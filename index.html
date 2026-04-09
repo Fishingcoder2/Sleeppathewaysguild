@@ -13,7 +13,7 @@
         color: white;
     }
 
-    /* NAV */
+    /* NAVIGATION */
     nav {
         background: #0B2B4A;
         padding: 15px 25px;
@@ -21,6 +21,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     nav h1 {
@@ -30,7 +31,20 @@
         letter-spacing: 1px;
     }
 
-    /* HERO */
+    nav .menu a {
+        color: white;
+        margin-left: 20px;
+        text-decoration: none;
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    nav .menu a:hover {
+        color: #C9A24A;
+        opacity: 1;
+    }
+
+    /* HERO SECTION */
     .hero {
         text-align: center;
         padding: 80px 20px;
@@ -50,7 +64,7 @@
         line-height: 1.6;
     }
 
-    /* SECTION */
+    /* CONTENT SECTIONS */
     .section {
         padding: 50px 20px;
         max-width: 900px;
@@ -79,6 +93,15 @@
 
 <nav>
     <h1>Sleep Pathways Guild</h1>
+
+    <div class="menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="members.html">Members</a>
+        <a href="projects.html">Projects</a>
+        <a href="newsletter.html">Newsletter</a>
+        <a href="contact.html">Contact</a>
+    </div>
 </nav>
 
 <section class="hero">
@@ -103,11 +126,11 @@
 <section class="section">
     <h3>What’s Coming</h3>
     <p>
-        • Guided study modules for RPSGT and CCSH  
-        • Monitoring and waveform interpretation labs  
-        • Peer-led discussion groups  
-        • Credential-safe onboarding and verification  
-        • A zero-cost, privacy-first member experience  
+        • Guided study modules for RPSGT and CCSH<br>
+        • Monitoring and waveform interpretation labs<br>
+        • Peer-led discussion groups<br>
+        • Credential-safe onboarding and verification<br>
+        • A zero-cost, privacy-first member experience
     </p>
 </section>
 
