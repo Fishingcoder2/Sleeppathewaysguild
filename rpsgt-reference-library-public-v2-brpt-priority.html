@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPSGT Public Reference Library | Sleep Pathways Guild</title>
+<style>
+:root{--bg:#f3efe8;--card:#fffdfa;--line:#c9c1b4;--text:#1f2328;--muted:#4f5a66;}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,var(--bg),#ece7de);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 56px}
+.hero{background:linear-gradient(180deg,#6a2632,#4d1b25);color:#fffdfa;border-radius:24px;padding:24px;box-shadow:0 8px 24px rgba(33,34,38,.12)}
+.hero *{color:#fffdfa}
+.controls{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
+input,select,button{min-height:44px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit}
+input{flex:1;min-width:260px;background:#fffdfa;color:var(--text)}
+button{background:#fffdfa;color:var(--text);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.ref-card{background:linear-gradient(180deg,var(--card),#f8f5ef);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 18px rgba(33,34,38,.07)}
+.kind,.brpt{display:inline-block;padding:5px 9px;border-radius:999px;background:#f0eadf;border:1px solid var(--line);font-size:.8rem;color:#3d3227;font-weight:700}
+.brpt{background:#efe2b4;margin-left:6px}
+h1,h2,h3{margin:0 0 10px}
+p{line-height:1.55}
+.meta,.tasks,.note{color:var(--muted)}
+.section{margin-top:20px}
+.footer{text-align:center;color:var(--muted);margin-top:24px;font-size:.92rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1>RPSGT Public Reference Library</h1>
+    <p>Books, manuals, guidelines, articles, papers, and review sources used for Sleep Pathways Guild study support.</p>
+    <p class="note">86 references listed • 14 BRPT-listed primary references identified • 30 book/manual/guideline references • 56 article/paper/review references.</p>
+  </section>
+  <div class="controls">
+    <input id="search" type="search" placeholder="Search title, author, topic, or task code...">
+    <select id="kind">
+      <option value="all">All reference types</option>
+      <option value="book">Books / manuals / guidelines</option>
+      <option value="article">Articles / papers / reviews</option>
+    </select>
+    <select id="brpt">
+      <option value="all">All references</option>
+      <option value="true">BRPT-listed first</option>
+    </select>
+    <button id="reset">Reset</button>
+  </div>
+  <section class="section">
+    <h2>Reference list</h2>
+    <p class="note">BRPT-listed primary references are shown first when they match the study area. This page intentionally avoids Drive links, filenames, internal source IDs, and build notes.</p>
+    <div class="grid" id="refs">
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="aast technical guideline: summary of aasm clinical guidelines for the manual titration of positive airway pressure in patients with osa american association of sleep technologists 2021 technical guideline pap titration, cpap, bilevel, oxygen, interface, troubleshooting d1a, d2a, d2c, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>AAST Technical Guideline: Summary of AASM Clinical Guidelines for the Manual Titration of Positive Airway Pressure in Patients with OSA</h3>
+      <p class="meta">American Association of Sleep Technologists • 2021 • Technical guideline</p>
+      <p>PAP titration, CPAP, bilevel, oxygen, interface, troubleshooting</p>
+      <p class="tasks">D1A, D2A, D2C, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="clinical guidelines for the manual titration of positive airway pressure in patients with obstructive sleep apnea kushida et al.; aasm pap titration task force 2008 article   clinical guideline pap titration, cpap, bilevel, oxygen, interface, troubleshooting d1a, d2c, d3a, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>Clinical Guidelines for the Manual Titration of Positive Airway Pressure in Patients with Obstructive Sleep Apnea</h3>
+      <p class="meta">Kushida et al.; AASM PAP Titration Task Force • 2008 • Guideline</p>
+      <p>PAP titration, CPAP, bilevel, oxygen, interface, troubleshooting</p>
+      <p class="tasks">D1A, D2C, D3A, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="fundamentals of sleep technology teofilo l. lee-chiong jr.; cynthia d. mattice; rita brooks 2019 book   textbook psg, scoring, physiology, pap, pediatric, sleep disorders, instrumentation d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>Fundamentals of Sleep Technology</h3>
+      <p class="meta">Teofilo L. Lee-Chiong Jr.; Cynthia D. Mattice; Rita Brooks • 2019 • 3rd ed.</p>
+      <p>PSG, scoring, physiology, PAP, pediatric, sleep disorders, instrumentation</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="international classification of sleep disorders american academy of sleep medicine  manual   classification sleep disorders, diagnostic criteria, insomnia, hypersomnia, circadian, parasomnias, srbd d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>International Classification of Sleep Disorders</h3>
+      <p class="meta">American Academy of Sleep Medicine • ICSD-3</p>
+      <p>Sleep disorders, diagnostic criteria, insomnia, hypersomnia, circadian, parasomnias, SRBD</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="the aasm manual for the scoring of sleep and associated events american academy of sleep medicine  manual   standard scoring, sleep stage scoring, respiratory events, movement, cardiac events, pediatric scoring d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>The AASM Manual for the Scoring of Sleep and Associated Events</h3>
+      <p class="meta">American Academy of Sleep Medicine • Version 3.0</p>
+      <p>Scoring, sleep stage scoring, respiratory events, movement, cardiac events, pediatric scoring</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="true" data-text="practice parameters for the respiratory indications for polysomnography in children aurora et al.; american academy of sleep medicine 2011 article   practice parameter pediatric psg, respiratory indications, pediatric osa, hypoventilation d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review <span class="brpt">BRPT-listed</span></div>
+      <h3>Practice Parameters for the Respiratory Indications for Polysomnography in Children</h3>
+      <p class="meta">Aurora et al.; American Academy of Sleep Medicine • 2011 • Practice parameter</p>
+      <p>Pediatric PSG, respiratory indications, pediatric OSA, hypoventilation</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="a clinical guide to pediatric sleep: diagnosis and management of sleep problems tbd from pdf title page  book   pediatric clinical guide pediatric sleep disorders, family education, treatment d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>A Clinical Guide to Pediatric Sleep: Diagnosis and Management of Sleep Problems</h3>
+      <p class="meta">TBD from PDF title page • 3rd ed.</p>
+      <p>Pediatric sleep disorders, family education, treatment</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="clinical practice guideline for diagnostic testing for adult obstructive sleep apnea kapur et al.; american academy of sleep medicine 2017 article   clinical practice guideline adult osa diagnostic testing, psg, hsat, indications d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>Clinical Practice Guideline for Diagnostic Testing for Adult Obstructive Sleep Apnea</h3>
+      <p class="meta">Kapur et al.; American Academy of Sleep Medicine • 2017 • Clinical practice guideline</p>
+      <p>Adult OSA diagnostic testing, PSG, HSAT, indications</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="oral appliance therapy for obstructive sleep apnea tbd   aasm-aadsm guideline likely  article   guideline oral appliance, osa therapy, alternative treatment d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>Oral Appliance Therapy for Obstructive Sleep Apnea</h3>
+      <p class="meta">TBD   AASM-AADSM guideline likely • Guideline</p>
+      <p>Oral appliance, OSA therapy, alternative treatment</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="sleep medicine pearls tbd from pdf title page  book   question-based review sleep disorders, clinical pearls, diagnosis, treatment d1a, d1b, d1c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>Sleep Medicine Pearls</h3>
+      <p class="meta">TBD from PDF title page</p>
+      <p>Sleep disorders, clinical pearls, diagnosis, treatment</p>
+      <p class="tasks">D1A, D1B, D1C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="true" data-text="international classification of sleep disorders, text revision supplemental material american academy of sleep medicine  supplement   classification sleep disorders, diagnostic criteria d1a, d1b, d1c">
+      <div class="kind">Article / Paper / Review <span class="brpt">BRPT-listed</span></div>
+      <h3>International Classification of Sleep Disorders, Text Revision Supplemental Material</h3>
+      <p class="meta">American Academy of Sleep Medicine • ICSD-3-TR supplemental</p>
+      <p>Sleep disorders, diagnostic criteria</p>
+      <p class="tasks">D1A, D1B, D1C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="true" data-text="practice parameters for the non-respiratory indications for polysomnography and multiple sleep latency testing for children aurora et al.; american academy of sleep medicine 2011 article   practice parameter pediatric psg, mslt, non-respiratory pediatric indications d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review <span class="brpt">BRPT-listed</span></div>
+      <h3>Practice Parameters for the Non-Respiratory Indications for Polysomnography and Multiple Sleep Latency Testing for Children</h3>
+      <p class="meta">Aurora et al.; American Academy of Sleep Medicine • 2011 • Practice parameter</p>
+      <p>Pediatric PSG, MSLT, non-respiratory pediatric indications</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="the international classification of sleep disorders american academy of sleep medicine  manual   classification sleep disorders classification d1a, d1b, d1c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>The International Classification of Sleep Disorders</h3>
+      <p class="meta">American Academy of Sleep Medicine</p>
+      <p>Sleep disorders classification</p>
+      <p class="tasks">D1A, D1B, D1C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="true" data-text="international classification of sleep disorders american academy of sleep medicine 1990 manual   legacy classification sleep disorders classification, historical d1a, d1b, d1c">
+      <div class="kind">Book / Manual / Guideline <span class="brpt">BRPT-listed</span></div>
+      <h3>International Classification of Sleep Disorders</h3>
+      <p class="meta">American Academy of Sleep Medicine • 1990 • 1990 edition</p>
+      <p>Sleep disorders classification, historical</p>
+      <p class="tasks">D1A, D1B, D1C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="advance titration certificate exam guided study workbook draft sleep pathways guild   tracy frazier draft 2026 user workbook draft atc exam guide, advanced titration, blueprint mapping d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Advance Titration Certificate Exam Guided Study Workbook Draft</h3>
+      <p class="meta">Sleep Pathways Guild   Tracy Frazier draft • 2026 • Draft</p>
+      <p>ATC exam guide, advanced titration, blueprint mapping</p>
+      <p class="tasks">D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="central sleep apnea guideline american academy of sleep medicine 2025 article   clinical practice guideline central sleep apnea, csa treatment, pap oxygen medications neurostimulation d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Central Sleep Apnea Guideline</h3>
+      <p class="meta">American Academy of Sleep Medicine • 2025 • Clinical practice guideline</p>
+      <p>Central sleep apnea, CSA treatment, PAP oxygen medications neurostimulation</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="principles and practice of pediatric sleep medicine tbd from pdf title page  book   pediatric textbook pediatric sleep disorders, pediatric psg, pediatric treatment d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Principles and Practice of Pediatric Sleep Medicine</h3>
+      <p class="meta">TBD from PDF title page</p>
+      <p>Pediatric sleep disorders, pediatric PSG, pediatric treatment</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="sleep disorders medicine sudhansu chokroverty, editor author depending edition  book   textbook sleep disorders, diagnosis, pathophysiology, treatment d1a, d1b, d1c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Sleep Disorders Medicine</h3>
+      <p class="meta">Sudhansu Chokroverty, editor author depending edition</p>
+      <p>Sleep disorders, diagnosis, pathophysiology, treatment</p>
+      <p class="tasks">D1A, D1B, D1C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="aast sleep technology terms and definitions american association of sleep technologists  glossary   terminology glossary, sleep technology terminology d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>AAST Sleep Technology Terms and Definitions</h3>
+      <p class="meta">American Association of Sleep Technologists • ebook</p>
+      <p>Glossary, sleep technology terminology</p>
+      <p class="tasks">D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="definition, discrimination, diagnosis and treatment of central breathing disturbances during sleep randerath et al. 2017 article   review central sleep apnea, cheyne-stokes, central breathing disturbances, treatment d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Definition, Discrimination, Diagnosis and Treatment of Central Breathing Disturbances During Sleep</h3>
+      <p class="meta">Randerath et al. • 2017 • Review   task force statement</p>
+      <p>Central sleep apnea, Cheyne-Stokes, central breathing disturbances, treatment</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="obesity hypoventilation syndrome masa et al. 2019 article   review obesity hypoventilation syndrome, hypoventilation, niv, pap d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Obesity Hypoventilation Syndrome</h3>
+      <p class="meta">Masa et al. • 2019 • Review</p>
+      <p>Obesity hypoventilation syndrome, hypoventilation, NIV, PAP</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="advanced titration workbook aast   verify from pdf  workbook   course companion advanced titration, pap, oxygen, alternative therapies d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Advanced Titration Workbook</h3>
+      <p class="meta">AAST   verify from PDF</p>
+      <p>Advanced titration, PAP, oxygen, alternative therapies</p>
+      <p class="tasks">D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="atlas of sleep medicine sudhansu chokroverty, editor author depending edition  book   atlas sleep medicine atlas, psg patterns, sleep disorders d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Atlas of Sleep Medicine</h3>
+      <p class="meta">Sudhansu Chokroverty, editor author depending edition</p>
+      <p>Sleep medicine atlas, PSG patterns, sleep disorders</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="clinical atlas of polysomnography tbd from pdf title page  book   atlas psg, sleep stage scoring, waveform recognition, respiratory events d1a, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Clinical Atlas of Polysomnography</h3>
+      <p class="meta">TBD from PDF title page</p>
+      <p>PSG, sleep stage scoring, waveform recognition, respiratory events</p>
+      <p class="tasks">D1A, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="diagnosis and management of childhood obstructive sleep apnea syndrome american academy of pediatrics 2012 article   guideline pediatric osa, diagnosis, adenotonsillectomy, cpap, weight loss, intranasal steroids d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Diagnosis and Management of Childhood Obstructive Sleep Apnea Syndrome</h3>
+      <p class="meta">American Academy of Pediatrics • 2012 • Clinical practice guideline</p>
+      <p>Pediatric OSA, diagnosis, adenotonsillectomy, CPAP, weight loss, intranasal steroids</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="pediatric sleep medicine sheldon; ferber spire levy et al. - verify title page  book   pediatric textbook pediatric sleep disorders, pediatric psg, infant child sleep d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Pediatric Sleep Medicine</h3>
+      <p class="meta">Sheldon; Ferber Spire Levy et al. - verify title page</p>
+      <p>Pediatric sleep disorders, pediatric PSG, infant child sleep</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="psg adult guidelines 2024 tbd   aasm or other organization 2024 guideline adult psg, diagnostic testing, protocols d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>PSG Adult Guidelines 2024</h3>
+      <p class="meta">TBD   AASM or other organization • 2024 • Guideline</p>
+      <p>Adult PSG, diagnostic testing, protocols</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="sleep medicine: essentials and review teofilo lee-chiong jr. 2008 book   textbook sleep medicine, psg, respiratory physiology, pediatric sleep, treatment d1a, d2a, d2b, d2c, d3a, d3b, d3c, d4a">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Sleep Medicine: Essentials and Review</h3>
+      <p class="meta">Teofilo Lee-Chiong Jr. • 2008</p>
+      <p>Sleep medicine, PSG, respiratory physiology, pediatric sleep, treatment</p>
+      <p class="tasks">D1A, D2A, D2B, D2C, D3A, D3B, D3C, D4A</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="caffeine for the pharmacological treatment of apnea of prematurity in the nicu long et al.   verify 2021 article   review apnea of prematurity, caffeine, methylxanthines, infant breathing d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Caffeine for the Pharmacological Treatment of Apnea of Prematurity in the NICU</h3>
+      <p class="meta">Long et al.   verify • 2021 • Review</p>
+      <p>Apnea of prematurity, caffeine, methylxanthines, infant breathing</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="central hypoventilation syndromes cielo and marcus 2014 article   review congenital central hypoventilation, cchs, rohhad, pediatric hypoventilation d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Central Hypoventilation Syndromes</h3>
+      <p class="meta">Cielo and Marcus • 2014 • Review</p>
+      <p>Congenital central hypoventilation, CCHS, ROHHAD, pediatric hypoventilation</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="effect of upper airway stimulation in patients with obstructive sleep apnea (effect): a randomized controlled crossover trial heiser et al. 2021 article   clinical trial hypoglossal nerve stimulation, upper airway stimulation, neurostimulator therapy, osa d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Effect of Upper Airway Stimulation in Patients with Obstructive Sleep Apnea (EFFECT): A Randomized Controlled Crossover Trial</h3>
+      <p class="meta">Heiser et al. • 2021 • Randomized controlled crossover trial</p>
+      <p>Hypoglossal nerve stimulation, upper airway stimulation, neurostimulator therapy, OSA</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="end-tidal co2 aast   verify  article   technical education end-tidal co2, capnography, ventilation monitoring d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>End-Tidal CO2</h3>
+      <p class="meta">AAST   verify • Technical article</p>
+      <p>End-tidal CO2, capnography, ventilation monitoring</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="interfaces and humidification for noninvasive mechanical ventilation nava et al. 2009 article   review niv interfaces, humidification, mask interface troubleshooting d2c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Interfaces and Humidification for Noninvasive Mechanical Ventilation</h3>
+      <p class="meta">Nava et al. • 2009 • Review</p>
+      <p>NIV interfaces, humidification, mask interface troubleshooting</p>
+      <p class="tasks">D2C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="interfaces, circuits and humidifiers ferreira 2020 article   review pediatric niv interfaces, circuits, humidification d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Interfaces, Circuits and Humidifiers</h3>
+      <p class="meta">Ferreira • 2020 • Review chapter</p>
+      <p>Pediatric NIV interfaces, circuits, humidification</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="montage technical article supplemental content  2021? supplemental content montage, technical setup, electrodes d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Montage Technical Article Supplemental Content</h3>
+      <p class="meta">2021? • Supplement</p>
+      <p>Montage, technical setup, electrodes</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="noninvasive ventilation statpearls   ncbi bookshelf  reference chapter niv, ventilation modes, respiratory failure, pap d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Noninvasive Ventilation</h3>
+      <p class="meta">StatPearls   NCBI Bookshelf • Bookshelf chapter</p>
+      <p>NIV, ventilation modes, respiratory failure, PAP</p>
+      <p class="tasks">D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="oral appliance therapy   article   guide oral appliance therapy, alternative therapies d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Oral Appliance Therapy</h3>
+      <p class="meta"></p>
+      <p>Oral appliance therapy, alternative therapies</p>
+      <p class="tasks">D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="pediatric obstructive sleep apnea statpearls   ncbi bookshelf  reference chapter pediatric osa, evaluation, therapy d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Pediatric Obstructive Sleep Apnea</h3>
+      <p class="meta">StatPearls   NCBI Bookshelf • Bookshelf chapter</p>
+      <p>Pediatric OSA, evaluation, therapy</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="pediatric sleep surgery sulman 2014 article   review pediatric sleep surgery, osa, multilevel obstruction d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Pediatric Sleep Surgery</h3>
+      <p class="meta">Sulman • 2014 • Review</p>
+      <p>Pediatric sleep surgery, OSA, multilevel obstruction</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="psg 10-20 ground m1 m2 guide sleep pathways guild   verify 2026 user guide   technical worksheet 10-20 system, montages, m1 m2 references, psg setup d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>PSG 10-20 Ground M1 M2 Guide</h3>
+      <p class="meta">Sleep Pathways Guild   verify • 2026 • Guide</p>
+      <p>10-20 system, montages, M1 M2 references, PSG setup</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="quality measures for the care of pediatric patients with obstructive sleep apnea lloyd et al.   aasm quality measures group - verify 2015 article   quality measure pediatric osa, cpap, follow-up, adherence, quality measures d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Quality Measures for the Care of Pediatric Patients with Obstructive Sleep Apnea</h3>
+      <p class="meta">Lloyd et al.   AASM quality measures group - verify • 2015 • Quality measure</p>
+      <p>Pediatric OSA, CPAP, follow-up, adherence, quality measures</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="review: full polysomnography in children   article   review pediatric psg, indications, procedures, scoring d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Review: Full Polysomnography in Children</h3>
+      <p class="meta">Review</p>
+      <p>Pediatric PSG, indications, procedures, scoring</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="rpsgt self-assessment   exam prep   self-assessment rpsgt review questions, exam preparation d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>RPSGT Self-Assessment</h3>
+      <p class="meta"></p>
+      <p>RPSGT review questions, exam preparation</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="sleep stage scoring   scoring guide sleep stage scoring, waveform recognition d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Sleep Stage Scoring</h3>
+      <p class="meta">C3 version?</p>
+      <p>Sleep stage scoring, waveform recognition</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="transcutaneous co2 monitoring aast   verify  article   technical education transcutaneous co2, hypoventilation monitoring, pediatric adult psg d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Transcutaneous CO2 Monitoring</h3>
+      <p class="meta">AAST   verify • Technical article</p>
+      <p>Transcutaneous CO2, hypoventilation monitoring, pediatric adult PSG</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="upper-airway stimulation for obstructive sleep apnea strollo et al. 2014 article   clinical trial hypoglossal nerve stimulation, osa, alternative therapy d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Upper-Airway Stimulation for Obstructive Sleep Apnea</h3>
+      <p class="meta">Strollo et al. • 2014 • Clinical trial</p>
+      <p>Hypoglossal nerve stimulation, OSA, alternative therapy</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="basic polysomnography: an algorithmic approach tripat deep singh - verify  book   psg review polysomnography, scoring, event recognition d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Basic Polysomnography: An Algorithmic Approach</h3>
+      <p class="meta">Tripat Deep Singh - verify</p>
+      <p>Polysomnography, scoring, event recognition</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="basics of sleep tbd from pdf title page  book   primer sleep physiology, sleep disorders, psg basics d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Basics of Sleep</h3>
+      <p class="meta">TBD from PDF title page</p>
+      <p>Sleep physiology, sleep disorders, PSG basics</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="clinician&#x27;s guide to pediatric sleep disorders tbd from pdf title page 2007 book   pediatric guide pediatric sleep disorders, pediatric clinical management d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Clinician&#x27;s Guide to Pediatric Sleep Disorders</h3>
+      <p class="meta">TBD from PDF title page • 2007</p>
+      <p>Pediatric sleep disorders, pediatric clinical management</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="niv guidelines   guideline   review niv, hypoventilation, ventilatory support d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>NIV Guidelines</h3>
+      <p class="meta">Guideline</p>
+      <p>NIV, hypoventilation, ventilatory support</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="the only ekg book you&#x27;ll ever need malcolm s. thaler  book   ekg ekg, cardiac physiology, arrhythmia recognition d1a, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>The Only EKG Book You&#x27;ll Ever Need</h3>
+      <p class="meta">Malcolm S. Thaler • 9th ed.</p>
+      <p>EKG, cardiac physiology, arrhythmia recognition</p>
+      <p class="tasks">D1A, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="two-process model of sleep regulation borbély   verify  book chapter   article sleep physiology, sleep regulation, circadian homeostatic process d1a, d1b, d1c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>Two-Process Model of Sleep Regulation</h3>
+      <p class="meta">Borbély   verify • Chapter</p>
+      <p>Sleep physiology, sleep regulation, circadian homeostatic process</p>
+      <p class="tasks">D1A, D1B, D1C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="11 cardiac arrhythmias to trace ecg ekg tbd from pdf title page  guide   ekg practice ekg, arrhythmia recognition d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>11 Cardiac Arrhythmias to Trace ECG EKG</h3>
+      <p class="meta">TBD from PDF title page</p>
+      <p>EKG, arrhythmia recognition</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="a comprehensive guide to noninvasive ventilation (niv) hamilton medical  manufacturer guide   education niv, ventilation modes, device concepts d1b, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>A Comprehensive Guide to Noninvasive Ventilation (NIV)</h3>
+      <p class="meta">Hamilton Medical • Guide</p>
+      <p>NIV, ventilation modes, device concepts</p>
+      <p class="tasks">D1B, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="a novel intraoral neuromuscular stimulation device tbd from pdf title page  article   device study intraoral stimulation, osa snoring, alternative therapy d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>A Novel Intraoral Neuromuscular Stimulation Device</h3>
+      <p class="meta">TBD from PDF title page</p>
+      <p>Intraoral stimulation, OSA snoring, alternative therapy</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="apnea of prematurity merck manual professional edition  clinical reference apnea of prematurity, infant respiratory control d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Apnea of Prematurity</h3>
+      <p class="meta">Merck Manual Professional Edition • Web PDF capture</p>
+      <p>Apnea of prematurity, infant respiratory control</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="breathing and exchange of gases   educational pdf gas exchange, anatomy, physiology d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Breathing and Exchange of Gases</h3>
+      <p class="meta">Educational handout</p>
+      <p>Gas exchange, anatomy, physiology</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="daytime neuromuscular electrical therapy of tongue muscles in improving snoring in individuals with primary snoring and mild obstructive sleep apnea baptista et al. 2021 article   clinical study intraoral tongue stimulation, primary snoring, mild osa d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Daytime Neuromuscular Electrical Therapy of Tongue Muscles in Improving Snoring in Individuals with Primary Snoring and Mild Obstructive Sleep Apnea</h3>
+      <p class="meta">Baptista et al. • 2021 • Clinical study</p>
+      <p>Intraoral tongue stimulation, primary snoring, mild OSA</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="heated humidified high-flow nasal cannula in children statpearls   ncbi bookshelf  reference chapter high-flow nasal cannula, pediatric respiratory support d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Heated Humidified High-Flow Nasal Cannula in Children</h3>
+      <p class="meta">StatPearls   NCBI Bookshelf • Bookshelf chapter</p>
+      <p>High-flow nasal cannula, pediatric respiratory support</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="high-flow therapy: physiological effects and clinical applications d&#x27;cruz et al. 2020 article   review high-flow nasal cannula, respiratory support, physiology d1a, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>High-Flow Therapy: Physiological Effects and Clinical Applications</h3>
+      <p class="meta">D&#x27;Cruz et al. • 2020 • Review</p>
+      <p>High-flow nasal cannula, respiratory support, physiology</p>
+      <p class="tasks">D1A, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="high-flow, heated, humidified air via nasal cannula treats cpap-intolerant children with osa  2017 article   clinical study pediatric osa, high-flow nasal cannula, cpap intolerance d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>High-Flow, Heated, Humidified Air via Nasal Cannula Treats CPAP-Intolerant Children with OSA</h3>
+      <p class="meta">2017 • Study</p>
+      <p>Pediatric OSA, high-flow nasal cannula, CPAP intolerance</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="humidification during invasive and non-invasive ventilation: a starting tool kit for correct setting re et al. 2024 article   review humidification, invasive ventilation, niv, interface comfort d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Humidification During Invasive and Non-Invasive Ventilation: A Starting Tool Kit for Correct Setting</h3>
+      <p class="meta">Re et al. • 2024 • Review</p>
+      <p>Humidification, invasive ventilation, NIV, interface comfort</p>
+      <p class="tasks">D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="other therapies for sleep apnea   article   patient or clinical education alternative therapies, positional therapy, surgery, oral appliance d1a, d1b, d3a, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Other Therapies for Sleep Apnea</h3>
+      <p class="meta"></p>
+      <p>Alternative therapies, positional therapy, surgery, oral appliance</p>
+      <p class="tasks">D1A, D1B, D3A, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="pediatric non-respiratory table   supplement   table pediatric non-respiratory psg indications d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Pediatric Non-Respiratory Table</h3>
+      <p class="meta">Table</p>
+      <p>Pediatric non-respiratory PSG indications</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="phrenic nerve stimulation for the treatment of central sleep apnea javaheri et al.   verify 2023 csa.pdf; likely phrenic csa files high d3a, d4b">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Phrenic Nerve Stimulation for the Treatment of Central Sleep Apnea</h3>
+      <p class="meta">Javaheri et al.   verify • 2023 • Review   therapy article</p>
+      <p>High</p>
+      <p class="tasks">D3A, D4B</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="polysomnography review   exam prep   review psg, scoring, respiratory events, technical performance d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Polysomnography Review</h3>
+      <p class="meta"></p>
+      <p>PSG, scoring, respiratory events, technical performance</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="respiratory gas exchange in the lungs   educational pdf gas exchange, alveoli, diffusion, physiology d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Respiratory Gas Exchange in the Lungs</h3>
+      <p class="meta">Educational handout</p>
+      <p>Gas exchange, alveoli, diffusion, physiology</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="respiratory physiology during sleep vipin malik; daniel smith; teofilo lee-chiong jr. 2012 pdf-vipin-malik-publication-respiratory.pdf   possibly 13311_2012_article_141.pdf core d1a">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Respiratory Physiology During Sleep</h3>
+      <p class="meta">Vipin Malik; Daniel Smith; Teofilo Lee-Chiong Jr. • 2012 • Review chapter article</p>
+      <p>Core</p>
+      <p class="tasks">D1A</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="review of medical therapy for osa   article   review medical therapy osa, medications, adjunctive therapy d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Review of Medical Therapy for OSA</h3>
+      <p class="meta">Review</p>
+      <p>Medical therapy OSA, medications, adjunctive therapy</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="review of neurostimulation therapies for obstructive sleep apnea: hypoglossal nerve stimulation and beyond dos santos cé et al. 2025 article   review neurostimulation, hypoglossal nerve stimulation, osa, therapy d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Review of Neurostimulation Therapies for Obstructive Sleep Apnea: Hypoglossal Nerve Stimulation and Beyond</h3>
+      <p class="meta">dos Santos Cé et al. • 2025 • Review</p>
+      <p>Neurostimulation, hypoglossal nerve stimulation, OSA, therapy</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="review: night wakings in children   article   review pediatric insomnia, night awakenings, family education d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Review: Night Wakings in Children</h3>
+      <p class="meta">Review</p>
+      <p>Pediatric insomnia, night awakenings, family education</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="sleep surgery in the era of precision medicine   article   review surgical therapy osa, airway surgery d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Sleep Surgery in the Era of Precision Medicine</h3>
+      <p class="meta">Review</p>
+      <p>Surgical therapy OSA, airway surgery</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="sleep technician guide   technician guide psg, tech workflow, scoring, patient preparation d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Sleep Technician Guide</h3>
+      <p class="meta"></p>
+      <p>PSG, tech workflow, scoring, patient preparation</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="unlocking the mystery of rem sleep without atonia   article   review rem sleep without atonia, rbd, scoring, parasomnia d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Unlocking the Mystery of REM Sleep Without Atonia</h3>
+      <p class="meta">Article</p>
+      <p>REM sleep without atonia, RBD, scoring, parasomnia</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="a case report of rem sleep behavior disorder ...   article   case report rem behavior disorder, parasomnia, case report d1a, d1b, d1c, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>A Case Report of REM Sleep Behavior Disorder ...</h3>
+      <p class="meta">Case report</p>
+      <p>REM behavior disorder, parasomnia, case report</p>
+      <p class="tasks">D1A, D1B, D1C, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="anatomy and physiology of the respiratory system ms. asma el-shara   verify  lecture pdf respiratory anatomy, ventilation, gas exchange d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Anatomy and Physiology of the Respiratory System</h3>
+      <p class="meta">Ms. Asma El-Shara   verify • Lecture handout</p>
+      <p>Respiratory anatomy, ventilation, gas exchange</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="bsc sleep technology curriculum  2021 curriculum   academic pdf sleep technology curriculum, broad psg topics d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>BSc Sleep Technology Curriculum</h3>
+      <p class="meta">2021 • Curriculum</p>
+      <p>Sleep technology curriculum, broad PSG topics</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="former preterm infants: caffeine was good for you, but now beware of snoring poets and khan 2014 article preterm infants, caffeine, snoring osa risk d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Former Preterm Infants: Caffeine Was Good for You, But Now Beware of Snoring</h3>
+      <p class="meta">Poets and Khan • 2014 • Commentary   article</p>
+      <p>Preterm infants, caffeine, snoring OSA risk</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="giving weight to incretin-based pharmacotherapy for obesity-related sleep apnea grunstein et al.   verify 2023 article   review obesity-related osa, weight-loss pharmacotherapy, glp-1 incretin therapy d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Giving Weight to Incretin-Based Pharmacotherapy for Obesity-Related Sleep Apnea</h3>
+      <p class="meta">Grunstein et al.   verify • 2023 • Commentary review</p>
+      <p>Obesity-related OSA, weight-loss pharmacotherapy, GLP-1 incretin therapy</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="national sleep foundation sleep in america poll report national sleep foundation 2026 report sleep health, public health, sleep awareness d1b, d2a, d3a, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>National Sleep Foundation Sleep in America Poll Report</h3>
+      <p class="meta">National Sleep Foundation • 2026 • Poll report</p>
+      <p>Sleep health, public health, sleep awareness</p>
+      <p class="tasks">D1B, D2A, D3A, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="pmh23-4 sanford sleep sanford   verify 2023? presentation   education sleep overview, clinical education d1a, d1b, d1c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>PMH23-4 Sanford Sleep</h3>
+      <p class="meta">Sanford   verify • 2023? • Presentation PDF</p>
+      <p>Sleep overview, clinical education</p>
+      <p class="tasks">D1A, D1B, D1C, D4A, D4B, D4C</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="polysomnography slideshare or presentation source - verify  slides   presentation psg overview, sensors, setup, scoring d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Polysomnography</h3>
+      <p class="meta">Slideshare or presentation source - verify • Presentation PDF</p>
+      <p>PSG overview, sensors, setup, scoring</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="brpt rpsgt candidate handbook board of registered polysomnographic technologists 2018 official handbook   exam info rpsgt exam process, blueprint, policies d2a, d2b, d2c, d3a, d3b, d3c">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>BRPT RPSGT Candidate Handbook</h3>
+      <p class="meta">Board of Registered Polysomnographic Technologists • 2018 • Candidate handbook</p>
+      <p>RPSGT exam process, blueprint, policies</p>
+      <p class="tasks">D2A, D2B, D2C, D3A, D3B, D3C</p>
+    </article>
+    <article class="ref-card" data-kind="book" data-brpt="false" data-text="so you want to write a textbook   writing guide writing publishing, textbook planning ">
+      <div class="kind">Book / Manual / Guideline </div>
+      <h3>So You Want to Write a Textbook</h3>
+      <p class="meta">Guide</p>
+      <p>Writing publishing, textbook planning</p>
+      <p class="tasks">Blueprint mapping pending</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="anyflip exports - title not visible from drive filename unknown until opened  unclassified pdf exports unknown - likely sleep textbook chapters slides from anyflip links ">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>AnyFlip exports - title not visible from Drive filename</h3>
+      <p class="meta">Unknown until opened</p>
+      <p>Unknown - likely sleep textbook chapters slides from AnyFlip links</p>
+      <p class="tasks">Blueprint mapping pending</p>
+    </article>
+    <article class="ref-card" data-kind="article" data-brpt="false" data-text="unresolved nihms   journal-code pdfs unknown until opened  unclassified article group likely sleep respiratory pediatric niv osa articles d1a, d1b, d1c, d2a, d2b, d2c, d3a, d3b, d3c, d4a, d4b, d4c">
+      <div class="kind">Article / Paper / Review </div>
+      <h3>Unresolved NIHMS   journal-code PDFs</h3>
+      <p class="meta">Unknown until opened</p>
+      <p>Likely sleep respiratory pediatric NIV OSA articles</p>
+      <p class="tasks">D1A, D1B, D1C, D2A, D2B, D2C, D3A, D3B, D3C, D4A, D4B, D4C</p>
+    </article></div>
+  </section>
+  <div class="footer">Educational study support only. Verify current scoring rules against current AASM and BRPT expectations.</div>
+</div>
+<script>
+const q=document.getElementById('search'), kind=document.getElementById('kind'), brpt=document.getElementById('brpt'), refs=[...document.querySelectorAll('.ref-card')];
+function apply(){const s=q.value.toLowerCase(), k=kind.value, b=brpt.value; refs.forEach(card=>{const okText=!s||card.dataset.text.includes(s); const okKind=k==='all'||card.dataset.kind===k; const okBrpt=b==='all'||card.dataset.brpt==='true'; card.style.display=(okText&&okKind&&okBrpt)?'block':'none';})}
+q.oninput=apply; kind.onchange=apply; brpt.onchange=apply; document.getElementById('reset').onclick=()=>{q.value='';kind.value='all';brpt.value='all';apply();};
+</script>
+</body>
+</html>
