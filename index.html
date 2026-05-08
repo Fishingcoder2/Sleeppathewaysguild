@@ -3,753 +3,900 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sleep Pathways Guild</title>
-  <meta name="description" content="Sleep Pathways Guild is a growing home for guidance, study, mentorship, and advancement in sleep technology and sleep medicine education." />
+  <title>Sleep Pathways Guild | RPSGT Exam Study Hub</title>
+  <meta
+    name="description"
+    content="Sleep Pathways Guild provides RPSGT exam study tools, practice questions, flashcards, references, labs, and review reports."
+  />
   <style>
-    :root {
-      --bg: #071425;
-      --bg-soft: #0d2038;
-      --panel: rgba(255,255,255,0.08);
-      --panel-strong: rgba(255,255,255,0.12);
-      --text: #edf4ff;
-      --muted: #b8c7df;
-      --line: rgba(255,255,255,0.12);
-      --blue: #4aa5ff;
-      --teal: #46d0c2;
-      --gold: #f2c14e;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --radius: 26px;
-      --max: 1180px;
+    :root{
+      --bg:#08121f;
+      --bg2:#0e1c31;
+      --ink:#f4f8ff;
+      --muted:#bfd0e7;
+      --line:rgba(255,255,255,.12);
+      --panel:rgba(255,255,255,.08);
+      --panel-strong:rgba(255,255,255,.12);
+      --blue:#1f6fbf;
+      --blue-soft:#dcecff;
+      --teal:#37b8b0;
+      --gold:#c89a32;
+      --cream:#fff8e7;
+      --shadow:0 28px 80px rgba(0,0,0,.34);
+      --max:1180px;
+      --radius:28px;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family:"Trebuchet MS","Segoe UI",Tahoma,sans-serif;
       background:
-        radial-gradient(circle at 20% 10%, rgba(74,165,255,.22), transparent 28%),
-        radial-gradient(circle at 80% 18%, rgba(70,208,194,.14), transparent 24%),
-        linear-gradient(180deg, #06111f 0%, #0a1830 55%, #0c1c36 100%);
-      min-height: 100vh;
+        radial-gradient(circle at 12% 12%, rgba(55,184,176,.18), transparent 24rem),
+        radial-gradient(circle at 84% 10%, rgba(31,111,191,.24), transparent 22rem),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
     }
 
-    a { color: inherit; text-decoration: none; }
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
 
-    .wrap {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
+    .wrap{width:min(calc(100% - 32px), var(--max));margin:0 auto}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter:blur(14px);
+      background:rgba(8,18,31,.72);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
-      background: rgba(6,17,31,.62);
-      border-bottom: 1px solid rgba(255,255,255,.08);
+    .topbarInner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:14px 0;
     }
 
-    .topbar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 14px 0;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
+    .brandLogo{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      object-fit:cover;
+      box-shadow:0 14px 30px rgba(10,28,52,.34);
+      border:1px solid rgba(255,255,255,.18);
+      background:#0a1730;
+      flex:0 0 auto;
     }
 
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      flex: 0 0 auto;
+    .brandText strong{
+      display:block;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.12rem;
+      letter-spacing:.02em;
+    }
+
+    .brandText span{
+      display:block;
+      color:var(--muted);
+      font-size:.84rem;
+      line-height:1.25;
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .nav a{
+      color:var(--muted);
+      font-size:.95rem;
+      padding:10px 13px;
+      border-radius:999px;
+      transition:.18s ease;
+    }
+
+    .nav a:hover{
+      color:var(--ink);
+      background:rgba(255,255,255,.08);
+    }
+
+    .hero{
+      padding:56px 0 24px;
+    }
+
+    .heroGrid{
+      display:grid;
+      grid-template-columns:minmax(0,1.06fr) minmax(320px,.94fr);
+      gap:24px;
+      align-items:stretch;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg,var(--panel-strong),var(--panel));
+      box-shadow:var(--shadow);
+    }
+
+    .heroCard{
+      padding:34px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .heroCard:after{
+      content:"";
+      position:absolute;
+      right:-90px;
+      top:-110px;
+      width:280px;
+      height:280px;
+      background:radial-gradient(circle, rgba(31,111,191,.28), transparent 68%);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+      color:#dde9fb;
+      font-size:.82rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .eyebrow:before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--gold),var(--teal));
+      box-shadow:0 0 16px rgba(200,154,50,.42);
+    }
+
+    h1{
+      margin:18px 0 14px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(2.5rem,6vw,4.9rem);
+      line-height:.98;
+      letter-spacing:-.04em;
+      max-width:11ch;
+    }
+
+    .lead{
+      color:var(--muted);
+      font-size:1.07rem;
+      line-height:1.72;
+      max-width:64ch;
+      margin:0 0 18px;
+    }
+
+    .heroBadgeRow,
+    .microBadgeRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.07);
+      color:#eef4ff;
+      font-size:.84rem;
+      font-weight:800;
+    }
+
+    .pill.gold{
+      background:rgba(255,248,231,.14);
+      border-color:rgba(200,154,50,.38);
+      color:#fff3d0;
+    }
+
+    .ctaRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin:24px 0 18px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:50px;
+      padding:0 18px;
+      border-radius:999px;
+      font-weight:900;
+      transition:.18s ease;
+      border:1px solid transparent;
+    }
+
+    .btn.primary{
+      color:#fff;
+      background:linear-gradient(135deg,#1f6fbf,#37b8b0);
+      box-shadow:0 14px 28px rgba(31,111,191,.26);
+    }
+
+    .btn.secondary{
+      color:var(--ink);
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.14);
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+
+    .heroStats{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:20px;
+    }
+
+    .heroStat{
+      padding:14px;
+      border-radius:20px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .heroStat strong{
+      display:block;
+      font-size:1.28rem;
+      font-family:Georgia,"Times New Roman",serif;
+      margin-bottom:5px;
+    }
+
+    .heroStat span{
+      display:block;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.35;
+    }
+
+    .brandPanel{
+      padding:26px;
+      display:grid;
+      gap:18px;
+      align-content:start;
       background:
-        radial-gradient(circle at center, rgba(255,255,255,.9) 0 4%, transparent 5%),
-        conic-gradient(from 0deg, #1b79d0 0 25%, #78e0d6 25% 50%, #1b79d0 50% 75%, #f2c14e 75% 100%);
-      border: 3px solid rgba(255,255,255,.85);
-      box-shadow: 0 0 0 4px rgba(255,255,255,.08);
-      position: relative;
+        radial-gradient(circle at top center, rgba(255,255,255,.1), transparent 20rem),
+        linear-gradient(180deg, rgba(255,248,231,.08), rgba(255,255,255,.05));
     }
 
-    .brand-mark::before,
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: 50% auto auto 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,.9);
-      border-radius: 999px;
+    .brandLockup{
+      display:grid;
+      place-items:center;
+      gap:14px;
+      text-align:center;
     }
 
-    .brand-mark::before { width: 4px; height: 32px; }
-    .brand-mark::after { width: 32px; height: 4px; }
-
-    .brand-copy {
-      min-width: 0;
+    .heroLogo{
+      width:min(100%, 370px);
+      aspect-ratio:1;
+      object-fit:cover;
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 26px 60px rgba(4,12,24,.34);
+      background:#0a1730;
     }
 
-    .brand-copy strong {
-      display: block;
-      font-size: 1rem;
-      letter-spacing: .04em;
+    .brandLockup h2{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(1.6rem,3vw,2.35rem);
+      line-height:1.08;
     }
 
-    .brand-copy span {
-      display: block;
-      color: var(--muted);
-      font-size: .82rem;
+    .brandLockup p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
     }
 
-    .nav {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+    .trustList{
+      display:grid;
+      gap:10px;
     }
 
-    .nav a {
-      color: var(--muted);
-      font-size: .95rem;
-      padding: 9px 12px;
-      border-radius: 999px;
-      transition: .2s ease;
+    .trustItem{
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.05);
     }
 
-    .nav a:hover {
-      color: var(--text);
-      background: rgba(255,255,255,.08);
+    .trustItem strong{
+      display:block;
+      margin-bottom:4px;
+      color:#fff6dc;
     }
 
-    .hero {
-      padding: 72px 0 28px;
+    .trustItem span{
+      display:block;
+      color:var(--muted);
+      font-size:.93rem;
+      line-height:1.45;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.12fr .88fr;
-      gap: 28px;
-      align-items: stretch;
+    .announce{
+      padding:8px 0 18px;
     }
 
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+    .announceCard{
+      padding:18px 20px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:16px;
+      align-items:center;
+      border-left:8px solid var(--gold);
+      background:linear-gradient(180deg, rgba(255,248,231,.16), rgba(255,255,255,.06));
     }
 
-    .hero-copy {
-      padding: 34px;
-      position: relative;
-      overflow: hidden;
+    .announceCard h3{
+      margin:4px 0 6px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.45rem;
+      color:#fff4d4;
     }
 
-    .hero-copy::after {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      right: -90px;
-      top: -80px;
-      background: radial-gradient(circle, rgba(74,165,255,.2), transparent 65%);
-      pointer-events: none;
+    .announceCard p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.1);
-      color: #d7e7ff;
-      font-size: .85rem;
-      letter-spacing: .04em;
-      text-transform: uppercase;
+    .section{
+      padding:18px 0 26px;
     }
 
-    .eyebrow::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold), var(--teal));
-      box-shadow: 0 0 18px rgba(242,193,78,.45);
+    .sectionHead{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:16px;
     }
 
-    h1 {
-      margin: 20px 0 14px;
-      font-size: clamp(2.3rem, 6vw, 4.65rem);
-      line-height: 1.03;
-      letter-spacing: -.03em;
-      max-width: 12ch;
+    .sectionHead h2{
+      margin:6px 0 0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(1.65rem,4vw,2.45rem);
+      line-height:1.08;
     }
 
-    .lead {
-      color: var(--muted);
-      font-size: 1.08rem;
-      line-height: 1.75;
-      max-width: 62ch;
-      margin: 0 0 22px;
+    .sectionHead p{
+      margin:0;
+      color:var(--muted);
+      max-width:62ch;
+      line-height:1.6;
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 24px 0 28px;
+    .launchGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      transition: .2s ease;
-      border: 1px solid transparent;
+    .launchCard{
+      padding:22px;
+      display:grid;
+      gap:14px;
+      align-content:start;
+      min-height:100%;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #3b91ff, #3fd3c0);
-      color: white;
-      box-shadow: 0 12px 24px rgba(26,126,214,.28);
+    .launchCard h3{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.42rem;
+      line-height:1.1;
     }
 
-    .btn-primary:hover { transform: translateY(-1px); }
-
-    .btn-secondary {
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      border-color: rgba(255,255,255,.12);
+    .launchCard p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.58;
     }
 
-    .hero-points {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 8px;
+    .launchIcon{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:1.6rem;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
     }
 
-    .hero-point {
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
+    .launchMeta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
     }
 
-    .hero-point strong {
-      display: block;
-      font-size: .98rem;
-      margin-bottom: 6px;
+    .linkRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:2px;
     }
 
-    .hero-point span {
-      display: block;
-      color: var(--muted);
-      font-size: .9rem;
-      line-height: 1.5;
+    .miniLink{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      color:#eff5ff;
+      font-weight:800;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
     }
 
-    .hero-visual {
-      padding: 26px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
-      min-height: 100%;
+    .badgeGrid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
     }
 
-    .badge-frame {
-      min-height: 420px;
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,.12);
-      background:
-        radial-gradient(circle at 50% 18%, rgba(255,255,255,.13), transparent 20%),
-        linear-gradient(180deg, rgba(35,108,190,.38), rgba(12,29,51,.88));
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-      padding: 24px;
+    .badgeCard{
+      padding:18px;
+      text-align:left;
+      display:grid;
+      gap:10px;
+      min-height:100%;
     }
 
-    .badge-frame::before {
-      content: "";
-      position: absolute;
-      inset: auto 8% 10% 8%;
-      height: 130px;
-      border-radius: 999px;
-      background: radial-gradient(circle at center, rgba(70,208,194,.26), transparent 68%);
-      filter: blur(10px);
+    .badgeEmblem{
+      width:68px;
+      height:68px;
+      border-radius:22px;
+      display:grid;
+      place-items:center;
+      font-size:1.4rem;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(135deg,#143f78,#1f6fbf 55%, #37b8b0);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 16px 36px rgba(5,18,38,.28);
     }
 
-    .compass {
-      width: min(92%, 420px);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      position: relative;
-      background:
-        radial-gradient(circle at center, rgba(255,255,255,.08) 0 35%, transparent 36%),
-        radial-gradient(circle at center, rgba(255,255,255,.18) 0 2%, transparent 3%),
-        conic-gradient(from 0deg, rgba(255,255,255,.1) 0 2%, transparent 2% 8%, rgba(255,255,255,.1) 8% 10%, transparent 10% 16%, rgba(255,255,255,.1) 16% 18%, transparent 18% 24%, rgba(255,255,255,.1) 24% 26%, transparent 26% 32%, rgba(255,255,255,.1) 32% 34%, transparent 34% 40%, rgba(255,255,255,.1) 40% 42%, transparent 42% 48%, rgba(255,255,255,.1) 48% 50%, transparent 50% 56%, rgba(255,255,255,.1) 56% 58%, transparent 58% 64%, rgba(255,255,255,.1) 64% 66%, transparent 66% 72%, rgba(255,255,255,.1) 72% 74%, transparent 74% 80%, rgba(255,255,255,.1) 80% 82%, transparent 82% 88%, rgba(255,255,255,.1) 88% 90%, transparent 90% 96%, rgba(255,255,255,.1) 96% 98%, transparent 98% 100%),
-        radial-gradient(circle at center, transparent 0 62%, rgba(255,255,255,.9) 62% 64%, transparent 64% 100%),
-        radial-gradient(circle at center, rgba(17,64,128,.9), rgba(8,27,56,.98));
-      border: 5px solid rgba(255,255,255,.9);
-      box-shadow: 0 16px 40px rgba(0,0,0,.34);
+    .badgeCard h3{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.18rem;
     }
 
-    .compass .ring {
-      position: absolute;
-      inset: 10%;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,.26);
+    .badgeCard p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.52;
+      font-size:.96rem;
     }
 
-    .needle, .needle::before {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      content: "";
-      display: block;
+    .nextGrid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:16px;
     }
 
-    .needle {
-      width: 18px;
-      height: 84%;
-      background: linear-gradient(180deg, rgba(255,255,255,.98), #53b3ff 48%, rgba(255,255,255,.98));
-      clip-path: polygon(50% 0%, 100% 28%, 68% 50%, 100% 72%, 50% 100%, 0% 72%, 32% 50%, 0% 28%);
-      box-shadow: 0 0 24px rgba(83,179,255,.32);
+    .nextCard{
+      padding:24px;
+      min-height:100%;
     }
 
-    .needle::before {
-      width: 84%;
-      height: 18px;
-      background: linear-gradient(90deg, rgba(255,255,255,.98), #53b3ff 48%, rgba(255,255,255,.98));
-      clip-path: polygon(0% 50%, 28% 0%, 50% 32%, 72% 0%, 100% 50%, 72% 100%, 50% 68%, 28% 100%);
+    .nextCard h3{
+      margin:6px 0 10px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.45rem;
     }
 
-    .guild-ribbon {
-      position: absolute;
-      left: 50%;
-      bottom: 13%;
-      transform: translateX(-50%);
-      min-width: 68%;
-      max-width: 86%;
-      padding: 14px 22px;
-      text-align: center;
-      background: linear-gradient(180deg, #0c3879, #0a2352);
-      border: 3px solid rgba(255,255,255,.92);
-      border-radius: 18px;
-      box-shadow: 0 12px 24px rgba(0,0,0,.28);
+    .nextCard p,
+    .nextCard li{
+      color:var(--muted);
+      line-height:1.58;
     }
 
-    .guild-ribbon strong {
-      display: block;
-      font-size: clamp(1rem, 2.6vw, 1.7rem);
-      letter-spacing: .08em;
+    .nextCard ul{
+      margin:12px 0 0;
+      padding-left:22px;
     }
 
-    .guild-ribbon span {
-      display: block;
-      margin-top: 4px;
-      color: #cfe5ff;
-      font-size: .9rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
+    .footer{
+      padding:30px 0 46px;
     }
 
-    .visual-note {
-      padding: 15px 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.08);
-      color: var(--muted);
-      line-height: 1.65;
-      font-size: .96rem;
+    .footerCard{
+      padding:22px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:16px;
+      align-items:start;
     }
 
-    section {
-      padding: 26px 0;
+    .footerCard h3{
+      margin:0 0 8px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.35rem;
     }
 
-    .section-head {
-      display: grid;
-      gap: 8px;
-      margin-bottom: 18px;
+    .footerCard p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.58;
     }
 
-    .section-head h2 {
-      margin: 0;
-      font-size: clamp(1.65rem, 3.8vw, 2.6rem);
-      letter-spacing: -.03em;
+    .footerLinks{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
-    .section-head p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 72ch;
+    .tinyNote{
+      margin-top:12px;
+      color:#aebed5;
+      font-size:.86rem;
+      line-height:1.5;
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .panel {
-      padding: 24px;
-      border-radius: 24px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.1);
-      min-height: 100%;
-    }
-
-    .panel .icon {
-      width: 50px;
-      height: 50px;
-      display: grid;
-      place-items: center;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(74,165,255,.24), rgba(70,208,194,.18));
-      border: 1px solid rgba(255,255,255,.1);
-      font-size: 1.35rem;
-      margin-bottom: 14px;
-    }
-
-    .panel h3 {
-      margin: 0 0 10px;
-      font-size: 1.2rem;
-    }
-
-    .panel p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: .98rem;
-    }
-
-    .journey {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .timeline {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 14px;
-    }
-
-    .timeline li {
-      display: grid;
-      grid-template-columns: 34px 1fr;
-      gap: 12px;
-      align-items: start;
-    }
-
-    .step {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #2e88ea, #34cdbd);
-      color: white;
-      font-weight: 800;
-      font-size: .92rem;
-      box-shadow: 0 10px 20px rgba(46,136,234,.22);
-    }
-
-    .timeline strong {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 1rem;
-    }
-
-    .timeline span {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: .96rem;
-    }
-
-    .band {
-      margin-top: 20px;
-      padding: 18px 20px;
-      border-radius: 22px;
-      background: linear-gradient(90deg, rgba(74,165,255,.14), rgba(70,208,194,.12), rgba(242,193,78,.12));
-      border: 1px solid rgba(255,255,255,.08);
-      color: #e8f3ff;
-      line-height: 1.7;
-    }
-
-    .footer {
-      padding: 26px 0 48px;
-      color: var(--muted);
-      font-size: .94rem;
-    }
-
-    .footer-card {
-      padding: 22px;
-      border-radius: 22px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer strong {
-      color: var(--text);
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid,
-      .journey,
-      .grid-3 {
-        grid-template-columns: 1fr;
+    @media (max-width: 1060px){
+      .heroGrid,
+      .nextGrid,
+      .launchGrid,
+      .badgeGrid{
+        grid-template-columns:1fr 1fr;
       }
-
-      .hero-points {
-        grid-template-columns: 1fr;
+      .heroGrid{
+        grid-template-columns:1fr;
       }
-
-      .badge-frame {
-        min-height: 360px;
+      .brandPanel{
+        order:-1;
       }
     }
 
-    @media (max-width: 700px) {
-      .topbar-inner {
-        align-items: flex-start;
-        flex-direction: column;
+    @media (max-width: 760px){
+      .topbarInner,
+      .announceCard,
+      .footerCard,
+      .sectionHead{
+        grid-template-columns:1fr;
+        display:grid;
       }
-
-      .nav {
-        justify-content: flex-start;
+      .nav,
+      .footerLinks{
+        justify-content:flex-start;
       }
-
-      .hero-copy,
-      .hero-visual,
-      .panel {
-        padding: 22px;
+      .hero,
+      .section,
+      .footer{
+        padding-top:24px;
       }
-
-      h1 {
-        max-width: 11ch;
+      .heroCard,
+      .brandPanel,
+      .launchCard,
+      .badgeCard,
+      .nextCard{
+        padding:20px;
+      }
+      .launchGrid,
+      .badgeGrid,
+      .nextGrid,
+      .heroStats{
+        grid-template-columns:1fr;
+      }
+      h1{
+        max-width:none;
       }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="#top" aria-label="Sleep Pathways Guild home">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div class="brand-copy">
-          <strong>SLEEP PATHWAYS GUILD</strong>
-          <span>Guidance • Growth • Advancement</span>
+    <div class="wrap topbarInner">
+      <a class="brand" href="#top">
+        <img class="brandLogo" src="assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass logo" />
+        <div class="brandText">
+          <strong>Sleep Pathways Guild</strong>
+          <span>Expertise - Care - Science</span>
         </div>
       </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="#vision">Vision</a>
-        <a href="#journey">Journey</a>
-        <a href="#features">Upcoming</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#launch">Webapp</a>
+        <a href="#badges">Guild badges</a>
+        <a href="https://blog.sleeppathwaysguild.com/">Blog</a>
+        <a href="mailto:sleeppathwaysguild@gmail.com">Contact</a>
       </nav>
     </div>
   </header>
 
   <main id="top">
     <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="card hero-copy">
-          <span class="eyebrow">A growing home for sleep-tech advancement</span>
-          <h1>Built for the path ahead.</h1>
+      <div class="wrap heroGrid">
+        <section class="card heroCard">
+          <span class="eyebrow">RPSGT Study Hub</span>
+          <div class="heroBadgeRow" style="margin-top:18px">
+            <span class="pill gold">RPSGT exam focus</span>
+            <span class="pill">Practice and review</span>
+            <span class="pill">Reference guided</span>
+          </div>
+          <h1>RPSGT exam study, practice, and review in one place.</h1>
           <p class="lead">
-            Sleep Pathways Guild is a developing home for learners, professionals, and future leaders in sleep technology and sleep medicine education. The vision is simple: create a place where guidance is practical, growth feels possible, and advancement is shared rather than gatekept.
+            Sleep Pathways Guild brings together practice questions, flashcards, references, labs, and report-guided
+            review for the RPSGT exam. Open the main study app below, use the classic and EKG pages when helpful, and
+            watch for additional study notes at <strong>blog.sleeppathwaysguild.com</strong>.
           </p>
-          <p class="lead">
-            This site is on a journey of its own right now. New sections, study tools, resources, and guided pathways are still in progress, but the mission is already clear: help people learn well, build confidence, and keep moving forward.
-          </p>
+          <div class="ctaRow">
+            <a class="btn primary" href="RPSGTv2.2026.html">Launch RPSGTv2 Webapp</a>
+            <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Visit the Blog</a>
+          </div>
+          <div class="microBadgeRow">
+            <span class="pill">Coach Bob honors Robert P. Dopson, RPSGT</span>
+            <span class="pill">Honoring the educational legacy of William C. Dement</span>
+          </div>
+          <div class="heroStats">
+            <div class="heroStat">
+              <strong>Study tools</strong>
+              <span>Questions, flashcards, labs, references, and review reports in one place.</span>
+            </div>
+            <div class="heroStat">
+              <strong>Official references</strong>
+              <span>Use the handbook, blueprint, and core references as anchors.</span>
+            </div>
+            <div class="heroStat">
+              <strong>Blog</strong>
+              <span>Additional study notes and updates will be posted at the Guild blog.</span>
+            </div>
+          </div>
+        </section>
 
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#vision">Explore the vision</a>
-            <a class="btn btn-secondary" href="#features">See what’s coming</a>
+        <aside class="card brandPanel" aria-label="Brand panel">
+          <div class="brandLockup">
+            <img class="heroLogo" src="assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild main logo" />
+            <div>
+              <h2>Sleep Pathways Guild</h2>
+              <p>
+                A focused study site for people preparing for the RPSGT exam.
+              </p>
+            </div>
           </div>
+          <div class="trustList">
+            <div class="trustItem">
+              <strong>Begin with the handbook and blueprint</strong>
+              <span>The BRPT Candidate Handbook, exam blueprint, and official references should guide application and exam planning.</span>
+            </div>
+            <div class="trustItem">
+              <strong>Study beyond memorization</strong>
+              <span>Use scoring manuals, core texts, labs, references, and repeated practice to build real confidence.</span>
+            </div>
+            <div class="trustItem">
+              <strong>Stay RPSGT focused</strong>
+              <span>The site is built to support RPSGT exam preparation with clear structure and practical review.</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-          <div class="hero-points">
-            <div class="hero-point">
-              <strong>Mentoring spirit</strong>
-              <span>A supportive place where people who want to learn are welcomed and built up.</span>
-            </div>
-            <div class="hero-point">
-              <strong>Professional growth</strong>
-              <span>Study, skill-building, and advancement shaped for real-world sleep work.</span>
-            </div>
-            <div class="hero-point">
-              <strong>Guild mindset</strong>
-              <span>A pathway culture focused on craft, community, and meaningful progress.</span>
-            </div>
+    <section class="announce">
+      <div class="wrap">
+        <div class="card announceCard">
+          <div>
+            <span class="eyebrow">Start here</span>
+            <h3>Open the main study app and begin with the strongest path.</h3>
+            <p>
+              Use the primary study app first, keep the classic build nearby if you want a lighter backup view, and use
+              the EKG page as an additional skills lane.
+            </p>
           </div>
-        </div>
-
-        <div class="card hero-visual">
-          <div class="badge-frame" aria-label="Sleep Pathways Guild visual badge concept">
-            <div class="compass" aria-hidden="true">
-              <div class="ring"></div>
-              <div class="needle"></div>
-              <div class="guild-ribbon">
-                <strong>SLEEP PATHWAYS</strong>
-                <span>Guild</span>
-              </div>
-            </div>
-          </div>
-          <div class="visual-note">
-            The visual direction centers on a compass, a pathway, and a sense of forward movement—because the Guild is not only about destination, but about the journey of learning, mentoring, and steady advancement.
-          </div>
+          <a class="btn primary" href="RPSGTv2.2026.html">Open the Webapp</a>
         </div>
       </div>
     </section>
 
-    <section id="vision">
+    <section class="section" id="launch">
       <div class="wrap">
-        <div class="section-head">
-          <h2>The basic vision of the Guild</h2>
+        <div class="sectionHead">
+          <div>
+            <span class="eyebrow">Study areas</span>
+            <h2>Choose the right lane.</h2>
+            <p>Use the main app for full RPSGT study flow, the classic build for a lighter backup view, and the EKG page for signal practice.</p>
+          </div>
+          <span class="pill gold">Study hub</span>
+        </div>
+
+        <div class="launchGrid">
+          <article class="card launchCard">
+            <div class="launchIcon">SPG</div>
+            <div class="launchMeta">
+              <span class="pill gold">Primary app</span>
+              <span class="pill">Sleep Pathways Guild</span>
+            </div>
+            <h3>RPSGTv2 Webapp</h3>
+            <p>
+              The main study environment with guided trail structure, focused practice, labs, reports, references,
+              flashcards, and the full mock exam flow.
+            </p>
+            <div class="linkRow">
+              <a class="miniLink" href="RPSGTv2.2026.html">Launch RPSGTv2.2026.html</a>
+            </div>
+          </article>
+
+          <article class="card launchCard">
+            <div class="launchIcon">RPS</div>
+            <div class="launchMeta">
+              <span class="pill">Classic build</span>
+              <span class="pill">Backup lane</span>
+            </div>
+            <h3>RPSGT Classic</h3>
+            <p>
+              An earlier build that can still be useful when you want a simpler backup view.
+            </p>
+            <div class="linkRow">
+              <a class="miniLink" href="RPSGT.2026.html">Open RPSGT.2026.html</a>
+            </div>
+          </article>
+
+          <article class="card launchCard">
+            <div class="launchIcon">EKG</div>
+            <div class="launchMeta">
+              <span class="pill">Skill support</span>
+              <span class="pill">Signal reading</span>
+            </div>
+            <h3>EKG and Signal Practice</h3>
+            <p>
+              Use the EKG-focused page as a support lane for rhythm recognition and waveform confidence.
+            </p>
+            <div class="linkRow">
+              <a class="miniLink" href="ekg.2026.html">Open ekg.2026.html</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="badges">
+      <div class="wrap">
+        <div class="sectionHead">
+          <div>
+            <span class="eyebrow">Quick guide</span>
+            <h2>What you will find here.</h2>
+            <p>A simple overview of the main study features and focus of the site.</p>
+          </div>
+          <span class="pill">Core features</span>
+        </div>
+
+        <div class="badgeGrid">
+          <article class="card badgeCard">
+            <div class="badgeEmblem">SPG</div>
+            <h3>RPSGT Exam Focus</h3>
+            <p>The site and app are built around RPSGT preparation rather than general credential marketing.</p>
+          </article>
+
+          <article class="card badgeCard">
+            <div class="badgeEmblem">BRPT</div>
+            <h3>Official References</h3>
+            <p>The candidate handbook, blueprint, and official references stay at the center of the credential path.</p>
+          </article>
+
+          <article class="card badgeCard">
+            <div class="badgeEmblem">CB</div>
+            <h3>Guided Review</h3>
+            <p>Reports, missed-question review, and study prompts are meant to help learners see what to do next.</p>
+          </article>
+
+          <article class="card badgeCard">
+            <div class="badgeEmblem">GO</div>
+            <h3>Coach Bob</h3>
+            <p>Coach Bob reflects a practical teaching style shaped by real mentorship in sleep technology.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap nextGrid">
+        <article class="card nextCard">
+          <span class="eyebrow">Coming next</span>
+          <h3>The Guild blog will carry updates and study notes.</h3>
           <p>
-            Sleep Pathways Guild is meant to become a trusted home base for sleep professionals and learners who want more than scattered information. The long-term goal is to bring together study support, practical education, encouraging guidance, and a pathway for growth under one uplifting banner.
+            The Sleep Pathways Guild blog at <strong>blog.sleeppathwaysguild.com</strong> will carry study notes,
+            updates, and reference commentary related to the RPSGT exam.
           </p>
-        </div>
+          <div class="ctaRow" style="margin:18px 0 0">
+            <a class="btn primary" href="https://blog.sleeppathwaysguild.com/">Open blog.sleeppathwaysguild.com</a>
+          </div>
+        </article>
 
-        <div class="grid-3">
-          <article class="panel">
-            <div class="icon" aria-hidden="true">🧭</div>
-            <h3>Direction</h3>
-            <p>
-              The Guild is here to point people toward the next step, whether that means starting out, sharpening skills, preparing for exams, or growing into a leadership role.
-            </p>
-          </article>
-          <article class="panel">
-            <div class="icon" aria-hidden="true">🎓</div>
-            <h3>Learning that lifts people up</h3>
-            <p>
-              The tone is meant to be encouraging and practical—serious about quality, but welcoming to people who are still finding their footing.
-            </p>
-          </article>
-          <article class="panel">
-            <div class="icon" aria-hidden="true">🤝</div>
-            <h3>Community and mentorship</h3>
-            <p>
-              At its heart, the Guild honors the idea that knowledge should be shared generously and that advancement is stronger when people help each other grow.
-            </p>
-          </article>
-        </div>
+        <article class="card nextCard">
+          <span class="eyebrow">Why this matters</span>
+          <h3>Good preparation needs clarity.</h3>
+          <ul>
+            <li>People spend real money and still fail hard exams without the right kind of guidance.</li>
+            <li>Application rules and official structures should be easy to find, not hidden behind noise.</li>
+            <li>Strong learners deserve a study home that is practical, calm, and serious about the work.</li>
+          </ul>
+        </article>
       </div>
     </section>
 
-    <section id="journey">
-      <div class="wrap journey">
-        <div class="panel">
-          <div class="section-head">
-            <h2>A path for learners and professionals</h2>
-            <p>
-              The Guild is built around the belief that growth happens in steps. Not everyone starts in the same place, and not everyone needs the same support at the same time.
-            </p>
-          </div>
-          <ul class="timeline">
-            <li>
-              <div class="step">1</div>
-              <div>
-                <strong>Learn the foundations</strong>
-                <span>Build confidence with clear teaching, strong basics, and guidance that makes the field feel approachable.</span>
-              </div>
-            </li>
-            <li>
-              <div class="step">2</div>
-              <div>
-                <strong>Strengthen the craft</strong>
-                <span>Grow practical understanding through focused study, smarter tools, and real-world concepts that matter.</span>
-              </div>
-            </li>
-            <li>
-              <div class="step">3</div>
-              <div>
-                <strong>Advance with purpose</strong>
-                <span>Move toward higher skill, stronger professional identity, and a deeper sense of belonging in the work.</span>
-              </div>
-            </li>
-          </ul>
-        </div>
+    <section class="section">
+      <div class="wrap nextGrid">
+        <article class="card nextCard">
+          <span class="eyebrow">In honor</span>
+          <h3>Sleep medicine grows because mentors keep the door open.</h3>
+          <p>
+            Sleep Pathways Guild honors William C. Dement, MD, PhD, for helping shape the modern field of sleep
+            medicine and its culture of serious teaching, and Robert P. Dopson, RPSGT, for the generous mentorship
+            spirit that welcomed learners instead of turning them away.
+          </p>
+          <p>
+            The site is guided by that spirit: serious teaching, steady support, and respect for the work of learning.
+          </p>
+        </article>
 
-        <div class="panel" id="features">
-          <div class="section-head">
-            <h2>This website is still becoming</h2>
-            <p>
-              Sleep Pathways Guild is advancing itself, too. The site is still under active development, and more pieces are expected to arrive over time as the vision grows.
-            </p>
-          </div>
-          <ul class="timeline">
-            <li>
-              <div class="step">→</div>
-              <div>
-                <strong>Upcoming study tools</strong>
-                <span>More focused learning pages, guided study support, and resource-rich sections are planned.</span>
-              </div>
-            </li>
-            <li>
-              <div class="step">→</div>
-              <div>
-                <strong>Growing resource library</strong>
-                <span>Future additions may include worksheets, guides, practical references, and supportive materials for learners.</span>
-              </div>
-            </li>
-            <li>
-              <div class="step">→</div>
-              <div>
-                <strong>A fuller Guild experience</strong>
-                <span>The site is expected to expand into a richer home for advancement, mentoring, and community over time.</span>
-              </div>
-            </li>
+        <article class="card nextCard">
+          <span class="eyebrow">Coach Bob</span>
+          <h3>A guide shaped by real-world mentorship.</h3>
+          <p>
+            Coach Bob is a tribute guide inspired by Robert P. Dopson, RPSGT. He represents the kind of mentor every
+            learner hopes to find: practical, calm, generous, and willing to teach without ego.
+          </p>
+          <ul>
+            <li>RPSGT exam preparation stays at the center of the app.</li>
+            <li>Official references and practical review matter more than hype.</li>
+            <li>The goal is to help learners keep moving when the exam feels difficult and expensive.</li>
           </ul>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="wrap">
-        <div class="band">
-          <strong style="display:block; margin-bottom:8px; font-size:1.06rem; color:var(--text);">A note from the road ahead</strong>
-          Sleep Pathways Guild is not presented as finished. It is being built thoughtfully, step by step, with the same spirit it hopes to offer others: keep learning, keep refining, and keep moving forward.
-        </div>
+        </article>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="wrap footer-card">
-      <div>
-        <strong>Sleep Pathways Guild</strong>
-        <div>A developing home for guidance, study, mentorship, and advancement in sleep technology.</div>
+    <div class="wrap">
+      <div class="card footerCard">
+        <div>
+          <h3>Sleep Pathways Guild</h3>
+          <p>
+            Independent educational study support for RPSGT exam preparation.
+            Use the app, references, and review tools here alongside current official sources.
+          </p>
+          <div class="tinyNote">
+            Independent educational exam-prep only. Not affiliated with or endorsed by BRPT, AASM, or AAST unless specifically stated.
+            Verify current official rules, references, and credential requirements through official sources.
+          </div>
+        </div>
+        <div class="footerLinks">
+          <a class="miniLink" href="RPSGTv2.2026.html">Launch webapp</a>
+          <a class="miniLink" href="https://blog.sleeppathwaysguild.com/">Guild blog</a>
+          <a class="miniLink" href="mailto:sleeppathwaysguild@gmail.com">sleeppathwaysguild@gmail.com</a>
+        </div>
       </div>
-      <div>Website in progress • More features coming soon</div>
     </div>
   </footer>
 </body>
