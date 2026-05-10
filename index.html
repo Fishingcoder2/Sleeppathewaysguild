@@ -70,10 +70,11 @@
     }
 
     .brandLogo{
-      width:56px;
-      height:56px;
+      width:62px;
+      height:62px;
       border-radius:18px;
-      object-fit:cover;
+      object-fit:contain;
+      padding:4px;
       border:1px solid rgba(255,255,255,.18);
       background:#0a1730;
       box-shadow:0 14px 30px rgba(10,28,52,.34);
@@ -327,10 +328,11 @@
     }
 
     .miniSeal{
-      width:64px;
-      height:64px;
+      width:76px;
+      height:76px;
       border-radius:18px;
-      object-fit:cover;
+      object-fit:contain;
+      padding:4px;
       border:1px solid rgba(255,255,255,.16);
       background:#0d1e36;
     }
@@ -579,7 +581,7 @@
   <header class="topbar">
     <div class="wrap topbarInner">
       <a class="brand" href="#top">
-        <img class="brandLogo" src="assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass logo" />
+        <img class="brandLogo" src="assets/branding/spg-guild-badge.png" alt="Sleep Pathways Guild badge logo" />
         <div class="brandText">
           <strong>Sleep Pathways Guild</strong>
           <span>RPSGT exam study hub. Free always. Built for the sleep technology community.</span>
@@ -608,11 +610,12 @@
           </p>
           <div class="pillRow">
             <span class="pill gold">Free always</span>
-            <span class="pill">Current main build: RPSGT.2026.html</span>
+            <span class="pill">Current main build: RPSGTv2.2026.html</span>
+            <span class="pill">Legacy RPSGT.2026 retires to home</span>
             <span class="pill">Flashcards, labs, reports, and EKG review</span>
           </div>
           <div class="ctaRow">
-            <a class="btn primary" href="RPSGT.2026.html">Open the webapp</a>
+            <a class="btn primary" href="RPSGTv2.2026.html">Open the webapp</a>
             <a class="btn secondary" href="ekg.2026.html">Open EKG lab</a>
             <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Visit the blog</a>
           </div>
@@ -684,7 +687,7 @@
         <div class="sectionTitle">
           <div>
             <span class="eyebrow">Current release</span>
-            <h2>The main webapp now lives at RPSGT.2026.html</h2>
+            <h2>The main webapp now lives at RPSGTv2.2026.html</h2>
             <p class="sectionLead">
               The updated RPSGT study build is now the primary release. It includes guided study flow,
               flashcards, reference tools, skill labs, reporting, and a stronger EKG review lane.
@@ -695,14 +698,27 @@
         <div class="launchGrid">
           <article class="card infoCard">
             <h3>Open the full study trail</h3>
-            <p>The main webapp is the center of the RPSGT experience and now points to the current build.</p>
+            <p>The main webapp is the center of the RPSGT experience and now points to the promoted current build.</p>
             <ul class="microList">
               <li>Guided trail, practice, flashcards, glossary, and references</li>
               <li>Mock exam flow and report-guided review</li>
               <li>Direct path back to the study home from flashcards and labs</li>
             </ul>
             <div class="ctaRow" style="margin-top:16px">
-              <a class="btn primary" href="RPSGT.2026.html">Launch RPSGT.2026.html</a>
+              <a class="btn primary" href="RPSGTv2.2026.html">Launch RPSGTv2.2026.html</a>
+            </div>
+          </article>
+
+          <article class="card infoCard">
+            <h3>Retire the older app path cleanly</h3>
+            <p>The older `RPSGT.2026.html` path now exists only as a retired link that routes people back to the front door.</p>
+            <ul class="microList">
+              <li>Keeps old bookmarks from landing on stale content</li>
+              <li>Makes the main app entry point unambiguous</li>
+              <li>Preserves a cleaner long-term site structure</li>
+            </ul>
+            <div class="ctaRow" style="margin-top:16px">
+              <a class="btn secondary" href="index.html">Open the site home</a>
             </div>
           </article>
 
@@ -716,19 +732,6 @@
             </ul>
             <div class="ctaRow" style="margin-top:16px">
               <a class="btn secondary" href="ekg.2026.html">Open ekg.2026.html</a>
-            </div>
-          </article>
-
-          <article class="card infoCard">
-            <h3>Follow the Guild blog</h3>
-            <p>The blog is the next lane for updates, study notes, reflections, and future Guild projects.</p>
-            <ul class="microList">
-              <li>blog.sleeppathwaysguild.com is the upcoming companion home</li>
-              <li>Expect notes, updates, and future learning content there</li>
-              <li>Contact: sleeppathwaysguild@gmail.com</li>
-            </ul>
-            <div class="ctaRow" style="margin-top:16px">
-              <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Open the blog</a>
             </div>
           </article>
         </div>
@@ -750,8 +753,8 @@
 
         <div class="philosophyGrid">
           <article class="card infoCard">
-            <h3>Open the path</h3>
-            <p>No sincere learner should be blocked by a paywall or left alone with a stack of expensive study materials and no direction.</p>
+            <h3>Path leaders, not gatekeepers</h3>
+            <p>The goal is to lower barriers, help learners use their study time efficiently, and support self-guided preparation that can reduce unnecessary costs while keeping progress focused on the RPSGT exam.</p>
           </article>
           <article class="card infoCard">
             <h3>Teach the why</h3>
@@ -863,9 +866,13 @@
         </div>
 
         <div class="footerLinks">
-          <a href="RPSGT.2026.html">
+          <a href="RPSGTv2.2026.html">
             Open the main webapp
-            <span>Current release: RPSGT.2026.html</span>
+            <span>Current release: RPSGTv2.2026.html</span>
+          </a>
+          <a href="index.html">
+            Retired legacy path
+            <span>RPSGT.2026.html now returns to the front door</span>
           </a>
           <a href="ekg.2026.html">
             Open the EKG lab
@@ -878,6 +885,10 @@
           <a href="mailto:sleeppathwaysguild@gmail.com">
             Contact Sleep Pathways Guild
             <span>sleeppathwaysguild@gmail.com</span>
+          </a>
+          <a href="tel:+18502961786">
+            Call or text
+            <span>(850) 296-1786</span>
           </a>
         </div>
       </div>

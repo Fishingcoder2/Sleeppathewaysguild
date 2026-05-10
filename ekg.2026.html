@@ -536,7 +536,7 @@ renderEkgSvg = function(item, width=980, height=220, compact=false) {
   if (compact || height < 180) return svg;
   return svg.replace('</svg>', `${calibrationPulse()}<text class="ekg-meta" x="88" y="132">1 mV</text><text class="ekg-meta" x="20" y="206">Lead II</text></svg>`);
 };
-const STUDY_HOME_URL = 'RPSGT.2026.html';
+const STUDY_HOME_URL = 'RPSGTv2.2026.html';
 const SITE_HOME_URL = 'index.html';
 const STORAGE_KEY = 'sleep-pathways-guild-rpsgt-ekg-page-v3';
 function loadState() { try { return Object.assign({ index:0, answered:0, correct:0, history:{}, missedCases:[], clearedCases:[] }, JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')); } catch(e) { return { index:0, answered:0, correct:0, history:{}, missedCases:[], clearedCases:[] }; } }
