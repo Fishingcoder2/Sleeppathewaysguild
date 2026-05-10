@@ -6,25 +6,25 @@
   <title>Sleep Pathways Guild | RPSGT Exam Study Hub</title>
   <meta
     name="description"
-    content="Sleep Pathways Guild provides RPSGT exam study tools, practice questions, flashcards, references, labs, and review reports."
+    content="Sleep Pathways Guild is a free RPSGT exam study hub with flashcards, practice questions, report-guided review, labs, references, and EKG training."
   />
+  <script src="https://analytics.ahrefs.com/analytics.js" data-key="/s9HvK+nlfPasBLtcJ6y3A" async></script>
   <style>
     :root{
-      --bg:#08121f;
-      --bg2:#0e1c31;
+      --bg:#07111d;
+      --bg2:#0d1d34;
       --ink:#f4f8ff;
-      --muted:#bfd0e7;
+      --muted:#c4d3e8;
       --line:rgba(255,255,255,.12);
       --panel:rgba(255,255,255,.08);
-      --panel-strong:rgba(255,255,255,.12);
+      --panelStrong:rgba(255,255,255,.12);
       --blue:#1f6fbf;
-      --blue-soft:#dcecff;
-      --teal:#37b8b0;
+      --teal:#2fb7b0;
       --gold:#c89a32;
       --cream:#fff8e7;
       --shadow:0 28px 80px rgba(0,0,0,.34);
-      --max:1180px;
       --radius:28px;
+      --max:1220px;
     }
 
     *{box-sizing:border-box}
@@ -34,13 +34,13 @@
       color:var(--ink);
       font-family:"Trebuchet MS","Segoe UI",Tahoma,sans-serif;
       background:
-        radial-gradient(circle at 12% 12%, rgba(55,184,176,.18), transparent 24rem),
-        radial-gradient(circle at 84% 10%, rgba(31,111,191,.24), transparent 22rem),
+        radial-gradient(circle at 12% 12%, rgba(47,183,176,.16), transparent 24rem),
+        radial-gradient(circle at 88% 8%, rgba(31,111,191,.24), transparent 22rem),
         linear-gradient(180deg, var(--bg), var(--bg2));
       min-height:100vh;
     }
 
-    img{max-width:100%;display:block}
+    img{display:block;max-width:100%}
     a{color:inherit;text-decoration:none}
 
     .wrap{width:min(calc(100% - 32px), var(--max));margin:0 auto}
@@ -49,16 +49,16 @@
       position:sticky;
       top:0;
       z-index:20;
-      backdrop-filter:blur(14px);
-      background:rgba(8,18,31,.72);
       border-bottom:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(14px);
+      background:rgba(7,17,29,.76);
     }
 
     .topbarInner{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:18px;
+      gap:20px;
       padding:14px 0;
     }
 
@@ -70,20 +70,20 @@
     }
 
     .brandLogo{
-      width:54px;
-      height:54px;
+      width:56px;
+      height:56px;
       border-radius:18px;
       object-fit:cover;
-      box-shadow:0 14px 30px rgba(10,28,52,.34);
       border:1px solid rgba(255,255,255,.18);
       background:#0a1730;
+      box-shadow:0 14px 30px rgba(10,28,52,.34);
       flex:0 0 auto;
     }
 
     .brandText strong{
       display:block;
       font-family:Georgia,"Times New Roman",serif;
-      font-size:1.12rem;
+      font-size:1.14rem;
       letter-spacing:.02em;
     }
 
@@ -96,6 +96,7 @@
 
     .nav{
       display:flex;
+      align-items:center;
       gap:10px;
       flex-wrap:wrap;
       justify-content:flex-end;
@@ -103,7 +104,7 @@
 
     .nav a{
       color:var(--muted);
-      font-size:.95rem;
+      font-size:.94rem;
       padding:10px 13px;
       border-radius:999px;
       transition:.18s ease;
@@ -115,25 +116,25 @@
     }
 
     .hero{
-      padding:56px 0 24px;
+      padding:54px 0 24px;
     }
 
     .heroGrid{
       display:grid;
-      grid-template-columns:minmax(0,1.06fr) minmax(320px,.94fr);
+      grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
       gap:24px;
-      align-items:stretch;
+      align-items:start;
     }
 
     .card{
       border:1px solid var(--line);
       border-radius:var(--radius);
-      background:linear-gradient(180deg,var(--panel-strong),var(--panel));
+      background:linear-gradient(180deg,var(--panelStrong),var(--panel));
       box-shadow:var(--shadow);
     }
 
     .heroCard{
-      padding:34px;
+      padding:36px;
       position:relative;
       overflow:hidden;
     }
@@ -175,22 +176,21 @@
     h1{
       margin:18px 0 14px;
       font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(2.5rem,6vw,4.9rem);
+      font-size:clamp(2.6rem,6vw,5rem);
       line-height:.98;
       letter-spacing:-.04em;
-      max-width:11ch;
+      max-width:10.5ch;
     }
 
     .lead{
+      margin:0 0 18px;
       color:var(--muted);
-      font-size:1.07rem;
+      font-size:1.06rem;
       line-height:1.72;
       max-width:64ch;
-      margin:0 0 18px;
     }
 
-    .heroBadgeRow,
-    .microBadgeRow{
+    .pillRow{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -237,7 +237,7 @@
 
     .btn.primary{
       color:#fff;
-      background:linear-gradient(135deg,#1f6fbf,#37b8b0);
+      background:linear-gradient(135deg,#1f6fbf,#2fb7b0);
       box-shadow:0 14px 28px rgba(31,111,191,.26);
     }
 
@@ -259,360 +259,319 @@
     .heroStat{
       padding:14px;
       border-radius:20px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .heroStat strong{
-      display:block;
-      font-size:1.28rem;
-      font-family:Georgia,"Times New Roman",serif;
-      margin-bottom:5px;
-    }
-
-    .heroStat span{
-      display:block;
-      color:var(--muted);
-      font-size:.9rem;
-      line-height:1.35;
-    }
-
-    .brandPanel{
-      padding:26px;
-      display:grid;
-      gap:18px;
-      align-content:start;
-      background:
-        radial-gradient(circle at top center, rgba(255,255,255,.1), transparent 20rem),
-        linear-gradient(180deg, rgba(255,248,231,.08), rgba(255,255,255,.05));
-    }
-
-    .brandLockup{
-      display:grid;
-      place-items:center;
-      gap:14px;
-      text-align:center;
-    }
-
-    .heroLogo{
-      width:min(100%, 370px);
-      aspect-ratio:1;
-      object-fit:cover;
-      border-radius:26px;
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow:0 26px 60px rgba(4,12,24,.34);
-      background:#0a1730;
-    }
-
-    .brandLockup h2{
-      margin:0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(1.6rem,3vw,2.35rem);
-      line-height:1.08;
-    }
-
-    .brandLockup p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.6;
-    }
-
-    .trustList{
-      display:grid;
-      gap:10px;
-    }
-
-    .trustItem{
-      padding:12px 14px;
-      border-radius:18px;
       border:1px solid rgba(255,255,255,.1);
       background:rgba(255,255,255,.05);
     }
 
-    .trustItem strong{
+    .heroStat strong{
       display:block;
-      margin-bottom:4px;
-      color:#fff6dc;
+      font-size:1.42rem;
+      font-weight:900;
+      color:#fff;
     }
 
-    .trustItem span{
+    .heroStat span{
       display:block;
+      margin-top:5px;
       color:var(--muted);
-      font-size:.93rem;
-      line-height:1.45;
+      font-size:.86rem;
+      line-height:1.35;
     }
 
-    .announce{
-      padding:8px 0 18px;
-    }
-
-    .announceCard{
-      padding:18px 20px;
+    .sideStack{
       display:grid;
-      grid-template-columns:minmax(0,1fr) auto;
+      gap:18px;
+    }
+
+    .sideCard{
+      padding:24px;
+    }
+
+    .visualCard{
+      overflow:hidden;
+      position:relative;
+      min-height:290px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.14), transparent 18rem),
+        linear-gradient(180deg, rgba(8,22,42,.96), rgba(8,18,31,.9));
+    }
+
+    .visualCard:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at center, rgba(207,227,255,.18), transparent 42%);
+      pointer-events:none;
+    }
+
+    .badgeFrame{
+      display:grid;
       gap:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .badgeFrame img{
+      width:min(100%, 420px);
+      margin:0 auto;
+      border-radius:24px;
+      box-shadow:0 18px 42px rgba(0,0,0,.34);
+    }
+
+    .badgeRow{
+      display:flex;
+      gap:12px;
       align-items:center;
-      border-left:8px solid var(--gold);
-      background:linear-gradient(180deg, rgba(255,248,231,.16), rgba(255,255,255,.06));
+      justify-content:center;
+      flex-wrap:wrap;
     }
 
-    .announceCard h3{
-      margin:4px 0 6px;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.45rem;
-      color:#fff4d4;
-    }
-
-    .announceCard p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.55;
+    .miniSeal{
+      width:64px;
+      height:64px;
+      border-radius:18px;
+      object-fit:cover;
+      border:1px solid rgba(255,255,255,.16);
+      background:#0d1e36;
     }
 
     .section{
-      padding:18px 0 26px;
+      padding:18px 0;
     }
 
-    .sectionHead{
+    .sectionTitle{
       display:flex;
       align-items:end;
       justify-content:space-between;
       gap:16px;
-      margin-bottom:16px;
+      margin-bottom:18px;
     }
 
-    .sectionHead h2{
-      margin:6px 0 0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(1.65rem,4vw,2.45rem);
-      line-height:1.08;
-    }
-
-    .sectionHead p{
+    h2{
       margin:0;
-      color:var(--muted);
-      max-width:62ch;
-      line-height:1.6;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(1.8rem,4vw,2.7rem);
+      line-height:1.05;
+      letter-spacing:-.03em;
     }
 
-    .launchGrid{
+    .sectionLead{
+      margin:10px 0 0;
+      color:var(--muted);
+      max-width:64ch;
+      line-height:1.72;
+    }
+
+    .launchGrid,
+    .philosophyGrid,
+    .featureGrid{
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:16px;
     }
 
-    .launchCard{
-      padding:22px;
-      display:grid;
-      gap:14px;
-      align-content:start;
-      min-height:100%;
+    .launchGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .philosophyGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .featureGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+    .infoCard{
+      padding:24px;
     }
 
-    .launchCard h3{
-      margin:0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.42rem;
-      line-height:1.1;
+    .infoCard h3{
+      margin:0 0 10px;
+      font-size:1.1rem;
+      color:#fff;
     }
 
-    .launchCard p{
+    .infoCard p{
       margin:0;
       color:var(--muted);
-      line-height:1.58;
+      line-height:1.66;
     }
 
-    .launchIcon{
-      width:56px;
-      height:56px;
-      border-radius:18px;
+    .microList{
+      margin:14px 0 0;
+      padding:0;
+      list-style:none;
       display:grid;
-      place-items:center;
-      font-size:1.6rem;
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.12);
-    }
-
-    .launchMeta{
-      display:flex;
-      flex-wrap:wrap;
       gap:8px;
     }
 
-    .linkRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:2px;
+    .microList li{
+      color:var(--muted);
+      font-size:.93rem;
+      line-height:1.46;
+      padding-left:16px;
+      position:relative;
     }
 
-    .miniLink{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      color:#eff5ff;
-      font-weight:800;
-      padding:8px 12px;
+    .microList li:before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:.56em;
+      width:7px;
+      height:7px;
       border-radius:999px;
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(135deg,var(--gold),var(--teal));
     }
 
-    .badgeGrid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:14px;
+    .sidebarQuote{
+      padding:24px;
+      border-left:8px solid var(--gold);
+      background:linear-gradient(180deg, rgba(255,248,231,.14), rgba(255,255,255,.05));
     }
 
-    .badgeCard{
-      padding:18px;
-      text-align:left;
+    .sidebarQuote blockquote{
+      margin:0 0 12px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.35rem;
+      line-height:1.35;
+      color:#fff5d6;
+    }
+
+    .sidebarQuote cite{
+      color:var(--muted);
+      font-style:normal;
+      display:block;
+      margin-bottom:14px;
+    }
+
+    .linkList{
       display:grid;
       gap:10px;
-      min-height:100%;
+      margin-top:12px;
     }
 
-    .badgeEmblem{
-      width:68px;
-      height:68px;
-      border-radius:22px;
-      display:grid;
-      place-items:center;
-      font-size:1.4rem;
-      font-weight:900;
+    .linkCard{
+      display:block;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.04);
+      transition:.18s ease;
+    }
+
+    .linkCard:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.2);
+      background:rgba(255,255,255,.07);
+    }
+
+    .linkCard strong{
+      display:block;
       color:#fff;
-      background:linear-gradient(135deg,#143f78,#1f6fbf 55%, #37b8b0);
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow:0 16px 36px rgba(5,18,38,.28);
+      margin-bottom:5px;
     }
 
-    .badgeCard h3{
-      margin:0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.18rem;
-    }
-
-    .badgeCard p{
-      margin:0;
+    .linkCard span{
+      display:block;
       color:var(--muted);
-      line-height:1.52;
-      font-size:.96rem;
+      font-size:.9rem;
+      line-height:1.45;
     }
 
-    .nextGrid{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:16px;
-    }
-
-    .nextCard{
-      padding:24px;
-      min-height:100%;
-    }
-
-    .nextCard h3{
-      margin:6px 0 10px;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.45rem;
-    }
-
-    .nextCard p,
-    .nextCard li{
+    .memorialNote{
+      margin-top:12px;
       color:var(--muted);
-      line-height:1.58;
-    }
-
-    .nextCard ul{
-      margin:12px 0 0;
-      padding-left:22px;
+      line-height:1.64;
     }
 
     .footer{
-      padding:30px 0 46px;
+      padding:28px 0 40px;
     }
 
     .footerCard{
-      padding:22px;
+      padding:24px;
       display:grid;
-      grid-template-columns:minmax(0,1fr) auto;
-      gap:16px;
+      grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);
+      gap:20px;
       align-items:start;
     }
 
-    .footerCard h3{
-      margin:0 0 8px;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.35rem;
+    .footerBrand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:12px;
     }
 
-    .footerCard p{
-      margin:0;
+    .footerBrand img{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      object-fit:cover;
+      border:1px solid rgba(255,255,255,.16);
+    }
+
+    .footerBrand strong{
+      display:block;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.2rem;
+    }
+
+    .footerBrand span{
+      display:block;
       color:var(--muted);
-      line-height:1.58;
+      font-size:.86rem;
+      margin-top:4px;
+    }
+
+    .footerText{
+      color:var(--muted);
+      line-height:1.68;
+      margin:0;
     }
 
     .footerLinks{
-      display:flex;
+      display:grid;
       gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
     }
 
-    .tinyNote{
-      margin-top:12px;
-      color:#aebed5;
+    .footerLinks a{
+      color:#eef4ff;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+    }
+
+    .footerLinks a span{
+      display:block;
+      color:var(--muted);
       font-size:.86rem;
-      line-height:1.5;
+      margin-top:4px;
     }
 
-    @media (max-width: 1060px){
+    .legal{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.6;
+    }
+
+    @media (max-width:1100px){
       .heroGrid,
-      .nextGrid,
-      .launchGrid,
-      .badgeGrid{
-        grid-template-columns:1fr 1fr;
-      }
-      .heroGrid{
-        grid-template-columns:1fr;
-      }
-      .brandPanel{
-        order:-1;
-      }
+      .footerCard{grid-template-columns:1fr}
+      .launchGrid{grid-template-columns:1fr 1fr}
+      .philosophyGrid{grid-template-columns:1fr 1fr}
+      .featureGrid{grid-template-columns:1fr 1fr}
     }
 
-    @media (max-width: 760px){
-      .topbarInner,
-      .announceCard,
-      .footerCard,
-      .sectionHead{
-        grid-template-columns:1fr;
-        display:grid;
-      }
-      .nav,
-      .footerLinks{
-        justify-content:flex-start;
-      }
-      .hero,
-      .section,
-      .footer{
-        padding-top:24px;
-      }
+    @media (max-width:760px){
+      .topbarInner{align-items:flex-start;flex-direction:column}
+      .nav{justify-content:flex-start}
       .heroCard,
-      .brandPanel,
-      .launchCard,
-      .badgeCard,
-      .nextCard{
-        padding:20px;
-      }
+      .sideCard,
+      .infoCard,
+      .sidebarQuote{padding:22px}
+      .heroStats,
       .launchGrid,
-      .badgeGrid,
-      .nextGrid,
-      .heroStats{
-        grid-template-columns:1fr;
-      }
-      h1{
-        max-width:none;
-      }
+      .philosophyGrid,
+      .featureGrid{grid-template-columns:1fr}
+      .ctaRow{flex-direction:column}
+      .btn{width:100%}
+      .badgeFrame img{width:100%}
     }
   </style>
 </head>
@@ -623,12 +582,13 @@
         <img class="brandLogo" src="assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass logo" />
         <div class="brandText">
           <strong>Sleep Pathways Guild</strong>
-          <span>Expertise - Care - Science</span>
+          <span>RPSGT exam study hub. Free always. Built for the sleep technology community.</span>
         </div>
       </a>
-      <nav class="nav" aria-label="Main navigation">
-        <a href="#launch">Webapp</a>
-        <a href="#badges">Guild badges</a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#launch">Launch</a>
+        <a href="#philosophy">Guild philosophy</a>
+        <a href="#tribute">Tributes</a>
         <a href="https://blog.sleeppathwaysguild.com/">Blog</a>
         <a href="mailto:sleeppathwaysguild@gmail.com">Contact</a>
       </nav>
@@ -638,241 +598,244 @@
   <main id="top">
     <section class="hero">
       <div class="wrap heroGrid">
-        <section class="card heroCard">
-          <span class="eyebrow">RPSGT Study Hub</span>
-          <div class="heroBadgeRow" style="margin-top:18px">
-            <span class="pill gold">RPSGT exam focus</span>
-            <span class="pill">Practice and review</span>
-            <span class="pill">Reference guided</span>
-          </div>
-          <h1>RPSGT exam study, practice, and review in one place.</h1>
+        <div class="card heroCard">
+          <span class="eyebrow">RPSGT exam study hub</span>
+          <h1>Sleep Pathways Guild</h1>
           <p class="lead">
-            Sleep Pathways Guild brings together practice questions, flashcards, references, labs, and report-guided
-            review for the RPSGT exam. Open the main study app below, use the classic and EKG pages when helpful, and
-            watch for additional study notes at <strong>blog.sleeppathwaysguild.com</strong>.
+            Sleep Pathways Guild is a free study home for people preparing for the RPSGT exam. The webapp
+            brings together guided practice, flashcards, waveform labs, EKG training, references, reports,
+            and review tools in one place so learners can keep moving forward with purpose.
           </p>
-          <div class="ctaRow">
-            <a class="btn primary" href="RPSGTv2.2026.html">Launch RPSGTv2 Webapp</a>
-            <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Visit the Blog</a>
+          <div class="pillRow">
+            <span class="pill gold">Free always</span>
+            <span class="pill">Current main build: RPSGT.2026.html</span>
+            <span class="pill">Flashcards, labs, reports, and EKG review</span>
           </div>
-          <div class="microBadgeRow">
-            <span class="pill">Coach Bob honors Robert P. Dopson, RPSGT</span>
-            <span class="pill">Honoring the educational legacy of William C. Dement</span>
+          <div class="ctaRow">
+            <a class="btn primary" href="RPSGT.2026.html">Open the webapp</a>
+            <a class="btn secondary" href="ekg.2026.html">Open EKG lab</a>
+            <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Visit the blog</a>
           </div>
           <div class="heroStats">
             <div class="heroStat">
-              <strong>Study tools</strong>
-              <span>Questions, flashcards, labs, references, and review reports in one place.</span>
+              <strong>Study</strong>
+              <span>Question practice, flashcards, and focused review paths.</span>
             </div>
             <div class="heroStat">
-              <strong>Official references</strong>
-              <span>Use the handbook, blueprint, and core references as anchors.</span>
+              <strong>Interpret</strong>
+              <span>Waveform labs, EKG teaching strips, and visual learning tools.</span>
             </div>
             <div class="heroStat">
-              <strong>Blog</strong>
-              <span>Additional study notes and updates will be posted at the Guild blog.</span>
+              <strong>Repair</strong>
+              <span>Reports and next-step guidance built around weak areas.</span>
             </div>
           </div>
-        </section>
+        </div>
 
-        <aside class="card brandPanel" aria-label="Brand panel">
-          <div class="brandLockup">
-            <img class="heroLogo" src="assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild main logo" />
-            <div>
-              <h2>Sleep Pathways Guild</h2>
-              <p>
-                A focused study site for people preparing for the RPSGT exam.
-              </p>
+        <aside class="sideStack" aria-label="Sidebar">
+          <div class="card sideCard visualCard">
+            <div class="badgeFrame">
+              <img src="assets/branding/spg-guild-badge.png" alt="Sleep Pathways Guild badge artwork" />
+              <div class="badgeRow">
+                <img class="miniSeal" src="assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass seal" />
+                <span class="pill gold">Expertise. Care. Science.</span>
+              </div>
             </div>
           </div>
-          <div class="trustList">
-            <div class="trustItem">
-              <strong>Begin with the handbook and blueprint</strong>
-              <span>The BRPT Candidate Handbook, exam blueprint, and official references should guide application and exam planning.</span>
+
+          <div class="card sidebarQuote">
+            <span class="eyebrow">In memoriam</span>
+            <blockquote>"Drowsiness is red alert."</blockquote>
+            <cite>William C. Dement, MD, PhD</cite>
+            <p class="memorialNote">
+              Sleep Pathways Guild honors Dr. Dement for helping shape modern sleep medicine, serious sleep
+              education, and the idea that vigilance and sleep safety matter in real life, not just on paper.
+            </p>
+            <div class="linkList">
+              <a class="linkCard" href="https://med.stanford.edu/news/all-news/2020/06/william-dement-giant-in-field-of-sleep-medicine-dies-at-91.html">
+                <strong>Stanford Medicine obituary</strong>
+                <span>William Dement, giant in the field of sleep medicine, dies at 91.</span>
+              </a>
+              <a class="linkCard" href="https://med.stanford.edu/news/insights/2021/01/a-sleep-scientists-legacy-generations-of-well-rested-students.html">
+                <strong>Stanford teaching legacy</strong>
+                <span>A look at the lasting reach of his teaching and mentorship.</span>
+              </a>
+              <a class="linkCard" href="https://aasm.org/in-memoriam-sleep-pioneer-founding-president-william-bill-dement/">
+                <strong>AASM memorial</strong>
+                <span>AASM remembrance of its founding president and sleep pioneer.</span>
+              </a>
             </div>
-            <div class="trustItem">
-              <strong>Study beyond memorization</strong>
-              <span>Use scoring manuals, core texts, labs, references, and repeated practice to build real confidence.</span>
-            </div>
-            <div class="trustItem">
-              <strong>Stay RPSGT focused</strong>
-              <span>The site is built to support RPSGT exam preparation with clear structure and practical review.</span>
-            </div>
+          </div>
+
+          <div class="card sideCard">
+            <span class="eyebrow">Mentorship</span>
+            <h3>Robert P. Dopson, RPSGT</h3>
+            <p>
+              Sleep Pathways Guild also honors Robert P. Dopson, RPSGT - mentor, uncle, and the kind of
+              teacher who never turned away an intern. That spirit of open-handed teaching lives inside this work.
+            </p>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="announce">
-      <div class="wrap">
-        <div class="card announceCard">
-          <div>
-            <span class="eyebrow">Start here</span>
-            <h3>Open the main study app and begin with the strongest path.</h3>
-            <p>
-              Use the primary study app first, keep the classic build nearby if you want a lighter backup view, and use
-              the EKG page as an additional skills lane.
-            </p>
-          </div>
-          <a class="btn primary" href="RPSGTv2.2026.html">Open the Webapp</a>
-        </div>
-      </div>
-    </section>
-
     <section class="section" id="launch">
       <div class="wrap">
-        <div class="sectionHead">
+        <div class="sectionTitle">
           <div>
-            <span class="eyebrow">Study areas</span>
-            <h2>Choose the right lane.</h2>
-            <p>Use the main app for full RPSGT study flow, the classic build for a lighter backup view, and the EKG page for signal practice.</p>
+            <span class="eyebrow">Current release</span>
+            <h2>The main webapp now lives at RPSGT.2026.html</h2>
+            <p class="sectionLead">
+              The updated RPSGT study build is now the primary release. It includes guided study flow,
+              flashcards, reference tools, skill labs, reporting, and a stronger EKG review lane.
+            </p>
           </div>
-          <span class="pill gold">Study hub</span>
         </div>
 
         <div class="launchGrid">
-          <article class="card launchCard">
-            <div class="launchIcon">SPG</div>
-            <div class="launchMeta">
-              <span class="pill gold">Primary app</span>
-              <span class="pill">Sleep Pathways Guild</span>
-            </div>
-            <h3>RPSGTv2 Webapp</h3>
-            <p>
-              The main study environment with guided trail structure, focused practice, labs, reports, references,
-              flashcards, and the full mock exam flow.
-            </p>
-            <div class="linkRow">
-              <a class="miniLink" href="RPSGTv2.2026.html">Launch RPSGTv2.2026.html</a>
+          <article class="card infoCard">
+            <h3>Open the full study trail</h3>
+            <p>The main webapp is the center of the RPSGT experience and now points to the current build.</p>
+            <ul class="microList">
+              <li>Guided trail, practice, flashcards, glossary, and references</li>
+              <li>Mock exam flow and report-guided review</li>
+              <li>Direct path back to the study home from flashcards and labs</li>
+            </ul>
+            <div class="ctaRow" style="margin-top:16px">
+              <a class="btn primary" href="RPSGT.2026.html">Launch RPSGT.2026.html</a>
             </div>
           </article>
 
-          <article class="card launchCard">
-            <div class="launchIcon">RPS</div>
-            <div class="launchMeta">
-              <span class="pill">Classic build</span>
-              <span class="pill">Backup lane</span>
-            </div>
-            <h3>RPSGT Classic</h3>
-            <p>
-              An earlier build that can still be useful when you want a simpler backup view.
-            </p>
-            <div class="linkRow">
-              <a class="miniLink" href="RPSGT.2026.html">Open RPSGT.2026.html</a>
+          <article class="card infoCard">
+            <h3>Use the EKG lab separately</h3>
+            <p>The rhythm lab remains available as its own focused teaching space for PSG-style rhythm review.</p>
+            <ul class="microList">
+              <li>Cleaner code-drawn strips and representative rhythm gallery</li>
+              <li>Large strip view with case-by-case recognition practice</li>
+              <li>Useful for rhythm awareness during overnight sleep studies</li>
+            </ul>
+            <div class="ctaRow" style="margin-top:16px">
+              <a class="btn secondary" href="ekg.2026.html">Open ekg.2026.html</a>
             </div>
           </article>
 
-          <article class="card launchCard">
-            <div class="launchIcon">EKG</div>
-            <div class="launchMeta">
-              <span class="pill">Skill support</span>
-              <span class="pill">Signal reading</span>
-            </div>
-            <h3>EKG and Signal Practice</h3>
-            <p>
-              Use the EKG-focused page as a support lane for rhythm recognition and waveform confidence.
-            </p>
-            <div class="linkRow">
-              <a class="miniLink" href="ekg.2026.html">Open ekg.2026.html</a>
+          <article class="card infoCard">
+            <h3>Follow the Guild blog</h3>
+            <p>The blog is the next lane for updates, study notes, reflections, and future Guild projects.</p>
+            <ul class="microList">
+              <li>blog.sleeppathwaysguild.com is the upcoming companion home</li>
+              <li>Expect notes, updates, and future learning content there</li>
+              <li>Contact: sleeppathwaysguild@gmail.com</li>
+            </ul>
+            <div class="ctaRow" style="margin-top:16px">
+              <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Open the blog</a>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="badges">
+    <section class="section" id="philosophy">
       <div class="wrap">
-        <div class="sectionHead">
+        <div class="sectionTitle">
           <div>
-            <span class="eyebrow">Quick guide</span>
-            <h2>What you will find here.</h2>
-            <p>A simple overview of the main study features and focus of the site.</p>
+            <span class="eyebrow">Guild philosophy</span>
+            <h2>What Sleep Pathways Guild stands for</h2>
+            <p class="sectionLead">
+              This project is meant to feel like a guided path into sleep technology: serious, practical,
+              source-aware, and welcoming to learners who are working hard to earn their place in the field.
+            </p>
           </div>
-          <span class="pill">Core features</span>
         </div>
 
-        <div class="badgeGrid">
-          <article class="card badgeCard">
-            <div class="badgeEmblem">SPG</div>
-            <h3>RPSGT Exam Focus</h3>
-            <p>The site and app are built around RPSGT preparation rather than general credential marketing.</p>
+        <div class="philosophyGrid">
+          <article class="card infoCard">
+            <h3>Open the path</h3>
+            <p>No sincere learner should be blocked by a paywall or left alone with a stack of expensive study materials and no direction.</p>
           </article>
-
-          <article class="card badgeCard">
-            <div class="badgeEmblem">BRPT</div>
-            <h3>Official References</h3>
-            <p>The candidate handbook, blueprint, and official references stay at the center of the credential path.</p>
+          <article class="card infoCard">
+            <h3>Teach the why</h3>
+            <p>Memorizing an answer is not enough. Learners need to understand signal logic, scoring decisions, and clinical context.</p>
           </article>
-
-          <article class="card badgeCard">
-            <div class="badgeEmblem">CB</div>
-            <h3>Guided Review</h3>
-            <p>Reports, missed-question review, and study prompts are meant to help learners see what to do next.</p>
+          <article class="card infoCard">
+            <h3>Practice what matters</h3>
+            <p>Questions, strips, flashcards, reports, and labs should all reinforce real RPSGT exam tasks instead of filler content.</p>
           </article>
-
-          <article class="card badgeCard">
-            <div class="badgeEmblem">GO</div>
-            <h3>Coach Bob</h3>
-            <p>Coach Bob reflects a practical teaching style shaped by real mentorship in sleep technology.</p>
+          <article class="card infoCard">
+            <h3>Leave the door open</h3>
+            <p>Mentorship matters. The Guild honors the people who taught generously and helped others find a place in sleep medicine.</p>
           </article>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="wrap nextGrid">
-        <article class="card nextCard">
-          <span class="eyebrow">Coming next</span>
-          <h3>The Guild blog will carry updates and study notes.</h3>
-          <p>
-            The Sleep Pathways Guild blog at <strong>blog.sleeppathwaysguild.com</strong> will carry study notes,
-            updates, and reference commentary related to the RPSGT exam.
-          </p>
-          <div class="ctaRow" style="margin:18px 0 0">
-            <a class="btn primary" href="https://blog.sleeppathwaysguild.com/">Open blog.sleeppathwaysguild.com</a>
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <span class="eyebrow">Inside the app</span>
+            <h2>How the webapp helps the learner move</h2>
+            <p class="sectionLead">
+              The goal is not just to test recall. The goal is to help the learner study, interpret, review, and return stronger to the next pass.
+            </p>
           </div>
-        </article>
+        </div>
 
-        <article class="card nextCard">
-          <span class="eyebrow">Why this matters</span>
-          <h3>Good preparation needs clarity.</h3>
-          <ul>
-            <li>People spend real money and still fail hard exams without the right kind of guidance.</li>
-            <li>Application rules and official structures should be easy to find, not hidden behind noise.</li>
-            <li>Strong learners deserve a study home that is practical, calm, and serious about the work.</li>
-          </ul>
-        </article>
+        <div class="featureGrid">
+          <article class="card infoCard">
+            <h3>Practice and mock flow</h3>
+            <p>Blueprint-oriented practice with readiness checks, weak-area review, and a clearer path through the exam content.</p>
+          </article>
+          <article class="card infoCard">
+            <h3>Flashcards and glossary</h3>
+            <p>Quick review for core facts, common traps, signal language, and the kinds of distinctions learners need on test day.</p>
+          </article>
+          <article class="card infoCard">
+            <h3>Waveform and skill labs</h3>
+            <p>Visual review for sleep stages, signal interpretation, troubleshooting, and the growing bank of cleaner teaching graphics.</p>
+          </article>
+          <article class="card infoCard">
+            <h3>EKG lane</h3>
+            <p>Focused rhythm recognition for PSG use, including broad pattern review, strip comparison, and representative examples.</p>
+          </article>
+          <article class="card infoCard">
+            <h3>Reports and repair</h3>
+            <p>Review tools aimed at showing what needs work next instead of leaving the learner with a raw score and no direction.</p>
+          </article>
+          <article class="card infoCard">
+            <h3>Reference awareness</h3>
+            <p>Official resources, handbook awareness, scoring references, and study direction that stays grounded in the discipline.</p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap nextGrid">
-        <article class="card nextCard">
-          <span class="eyebrow">In honor</span>
-          <h3>Sleep medicine grows because mentors keep the door open.</h3>
-          <p>
-            Sleep Pathways Guild honors William C. Dement, MD, PhD, for helping shape the modern field of sleep
-            medicine and its culture of serious teaching, and Robert P. Dopson, RPSGT, for the generous mentorship
-            spirit that welcomed learners instead of turning them away.
-          </p>
-          <p>
-            The site is guided by that spirit: serious teaching, steady support, and respect for the work of learning.
-          </p>
-        </article>
+    <section class="section" id="tribute">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <span class="eyebrow">Tributes</span>
+            <h2>Built in the spirit of teaching</h2>
+            <p class="sectionLead">
+              Sleep medicine grows because people share what they know, take learners seriously, and help others cross the hard parts of the path.
+            </p>
+          </div>
+        </div>
 
-        <article class="card nextCard">
-          <span class="eyebrow">Coach Bob</span>
-          <h3>A guide shaped by real-world mentorship.</h3>
-          <p>
-            Coach Bob is a tribute guide inspired by Robert P. Dopson, RPSGT. He represents the kind of mentor every
-            learner hopes to find: practical, calm, generous, and willing to teach without ego.
-          </p>
-          <ul>
-            <li>RPSGT exam preparation stays at the center of the app.</li>
-            <li>Official references and practical review matter more than hype.</li>
-            <li>The goal is to help learners keep moving when the exam feels difficult and expensive.</li>
-          </ul>
-        </article>
+        <div class="launchGrid">
+          <article class="card infoCard">
+            <h3>William C. Dement, MD, PhD</h3>
+            <p>Honored here as one of the great builders of modern sleep medicine and sleep education. His work helped shape the field that later shaped all of us.</p>
+          </article>
+          <article class="card infoCard">
+            <h3>Robert P. Dopson, RPSGT</h3>
+            <p>Honored here for mentorship, practical teaching, and the example of never turning away an intern who was trying to learn.</p>
+          </article>
+          <article class="card infoCard">
+            <h3>The Guild promise</h3>
+            <p>This project aims to keep learning rigorous, grounded, visual, and welcoming so more people can enter the field prepared and supported.</p>
+          </article>
+        </div>
       </div>
     </section>
   </main>
@@ -881,20 +844,41 @@
     <div class="wrap">
       <div class="card footerCard">
         <div>
-          <h3>Sleep Pathways Guild</h3>
-          <p>
-            Independent educational study support for RPSGT exam preparation.
-            Use the app, references, and review tools here alongside current official sources.
-          </p>
-          <div class="tinyNote">
-            Independent educational exam-prep only. Not affiliated with or endorsed by BRPT, AASM, or AAST unless specifically stated.
-            Verify current official rules, references, and credential requirements through official sources.
+          <div class="footerBrand">
+            <img src="assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass seal" />
+            <div>
+              <strong>Sleep Pathways Guild</strong>
+              <span>RPSGT exam study hub for the sleep technology community</span>
+            </div>
           </div>
+          <p class="footerText">
+            Sleep Pathways Guild exists to help learners find a clearer path into sleep technology through guided study,
+            practical review, visual learning, and mentorship-minded design.
+          </p>
+          <p class="legal">
+            Independent educational study support only. Sleep Pathways Guild is not affiliated with, endorsed by, sponsored by,
+            or approved by BRPT, AASM, AAST, or other organizations unless specifically stated. Learners should verify current
+            official rules, eligibility, references, and scoring standards through official sources.
+          </p>
         </div>
+
         <div class="footerLinks">
-          <a class="miniLink" href="RPSGTv2.2026.html">Launch webapp</a>
-          <a class="miniLink" href="https://blog.sleeppathwaysguild.com/">Guild blog</a>
-          <a class="miniLink" href="mailto:sleeppathwaysguild@gmail.com">sleeppathwaysguild@gmail.com</a>
+          <a href="RPSGT.2026.html">
+            Open the main webapp
+            <span>Current release: RPSGT.2026.html</span>
+          </a>
+          <a href="ekg.2026.html">
+            Open the EKG lab
+            <span>Separate rhythm practice for PSG review</span>
+          </a>
+          <a href="https://blog.sleeppathwaysguild.com/">
+            Visit the Guild blog
+            <span>blog.sleeppathwaysguild.com</span>
+          </a>
+          <a href="mailto:sleeppathwaysguild@gmail.com">
+            Contact Sleep Pathways Guild
+            <span>sleeppathwaysguild@gmail.com</span>
+          </a>
         </div>
       </div>
     </div>
