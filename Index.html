@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Sleep Pathways Guild | Community for Sleep Technologists</title>
+  <meta
+    name="description"
+    content="Sleep Pathways Guild is a peer-led professional community for sleep technologists and CCSH practitioners. Its permanently free self-guided webapp helps learners prepare for the RPSGT exam."
+  />
+
+  <script src="https://analytics.ahrefs.com/analytics.js" data-key="/s9HvK+nlfPasBLtcJ6y3A" async></script>
+
+  <style>
+    :root{
+      --bg:#07111d;
+      --bg2:#0d1d34;
+      --ink:#f4f8ff;
+      --muted:#c4d3e8;
+      --line:rgba(255,255,255,.12);
+      --panel:rgba(255,255,255,.08);
+      --panelStrong:rgba(255,255,255,.12);
+      --blue:#1f6fbf;
+      --teal:#2fb7b0;
+      --gold:#c89a32;
+      --goldSoft:#fff1c9;
+      --cream:#fff8e7;
+      --shadow:0 28px 80px rgba(0,0,0,.34);
+      --radius:28px;
+      --max:1220px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family:"Trebuchet MS","Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(47,183,176,.16), transparent 24rem),
+        radial-gradient(circle at 88% 8%, rgba(31,111,191,.24), transparent 22rem),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+    }
+
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    p{margin-top:0}
+    strong{font-weight:900}
+
+    .wrap{width:min(calc(100% - 32px), var(--max));margin:0 auto}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(14px);
+      background:rgba(7,17,29,.82);
+    }
+
+    .topbarInner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:14px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .brandLogo{
+      width:62px;
+      height:62px;
+      border-radius:18px;
+      object-fit:contain;
+      padding:4px;
+      border:1px solid rgba(255,255,255,.18);
+      background:#0a1730;
+      box-shadow:0 14px 30px rgba(10,28,52,.34);
+      flex:0 0 auto;
+    }
+
+    .brandText strong{
+      display:block;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.14rem;
+      letter-spacing:.02em;
+    }
+
+    .brandText span{
+      display:block;
+      color:var(--muted);
+      font-size:.84rem;
+      line-height:1.35;
+      max-width:52ch;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .nav a{
+      color:var(--muted);
+      font-size:.94rem;
+      padding:10px 13px;
+      border-radius:999px;
+      transition:.18s ease;
+    }
+
+    .nav a:hover,
+    .nav a:focus{
+      color:var(--ink);
+      background:rgba(255,255,255,.08);
+      outline:none;
+    }
+
+    .hero{padding:54px 0 28px}
+
+    .heroGrid{
+      display:grid;
+      grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);
+      gap:24px;
+      align-items:start;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg,var(--panelStrong),var(--panel));
+      box-shadow:var(--shadow);
+    }
+
+    .heroCard{
+      padding:36px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .heroCard:after{
+      content:"";
+      position:absolute;
+      right:-90px;
+      top:-110px;
+      width:280px;
+      height:280px;
+      background:radial-gradient(circle, rgba(31,111,191,.28), transparent 68%);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+      color:#dde9fb;
+      font-size:.82rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .eyebrow:before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--gold),var(--teal));
+      box-shadow:0 0 16px rgba(200,154,50,.42);
+    }
+
+    h1{
+      margin:18px 0 14px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(2.55rem,6vw,5rem);
+      line-height:.98;
+      letter-spacing:-.04em;
+      max-width:13ch;
+    }
+
+    h2{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(1.8rem,4vw,2.7rem);
+      line-height:1.06;
+      letter-spacing:-.03em;
+    }
+
+    h3{
+      margin:0 0 10px;
+      font-size:1.1rem;
+      line-height:1.3;
+      color:#fff;
+    }
+
+    .lead{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:1.08rem;
+      line-height:1.78;
+      max-width:68ch;
+      position:relative;
+      z-index:1;
+    }
+
+    .heroStrong{
+      color:#fff;
+      font-weight:900;
+    }
+
+    .pillRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.07);
+      color:#eef4ff;
+      font-size:.84rem;
+      font-weight:800;
+    }
+
+    .pill.gold{
+      background:rgba(255,248,231,.14);
+      border-color:rgba(200,154,50,.38);
+      color:#fff3d0;
+    }
+
+    .ctaRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin:24px 0 18px;
+      position:relative;
+      z-index:1;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:50px;
+      padding:0 18px;
+      border-radius:999px;
+      font-weight:900;
+      transition:.18s ease;
+      border:1px solid transparent;
+    }
+
+    .btn.primary{
+      color:#fff;
+      background:linear-gradient(135deg,#1f6fbf,#2fb7b0);
+      box-shadow:0 14px 28px rgba(31,111,191,.26);
+    }
+
+    .btn.secondary{
+      color:var(--ink);
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.14);
+    }
+
+    .btn.gold{
+      color:#251600;
+      background:linear-gradient(135deg,#fff1c9,#c89a32);
+      box-shadow:0 14px 28px rgba(200,154,50,.22);
+    }
+
+    .btn:hover,
+    .btn:focus{
+      transform:translateY(-1px);
+      outline:none;
+    }
+
+    .heroStats{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:20px;
+      position:relative;
+      z-index:1;
+    }
+
+    .heroStat{
+      padding:14px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.05);
+    }
+
+    .heroStat strong{
+      display:block;
+      font-size:1.2rem;
+      font-weight:900;
+      color:#fff;
+      line-height:1.25;
+    }
+
+    .heroStat span{
+      display:block;
+      margin-top:5px;
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.45;
+    }
+
+    .sideStack{
+      display:grid;
+      gap:18px;
+    }
+
+    .sideCard{
+      padding:24px;
+    }
+
+    .visualCard{
+      overflow:hidden;
+      position:relative;
+      min-height:290px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.14), transparent 18rem),
+        linear-gradient(180deg, rgba(8,22,42,.96), rgba(8,18,31,.9));
+    }
+
+    .visualCard:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at center, rgba(207,227,255,.18), transparent 42%);
+      pointer-events:none;
+    }
+
+    .badgeFrame{
+      display:grid;
+      gap:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .badgeFrame img{
+      width:min(100%, 420px);
+      margin:0 auto;
+      border-radius:24px;
+      box-shadow:0 18px 42px rgba(0,0,0,.34);
+    }
+
+    .badgeRow{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .miniSeal{
+      width:76px;
+      height:76px;
+      border-radius:18px;
+      object-fit:contain;
+      padding:4px;
+      border:1px solid rgba(255,255,255,.16);
+      background:#0d1e36;
+    }
+
+    .missionCard{
+      border-left:8px solid var(--gold);
+      background:linear-gradient(180deg, rgba(255,248,231,.15), rgba(255,255,255,.05));
+    }
+
+    .missionCard p{
+      color:var(--muted);
+      line-height:1.72;
+      margin:0 0 12px;
+    }
+
+    .missionCard .missionLine{
+      color:#fff5d6;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.22rem;
+      line-height:1.48;
+      margin:12px 0 0;
+    }
+
+    .section{padding:20px 0}
+
+    .sectionTitle{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .sectionLead{
+      margin:10px 0 0;
+      color:var(--muted);
+      max-width:76ch;
+      line-height:1.74;
+    }
+
+    .grid3,
+    .grid4,
+    .grid2{
+      display:grid;
+      gap:16px;
+    }
+
+    .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+    .infoCard{padding:24px}
+
+    .infoCard p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.68;
+    }
+
+    .microList{
+      margin:14px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+
+    .microList li{
+      color:var(--muted);
+      font-size:.93rem;
+      line-height:1.5;
+      padding-left:16px;
+      position:relative;
+    }
+
+    .microList li:before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:.56em;
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--gold),var(--teal));
+    }
+
+    .quoteCard{
+      padding:24px;
+      border-left:8px solid var(--gold);
+      background:linear-gradient(180deg, rgba(255,248,231,.14), rgba(255,255,255,.05));
+    }
+
+    .quoteCard blockquote{
+      margin:0 0 12px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.35rem;
+      line-height:1.4;
+      color:#fff5d6;
+    }
+
+    .quoteCard cite{
+      color:var(--muted);
+      font-style:normal;
+      display:block;
+      margin-bottom:14px;
+    }
+
+    .quoteCard p{
+      color:var(--muted);
+      line-height:1.68;
+      margin:0;
+    }
+
+    .gratitudeCard{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .gratitudeCard:after{
+      content:"";
+      position:absolute;
+      inset:auto -50px -50px auto;
+      width:160px;
+      height:160px;
+      border-radius:999px;
+      background:radial-gradient(circle, rgba(47,183,176,.16), transparent 70%);
+      pointer-events:none;
+    }
+
+    .gratitudeCard a{
+      color:#fff3d0;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+
+    .principleBand{
+      padding:26px;
+      display:grid;
+      grid-template-columns:minmax(0,1.3fr) minmax(250px,.7fr);
+      gap:20px;
+      align-items:center;
+      background:
+        radial-gradient(circle at right, rgba(200,154,50,.16), transparent 20rem),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+    }
+
+    .principleBand p{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.74;
+      max-width:80ch;
+    }
+
+    .principlePills{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .legalCard{
+      padding:26px;
+      border:1px solid rgba(200,154,50,.24);
+      background:linear-gradient(180deg, rgba(255,248,231,.10), rgba(255,255,255,.05));
+    }
+
+    .legalCard p{
+      color:var(--muted);
+      line-height:1.72;
+      margin:0 0 12px;
+    }
+
+    .legalCard p:last-child{margin-bottom:0}
+
+    .footer{
+      padding:30px 0 44px;
+    }
+
+    .footerCard{
+      padding:24px;
+      display:grid;
+      grid-template-columns:minmax(0,1.18fr) minmax(260px,.82fr);
+      gap:20px;
+      align-items:start;
+    }
+
+    .footerBrand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:12px;
+    }
+
+    .footerBrand img{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      object-fit:contain;
+      padding:4px;
+      background:#0d1e36;
+      border:1px solid rgba(255,255,255,.16);
+    }
+
+    .footerBrand strong{
+      display:block;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.2rem;
+    }
+
+    .footerBrand span{
+      display:block;
+      color:var(--muted);
+      font-size:.86rem;
+      margin-top:4px;
+      line-height:1.4;
+    }
+
+    .footerText{
+      color:var(--muted);
+      line-height:1.68;
+      margin:0;
+    }
+
+    .footerLinks{
+      display:grid;
+      gap:10px;
+    }
+
+    .footerLinks a{
+      color:#eef4ff;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      transition:.18s ease;
+    }
+
+    .footerLinks a:hover,
+    .footerLinks a:focus{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.2);
+      background:rgba(255,255,255,.07);
+      outline:none;
+    }
+
+    .footerLinks a span{
+      display:block;
+      color:var(--muted);
+      font-size:.86rem;
+      margin-top:4px;
+      line-height:1.42;
+    }
+
+    .legalFine{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.65;
+    }
+
+    @media (max-width:1100px){
+      .heroGrid,
+      .footerCard,
+      .principleBand{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr 1fr}
+      .grid4{grid-template-columns:1fr 1fr}
+      .principlePills{justify-content:flex-start}
+    }
+
+    @media (max-width:760px){
+      .topbarInner{align-items:flex-start;flex-direction:column}
+      .nav{justify-content:flex-start}
+      .heroCard,
+      .sideCard,
+      .infoCard,
+      .quoteCard,
+      .legalCard,
+      .principleBand{padding:22px}
+      .heroStats,
+      .grid3,
+      .grid4,
+      .grid2{grid-template-columns:1fr}
+      .ctaRow{flex-direction:column}
+      .btn{width:100%}
+      .badgeFrame img{width:100%}
+      h1{max-width:100%}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap topbarInner">
+      <a class="brand" href="#top">
+        <img class="brandLogo" src="https://sleeppathwaysguild.com/assets/branding/spg-guild-badge.png" alt="Sleep Pathways Guild badge logo" />
+        <div class="brandText">
+          <strong>Sleep Pathways Guild</strong>
+          <span>A professional, peer-led community for sleep technologists and CCSH practitioners.</span>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="#guild">The Guild</a>
+        <a href="#free-webapp">RPSGT Exam Webapp</a>
+        <a href="#gratitude">Gratitude</a>
+        <a href="#tributes">Tributes</a>
+        <a href="https://blog.sleeppathwaysguild.com/">Blog</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap heroGrid">
+        <div class="card heroCard">
+          <span class="eyebrow">Sleep Pathways Guild</span>
+          <h1>A guild for the craft of sleep technology.</h1>
+
+          <p class="lead">
+            <span class="heroStrong">Sleep Pathways Guild</span> is a professional, peer-led community for credentialed sleep technologists
+            and CCSH practitioners, focused on mastery of monitoring, signal interpretation, and real-world practice.
+            Built in the spirit of a guild, it exists to support structured learning pathways, guided study,
+            mentorship, professional development, and shared expertise in a craft-centered, standards-driven environment.
+          </p>
+
+          <div class="pillRow">
+            <span class="pill gold">Peer-led</span>
+            <span class="pill">Standards-driven</span>
+            <span class="pill">Craft-centered</span>
+            <span class="pill">Mentorship-minded</span>
+          </div>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">Open the RPSGT Exam Webapp</a>
+            <a class="btn secondary" href="#guild">Explore the Guild Mission</a>
+            <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Visit the Guild Blog</a>
+          </div>
+
+          <div class="heroStats">
+            <div class="heroStat">
+              <strong>Mastery</strong>
+              <span>Monitoring, technical reasoning, visual interpretation, and the discipline behind reliable sleep practice.</span>
+            </div>
+            <div class="heroStat">
+              <strong>Mentorship</strong>
+              <span>A community spirit shaped by those who taught generously and kept the pathway open.</span>
+            </div>
+            <div class="heroStat">
+              <strong>Momentum</strong>
+              <span>Practical learning pathways that help technologists keep growing beyond the next exam.</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="sideStack" aria-label="Highlights">
+          <div class="card sideCard visualCard">
+            <div class="badgeFrame">
+              <img src="https://sleeppathwaysguild.com/assets/branding/spg-guild-badge.png" alt="Sleep Pathways Guild badge artwork" />
+              <div class="badgeRow">
+                <img class="miniSeal" src="https://sleeppathwaysguild.com/assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass seal" />
+                <span class="pill gold">Expertise. Care. Science.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card sideCard missionCard">
+            <span class="eyebrow">Current public mission</span>
+            <h3>Keep serious RPSGT exam preparation free.</h3>
+            <p>
+              The Sleep Pathways Guild webapp for RPSGT exam preparation will remain free.
+              It is a permanent public-service resource of the Guild.
+            </p>
+            <p class="missionLine">
+              Our current mission is to help improve RPSGT exam pass rates by expanding access to high-quality,
+              structured, independent preparation.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="guild">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <span class="eyebrow">The Guild</span>
+            <h2>A professional community built around the work.</h2>
+            <p class="sectionLead">
+              Sleep Pathways Guild is meant to be more than a study tool. It is a home for people who respect the
+              craft of sleep technology: the clean signal, the careful montage, the correct escalation, the reason
+              behind the rule, and the lifelong growth that happens when technologists teach one another well.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid4">
+          <article class="card infoCard">
+            <h3>Standards before shortcuts</h3>
+            <p>We support high-quality practice, source awareness, and the professional standards that protect patients and strengthen the field.</p>
+          </article>
+
+          <article class="card infoCard">
+            <h3>Craft over noise</h3>
+            <p>Signal interpretation, monitoring skill, real-world judgment, and technical reasoning deserve careful, serious attention.</p>
+          </article>
+
+          <article class="card infoCard">
+            <h3>Mentors, not gatekeepers</h3>
+            <p>Knowledge grows when experienced technologists keep the door open and help others develop confidence with rigor.</p>
+          </article>
+
+          <article class="card infoCard">
+            <h3>Community with purpose</h3>
+            <p>The Guild is being built for learning pathways, shared expertise, professional development, and collaborative knowledge.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="free-webapp">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <span class="eyebrow">Forever-free resource</span>
+            <h2>Free Self-Guided Webapp for RPSGT Exam Preparation</h2>
+            <p class="sectionLead">
+              Created by Sleep Pathways Guild, this independent educational resource is designed to help learners
+              prepare for the Registered Polysomnographic Technologist™ (RPSGT) credentialing exam
+              administered by the Board of Registered Polysomnographic Technologists (BRPT).
+            </p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <article class="card infoCard">
+            <h3>Free, permanently</h3>
+            <p>This specific RPSGT study webapp is intended to remain free so cost is not the reason a serious learner lacks a structured place to begin.</p>
+            <ul class="microList">
+              <li>Free guided study access</li>
+              <li>Free practice and review tools</li>
+              <li>Free skill-lab entry points</li>
+            </ul>
+            <div class="ctaRow" style="margin-top:16px">
+              <a class="btn primary" href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">Open the RPSGT Exam Webapp</a>
+            </div>
+          </article>
+
+          <article class="card infoCard">
+            <h3>Built for readiness</h3>
+            <p>The webapp emphasizes both memory and judgment: knowledge recall, best-answer thinking, weak-area repair, and exam-oriented practice.</p>
+            <ul class="microList">
+              <li>Guided study trail</li>
+              <li>Practice questions and mock-exam flow</li>
+              <li>Reports, review direction, and skill labs</li>
+            </ul>
+          </article>
+
+          <article class="card infoCard">
+            <h3>Independent and respectful</h3>
+            <p>It is designed to point learners toward official resources, high standards, and strong source habits—not to replace credentialing authorities or textbooks.</p>
+            <ul class="microList">
+              <li>Original practice materials</li>
+              <li>No claim of official endorsement</li>
+              <li>Verify current official rules and requirements directly</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap card principleBand">
+        <div>
+          <span class="eyebrow">Guiding principle</span>
+          <h2>Honor the standards. Strengthen the learner. Keep the pathway open.</h2>
+          <p>
+            Sleep Pathways Guild exists to honor the high standards that built the profession, support the
+            technologists carrying it forward, and keep one serious pathway to RPSGT preparation freely open.
+          </p>
+        </div>
+        <div class="principlePills">
+          <span class="pill gold">High standards</span>
+          <span class="pill">Original education</span>
+          <span class="pill">Accessible preparation</span>
+          <span class="pill">Peer-led growth</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gratitude">
+      <div class="wrap">
+        <div class="card infoCard">
+          <span class="eyebrow">With gratitude</span>
+          <h2 style="margin-top:14px">Thank you to the people and organizations that uphold the field.</h2>
+          <p class="sectionLead" style="max-width:92ch">
+            Sleep Pathways Guild is grateful for AASM, AAST, BRPT, credentialing boards, authors, researchers,
+            educators, publishers, and responsible media and content contributors who support high standards
+            across the sleep technology community as a whole. Please support them, learn from them, and value
+            the work they do to strengthen the profession. Thank you.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tributes">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <span class="eyebrow">Tributes</span>
+            <h2>Built in the spirit of teaching.</h2>
+            <p class="sectionLead">
+              Sleep technology grows because mentors keep the door open. The Guild carries forward that spirit
+              through reverence for the field’s builders and gratitude for the people who taught generously.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <article class="card quoteCard">
+            <span class="eyebrow">In honor of a field-builder</span>
+            <blockquote>“Drowsiness is red alert.”</blockquote>
+            <cite>William C. Dement, MD, PhD</cite>
+            <p>
+              Sleep Pathways Guild honors Dr. Dement for helping shape modern sleep medicine, sleep education,
+              and the public understanding that sleep matters profoundly in real life. His legacy reminds us that
+              a field advances through discovery, standards, teaching, and the willingness to wake others up to
+              what matters.
+            </p>
+          </article>
+
+          <article class="card quoteCard">
+            <span class="eyebrow">The Guild spirit</span>
+            <blockquote>Sleep technology grows because mentors keep the door open.</blockquote>
+            <cite>In honor of Robert “Bob” Dopson, RPSGT</cite>
+            <p>
+              Sleep Pathways Guild also honors Robert “Bob” Dopson, RPSGT—mentor, uncle, and the kind of teacher
+              who never turned away someone who truly wanted to learn. That open-handed approach to professional
+              teaching is part of the Guild’s foundation.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="independence">
+      <div class="wrap">
+        <div class="card legalCard">
+          <span class="eyebrow">Independent and standards-aware</span>
+          <h2 style="margin-top:14px">A clear note about the Guild and its free self-guided webapp for RPSGT exam preparation.</h2>
+          <p style="margin-top:14px">
+            Sleep Pathways Guild is an independent professional community and educational project.
+            It is not affiliated with, endorsed by, sponsored by, or approved by BRPT, AASM, AAST,
+            textbook publishers, media companies, or other organizations unless specifically stated.
+          </p>
+          <p>
+            The Sleep Pathways Guild webapp for RPSGT exam preparation contains original educational practice materials,
+            study pathways, rationales, labs, and teaching visuals created for self-guided review. It does not
+            reproduce actual BRPT examination items or proprietary exam questions, and it does not promise or
+            guarantee any exam, credentialing, employment, or clinical outcome.
+          </p>
+          <p>
+            Learners should verify current credentialing requirements, exam policies, blueprint details, scoring
+            rules, clinical standards, and official references directly through the appropriate official sources.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="wrap">
+      <div class="card footerCard">
+        <div>
+          <div class="footerBrand">
+            <img src="https://sleeppathwaysguild.com/assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass seal" />
+            <div>
+              <strong>Sleep Pathways Guild</strong>
+              <span>A peer-led professional community for sleep technologists and CCSH practitioners.</span>
+            </div>
+          </div>
+
+          <p class="footerText">
+            Sleep Pathways Guild is built for mastery, mentorship, professional growth, and shared expertise in
+            the craft of sleep technology. Its webapp for RPSGT exam preparation is a permanent free public resource created
+            to help expand access to serious, structured exam preparation.
+          </p>
+
+          <p class="legalFine">
+            © 2026 Sleep Pathways Guild. Independent educational resource.<br />
+            Contact: <a href="mailto:admin@sleeppathsguild.com">admin@sleeppathsguild.com</a>
+            &nbsp;•&nbsp; Call or text <a href="tel:+17722423667">(772) 242-3667</a>.
+          </p>
+        </div>
+
+        <div class="footerLinks">
+          <a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">
+            Open the RPSGT Exam Webapp
+            <span>Permanently free self-guided preparation for learners working toward the RPSGT exam.</span>
+          </a>
+
+          <a href="https://sleeppathwaysguild.com/ekg.2026.html">
+            Open EKG Practice
+            <span>Focused rhythm recognition and sleep-lab awareness support.</span>
+          </a>
+
+          <a href="https://blog.sleeppathwaysguild.com/">
+            Visit the Guild Blog
+            <span>Project updates, reflections, and future community writing.</span>
+          </a>
+
+          <a href="mailto:admin@sleeppathsguild.com">
+            admin@sleeppathsguild.com
+            <span>Email Sleep Pathways Guild</span>
+          </a>
+
+          <a href="tel:+17722423667">
+            Call or text Sleep Pathways Guild
+            <span>(772) 242-3667</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
