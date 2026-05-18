@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "rpsgt2016",
+  "name": "sleeppathewaysguild",
   "compatibility_date": "2026-04-13",
   "observability": {
     "enabled": true
