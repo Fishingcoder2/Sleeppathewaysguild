@@ -45,7 +45,7 @@ body {
 .shell { max-width:1000px; margin:0 auto; padding:24px 18px; flex: 1; width: 100%;}
 
 /* Header Elements (Dark Mode Branded) */
-.header-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--brand-line); padding-bottom: 20px; }
+.header-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--brand-line); padding-bottom: 20px;}
 .header-titles { display: flex; flex-direction: column; gap: 4px; }
 .header-titles h1 { margin: 0; font-size: 28px; color: var(--brand-teal); font-weight: 700; letter-spacing: -0.5px;}
 .header-titles h2 { margin: 0; font-size: 16px; color: var(--brand-muted); font-weight: 400; }
@@ -214,7 +214,7 @@ svg.ekg-canvas { display: block; min-width: 1000px; width: 100%; }
 .stats { font-weight: 600; color: var(--brand-muted); font-size: 15px;}
 
 /* Disclaimer Text */
-.disclaimer { text-align: center; font-size: 13px; color: var(--brand-muted); padding: 24px 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--brand-line); line-height: 1.5; border-radius: 0 0 8px 8px; }
+.disclaimer { text-align: center; font-size: 13px; color: var(--brand-muted); padding: 24px 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--brand-line); line-height: 1.5; border-radius: 0 0 8px 8px;}
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 </style>
@@ -290,9 +290,9 @@ svg.ekg-canvas { display: block; min-width: 1000px; width: 100%; }
 
         <div class="offer-notice">
           <strong>Ready to lock in your rhythm recognition?</strong>
-          <p>Grab the official <b>Sleep Pathways Guild EKG Flashcards</b>. Perfect for on-the-go review, RPSGT board prep, and building instant visual recall of complex rhythms.</p>
+          <p>Browse the <b>Sleep Pathways Guild EKG Flashcards</b>. Perfect for on-the-go review, RPSGT board prep, and building instant visual recall of complex rhythms.</p>
           <div style="display: flex; gap: 12px; align-items: center;">
-            <button class="btn-gold" onclick="window.location.href='https://sleeppathwaysguild.com/'">Get the Flashcards</button>
+            <button class="btn-gold" onclick="window.location.href='flashcards.2026.html'">View Flashcards</button>
             <button class="app-btn btn-control" onclick="hideSummary()">Back to Drill</button>
           </div>
         </div>
@@ -334,7 +334,7 @@ svg.ekg-canvas { display: block; min-width: 1000px; width: 100%; }
 
   <!-- Medical Disclaimer -->
   <div class="disclaimer">
-    <strong>Disclaimer:</strong> This application is designed strictly for educational and training purposes for sleep technologists and students preparing for credential exams. <strong>It is NOT intended to replace professional medical training, clinical expertise, or a licensed healthcare provider's medical judgment.</strong> Always refer to the official AASM Scoring Manual and consult qualified sleep medicine professionals for clinical decisions.
+    <strong>Disclaimer:</strong> This application is designed strictly for educational and training purposes for sleep technologists and students preparing for credential exams. <strong>It is NOT intended for clinical diagnosis or patient care.</strong> Always refer to current AASM guidelines and consult with qualified healthcare professionals for clinical decisions.
   </div>
 </div>
 
@@ -347,38 +347,38 @@ const EKG_CASES = [
   { type: 'nsr', title: 'Normal Sinus Rhythm', description: 'Regular rhythm, rate 60-100 bpm. Every P wave is followed by a normal QRS complex, PR interval is normal.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Sinus Tachycardia'], answer: 'Normal Sinus Rhythm' },
   { type: 'bradycardia', title: 'Sinus Bradycardia', description: 'Regular rhythm, rate < 60 bpm. Identical to NSR but slower.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Junctional Rhythm'], answer: 'Sinus Bradycardia' },
   { type: 'tachycardia', title: 'Sinus Tachycardia', description: 'Regular rhythm, rate > 100 bpm. Normal P, PR, and QRS.', options: ['Sinus Tachycardia', 'Supraventricular Tachycardia (SVT)', 'Ventricular Tachycardia'], answer: 'Sinus Tachycardia' },
-  { type: 'sinus_arrhythmia', title: 'Sinus Arrhythmia', description: 'Irregular rhythm varying with respiration. P, QRS, and T waves are normal.', options: ['Atrial Fibrillation', 'Sinus Arrhythmia', 'Sinus Pause'], answer: 'Sinus Arrhythmia' },
+  { type: 'sinus_arrhythmia', title: 'Sinus Arrhythmia', description: 'Irregular rhythm varying with respiration. P, QRS, and T waves are normal.', options: ['Atrial Fibrillation', 'Sinus Arrhythmia', 'Atrial Flutter'], answer: 'Sinus Arrhythmia' },
   { type: 'sinus_pause', title: 'Sinus Pause', description: 'Sudden failure of the SA node to initiate an impulse, creating a long visible pause.', options: ['Sinus Pause', 'Asystole', 'Wenckebach'], answer: 'Sinus Pause' },
   { type: 'afib', title: 'Atrial Fibrillation', description: 'Irregularly irregular rhythm. Absent distinct P waves, fibrillatory baseline.', options: ['Normal Sinus Rhythm', 'Ventricular Fibrillation', 'Atrial Fibrillation'], answer: 'Atrial Fibrillation' },
-  { type: 'aflutter', title: 'Atrial Flutter', description: 'Continuous "sawtooth" or "picket fence" pattern of flutter waves instead of standard P waves.', options: ['Atrial Fibrillation', 'Ventricular Tachycardia', 'Atrial Flutter'], answer: 'Atrial Flutter' },
-  { type: 'svt', title: 'Supraventricular Tachycardia (SVT)', description: 'Fast rate >150 bpm with narrow QRS complexes. P waves often hidden in preceding T waves.', options: ['Ventricular Tachycardia', 'Supraventricular Tachycardia (SVT)', 'Sinus Tachycardia'], answer: 'Supraventricular Tachycardia (SVT)' },
+  { type: 'aflutter', title: 'Atrial Flutter', description: 'Continuous "sawtooth" or "picket fence" pattern of flutter waves instead of standard P waves.', options: ['Atrial Fibrillation', 'Ventricular Flutter', 'Atrial Flutter'], answer: 'Atrial Flutter' },
+  { type: 'svt', title: 'Supraventricular Tachycardia (SVT)', description: 'Fast rate >150 bpm with narrow QRS complexes. P waves often hidden in preceding T waves.', options: ['Ventricular Tachycardia', 'Supraventricular Tachycardia (SVT)', 'Atrial Flutter'], answer: 'Supraventricular Tachycardia (SVT)' },
   { type: 'junctional', title: 'Junctional Rhythm', description: 'Rate 40-60 bpm. Impulses originate in AV node. P waves are absent or inverted.', options: ['Sinus Bradycardia', 'Junctional Rhythm', 'Idioventricular Rhythm'], answer: 'Junctional Rhythm' },
-  { type: 'idioventricular', title: 'Idioventricular Rhythm', description: 'Rate 20-40 bpm originating from ventricles. Very wide QRS complexes and absent P waves.', options: ['Junctional Rhythm', '3rd Degree AV Block', 'Idioventricular Rhythm'], answer: 'Idioventricular Rhythm' },
-  { type: 'bbb', title: 'Bundle Branch Block', description: 'Underlying rhythm is normal, but QRS complex is widened (>0.12s), often notched ("rabbit ears").', options: ['Premature Ventricular Contraction', 'Bundle Branch Block', 'Normal Sinus Rhythm'], answer: 'Bundle Branch Block' },
-  { type: 'vtach', title: 'Ventricular Tachycardia', description: 'Wide, fast, bizarre QRS complexes >100 bpm. Often resembles continuous mountains.', options: ['Ventricular Tachycardia', 'Ventricular Fibrillation', 'Supraventricular Tachycardia'], answer: 'Ventricular Tachycardia' },
+  { type: 'idioventricular', title: 'Idioventricular Rhythm', description: 'Rate 20-40 bpm originating from ventricles. Very wide QRS complexes and absent P waves.', options: ['Junctional Rhythm', '3rd Degree Block', 'Idioventricular Rhythm'], answer: 'Idioventricular Rhythm' },
+  { type: 'bbb', title: 'Bundle Branch Block', description: 'Underlying rhythm is normal, but QRS complex is widened (>0.12s), often notched ("rabbit ears").', options: ['Premature Ventricular Contraction', 'Bundle Branch Block', 'Ventricular Tachycardia'], answer: 'Bundle Branch Block' },
+  { type: 'vtach', title: 'Ventricular Tachycardia', description: 'Wide, fast, bizarre QRS complexes >100 bpm. Often resembles continuous mountains.', options: ['Ventricular Tachycardia', 'Ventricular Flutter', 'Atrial Flutter'], answer: 'Ventricular Tachycardia' },
   { type: 'vfib', title: 'Ventricular Fibrillation', description: 'Chaotic, bizarre electrical activity with no identifiable P, QRS, or T waves.', options: ['Ventricular Fibrillation', 'Atrial Fibrillation', 'Asystole'], answer: 'Ventricular Fibrillation' },
   { type: 'asystole', title: 'Asystole', description: 'Flatline. Complete absence of electrical activity.', options: ['Asystole', 'Ventricular Fibrillation', 'Sinus Pause'], answer: 'Asystole' },
-  { type: 'pvc', title: 'Premature Ventricular Contraction (PVC)', description: 'Underlying rhythm interrupted by a premature, wide, bizarre QRS complex.', options: ['Bundle Branch Block', 'Premature Ventricular Contraction (PVC)', 'Normal Sinus Rhythm'], answer: 'Premature Ventricular Contraction (PVC)' },
-  { type: 'pvc_bigeminy', title: 'PVC (Bigeminy)', description: 'A regular alternating pattern: one normal beat immediately followed by one PVC.', options: ['Ventricular Tachycardia', 'Premature Ventricular Contraction (PVC)', 'PVC Bigeminy'], answer: 'PVC Bigeminy' },
+  { type: 'pvc', title: 'Premature Ventricular Contraction (PVC)', description: 'Underlying rhythm interrupted by a premature, wide, bizarre QRS complex.', options: ['Bundle Branch Block', 'Premature Ventricular Contraction (PVC)', 'Ventricular Tachycardia'], answer: 'Premature Ventricular Contraction (PVC)' },
+  { type: 'pvc_bigeminy', title: 'PVC (Bigeminy)', description: 'A regular alternating pattern: one normal beat immediately followed by one PVC.', options: ['Ventricular Tachycardia', 'Premature Ventricular Contraction (PVC)', 'PVC (Bigeminy)'], answer: 'PVC (Bigeminy)' },
   { type: '1stdegree', title: '1st Degree AV Block', description: 'Regular rhythm but with a consistently prolonged PR interval.', options: ['Normal Sinus Rhythm', '1st Degree AV Block', 'Wenckebach'], answer: '1st Degree AV Block' },
-  { type: '2nddegree_type1', title: '2nd Degree AV Block (Wenckebach)', description: 'Progressively lengthening PR interval beat-by-beat until a QRS is entirely dropped.', options: ['1st Degree AV Block', '2nd Degree AV Block (Wenckebach)', 'Mobitz II'], answer: '2nd Degree AV Block (Wenckebach)' },
-  { type: 'mobitz2', title: '2nd Degree AV Block (Mobitz II)', description: 'Intermittent dropped beats. Unlike Wenckebach, the PR interval remains CONSTANT before the dropped QRS.', options: ['Wenckebach', 'Mobitz II', '3rd Degree AV Block'], answer: 'Mobitz II' },
-  { type: 'third_degree', title: '3rd Degree (Complete) AV Block', description: 'Atria and ventricles beat completely independently. P waves march through the QRS indiscriminately.', options: ['Mobitz II', '3rd Degree AV Block', '1st Degree AV Block'], answer: '3rd Degree AV Block' }
+  { type: '2nddegree_type1', title: '2nd Degree AV Block (Wenckebach)', description: 'Progressively lengthening PR interval beat-by-beat until a QRS is entirely dropped.', options: ['1st Degree AV Block', 'Wenckebach', 'Mobitz II'], answer: 'Wenckebach' },
+  { type: 'mobitz2', title: '2nd Degree AV Block (Mobitz II)', description: 'Intermittent dropped beats. Unlike Wenckebach, the PR interval remains CONSTANT before the dropped QRS.', options: ['Wenckebach', 'Mobitz II', '3rd Degree Block'], answer: 'Mobitz II' },
+  { type: 'third_degree', title: '3rd Degree (Complete) AV Block', description: 'Atria and ventricles beat completely independently. P waves march through the QRS indiscriminately.', options: ['Mobitz II', '3rd Degree Block', 'Junctional Rhythm'], answer: '3rd Degree Block' }
 ];
 
 // --- DATA: 50-QUESTION AASM WRITTEN QUIZ ---
 const AASM_QUIZ = [
-  { q: "According to the AASM scoring manual, what is the recommended derivation for the ECG recording during a polysomnogram?", opts: ["Modified Lead I", "Modified Lead II", "Lead V5", "Modified Lead V2"], ans: "Modified Lead II", rat: "The AASM manual recommends Modified Lead II as the standard derivation for ECG monitoring during polysomnography.", ref: "AASM Manual 3.0", bp: "ECG Setup" },
-  { q: "What is the recommended minimum sampling rate for the ECG channel according to AASM specifications?", opts: ["100 Hz", "200 Hz", "500 Hz", "1000 Hz"], ans: "200 Hz", rat: "The AASM manual states the minimum sampling rate should be 200 Hz for proper ECG signal capture.", ref: "AASM Manual 3.0", bp: "Equipment Standards" },
-  { q: "What is the desirable sampling rate for the ECG channel during a sleep study?", opts: ["200 Hz", "250 Hz", "500 Hz", "1000 Hz"], ans: "500 Hz", rat: "The AASM manual recommends a desirable sampling rate of 500 Hz for optimal waveform fidelity.", ref: "AASM Manual 3.0", bp: "Equipment Standards" },
-  { q: "What is the recommended Low Frequency Filter (LFF) setting for the ECG channel?", opts: ["0.1 Hz", "0.3 Hz", "1.0 Hz", "10 Hz"], ans: "0.3 Hz", rat: "The AASM manual specifies an LFF of 0.3 Hz to minimize baseline drift while preserving QRS morphology.", ref: "AASM Manual 3.0", bp: "Filter Settings" },
-  { q: "What is the recommended High Frequency Filter (HFF) setting for the ECG channel?", opts: ["15 Hz", "35 Hz", "70 Hz", "100 Hz"], ans: "70 Hz", rat: "The AASM recommends an HFF of 70 Hz to allow proper visualization of the QRS complex and T waves.", ref: "AASM Manual 3.0", bp: "Filter Settings" },
-  { q: "According to AASM rules, how is Sinus Tachycardia scored in an adult during sleep?", opts: ["A sustained heart rate of > 90 bpm.", "A sustained heart rate of > 100 bpm.", "A sustained heart rate of > 110 bpm.", "Only if rate exceeds 120 bpm"], ans: "A sustained heart rate of > 100 bpm.", rat: "AASM defines adult Sinus Tachycardia as a sustained heart rate greater than 100 bpm during sleep.", ref: "AASM Manual 3.0", bp: "Cardiac Scoring" },
-  { q: "How is Sinus Bradycardia scored in an adult during a sleep study?", opts: ["A sustained heart rate of < 60 bpm.", "A sustained heart rate of < 50 bpm.", "A sustained heart rate of < 40 bpm.", "Only if accompanied by arousals"], ans: "A sustained heart rate of < 60 bpm.", rat: "AASM scoring guidelines define adult Sinus Bradycardia as a heart rate less than 60 bpm sustained during sleep.", ref: "AASM Manual 3.0", bp: "Cardiac Scoring" },
-  { q: "According to AASM rules for adults, Asystole is scored when there is a cardiac pause of at least:", opts: ["2 seconds", "3 seconds", "5 seconds", "10 seconds"], ans: "3 seconds", rat: "AASM rules specify that Asystole must be a cardiac pause lasting at least 3 seconds to be scored.", ref: "AASM Manual 3.0", bp: "Arrhythmias" },
-  { q: "How does the AASM define Wide Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", "A rhythm lasting a minimum of 2 beats at a rate >150 bpm with wide QRS.", "Any tachycardia above 120 bpm", "Rapid atrial fibrillation with aberrant conduction"], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", rat: "AASM defines Wide Complex Tachycardia as at least 3 consecutive beats at rate >100 bpm with QRS ≥120 msec.", ref: "AASM Manual 3.0", bp: "Arrhythmias" },
-  { q: "How does the AASM define Narrow Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", "Any sinus tachycardia", "Atrial fibrillation with rapid ventricular response", "Only supraventricular tachycardia"], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", rat: "AASM defines Narrow Complex Tachycardia as 3+ consecutive beats at >100 bpm with QRS <120 msec.", ref: "AASM Manual 3.0", bp: "Arrhythmias" },
-  { q: "What is the primary characteristic used to score Atrial Fibrillation according to AASM guidelines?", opts: ["A regular rhythm with a rate >150 bpm.", "Irregularly irregular ventricular rhythm without distinct P waves.", "Visible sawtooth flutter waves.", "Dropped QRS complexes"], ans: "Irregularly irregular ventricular rhythm without distinct P waves.", rat: "The hallmark of Atrial Fibrillation per AASM is an irregularly irregular rhythm lacking distinct P waves.", ref: "AASM Manual 3.0", bp: "Arrhythmias" }
+  { q: "According to the AASM scoring manual, what is the recommended derivation for the ECG recording during a polysomnogram?", opts: ["Modified Lead I", "Modified Lead II", "Lead V5", "Modified Lead III"], ans: "Modified Lead II", rat: "AASM recommends Modified Lead II for standard PSG recording.", ref: "AASM Manual 2.11", bp: "Technical Setup" },
+  { q: "What is the recommended minimum sampling rate for the ECG channel according to AASM specifications?", opts: ["100 Hz", "200 Hz", "500 Hz", "1000 Hz"], ans: "200 Hz", rat: "The AASM manual states 200 Hz minimum sampling rate for ECG.", ref: "AASM 2.11", bp: "Specifications" },
+  { q: "What is the desirable sampling rate for the ECG channel during a sleep study?", opts: ["200 Hz", "250 Hz", "500 Hz", "1000 Hz"], ans: "500 Hz", rat: "500 Hz is recommended for better waveform quality.", ref: "AASM 2.11", bp: "Best Practice" },
+  { q: "What is the recommended Low Frequency Filter (LFF) setting for the ECG channel?", opts: ["0.1 Hz", "0.3 Hz", "1.0 Hz", "10 Hz"], ans: "0.3 Hz", rat: "AASM specifies 0.3 Hz to prevent baseline drift.", ref: "AASM 2.11", bp: "Filtering" },
+  { q: "What is the recommended High Frequency Filter (HFF) setting for the ECG channel?", opts: ["15 Hz", "35 Hz", "70 Hz", "100 Hz"], ans: "70 Hz", rat: "70 Hz preserves QRS and T wave morphology.", ref: "AASM 2.11", bp: "Filtering" },
+  { q: "According to AASM rules, how is Sinus Tachycardia scored in an adult during sleep?", opts: ["A sustained heart rate of > 90 bpm.", "A sustained heart rate of > 100 bpm.", "A sustained heart rate of > 110 bpm.", "Any HR increase lasting > 5 seconds"], ans: "A sustained heart rate of > 100 bpm.", rat: "Sinus tachycardia is defined as sustained rate >100 bpm.", ref: "AASM 2.2", bp: "Cardiac Events" },
+  { q: "How is Sinus Bradycardia scored in an adult during a sleep study?", opts: ["A sustained heart rate of < 60 bpm.", "A sustained heart rate of < 50 bpm.", "A sustained heart rate of < 40 bpm.", "Any single beat < 50 bpm"], ans: "A sustained heart rate of < 60 bpm.", rat: "Sinus bradycardia is sustained rate <60 bpm.", ref: "AASM 2.2", bp: "Cardiac Events" },
+  { q: "According to AASM rules for adults, Asystole is scored when there is a cardiac pause of at least:", opts: ["2 seconds", "3 seconds", "5 seconds", "10 seconds"], ans: "3 seconds", rat: "AASM defines asystole as a pause ≥3 seconds.", ref: "AASM 2.2", bp: "Arrhythmias" },
+  { q: "How does the AASM define Wide Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", "A rhythm lasting minimum 2 beats >150 bpm with wide QRS.", "Any ventricular rate >120 bpm.", "Wide QRS lasting >1 second at any rate."], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", rat: "WCT = 3+ beats, rate >100, QRS ≥120 ms.", ref: "AASM 2.2", bp: "Tachycardias" },
+  { q: "How does the AASM define Narrow Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", "Any sinus tachycardia.", "Atrial flutter with rate >120 bpm.", "Sinus tachycardia with HR >100."], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", rat: "NCT = 3+ beats, rate >100, QRS <120 ms.", ref: "AASM 2.2", bp: "Tachycardias" },
+  { q: "What is the primary characteristic used to score Atrial Fibrillation according to AASM guidelines?", opts: ["A regular rhythm with a rate >150 bpm.", "Irregularly irregular ventricular rhythm with absent distinct P waves.", "Presence of flutter waves.", "QRS duration >120 msec."], ans: "Irregularly irregular ventricular rhythm with absent distinct P waves.", rat: "AFib characterized by irregularly irregular rhythm and absent P waves.", ref: "AASM 2.2", bp: "Arrhythmias" }
 ];
 
 // --- GLOBAL STATE ---
@@ -584,7 +584,7 @@ function renderDrill() {
         feedback.style.display = 'block';
         feedback.style.borderColor = isCorrect ? 'var(--accent2)' : 'var(--danger)';
         feedback.style.backgroundColor = isCorrect ? '#f0fdf4' : '#fef2f2';
-        feedback.innerHTML = `<h3 style="color: ${isCorrect ? '#166534' : '#991b1b'}; margin-top: 0;">${isCorrect ? '✓ Correct' : '✗ Incorrect'}: ${currentCase.title}</h3><p style="color: ${isCorrect ? '#166534' : '#991b1b'}">${currentCase.description}</p>`;
+        feedback.innerHTML = `<h3 style="color: ${isCorrect ? '#166534' : '#991b1b'}; margin-top: 0;">${isCorrect ? '✓ Correct' : '✗ Incorrect'}: ${currentCase.title}</h3><p style="color: ${isCorrect ? '#166534' : '#991b1b'};">${currentCase.description}</p>`;
     } else feedback.style.display = 'none';
 
     updateStats();
