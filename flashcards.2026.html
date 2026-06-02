@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sleep Pathways Guild | Interactive Flashcards</title>
-<meta name="description" content="Official Sleep Pathways Guild EKG and Sleep Staging Flashcards." />
+<title>Sleep Pathways Guild | EKG Flashcards</title>
+<meta name="description" content="Official Sleep Pathways Guild EKG Flashcards." />
 <script src="https://analytics.ahrefs.com/analytics.js" data-key="/s9HvK+nlfPasBLtcJ6y3A" async></script>
 <style>
 :root { 
@@ -26,7 +26,6 @@
   --ekgPaper: #fffcfc; 
   --ekgMinor: #fecdd3; 
   --ekgMajor: #fda4af; 
-  --psgGrid: #e2e8f0; 
 }
 * { box-sizing:border-box; }
 body { 
@@ -115,20 +114,18 @@ svg.canvas-area { display: block; width: 100%; }
   <header class="header-bar">
     <div class="header-titles">
       <h1>Sleep Pathways Guild</h1>
-      <h2>Interactive Mastery Flashcards</h2>
+      <h2>Interactive EKG Flashcards</h2>
     </div>
     <div class="nav-group">
       <a href="https://sleeppathwaysguild.com/" class="brand-btn">Guild Home</a>
-      <a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html" class="brand-btn">RPSGT Exam App</a>
+      <a href="https://sleeppathwaysguild.com/ekg.2026.html" class="brand-btn">EKG Lab</a>
     </div>
   </header>
 
   <div class="deck-controls">
     <select id="deckSelector" class="category-select" onchange="loadDeck()">
       <option value="ekg_visual">Visuals: EKG Rhythm Identification</option>
-      <option value="psg_visual">Visuals: PSG Epoch Staging</option>
       <option value="cardiac_rules">Written: AASM Cardiac Rules</option>
-      <option value="staging_rules">Written: AASM Staging Rules</option>
     </select>
     <div class="card-counter" id="cardCounter">Card 1 / 10</div>
   </div>
@@ -136,16 +133,20 @@ svg.canvas-area { display: block; width: 100%; }
   <div class="flashcard-container">
     <div class="flashcard-inner" id="flashcard" onclick="flipCard()">
       
+      <!-- FRONT OF CARD -->
       <div class="flashcard-front">
         <div class="card-label" id="frontLabel">Question</div>
         
+        <!-- Text Question Container -->
         <div id="frontText" class="card-question" style="display:none;"></div>
         
+        <!-- Visual Waveform Container (Injected via JS) -->
         <div id="frontVisual" class="visual-embed" style="display:none;"></div>
 
         <div class="flip-hint">Tap to Flip ↻</div>
       </div>
 
+      <!-- BACK OF CARD -->
       <div class="flashcard-back">
         <div class="card-label" style="color: var(--brand-teal);">Answer</div>
         <div id="backAnswer" class="card-answer"></div>
@@ -165,7 +166,7 @@ svg.canvas-area { display: block; width: 100%; }
 <script>
 // --- PROCEDURAL GENERATORS ---
 
-// 1. EKG Generator
+// EKG Generator
 function getEKGSVG(type) {
     let width = 1000, height = 240, path = `M 0 ${height/2}`, baseline = height/2;
     let beats = [], pBeats = [];
@@ -252,83 +253,6 @@ function getEKGSVG(type) {
       </svg>`;
 }
 
-// 2. PSG Generator
-function getPSGSVG(type) {
-    let width = 1000;
-    let paths = { eogL: `M 0 `, eogR: `M 0 `, eeg: `M 0 `, emg: `M 0 ` };
-    let offsets = { eogL: 50, eogR: 120, eeg: 220, emg: 330 };
-
-    for (let x = 0; x <= width; x++) {
-        let t = x / (1000/30);
-        let lamf = Math.sin(t * 5 * Math.PI * 2) * 5 + Math.sin(t * 6 * Math.PI * 2) * 4 + Math.sin(t * 2.5 * Math.PI * 2) * 3;
-        
-        ['eogL', 'eogR', 'eeg', 'emg'].forEach(ch => {
-            let y = 0;
-            let noise = (Math.random() - 0.5) * 4;
-
-            if (type === 'W') {
-                if (ch === 'eeg') y = Math.sin(t * 10 * Math.PI * 2) * 15 + noise; 
-                if (ch === 'emg') y = (Math.random() - 0.5) * 25; 
-                if (ch === 'eogL' || ch === 'eogR') {
-                    y = noise;
-                    if (t > 5 && t < 5.3) y += Math.sin((t-5)/0.3 * Math.PI) * (ch==='eogL'? -35 : 35);
-                    if (t > 18 && t < 18.3) y += Math.sin((t-18)/0.3 * Math.PI) * (ch==='eogL'? -30 : 30);
-                }
-            } else if (type === 'N1') {
-                if (ch === 'eeg') {
-                    y = lamf + noise;
-                    if (t > 15 && t < 15.4) { let vTime = (t-15)/0.4; y += Math.sin(vTime * Math.PI * 2) * -30 * Math.exp(-Math.pow(vTime-0.5, 2)*20); }
-                }
-                if (ch === 'emg') y = (Math.random() - 0.5) * 10;
-                if (ch === 'eogL') y = Math.sin(t * 0.3 * Math.PI * 2) * 15 + noise*0.5; 
-                if (ch === 'eogR') y = -Math.sin(t * 0.3 * Math.PI * 2) * 15 + noise*0.5;
-            } else if (type === 'N2') {
-                if (ch === 'eeg') {
-                    y = lamf * 0.8 + noise;
-                    if (t > 6 && t < 7) { let env = Math.sin((t-6) * Math.PI); y += Math.sin(t * 13 * Math.PI * 2) * 25 * env; }
-                    if (t > 24 && t < 24.8) { let env = Math.sin((t-24)/0.8 * Math.PI); y += Math.sin(t * 14 * Math.PI * 2) * 22 * env; }
-                    if (t > 14 && t < 15) { let kTime = (t-14); if (kTime < 0.2) y += (kTime/0.2) * -60; else if (kTime < 0.6) y += (-60 + ((kTime-0.2)/0.4)*100); else y += (40 - ((kTime-0.6)/0.4)*40); }
-                }
-                if (ch === 'emg') y = (Math.random() - 0.5) * 6;
-                if (ch === 'eogL' || ch === 'eogR') y = noise;
-            } else if (type === 'N3') {
-                if (ch === 'eeg') y = Math.sin(t * 1.1 * Math.PI * 2) * 35 + Math.sin(t * 0.6 * Math.PI * 2) * 25 + lamf*0.5 + noise;
-                if (ch === 'emg') y = (Math.random() - 0.5) * 4;
-                if (ch === 'eogL' || ch === 'eogR') y = (Math.sin(t * 1.1 * Math.PI * 2) * 10 + Math.sin(t * 0.6 * Math.PI * 2) * 8) + noise;
-            } else if (type === 'R') {
-                if (ch === 'eeg') {
-                    y = lamf + noise;
-                    if (t > 9 && t < 11) { let saw = (t * 4) % 1; y += (saw * 20 - 10); }
-                }
-                if (ch === 'emg') y = (Math.random() - 0.5) * 2; 
-                if (ch === 'eogL' || ch === 'eogR') {
-                    y = noise * 0.5;
-                    let dir = ch === 'eogL' ? -1 : 1;
-                    if (t>11.2 && t<11.5) y += Math.sin((t-11.2)/0.3 * Math.PI) * 40 * dir;
-                    if (t>11.8 && t<12.0) y += Math.sin((t-11.8)/0.2 * Math.PI) * -35 * dir;
-                    if (t>12.2 && t<12.6) y += Math.sin((t-12.2)/0.4 * Math.PI) * 45 * dir;
-                }
-            }
-            paths[ch] += ` L ${x} ${(offsets[ch] + y).toFixed(1)}`;
-        });
-    }
-
-    return `
-      <div style="position:absolute; top:0; left:0; width:60px; height:100%; background:rgba(255,255,255,0.9); border-right:1px solid var(--line); display:flex; flex-direction:column; justify-content:space-around; font-family:monospace; font-size:11px; font-weight:bold; padding-left:8px; z-index:10;">
-        <div style="color:#1d4ed8">EOG L</div><div style="color:#1d4ed8">EOG R</div><div style="color:#0f172a">EEG C4</div><div style="color:#b91c1c">Chin</div>
-      </div>
-      <div class="visual-label" style="left:auto; right:8px; background:transparent; border:none; color:var(--muted);">30-sec Epoch</div>
-      <svg viewBox="0 0 1000 400" class="canvas-area" style="margin-left:60px; width:calc(100% - 60px);">
-        <defs><pattern id="grid-psg" width="33.33" height="400" patternUnits="userSpaceOnUse"><rect width="33.33" height="400" fill="none" stroke="var(--psgGrid)" stroke-width="1" /></pattern></defs>
-        <rect width="100%" height="100%" fill="url(#grid-psg)" />
-        <path d="${paths.eogL}" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" />
-        <path d="${paths.eogR}" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" />
-        <path d="${paths.eeg}" fill="none" stroke="#0f172a" stroke-width="1.5" stroke-linejoin="round" />
-        <path d="${paths.emg}" fill="none" stroke="#b91c1c" stroke-width="1.2" stroke-linejoin="round" />
-      </svg>`;
-}
-
-
 // --- FLASHCARD DATABASE ---
 const DECKS = {
   ekg_visual: [
@@ -345,13 +269,6 @@ const DECKS = {
     { type: 'visual', gen: 'ekg', val: '2nddegree_type1', q: "Identify the Rhythm", a: "2nd Degree AV Block (Wenckebach)", d: "Progressively lengthening PR interval beat-by-beat until a QRS is entirely dropped." },
     { type: 'visual', gen: 'ekg', val: 'third_degree', q: "Identify the Rhythm", a: "3rd Degree (Complete) AV Block", d: "Atria and ventricles beat completely independently. P waves march through the QRS indiscriminately." }
   ],
-  psg_visual: [
-    { type: 'visual', gen: 'psg', val: 'W', q: "Score this Epoch", a: "Stage W (Wake)", d: "Alpha rhythm (8-13 Hz) present >50% of the epoch. Eye blinks and high chin EMG tone." },
-    { type: 'visual', gen: 'psg', val: 'N1', q: "Score this Epoch", a: "Stage N1", d: "Alpha replaced by Low Amplitude Mixed Frequency (LAMF). Slow Eye Movements (SEMs) and Vertex waves present." },
-    { type: 'visual', gen: 'psg', val: 'N2', q: "Score this Epoch", a: "Stage N2", d: "Presence of Sleep Spindles (11-16 Hz) and/or K-Complexes (≥0.5s duration) on a LAMF background." },
-    { type: 'visual', gen: 'psg', val: 'N3', q: "Score this Epoch", a: "Stage N3", d: "Slow wave activity (0.5-2 Hz, >75 µV) taking up ≥20% of the epoch. EOG is generally quiet or picks up Delta bleed." },
-    { type: 'visual', gen: 'psg', val: 'R', q: "Score this Epoch", a: "Stage R (REM)", d: "LAMF EEG with sawtooth waves. Rapid Eye Movements (REMs) present. Chin EMG tone is at its lowest (atonia)." }
-  ],
   cardiac_rules: [
     { type: 'text', q: "What are the AASM criteria for scoring Sinus Bradycardia in an adult during sleep?", a: "Sustained HR < 40 bpm", d: "While 60 bpm is the clinical waking threshold, heart rates drop naturally during sleep, so the AASM threshold is lower." },
     { type: 'text', q: "What are the AASM criteria for scoring Sinus Tachycardia in an adult during sleep?", a: "Sustained HR > 90 bpm", d: "Requires a sustained rate, not just a brief acceleration following an arousal." },
@@ -361,16 +278,6 @@ const DECKS = {
     { type: 'text', q: "What are the recommended Low and High Frequency Filter (LFF/HFF) settings for the ECG channel?", a: "LFF: 0.3 Hz | HFF: 70 Hz", d: "0.3 Hz stops respiratory wander. 70 Hz ensures the sharp peaks of the QRS are not rounded off." },
     { type: 'text', q: "What is the defining characteristic of a 2nd Degree AV Block, Type I (Wenckebach)?", a: "Progressively lengthening PR interval until a QRS is dropped.", d: "Also known as the 'going, going, gone' pattern." },
     { type: 'text', q: "What defines a Premature Ventricular Contraction (PVC)?", a: "A wide, bizarre QRS complex with no preceding P wave.", d: "Because the impulse starts in the ventricles, it bypasses normal fast pathways, causing a wide complex." }
-  ],
-  staging_rules: [
-    { type: 'text', q: "What are the recommended EEG derivations for sleep staging in adults?", a: "F4-M1, C4-M1, and O2-M1", d: "Frontal, Central, and Occipital referenced to the contralateral mastoid." },
-    { type: 'text', q: "What defines a Posterior Dominant Rhythm (Alpha)?", a: "Trains of 8–13 Hz activity recorded over the occipital region with eye closure.", d: "Attenuates with eye opening. Required to be >50% of the epoch to score Stage W in alpha-producers." },
-    { type: 'text', q: "What defines a K-Complex?", a: "A negative sharp wave followed by a positive component lasting ≥ 0.5 seconds.", d: "Maximal over the frontal regions. Initiates Stage N2 if unassociated with an arousal." },
-    { type: 'text', q: "What defines a Sleep Spindle?", a: "A train of distinct sinusoidal waves (11–16 Hz) lasting ≥ 0.5 seconds.", d: "Maximal in the central regions. Initiates Stage N2." },
-    { type: 'text', q: "What defines Slow Wave Activity used to score Stage N3?", a: "Frequency: 0.5–2.0 Hz | Amplitude: > 75 µV", d: "Measured over the frontal regions. Must occupy ≥ 20% of the epoch to score N3." },
-    { type: 'text', q: "What three criteria MUST be present to score an epoch as definite Stage R (REM)?", a: "1. LAMF EEG (no spindles/Ks)\n2. Low chin EMG\n3. Rapid Eye Movements (REMs)", d: "Sawtooth waves are highly supportive but not strictly required to score Stage R." },
-    { type: 'text', q: "How is an arousal scored in NREM sleep?", a: "An abrupt shift in EEG frequency lasting ≥ 3 seconds.", d: "Must be preceded by at least 10 seconds of stable sleep. (Shift includes alpha, theta, or >16Hz, but not spindles)." },
-    { type: 'text', q: "What additional requirement must be met to score an arousal during Stage R sleep?", a: "A concurrent increase in submental EMG lasting ≥ 1 second.", d: "Because the EEG is already LAMF and variable in REM, the muscle tone increase is required." }
   ]
 };
 
@@ -418,7 +325,6 @@ function renderCard() {
         qText.style.display = 'none';
         qVisual.style.display = 'block';
         if (card.gen === 'ekg') qVisual.innerHTML = getEKGSVG(card.val);
-        if (card.gen === 'psg') qVisual.innerHTML = getPSGSVG(card.val);
     } else {
         qVisual.style.display = 'none';
         qText.style.display = 'block';
