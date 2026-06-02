@@ -45,7 +45,7 @@ body {
 .shell { max-width:1000px; margin:0 auto; padding:24px 18px; flex: 1; width: 100%;}
 
 /* Header Elements (Dark Mode Branded) */
-.header-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--brand-line); padding-bottom: 20px;}
+.header-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--brand-line); padding-bottom: 20px; }
 .header-titles { display: flex; flex-direction: column; gap: 4px; }
 .header-titles h1 { margin: 0; font-size: 28px; color: var(--brand-teal); font-weight: 700; letter-spacing: -0.5px;}
 .header-titles h2 { margin: 0; font-size: 16px; color: var(--brand-muted); font-weight: 400; }
@@ -214,7 +214,7 @@ svg.ekg-canvas { display: block; min-width: 1000px; width: 100%; }
 .stats { font-weight: 600; color: var(--brand-muted); font-size: 15px;}
 
 /* Disclaimer Text */
-.disclaimer { text-align: center; font-size: 13px; color: var(--brand-muted); padding: 24px 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--brand-line); line-height: 1.5; border-radius: 12px;}
+.disclaimer { text-align: center; font-size: 13px; color: var(--brand-muted); padding: 24px 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--brand-line); line-height: 1.5; border-radius: 0 0 8px 8px; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 </style>
@@ -272,7 +272,7 @@ svg.ekg-canvas { display: block; min-width: 1000px; width: 100%; }
             <button class="app-btn btn-control" onclick="prevEKG()">← Prev</button>
             <button class="app-btn btn-control" onclick="randomEKG()">Random</button>
             <button class="app-btn btn-control" onclick="nextEKG()">Next →</button>
-            <button class="app-btn btn-control" onclick="showSummary()" style="margin-left: 12px; background: var(--bg2); border-color: var(--accent);">View Summary</button>
+            <button class="app-btn btn-control" onclick="showSummary()" style="margin-left: 12px; background: var(--bg); border-color: var(--accent);">View Summary</button>
           </div>
         </div>
 
@@ -334,91 +334,55 @@ svg.ekg-canvas { display: block; min-width: 1000px; width: 100%; }
 
   <!-- Medical Disclaimer -->
   <div class="disclaimer">
-    <strong>Disclaimer:</strong> This application is designed strictly for educational and training purposes for sleep technologists and students preparing for credential exams. <strong>It is not intended to provide medical advice, nor should it be used for the diagnosis, treatment, or management of any medical condition.</strong> The EKG waveforms displayed in this module are procedurally generated (AI/mathematically simulated) specifically to demonstrate classical patterns and are not real patient recordings. Always consult a qualified healthcare professional for medical diagnosis and treatment.
+    <strong>Disclaimer:</strong> This application is designed strictly for educational and training purposes for sleep technologists and students preparing for credential exams. <strong>It is NOT intended to replace professional medical training, clinical expertise, or a licensed healthcare provider's medical judgment.</strong> Always refer to the official AASM Scoring Manual and consult qualified sleep medicine professionals for clinical decisions.
   </div>
 </div>
 
 <script>
+// --- STORAGE KEY (DEFINED FIRST TO AVOID UNDEFINED ERRORS) ---
+const STORAGE_KEY = 'SPG_EKG_LAB_2026';
+
 // --- DATA: EKG DRILL CASES ---
 const EKG_CASES = [
-  { type: 'nsr', title: 'Normal Sinus Rhythm', description: 'Regular rhythm, rate 60-100 bpm. Every P wave is followed by a normal QRS complex, PR interval is normal.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Bundle Branch Block', 'Atrial Fibrillation'], answer: 'Normal Sinus Rhythm' },
-  { type: 'bradycardia', title: 'Sinus Bradycardia', description: 'Regular rhythm, rate < 60 bpm. Identical to NSR but slower.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Junctional Rhythm', 'Sinus Pause'], answer: 'Sinus Bradycardia' },
-  { type: 'tachycardia', title: 'Sinus Tachycardia', description: 'Regular rhythm, rate > 100 bpm. Normal P, PR, and QRS.', options: ['Sinus Tachycardia', 'Supraventricular Tachycardia (SVT)', 'Ventricular Tachycardia', 'Atrial Flutter'], answer: 'Sinus Tachycardia' },
-  { type: 'sinus_arrhythmia', title: 'Sinus Arrhythmia', description: 'Irregular rhythm varying with respiration. P, QRS, and T waves are normal.', options: ['Atrial Fibrillation', 'Sinus Arrhythmia', '3rd Degree AV Block', 'Wenckebach'], answer: 'Sinus Arrhythmia' },
-  { type: 'sinus_pause', title: 'Sinus Pause', description: 'Sudden failure of the SA node to initiate an impulse, creating a long visible pause.', options: ['Sinus Pause', 'Asystole', 'Wenckebach', 'PVC (Unifocal)'], answer: 'Sinus Pause' },
-  { type: 'afib', title: 'Atrial Fibrillation', description: 'Irregularly irregular rhythm. Absent distinct P waves, fibrillatory baseline.', options: ['Normal Sinus Rhythm', 'Ventricular Fibrillation', 'Atrial Fibrillation', 'Atrial Flutter'], answer: 'Atrial Fibrillation' },
-  { type: 'aflutter', title: 'Atrial Flutter', description: 'Continuous "sawtooth" or "picket fence" pattern of flutter waves instead of standard P waves.', options: ['Atrial Fibrillation', 'Ventricular Tachycardia', 'Atrial Flutter', 'SVT'], answer: 'Atrial Flutter' },
-  { type: 'svt', title: 'Supraventricular Tachycardia (SVT)', description: 'Fast rate >150 bpm with narrow QRS complexes. P waves often hidden in preceding T waves.', options: ['Ventricular Tachycardia', 'SVT', 'Sinus Tachycardia', 'Atrial Flutter'], answer: 'SVT' },
-  { type: 'junctional', title: 'Junctional Rhythm', description: 'Rate 40-60 bpm. Impulses originate in AV node. P waves are absent or inverted.', options: ['Sinus Bradycardia', 'Junctional Rhythm', 'Idioventricular Rhythm', '1st Degree Block'], answer: 'Junctional Rhythm' },
-  { type: 'idioventricular', title: 'Idioventricular Rhythm', description: 'Rate 20-40 bpm originating from ventricles. Very wide QRS complexes and absent P waves.', options: ['Junctional Rhythm', '3rd Degree AV Block', 'Idioventricular Rhythm', 'Ventricular Tachycardia'], answer: 'Idioventricular Rhythm' },
-  { type: 'bbb', title: 'Bundle Branch Block', description: 'Underlying rhythm is normal, but QRS complex is widened (>0.12s), often notched ("rabbit ears").', options: ['Premature Ventricular Contraction', 'Bundle Branch Block', 'Idioventricular Rhythm', 'Normal Sinus Rhythm'], answer: 'Bundle Branch Block' },
-  { type: 'vtach', title: 'Ventricular Tachycardia', description: 'Wide, fast, bizarre QRS complexes >100 bpm. Often resembles continuous mountains.', options: ['Ventricular Tachycardia', 'Ventricular Fibrillation', 'SVT', 'PVC (Bigeminy)'], answer: 'Ventricular Tachycardia' },
-  { type: 'vfib', title: 'Ventricular Fibrillation', description: 'Chaotic, bizarre electrical activity with no identifiable P, QRS, or T waves.', options: ['Ventricular Fibrillation', 'Atrial Fibrillation', 'Asystole', 'Ventricular Tachycardia'], answer: 'Ventricular Fibrillation' },
-  { type: 'asystole', title: 'Asystole', description: 'Flatline. Complete absence of electrical activity.', options: ['Asystole', 'Ventricular Fibrillation', 'Sinus Pause', '1st Degree AV Block'], answer: 'Asystole' },
-  { type: 'pvc', title: 'Premature Ventricular Contraction (PVC)', description: 'Underlying rhythm interrupted by a premature, wide, bizarre QRS complex.', options: ['Bundle Branch Block', 'Premature Ventricular Contraction (PVC)', 'PVC (Bigeminy)', 'Idioventricular Rhythm'], answer: 'Premature Ventricular Contraction (PVC)' },
-  { type: 'pvc_bigeminy', title: 'PVC (Bigeminy)', description: 'A regular alternating pattern: one normal beat immediately followed by one PVC.', options: ['Ventricular Tachycardia', 'Premature Ventricular Contraction (PVC)', 'PVC (Bigeminy)', 'Wenckebach'], answer: 'PVC (Bigeminy)' },
-  { type: '1stdegree', title: '1st Degree AV Block', description: 'Regular rhythm but with a consistently prolonged PR interval.', options: ['Normal Sinus Rhythm', '1st Degree AV Block', 'Wenckebach', 'Mobitz II'], answer: '1st Degree AV Block' },
-  { type: '2nddegree_type1', title: '2nd Degree AV Block (Wenckebach)', description: 'Progressively lengthening PR interval beat-by-beat until a QRS is entirely dropped.', options: ['1st Degree AV Block', '2nd Degree AV Block (Wenckebach)', 'Mobitz II', '3rd Degree AV Block'], answer: '2nd Degree AV Block (Wenckebach)' },
-  { type: 'mobitz2', title: '2nd Degree AV Block (Mobitz II)', description: 'Intermittent dropped beats. Unlike Wenckebach, the PR interval remains CONSTANT before the dropped QRS.', options: ['Wenckebach', '2nd Degree AV Block (Mobitz II)', '3rd Degree AV Block', 'Premature Atrial Contraction'], answer: '2nd Degree AV Block (Mobitz II)' },
-  { type: 'third_degree', title: '3rd Degree (Complete) AV Block', description: 'Atria and ventricles beat completely independently. P waves march through the QRS indiscriminately.', options: ['Mobitz II', '3rd Degree (Complete) AV Block', 'Idioventricular Rhythm', 'Wenckebach'], answer: '3rd Degree (Complete) AV Block' }
+  { type: 'nsr', title: 'Normal Sinus Rhythm', description: 'Regular rhythm, rate 60-100 bpm. Every P wave is followed by a normal QRS complex, PR interval is normal.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Sinus Tachycardia'], answer: 'Normal Sinus Rhythm' },
+  { type: 'bradycardia', title: 'Sinus Bradycardia', description: 'Regular rhythm, rate < 60 bpm. Identical to NSR but slower.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Junctional Rhythm'], answer: 'Sinus Bradycardia' },
+  { type: 'tachycardia', title: 'Sinus Tachycardia', description: 'Regular rhythm, rate > 100 bpm. Normal P, PR, and QRS.', options: ['Sinus Tachycardia', 'Supraventricular Tachycardia (SVT)', 'Ventricular Tachycardia'], answer: 'Sinus Tachycardia' },
+  { type: 'sinus_arrhythmia', title: 'Sinus Arrhythmia', description: 'Irregular rhythm varying with respiration. P, QRS, and T waves are normal.', options: ['Atrial Fibrillation', 'Sinus Arrhythmia', 'Sinus Pause'], answer: 'Sinus Arrhythmia' },
+  { type: 'sinus_pause', title: 'Sinus Pause', description: 'Sudden failure of the SA node to initiate an impulse, creating a long visible pause.', options: ['Sinus Pause', 'Asystole', 'Wenckebach'], answer: 'Sinus Pause' },
+  { type: 'afib', title: 'Atrial Fibrillation', description: 'Irregularly irregular rhythm. Absent distinct P waves, fibrillatory baseline.', options: ['Normal Sinus Rhythm', 'Ventricular Fibrillation', 'Atrial Fibrillation'], answer: 'Atrial Fibrillation' },
+  { type: 'aflutter', title: 'Atrial Flutter', description: 'Continuous "sawtooth" or "picket fence" pattern of flutter waves instead of standard P waves.', options: ['Atrial Fibrillation', 'Ventricular Tachycardia', 'Atrial Flutter'], answer: 'Atrial Flutter' },
+  { type: 'svt', title: 'Supraventricular Tachycardia (SVT)', description: 'Fast rate >150 bpm with narrow QRS complexes. P waves often hidden in preceding T waves.', options: ['Ventricular Tachycardia', 'Supraventricular Tachycardia (SVT)', 'Sinus Tachycardia'], answer: 'Supraventricular Tachycardia (SVT)' },
+  { type: 'junctional', title: 'Junctional Rhythm', description: 'Rate 40-60 bpm. Impulses originate in AV node. P waves are absent or inverted.', options: ['Sinus Bradycardia', 'Junctional Rhythm', 'Idioventricular Rhythm'], answer: 'Junctional Rhythm' },
+  { type: 'idioventricular', title: 'Idioventricular Rhythm', description: 'Rate 20-40 bpm originating from ventricles. Very wide QRS complexes and absent P waves.', options: ['Junctional Rhythm', '3rd Degree AV Block', 'Idioventricular Rhythm'], answer: 'Idioventricular Rhythm' },
+  { type: 'bbb', title: 'Bundle Branch Block', description: 'Underlying rhythm is normal, but QRS complex is widened (>0.12s), often notched ("rabbit ears").', options: ['Premature Ventricular Contraction', 'Bundle Branch Block', 'Normal Sinus Rhythm'], answer: 'Bundle Branch Block' },
+  { type: 'vtach', title: 'Ventricular Tachycardia', description: 'Wide, fast, bizarre QRS complexes >100 bpm. Often resembles continuous mountains.', options: ['Ventricular Tachycardia', 'Ventricular Fibrillation', 'Supraventricular Tachycardia'], answer: 'Ventricular Tachycardia' },
+  { type: 'vfib', title: 'Ventricular Fibrillation', description: 'Chaotic, bizarre electrical activity with no identifiable P, QRS, or T waves.', options: ['Ventricular Fibrillation', 'Atrial Fibrillation', 'Asystole'], answer: 'Ventricular Fibrillation' },
+  { type: 'asystole', title: 'Asystole', description: 'Flatline. Complete absence of electrical activity.', options: ['Asystole', 'Ventricular Fibrillation', 'Sinus Pause'], answer: 'Asystole' },
+  { type: 'pvc', title: 'Premature Ventricular Contraction (PVC)', description: 'Underlying rhythm interrupted by a premature, wide, bizarre QRS complex.', options: ['Bundle Branch Block', 'Premature Ventricular Contraction (PVC)', 'Normal Sinus Rhythm'], answer: 'Premature Ventricular Contraction (PVC)' },
+  { type: 'pvc_bigeminy', title: 'PVC (Bigeminy)', description: 'A regular alternating pattern: one normal beat immediately followed by one PVC.', options: ['Ventricular Tachycardia', 'Premature Ventricular Contraction (PVC)', 'PVC Bigeminy'], answer: 'PVC Bigeminy' },
+  { type: '1stdegree', title: '1st Degree AV Block', description: 'Regular rhythm but with a consistently prolonged PR interval.', options: ['Normal Sinus Rhythm', '1st Degree AV Block', 'Wenckebach'], answer: '1st Degree AV Block' },
+  { type: '2nddegree_type1', title: '2nd Degree AV Block (Wenckebach)', description: 'Progressively lengthening PR interval beat-by-beat until a QRS is entirely dropped.', options: ['1st Degree AV Block', '2nd Degree AV Block (Wenckebach)', 'Mobitz II'], answer: '2nd Degree AV Block (Wenckebach)' },
+  { type: 'mobitz2', title: '2nd Degree AV Block (Mobitz II)', description: 'Intermittent dropped beats. Unlike Wenckebach, the PR interval remains CONSTANT before the dropped QRS.', options: ['Wenckebach', 'Mobitz II', '3rd Degree AV Block'], answer: 'Mobitz II' },
+  { type: 'third_degree', title: '3rd Degree (Complete) AV Block', description: 'Atria and ventricles beat completely independently. P waves march through the QRS indiscriminately.', options: ['Mobitz II', '3rd Degree AV Block', '1st Degree AV Block'], answer: '3rd Degree AV Block' }
 ];
 
 // --- DATA: 50-QUESTION AASM WRITTEN QUIZ ---
 const AASM_QUIZ = [
-  { q: "According to the AASM scoring manual, what is the recommended derivation for the ECG recording during a polysomnogram?", opts: ["Modified Lead I", "Modified Lead II", "Lead V5", "Modified Lead III"], ans: "Modified Lead II", rat: "The AASM manual specifically recommends using a modified Lead II derivation (torso placement) to best capture the P, QRS, and T waves.", ref: "AASM Manual V3", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "What is the recommended minimum sampling rate for the ECG channel according to AASM specifications?", opts: ["100 Hz", "200 Hz", "500 Hz", "1000 Hz"], ans: "200 Hz", rat: "The AASM manual states the minimum acceptable sampling rate for ECG is 200 Hz.", ref: "AASM Manual V3", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "What is the desirable sampling rate for the ECG channel during a sleep study?", opts: ["200 Hz", "250 Hz", "500 Hz", "1000 Hz"], ans: "500 Hz", rat: "The AASM manual recommends a desirable sampling rate of 500 Hz for ECG to capture high-frequency components accurately.", ref: "AASM Manual V3", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "What is the recommended Low Frequency Filter (LFF) setting for the ECG channel?", opts: ["0.1 Hz", "0.3 Hz", "1.0 Hz", "10 Hz"], ans: "0.3 Hz", rat: "The AASM manual specifies an LFF of 0.3 Hz for the ECG derivation to stabilize the baseline while preserving the ST segment.", ref: "AASM Manual V3", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "What is the recommended High Frequency Filter (HFF) setting for the ECG channel?", opts: ["15 Hz", "35 Hz", "70 Hz", "100 Hz"], ans: "70 Hz", rat: "The AASM recommends an HFF of 70 Hz to allow the sharp, fast frequencies of the QRS complex to be recorded without rounding them off.", ref: "AASM Manual V3", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "According to AASM rules, how is Sinus Tachycardia scored in an adult during sleep?", opts: ["A sustained heart rate of > 90 bpm.", "A sustained heart rate of > 100 bpm.", "A sustained heart rate of > 110 bpm.", "A sustained heart rate of > 120 bpm."], ans: "A sustained heart rate of > 90 bpm.", rat: "The AASM manual states that Sinus Tachycardia during sleep for adults is scored when the heart rate is sustained at >90 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "How is Sinus Bradycardia scored in an adult during a sleep study?", opts: ["A sustained heart rate of < 60 bpm.", "A sustained heart rate of < 50 bpm.", "A sustained heart rate of < 40 bpm.", "A sustained heart rate of < 30 bpm."], ans: "A sustained heart rate of < 40 bpm.", rat: "AASM defines Sinus Bradycardia during sleep in adults as a sustained heart rate of <40 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "According to AASM rules for adults, Asystole is scored when there is a cardiac pause of at least:", opts: ["2 seconds", "3 seconds", "5 seconds", "10 seconds"], ans: "3 seconds", rat: "AASM rules require a cardiac pause of 3 seconds or longer to score Asystole in adults.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "How does the AASM define Wide Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", "A rhythm lasting a minimum of 5 consecutive beats at a rate >120 per minute with QRS duration >100 msec.", "A rhythm lasting a minimum of 3 consecutive beats at a rate >90 per minute with QRS duration ≥120 msec.", "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec."], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", rat: "This matches the exact AASM glossary definition for wide complex tachycardia.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "How does the AASM define Narrow Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", "A rhythm lasting a minimum of 3 consecutive beats at a rate >90 per minute with QRS duration <120 msec.", "A rhythm lasting a minimum of 5 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec."], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", rat: "This matches the exact AASM glossary definition for narrow complex tachycardia.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "What is the primary characteristic used to score Atrial Fibrillation according to AASM guidelines?", opts: ["A regular rhythm with a rate >150 bpm.", "Irregularly irregular ventricular rhythm associated with replacement of consistent P waves by rapid oscillations.", "A regular rhythm with 'sawtooth' baseline waves.", "A widening of the QRS complex accompanied by a dropped beat."], ans: "Irregularly irregular ventricular rhythm associated with replacement of consistent P waves by rapid oscillations.", rat: "This perfectly describes A-fib: variable R-R intervals and absent distinct P waves.", ref: "AASM Manual V3 / Cardiac Arrhythmias", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "According to the AASM Pediatric Cardiac rules, what defines Sinus Bradycardia in a child aged 2 months to 3 years?", opts: ["Heart rate less than 40 bpm", "Heart rate less than 60 bpm", "Heart rate less than 80 bpm", "Heart rate less than 100 bpm"], ans: "Heart rate less than 60 bpm", rat: "For ages 2 months to 3 years, AASM defines bradycardia as a rate <60 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "In a pediatric patient aged 3 years to less than 5 years, what heart rate threshold defines Sinus Bradycardia?", opts: ["Less than 40 bpm", "Less than 46 bpm", "Less than 60 bpm", "Less than 70 bpm"], ans: "Less than 46 bpm", rat: "For children 3 to <5 years, the AASM threshold for bradycardia is <46 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "For a pediatric patient aged 5 years to less than 10 years, Sinus Bradycardia is scored when the heart rate is:", opts: ["Less than 40 bpm", "Less than 45 bpm", "Less than 50 bpm", "Less than 60 bpm"], ans: "Less than 45 bpm", rat: "For children 5 to <10 years, the bradycardia threshold is <45 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "For a pediatric patient aged 10 years to less than 15 years, Sinus Bradycardia is defined as a heart rate:", opts: ["Less than 40 bpm", "Less than 42 bpm", "Less than 45 bpm", "Less than 50 bpm"], ans: "Less than 42 bpm", rat: "For adolescents 10 to <15 years, the threshold is <42 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "According to the AASM Pediatric Cardiac rules, what defines Sinus Tachycardia during sleep in a child aged 2 months to 3 years?", opts: ["Greater than 100 bpm", "Greater than 110 bpm", "Greater than 136 bpm", "Greater than 150 bpm"], ans: "Greater than 136 bpm", rat: "The AASM sets the sleep tachycardia threshold for 2 months to 3 years at >136 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "In a pediatric patient aged 3 years to less than 5 years, what heart rate threshold defines Sinus Tachycardia during sleep?", opts: ["Greater than 100 bpm", "Greater than 119 bpm", "Greater than 136 bpm", "Greater than 140 bpm"], ans: "Greater than 119 bpm", rat: "For children 3 to <5 years, sleep tachycardia is >119 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "For a pediatric patient aged 5 years to less than 10 years, Sinus Tachycardia during sleep is scored when the heart rate is:", opts: ["Greater than 90 bpm", "Greater than 100 bpm", "Greater than 108 bpm", "Greater than 119 bpm"], ans: "Greater than 108 bpm", rat: "For children 5 to <10 years, sleep tachycardia is >108 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "For a pediatric patient aged 10 years to less than 15 years, Sinus Tachycardia during sleep is defined as a heart rate:", opts: ["Greater than 90 bpm", "Greater than 100 bpm", "Greater than 104 bpm", "Greater than 108 bpm"], ans: "Greater than 104 bpm", rat: "For adolescents 10 to <15 years, sleep tachycardia is >104 bpm.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "How long must Asystole last to be scored in a pediatric patient?", opts: ["2 seconds", "3 seconds", "4 seconds", "5 seconds"], ans: "3 seconds", rat: "Just like adults, the pediatric AASM rule requires a cardiac pause of at least 3 seconds to score Asystole.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "When observing an ECG, which rhythm features a progressively lengthening PR interval until a QRS complex is completely dropped?", opts: ["1st Degree AV Block", "2nd Degree AV Block, Type I (Wenckebach)", "2nd Degree AV Block, Type II (Mobitz II)", "3rd Degree AV Block"], ans: "2nd Degree AV Block, Type I (Wenckebach)", rat: "Wenckebach is characterized by the 'going, going, gone' pattern of a lengthening PR interval followed by a dropped beat.", ref: "Cardiac Arrhythmias / SleepTechTutor", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "Which of the following arrhythmias is described as a 'medical emergency' requiring immediate intervention, presenting as chaotic, bizarre electrical activity with no identifiable waves?", opts: ["Atrial Fibrillation", "Ventricular Tachycardia", "Ventricular Fibrillation", "Sinus Arrhythmia"], ans: "Ventricular Fibrillation", rat: "V-Fib is a total loss of organized ventricular contraction, presenting as chaotic baseline waving, and is immediately life-threatening.", ref: "Polysomnography for the Sleep Technologist", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "What defines a Premature Ventricular Contraction (PVC)?", opts: ["A premature beat with a normal, narrow QRS complex and a preceding P wave.", "A premature beat with a wide, bizarre QRS complex and no preceding P wave.", "A delayed beat following a long pause.", "A beat where the P wave is inverted."], ans: "A premature beat with a wide, bizarre QRS complex and no preceding P wave.", rat: "Because the impulse originates in the ventricles, it bypasses the normal conduction pathway, resulting in a wide QRS without a P wave.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "What is the defining characteristic of a 3rd Degree (Complete) AV Block?", opts: ["The PR interval is consistently prolonged.", "The PR interval lengthens until a beat is dropped.", "The atria and ventricles beat completely independently of one another.", "There are no P waves present at all."], ans: "The atria and ventricles beat completely independently of one another.", rat: "In complete heart block, no signals pass from the atria to the ventricles, causing them to fire on their own separate pacemakers.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "In a patient with Atrial Flutter, the baseline between QRS complexes typically resembles:", opts: ["A flat, straight line", "A chaotic, unorganized squiggle", "A continuous 'sawtooth' or 'picket fence' pattern", "Distinct, normal P waves"], ans: "A continuous 'sawtooth' or 'picket fence' pattern", rat: "Atrial flutter is characterized by rapidly firing 'F-waves' that create a uniform sawtooth appearance.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "Which artifact is most commonly mistaken for Ventricular Tachycardia or Ventricular Fibrillation during a sleep study?", opts: ["Snoring artifact", "Sweat artifact", "Electrode popping", "Body movement or scratching"], ans: "Body movement or scratching", rat: "Rhythmic scratching or intense body movement can create high-amplitude, erratic waves on the ECG that mimic dangerous arrhythmias.", ref: "Polysomnography for the Sleep Technologist", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "What is the key difference between 2nd Degree AV Block Type I (Wenckebach) and Type II (Mobitz II)?", opts: ["Type I has dropped beats, Type II does not.", "In Type I the PR interval lengthens; in Type II the PR interval is constant before the drop.", "Type I has wide QRS complexes, Type II has narrow QRS complexes.", "Type I occurs only in wakefulness, Type II only in sleep."], ans: "In Type I the PR interval lengthens; in Type II the PR interval is constant before the drop.", rat: "This is the primary diagnostic difference between the two 2nd degree blocks.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "How is a Premature Atrial Contraction (PAC) identified on an ECG?", opts: ["A wide, bizarre QRS complex.", "An early beat with a normal QRS complex, usually preceded by an abnormally shaped P wave.", "A dropped QRS complex.", "A completely inverted QRS complex."], ans: "An early beat with a normal QRS complex, usually preceded by an abnormally shaped P wave.", rat: "Because the beat originates in the atria (but not the SA node), the P wave looks different, but the QRS remains narrow and normal.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "A patient's ECG shows a regular rhythm at 45 bpm. P waves are entirely absent, and the QRS complexes are narrow and normal in appearance. What is the most likely rhythm?", opts: ["Sinus Bradycardia", "Junctional Rhythm", "Idioventricular Rhythm", "1st Degree AV Block"], ans: "Junctional Rhythm", rat: "Junctional rhythms originate in the AV node, resulting in a rate of 40-60, narrow QRS, and absent or inverted P waves.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "What rhythm is characterized by a heart rate of 20-40 bpm, wide and bizarre QRS complexes, and absent P waves?", opts: ["Sinus Bradycardia", "Junctional Rhythm", "Idioventricular Rhythm", "Asystole"], ans: "Idioventricular Rhythm", rat: "This rhythm originates in the ventricles (hence wide QRS) and acts as a final backup pacemaker at 20-40 bpm.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "Which of the following describes a Bundle Branch Block (BBB)?", opts: ["A dropped P wave resulting in a pause.", "A widening of the QRS complex (>0.12 seconds), often with a notched appearance.", "A progressive lengthening of the PR interval.", "A heart rate exceeding 150 bpm."], ans: "A widening of the QRS complex (>0.12 seconds), often with a notched appearance.", rat: "A BBB occurs when one of the bundle branches is delayed, causing the ventricles to depolarize sequentially, resulting in a wide, notched QRS.", ref: "Polysomnography for the Sleep Technologist", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "A pattern where every single normal beat is immediately followed by a PVC is known as:", opts: ["Ventricular Tachycardia", "Couplets", "Trigeminy", "Bigeminy"], ans: "Bigeminy", rat: "Bigeminy is defined as an alternating pattern of one normal beat, one PVC, continuously.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "A run of three or more PVCs in a row at a rate greater than 100 bpm is considered:", opts: ["Bigeminy", "Idioventricular Rhythm", "Ventricular Tachycardia", "Atrial Fibrillation"], ans: "Ventricular Tachycardia", rat: "Three or more consecutive PVCs at >100 bpm meets the clinical definition for a run of V-Tach.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "During a sleep study, you notice the patient's heart rate naturally speeds up during inspiration and slows down during expiration. What is this called?", opts: ["Atrial Fibrillation", "Sinus Arrhythmia", "Sinus Tachycardia", "Wenckebach"], ans: "Sinus Arrhythmia", rat: "Sinus Arrhythmia is a normal physiological phenomenon where the heart rate varies with the respiratory cycle.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "When scoring Cardiac Events, the AASM manual requires technologist to score and report which of the following?", opts: ["Only Asystole", "Only arrhythmias that wake the patient", "Sinus tachycardia, sinus bradycardia, asystole, wide complex tachycardia, and narrow complex tachycardia.", "Every single PVC or PAC that occurs during the night."], ans: "Sinus tachycardia, sinus bradycardia, asystole, wide complex tachycardia, and narrow complex tachycardia.", rat: "The AASM mandates scoring these specific categories of cardiac events during a PSG.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "A patient is experiencing a supraventricular tachycardia (SVT). According to the AASM glossary, this will likely be scored as a:", opts: ["Wide Complex Tachycardia", "Narrow Complex Tachycardia", "Sinus Tachycardia", "Atrial Fibrillation"], ans: "Narrow Complex Tachycardia", rat: "Because the impulse travels down the normal bundle pathways, the QRS duration is <120 msec.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "You see a rhythm with a rate of 160 bpm, wide QRS complexes, and no visible P waves. How should this be scored according to AASM?", opts: ["Sinus Tachycardia", "Narrow Complex Tachycardia", "Wide Complex Tachycardia", "Asystole"], ans: "Wide Complex Tachycardia", rat: "Because the rate is >100 and the QRS is wide (likely >120 msec), it meets this criteria (likely V-Tach).", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "When an ECG artifact mimics a dangerous arrhythmia, what is the best first step for a polysomnographic technologist?", opts: ["Immediately call 911.", "Check other channels (like EEG or EMG) and the video to see if the patient is moving or scratching.", "Wake the patient up to ask how they feel.", "Change the Low Frequency Filter to 5.0 Hz."], ans: "Check other channels (like EEG or EMG) and the video to see if the patient is moving or scratching.", rat: "Movement artifact frequently mimics V-Tach or V-Fib; verifying patient state prevents false alarms.", ref: "Polysomnography for the Sleep Technologist", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "If a patient experiences 4 consecutive PVCs at a rate of 110 bpm, does this meet the AASM criteria for a Wide Complex Tachycardia?", opts: ["Yes, because it is more than 3 consecutive beats, rate >100, and QRS is wide.", "No, because it must last for at least 30 seconds.", "No, because the rate must be >150 bpm.", "No, because PVCs are not considered tachycardia."], ans: "Yes, because it is more than 3 consecutive beats, rate >100, and QRS is wide.", rat: "This perfectly matches the AASM definition for Wide Complex Tachycardia.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "What is the normal QRS duration in a healthy adult?", opts: ["0.12 - 0.20 seconds", "Less than 0.12 seconds (120 msec)", "Greater than 0.12 seconds", "0.20 - 0.40 seconds"], ans: "Less than 0.12 seconds (120 msec)", rat: "A normal, narrow QRS is typically between 0.06 and 0.10 seconds, but always less than 0.12.", ref: "Polysomnography for the Sleep Technologist", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "Which of the following describes a 1st Degree AV Block?", opts: ["A PR interval greater than 0.20 seconds (5 small boxes) that remains constant.", "A PR interval that progressively lengthens.", "A widening of the QRS complex.", "Independent beating of atria and ventricles."], ans: "A PR interval greater than 0.20 seconds (5 small boxes) that remains constant.", rat: "This is the classic definition; the signal is delayed at the AV node but always gets through.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "What is a major physiological concern if a patient remains in 3rd Degree Complete Heart Block?", opts: ["Their heart rate will likely be dangerously slow, resulting in poor cardiac output.", "Their heart rate will accelerate uncontrollably into V-Tach.", "They will breathe too fast (hyperventilate).", "The QRS complexes will become entirely invisible."], ans: "Their heart rate will likely be dangerously slow, resulting in poor cardiac output.", rat: "Because the ventricles are beating on their own backup pacemaker (usually 20-40 bpm), output drops significantly.", ref: "Polysomnography for the Sleep Technologist", bp: "Domain 1: Study Preparation and Patient Assessment" },
-  { q: "When viewing the PSG, the technologist notices 6 seconds of flatline on the ECG. The patient's EEG shows an arousal, and the respiratory belts show a pause. What should be scored?", opts: ["Sinus Pause", "Asystole", "Central Sleep Apnea", "Electrode pop"], ans: "Asystole", rat: "A pause of >3 seconds meets the AASM criteria for Asystole.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "If a patient’s baseline heart rate during sleep is 55 bpm, and it briefly jumps to 85 bpm following an apneic event before settling back down, should Sinus Tachycardia be scored?", opts: ["Yes, because the rate increased by more than 15 bpm.", "Yes, because 85 bpm is tachycardia.", "No, because the rate did not exceed 90 bpm and tachycardia requires a sustained rate.", "No, because tachycardia cannot happen after an apnea."], ans: "No, because the rate did not exceed 90 bpm and tachycardia requires a sustained rate.", rat: "It did not meet the >90 bpm threshold, nor is it typically sustained when just reacting to an arousal.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "A patient exhibits an ECG rhythm with regular P waves occurring at 80 bpm. However, the QRS complexes are occurring at a regular rate of 35 bpm, and there is no relationship between the P waves and QRS complexes. What is this rhythm?", opts: ["Sinus Bradycardia", "3rd Degree AV Block", "Mobitz II", "Wenckebach"], ans: "3rd Degree AV Block", rat: "The independent, disconnected firing of atria (P) and ventricles (QRS) defines a complete block.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "Which of the following is true regarding alternative derivations for the ECG in a PSG?", opts: ["Alternative derivations are strictly forbidden by AASM.", "If lead II is unreadable, any two electrodes placed anywhere on the chest to obtain a clear QRS can be used.", "You must use EEG leads if ECG fails.", "You must wake the patient and send them to the ER if one ECG lead pops off."], ans: "If lead II is unreadable, any two electrodes placed anywhere on the chest to obtain a clear QRS can be used.", rat: "While standard placement is preferred, obtaining a readable, identifiable QRS complex is the ultimate technical requirement.", ref: "AASM Manual V3", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "Why is the High Frequency Filter (HFF) for ECG set to 70 Hz rather than 35 Hz?", opts: ["To filter out muscle artifact.", "To prevent the attenuation (rounding) of the sharp, fast QRS complex.", "To eliminate 60 Hz line noise.", "To remove respiratory wander."], ans: "To prevent the attenuation (rounding) of the sharp, fast QRS complex.", rat: "The QRS contains high-frequency components; setting the HFF too low will make the QRS look artificially wide or rounded.", ref: "Polysomnography for the Sleep Technologist", bp: "Domain 2: Study Performance and Instrumentation" },
-  { q: "A 14-year-old patient has a sustained heart rate of 43 bpm during Stage N3 sleep. According to AASM rules, should Bradycardia be scored?", opts: ["Yes, because it is under 60 bpm.", "Yes, because it is under 45 bpm.", "No, because the threshold for 10 to <15 years old is less than 42 bpm.", "No, because pediatric bradycardia is never scored during N3 sleep."], ans: "No, because the threshold for 10 to <15 years old is less than 42 bpm.", rat: "At 43 bpm, they are just above the threshold for this specific age group.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing (Pediatric)" },
-  { q: "What is the primary difference between a PVC and an Idioventricular rhythm?", opts: ["A PVC is a single premature ectopic beat, while Idioventricular is a sustained, slow escape rhythm.", "A PVC has a narrow QRS, Idioventricular has a wide QRS.", "A PVC originates in the atria, Idioventricular in the ventricles.", "There is no difference."], ans: "A PVC is a single premature ectopic beat, while Idioventricular is a sustained, slow escape rhythm.", rat: "Both originate in the ventricles (wide QRS), but PVC is early/extra, whereas Idioventricular is the primary slow pacemaker.", ref: "Cardiac Arrhythmias Guide", bp: "Domain 3: Scoring and Data Processing" },
-  { q: "According to AASM, is a continuous run of exactly 2 PVCs in a row considered a Wide Complex Tachycardia?", opts: ["Yes, any multiple PVCs are considered tachycardia.", "No, it must be a minimum of 3 consecutive beats.", "No, it must be a minimum of 5 consecutive beats.", "Yes, if the rate is >100 bpm."], ans: "No, it must be a minimum of 3 consecutive beats.", rat: "The strict definition requires at least 3 consecutive beats to be classified as tachycardia.", ref: "AASM Manual V3", bp: "Domain 3: Scoring and Data Processing" }
+  { q: "According to the AASM scoring manual, what is the recommended derivation for the ECG recording during a polysomnogram?", opts: ["Modified Lead I", "Modified Lead II", "Lead V5", "Modified Lead V2"], ans: "Modified Lead II", rat: "The AASM manual recommends Modified Lead II as the standard derivation for ECG monitoring during polysomnography.", ref: "AASM Manual 3.0", bp: "ECG Setup" },
+  { q: "What is the recommended minimum sampling rate for the ECG channel according to AASM specifications?", opts: ["100 Hz", "200 Hz", "500 Hz", "1000 Hz"], ans: "200 Hz", rat: "The AASM manual states the minimum sampling rate should be 200 Hz for proper ECG signal capture.", ref: "AASM Manual 3.0", bp: "Equipment Standards" },
+  { q: "What is the desirable sampling rate for the ECG channel during a sleep study?", opts: ["200 Hz", "250 Hz", "500 Hz", "1000 Hz"], ans: "500 Hz", rat: "The AASM manual recommends a desirable sampling rate of 500 Hz for optimal waveform fidelity.", ref: "AASM Manual 3.0", bp: "Equipment Standards" },
+  { q: "What is the recommended Low Frequency Filter (LFF) setting for the ECG channel?", opts: ["0.1 Hz", "0.3 Hz", "1.0 Hz", "10 Hz"], ans: "0.3 Hz", rat: "The AASM manual specifies an LFF of 0.3 Hz to minimize baseline drift while preserving QRS morphology.", ref: "AASM Manual 3.0", bp: "Filter Settings" },
+  { q: "What is the recommended High Frequency Filter (HFF) setting for the ECG channel?", opts: ["15 Hz", "35 Hz", "70 Hz", "100 Hz"], ans: "70 Hz", rat: "The AASM recommends an HFF of 70 Hz to allow proper visualization of the QRS complex and T waves.", ref: "AASM Manual 3.0", bp: "Filter Settings" },
+  { q: "According to AASM rules, how is Sinus Tachycardia scored in an adult during sleep?", opts: ["A sustained heart rate of > 90 bpm.", "A sustained heart rate of > 100 bpm.", "A sustained heart rate of > 110 bpm.", "Only if rate exceeds 120 bpm"], ans: "A sustained heart rate of > 100 bpm.", rat: "AASM defines adult Sinus Tachycardia as a sustained heart rate greater than 100 bpm during sleep.", ref: "AASM Manual 3.0", bp: "Cardiac Scoring" },
+  { q: "How is Sinus Bradycardia scored in an adult during a sleep study?", opts: ["A sustained heart rate of < 60 bpm.", "A sustained heart rate of < 50 bpm.", "A sustained heart rate of < 40 bpm.", "Only if accompanied by arousals"], ans: "A sustained heart rate of < 60 bpm.", rat: "AASM scoring guidelines define adult Sinus Bradycardia as a heart rate less than 60 bpm sustained during sleep.", ref: "AASM Manual 3.0", bp: "Cardiac Scoring" },
+  { q: "According to AASM rules for adults, Asystole is scored when there is a cardiac pause of at least:", opts: ["2 seconds", "3 seconds", "5 seconds", "10 seconds"], ans: "3 seconds", rat: "AASM rules specify that Asystole must be a cardiac pause lasting at least 3 seconds to be scored.", ref: "AASM Manual 3.0", bp: "Arrhythmias" },
+  { q: "How does the AASM define Wide Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", "A rhythm lasting a minimum of 2 beats at a rate >150 bpm with wide QRS.", "Any tachycardia above 120 bpm", "Rapid atrial fibrillation with aberrant conduction"], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", rat: "AASM defines Wide Complex Tachycardia as at least 3 consecutive beats at rate >100 bpm with QRS ≥120 msec.", ref: "AASM Manual 3.0", bp: "Arrhythmias" },
+  { q: "How does the AASM define Narrow Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", "Any sinus tachycardia", "Atrial fibrillation with rapid ventricular response", "Only supraventricular tachycardia"], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", rat: "AASM defines Narrow Complex Tachycardia as 3+ consecutive beats at >100 bpm with QRS <120 msec.", ref: "AASM Manual 3.0", bp: "Arrhythmias" },
+  { q: "What is the primary characteristic used to score Atrial Fibrillation according to AASM guidelines?", opts: ["A regular rhythm with a rate >150 bpm.", "Irregularly irregular ventricular rhythm without distinct P waves.", "Visible sawtooth flutter waves.", "Dropped QRS complexes"], ans: "Irregularly irregular ventricular rhythm without distinct P waves.", rat: "The hallmark of Atrial Fibrillation per AASM is an irregularly irregular rhythm lacking distinct P waves.", ref: "AASM Manual 3.0", bp: "Arrhythmias" }
 ];
 
 // --- GLOBAL STATE ---
-let currentTab = 'drill'; // 'drill' or 'quiz'
+let currentTab = 'drill';
 let drillState = { index: 0, answered: 0, correct: 0, history: {}, clearedCases: [] };
 let quizState = { index: 0, answered: 0, correct: 0, history: {} };
 
@@ -427,13 +391,17 @@ try {
   if (savedDrill) drillState = { ...drillState, ...JSON.parse(savedDrill) }; 
   const savedQuiz = localStorage.getItem(STORAGE_KEY + '_quiz');
   if (savedQuiz) quizState = { ...quizState, ...JSON.parse(savedQuiz) };
-} catch(e) {}
+} catch(e) {
+  console.error('Error loading saved state:', e);
+}
 
 function saveState() { 
   try { 
     localStorage.setItem(STORAGE_KEY + '_drill', JSON.stringify(drillState)); 
     localStorage.setItem(STORAGE_KEY + '_quiz', JSON.stringify(quizState)); 
-  } catch(e) {} 
+  } catch(e) {
+    console.error('Error saving state:', e);
+  } 
 }
 
 function resetData() {
@@ -441,7 +409,6 @@ function resetData() {
   quizState = { index: 0, answered: 0, correct: 0, history: {} };
   saveState();
   
-  // Hide summary if it was visible
   document.getElementById('drillActiveArea').style.display = 'block';
   document.getElementById('drillSummaryArea').style.display = 'none';
 
@@ -457,7 +424,6 @@ function switchTab(tab) {
   document.getElementById('sectionDrill').classList.toggle('active', tab === 'drill');
   document.getElementById('sectionQuiz').classList.toggle('active', tab === 'quiz');
   
-  // If moving back to drill, ensure active area is shown if they didn't manually view summary
   if(tab === 'drill') {
       document.getElementById('drillActiveArea').style.display = 'block';
       document.getElementById('drillSummaryArea').style.display = 'none';
@@ -560,9 +526,9 @@ function generateEKGPath(type) {
                 if (!isDroppedBeat) {
                     if (isWide) {
                         if (type === 'bbb') {
-                            if(minD > -8 && minD <= -4) y -= 35; else if(minD > -4 && minD <= 0) y += 15; else if(minD > 0 && minD <= 4) y -= 45; else if(minD > 4 && minD <= 8) y += 20; else if(minD > 8 && minD <= 12) y -= 5;
+                            if(minD > -8 && minD <= -4) y -= 35; else if(minD > -4 && minD <= 0) y += 15; else if(minD > 0 && minD <= 4) y -= 45; else if(minD > 4 && minD <= 8) y += 20;
                         } else {
-                            if(minD > -20 && minD <= 0) y -= (minD+20)*2.5; else if(minD > 0 && minD <= 25) y += 50 - (minD*2); else if(minD > 25 && minD <= 55) y += Math.sin((minD-25)/30*Math.PI)*20; 
+                            if(minD > -20 && minD <= 0) y -= (minD+20)*2.5; else if(minD > 0 && minD <= 25) y += 50 - (minD*2); else if(minD > 25 && minD <= 55) y += Math.sin((minD-25)/30*Math.PI)*20;
                         }
                     } else {
                         if(minD > -5 && minD <= -2) y += 4; else if(minD > -2 && minD <= 0) y -= 55; else if(minD > 0 && minD <= 2) y += 15; else if(minD > 2 && minD <= 5) y -= 5; 
@@ -592,527 +558,7 @@ function renderDrill() {
     const currentCase = EKG_CASES[drillState.index];
     document.getElementById('ekgPath').setAttribute('d', generateEKGPath(currentCase.type));
     
-    // Animate
     animateEKG();
-
-    const quizArea = document.getElementById('ekgQuizArea');
-    quizArea.innerHTML = '';
-    const hasAnswered = drillState.history[drillState.index] !== undefined;
-    const isCorrect = drillState.history[drillState.index] === true;
-
-    currentCase.options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-opt';
-        btn.textContent = opt;
-        if (hasAnswered) {
-            btn.disabled = true;
-            if (opt === currentCase.answer) btn.classList.add('correct');
-            else if (drillState.history[drillState.index] === opt) btn.classList.add('incorrect');
-        } else {
-            btn.onclick = () => handleDrillAnswer(opt, currentCase.answer);
-        }
-        quizArea.appendChild(btn);
-    });
-
-    const feedback = document.getElementById('ekgFeedbackArea');
-    if (hasAnswered) {
-        feedback.style.display = 'block';
-        feedback.style.borderColor = isCorrect ? 'var(--accent2)' : 'var(--danger)';
-        feedback.style.backgroundColor = isCorrect ? '#f0fdf4' : '#fef2f2';
-        feedback.innerHTML = `<h3 style="color: ${isCorrect ? '#166534' : '#991b1b'}; margin-top: 0;">${isCorrect ? '✓ Correct' : '✗ Incorrect'}: ${currentCase.title}</h3><p style="color: ${isCorrect ? '#166534' : '#991b1b'}; opacity: 0.9;">${currentCase.description}</p>`;
-    } else feedback.style.display = 'none';
-
-    updateStats();
-}
-
-function handleDrillAnswer(selected, correct) {
-    const isCorrect = (selected === correct);
-    drillState.history[drillState.index] = isCorrect ? true : selected;
-    drillState.answered++;
-    if (isCorrect) {
-        drillState.correct++;
-        if (!drillState.clearedCases.includes(drillState.index)) {
-            drillState.clearedCases.push(drillState.index);
-        }
-    }
-    saveState(); 
-    renderDrill();
-    
-    // Auto show summary if they just cleared the last unique rhythm
-    if (drillState.clearedCases.length === EKG_CASES.length) {
-        setTimeout(() => { showSummary(); }, 1500); // slight delay so they see the final feedback first
-    }
-}
-
-function prevEKG() { drillState.index = (drillState.index - 1 + EKG_CASES.length) % EKG_CASES.length; saveState(); renderDrill(); }
-function nextEKG() { drillState.index = (drillState.index + 1) % EKG_CASES.length; saveState(); renderDrill(); }
-function randomEKG() { drillState.index = Math.floor(Math.random() * EKG_CASES.length); saveState(); renderDrill(); }
-
-// --- AASM WRITTEN QUIZ LOGIC ---
-function renderQuiz() {
-    const qData = AASM_QUIZ[quizState.index];
-    document.getElementById('writtenQText').textContent = `${quizState.index + 1}. ${qData.q}`;
-    
-    const quizArea = document.getElementById('writtenQuizArea');
-    quizArea.innerHTML = '';
-    const hasAnswered = quizState.history[quizState.index] !== undefined;
-    const isCorrect = quizState.history[quizState.index] === true;
-
-    qData.opts.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-opt';
-        btn.textContent = opt;
-        if (hasAnswered) {
-            btn.disabled = true;
-            if (opt === qData.ans) btn.classList.add('correct');
-            else if (quizState.history[quizState.index] === opt) btn.classList.add('incorrect');
-        } else {
-            btn.onclick = () => handleQuizAnswer(opt, qData.ans);
-        }
-        quizArea.appendChild(btn);
-    });
-
-    const rationale = document.getElementById('writtenRationaleArea');
-    if (hasAnswered) {
-        rationale.style.display = 'block';
-        rationale.style.borderColor = isCorrect ? 'var(--accent2)' : 'var(--danger)';
-        document.getElementById('rationaleText').innerHTML = `<strong>Explanation:</strong> ${qData.rat}`;
-        document.getElementById('rationaleRef').textContent = `📚 ${qData.ref}`;
-        document.getElementById('rationaleBlueprint').textContent = `🎯 ${qData.bp}`;
-    } else {
-        rationale.style.display = 'none';
-    }
-
-    updateStats();
-}
-
-function handleQuizAnswer(selected, correct) {
-    const isCorrect = (selected === correct);
-    quizState.history[quizState.index] = isCorrect ? true : selected;
-    quizState.answered++;
-    if (isCorrect) quizState.correct++;
-    saveState(); renderQuiz();
-}
-
-function prevQuiz() { quizState.index = (quizState.index - 1 + AASM_QUIZ.length) % AASM_QUIZ.length; saveState(); renderQuiz(); }
-function nextQuiz() { quizState.index = (quizState.index + 1) % AASM_QUIZ.length; saveState(); renderQuiz(); }
-function randomQuiz() { quizState.index = Math.floor(Math.random() * AASM_QUIZ.length); saveState(); renderQuiz(); }
-
-
-// Init
-window.onload = () => {
-    switchTab('drill');
-};
-</script>
-</body>
-</html>
-  margin:0; 
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; 
-  background:linear-gradient(135deg,var(--brand-bg),var(--brand-bg2)); 
-  color:var(--brand-text); 
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.shell { max-width:1000px; margin:0 auto; padding:24px 18px; flex: 1; width: 100%;}
-
-/* Header Elements (Dark Mode Branded) */
-.header-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--brand-line); padding-bottom: 20px; }
-.header-titles { display: flex; flex-direction: column; gap: 4px; }
-.header-titles h1 { margin: 0; font-size: 28px; color: var(--brand-teal); font-weight: 700; letter-spacing: -0.5px;}
-.header-titles h2 { margin: 0; font-size: 16px; color: var(--brand-muted); font-weight: 400; }
-.nav-group { display: flex; gap: 8px; flex-wrap: wrap; }
-
-.brand-btn {
-  background: var(--brand-panel); color: var(--brand-text); border: 1px solid var(--brand-line);
-  padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;
-  transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
-}
-.brand-btn:hover {
-  background: rgba(255,255,255,0.15); border-color: var(--brand-gold); color: var(--brand-gold);
-}
-
-/* Tabs */
-.tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-.tab-btn {
-  background: transparent; border: none; font-size: 16px; font-weight: 600; color: var(--brand-muted);
-  padding: 8px 16px; cursor: pointer; border-radius: 8px; transition: all 0.2s;
-}
-.tab-btn:hover { background: var(--brand-panel); color: var(--brand-text); }
-.tab-btn.active { background: var(--brand-blue); color: #fff; }
-
-/* Card Containers (Light Mode Content) */
-.card { 
-  background:var(--card); 
-  border:1px solid var(--line); 
-  border-radius:20px; 
-  box-shadow:0 14px 34px rgba(0,0,0,0.2); 
-  padding: 24px;
-  margin-bottom: 24px;
-  color: var(--text);
-}
-
-/* Sections */
-.section-content { display: none; animation: fadeIn 0.3s ease-out; }
-.section-content.active { display: block; }
-
-/* Upgraded EKG Display Area */
-.monitor-bezel {
-  background: #f1f5f9; padding: 16px; border-radius: 16px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.04); margin-bottom: 24px;
-}
-.paper-slot {
-  border-radius: 8px; overflow-x: auto; overflow-y: hidden;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.1); position: relative;
-  background: var(--ekgPaper); border: 1px solid var(--line);
-}
-.ekg-lead-label {
-  position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.9);
-  padding: 4px 8px; border-radius: 6px; font-family: monospace; font-weight: bold; font-size: 14px;
-  color: #1e293b; border: 1px solid var(--ekgMajor); backdrop-filter: blur(4px); z-index: 10;
-}
-.ekg-strip-label {
-  position: absolute; top: 12px; right: 12px; background: transparent; padding: 4px 8px;
-  font-family: monospace; font-weight: 600; font-size: 12px; color: #94a3b8; z-index: 10;
-}
-svg.ekg-canvas { display: block; min-width: 1000px; width: 100%; }
-.ekg-line { filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.15)); }
-
-/* Inner App Buttons */
-.app-btn {
-  cursor: pointer; font-family: inherit; font-weight: 600; font-size: 14px;
-  border: 1px solid transparent; border-radius: 8px; padding: 10px 16px;
-  background: #ffffff; color: var(--muted); border-color: var(--line); transition: all 0.2s;
-}
-.app-btn:hover { background: #f8fafc; color: var(--text); border-color: #cbd5e1; }
-.btn-control { background: var(--bg); color: var(--accent); border-color: var(--line); }
-
-/* Quiz Section shared styles */
-.quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
-.quiz-opt {
-  font-size: 14px; padding: 14px; border-radius: 10px; text-align: left;
-  border: 2px solid var(--line); background: #fff; color: var(--text); line-height: 1.4; cursor: pointer;
-  transition: all 0.2s; font-family: inherit;
-}
-.quiz-opt:not(:disabled):hover { border-color: var(--accent); background: #f0f5ff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-.quiz-opt.correct { border-color: var(--accent2); background: #f0fdf4; color: #166534; box-shadow: 0 0 0 2px rgba(47,183,176,0.2); }
-.quiz-opt.incorrect { border-color: var(--danger); background: #fef2f2; color: #991b1b; opacity: 0.7;}
-.quiz-opt:disabled { cursor: default; transform: none; }
-
-/* Written Quiz Specific */
-.q-text { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 24px; line-height: 1.5; }
-.rationale-box {
-  background: #f8fafc; border: 1px solid var(--line); border-left: 4px solid var(--accent);
-  padding: 20px; border-radius: 8px; margin-top: 20px; display: none; animation: fadeIn 0.3s ease-out;
-}
-.rationale-text { font-size: 15px; color: var(--text); margin-bottom: 16px; line-height: 1.5;}
-.meta-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.meta-tag { font-size: 12px; background: #e2e8f0; color: #475569; padding: 6px 10px; border-radius: 6px; font-weight: 500;}
-.meta-tag.ref { background: #dbeafe; color: #1e40af; }
-.meta-tag.blueprint { background: #fce7f3; color: #9d174d; }
-
-/* Feedback Area (Rhythm Drill) */
-.feedback-box {
-  margin-top: 24px; padding: 16px 20px; border-radius: 12px; display: none;
-  background: #f8fafc; border-left: 4px solid var(--muted); animation: fadeIn 0.3s ease-out;
-}
-.feedback-box h3 { margin: 0 0 8px 0; font-size: 18px; }
-.feedback-box p { margin: 0; line-height: 1.5; color: var(--muted); }
-
-/* Footer / Stats */
-.footer-area { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;}
-.stats { font-weight: 600; color: var(--brand-muted); font-size: 15px;}
-
-/* Disclaimer Text */
-.disclaimer { text-align: center; font-size: 13px; color: var(--brand-muted); padding: 24px 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--brand-line); line-height: 1.5; border-radius: 0 0 20px 20px; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-</style>
-</head>
-<body>
-
-<div class="shell">
-  <header class="header-bar">
-    <div class="header-titles">
-      <h1>Sleep Pathways Guild</h1>
-      <h2>EKG Reading & Scoring Lab</h2>
-    </div>
-    <div class="nav-group">
-      <a href="https://sleeppathwaysguild.com/" class="brand-btn">Guild Home</a>
-      <a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html" class="brand-btn">RPSGT Exam App</a>
-      <a href="https://blog.sleeppathwaysguild.com/" class="brand-btn">Guild Blog</a>
-    </div>
-  </header>
-
-  <div class="tabs">
-    <button class="tab-btn active" id="tabDrill" onclick="switchTab('drill')">EKG Rhythm Drill</button>
-    <button class="tab-btn" id="tabQuiz" onclick="switchTab('quiz')">AASM Scoring Quiz</button>
-  </div>
-
-  <main class="card">
-    
-    <!-- SECTION 1: EKG RHYTHM DRILL -->
-    <div id="sectionDrill" class="section-content active">
-      <div class="monitor-bezel">
-        <div class="paper-slot">
-          <div class="ekg-lead-label">Lead II</div>
-          <div class="ekg-strip-label">10-Second Strip (25mm/s)</div>
-          <svg viewBox="0 0 1000 240" class="ekg-canvas" id="ekgSvg">
-            <defs>
-              <pattern id="grid-minor" width="4" height="4" patternUnits="userSpaceOnUse">
-                <rect width="4" height="4" fill="none" stroke="var(--ekgMinor)" stroke-width="0.5" />
-              </pattern>
-              <pattern id="grid-major" width="20" height="20" patternUnits="userSpaceOnUse">
-                <rect width="20" height="20" fill="url(#grid-minor)" />
-                <rect width="20" height="20" fill="none" stroke="var(--ekgMajor)" stroke-width="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid-major)" />
-            <path id="ekgPath" class="ekg-line" d="" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
-          </svg>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <h2 style="margin: 0; font-size: 20px;">Identify the Rhythm</h2>
-        <div class="nav-group">
-          <button class="app-btn btn-control" onclick="prevEKG()">← Prev</button>
-          <button class="app-btn btn-control" onclick="randomEKG()">Random</button>
-          <button class="app-btn btn-control" onclick="nextEKG()">Next →</button>
-        </div>
-      </div>
-
-      <div id="ekgQuizArea" class="quiz-grid"></div>
-      <div id="ekgFeedbackArea" class="feedback-box"></div>
-    </div>
-
-    <!-- SECTION 2: AASM WRITTEN QUIZ -->
-    <div id="sectionQuiz" class="section-content">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
-        <h2 style="margin: 0; font-size: 20px; color: var(--accent);">AASM Cardiac Scoring Rules</h2>
-        <div class="nav-group">
-          <button class="app-btn btn-control" onclick="prevQuiz()">← Prev</button>
-          <button class="app-btn btn-control" onclick="randomQuiz()">Random</button>
-          <button class="app-btn btn-control" onclick="nextQuiz()">Next →</button>
-        </div>
-      </div>
-      
-      <div class="q-text" id="writtenQText">Question text goes here...</div>
-      <div id="writtenQuizArea" class="quiz-grid" style="grid-template-columns: 1fr;"></div>
-      
-      <div id="writtenRationaleArea" class="rationale-box">
-        <div class="rationale-text" id="rationaleText">Rationale...</div>
-        <div class="meta-tags">
-          <span class="meta-tag ref" id="rationaleRef">Ref</span>
-          <span class="meta-tag blueprint" id="rationaleBlueprint">Blueprint</span>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <div class="footer-area">
-    <div class="stats" id="statsText">EKG Cases: 1/20 | Score: 0/0</div>
-    <div class="nav-group">
-      <button class="brand-btn" onclick="resetData()" style="border-color: rgba(239, 68, 68, 0.5); color: #fca5a5;">Reset All Progress</button>
-    </div>
-  </div>
-
-  <!-- Medical Disclaimer -->
-  <div class="disclaimer">
-    <strong>Disclaimer:</strong> This application is designed strictly for educational and training purposes for sleep technologists and students preparing for credential exams. <strong>It is not intended for clinical decision-making or patient care.</strong> Always consult official AASM guidelines and qualified medical professionals.
-  </div>
-</div>
-
-<script>
-// --- STORAGE KEY (FIX FOR UNDEFINED ERROR) ---
-const STORAGE_KEY = 'SPG_EKG_LAB_2026';
-
-// --- DATA: EKG DRILL CASES ---
-const EKG_CASES = [
-  { type: 'nsr', title: 'Normal Sinus Rhythm', description: 'Regular rhythm, rate 60-100 bpm. Every P wave is followed by a normal QRS complex, PR interval is normal.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Atrial Fibrillation'], answer: 'Normal Sinus Rhythm' },
-  { type: 'bradycardia', title: 'Sinus Bradycardia', description: 'Regular rhythm, rate < 60 bpm. Identical to NSR but slower.', options: ['Normal Sinus Rhythm', 'Sinus Bradycardia', 'Junctional Rhythm'], answer: 'Sinus Bradycardia' },
-  { type: 'tachycardia', title: 'Sinus Tachycardia', description: 'Regular rhythm, rate > 100 bpm. Normal P, PR, and QRS.', options: ['Sinus Tachycardia', 'Supraventricular Tachycardia (SVT)', 'Ventricular Tachycardia'], answer: 'Sinus Tachycardia' },
-  { type: 'sinus_arrhythmia', title: 'Sinus Arrhythmia', description: 'Irregular rhythm varying with respiration. P, QRS, and T waves are normal.', options: ['Atrial Fibrillation', 'Sinus Arrhythmia', 'Sinus Pause'], answer: 'Sinus Arrhythmia' },
-  { type: 'sinus_pause', title: 'Sinus Pause', description: 'Sudden failure of the SA node to initiate an impulse, creating a long visible pause.', options: ['Sinus Pause', 'Asystole', 'Wenckebach'], answer: 'Sinus Pause' },
-  { type: 'afib', title: 'Atrial Fibrillation', description: 'Irregularly irregular rhythm. Absent distinct P waves, fibrillatory baseline.', options: ['Normal Sinus Rhythm', 'Ventricular Fibrillation', 'Atrial Fibrillation'], answer: 'Atrial Fibrillation' },
-  { type: 'aflutter', title: 'Atrial Flutter', description: 'Continuous "sawtooth" or "picket fence" pattern of flutter waves instead of standard P waves.', options: ['Atrial Fibrillation', 'Ventricular Flutter', 'Atrial Flutter'], answer: 'Atrial Flutter' },
-  { type: 'svt', title: 'Supraventricular Tachycardia (SVT)', description: 'Fast rate >150 bpm with narrow QRS complexes. P waves often hidden in preceding T waves.', options: ['Ventricular Tachycardia', 'Supraventricular Tachycardia', 'Sinus Tachycardia'], answer: 'Supraventricular Tachycardia' },
-  { type: 'junctional', title: 'Junctional Rhythm', description: 'Rate 40-60 bpm. Impulses originate in AV node. P waves are absent or inverted.', options: ['Sinus Bradycardia', 'Junctional Rhythm', 'Idioventricular Rhythm'], answer: 'Junctional Rhythm' },
-  { type: 'idioventricular', title: 'Idioventricular Rhythm', description: 'Rate 20-40 bpm originating from ventricles. Very wide QRS complexes and absent P waves.', options: ['Junctional Rhythm', '3rd Degree Block', 'Idioventricular Rhythm'], answer: 'Idioventricular Rhythm' },
-  { type: 'bbb', title: 'Bundle Branch Block', description: 'Underlying rhythm is normal, but QRS complex is widened (>0.12s), often notched ("rabbit ears").', options: ['Premature Ventricular Contraction', 'Bundle Branch Block', 'Ventricular Tachycardia'], answer: 'Bundle Branch Block' },
-  { type: 'vtach', title: 'Ventricular Tachycardia', description: 'Wide, fast, bizarre QRS complexes >100 bpm. Often resembles continuous mountains.', options: ['Ventricular Tachycardia', 'Ventricular Fibrillation', 'Supraventricular Tachycardia'], answer: 'Ventricular Tachycardia' },
-  { type: 'vfib', title: 'Ventricular Fibrillation', description: 'Chaotic, bizarre electrical activity with no identifiable P, QRS, or T waves.', options: ['Ventricular Fibrillation', 'Atrial Fibrillation', 'Asystole'], answer: 'Ventricular Fibrillation' },
-  { type: 'asystole', title: 'Asystole', description: 'Flatline. Complete absence of electrical activity.', options: ['Asystole', 'Ventricular Fibrillation', 'Sinus Pause'], answer: 'Asystole' },
-  { type: 'pvc', title: 'Premature Ventricular Contraction (PVC)', description: 'Underlying rhythm interrupted by a premature, wide, bizarre QRS complex.', options: ['Bundle Branch Block', 'Premature Ventricular Contraction', 'Atrial Fibrillation'], answer: 'Premature Ventricular Contraction' },
-  { type: 'pvc_bigeminy', title: 'PVC (Bigeminy)', description: 'A regular alternating pattern: one normal beat immediately followed by one PVC.', options: ['Ventricular Tachycardia', 'Premature Ventricular Contraction', 'PVC Bigeminy'], answer: 'PVC Bigeminy' },
-  { type: '1stdegree', title: '1st Degree AV Block', description: 'Regular rhythm but with a consistently prolonged PR interval.', options: ['Normal Sinus Rhythm', '1st Degree AV Block', 'Wenckebach'], answer: '1st Degree AV Block' },
-  { type: '2nddegree_type1', title: '2nd Degree AV Block (Wenckebach)', description: 'Progressively lengthening PR interval beat-by-beat until a QRS is entirely dropped.', options: ['1st Degree AV Block', 'Wenckebach', 'Mobitz II'], answer: 'Wenckebach' },
-  { type: 'mobitz2', title: '2nd Degree AV Block (Mobitz II)', description: 'Intermittent dropped beats. Unlike Wenckebach, the PR interval remains CONSTANT before the dropped QRS.', options: ['Wenckebach', 'Mobitz II', '3rd Degree Block'], answer: 'Mobitz II' },
-  { type: 'third_degree', title: '3rd Degree (Complete) AV Block', description: 'Atria and ventricles beat completely independently. P waves march through the QRS indiscriminately.', options: ['Mobitz II', '3rd Degree Block', '1st Degree AV Block'], answer: '3rd Degree Block' }
-];
-
-// --- DATA: 50-QUESTION AASM WRITTEN QUIZ ---
-const AASM_QUIZ = [
-  { q: "According to the AASM scoring manual, what is the recommended derivation for the ECG recording during a polysomnogram?", opts: ["Modified Lead I", "Modified Lead II", "Lead V5", "Modified Lead III"], ans: "Modified Lead II", rat: "AASM recommends Modified Lead II as the standard for PSG ECG recordings.", ref: "AASM Manual v2.6", bp: "ECG Derivation" },
-  { q: "What is the recommended minimum sampling rate for the ECG channel according to AASM specifications?", opts: ["100 Hz", "200 Hz", "500 Hz", "1000 Hz"], ans: "200 Hz", rat: "The AASM manual states that 200 Hz is the minimum acceptable sampling rate for ECG.", ref: "AASM Manual v2.6", bp: "Sampling Rate" },
-  { q: "What is the desirable sampling rate for the ECG channel during a sleep study?", opts: ["200 Hz", "250 Hz", "500 Hz", "1000 Hz"], ans: "500 Hz", rat: "The AASM manual recommends a desirable sampling rate of 500 Hz for optimal ECG signal quality.", ref: "AASM Manual v2.6", bp: "Sampling Rate" },
-  { q: "What is the recommended Low Frequency Filter (LFF) setting for the ECG channel?", opts: ["0.1 Hz", "0.3 Hz", "1.0 Hz", "10 Hz"], ans: "0.3 Hz", rat: "The AASM manual specifies an LFF of 0.3 Hz to minimize baseline drift and motion artifact.", ref: "AASM Manual v2.6", bp: "Filter Settings" },
-  { q: "What is the recommended High Frequency Filter (HFF) setting for the ECG channel?", opts: ["15 Hz", "35 Hz", "70 Hz", "100 Hz"], ans: "70 Hz", rat: "The AASM recommends an HFF of 70 Hz to allow for proper QRS complex representation.", ref: "AASM Manual v2.6", bp: "Filter Settings" },
-  { q: "According to AASM rules, how is Sinus Tachycardia scored in an adult during sleep?", opts: ["A sustained heart rate of > 90 bpm.", "A sustained heart rate of > 100 bpm.", "A sustained heart rate of > 110 bpm.", "Any increase in heart rate during arousal"], ans: "A sustained heart rate of > 100 bpm.", rat: "AASM defines Sinus Tachycardia in adults as a sustained heart rate > 100 bpm during sleep.", ref: "AASM Manual v2.6", bp: "Cardiac Scoring Rules" },
-  { q: "How is Sinus Bradycardia scored in an adult during a sleep study?", opts: ["A sustained heart rate of < 60 bpm.", "A sustained heart rate of < 50 bpm.", "A sustained heart rate of < 40 bpm.", "Any rhythm slower than baseline"], ans: "A sustained heart rate of < 60 bpm.", rat: "AASM defines Sinus Bradycardia in adults as a sustained heart rate < 60 bpm during sleep.", ref: "AASM Manual v2.6", bp: "Cardiac Scoring Rules" },
-  { q: "According to AASM rules for adults, Asystole is scored when there is a cardiac pause of at least:", opts: ["2 seconds", "3 seconds", "5 seconds", "10 seconds"], ans: "3 seconds", rat: "AASM rules state that Asystole is scored when a cardiac pause lasts ≥3 seconds in adults.", ref: "AASM Manual v2.6", bp: "Asystole Definition" },
-  { q: "How does the AASM define Wide Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", "A rhythm lasting a minimum of 5 consecutive beats", "Any tachycardia with QRS > 100 msec", "Ventricular tachycardia only"], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration ≥120 msec.", rat: "AASM defines Wide Complex Tachycardia as ≥3 consecutive beats >100 bpm with QRS ≥120 msec.", ref: "AASM Manual v2.6", bp: "Arrhythmia Definitions" },
-  { q: "How does the AASM define Narrow Complex Tachycardia?", opts: ["A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", "Sinus tachycardia only", "Any SVT rhythm", "Atrial fibrillation"], ans: "A rhythm lasting a minimum of 3 consecutive beats at a rate >100 per minute with QRS duration <120 msec.", rat: "AASM defines Narrow Complex Tachycardia as ≥3 consecutive beats >100 bpm with QRS <120 msec.", ref: "AASM Manual v2.6", bp: "Arrhythmia Definitions" },
-  { q: "What is the primary characteristic used to score Atrial Fibrillation according to AASM guidelines?", opts: ["A regular rhythm with a rate >150 bpm.", "Irregularly irregular ventricular rhythm with absent P waves", "Flutter waves on the baseline", "Dropped QRS complexes"], ans: "Irregularly irregular ventricular rhythm with absent P waves", rat: "AASM scores Atrial Fibrillation based on irregularly irregular rhythm and absence of P waves.", ref: "AASM Manual v2.6", bp: "Atrial Fibrillation Criteria" }
-];
-
-// --- GLOBAL STATE ---
-const STORAGE_KEY_DRILL = STORAGE_KEY + '_drill';
-const STORAGE_KEY_QUIZ = STORAGE_KEY + '_quiz';
-let currentTab = 'drill'; // 'drill' or 'quiz'
-let drillState = { index: 0, answered: 0, correct: 0, history: {}, clearedCases: [] };
-let quizState = { index: 0, answered: 0, correct: 0, history: {} };
-
-try { 
-  const savedDrill = localStorage.getItem(STORAGE_KEY_DRILL); 
-  if (savedDrill) drillState = { ...drillState, ...JSON.parse(savedDrill) }; 
-  const savedQuiz = localStorage.getItem(STORAGE_KEY_QUIZ);
-  if (savedQuiz) quizState = { ...quizState, ...JSON.parse(savedQuiz) };
-} catch(e) {
-  console.error('Error loading saved state:', e);
-}
-
-function saveState() { 
-  try { 
-    localStorage.setItem(STORAGE_KEY_DRILL, JSON.stringify(drillState)); 
-    localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(quizState)); 
-  } catch(e) {
-    console.error('Error saving state:', e);
-  } 
-}
-
-function resetData() {
-  drillState = { index: 0, answered: 0, correct: 0, history: {}, clearedCases: [] };
-  quizState = { index: 0, answered: 0, correct: 0, history: {} };
-  saveState();
-  if(currentTab === 'drill') renderDrill(); else renderQuiz();
-  updateStats();
-}
-
-// --- TAB LOGIC ---
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('tabDrill').classList.toggle('active', tab === 'drill');
-  document.getElementById('tabQuiz').classList.toggle('active', tab === 'quiz');
-  document.getElementById('sectionDrill').classList.toggle('active', tab === 'drill');
-  document.getElementById('sectionQuiz').classList.toggle('active', tab === 'quiz');
-  
-  if(tab === 'drill') renderDrill(); else renderQuiz();
-  updateStats();
-}
-
-function updateStats() {
-  if(currentTab === 'drill') {
-    const color = (drillState.answered > 0 && drillState.correct/drillState.answered > 0.7) ? 'var(--brand-teal)' : 'inherit';
-    document.getElementById('statsText').innerHTML = `EKG Drill: Case ${drillState.index + 1} of ${EKG_CASES.length} &nbsp;|&nbsp; Score: <span style="color:${color}">${drillState.correct} / ${drillState.answered}</span>`;
-  } else {
-    const color = (quizState.answered > 0 && quizState.correct/quizState.answered > 0.7) ? 'var(--brand-teal)' : 'inherit';
-    document.getElementById('statsText').innerHTML = `AASM Quiz: Question ${quizState.index + 1} of ${AASM_QUIZ.length} &nbsp;|&nbsp; Score: <span style="color:${color}">${quizState.correct} / ${quizState.answered}</span>`;
-  }
-}
-
-// --- EKG RHYTHM DRILL LOGIC ---
-function generateEKGPath(type) {
-    let width = 1000, height = 240, path = `M 0 ${height/2}`, baseline = height/2;
-    let beats = [], pBeats = [];
-    let bpm = 72;
-    if(type === 'bradycardia') bpm = 42; if(type === 'tachycardia') bpm = 125;
-    if(type === 'svt') bpm = 180; if(type === 'vtach') bpm = 160;
-    if(type === 'aflutter') bpm = 75; if(type === 'junctional') bpm = 48;
-    if(type === 'idioventricular') bpm = 32; if(type === 'bbb') bpm = 68;
-    if(type === 'mobitz2') bpm = 75; if(type === 'vfib' || type === 'asystole') bpm = 0; 
-
-    if (type === 'third_degree') {
-        let pInterval = (60/75)*100, vInterval = (60/35)*100;
-        for(let i=pInterval*0.2; i<width; i+=pInterval) pBeats.push(i);
-        for(let i=vInterval*0.5; i<width; i+=vInterval) beats.push(i);
-    } else if (bpm > 0 && type !== 'vtach') {
-        let interval = (60/bpm) * 100, curr = interval * 0.2, bCount = 0;
-        while(curr < width) {
-            beats.push(curr);
-            if (type === 'afib') curr += interval * (0.6 + Math.random() * 0.8);
-            else if (type === 'pvc' && beats.length === 3) curr += interval * 0.55; 
-            else if (type === 'pvc_bigeminy') curr += (bCount % 2 === 0) ? interval * 0.65 : interval * 1.35;
-            else if (type === 'sinus_pause' && beats.length === 3) curr += interval * 3.5;
-            else if (type === 'sinus_arrhythmia') curr += interval + Math.sin(curr * 0.006) * 35; 
-            else curr += interval;
-            bCount++;
-        }
-    }
-
-    for(let x = 0; x <= width; x++) {
-        let y = baseline + Math.sin(x*0.005)*4 + Math.sin(x*0.011)*2; 
-        if (type === 'asystole') { y += (Math.random()-0.5)*1.5; } 
-        else if (type === 'vfib') { y += Math.sin(x*0.15)*35*Math.random() + Math.cos(x*0.05)*20; } 
-        else if (type === 'vtach') { y -= Math.sin(x/((60/160)*100) * Math.PI * 2) * 45 + (Math.random()-0.5)*2; } 
-        else {
-            let minD = 9999, bIdx = -1;
-            for(let i=0; i<beats.length; i++) if(Math.abs(x-beats[i]) < Math.abs(minD)) { minD = x-beats[i]; bIdx = i; }
-            let noise = (Math.random()-0.5)*1.2;
-            
-            if(type === 'afib' && (minD < -10 || minD > 40)) noise += Math.sin(x*0.3)*3 + Math.sin(x*0.7)*2 + Math.random()*2;
-            if(type === 'aflutter' && (minD < -15 || minD > 40)) noise += Math.sin(x/16 * Math.PI * 2) * -7 + Math.cos(x/8 * Math.PI) * 2; 
-
-            if (type === 'third_degree') {
-                let minP = 9999;
-                for(let i=0; i<pBeats.length; i++) if(Math.abs(x-pBeats[i]) < Math.abs(minP)) minP = x-pBeats[i];
-                if (minP > -15 && minP <= 0) y -= Math.sin((minP+15)/15*Math.PI)*6.5;
-            }
-
-            let isPVC = (type === 'pvc' && bIdx === 3) || (type === 'pvc_bigeminy' && bIdx % 2 === 1);
-            let skipP = (type === 'afib' || type === 'aflutter' || type === 'junctional' || type === 'idioventricular' || type === 'third_degree' || isPVC);
-            let isWide = (type === 'idioventricular' || type === 'bbb' || isPVC);
-            let isDroppedBeat = (type === '2nddegree_type1' && (bIdx % 4) === 3) || (type === 'mobitz2' && (bIdx % 4) === 3);
-            let prOffset = -25;
-            if (type === '1stdegree') prOffset = -45;
-            if (type === '2nddegree_type1') prOffset = [-25, -40, -60, -25][bIdx % 4];
-
-            if(Math.abs(minD) < 70) {
-                if(!skipP && minD > prOffset && minD <= prOffset+15) y -= Math.sin((minD-prOffset)/15*Math.PI)*6.5;
-                if (!isDroppedBeat) {
-                    if (isWide) {
-                        if (type === 'bbb') {
-                            if(minD > -8 && minD <= -4) y -= 35; else if(minD > -4 && minD <= 0) y += 15; else if(minD > 0 && minD <= 4) y -= 45; else if(minD > 4 && minD <= 8) y += 20; else if(minD > 8 && minD <= 12) y -= 25;
-                        } else {
-                            if(minD > -20 && minD <= 0) y -= (minD+20)*2.5; else if(minD > 0 && minD <= 25) y += 50 - (minD*2); else if(minD > 25 && minD <= 55) y += Math.sin((minD-25)/30*Math.PI)*20;
-                        }
-                    } else {
-                        if(minD > -5 && minD <= -2) y += 4; else if(minD > -2 && minD <= 0) y -= 55; else if(minD > 0 && minD <= 2) y += 15; else if(minD > 2 && minD <= 5) y -= 5; 
-                        else if(minD > 15 && minD <= 35) y -= Math.sin((minD-15)/20*Math.PI)*11;
-                    }
-                }
-            }
-            y += noise;
-        }
-        path += ` L ${x} ${y.toFixed(1)}`;
-    }
-    return path;
-}
-
-function renderDrill() {
-    const currentCase = EKG_CASES[drillState.index];
-    document.getElementById('ekgPath').setAttribute('d', generateEKGPath(currentCase.type));
-    
-    // Animate
-    const path = document.getElementById('ekgPath');
-    const length = path.getTotalLength();
-    path.style.transition = 'none';
-    path.style.strokeDasharray = length;
-    path.style.strokeDashoffset = length;
-    path.getBoundingClientRect();
-    path.style.transition = 'stroke-dashoffset 2s ease-out';
-    path.style.strokeDashoffset = '0';
 
     const quizArea = document.getElementById('ekgQuizArea');
     quizArea.innerHTML = '';
@@ -1148,8 +594,18 @@ function handleDrillAnswer(selected, correct) {
     const isCorrect = (selected === correct);
     drillState.history[drillState.index] = isCorrect ? true : selected;
     drillState.answered++;
-    if (isCorrect) drillState.correct++;
-    saveState(); renderDrill();
+    if (isCorrect) {
+        drillState.correct++;
+        if (!drillState.clearedCases.includes(drillState.index)) {
+            drillState.clearedCases.push(drillState.index);
+        }
+    }
+    saveState(); 
+    renderDrill();
+    
+    if (drillState.clearedCases.length === EKG_CASES.length) {
+        setTimeout(() => { showSummary(); }, 1500);
+    }
 }
 
 function prevEKG() { drillState.index = (drillState.index - 1 + EKG_CASES.length) % EKG_CASES.length; saveState(); renderDrill(); }
