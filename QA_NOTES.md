@@ -33,7 +33,7 @@ Date: 2026-06-13
 - 2,905 generated front/back flashcards.
 - 132 glossary entries.
 - 126 public reference entries.
-- Existing Sleep Pathways Guild logo and Coach Bob avatar.
+- Existing Sleep Pathways Guild logo and a friendly illustrated Coach Bob avatar.
 - Existing Study Trail color, typography, and guided-learning tone.
 
 ## Focused checks

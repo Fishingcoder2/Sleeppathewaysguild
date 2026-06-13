@@ -94,7 +94,7 @@
     var card = element("aside", { className: "coach-card" });
     var image = element("img", {
       attributes: {
-        src: "assets/coach-bob/coach-bob-avatar.jpg",
+        src: "assets/coach-bob/coach-bob-illustrated.png",
         alt: "Coach Bob"
       }
     });
