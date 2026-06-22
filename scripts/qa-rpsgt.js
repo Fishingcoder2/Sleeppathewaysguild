@@ -51,8 +51,11 @@ check(flashcards.cards.length === appData.seed.questionBank.length, "every quest
 
 const html = fs.readFileSync(path.join(root, "RPSGTv2.2026.html"), "utf8");
 const js = fs.readFileSync(path.join(root, "assets/js/rpsgt-app.js"), "utf8");
-["home", "practice", "mock", "math", "flashcards", "library", "reports"].forEach((room) => {
+["home", "trail", "practice", "labs", "mock", "math", "flashcards", "library", "reports"].forEach((room) => {
   check(html.includes('data-room="' + room + '"'), room + " navigation is present");
+});
+["Guided Study Trail", "Sleep Tech Skill Labs", "Waveform Atlas", "PAP Simulation", "Filters & Sensitivity", "Guild Exam Rehearsal"].forEach((feature) => {
+  check(js.includes(feature), feature + " is implemented");
 });
 ["Practice Progress Report", "Readiness Report", "Mock Exam Report", "Flagged / Missed Item Report", "What to Study Next", "Admin QA Dashboard"].forEach((report) => {
   check(js.includes(report), report + " is implemented");

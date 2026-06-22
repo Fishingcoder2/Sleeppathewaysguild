@@ -27,12 +27,25 @@ Date: 2026-06-13
 13. Primary actions are labeled with the next learner task.
 14. Each room includes one clear next action and concise Coach Bob guidance where useful.
 
+## Rich Study Trail restoration
+
+- Home now restores the four-stage trail overview, milestone state, launch cards, and BRPT blueprint snapshot.
+- Guided Trail restores all 12 domain/task study lessons with study targets, learning bullets, Coach Bob cues, and focused-practice launch actions.
+- Practice Center restores choice-first routes, task filters, difficulty filters, missed review, flagged review, and hard/tricky drill access.
+- Skill Labs restore waveform atlas cases, PAP simulation cases, filter/sensitivity memory coaching, and the filter decision drill.
+- Mock Exam Hall restores 25, 50, and 100-question blueprint-weighted readiness checks.
+- Math Coach now includes calculator tools plus a formula trail and report-math decision practice.
+
 ## Data carried forward
 
 - 2,905 RPSGT question-bank items.
 - 2,905 generated front/back flashcards.
 - 132 glossary entries.
 - 126 public reference entries.
+- 12 guided blueprint task lessons.
+- 13 waveform interpretation cases.
+- 7 PAP simulation cases.
+- 5 filter and sensitivity memory lessons plus the technical filter drill bank.
 - Existing Sleep Pathways Guild logo and a friendly illustrated Coach Bob avatar.
 - Existing Study Trail color, typography, and guided-learning tone.
 

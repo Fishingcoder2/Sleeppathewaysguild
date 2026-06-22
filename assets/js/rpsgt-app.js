@@ -13,6 +13,10 @@
   var cardBackVisible = false;
   var mockSession = null;
   var reportView = "progress";
+  var activeGuideIndex = 0;
+  var activeLab = "waveforms";
+  var activeLabIndex = 0;
+  var mockSize = 25;
 
   var progress = loadProgress();
 
@@ -21,6 +25,7 @@
       answered: {},
       flagged: [],
       sessions: [],
+      labResults: {},
       lastRoom: "home"
     };
   }
@@ -185,7 +190,9 @@
     clearMain();
     var renderers = {
       home: renderHome,
+      trail: renderTrail,
       practice: renderPractice,
+      labs: renderLabs,
       mock: renderMock,
       math: renderMath,
       flashcards: renderFlashcards,
@@ -199,9 +206,21 @@
 
   function renderHome() {
     var m = metrics();
+    var milestone = currentMilestone();
     append(main,
-      roomHead("Trailhead", "Welcome back to the Study Trail", "Choose one learning task for this session. Your work stays on this device."),
-      coach(nextStudyMessage()),
+      roomHead("Guild Trailhead", "Build exam skill one trail marker at a time", "Learn the blueprint, practice decisions, read simulated signals, and use reports to choose the next useful step."),
+      append(element("section", { className: "hero-panel" }),
+        append(element("div"),
+          element("p", { className: "room-kicker", text: "Your current trail marker" }),
+          element("h3", { text: milestone.title }),
+          element("p", { text: milestone.reward }),
+          append(element("div", { className: "actions" }),
+            button("Continue guided trail", function () { setRoom("trail"); }, "gold"),
+            button("Start focused practice", function () { setRoom("practice"); }, "secondary")
+          )
+        ),
+        coach(nextStudyMessage())
+      ),
       append(element("div", { className: "stats" }),
         stat("Questions answered", m.answered),
         stat("Accuracy", m.accuracy + "%"),
@@ -210,17 +229,77 @@
       )
     );
 
-    var cards = element("div", { className: "grid three" });
-    addHomeCard(cards, "Practice one question", "Work one item at a time with immediate rationale.", "Start practice", function () { setRoom("practice"); });
-    addHomeCard(cards, "Review flashcards", "Flip, flag, and print front/back cards for quick review.", "Open flashcards", function () { setRoom("flashcards"); });
-    addHomeCard(cards, "See what to study", "Use your missed items and domain performance to choose tonight's focus.", "Open reports", function () { setRoom("reports"); });
-    append(main, cards);
+    var path = element("section", { className: "panel trail-overview" });
+    append(path, element("p", { className: "room-kicker", text: "The four-part study path" }), element("h3", { text: "Know where you are going" }));
+    var stages = element("div", { className: "journey-grid" });
+    (appData.seed.journeyStages || []).forEach(function (stage, index) {
+      var item = element("article", { className: "journey-card" });
+      append(item,
+        element("span", { className: "journey-number", text: index + 1 }),
+        element("h3", { text: stage.title }),
+        element("strong", { text: stage.subtitle }),
+        element("p", { text: stage.description })
+      );
+      stages.appendChild(item);
+    });
+    append(path, stages);
+    main.appendChild(path);
+
+    var cards = element("div", { className: "grid three room-launch-grid" });
+    addHomeCard(cards, "Guided Study Trail", "Work through all 12 BRPT-aligned tasks with study targets and focused practice.", "Open the trail", function () { setRoom("trail"); }, "trail-card");
+    addHomeCard(cards, "Visual Skill Labs", "Interpret waveform cases, PAP response strips, filters, sensitivity, and signal clues.", "Enter skill labs", function () { setRoom("labs"); }, "lab-card");
+    addHomeCard(cards, "Practice Center", "Choose a domain, task, difficulty, missed deck, or hard-question drill.", "Build a practice round", function () { setRoom("practice"); }, "practice-card");
+    addHomeCard(cards, "Mock Exam Hall", "Use 25, 50, or 100-question mixed blueprint checks with a report afterward.", "Choose a mock", function () { setRoom("mock"); }, "mock-card");
+    addHomeCard(cards, "Flashcard Workshop", "Review the full deck, missed questions, flagged cards, or an exam-day set.", "Review cards", function () { setRoom("flashcards"); }, "flash-card");
+    addHomeCard(cards, "Guild Reports", "Find weak domains, repeated misses, readiness trends, and tonight's study plan.", "Read reports", function () { setRoom("reports"); }, "report-card");
+    append(main, cards, renderBlueprintSnapshot());
   }
 
-  function addHomeCard(parent, title, copy, label, handler) {
-    var card = element("article", { className: "panel" });
+  function addHomeCard(parent, title, copy, label, handler, extraClass) {
+    var card = element("article", { className: "panel launch-card " + (extraClass || "") });
     append(card, element("h3", { text: title }), element("p", { text: copy }), button(label, handler));
     parent.appendChild(card);
+  }
+
+  function currentMilestone() {
+    var answered = metrics().answered;
+    var milestones = appData.seed.guildMilestones || [];
+    var reached = milestones[0] || { title: "First Footing", reward: "Begin the trail." };
+    milestones.forEach(function (milestone) {
+      if (answered >= milestone.requirement) reached = milestone;
+    });
+    return reached;
+  }
+
+  function renderBlueprintSnapshot() {
+    var panel = element("section", { className: "panel blueprint-snapshot" });
+    append(panel,
+      element("p", { className: "room-kicker", text: "RPSGT blueprint map" }),
+      element("h3", { text: "Four domains, twelve study tasks" }),
+      element("p", { text: "The app keeps your practice tied to the exam blueprint instead of treating all questions as one pile." })
+    );
+    var grid = element("div", { className: "domain-grid" });
+    (appData.seed.blueprintDomains || []).forEach(function (domain) {
+      var card = element("article", { className: "domain-card" });
+      var list = element("ul");
+      domain.tasks.forEach(function (task) { list.appendChild(element("li", { text: task })); });
+      append(card,
+        append(element("div", { className: "domain-card-head" }),
+          element("strong", { text: domain.id }),
+          element("span", { text: domain.weight + "% of blueprint" })
+        ),
+        element("h3", { text: domain.fullName }),
+        list,
+        button("Study " + domain.id, function () {
+          var index = (appData.taskStudyGuides || []).findIndex(function (guide) { return guide.domain === domain.id; });
+          activeGuideIndex = index < 0 ? 0 : index;
+          setRoom("trail");
+        }, "secondary small")
+      );
+      grid.appendChild(card);
+    });
+    append(panel, grid);
+    return panel;
   }
 
   function nextStudyMessage() {
@@ -228,6 +307,94 @@
     if (!m.answered) return "Start with ten practice questions. Accuracy can wait; first we need a useful baseline.";
     if (m.missed) return "Your missed-item report is ready. Review the pattern, then return for a short focused practice set.";
     return "Strong start. Add another short practice set or test your pacing in the Mock Exam room.";
+  }
+
+  function renderTrail() {
+    var guides = appData.taskStudyGuides || [];
+    if (activeGuideIndex >= guides.length) activeGuideIndex = 0;
+    append(main,
+      roomHead("Guided Study Trail", "Learn the blueprint before testing it", "Move through all 12 tasks. Each stop gives you the study target, what to know, a Coach Bob cue, and a focused practice launch."),
+      coach("Do not try to memorize the whole blueprint at once. Learn one task, practice that task, then leave a trail marker in your reports.")
+    );
+    var layout = element("div", { className: "trail-layout" });
+    var rail = element("aside", { className: "trail-rail panel no-print" });
+    append(rail, element("h3", { text: "Twelve task stops" }));
+    guides.forEach(function (guide, index) {
+      var selected = index === activeGuideIndex;
+      var item = element("button", {
+        className: "trail-stop" + (selected ? " active" : ""),
+        type: "button",
+        onClick: function () {
+          activeGuideIndex = index;
+          renderTrailLesson();
+        }
+      });
+      append(item,
+        element("span", { text: guide.domain }),
+        append(element("div"), element("strong", { text: guide.task }), element("small", { text: guide.focus }))
+      );
+      rail.appendChild(item);
+    });
+    append(layout, rail, element("div", { id: "trail-lesson" }));
+    main.appendChild(layout);
+    renderTrailLesson();
+  }
+
+  function renderTrailLesson() {
+    var target = document.getElementById("trail-lesson");
+    if (!target) return;
+    while (target.firstChild) target.removeChild(target.firstChild);
+    var guide = (appData.taskStudyGuides || [])[activeGuideIndex];
+    if (!guide) return;
+    Array.prototype.forEach.call(document.querySelectorAll(".trail-stop"), function (item, index) {
+      item.classList.toggle("active", index === activeGuideIndex);
+    });
+    var domain = (appData.seed.blueprintDomains || []).find(function (item) { return item.id === guide.domain; });
+    var card = element("article", { className: "panel lesson-card" });
+    var learnList = element("ul", { className: "lesson-list" });
+    (guide.learn || []).forEach(function (point) { learnList.appendChild(element("li", { text: point })); });
+    append(card,
+      append(element("div", { className: "lesson-heading" }),
+        append(element("div"),
+          element("p", { className: "room-kicker", text: guide.domain + " task lesson" }),
+          element("h2", { text: guide.task }),
+          element("p", { text: domain ? domain.fullName : guide.domain })
+        ),
+        element("span", { className: "weight-badge", text: domain ? domain.weight + "%" : guide.domain })
+      ),
+      append(element("section", { className: "study-target" }),
+        element("strong", { text: "Study target" }),
+        element("p", { text: guide.focus })
+      ),
+      element("h3", { text: "What you need to learn" }),
+      learnList,
+      coach(trailCoachMessage(guide)),
+      append(element("div", { className: "lesson-actions" }),
+        button("Practice this task", function () {
+          setRoom("practice", { domain: guide.domain, task: guide.task });
+        }, "gold"),
+        button("Open related flashcards", function () {
+          activeDeck = (flashcardData.cards || []).filter(function (cardItem) {
+            return cardItem.domain === guide.domain && (!cardItem.task || cardItem.task === guide.task);
+          });
+          activeDeck.kind = "guided";
+          activeCardIndex = 0;
+          setRoom("flashcards");
+        }, "secondary"),
+        button("Next trail stop", function () {
+          activeGuideIndex = (activeGuideIndex + 1) % (appData.taskStudyGuides || []).length;
+          renderTrailLesson();
+        }, "secondary")
+      )
+    );
+    target.appendChild(card);
+  }
+
+  function trailCoachMessage(guide) {
+    if (guide.domain === "D2") return "Think like the technologist at the bedside: what should the signal look like, what changed, and what can you safely correct?";
+    if (guide.domain === "D3") return "State the rule in plain language, then apply it to the strip or report. That keeps scoring details from turning into disconnected trivia.";
+    if (guide.domain === "D4") return "Treatment questions usually ask for the safest next response, not the most dramatic response.";
+    return "Start with the patient story. Clinical clues, education, safety, and communication all begin with what this patient needs tonight.";
   }
 
   function selectField(labelText, id, choices) {
@@ -242,8 +409,37 @@
   }
 
   function renderPractice(options) {
-    append(main, roomHead("Practice Room", "One question at a time", "Choose a domain, answer the item, read the rationale, then take the next step."));
-    var toolbar = element("div", { className: "toolbar no-print" });
+    append(main,
+      roomHead("Practice Center", "Build the practice round you need", "Choose a quick route or use the filters. Questions stay one at a time, but the learning path around them is much richer."),
+      coach("Pick a purpose before you pick a question: learn a domain, repair misses, challenge yourself, or rehearse exam decisions.")
+    );
+    var routes = element("div", { className: "practice-route-grid no-print" });
+    [
+      ["Blueprint Mix", "Balanced practice across all four domains.", "all", "unanswered", "all"],
+      ["Hard & Tricky", "Intermediate and exam-level decisions.", "all", "all", "hard"],
+      ["Repair Misses", "Rework questions you previously missed.", "all", "missed", "all"],
+      ["Flagged Review", "Return to questions you marked for later.", "all", "flagged", "all"]
+    ].forEach(function (route) {
+      var card = element("button", {
+        className: "practice-route",
+        type: "button",
+        onClick: function () {
+          document.getElementById("practice-domain").value = route[2];
+          document.getElementById("practice-mode").value = route[3];
+          document.getElementById("practice-difficulty").value = route[4];
+          document.getElementById("practice-task").value = "all";
+          activeQuestion = choosePracticeQuestion(route[2], route[3], route[4], "all");
+          renderPracticeQuestion();
+        }
+      });
+      append(card, element("strong", { text: route[0] }), element("span", { text: route[1] }));
+      routes.appendChild(card);
+    });
+    main.appendChild(routes);
+
+    var filterPanel = element("details", { className: "practice-filters no-print", attributes: { open: "open" } });
+    filterPanel.appendChild(element("summary", { text: "Choose domain, task, difficulty, or saved deck" }));
+    var toolbar = element("div", { className: "toolbar practice-toolbar" });
     var domainField = selectField("Domain", "practice-domain", [
       { label: "All domains", value: "all" },
       { label: "Domain 1", value: "D1" },
@@ -257,29 +453,50 @@
       { label: "Flagged items", value: "flagged" },
       { label: "All questions", value: "all" }
     ]);
+    var taskChoices = [{ label: "All tasks", value: "all" }];
+    (appData.taskStudyGuides || []).forEach(function (guide) {
+      taskChoices.push({ label: guide.domain + " · " + guide.task, value: guide.task });
+    });
+    var taskField = selectField("Blueprint task", "practice-task", taskChoices);
+    var difficultyField = selectField("Difficulty", "practice-difficulty", [
+      { label: "All levels", value: "all" },
+      { label: "Core / foundation", value: "core" },
+      { label: "Intermediate", value: "intermediate" },
+      { label: "Exam / hard", value: "hard" }
+    ]);
     var nextBox = element("div", { className: "field" });
     append(nextBox, element("label", { text: "Next action" }), button("Load question", function () {
       activeQuestion = choosePracticeQuestion(
         document.getElementById("practice-domain").value,
-        document.getElementById("practice-mode").value
+        document.getElementById("practice-mode").value,
+        document.getElementById("practice-difficulty").value,
+        document.getElementById("practice-task").value
       );
       renderPracticeQuestion();
     }));
-    append(toolbar, domainField, modeField, nextBox);
-    append(main, toolbar, element("div", { id: "practice-stage" }));
-    activeQuestion = options.question || choosePracticeQuestion("all", "unanswered");
+    append(toolbar, domainField, taskField, difficultyField, modeField, nextBox);
+    filterPanel.appendChild(toolbar);
+    append(main, filterPanel, element("div", { id: "practice-stage" }));
+    if (options.domain) document.getElementById("practice-domain").value = options.domain;
+    if (options.task) document.getElementById("practice-task").value = options.task;
+    activeQuestion = options.question || choosePracticeQuestion(options.domain || "all", "unanswered", "all", options.task || "all");
     renderPracticeQuestion();
   }
 
-  function choosePracticeQuestion(domain, mode) {
+  function choosePracticeQuestion(domain, mode, difficulty, task) {
     var bank = questionBank().filter(function (question) {
       if (domain !== "all" && question.domain !== domain) return false;
+      if (task && task !== "all" && question.task !== task) return false;
+      var level = String(question.difficulty || "").toLowerCase();
+      if (difficulty === "core" && level !== "core" && level !== "foundation") return false;
+      if (difficulty === "intermediate" && level !== "intermediate") return false;
+      if (difficulty === "hard" && level !== "exam" && level !== "hard" && level !== "advanced" && level !== "intermediate") return false;
       if (mode === "unanswered" && progress.answered[question.id]) return false;
       if (mode === "missed" && (!progress.answered[question.id] || progress.answered[question.id].correct)) return false;
       if (mode === "flagged" && progress.flagged.indexOf(String(question.id)) === -1) return false;
       return Array.isArray(question.options) && question.options.length && question.answer;
     });
-    if (!bank.length && mode === "unanswered") return choosePracticeQuestion(domain, "all");
+    if (!bank.length && mode === "unanswered") return choosePracticeQuestion(domain, "all", difficulty, task);
     return bank.length ? bank[Math.floor(Math.random() * bank.length)] : null;
   }
 
@@ -293,7 +510,9 @@
     var card = element("article", { className: "question-card" });
     append(card,
       element("span", { className: "tag", text: activeQuestion.domain }),
+      element("span", { className: "tag", text: activeQuestion.task || "Blueprint task" }),
       element("span", { className: "tag", text: activeQuestion.topic || activeQuestion.task || "Practice" }),
+      element("span", { className: "tag", text: activeQuestion.difficulty || "Mixed" }),
       element("h3", { text: activeQuestion.prompt })
     );
     var options = element("div", { className: "option-list" });
@@ -314,7 +533,9 @@
       button("Next question", function () {
         activeQuestion = choosePracticeQuestion(
           document.getElementById("practice-domain").value,
-          document.getElementById("practice-mode").value
+          document.getElementById("practice-mode").value,
+          document.getElementById("practice-difficulty").value,
+          document.getElementById("practice-task").value
         );
         renderPracticeQuestion();
       }, "gold")
@@ -363,18 +584,225 @@
     saveProgress();
   }
 
-  function renderMock() {
-    append(main, roomHead("Mock Exam Room", "Practice exam decisions", "Use a 25-question mixed set. Results feed the Mock Exam Report and your next-study guidance."));
-    if (!mockSession) {
-      var intro = element("div", { className: "grid two" });
-      var panel = element("section", { className: "panel" });
-      append(panel,
-        element("h3", { text: "25-question readiness check" }),
-        element("p", { text: "Questions are mixed across the four domains. Answer every item, then submit the session for a scored report." }),
-        button("Start mock exam", startMock, "gold")
+  function renderLabs() {
+    append(main,
+      roomHead("Sleep Tech Skill Labs", "Read the signal, explain the clue, choose the response", "These are teaching simulations from the original Study Trail: waveform recognition, PAP response, and filter/sensitivity memory."),
+      coach("Use the same order every time: name the channel, describe what changed, decide whether it is physiology or artifact, then choose the safest interpretation.")
+    );
+    var tabs = element("div", { className: "lab-tabs no-print" });
+    [
+      ["waveforms", "Waveform Atlas"],
+      ["pap", "PAP Simulation"],
+      ["filters", "Filters & Sensitivity"]
+    ].forEach(function (entry) {
+      var item = button(entry[1], function () {
+        activeLab = entry[0];
+        activeLabIndex = 0;
+        renderLabStage();
+      }, "secondary");
+      item.setAttribute("aria-pressed", activeLab === entry[0] ? "true" : "false");
+      item.setAttribute("data-lab", entry[0]);
+      tabs.appendChild(item);
+    });
+    append(main, tabs, element("div", { id: "lab-stage" }));
+    renderLabStage();
+  }
+
+  function renderLabStage() {
+    var target = document.getElementById("lab-stage");
+    if (!target) return;
+    while (target.firstChild) target.removeChild(target.firstChild);
+    Array.prototype.forEach.call(document.querySelectorAll("[data-lab]"), function (item) {
+      item.setAttribute("aria-pressed", item.getAttribute("data-lab") === activeLab ? "true" : "false");
+    });
+    if (activeLab === "filters") renderFilterLab(target);
+    else renderSignalLab(target, activeLab === "pap" ? appData.seed.papSimulationCases : appData.seed.waveformCases, activeLab);
+  }
+
+  function renderFilterLab(target) {
+    var intro = element("section", { className: "panel" });
+    append(intro,
+      element("h3", { text: "Filter and sensitivity memory wall" }),
+      element("p", { text: "These reminders restore the original app's practical signal-acquisition coaching. Read the memory cue, then connect it to what changes on screen." })
+    );
+    var grid = element("div", { className: "memory-grid" });
+    (appData.seed.filterMemoryCards || []).forEach(function (memory) {
+      var card = element("article", { className: "memory-card" });
+      append(card,
+        element("span", { className: "signal-icon", text: "≈" }),
+        element("h3", { text: memory.title }),
+        element("p", { text: memory.memory }),
+        element("blockquote", { text: memory.bob })
       );
-      append(intro, panel, coach("Treat this as a pacing rehearsal. Make the best decision, flag uncertainty mentally, and keep moving."));
-      main.appendChild(intro);
+      grid.appendChild(card);
+    });
+    append(intro, grid);
+    target.appendChild(intro);
+    var quizPanel = element("section", { className: "panel" });
+    append(quizPanel, element("h3", { text: "Filter decision drill" }), element("p", { text: "Practice questions from the technical-preparation bank." }));
+    var quiz = shuffled(appData.seed.filterQuizBank || []).slice(0, 5);
+    quiz.forEach(function (question, index) {
+      var compact = element("article", { className: "lab-quiz-card" });
+      append(compact, element("strong", { text: (index + 1) + ". " + (question.prompt || question.question || question.title) }));
+      var choices = element("div", { className: "option-list compact-options" });
+      (question.options || []).forEach(function (choice) {
+        choices.appendChild(element("button", {
+          className: "option",
+          text: choice,
+          type: "button",
+          onClick: function (event) {
+            answerLabChoice(question, choice, event.currentTarget, choices, question.rationale || question.explanation || "");
+          }
+        }));
+      });
+      append(compact, choices);
+      quizPanel.appendChild(compact);
+    });
+    target.appendChild(quizPanel);
+  }
+
+  function renderSignalLab(target, cases, kind) {
+    var items = cases || [];
+    if (!items.length) {
+      target.appendChild(element("div", { className: "empty", text: "No cases are available in this lab." }));
+      return;
+    }
+    if (activeLabIndex >= items.length) activeLabIndex = 0;
+    var current = items[activeLabIndex];
+    var layout = element("div", { className: "signal-lab-layout" });
+    var viewer = element("section", { className: "panel signal-viewer" });
+    append(viewer,
+      append(element("div", { className: "signal-viewer-head" }),
+        append(element("div"),
+          element("p", { className: "room-kicker", text: (kind === "pap" ? "PAP case " : "Atlas case ") + (activeLabIndex + 1) + " of " + items.length }),
+          element("h3", { text: current.title }),
+          element("p", { text: current.category || current.focus || "Signal interpretation" })
+        ),
+        element("span", { className: "weight-badge", text: current.difficulty || current.domain || "Lab" })
+      ),
+      renderChannelStrip(current.channels || {}),
+      append(element("div", { className: "clue-box" }),
+        element("strong", { text: "What you can observe" }),
+        element("p", { text: current.clue })
+      ),
+      element("h3", { text: kind === "pap" ? "What is the best interpretation?" : "How should this be identified?" })
+    );
+    var choices = element("div", { className: "option-list" });
+    (current.options || []).forEach(function (choice) {
+      choices.appendChild(element("button", {
+        className: "option",
+        text: choice,
+        type: "button",
+        onClick: function (event) {
+          answerLabChoice(current, choice, event.currentTarget, choices, current.teaching || current.scoringPearl || current.beginner || "");
+        }
+      }));
+    });
+    var actions = element("div", { className: "actions no-print" });
+    var previous = button("Previous case", function () {
+      activeLabIndex = (activeLabIndex - 1 + items.length) % items.length;
+      renderLabStage();
+    }, "secondary");
+    var next = button("Next case", function () {
+      activeLabIndex = (activeLabIndex + 1) % items.length;
+      renderLabStage();
+    }, "gold");
+    append(actions, previous, next);
+    append(viewer, choices, actions);
+    var rail = element("aside", { className: "panel lab-teaching-rail" });
+    append(rail,
+      element("h3", { text: "Coach Bob's reading order" }),
+      element("ol", { html: "<li>Name each channel.</li><li>Find the change.</li><li>Compare related channels.</li><li>Choose physiology, artifact, or treatment response.</li>" }),
+      append(element("div", { className: "bob-hint" }),
+        element("strong", { text: "Hint" }),
+        element("p", { text: current.bobHint || current.teaching || "Compare airflow, effort, signal quality, and the clinical situation before deciding." })
+      ),
+      element("h3", { text: "Case library" })
+    );
+    items.forEach(function (caseItem, index) {
+      rail.appendChild(element("button", {
+        className: "case-jump" + (index === activeLabIndex ? " active" : ""),
+        text: (index + 1) + ". " + caseItem.title,
+        type: "button",
+        onClick: function () { activeLabIndex = index; renderLabStage(); }
+      }));
+    });
+    append(layout, viewer, rail);
+    target.appendChild(layout);
+  }
+
+  function renderChannelStrip(channels) {
+    var shell = element("div", { className: "channel-stack", attributes: { role: "img", "aria-label": "Simulated multi-channel sleep study waveform" } });
+    Object.keys(channels).forEach(function (name) {
+      var row = element("div", { className: "channel-row" });
+      row.appendChild(element("strong", { text: name }));
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 600 90");
+      svg.setAttribute("preserveAspectRatio", "none");
+      svg.setAttribute("aria-hidden", "true");
+      var gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      gridLine.setAttribute("x1", "0");
+      gridLine.setAttribute("x2", "600");
+      gridLine.setAttribute("y1", "45");
+      gridLine.setAttribute("y2", "45");
+      gridLine.setAttribute("class", "signal-midline");
+      svg.appendChild(gridLine);
+      var values = channels[name] || [];
+      var points = values.map(function (value, index) {
+        var x = values.length > 1 ? index / (values.length - 1) * 600 : 0;
+        var y = 82 - Math.max(0, Math.min(1, Number(value))) * 74;
+        return x.toFixed(1) + "," + y.toFixed(1);
+      }).join(" ");
+      var line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+      line.setAttribute("points", points);
+      line.setAttribute("class", "signal-trace");
+      svg.appendChild(line);
+      append(row, svg);
+      shell.appendChild(row);
+    });
+    return shell;
+  }
+
+  function answerLabChoice(question, choice, clicked, optionBox, teaching) {
+    var correct = choice === question.answer;
+    Array.prototype.forEach.call(optionBox.querySelectorAll("button"), function (item) {
+      item.disabled = true;
+      if (item.textContent === question.answer) item.classList.add("correct");
+    });
+    if (!correct) clicked.classList.add("wrong");
+    var key = activeLab + "-" + String(question.id || question.title);
+    progress.labResults[key] = { correct: correct, date: new Date().toISOString() };
+    saveProgress();
+    var feedback = element("div", { className: "feedback lab-feedback" });
+    append(feedback,
+      element("strong", { text: correct ? "Good read." : "Pause and compare the channels again." }),
+      element("p", { text: teaching || ("Correct answer: " + question.answer) }),
+      question.scoringPearl && question.scoringPearl !== teaching ? element("p", { text: "Scoring pearl: " + question.scoringPearl }) : null
+    );
+    optionBox.parentNode.insertBefore(feedback, optionBox.nextSibling);
+  }
+
+  function renderMock() {
+    append(main, roomHead("Guild Exam Hall", "Choose the size of your readiness rehearsal", "Use a blueprint-weighted 25, 50, or 100-question mixed exam. Results feed the Mock Exam Report and your next-study guidance."));
+    if (!mockSession) {
+      main.appendChild(coach("A short mock checks decisions. A long mock also checks stamina. Choose the smallest exam that answers the question you have today."));
+      var choices = element("div", { className: "mock-size-grid" });
+      [
+        [25, "Trail Check", "A focused readiness sample for an ordinary study night.", "About 25–35 minutes"],
+        [50, "Half Mock", "A broader domain check with enough depth to expose patterns.", "About 50–70 minutes"],
+        [100, "Guild Exam Rehearsal", "A substantial pacing and stamina session across the blueprint.", "About 100–140 minutes"]
+      ].forEach(function (choice) {
+        var panel = element("section", { className: "panel mock-size-card" });
+        append(panel,
+          element("span", { className: "mock-number", text: choice[0] }),
+          element("h3", { text: choice[1] }),
+          element("p", { text: choice[2] }),
+          element("small", { text: choice[3] }),
+          button("Start " + choice[0] + "-question mock", function () { startMock(choice[0]); }, choice[0] === 50 ? "gold" : "secondary")
+        );
+        choices.appendChild(panel);
+      });
+      append(main, choices, renderMockBlueprint());
       return;
     }
     renderMockQuestion();
@@ -391,14 +819,33 @@
     return copy;
   }
 
-  function startMock() {
-    var pools = ["D1", "D2", "D3", "D4"].map(function (domain) {
-      return shuffled(questionBank().filter(function (question) {
-        return question.domain === domain && Array.isArray(question.options) && question.answer;
-      })).slice(0, 7);
+  function renderMockBlueprint() {
+    var panel = element("section", { className: "panel mock-blueprint" });
+    append(panel, element("h3", { text: "Blueprint weighting used in mock selection" }));
+    var grid = element("div", { className: "domain-grid" });
+    (appData.seed.blueprintDomains || []).forEach(function (domain) {
+      append(grid, append(element("div", { className: "blueprint-weight" }),
+        element("strong", { text: domain.id + " · " + domain.weight + "%" }),
+        element("span", { text: domain.fullName })
+      ));
+    });
+    append(panel, grid);
+    return panel;
+  }
+
+  function startMock(size) {
+    mockSize = size || 25;
+    var domains = appData.seed.blueprintDomains || [];
+    var selected = [];
+    domains.forEach(function (domain, index) {
+      var count = index === domains.length - 1 ? mockSize - selected.length : Math.round(mockSize * domain.weight / 100);
+      var pool = shuffled(questionBank().filter(function (question) {
+        return question.domain === domain.id && Array.isArray(question.options) && question.answer;
+      }));
+      selected = selected.concat(pool.slice(0, count));
     });
     mockSession = {
-      questions: shuffled([].concat.apply([], pools)).slice(0, 25),
+      questions: shuffled(selected).slice(0, mockSize),
       index: 0,
       answers: {},
       startedAt: new Date().toISOString()
@@ -510,6 +957,59 @@
     addOhmCalculator(grid);
     addSignalNotes(grid);
     main.appendChild(grid);
+    var formulaTrail = element("section", { className: "panel formula-trail" });
+    append(formulaTrail,
+      element("p", { className: "room-kicker", text: "Coach Bob's formula trail" }),
+      element("h3", { text: "Know what belongs in the numerator and denominator" })
+    );
+    var formulaGrid = element("div", { className: "formula-grid" });
+    [
+      ["AHI", "Apneas + hypopneas", "Total sleep time in hours"],
+      ["RDI", "Apneas + hypopneas + RERAs", "Total sleep time in hours"],
+      ["PLMI", "Periodic limb movements", "Total sleep time in hours"],
+      ["Sleep efficiency", "Total sleep time", "Time in bed × 100"],
+      ["Oxygen time %", "Minutes at threshold", "Total sleep time × 100"],
+      ["Frequency", "Cycles", "Seconds"]
+    ].forEach(function (formula) {
+      append(formulaGrid, append(element("article", { className: "formula-card" }),
+        element("strong", { text: formula[0] }),
+        element("span", { text: formula[1] }),
+        element("small", { text: "÷ " + formula[2] })
+      ));
+    });
+    append(formulaTrail, formulaGrid);
+    main.appendChild(formulaTrail);
+    renderMathPractice();
+  }
+
+  function renderMathPractice() {
+    var candidates = questionBank().filter(function (question) {
+      var text = [question.topic, question.prompt, question.reportCategory].join(" ").toLowerCase();
+      return Array.isArray(question.options) && question.answer && (text.indexOf("math") !== -1 || text.indexOf("index") !== -1 || text.indexOf("efficiency") !== -1 || text.indexOf("frequency") !== -1);
+    });
+    var panel = element("section", { className: "panel math-practice-panel" });
+    append(panel, element("h3", { text: "Calculation decision practice" }), element("p", { text: "The exam may test setup and interpretation, not just arithmetic. Try these without leaving Math Coach." }));
+    shuffled(candidates).slice(0, 4).forEach(function (question, index) {
+      var card = element("article", { className: "lab-quiz-card" });
+      append(card,
+        element("span", { className: "tag", text: question.topic || "Report math" }),
+        element("strong", { text: (index + 1) + ". " + question.prompt })
+      );
+      var choices = element("div", { className: "option-list compact-options" });
+      question.options.forEach(function (choice) {
+        choices.appendChild(element("button", {
+          className: "option",
+          text: choice,
+          type: "button",
+          onClick: function (event) {
+            answerLabChoice(question, choice, event.currentTarget, choices, question.rationale || "");
+          }
+        }));
+      });
+      append(card, choices);
+      panel.appendChild(card);
+    });
+    main.appendChild(panel);
   }
 
   function calculatorShell(title, formula) {
