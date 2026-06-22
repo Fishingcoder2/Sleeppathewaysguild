@@ -26,6 +26,7 @@
       flagged: [],
       sessions: [],
       labResults: {},
+      notes: { title: "My RPSGT study notes", body: "" },
       lastRoom: "home"
     };
   }
@@ -196,6 +197,7 @@
       mock: renderMock,
       math: renderMath,
       flashcards: renderFlashcards,
+      notes: renderNotes,
       library: renderLibrary,
       reports: renderReports
     };
@@ -208,7 +210,7 @@
     var m = metrics();
     var milestone = currentMilestone();
     append(main,
-      roomHead("Guild Trailhead", "Build exam skill one trail marker at a time", "Learn the blueprint, practice decisions, read simulated signals, and use reports to choose the next useful step."),
+      roomHead("Sleep Pathways Guild home base", "Blueprint-first learning with a calmer, more professional front door", "Move from guided posts to focused practice, visual labs, flashcards, Math Coach, and reports without getting lost in one giant file."),
       append(element("section", { className: "hero-panel" }),
         append(element("div"),
           element("p", { className: "room-kicker", text: "Your current trail marker" }),
@@ -228,6 +230,20 @@
         stat("Readiness", readinessScore() + "%")
       )
     );
+
+    append(main, append(element("section", { className: "panel guild-promise" }),
+      append(element("div"),
+        element("p", { className: "room-kicker", text: "Guild identity" }),
+        element("h3", { text: "A learning hub, not a file archive" }),
+        element("p", { text: "The rebuilt app keeps the safer multi-file structure, but the experience should still feel like the original Study Trail: guided lanes, visual tools, repair-focused reports, and Coach Bob nudges that tell the learner what to do next." })
+      ),
+      append(element("div", { className: "promise-grid" }),
+        promiseCard("Guided pathways", "Start with a post, practice the task, then leave a trail marker in the report."),
+        promiseCard("Visual study tools", "Use signal labs, flashcards, and formulas to make hard concepts easier to scan."),
+        promiseCard("Repair reports", "Turn weak domains and missed items into tonight's study plan."),
+        promiseCard("RPSGT focus", "Keep the app centered on RPSGT preparation and current-source awareness.")
+      )
+    ));
 
     var path = element("section", { className: "panel trail-overview" });
     append(path, element("p", { className: "room-kicker", text: "The four-part study path" }), element("h3", { text: "Know where you are going" }));
@@ -251,6 +267,7 @@
     addHomeCard(cards, "Practice Center", "Choose a domain, task, difficulty, missed deck, or hard-question drill.", "Build a practice round", function () { setRoom("practice"); }, "practice-card");
     addHomeCard(cards, "Mock Exam Hall", "Use 25, 50, or 100-question mixed blueprint checks with a report afterward.", "Choose a mock", function () { setRoom("mock"); }, "mock-card");
     addHomeCard(cards, "Flashcard Workshop", "Review the full deck, missed questions, flagged cards, or an exam-day set.", "Review cards", function () { setRoom("flashcards"); }, "flash-card");
+    addHomeCard(cards, "My Notes", "Keep your memory tricks, confusing formulas, and Coach Bob reminders in one local notebook.", "Open notes", function () { setRoom("notes"); }, "notes-card");
     addHomeCard(cards, "Guild Reports", "Find weak domains, repeated misses, readiness trends, and tonight's study plan.", "Read reports", function () { setRoom("reports"); }, "report-card");
     append(main, cards, renderBlueprintSnapshot());
   }
@@ -259,6 +276,13 @@
     var card = element("article", { className: "panel launch-card " + (extraClass || "") });
     append(card, element("h3", { text: title }), element("p", { text: copy }), button(label, handler));
     parent.appendChild(card);
+  }
+
+  function promiseCard(title, copy) {
+    return append(element("article", { className: "promise-card" }),
+      element("strong", { text: title }),
+      element("span", { text: copy })
+    );
   }
 
   function currentMilestone() {
@@ -942,8 +966,8 @@
 
   function renderMath() {
     append(main,
-      roomHead("Math Coach", "Sleep-tech calculations without guesswork", "Use the named calculator for the task in front of you. No free-form expression evaluator is used."),
-      coach("Write the units first. Then ask whether the denominator is hours, minutes, total sleep time, or recording time.")
+      roomHead("Math Coach", "Sleep-tech calculations without guesswork", "Use the named calculator, formula trail, and decision practice the clients loved from the original app."),
+      coach("Write the units first. Then ask whether the denominator is hours, minutes, total sleep time, or recording time. Most math misses are denominator misses.")
     );
     var grid = element("div", { className: "math-grid" });
     addRateCalculator(grid, "AHI", "Apneas + hypopneas per hour of sleep", "Events", "Hours of sleep", "events/hour");
@@ -1262,6 +1286,68 @@
       .replace(/'/g, "&#039;");
   }
 
+  function renderNotes() {
+    if (!progress.notes) progress.notes = { title: "My RPSGT study notes", body: "" };
+    append(main,
+      roomHead("My Notes", "Keep the study trail personal", "Save memory tricks, formulas that keep slipping, and what Coach Bob would tell you to review next."),
+      coach("A useful note is short and actionable: what confused you, what the correct cue is, and what you will practice next.")
+    );
+    var layout = element("section", { className: "notes-layout" });
+    var editor = element("div", { className: "panel notes-editor" });
+    var titleField = element("input", {
+      id: "notes-title",
+      value: progress.notes.title || "My RPSGT study notes",
+      attributes: { "aria-label": "Notes title" }
+    });
+    var bodyField = element("textarea", {
+      id: "notes-body",
+      text: progress.notes.body || "",
+      placeholder: "Example: AHI denominator is total sleep time in hours. If recording time is used, stop and re-read the prompt.",
+      attributes: { rows: "18", "aria-label": "Study notes" }
+    });
+    var savedLine = element("p", { className: "notes-saved", text: "Saved locally in this browser." });
+    function saveNotes() {
+      progress.notes = { title: titleField.value, body: bodyField.value };
+      saveProgress();
+      savedLine.textContent = "Saved " + new Date().toLocaleTimeString();
+    }
+    titleField.addEventListener("input", saveNotes);
+    bodyField.addEventListener("input", saveNotes);
+    append(editor,
+      element("p", { className: "room-kicker", text: "Local notebook" }),
+      titleField,
+      bodyField,
+      append(element("div", { className: "actions" }),
+        button("Insert tonight's repair plan", function () {
+          var domain = weakestDomain();
+          var addition = "\n\nTonight's repair plan:\n- Review 10 flashcards for " + domain + " (" + domainName(domain) + ").\n- Answer 10 focused practice questions.\n- Write the one rule or cue that caused the miss.\n";
+          bodyField.value = (bodyField.value || "") + addition;
+          saveNotes();
+        }, "gold"),
+        button("Clear notes", function () {
+          titleField.value = "My RPSGT study notes";
+          bodyField.value = "";
+          saveNotes();
+        }, "secondary")
+      ),
+      savedLine
+    );
+    var rail = element("aside", { className: "panel notes-rail" });
+    append(rail,
+      element("p", { className: "room-kicker", text: "Good note format" }),
+      element("h3", { text: "Cue, trap, action" }),
+      append(element("ul"),
+        element("li", { text: "Cue: the phrase that tells you what rule or formula to use." }),
+        element("li", { text: "Trap: the wrong answer pattern you almost picked." }),
+        element("li", { text: "Action: the next small practice set or flashcard deck." })
+      ),
+      button("Open reports", function () { setRoom("reports"); }, "secondary"),
+      button("Open Math Coach", function () { setRoom("math"); }, "secondary")
+    );
+    append(layout, editor, rail);
+    main.appendChild(layout);
+  }
+
   function renderLibrary() {
     append(main, roomHead("Library", "Glossary and references", "Search one combined library, then return to the learning task that brought you here."));
     var panel = element("section", { className: "panel" });
@@ -1316,7 +1402,10 @@
   }
 
   function renderReports() {
-    append(main, roomHead("Reports Room", "Turn practice into a study decision", "See what is weak, what keeps repeating, whether you are mock-ready, and what to print."));
+    append(main,
+      roomHead("Guild Reports", "Turn practice into a study decision", "See what is weak, what keeps repeating, whether you are mock-ready, and what to print."),
+      coach("Reports are the map. Do not just read the score; look for the task pattern, choose one repair action, then come back after a short practice round.")
+    );
     var tabs = element("div", { className: "report-tabs no-print" });
     [
       ["progress", "Practice Progress"],
