@@ -1,0 +1,10 @@
+#Ads.txt sleeppathwaysguild.com
+#Ads.txt managed by AdsTxtManager.com - the free ads.txt management tool for publishers
+ownerdomain=sleeppathwaysguild.com
+contact=directsales@ezoic.com
+managerdomain=ezoic.ai
+
+ezoic.ai, f7cc09ce266a89d9166dfa85428cf9ff, DIRECT
+# 35
+google.com, pub-6644558441501035, DIRECT, f08c47fec0942fa0
+google.com, pub-1175987143200523, RESELLER, f08c47fec0942fa0
