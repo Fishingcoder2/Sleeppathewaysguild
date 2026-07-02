@@ -34,10 +34,10 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- ads.txt; then
-            echo "ads.txt is already up to date."
-          else
+          if [ -n "$(git status --porcelain -- ads.txt)" ]; then
             git add ads.txt
             git commit -m "Update Ezoic ads.txt"
             git push
+          else
+            echo "ads.txt is already up to date."
           fi
