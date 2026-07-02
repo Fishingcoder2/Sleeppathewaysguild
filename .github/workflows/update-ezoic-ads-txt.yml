@@ -1,0 +1,43 @@
+name: Update Ezoic ads.txt
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 8 * * *"
+  push:
+    paths:
+      - ".github/workflows/update-ezoic-ads-txt.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update-ads-txt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download Ezoic managed ads.txt
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://srv.adstxtmanager.com/19390/sleeppathwaysguild.com" -o ads.txt
+          test -s ads.txt
+          if grep -qiE "<html|not found|error" ads.txt; then
+            echo "Downloaded ads.txt does not look valid."
+            cat ads.txt
+            exit 1
+          fi
+
+      - name: Commit ads.txt if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- ads.txt; then
+            echo "ads.txt is already up to date."
+          else
+            git add ads.txt
+            git commit -m "Update Ezoic ads.txt"
+            git push
+          fi
