@@ -1,4 +1,4 @@
-name: Update Ezoic ads.txt
+name: Maintain Ezoic ads.txt redirect
 
 on:
   workflow_dispatch:
@@ -12,11 +12,11 @@ permissions:
   contents: write
 
 concurrency:
-  group: update-ezoic-ads-txt
+  group: maintain-ezoic-ads-txt
   cancel-in-progress: true
 
 jobs:
-  update-ads-txt:
+  maintain-ads-txt:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -29,16 +29,10 @@ jobs:
           set -euo pipefail
           git pull --ff-only origin main
 
-      - name: Download Ezoic managed ads.txt
+      - name: Write Ezoic Ads.txt Manager redirect
         run: |
           set -euo pipefail
-          curl -fsSL "https://srv.adstxtmanager.com/19390/sleeppathwaysguild.com" -o ads.txt
-          test -s ads.txt
-          if grep -qiE "<html|not found|error" ads.txt; then
-            echo "Downloaded ads.txt does not look valid."
-            cat ads.txt
-            exit 1
-          fi
+          printf 'redirect=https://srv.adstxtmanager.com/19390/sleeppathwaysguild.com\n' > ads.txt
 
       - name: Commit ads.txt if changed
         run: |
@@ -47,9 +41,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [ -n "$(git status --porcelain -- ads.txt)" ]; then
             git add ads.txt
-            git commit -m "Update Ezoic ads.txt"
+            git commit -m "Maintain Ezoic ads.txt redirect"
             git pull --rebase origin main
             git push
           else
-            echo "ads.txt is already up to date."
+            echo "ads.txt redirect is already up to date."
           fi
