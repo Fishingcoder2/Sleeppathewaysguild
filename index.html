@@ -7,7 +7,7 @@
   <title>Sleep Pathways Guild | Community for Sleep Technologists</title>
   <meta
     name="description"
-    content="Sleep Pathways Guild is a peer-led professional community for sleep technologists and CCSH practitioners. Its permanently free self-guided webapp helps learners prepare for the RPSGT exam[...]
+    content="Sleep Pathways Guild is a peer-led professional community for sleep technologists and CCSH practitioners. Its permanently free self-guided webapp helps learners prepare for the RPSGT exam, and its curated book store points learners to study resources and official references."
   />
 
   <script src="https://analytics.ahrefs.com/analytics.js" data-key="/s9HvK+nlfPasBLtcJ6y3A" async></script>
@@ -19,7 +19,6 @@
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6650393062138165"
      crossorigin="anonymous"></script>
-
 
   <style>
     :root{
@@ -128,10 +127,16 @@
     }
 
     .nav a:hover,
-    .nav a:focus{
+    .nav a:focus,
+    .nav a.featured{
       color:var(--ink);
       background:rgba(255,255,255,.08);
       outline:none;
+    }
+
+    .nav a.featured{
+      border:1px solid rgba(200,154,50,.34);
+      color:#fff3d0;
     }
 
     .hero{padding:54px 0 28px}
@@ -150,11 +155,15 @@
       box-shadow:var(--shadow);
     }
 
-    .heroCard{
-      padding:36px;
-      position:relative;
-      overflow:hidden;
-    }
+    .heroCard,
+    .sideCard,
+    .infoCard,
+    .quoteCard,
+    .legalCard,
+    .bookStoreCard,
+    .mentoringCard{padding:26px}
+
+    .heroCard{padding:36px;position:relative;overflow:hidden}
 
     .heroCard:after{
       content:"";
@@ -224,10 +233,7 @@
       z-index:1;
     }
 
-    .heroStrong{
-      color:#fff;
-      font-weight:900;
-    }
+    .heroStrong{color:#fff;font-weight:900}
 
     .pillRow{
       display:flex;
@@ -276,6 +282,7 @@
       font-weight:900;
       transition:.18s ease;
       border:1px solid transparent;
+      text-align:center;
     }
 
     .btn.primary{
@@ -297,10 +304,7 @@
     }
 
     .btn:hover,
-    .btn:focus{
-      transform:translateY(-1px);
-      outline:none;
-    }
+    .btn:focus{transform:translateY(-1px);outline:none}
 
     .heroStats{
       display:grid;
@@ -334,14 +338,7 @@
       line-height:1.45;
     }
 
-    .sideStack{
-      display:grid;
-      gap:18px;
-    }
-
-    .sideCard{
-      padding:24px;
-    }
+    .sideStack{display:grid;gap:18px}
 
     .visualCard{
       overflow:hidden;
@@ -360,12 +357,7 @@
       pointer-events:none;
     }
 
-    .badgeFrame{
-      display:grid;
-      gap:16px;
-      position:relative;
-      z-index:1;
-    }
+    .badgeFrame{display:grid;gap:16px;position:relative;z-index:1}
 
     .badgeFrame img{
       width:min(100%, 420px);
@@ -397,7 +389,12 @@
       background:linear-gradient(180deg, rgba(255,248,231,.15), rgba(255,255,255,.05));
     }
 
-    .missionCard p{
+    .missionCard p,
+    .infoCard p,
+    .mentoringCard p,
+    .legalCard p,
+    .bookStoreCard p,
+    .footerText{
       color:var(--muted);
       line-height:1.72;
       margin:0 0 12px;
@@ -430,22 +427,10 @@
 
     .grid3,
     .grid4,
-    .grid2{
-      display:grid;
-      gap:16px;
-    }
-
+    .grid2{display:grid;gap:16px}
     .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
     .grid4{grid-template-columns:repeat(4,minmax(0,1fr))}
     .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
-
-    .infoCard{padding:24px}
-
-    .infoCard p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.68;
-    }
 
     .microList{
       margin:14px 0 0;
@@ -474,181 +459,51 @@
       background:linear-gradient(135deg,var(--gold),var(--teal));
     }
 
-    .quoteCard{
-      padding:24px;
-      border-left:8px solid var(--gold);
-      background:linear-gradient(180deg, rgba(255,248,231,.14), rgba(255,255,255,.05));
-    }
-
-    .quoteCard blockquote{
-      margin:0 0 12px;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.35rem;
-      line-height:1.4;
-      color:#fff5d6;
-    }
-
-    .quoteCard cite{
-      color:var(--muted);
-      font-style:normal;
-      display:block;
-      margin-bottom:14px;
-    }
-
-    .quoteCard p{
-      color:var(--muted);
-      line-height:1.68;
-      margin:0;
-    }
-
-    .gratitudeCard{
+    .bookStoreCard{
       position:relative;
       overflow:hidden;
-    }
-
-    .gratitudeCard:after{
-      content:"";
-      position:absolute;
-      inset:auto -50px -50px auto;
-      width:160px;
-      height:160px;
-      border-radius:999px;
-      background:radial-gradient(circle, rgba(47,183,176,.16), transparent 70%);
-      pointer-events:none;
-    }
-
-    .gratitudeCard a{
-      color:#fff3d0;
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
-
-    .principleBand{
-      padding:26px;
       display:grid;
-      grid-template-columns:minmax(0,1.3fr) minmax(250px,.7fr);
-      gap:20px;
+      grid-template-columns:minmax(0,1.08fr) minmax(280px,.92fr);
+      gap:22px;
       align-items:center;
+      border:1px solid rgba(200,154,50,.32);
+      border-left:8px solid var(--gold);
       background:
-        radial-gradient(circle at right, rgba(200,154,50,.16), transparent 20rem),
-        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+        radial-gradient(circle at 12% 10%, rgba(200,154,50,.18), transparent 20rem),
+        radial-gradient(circle at 96% 18%, rgba(47,183,176,.18), transparent 20rem),
+        linear-gradient(180deg, rgba(255,248,231,.13), rgba(255,255,255,.06));
     }
 
-    .principleBand p{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.74;
-      max-width:80ch;
-    }
+    .bookStoreCard h2{margin-top:14px}
 
-    .principlePills{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
-    .legalCard{
-      padding:26px;
-      border:1px solid rgba(200,154,50,.24);
-      background:linear-gradient(180deg, rgba(255,248,231,.10), rgba(255,255,255,.05));
-    }
-
-    .legalCard p{
-      color:var(--muted);
-      line-height:1.72;
-      margin:0 0 12px;
-    }
-
-    .legalCard p:last-child{margin-bottom:0}
-
-    .footer{
-      padding:30px 0 44px;
-    }
-
-    .footerCard{
-      padding:24px;
+    .bookStoreFeatureGrid{
       display:grid;
-      grid-template-columns:minmax(0,1.18fr) minmax(260px,.82fr);
-      gap:20px;
-      align-items:start;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
     }
 
-    .footerBrand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      margin-bottom:12px;
+    .bookMini{
+      padding:15px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
     }
 
-    .footerBrand img{
-      width:58px;
-      height:58px;
-      border-radius:18px;
-      object-fit:contain;
-      padding:4px;
-      background:#0d1e36;
-      border:1px solid rgba(255,255,255,.16);
-    }
+    .bookMini strong{display:block;color:#fff3d0;margin-bottom:5px}
+    .bookMini span{display:block;color:var(--muted);font-size:.9rem;line-height:1.45}
 
-    .footerBrand strong{
-      display:block;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.2rem;
-    }
-
-    .footerBrand span{
-      display:block;
-      color:var(--muted);
-      font-size:.86rem;
-      margin-top:4px;
-      line-height:1.4;
-    }
-
-    .footerText{
-      color:var(--muted);
-      line-height:1.68;
-      margin:0;
-    }
-
-    .footerLinks{
-      display:grid;
-      gap:10px;
-    }
-
-    .footerLinks a{
-      color:#eef4ff;
-      padding:12px 14px;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:16px;
-      background:rgba(255,255,255,.04);
-      transition:.18s ease;
-    }
-
-    .footerLinks a:hover,
-    .footerLinks a:focus{
-      transform:translateY(-1px);
-      border-color:rgba(255,255,255,.2);
-      background:rgba(255,255,255,.07);
-      outline:none;
-    }
-
-    .footerLinks a span{
-      display:block;
-      color:var(--muted);
-      font-size:.86rem;
-      margin-top:4px;
-      line-height:1.42;
-    }
-
-    .legalFine{
+    .affiliateDisclosure{
       margin-top:14px;
-      color:var(--muted);
-      font-size:.88rem;
-      line-height:1.65;
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:#fff8e7;
+      font-size:.92rem;
+      line-height:1.55;
     }
 
-
+    .affiliateDisclosure strong{display:block;color:#fff3d0;margin-bottom:4px}
 
     .supportNotice{
       margin-top:18px;
@@ -662,29 +517,12 @@
       z-index:1;
     }
 
-    .supportNotice strong{
-      display:block;
-      color:#fff3d0;
-      font-size:1.05rem;
-      margin-bottom:6px;
-    }
-
-    .supportNotice p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.55;
-    }
+    .supportNotice strong{display:block;color:#fff3d0;font-size:1.05rem;margin-bottom:6px}
+    .supportNotice p{margin:0;color:var(--muted);line-height:1.55}
 
     .mentoringCard{
-      padding:26px;
       border-left:8px solid var(--gold);
       background:linear-gradient(180deg, rgba(255,248,231,.14), rgba(255,255,255,.05));
-    }
-
-    .mentoringCard p{
-      color:var(--muted);
-      line-height:1.72;
-      margin:0 0 12px;
     }
 
     .supportActionGrid{
@@ -695,22 +533,77 @@
       align-items:stretch;
     }
 
-    .calendarButtonMount{
-      display:flex;
+    .calendarButtonMount{display:flex;align-items:center;min-height:50px}
+    .calendarButtonMount button{min-height:50px !important;border-radius:999px !important;font-weight:900 !important}
+
+    .principleBand{
+      padding:26px;
+      display:grid;
+      grid-template-columns:minmax(0,1.3fr) minmax(250px,.7fr);
+      gap:20px;
       align-items:center;
-      min-height:50px;
+      background:
+        radial-gradient(circle at right, rgba(200,154,50,.16), transparent 20rem),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
     }
 
-    .calendarButtonMount button{
-      min-height:50px !important;
-      border-radius:999px !important;
-      font-weight:900 !important;
+    .principleBand p{margin:10px 0 0;color:var(--muted);line-height:1.74;max-width:80ch}
+
+    .principlePills{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+    .legalCard{
+      border:1px solid rgba(200,154,50,.24);
+      background:linear-gradient(180deg, rgba(255,248,231,.10), rgba(255,255,255,.05));
     }
+
+    .footer{padding:30px 0 44px}
+
+    .footerCard{
+      padding:24px;
+      display:grid;
+      grid-template-columns:minmax(0,1.18fr) minmax(260px,.82fr);
+      gap:20px;
+      align-items:start;
+    }
+
+    .footerBrand{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+
+    .footerBrand img{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      object-fit:contain;
+      padding:4px;
+      background:#0d1e36;
+      border:1px solid rgba(255,255,255,.16);
+    }
+
+    .footerBrand strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:1.2rem}
+    .footerBrand span{display:block;color:var(--muted);font-size:.86rem;margin-top:4px;line-height:1.4}
+
+    .footerLinks{display:grid;gap:10px}
+
+    .footerLinks a{
+      color:#eef4ff;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      transition:.18s ease;
+    }
+
+    .footerLinks a:hover,
+    .footerLinks a:focus{transform:translateY(-1px);border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.07);outline:none}
+
+    .footerLinks a span{display:block;color:var(--muted);font-size:.86rem;margin-top:4px;line-height:1.42}
+
+    .legalFine{margin-top:14px;color:var(--muted);font-size:.88rem;line-height:1.65}
 
     @media (max-width:1100px){
       .heroGrid,
       .footerCard,
-      .principleBand{grid-template-columns:1fr}
+      .principleBand,
+      .bookStoreCard{grid-template-columns:1fr}
       .grid3{grid-template-columns:1fr 1fr}
       .grid4{grid-template-columns:1fr 1fr}
       .principlePills{justify-content:flex-start}
@@ -724,14 +617,16 @@
       .infoCard,
       .quoteCard,
       .legalCard,
-      .principleBand{padding:22px}
+      .principleBand,
+      .bookStoreCard,
+      .mentoringCard{padding:22px}
       .heroStats,
       .grid3,
       .grid4,
-      .grid2{grid-template-columns:1fr}
+      .grid2,
+      .bookStoreFeatureGrid{grid-template-columns:1fr}
       .ctaRow{flex-direction:column}
       .btn{width:100%}
-
       .supportActionGrid{grid-template-columns:1fr}
       .calendarButtonMount, .calendarButtonMount > *{width:100%}
       .badgeFrame img{width:100%}
@@ -754,8 +649,7 @@
       <nav class="nav" aria-label="Primary">
         <a href="#guild">The Guild</a>
         <a href="#free-webapp">RPSGT Exam Webapp</a>
-        <a href="#gratitude">Gratitude</a>
-        <a href="#tributes">Tributes</a>
+        <a class="featured" href="#book-store">Book Store</a>
         <a href="https://blog.sleeppathwaysguild.com/">Blog</a>
         <a href="#mentoring">Mentoring</a>
         <a href="#contact">Contact</a>
@@ -786,9 +680,9 @@
 
           <div class="ctaRow">
             <a class="btn primary" href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">Open the RPSGT Exam Webapp</a>
-            <a class="btn gold" href="#mentoring">Schedule Mentoring Meeting</a>
+            <a class="btn gold" href="https://blog.sleeppathwaysguild.com/p/rpsgt-exam-prep-book-store.html" target="_blank" rel="noopener">RPSGT Exam Prep Book Store</a>
+            <a class="btn secondary" href="#mentoring">Schedule Mentoring Meeting</a>
             <a class="btn secondary" href="mailto:admin@sleeppathsguild.com?subject=Sleep%20Pathways%20Guild%20Support">Email Contact / Webapp Support</a>
-            <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/">Visit the Guild Blog</a>
           </div>
 
           <div class="supportNotice">
@@ -928,6 +822,49 @@
       </div>
     </section>
 
+    <section class="section" id="book-store">
+      <div class="wrap card bookStoreCard">
+        <div>
+          <span class="eyebrow">New study shelf</span>
+          <h2>RPSGT Exam Prep Book Store</h2>
+          <p class="sectionLead">
+            Explore a curated Sleep Pathways Guild book shelf for RPSGT exam prep, sleep technology review,
+            polysomnography study, pediatric sleep, scoring support, and official reference awareness.
+          </p>
+          <p>
+            The store separates study companion books from official references such as the AASM Scoring Manual and the International Classification of Sleep Disorders, so learners know where to start and when to verify rules directly with official sources.
+          </p>
+          <div class="ctaRow">
+            <a class="btn gold" href="https://blog.sleeppathwaysguild.com/p/rpsgt-exam-prep-book-store.html" target="_blank" rel="noopener">Browse the RPSGT Book Store</a>
+            <a class="btn secondary" href="https://blog.sleeppathwaysguild.com/" target="_blank" rel="noopener">Visit the Guild Blog</a>
+          </div>
+          <div class="affiliateDisclosure">
+            <strong>Affiliate disclosure</strong>
+            As an Amazon Associate I earn from qualifying purchases. Sleep Pathways Guild may earn a small commission from qualifying Amazon purchases made through links on the book store page, at no extra cost to you.
+          </div>
+        </div>
+
+        <div class="bookStoreFeatureGrid" aria-label="Book store highlights">
+          <div class="bookMini">
+            <strong>RPSGT study books</strong>
+            <span>Sleep technology, PSG, scoring review, and exam-prep resources.</span>
+          </div>
+          <div class="bookMini">
+            <strong>Official references</strong>
+            <span>AASM scoring and ICSD guidance should be checked through official sources.</span>
+          </div>
+          <div class="bookMini">
+            <strong>Pediatric sleep</strong>
+            <span>Resources for pediatric sleep concepts and child sleep study awareness.</span>
+          </div>
+          <div class="bookMini">
+            <strong>Study supplies</strong>
+            <span>Index cards, notebooks, tabs, EKG tools, and night-shift support items.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="mentoring">
       <div class="wrap">
         <div class="card mentoringCard">
@@ -1000,5 +937,46 @@
       </div>
     </section>
 
-    <section class="section" id="tributes">
-      <div class="wrap">
+    <section class="section">
+      <div class="wrap card legalCard">
+        <span class="eyebrow">Important note</span>
+        <h2 style="margin-top:14px">Independent educational support</h2>
+        <p style="margin-top:14px">
+          Sleep Pathways Guild is an independent educational project and is not an official BRPT, AASM, or AAST product. Learners should verify current exam requirements, scoring rules, and professional standards directly with the appropriate official organizations.
+        </p>
+        <p>
+          Affiliate links help support the continued development of free and low-cost Sleep Pathways Guild resources, including study tools, review pages, practice content, and free educational materials for sleep technologists.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="wrap card footerCard">
+      <div>
+        <div class="footerBrand">
+          <img src="https://sleeppathwaysguild.com/assets/branding/spg-compass-logo.png" alt="Sleep Pathways Guild compass logo" />
+          <div>
+            <strong>Sleep Pathways Guild</strong>
+            <span>Peer-led learning support for the sleep technology community.</span>
+          </div>
+        </div>
+        <p class="footerText">
+          Built to support structured RPSGT preparation, professional growth, mentorship, and respect for the craft of sleep technology.
+        </p>
+        <p class="legalFine">
+          © Sleep Pathways Guild. Educational content only. Not medical advice, legal advice, or an official credentialing-board resource.
+        </p>
+      </div>
+
+      <div class="footerLinks">
+        <a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">Open the RPSGT Exam Webapp<span>Free self-guided exam-prep webapp.</span></a>
+        <a href="https://blog.sleeppathwaysguild.com/p/rpsgt-exam-prep-book-store.html" target="_blank" rel="noopener">RPSGT Exam Prep Book Store<span>Curated books and study resources.</span></a>
+        <a href="https://blog.sleeppathwaysguild.com/" target="_blank" rel="noopener">Visit the Guild Blog<span>Articles, updates, and learning support.</span></a>
+        <a href="mailto:admin@sleeppathsguild.com?subject=Sleep%20Pathways%20Guild%20Support">Email Contact / Webapp Support<span>admin@sleeppathsguild.com</span></a>
+        <a href="tel:+17722423667">Call or text<span>(772) 242-3667</span></a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
