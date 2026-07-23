@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add safe runtime removal
+      - name: Add and validate safe runtime removal
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -22,17 +22,16 @@ jobs:
           path = Path('RPSGTv2.2026.html')
           text = path.read_text(encoding='utf-8')
           marker = 'spg-remove-mentor-button'
-          if marker in text:
-              print('Safe mentor-button patch already present.')
-              raise SystemExit(0)
 
           script = r'''
 <script id="spg-remove-mentor-button">
 (function(){
   function removeMentorAppointmentButton(){
-    document.querySelectorAll('a,button,[role="button"]').forEach(function(el){
+    document.querySelectorAll('a,button,[role="button"],span,div').forEach(function(el){
       var label=(el.textContent||'').replace(/\s+/g,' ').trim();
-      if(/^schedule free mentor appointment$/i.test(label) || /^schedule free mentorship appointment$/i.test(label)){
+      if(/^schedule free mentor(?:ship)? appointment$/i.test(label)){
+        el.style.display='none';
+        el.setAttribute('aria-hidden','true');
         el.remove();
       }
     });
@@ -42,15 +41,25 @@ jobs:
   }else{
     removeMentorAppointmentButton();
   }
+  window.addEventListener('load',removeMentorAppointmentButton,{once:true});
   new MutationObserver(removeMentorAppointmentButton).observe(document.documentElement,{childList:true,subtree:true});
+  setTimeout(removeMentorAppointmentButton,250);
+  setTimeout(removeMentorAppointmentButton,1000);
 })();
 </script>
 '''
 
-          pos = text.lower().rfind('</body>')
-          if pos == -1:
-              raise SystemExit('Could not find closing </body>; file left unchanged.')
-          text = text[:pos] + script + text[pos:]
+          if marker not in text:
+              pos = text.lower().rfind('</body>')
+              if pos == -1:
+                  raise SystemExit('Could not find closing </body>; file left unchanged.')
+              text = text[:pos] + script + text[pos:]
+
+          if text.count(marker) != 1:
+              raise SystemExit('Validation failed: expected exactly one safe-patch marker.')
+          if '</body>' not in text.lower() or '</html>' not in text.lower():
+              raise SystemExit('Validation failed: closing document tags missing.')
+
           path.write_text(text, encoding='utf-8')
           PY
       - name: Commit safe patch
