@@ -1,0 +1,236 @@
+{
+  "blueprintId": "BRPT-RPSGT-2023-09-01",
+  "credential": "RPSGT",
+  "title": "RPSGT Exam Blueprint",
+  "issuingOrganization": "Board of Registered Polysomnographic Technologists",
+  "effectiveDate": "2023-09-01",
+  "active": true,
+  "startDate": "2023-09-01",
+  "endDate": null,
+  "lastVerified": "2026-07-23",
+  "nextReviewDue": "2026-10-23",
+  "officialSourceUrl": "https://brpt.org/rpsgt/exam-blueprint/",
+  "exam": {
+    "totalItems": 175,
+    "scoredItems": 150,
+    "pretestItems": 25,
+    "responseFormat": "single-best-response",
+    "responseOptionsPerItem": 4,
+    "timeLimitMinutes": 180
+  },
+  "generalKnowledge": [
+    "Medical terminology",
+    "Safety",
+    "Verbal and written communication skills",
+    "Ethics",
+    "Patient confidentiality",
+    "Basic patient care and emergency procedures",
+    "Basic math skills and calculations",
+    "Computer skills"
+  ],
+  "knowledgeAreas": [
+    "Sleep disorders and diagnostic criteria",
+    "Sleep-related comorbidities",
+    "Anatomy and physiology",
+    "Neurophysiology",
+    "Cardiac physiology",
+    "Respiratory physiology",
+    "Sleep physiology",
+    "Scoring rules",
+    "Practice parameters",
+    "Testing procedures",
+    "Medications and over-the-counter products",
+    "Basic knowledge of computers",
+    "EEG waveform morphology",
+    "Instrumentation",
+    "Intervention, treatment, and therapy modalities"
+  ],
+  "domains": [
+    {
+      "id": "D1",
+      "title": "Clinical Overview, Education, Patient Support",
+      "weightPercent": 20.0,
+      "active": true,
+      "tasks": [
+        {
+          "id": "D1-A",
+          "title": "Patient information and clinical assessment",
+          "itemRange": "10-14",
+          "topics": [
+            "Clinician's orders and testing indications",
+            "History and physical",
+            "Sleep disorders, including circadian rhythm disorders, sleep-disordered breathing, parasomnias, and hypersomnias",
+            "Medications, including risks, implications, and effects on sleep",
+            "Patient orientation to department",
+            "Establish clinical baseline, including age-specific care, sleep history, mobility, pain, and vital signs",
+            "Questionnaires, including Epworth Sleepiness Scale, STOP-Bang, and pre/post PSG"
+          ]
+        },
+        {
+          "id": "D1-B",
+          "title": "Patient and caregiver education",
+          "itemRange": "7-11",
+          "topics": [
+            "Sleep hygiene",
+            "Therapy and compliance",
+            "Sleep disorder testing"
+          ]
+        },
+        {
+          "id": "D1-C",
+          "title": "Provide therapy support",
+          "itemRange": "7-11",
+          "topics": [
+            "PAP desensitization techniques",
+            "PAP therapy application and mechanics",
+            "Assessment of the download report"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "title": "Sleep Study Preparation and Performance",
+      "weightPercent": 27.3,
+      "active": true,
+      "tasks": [
+        {
+          "id": "D2-A",
+          "title": "Determine technical preparation",
+          "itemRange": "12-16",
+          "topics": [
+            "Equipment and supplies",
+            "Electrode and sensor placement, including modifications for patient need",
+            "Site preparation and application",
+            "Technical specifications and instrumentation",
+            "Montage selection",
+            "Infection control, including universal precautions, PPE, and equipment disinfection"
+          ]
+        },
+        {
+          "id": "D2-B",
+          "title": "Perform procedures and follow practice guidelines",
+          "itemRange": "11-15",
+          "topics": [
+            "Adult PSG",
+            "Pediatric PSG",
+            "Multiple Sleep Latency Test",
+            "Maintenance of Wakefulness Test",
+            "Home Sleep Apnea Testing"
+          ]
+        },
+        {
+          "id": "D2-C",
+          "title": "Identify, respond, and document",
+          "itemRange": "12-16",
+          "topics": [
+            "Waveform variations, including abnormal EEG",
+            "Artifacts",
+            "Equipment malfunction",
+            "Recognition of cardiac, respiratory, movement, and capnography events",
+            "Settings, including filters, sensitivity, and gain",
+            "Channel and physiological calibrations",
+            "Impedance verification"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D3",
+      "title": "Scoring, Reporting, and Data Verification",
+      "weightPercent": 25.3,
+      "active": true,
+      "tasks": [
+        {
+          "id": "D3-A",
+          "title": "Score adult studies",
+          "itemRange": "18-22",
+          "topics": [
+            "Sleep stages",
+            "Arousals",
+            "Respiratory events",
+            "Desaturations",
+            "Movements",
+            "Cardiac events"
+          ]
+        },
+        {
+          "id": "D3-B",
+          "title": "Score pediatric and infant studies",
+          "itemRange": "6-10",
+          "topics": [
+            "Sleep staging",
+            "Arousals",
+            "Respiratory events",
+            "Desaturations",
+            "Movements",
+            "Cardiac events"
+          ]
+        },
+        {
+          "id": "D3-C",
+          "title": "Generate and verify report",
+          "itemRange": "8-12",
+          "topics": [
+            "Calculations, including AHI, RDI, TST, and REI",
+            "Technologist documentation summary",
+            "Graphic summary, including histogram, hypnogram, and titration table"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D4",
+      "title": "Treatment and Intervention",
+      "weightPercent": 27.3,
+      "active": true,
+      "tasks": [
+        {
+          "id": "D4-A",
+          "title": "Administer PAP therapy",
+          "itemRange": "24-28",
+          "topics": [
+            "Adult practice guidelines",
+            "Pediatric practice guidelines",
+            "Mode of intervention",
+            "Acclimation and interface fit",
+            "Troubleshooting, including leak levels, pressure release, and humidification",
+            "Indications and contraindications",
+            "CPAP",
+            "Bilevel PAP",
+            "APAP",
+            "ASV",
+            "NIPPV"
+          ]
+        },
+        {
+          "id": "D4-B",
+          "title": "Identify alternative therapies",
+          "itemRange": "8-12",
+          "topics": [
+            "Oral appliances",
+            "Positional therapy",
+            "Surgical options",
+            "Indications and contraindications"
+          ]
+        },
+        {
+          "id": "D4-C",
+          "title": "Administer oxygen therapy",
+          "itemRange": "3-7",
+          "topics": [
+            "Oxygen titration practice guidelines",
+            "Indications and contraindications"
+          ]
+        }
+      ]
+    }
+  ],
+  "changeHistory": [
+    {
+      "date": "2026-07-23",
+      "action": "Initial structured transcription from the current official BRPT blueprint page",
+      "reviewStatus": "current"
+    }
+  ]
+}
