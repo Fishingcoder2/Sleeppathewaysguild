@@ -1,0 +1,67 @@
+name: Remove RPSGT mentorship scheduling
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/remove-rpsgt-mentorship.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  clean-webapp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove mentorship scheduling UI and code
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('RPSGTv2.2026.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+
+          # Remove buttons and links advertising mentorship scheduling.
+          patterns = [
+              r'<a\b[^>]*>[^<]*(?:schedule\s+(?:a\s+)?(?:free\s+)?mentorship|mentorship\s+appointment|book\s+(?:a\s+)?mentorship)[^<]*</a>',
+              r'<button\b[^>]*>[^<]*(?:schedule\s+(?:a\s+)?(?:free\s+)?mentorship|mentorship\s+appointment|book\s+(?:a\s+)?mentorship)[^<]*</button>',
+              r'<(?:span|div)\b[^>]*>\s*(?:schedule\s+(?:a\s+)?(?:free\s+)?mentorship\s+appointment)\s*</(?:span|div)>',
+          ]
+          for pattern in patterns:
+              text = re.sub(pattern, '', text, flags=re.I | re.S)
+
+          # Remove Google Calendar appointment-scheduling assets and embedded setup code.
+          text = re.sub(r'<link\b[^>]*calendar\.google\.com/calendar/scheduling-button-script\.css[^>]*>', '', text, flags=re.I)
+          text = re.sub(r'<script\b[^>]*calendar\.google\.com/calendar/scheduling-button-script\.js[^>]*>\s*</script>', '', text, flags=re.I | re.S)
+          text = re.sub(r'<script\b[^>]*>.*?(?:calendar\.schedulingButton|appointments/schedules/|schedulingButton\.load).*?</script>', '', text, flags=re.I | re.S)
+
+          # Remove remaining standalone scheduling notices and exact phrases.
+          replacements = [
+              r'Schedule Free Mentorship Appointment',
+              r'Schedule a Free Mentorship Appointment',
+              r'Schedule Mentorship Appointment',
+              r'Schedule a Mentorship Appointment',
+              r'Book a Mentorship Appointment',
+              r'Free Mentorship Appointment',
+          ]
+          for phrase in replacements:
+              text = re.sub(phrase, '', text, flags=re.I)
+
+          # Remove empty action containers left by the cleanup.
+          text = re.sub(r'<(?:div|span)\b([^>]*)>\s*</(?:div|span)>', lambda m: '' if re.search(r'(?:actions?|calendar|mentor|appointment)', m.group(1), re.I) else m.group(0), text, flags=re.I | re.S)
+
+          if text == original:
+              raise SystemExit('No mentorship scheduling content was found; no file changes made.')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit cleaned webapp
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add RPSGTv2.2026.html
+          git diff --cached --quiet || git commit -m "Remove mentorship appointments from RPSGT webapp"
+          git push
