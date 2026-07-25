@@ -58,4 +58,4 @@ jobs:
           git commit -m 'Deploy repaired RPSGT webapp'
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
-# Register on main, apply only after exact old/new hashes and SHA-256 pass.
+# Retrigger after workflow registration on the default branch.
