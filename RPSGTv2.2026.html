@@ -22,12 +22,12 @@
       <div class="spinner" aria-hidden="true"></div>
       <h1>Loading the RPSGT Study Trail</h1>
       <p>The study app is large and may need a few seconds on a phone or slower connection.</p>
-      <a class="fallbackLink" href="/RPSGTv2.2026-core.html?loader=20260725b">Open the study app directly</a>
+      <a class="fallbackLink" href="RPSGTv2.2026-core.html?loader=20260725b">Open the study app directly</a>
     </div>
   </div>
 
   <iframe id="rpsgtApp" title="Sleep Pathways Guild RPSGT Study Trail" allow="fullscreen; clipboard-write" referrerpolicy="same-origin"></iframe>
-  <noscript><div class="loadPanel"><div class="loadCard"><h1>JavaScript is required</h1><p><a href="/RPSGTv2.2026-core.html?loader=20260725b">Open the RPSGT Study Trail</a></p></div></div></noscript>
+  <noscript><div class="loadPanel"><div class="loadCard"><h1>JavaScript is required</h1><p><a href="RPSGTv2.2026-core.html?loader=20260725b">Open the RPSGT Study Trail</a></p></div></div></noscript>
 
   <script>
   (function(){
@@ -38,7 +38,7 @@
     var loaded=false;
     var separator=location.search?'&':'?';
 
-    frame.src='/RPSGTv2.2026-core.html'+location.search+separator+'loader=20260725b'+location.hash;
+    frame.src='RPSGTv2.2026-core.html'+location.search+separator+'loader=20260725b'+location.hash;
 
     function removeObsoleteControls(doc){
       try{
