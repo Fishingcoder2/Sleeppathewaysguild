@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - deploy/rpsgt-loading-repair-2026-07-25
     paths:
       - '.github/workflows/apply-rpsgt-loading-repair.yml'
 
@@ -16,58 +15,33 @@ jobs:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out deployment branch
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Rebuild and verify repaired core
+      - name: Download and verify repaired RPSGT core
         shell: bash
         run: |
           set -euo pipefail
 
-          cat .deploy/rpsgt-repair/part-*.b64 > /tmp/rpsgt-repair.patch.gz.b64
-          base64 --decode /tmp/rpsgt-repair.patch.gz.b64 > /tmp/rpsgt-repair.patch.gz
-          gzip -dc /tmp/rpsgt-repair.patch.gz > /tmp/rpsgt-repair.patch
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          patch = Path('/tmp/rpsgt-repair.patch')
-          text = patch.read_text(encoding='utf-8')
-          replacements = {
-              'diff --git a/mnt/data/RPSGTv2.2026.html b/mnt/data/RPSGTv2.2026_repaired_2026-07-25.html':
-                  'diff --git a/RPSGTv2.2026-core.html b/RPSGTv2.2026-core.html',
-              '--- a/mnt/data/RPSGTv2.2026.html':
-                  '--- a/RPSGTv2.2026-core.html',
-              '+++ b/mnt/data/RPSGTv2.2026_repaired_2026-07-25.html':
-                  '+++ b/RPSGTv2.2026-core.html',
-          }
-          for old, new in replacements.items():
-              if old not in text:
-                  raise SystemExit(f'Missing expected patch header: {old}')
-              text = text.replace(old, new, 1)
-          patch.write_text(text, encoding='utf-8')
-          PY
-
-          grep -q '^diff --git a/RPSGTv2.2026-core.html b/RPSGTv2.2026-core.html$' /tmp/rpsgt-repair.patch
-          grep -q '^--- a/RPSGTv2.2026-core.html$' /tmp/rpsgt-repair.patch
-          grep -q '^+++ b/RPSGTv2.2026-core.html$' /tmp/rpsgt-repair.patch
-
           old_blob="$(git hash-object RPSGTv2.2026-core.html)"
           test "$old_blob" = "4423bb6220af7fa354ce4f33acedc6f7b6a8cc53"
 
-          git apply --binary /tmp/rpsgt-repair.patch
+          curl --fail --location --retry 4 --retry-delay 2 \
+            'https://drive.usercontent.google.com/download?id=1By9KSbg919N3W8zeUi6G7lgfRsV3psA5&export=download&confirm=t' \
+            --output /tmp/RPSGTv2.2026-core.repaired.html
 
+          echo "2508815dde8c2b278b25708ff2328e8203afc065fb6493550b4d0fca71b3c0ae  /tmp/RPSGTv2.2026-core.repaired.html" | sha256sum --check --strict
+          test "$(wc -c < /tmp/RPSGTv2.2026-core.repaired.html)" -eq 11441217
+          grep -qi '<!doctype html' /tmp/RPSGTv2.2026-core.repaired.html
+          grep -q 'id="app-data"' /tmp/RPSGTv2.2026-core.repaired.html
+          grep -q 'RPSGT Study Trail' /tmp/RPSGTv2.2026-core.repaired.html
+          grep -q '</html>' /tmp/RPSGTv2.2026-core.repaired.html
+
+          mv /tmp/RPSGTv2.2026-core.repaired.html RPSGTv2.2026-core.html
           new_blob="$(git hash-object RPSGTv2.2026-core.html)"
           test "$new_blob" = "e6c060aeaecb0ece885b3489c2a696c98877faca"
-          echo "2508815dde8c2b278b25708ff2328e8203afc065fb6493550b4d0fca71b3c0ae  RPSGTv2.2026-core.html" | sha256sum --check --strict
-
-          test "$(wc -c < RPSGTv2.2026-core.html)" -eq 11441217
-          grep -qi '<!doctype html' RPSGTv2.2026-core.html
-          grep -q 'id="app-data"' RPSGTv2.2026-core.html
-          grep -q 'RPSGT Study Trail' RPSGTv2.2026-core.html
-          grep -q '</html>' RPSGTv2.2026-core.html
 
           rm -rf .deploy/rpsgt-repair
           rm -f .github/workflows/apply-rpsgt-loading-repair.yml
@@ -82,4 +56,4 @@ jobs:
           git commit -m 'Deploy repaired RPSGT webapp'
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
-# Normalize the binary patch paths, then apply only after exact old/new hashes pass.
+# Direct verified deployment from the preserved public Drive source.
