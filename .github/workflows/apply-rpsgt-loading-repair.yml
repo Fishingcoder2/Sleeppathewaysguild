@@ -1,59 +1,14 @@
 name: Apply RPSGT loading repair
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/apply-rpsgt-loading-repair.yml'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  repair:
-    if: github.actor != 'github-actions[bot]'
+  disabled:
+    if: false
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Download and verify repaired RPSGT core
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          old_blob="$(git hash-object RPSGTv2.2026-core.html)"
-          test "$old_blob" = "4423bb6220af7fa354ce4f33acedc6f7b6a8cc53"
-
-          curl --fail --location --retry 4 --retry-delay 2 \
-            'https://drive.usercontent.google.com/download?id=1By9KSbg919N3W8zeUi6G7lgfRsV3psA5&export=download&confirm=t' \
-            --output /tmp/RPSGTv2.2026-core.repaired.html
-
-          echo "2508815dde8c2b278b25708ff2328e8203afc065fb6493550b4d0fca71b3c0ae  /tmp/RPSGTv2.2026-core.repaired.html" | sha256sum --check --strict
-          test "$(wc -c < /tmp/RPSGTv2.2026-core.repaired.html)" -eq 11441217
-          grep -qi '<!doctype html' /tmp/RPSGTv2.2026-core.repaired.html
-          grep -q 'id="app-data"' /tmp/RPSGTv2.2026-core.repaired.html
-          grep -q 'RPSGT Study Trail' /tmp/RPSGTv2.2026-core.repaired.html
-          grep -q '</html>' /tmp/RPSGTv2.2026-core.repaired.html
-
-          mv /tmp/RPSGTv2.2026-core.repaired.html RPSGTv2.2026-core.html
-          new_blob="$(git hash-object RPSGTv2.2026-core.html)"
-          test "$new_blob" = "e6c060aeaecb0ece885b3489c2a696c98877faca"
-
-          rm -rf .deploy/rpsgt-repair
-          rm -f .github/workflows/apply-rpsgt-loading-repair.yml
-
-      - name: Commit verified repaired core
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'Sleep Pathways Guild Automation'
-          git config user.email 'admin@sleeppathsguild.com'
-          git add -A
-          git commit -m 'Deploy repaired RPSGT webapp'
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-
-# Direct verified deployment from the preserved public Drive source.
+      - run: echo 'Superseded by the verified browser loader deployment.'
