@@ -1,0 +1,58 @@
+name: Apply RPSGT loading repair
+
+on:
+  push:
+    branches:
+      - deploy/rpsgt-loading-repair-2026-07-25
+    paths:
+      - '.github/workflows/apply-rpsgt-loading-repair.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out deployment branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild and verify repaired core
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cat .deploy/rpsgt-repair/part-*.b64 > /tmp/rpsgt-repair.patch.gz.b64
+          base64 --decode /tmp/rpsgt-repair.patch.gz.b64 > /tmp/rpsgt-repair.patch.gz
+          gzip -dc /tmp/rpsgt-repair.patch.gz > /tmp/rpsgt-repair.patch
+
+          old_blob="$(git hash-object RPSGTv2.2026-core.html)"
+          test "$old_blob" = "4423bb6220af7fa354ce4f33acedc6f7b6a8cc53"
+
+          git apply --binary /tmp/rpsgt-repair.patch
+
+          new_blob="$(git hash-object RPSGTv2.2026-core.html)"
+          test "$new_blob" = "e6c060aeaecb0ece885b3489c2a696c98877faca"
+          echo "2508815dde8c2b278b25708ff2328e8203afc065fb6493550b4d0fca71b3c0ae  RPSGTv2.2026-core.html" | sha256sum --check --strict
+
+          test "$(wc -c < RPSGTv2.2026-core.html)" -eq 11441217
+          grep -qi '<!doctype html' RPSGTv2.2026-core.html
+          grep -q 'id="app-data"' RPSGTv2.2026-core.html
+          grep -q 'RPSGT Study Trail' RPSGTv2.2026-core.html
+          grep -q '</html>' RPSGTv2.2026-core.html
+
+          rm -rf .deploy/rpsgt-repair
+          rm -f .github/workflows/apply-rpsgt-loading-repair.yml
+
+      - name: Commit verified repaired core
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Sleep Pathways Guild Automation'
+          git config user.email 'admin@sleeppathsguild.com'
+          git add -A
+          git commit -m 'Deploy repaired RPSGT webapp'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
