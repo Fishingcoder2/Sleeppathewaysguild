@@ -56,3 +56,5 @@ jobs:
           git add -A
           git commit -m 'Deploy repaired RPSGT webapp'
           git push origin "HEAD:${GITHUB_REF_NAME}"
+
+# Retrigger after all eleven verified patch segments were staged.
