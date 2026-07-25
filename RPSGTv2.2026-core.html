@@ -28,15 +28,17 @@
 <script>
 (() => {
   'use strict';
+
   const REPOSITORY = 'Fishingcoder2/Sleeppathewaysguild';
   const ORIGINAL_URL = `https://raw.githubusercontent.com/${REPOSITORY}/rpsgt-pre-repair-20260725/RPSGTv2.2026-core.html`;
   const PATCH_BASE = `https://raw.githubusercontent.com/${REPOSITORY}/main/.deploy/rpsgt-repair`;
-  const PATCH_URLS = Array.from({length: 11}, (_, i) => `${PATCH_BASE}/part-${String(i + 1).padStart(3, '0')}.b64`);
+  const PATCH_URLS = Array.from({length: 11}, (_, i) => `${PATCH_BASE}/part-${String(i + 1).padStart(3, '0')}.b64?v=20260725b`);
   const EXPECTED_ORIGINAL_SIZE = 11734470;
   const EXPECTED_TARGET_SIZE = 11441217;
   const EXPECTED_TARGET_SHA256 = '2508815dde8c2b278b25708ff2328e8203afc065fb6493550b4d0fca71b3c0ae';
   const BASE85 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~';
   const BASE85_MAP = new Map(Array.from(BASE85, (char, index) => [char, index]));
+
   const statusNode = document.getElementById('status');
   const fillNode = document.getElementById('fill');
   const errorNode = document.getElementById('error');
@@ -59,10 +61,26 @@
   }
 
   function base64ToBytes(base64) {
-    const clean = base64.replace(/\s+/g, '');
-    const binary = atob(clean);
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    const clean = String(base64).replace(/[^A-Za-z0-9+/=]/g, '');
+    if (!clean || clean.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(clean)) {
+      throw new Error('The repair package is not valid Base64 data.');
+    }
+    const blockSize = 32768;
+    const chunks = [];
+    let total = 0;
+    for (let start = 0; start < clean.length; start += blockSize) {
+      const binary = atob(clean.slice(start, Math.min(start + blockSize, clean.length)));
+      const chunk = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i += 1) chunk[i] = binary.charCodeAt(i);
+      chunks.push(chunk);
+      total += chunk.length;
+    }
+    const bytes = new Uint8Array(total);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.length;
+    }
     return bytes;
   }
 
