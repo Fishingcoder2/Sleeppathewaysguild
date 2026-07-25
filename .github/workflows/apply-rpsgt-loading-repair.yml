@@ -3,6 +3,7 @@ name: Apply RPSGT loading repair
 on:
   push:
     branches:
+      - main
       - deploy/rpsgt-loading-repair-2026-07-25
     paths:
       - '.github/workflows/apply-rpsgt-loading-repair.yml'
@@ -57,4 +58,4 @@ jobs:
           git commit -m 'Deploy repaired RPSGT webapp'
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
-# Retrigger after all eleven verified patch segments were staged.
+# Register on main, apply only after exact old/new hashes and SHA-256 pass.
