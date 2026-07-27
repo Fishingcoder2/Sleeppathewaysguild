@@ -1,4 +1,4 @@
-name: Apply technical SEO and analytics coverage
+name: Validate technical SEO and analytics coverage
 
 on:
   push:
@@ -15,11 +15,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  optimize:
-    if: github.actor != 'github-actions[bot]'
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Check out optimization branch
@@ -58,16 +57,13 @@ jobs:
           test -s 404.html
           grep -q '<urlset' sitemap.xml
 
-      - name: Commit optimized site
+      - name: Confirm generated SEO files are committed
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'Sleep Pathways Guild Automation'
-          git config user.email 'admin@sleeppathsguild.com'
-          git add -A
-          if git diff --cached --quiet; then
-            echo 'No site changes were needed.'
-          else
-            git commit -m 'Add technical SEO and complete analytics coverage'
-            git push origin HEAD:technical-seo-analytics-2026-07-27
+          if ! git diff --quiet; then
+            git diff --stat
+            echo '::error::The SEO generator changed tracked files. Commit those generated changes before merging.'
+            exit 1
           fi
+          echo 'SEO and analytics files are current.'
