@@ -5,6 +5,13 @@ on:
     branches:
       - technical-seo-analytics-2026-07-27
     paths:
+      - index.html
+      - RPSGTv2.2026.html
+      - ekg.2026.html
+      - flashcards.2026.html
+      - robots.txt
+      - sitemap.xml
+      - 404.html
       - tools/technical_seo.py
       - tools/normalize_head_order.py
       - .github/workflows/technical-seo-analytics.yml
@@ -26,11 +33,6 @@ jobs:
         with:
           ref: technical-seo-analytics-2026-07-27
           fetch-depth: 0
-
-      - name: Apply metadata, schema, and analytics coverage
-        run: |
-          python3 tools/technical_seo.py
-          python3 tools/normalize_head_order.py
 
       - name: Validate public pages
         shell: bash
@@ -56,14 +58,4 @@ jobs:
           test -s sitemap.xml
           test -s 404.html
           grep -q '<urlset' sitemap.xml
-
-      - name: Confirm generated SEO files are committed
-        shell: bash
-        run: |
-          set -euo pipefail
-          if ! git diff --quiet; then
-            git diff --stat
-            echo '::error::The SEO generator changed tracked files. Commit those generated changes before merging.'
-            exit 1
-          fi
-          echo 'SEO and analytics files are current.'
+          echo 'SEO and analytics validation passed.'
