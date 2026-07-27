@@ -1,0 +1,61 @@
+name: Validate technical SEO and analytics coverage
+
+on:
+  push:
+    branches:
+      - technical-seo-analytics-2026-07-27
+    paths:
+      - index.html
+      - RPSGTv2.2026.html
+      - ekg.2026.html
+      - flashcards.2026.html
+      - robots.txt
+      - sitemap.xml
+      - 404.html
+      - tools/technical_seo.py
+      - tools/normalize_head_order.py
+      - .github/workflows/technical-seo-analytics.yml
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out optimization branch
+        uses: actions/checkout@v4
+        with:
+          ref: technical-seo-analytics-2026-07-27
+          fetch-depth: 0
+
+      - name: Validate public pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/technical_seo.py tools/normalize_head_order.py
+          for page in index.html RPSGTv2.2026.html ekg.2026.html flashcards.2026.html; do
+            test -s "$page"
+            grep -q 'G-MZTRYT67VG' "$page"
+            grep -q 'rel="canonical"' "$page"
+            grep -q 'application/ld+json' "$page"
+            python3 - "$page" <<'PY'
+          import sys
+          from pathlib import Path
+          text = Path(sys.argv[1]).read_text(encoding='utf-8', errors='replace')
+          charset = text.lower().find('<meta charset')
+          marker = text.find('<!-- SPG TECHNICAL SEO START -->')
+          if charset < 0 or marker < 0 or charset > marker:
+              raise SystemExit(f'Head order validation failed: {sys.argv[1]}')
+          PY
+          done
+          test -s robots.txt
+          test -s sitemap.xml
+          test -s 404.html
+          grep -q '<urlset' sitemap.xml
+          echo 'SEO and analytics validation passed.'
