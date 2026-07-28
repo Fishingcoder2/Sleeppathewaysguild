@@ -1,0 +1,51 @@
+name: One-time contact email correction
+
+on:
+  push:
+    branches:
+      - fix-contact-email-2026-07-28
+    paths:
+      - .github/workflows/fix-contact-email-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  correct-email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-contact-email-2026-07-28
+      - name: Replace outdated contact email everywhere
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          old = b"admin@sleeppathsguild.com"
+          new = b"admin@sleeppathwaysguild.com"
+          changed = []
+          for path in Path('.').rglob('*'):
+              if not path.is_file() or '.git' in path.parts:
+                  continue
+              data = path.read_bytes()
+              if old in data:
+                  path.write_bytes(data.replace(old, new))
+                  changed.append(str(path))
+          print(f"Updated {len(changed)} files")
+          for item in changed:
+              print(item)
+          PY
+          rm -f .github/workflows/fix-contact-email-once.yml
+      - name: Commit correction
+        shell: bash
+        run: |
+          git config user.name "Sleep Pathways Guild Automation"
+          git config user.email "admin@sleeppathwaysguild.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes were needed."
+          else
+            git commit -m "Correct Sleep Pathways Guild contact email"
+            git push origin HEAD:fix-contact-email-2026-07-28
+          fi
