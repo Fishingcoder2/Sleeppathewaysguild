@@ -1,5 +1,6 @@
 name: Assemble CPSGT Release
 
+# Synchronization trigger for the CPSGT release PR.
 on:
   push:
     branches:
