@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free CPSGT Study App & Practice Questions | Sleep Pathways Guild</title>
+<meta name="description" content="Prepare for the CPSGT exam with free blueprint-aligned practice questions, flashcards, math drills, mock-style exams, progress reports, and sleep technology study tools.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="author" content="Sleep Pathways Guild">
+<meta name="application-name" content="CPSGT Study Launchpad">
+<meta name="theme-color" content="#082b57">
+<link rel="canonical" href="https://sleeppathwaysguild.com/cpsgt-study-app.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sleep Pathways Guild">
+<meta property="og:title" content="Free CPSGT Study App & Practice Questions">
+<meta property="og:description" content="Blueprint-aligned CPSGT practice questions, flashcards, math drills, mock-style exams, progress reports, and sleep technology study tools.">
+<meta property="og:url" content="https://sleeppathwaysguild.com/cpsgt-study-app.html">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free CPSGT Study App & Practice Questions">
+<meta name="twitter:description" content="Free CPSGT exam preparation with practice questions, flashcards, math drills, mock-style exams, and progress reports.">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":["SoftwareApplication","LearningResource"],
+  "@id":"https://sleeppathwaysguild.com/cpsgt-study-app.html#app",
+  "name":"CPSGT Study Launchpad",
+  "alternateName":"Free CPSGT Study App",
+  "url":"https://sleeppathwaysguild.com/cpsgt-study-app.html",
+  "description":"A free web-based CPSGT exam study application with original blueprint-aligned practice questions, flashcards, math drills, mock-style exams, equipment review, and personalized progress reports.",
+  "applicationCategory":"EducationalApplication",
+  "operatingSystem":"Any",
+  "browserRequirements":"Requires JavaScript and a modern web browser",
+  "isAccessibleForFree":true,
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "publisher":{"@type":"EducationalOrganization","name":"Sleep Pathways Guild","url":"https://sleeppathwaysguild.com/"},
+  "audience":{"@type":"EducationalAudience","educationalRole":"student","audienceType":"CPSGT candidates and sleep technology learners"},
+  "learningResourceType":["Practice questions","Flashcards","Mock-style exam","Glossary","Math drills","Progress report"],
+  "educationalUse":["Self assessment","Exam preparation","Review"],
+  "inLanguage":"en-US"
+}
+</script>
+<style>
+:root{color-scheme:light;--navy:#082b57;--blue:#075fa8;--teal:#0f8a9b;--ink:#183040;--muted:#536b78;--line:#c7dce6}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#f7fbfd,#e9f6fa);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+main{width:min(760px,100%);padding:clamp(24px,5vw,46px);border:1px solid var(--line);border-radius:26px;background:#fff;box-shadow:0 22px 65px rgba(8,43,87,.14);text-align:center}
+h1{margin:.35rem 0 .7rem;color:var(--navy);font-size:clamp(2rem,7vw,3.5rem);line-height:1.04}.eyebrow{font-size:.76rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--teal)}p{line-height:1.65;color:var(--muted)}
+.spinner{width:54px;height:54px;margin:25px auto 13px;border:6px solid #dcebf1;border-top-color:var(--blue);border-radius:50%;animation:spin .85s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.status{font-weight:800;color:var(--navy)}.error{display:none;margin-top:18px;padding:14px;border-radius:14px;background:#fff0f1;border:1px solid #dda0a8;color:#842b39;text-align:left}.error.show{display:block}.fine{font-size:.8rem}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Sleep Pathways Guild</div>
+  <h1>Free CPSGT Study Launchpad</h1>
+  <p>Loading the complete CPSGT practice app with blueprint-aligned questions, flashcards, Math Coach, mock-style testing, equipment review, and progress reports.</p>
+  <div class="spinner" id="spinner" aria-hidden="true"></div>
+  <div class="status" id="status" role="status" aria-live="polite">Preparing your study tools…</div>
+  <div class="error" id="error" role="alert"></div>
+  <noscript><div class="error show">JavaScript is required for this interactive study app. Please enable JavaScript and reload the page.</div></noscript>
+  <p class="fine">Your study progress is stored locally in your browser.</p>
+</main>
+<script>
+(async function(){
+  const status=document.getElementById('status');
+  const error=document.getElementById('error');
+  const spinner=document.getElementById('spinner');
+  try{
+    if(typeof DecompressionStream==='undefined'){
+      throw new Error('This browser does not support the secure decompression feature needed by the app. Please update Chrome, Edge, Firefox, or Safari and try again.');
+    }
+    const parts=['.cpsgt-upload/part-000.b64','.cpsgt-upload/part-001.b64'];
+    status.textContent='Downloading the CPSGT learning library…';
+    const responses=await Promise.all(parts.map(async path=>{
+      const response=await fetch(path,{cache:'force-cache'});
+      if(!response.ok) throw new Error('A required app file could not be loaded ('+response.status+').');
+      return response.text();
+    }));
+    status.textContent='Opening the CPSGT Study Launchpad…';
+    const encoded=responses.join('').replace(/\s+/g,'');
+    const binary=atob(encoded);
+    const bytes=new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+    const decompressed=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const html=await new Response(decompressed).text();
+    if(!/^\s*<!doctype html>/i.test(html)||!html.includes('CPSGT')){
+      throw new Error('The downloaded app package did not pass its content check.');
+    }
+    document.open();
+    document.write(html);
+    document.close();
+  }catch(err){
+    spinner.style.display='none';
+    status.textContent='The study app could not be opened.';
+    error.textContent=(err&&err.message)?err.message:'An unexpected loading error occurred. Please reload the page.';
+    error.classList.add('show');
+    console.error('CPSGT Study Launchpad loader error:',err);
+  }
+})();
+</script>
+</body>
+</html>
