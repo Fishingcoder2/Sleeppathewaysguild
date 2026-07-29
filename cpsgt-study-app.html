@@ -65,7 +65,7 @@ h1{margin:.35rem 0 .7rem;color:var(--navy);font-size:clamp(2rem,7vw,3.5rem);line
   const status=document.getElementById('status');
   const error=document.getElementById('error');
   const spinner=document.getElementById('spinner');
-  const packageVersion='20260729-2';
+  const packageVersion='20260729-3';
 
   function decodeBase64(value){
     const binary=atob(value.replace(/\s+/g,''));
@@ -104,7 +104,7 @@ h1{margin:.35rem 0 .7rem;color:var(--navy);font-size:clamp(2rem,7vw,3.5rem);line
     if(typeof DecompressionStream==='undefined'){
       throw new Error('This browser does not support the secure decompression feature needed by the app. Please update Chrome, Edge, Firefox, or Safari and try again.');
     }
-    const parts=['.cpsgt-upload/part-000.b64','.cpsgt-upload/part-001.b64'];
+    const parts=['/cpsgt-assets/part-000.b64','/cpsgt-assets/part-001.b64'];
     status.textContent='Downloading the CPSGT learning library…';
     const responses=await Promise.all(parts.map(async path=>{
       const response=await fetch(path+'?v='+packageVersion,{cache:'no-store'});

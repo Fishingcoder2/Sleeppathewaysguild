@@ -1,0 +1,1 @@
+CPSGT Study Launchpad package assets. These files are loaded by /cpsgt-study-app.html.
