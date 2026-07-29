@@ -1,0 +1,41 @@
+name: One-time Fundamentals Amazon link repair
+
+on:
+  push:
+    branches:
+      - fix-fundamentals-amazon-link-2026-07-29
+
+permissions:
+  contents: write
+
+jobs:
+  patch-link:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-fundamentals-amazon-link-2026-07-29
+          fetch-depth: 0
+      - name: Replace broken direct product link
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('cpsgt-study-app.html')
+          text = path.read_text(encoding='utf-8')
+          old = 'https://www.amazon.com/dp/1975111648?tag=spg_rpsgt-20'
+          new = 'https://www.amazon.com/s?k=9781975111649&tag=spg_rpsgt-20'
+          count = text.count(old)
+          if count != 3:
+              raise SystemExit(f'Expected 3 Fundamentals links, found {count}')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          print(f'Replaced {count} links')
+          PY
+      - name: Remove one-time workflow and commit repair
+        run: |
+          rm .github/workflows/patch-fundamentals-amazon-link.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cpsgt-study-app.html .github/workflows/patch-fundamentals-amazon-link.yml
+          git commit -m "Fix Fundamentals of Sleep Technology Amazon links"
+          git push origin HEAD:fix-fundamentals-amazon-link-2026-07-29
