@@ -6,6 +6,12 @@
     "enabled": true
   },
   "assets": {
-    "directory": "./public"
+    "directory": ".",
+    "exclude": [
+      "node_modules",
+      "wrangler.jsonc",
+      "package.json",
+      "package-lock.json"
+    ]
   }
 }
