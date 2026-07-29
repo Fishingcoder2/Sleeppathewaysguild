@@ -1,0 +1,94 @@
+name: Apply SEO phase 1 to main site
+
+on:
+  push:
+    branches:
+      - seo-phase-1-main-2026-07-29
+    paths:
+      - .github/workflows/apply-seo-phase-1-main.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-phase-1-main-2026-07-29
+          fetch-depth: 0
+
+      - name: Update homepage SEO metadata and visible search language
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  '<title>Sleep Pathways Guild | Free CPSGT & RPSGT Study Apps</title>',
+                  '<title>Free CPSGT & RPSGT Exam Prep | Sleep Pathways Guild</title>'
+              ),
+              (
+                  '<meta name="description" content="Free CPSGT and RPSGT exam-preparation webapps, EKG practice, sleep-technology lessons, study downloads, progress tools, and peer-led learning support from Sleep Pathways Guild.">',
+                  '<meta name="description" content="Free CPSGT and RPSGT exam prep for sleep technologists with original practice questions, mock-style exams, sleep scoring, EKG, math drills, and progress tools.">'
+              ),
+              (
+                  '<meta property="og:title" content="Sleep Pathways Guild | Free CPSGT & RPSGT Study Apps">',
+                  '<meta property="og:title" content="Free CPSGT & RPSGT Exam Prep | Sleep Pathways Guild">'
+              ),
+              (
+                  '<meta property="og:description" content="Free CPSGT and RPSGT exam-preparation webapps, EKG practice, sleep-technology lessons, study downloads, and peer-led learning support.">',
+                  '<meta property="og:description" content="Free CPSGT and RPSGT exam prep with original practice questions, mock-style exams, sleep scoring, EKG practice, math drills, and progress tools.">'
+              ),
+              (
+                  '<meta name="twitter:title" content="Sleep Pathways Guild | Free CPSGT & RPSGT Study Apps">',
+                  '<meta name="twitter:title" content="Free CPSGT & RPSGT Exam Prep | Sleep Pathways Guild">'
+              ),
+              (
+                  '<meta name="twitter:description" content="Free CPSGT and RPSGT exam-preparation webapps, EKG practice, sleep-technology lessons, study downloads, and peer-led learning support.">',
+                  '<meta name="twitter:description" content="Free CPSGT and RPSGT exam prep with original practice questions, mock-style exams, sleep scoring, EKG practice, math drills, and progress tools.">'
+              ),
+              (
+                  '"description":"Free CPSGT and RPSGT exam-preparation webapps, EKG practice, sleep-technology lessons, study downloads, and peer-led learning support."',
+                  '"description":"Free CPSGT and RPSGT exam prep with original practice questions, mock-style exams, sleep scoring, EKG practice, math drills, and progress tools for sleep technologists."'
+              ),
+              (
+                  '<h1>A guild for the craft of sleep technology.</h1>',
+                  '<h1>Free CPSGT and RPSGT exam prep for sleep technologists.</h1>'
+              ),
+              (
+                  '<p class="lead"><strong style="color:#fff">Sleep Pathways Guild</strong> is an independent, peer-led educational project founded by <strong style="color:#fff">Tracy Frazier, RHIT, RPSGT, CCS-P</strong> for sleep technologists, RPSGT learners, CPSGT learners, students, and professionals who want practical review, stronger technical reasoning, and standards-aware learning.</p>',
+                  '<p class="lead"><strong style="color:#fff">Sleep Pathways Guild</strong> is an independent, peer-led educational project founded by <strong style="color:#fff">Tracy Frazier, RHIT, RPSGT, CCS-P</strong> for sleep technologists, RPSGT learners, CPSGT learners, students, and professionals. Explore free practice questions, mock-style exams, sleep scoring review, EKG learning, math drills, flashcards, and progress tools designed to support practical reasoning and standards-aware study.</p>'
+              )
+          ]
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected one match, found {count}: {old[:100]}")
+              text = text.replace(old, new, 1)
+
+          cpsgt_schema = '{"@context":"https://schema.org","@type":"WebApplication","name":"CPSGT Study Launchpad","url":"https://sleeppathwaysguild.com/cpsgt-study-app.html","applicationCategory":"EducationalApplication","operatingSystem":"Any modern web browser","isAccessibleForFree":true,"description":"Free CPSGT study app with 600 practice questions, a 75-question mock-style exam, flashcards, math drills, equipment review, and personalized progress reports.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://sleeppathwaysguild.com/#organization"}}'
+          rpsgt_schema = '{"@context":"https://schema.org","@type":"WebApplication","name":"RPSGT Study Webapp","url":"https://sleeppathwaysguild.com/RPSGTv2.2026.html","applicationCategory":"EducationalApplication","operatingSystem":"Any modern web browser","isAccessibleForFree":true,"description":"Free RPSGT exam preparation with original practice questions, guided study paths, sleep scoring review, skill labs, and progress reports.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://sleeppathwaysguild.com/#organization"}}'
+
+          if text.count(cpsgt_schema) != 1:
+              raise SystemExit("CPSGT homepage schema block was not found exactly once")
+          text = text.replace(cpsgt_schema, cpsgt_schema + ',\n' + rpsgt_schema, 1)
+
+          path.write_text(text, encoding="utf-8")
+
+      - name: Commit SEO changes
+        run: |
+          git config user.name "Sleep Pathways Guild SEO Bot"
+          git config user.email "admin@sleeppathwaysguild.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Improve homepage search metadata and keyword targeting"
+          git push origin HEAD:seo-phase-1-main-2026-07-29
