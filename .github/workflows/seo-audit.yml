@@ -1,0 +1,28 @@
+name: SEO audit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Audit sitemap-listed pages
+        run: python scripts/seo_audit.py --site-url https://sleeppathwaysguild.com
+
+      - name: Upload SEO report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-seo-audit-report
+          path: seo-audit-report.txt
