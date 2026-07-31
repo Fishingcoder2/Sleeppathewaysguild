@@ -17,6 +17,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Verify public release and contact copy
+        run: python scripts/content_integrity.py
+
       - name: Audit sitemap-listed pages
         run: python scripts/seo_audit.py --site-url https://sleeppathwaysguild.com
 
