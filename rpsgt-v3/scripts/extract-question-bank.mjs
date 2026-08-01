@@ -1,11 +1,11 @@
-import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
+import { readFile, writeFile, mkdir, rm, readdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..", "..");
-const sourcePath = resolve(process.argv[2] || join(repoRoot, "RPSGTv2.2026-core.html"));
+const requestedSourcePath = resolve(process.argv[2] || join(repoRoot, "RPSGTv2.2026-core.html"));
 const outputDir = resolve(process.argv[3] || join(here, "..", "data", "question-bank"));
 const extractedAt = process.env.RPSGT_EXTRACTION_DATE || new Date().toISOString().slice(0, 10);
 const sha256 = value => createHash("sha256").update(value).digest("hex");
@@ -13,14 +13,51 @@ const compact = value => JSON.stringify(value);
 const directTaskCodes = ["D1A","D1B","D1C","D2A","D2B","D2C","D3A","D3B","D3C","D4A","D4B","D4C"];
 const moduleTaskCodes = [...directTaskCodes, "D2A/D2C"];
 
-const sourceText = await readFile(sourcePath, "utf8");
-const match = sourceText.match(/<script[^>]+id=["']app-data["'][^>]*>([\s\S]*?)<\/script>/i);
-if (!match) throw new Error(`No <script id="app-data"> package found in ${sourcePath}`);
+const packagePattern = /<script[^>]+id=["']app-data["'][^>]*>([\s\S]*?)<\/script>/i;
 
-const appDataText = match[1];
-const appData = JSON.parse(appDataText);
-const questions = appData?.seed?.questionBank;
-if (!Array.isArray(questions)) throw new Error("app-data seed.questionBank is not an array");
+async function htmlFiles(root) {
+  const files = [];
+  async function visit(directory) {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      if (entry.name === ".git" || entry.name === "node_modules" || entry.name === "rpsgt-v3") continue;
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) await visit(path);
+      else if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) files.push(path);
+    }
+  }
+  await visit(root);
+  return files;
+}
+
+async function readPackage(path) {
+  try {
+    const sourceText = await readFile(path, "utf8");
+    const match = sourceText.match(packagePattern);
+    if (!match) return null;
+    const appDataText = match[1];
+    const appData = JSON.parse(appDataText);
+    const questions = appData?.seed?.questionBank;
+    if (!Array.isArray(questions)) return null;
+    return { sourcePath: path, sourceText, appDataText, appData, questions };
+  } catch {
+    return null;
+  }
+}
+
+let sourcePackage = await readPackage(requestedSourcePath);
+if (!sourcePackage) {
+  const candidates = [];
+  for (const path of await htmlFiles(repoRoot)) {
+    const candidate = await readPackage(path);
+    if (candidate) candidates.push(candidate);
+  }
+  candidates.sort((a, b) => b.questions.length - a.questions.length || b.appDataText.length - a.appDataText.length);
+  sourcePackage = candidates[0] || null;
+}
+if (!sourcePackage) throw new Error(`No HTML file containing a valid <script id="app-data"> question package was found under ${repoRoot}`);
+
+const { sourcePath, sourceText, appDataText, appData, questions } = sourcePackage;
+console.log(`Selected source package: ${relative(repoRoot, sourcePath)} (${questions.length} questions)`);
 
 const taskCounts = new Map();
 questions.forEach(question => taskCounts.set(question.taskCode, (taskCounts.get(question.taskCode) || 0) + 1));
@@ -46,7 +83,7 @@ for (const taskCode of moduleTaskCodes) {
       taskCode,
       domain: selected[0].question.domain,
       questionCount: selected.length,
-      sourceFile: sourcePath.split(/[\\/]/).pop(),
+      sourceFile: relative(repoRoot, sourcePath).replaceAll("\\", "/"),
       sourceScriptId: "app-data",
       sourceAppDataSha256: sha256(appDataText),
       recordsPreservedUnchanged: true,
@@ -118,7 +155,7 @@ const manifest = {
     name: "RPSGT v3 full question-bank extraction manifest",
     version: 1,
     extractedAt,
-    sourceFile: sourcePath.split(/[\\/]/).pop(),
+    sourceFile: relative(repoRoot, sourcePath).replaceAll("\\", "/"),
     sourceHtmlSha256: sha256(sourceText),
     sourceScriptId: "app-data",
     sourceAppDataSha256: sha256(appDataText),
