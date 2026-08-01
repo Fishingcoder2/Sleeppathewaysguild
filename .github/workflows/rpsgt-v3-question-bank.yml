@@ -9,12 +9,22 @@ on:
       - rpsgt-v3/scripts/extract-question-bank.mjs
       - rpsgt-v3/scripts/validate-question-bank.mjs
       - .github/workflows/rpsgt-v3-question-bank.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - RPSGTv2.2026-core.html
+      - rpsgt-v3/scripts/extract-question-bank.mjs
+      - rpsgt-v3/scripts/validate-question-bank.mjs
+      - .github/workflows/rpsgt-v3-question-bank.yml
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   extract-and-validate:
+    if: github.ref_name == 'build/rpsgt-v3-modular' || github.head_ref == 'build/rpsgt-v3-modular'
     runs-on: ubuntu-latest
     steps:
       - name: Check out development branch
