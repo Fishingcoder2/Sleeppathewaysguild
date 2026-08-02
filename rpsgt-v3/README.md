@@ -37,12 +37,14 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab records remain technically and visibly separate.
 - A canonical ten-family laboratory catalog defines stable IDs, progress keys, blueprint-task mappings, migration status, planned routes, and confirmed preserved destinations.
 - The laboratory catalog reads mapped `completed`, `started`, `lastLab`, per-lab completion objects, and legacy `catalogIndex` shapes without modifying them.
-- Hookup, Sleep Staging and Event Scoring, Respiratory Signals and Event Recognition, and Math Coach now have individual v3 laboratory experiences. The preserved EKG destination remains linked; the other catalog-only laboratories remain disabled until their individual parity work is complete.
+- Hookup, Sleep Staging and Event Scoring, Respiratory Signals and Event Recognition, Instrumentation, Filters, and Signal Pathways, and Math Coach now have individual v3 laboratory experiences. The preserved EKG destination remains linked; the other catalog-only laboratories remain disabled until their individual parity work is complete.
 - The Hookup lab uses a pure progress engine, six app-authored workflow stations, and a ten-question learner-eligible D2A/D2B checkpoint. All stations plus an 80% checkpoint are required for completion, and failed retries never erase completion.
 - The Sleep Staging and Event-Scoring lab uses a pure progress engine, seven app-authored review stations, and a ten-question checkpoint balanced across learner-eligible D3A, D3B, and D3C records. It excludes manual-review records, deduplicates prompts and IDs, preserves source-object immutability, requires all stations plus 80%, and keeps failed retries in bounded history without erasing completion.
 - The scoring lab classifies broad question families only to improve checkpoint variety. It does not add scoring criteria or reproduce proprietary AASM scoring-manual text, figures, or tables; rule-sensitive decisions remain tied to current official guidance.
 - The Respiratory lab uses a pure progress engine, seven app-authored signal-pathway stations, and a respiratory-relevant ten-question checkpoint balanced across learner-eligible D2A, D2B, and D3B records. It excludes manual-review records, duplicate prompts, duplicate IDs, and unrelated setup or troubleshooting questions.
 - Respiratory completion requires all seven stations plus 80%. Failed retries remain in bounded lab history without erasing completion, and broad signal families are used only to improve checkpoint variety—not to add or reproduce proprietary scoring criteria.
+- The Instrumentation lab uses a pure progress engine, seven app-authored signal-pathway stations, and an instrumentation-relevant ten-question checkpoint across learner-eligible D2A, D2B, and D2C records. It covers derivations, polarity, amplifiers, sensitivity, calibration, filters, sampling, digital acquisition, and artifact troubleshooting.
+- Instrumentation eligibility excludes manual-review records, duplicate prompts, duplicate IDs, unrelated questions, and ambiguous `D2A/D2C` records. Completion requires all seven stations plus 80%; failed retries remain in bounded lab history without erasing completion.
 - The Math Coach lab uses learner-eligible D3C calculation questions, protected attempt history, migrated lesson-state visibility, and an 80% completion threshold.
 - The modular Reports Center reads learner records without writing to them and provides task-level progress, missed/mastered status, separate diagnostic histories, Guided Trail status, and Coach Bob study directions.
 - Reports use a compact generated feedback index containing question IDs and classification metadata only; it contains no prompt, option, answer, or rationale text.
@@ -50,7 +52,7 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - All 12 RPSGT task codes have a defined source sequence, and 20 topic families provide more specific routes for instrumentation, artifact, staging, respiratory scoring, calculations, PAP, pediatrics, safety, and related weak areas.
 - Rule-sensitive feedback begins with the current official AASM section before textbook reinforcement and focused practice.
 - Chapter and section titles are navigation aids only. The app does not reproduce textbook prose, figures, tables, proprietary scoring rules, or publisher question banks.
-- GitHub Actions validates full-bank reconstruction, learner/quality separation, Guided Trail checkpoints and reporting, laboratory catalog contracts, Hookup, Scoring, Respiratory, and Math Coach laboratory behavior, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and storage-migration safeguards.
+- GitHub Actions validates full-bank reconstruction, learner/quality separation, Guided Trail checkpoints and reporting, laboratory catalog contracts, Hookup, Scoring, Respiratory, Instrumentation, and Math Coach laboratory behavior, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and storage-migration safeguards.
 - Interactive desktop/mobile browser regression is still required before merge; no browser interaction pass is claimed.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All development pages are marked `noindex,nofollow`.
@@ -77,7 +79,7 @@ Private Drive URLs are not placed in public learner data. Public release resourc
 ## Remaining release gates
 
 1. Validate migration against representative real browser exports and resolve every malformed or ambiguous legacy field before enabling import.
-2. Migrate and validate the remaining individual laboratory experiences; Hookup, Scoring, Respiratory, and Math Coach do not establish full laboratory parity.
+2. Migrate and validate the remaining individual laboratory experiences; Hookup, Scoring, Respiratory, Instrumentation, and Math Coach do not establish full laboratory parity.
 3. Add mock-result drill-down.
 4. Add printable or exportable study summaries after report contracts remain stable.
 5. Complete interactive desktop/mobile browser regression before considering the draft pull request ready for release.
