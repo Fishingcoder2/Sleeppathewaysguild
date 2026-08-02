@@ -1,0 +1,10 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js,catalog]=await Promise.all([readFile(join(root,'lab-math-coach.html'),'utf8'),readFile(join(root,'core','lab-math-coach.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const selector of ['data-math-start','data-math-summary','data-math-legacy','data-math-workspace']) if(!html.includes(selector)) throw new Error(`Math Coach page is missing ${selector}.`);
+for(const script of ['core/storage.js','core/math-coach-engine.js','core/lab-math-coach.js']) if(!html.includes(script)) throw new Error(`Math Coach page does not load ${script}.`);
+if(html.indexOf('core/math-coach-engine.js')>html.indexOf('core/lab-math-coach.js')) throw new Error('Math Coach engine must load before its controller.');
+for(const token of ['data/question-bank/d3c.json','eligibleQuestions','selectQuestions','gradeSession','applySession','RPSGTStorage.save']) if(!js.includes(token)) throw new Error(`Math Coach controller is missing ${token}.`);
+if(/localStorage\.(?:setItem|removeItem|clear)/.test(js)) throw new Error('Math Coach controller must write only through versioned RPSGT storage.');
+if(!html.includes('do not change ordinary Practice')||!html.includes('80% or higher')) throw new Error('Math Coach evidence and completion boundaries must be visible.');
+const lab=catalog.labs.find(item=>item.id==='math-coach');if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-math-coach.html') throw new Error('The laboratory catalog does not route the v3-ready Math Coach lab.');
+console.log('Math Coach page, storage boundary, script order, and catalog route contracts passed.');
