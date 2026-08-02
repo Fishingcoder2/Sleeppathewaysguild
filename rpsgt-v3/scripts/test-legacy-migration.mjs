@@ -89,7 +89,11 @@ assert.equal(draft.state.mock.history.length,1,"Mock-style history must stay sep
 assert.equal(draft.validation.unresolvedHistoryRecords.length,1,"Ambiguous history must not be guessed into a report family.");
 assert.deepEqual(Array.from(draft.state.review.missedIds),[learnerOne]);
 assert.deepEqual(Array.from(draft.state.review.masteredIds),[learnerTwo]);
-assert.deepEqual(Array.from(draft.state.review.flaggedIds),[learnerOne,learnerTwo,manualId]);
+assert.deepEqual(
+  new Set(Array.from(draft.state.review.flaggedIds).map(String)),
+  new Set([learnerOne,learnerTwo,manualId].map(String)),
+  "Flagged IDs are membership data; JSON object-key order and numeric stringification must not affect parity."
+);
 assert.ok(draft.validation.duplicateQuestionIds.some(item=>String(item.id)===String(learnerOne)));
 assert.ok(draft.validation.unresolvedQuestionIds.some(item=>String(item.id)===unknownId));
 assert.ok(draft.validation.rejectedManualReviewQuestionIds.some(item=>String(item.id)===String(manualId)),"Quality-review IDs must be excluded from remediation.");
