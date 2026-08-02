@@ -13,6 +13,9 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Full Practice Center with domain/task filtering and lazy task-module loading.
 - Learner practice excludes all 560 manual-review records by default.
 - Separate quality-review mode preserves those 560 records without changing learner progress.
+- Missed Question Review and Mastered Question Review use the complete learner-practice bank.
+- Correct missed answers move to mastered; incorrect mastered answers return to missed.
+- Quality-review records remain excluded from learner remediation lists.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All pages are marked `noindex,nofollow` during development.
 
@@ -28,8 +31,8 @@ The preview does not import, overwrite, or delete any legacy record. `createMigr
 
 ## Next milestone
 
-1. Add missed-question and mastered-question review sessions against the complete bank.
-2. Build readiness checks separately from ordinary practice.
+1. Build readiness checks separately from ordinary practice.
+2. Preserve readiness history and focused study recommendations.
 3. Recreate the 175-question mock exam with preserved weighting, timing, navigation, and history.
 4. Connect complete-bank results to modular reports.
 5. Continue Guided Trail and laboratory migration without changing the current public application.
