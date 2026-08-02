@@ -25,7 +25,7 @@
 </aside>
 <main class="main">
 <section class="hero report-hero">
-  <div><div class="eyebrow">Module 4 · modular reporting</div><h1>Progress, diagnostics, and study directions</h1><p class="lead">Practice, remediation, Readiness, and Mock results remain separate. This page reads those records and turns weak areas into a textbook- and guideline-backed study route.</p></div>
+  <div><div class="eyebrow">Module 4 · modular reporting</div><h1>Progress, diagnostics, Trail, and study directions</h1><p class="lead">Practice, remediation, Readiness, Mock, and Guided Trail evidence remain separate. This page reads those records and turns weak areas into a textbook- and guideline-backed study route.</p></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Study the cause, not only the score.</h2><p>Start with the current official rule when one applies, use a core textbook to understand the concept, then return to focused practice.</p></aside>
 </section>
 <section class="section notice"><strong>Reporting boundary:</strong> This page is read only. It does not change answers, missed or mastered lists, Readiness history, Mock history, Guided Trail progress, or legacy data.</section>
@@ -44,7 +44,7 @@
   <article class="card report-family"><span class="status">Skill building</span><h2>Practice and remediation</h2><p>Ordinary practice attempts, task accuracy, missed questions, mastered questions, and review activity.</p><div class="report-family-metrics" data-practice-family></div><a class="btn secondary" href="#practice-report">View practice report</a></article>
   <article class="card report-family"><span class="status gold">Diagnostic</span><h2>Readiness Checks</h2><p>Weighted 25-, 50-, and 100-question checks remain separate from ordinary practice.</p><div class="report-family-metrics" data-readiness-family></div><a class="btn secondary" href="#readiness-report">View readiness report</a></article>
   <article class="card report-family"><span class="status green">Full length</span><h2>175-question Mock</h2><p>Scored-style percentage, timing, domain results, and weak tasks remain in Mock history only.</p><div class="report-family-metrics" data-mock-family></div><a class="btn secondary" href="#mock-report">View mock report</a></article>
-  <article class="card report-family"><span class="status quality">Guided Trail</span><h2>Trail and awards</h2><p>Trail awards are displayed from their own record. Full checkpoint reporting remains a later parity milestone.</p><div class="report-family-metrics" data-trail-family></div><a class="btn secondary" href="study.html">Open Guided Study</a></article>
+  <article class="card report-family"><span class="status quality">Guided Trail</span><h2>Trail and awards</h2><p>Study marks, task and domain awards, current position, and checkpoint attempts remain in the Guided Trail record.</p><div class="report-family-metrics" data-trail-family></div><a class="btn secondary" href="#guided-trail-report">View Trail report</a></article>
 </section>
 <section class="section card coach-plan" id="study-plan">
   <div class="section-head"><div><div class="eyebrow">Library-backed feedback</div><h2>Coach Bob’s next study plan</h2></div><span class="status gold">Official rule → textbook → practice</span></div>
@@ -53,8 +53,12 @@
 </section>
 <section class="section card" id="practice-report">
   <div class="section-head"><div><div class="eyebrow">Ordinary learner record</div><h2>Practice and remediation report</h2></div><div class="actions compact"><a class="btn secondary" href="practice.html">Focused practice</a><a class="btn secondary" href="review.html?list=missed">Review missed</a></div></div>
-  <div class="report-callout" data-practice-summary></div>
-  <div class="task-report-list" data-task-report></div>
+  <div class="report-callout" data-practice-summary></div><div class="task-report-list" data-task-report></div>
+</section>
+<section class="section card" id="guided-trail-report">
+  <div class="section-head"><div><div class="eyebrow">Separate Guided Trail record</div><h2>Trail checkpoints and awards</h2></div><a class="btn secondary" href="study.html">Open Guided Study</a></div>
+  <p class="report-intro">This report reads Guided Trail position, study marks, task awards, domain awards, and checkpoint history. It does not add checkpoint answers to ordinary Practice totals.</p>
+  <div data-guided-trail-report><div class="empty-report">Loading Guided Trail report…</div></div>
 </section>
 <section class="section grid grid-2 diagnostic-reports">
   <article class="card" id="readiness-report"><div class="section-head"><div><div class="eyebrow">Separate diagnostic history</div><h2>Readiness Check report</h2></div><a class="btn secondary" href="readiness.html">Open Readiness</a></div><div data-readiness-report></div></article>
@@ -62,8 +66,7 @@
 </section>
 <section class="section card source-shelf" id="source-outlines">
   <div class="section-head"><div><div class="eyebrow">Study source shelf</div><h2>Outlined textbooks and official references</h2></div><span class="status green" data-outline-count>0 outlined sections</span></div>
-  <p class="report-intro">These outlines are navigation aids for books already represented in the Sleep Pathways Guild library. Public learner feedback identifies chapter or section locations without exposing private Drive files or copying protected content.</p>
-  <div data-source-outlines></div>
+  <p class="report-intro">These outlines are navigation aids for books already represented in the Sleep Pathways Guild library. Public learner feedback identifies chapter or section locations without exposing private Drive files or copying protected content.</p><div data-source-outlines></div>
 </section>
 <section class="section card"><div class="section-head"><div><div class="eyebrow">Migration preview</div><h2>Existing browser progress</h2></div><span class="status green">Read only</span></div><div data-migration-preview></div></section>
 </div>
@@ -76,6 +79,8 @@
 <script src="core/app-shell.js"></script>
 <script src="core/study-feedback-engine.js"></script>
 <script src="core/reports-engine.js"></script>
+<script src="core/guided-trail-engine.js"></script>
 <script src="core/reports.js"></script>
+<script src="core/guided-trail-report.js"></script>
 </body>
 </html>
