@@ -8,6 +8,15 @@
   const esc=value=>String(value==null?"":value).replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
   const formatDate=value=>value?new Date(value).toLocaleString():"Date not recorded";
   async function loadJson(path){const response=await fetch(path,{cache:"no-store"});if(!response.ok) throw new Error(path+" HTTP "+response.status);return response.json();}
+  async function loadOutlines(){
+    const base="data/study-sources/";const manifest=await loadJson(base+"manifest.json");
+    const [sources,taskPlans,...topicPackages]=await Promise.all([
+      Promise.all((manifest.sourceFiles||[]).map(file=>loadJson(base+file))),
+      loadJson(base+manifest.taskPlanFile),
+      ...(manifest.topicFamilyFiles||[]).map(file=>loadJson(base+file))
+    ]);
+    return {schemaVersion:manifest.schemaVersion,copyrightBoundary:manifest.copyrightBoundary,sources,taskPlans:taskPlans.taskPlans||{},topicFamilies:topicPackages.flatMap(pkg=>pkg.topicFamilies||[])};
+  }
   function setText(selector,value){$all(selector).forEach(node=>node.textContent=value);}
   function buildMaps(){
     (state.blueprint.domains||[]).forEach(domain=>(domain.tasks||[]).forEach(task=>state.taskMap.set(task.code,{...task,domain:domain.id,domainName:domain.fullName})));
@@ -66,7 +75,7 @@
   async function init(){
     try{
       if(!window.RPSGTStorage||!reportEngine||!feedbackEngine) throw new Error("A required report module is unavailable.");
-      [state.blueprint,state.outlines,state.index]=await Promise.all([loadJson("data/blueprint.json"),loadJson("data/study-source-outlines.json"),loadJson("data/question-bank/feedback-index.json")]);
+      [state.blueprint,state.outlines,state.index]=await Promise.all([loadJson("data/blueprint.json"),loadOutlines(),loadJson("data/question-bank/feedback-index.json")]);
       state.saved=window.RPSGTStorage.load();buildMaps();renderSnapshot();renderTaskReport();renderDiagnostics();renderCoachPlan();renderSources();
       $("[data-reports-load]").classList.add("hidden");$("[data-reports-content]").classList.remove("hidden");
     }catch(error){showError(error);}
