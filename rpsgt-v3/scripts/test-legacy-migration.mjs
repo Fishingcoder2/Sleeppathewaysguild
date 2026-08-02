@@ -14,7 +14,7 @@ const learner=feedbackIndex.records.find(record=>!record.manualReviewRecommended
 assert.ok(learner,"The generated compact feedback index must include a learner-practice record.");
 
 const primary={
-  stats:{answered:1,correct:1,byDomain:{[learner.domainCode]:{answered:1,correct:1}},byTask:{[learner.taskCode]:{answered:1,correct:1}},history:[{id:learner.id,mode:"practice",correct:true}]},
+  stats:{answered:1,correct:1,byDomain:{[learner.domain]:{answered:1,correct:1}},byTask:{[learner.taskCode]:{answered:1,correct:1}},history:[{id:learner.id,mode:"practice",correct:true}]},
   missedIds:[],masteredIds:[],flaggedIds:[learner.id]
 };
 const values=new Map([["spg_rpsgtv2_2026_evolved_v10_5_1",JSON.stringify(primary)]]);
