@@ -10,15 +10,19 @@ on:
       - rpsgt-v3/practice.html
       - rpsgt-v3/review.html
       - rpsgt-v3/readiness.html
+      - rpsgt-v3/mock.html
       - rpsgt-v3/assets/practice.css
       - rpsgt-v3/assets/review.css
       - rpsgt-v3/assets/readiness.css
+      - rpsgt-v3/assets/mock.css
       - rpsgt-v3/core/storage.js
       - rpsgt-v3/core/app-shell.js
       - rpsgt-v3/core/practice.js
       - rpsgt-v3/core/review.js
       - rpsgt-v3/core/readiness-engine.js
       - rpsgt-v3/core/readiness.js
+      - rpsgt-v3/core/mock-engine.js
+      - rpsgt-v3/core/mock.js
       - rpsgt-v3/scripts/extract-question-bank.mjs
       - rpsgt-v3/scripts/validate-question-bank.mjs
       - rpsgt-v3/scripts/test-practice-pools.mjs
@@ -26,6 +30,8 @@ on:
       - rpsgt-v3/scripts/test-review-system.mjs
       - rpsgt-v3/scripts/test-readiness-system.mjs
       - rpsgt-v3/scripts/test-readiness-shell.mjs
+      - rpsgt-v3/scripts/test-mock-system.mjs
+      - rpsgt-v3/scripts/test-mock-shell.mjs
       - .github/workflows/rpsgt-v3-question-bank.yml
   pull_request:
     branches:
@@ -36,15 +42,19 @@ on:
       - rpsgt-v3/practice.html
       - rpsgt-v3/review.html
       - rpsgt-v3/readiness.html
+      - rpsgt-v3/mock.html
       - rpsgt-v3/assets/practice.css
       - rpsgt-v3/assets/review.css
       - rpsgt-v3/assets/readiness.css
+      - rpsgt-v3/assets/mock.css
       - rpsgt-v3/core/storage.js
       - rpsgt-v3/core/app-shell.js
       - rpsgt-v3/core/practice.js
       - rpsgt-v3/core/review.js
       - rpsgt-v3/core/readiness-engine.js
       - rpsgt-v3/core/readiness.js
+      - rpsgt-v3/core/mock-engine.js
+      - rpsgt-v3/core/mock.js
       - rpsgt-v3/scripts/extract-question-bank.mjs
       - rpsgt-v3/scripts/validate-question-bank.mjs
       - rpsgt-v3/scripts/test-practice-pools.mjs
@@ -52,6 +62,8 @@ on:
       - rpsgt-v3/scripts/test-review-system.mjs
       - rpsgt-v3/scripts/test-readiness-system.mjs
       - rpsgt-v3/scripts/test-readiness-shell.mjs
+      - rpsgt-v3/scripts/test-mock-system.mjs
+      - rpsgt-v3/scripts/test-mock-shell.mjs
       - .github/workflows/rpsgt-v3-question-bank.yml
 
 permissions:
@@ -82,7 +94,7 @@ jobs:
       - name: Validate question bank
         run: node rpsgt-v3/scripts/validate-question-bank.mjs
 
-      - name: Validate practice, review, and readiness systems
+      - name: Validate practice, review, readiness, and mock systems
         run: |
           node --check rpsgt-v3/core/storage.js
           node --check rpsgt-v3/core/app-shell.js
@@ -90,11 +102,15 @@ jobs:
           node --check rpsgt-v3/core/review.js
           node --check rpsgt-v3/core/readiness-engine.js
           node --check rpsgt-v3/core/readiness.js
+          node --check rpsgt-v3/core/mock-engine.js
+          node --check rpsgt-v3/core/mock.js
           node rpsgt-v3/scripts/test-practice-pools.mjs
           node rpsgt-v3/scripts/test-practice-shell.mjs
           node rpsgt-v3/scripts/test-review-system.mjs
           node rpsgt-v3/scripts/test-readiness-system.mjs
           node rpsgt-v3/scripts/test-readiness-shell.mjs
+          node rpsgt-v3/scripts/test-mock-system.mjs
+          node rpsgt-v3/scripts/test-mock-shell.mjs
 
       - name: Commit generated modules
         run: |
