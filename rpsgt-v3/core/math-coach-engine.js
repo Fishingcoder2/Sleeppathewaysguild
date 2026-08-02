@@ -4,10 +4,11 @@
   root.RPSGTMathCoachEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.0.0';
+  const VERSION='1.0.1';
   const LAB_ID='math-coach';
   const SESSION_SIZE=10;
   const PASS_PERCENT=80;
+  const HISTORY_LIMIT=20;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const safeNumber=(value,fallback=0)=>Number.isFinite(Number(value))?Number(value):fallback;
@@ -59,7 +60,10 @@
   }
   function applySession(value,session){
     const normalized=normalizeLabs(value);const record=normalized.record;const safe=clone(session);const time=safe.completedAt||new Date().toISOString();
-    record.startedAt=record.startedAt||time;record.updatedAt=time;record.latestSession=safe;record.history=[safe,...record.history.filter(item=>item&&item.id!==safe.id)].slice(0,20);record.attempts=record.history.length;record.bestPercent=Math.max(record.bestPercent,safeNumber(safe.percent,0));
+    const alreadyRecorded=record.history.some(item=>item&&item.id===safe.id);
+    record.startedAt=record.startedAt||time;record.updatedAt=time;record.latestSession=safe;record.history=[safe,...record.history.filter(item=>item&&item.id!==safe.id)].slice(0,HISTORY_LIMIT);
+    if(!alreadyRecorded) record.attempts=Math.max(0,safeNumber(record.attempts,0))+1;
+    record.bestPercent=Math.max(record.bestPercent,safeNumber(safe.percent,0));
     if(safe.passed){record.completed=true;record.status='completed';record.completedAt=record.completedAt||time;normalized.completed.add(LAB_ID);}else if(!record.completed){record.status='in-progress';}
     normalized.started[LAB_ID]=isObject(normalized.started[LAB_ID])?normalized.started[LAB_ID]:{startedAt:record.startedAt};
     normalized.labs.started=normalized.started;normalized.labs.completed=[...normalized.completed].sort();normalized.labs.lastLab=LAB_ID;normalized.labs[LAB_ID]=record;return normalized.labs;
@@ -71,5 +75,5 @@
     const known={};['lesson','currentLesson','index','completed','score','updatedAt'].forEach(key=>{if(value[key]!==undefined) known[key]=clone(value[key]);});
     return {present:true,type:'object',known,unknownKeys:Object.keys(value).filter(key=>!Object.prototype.hasOwnProperty.call(known,key)).sort()};
   }
-  return {VERSION,LAB_ID,SESSION_SIZE,PASS_PERCENT,eligibleQuestions,selectQuestions,gradeSession,normalizeLabs,start,applySession,summary,legacyLessonSummary};
+  return {VERSION,LAB_ID,SESSION_SIZE,PASS_PERCENT,HISTORY_LIMIT,eligibleQuestions,selectQuestions,gradeSession,normalizeLabs,start,applySession,summary,legacyLessonSummary};
 });
