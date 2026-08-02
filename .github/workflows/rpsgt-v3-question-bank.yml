@@ -11,10 +11,12 @@ on:
       - rpsgt-v3/review.html
       - rpsgt-v3/readiness.html
       - rpsgt-v3/mock.html
+      - rpsgt-v3/reports.html
       - rpsgt-v3/assets/practice.css
       - rpsgt-v3/assets/review.css
       - rpsgt-v3/assets/readiness.css
       - rpsgt-v3/assets/mock.css
+      - rpsgt-v3/assets/reports.css
       - rpsgt-v3/core/storage.js
       - rpsgt-v3/core/app-shell.js
       - rpsgt-v3/core/practice.js
@@ -23,7 +25,12 @@ on:
       - rpsgt-v3/core/readiness.js
       - rpsgt-v3/core/mock-engine.js
       - rpsgt-v3/core/mock.js
+      - rpsgt-v3/core/study-feedback-engine.js
+      - rpsgt-v3/core/reports-engine.js
+      - rpsgt-v3/core/reports.js
+      - rpsgt-v3/data/study-sources/**
       - rpsgt-v3/scripts/extract-question-bank.mjs
+      - rpsgt-v3/scripts/generate-feedback-index.mjs
       - rpsgt-v3/scripts/validate-question-bank.mjs
       - rpsgt-v3/scripts/test-practice-pools.mjs
       - rpsgt-v3/scripts/test-practice-shell.mjs
@@ -32,6 +39,8 @@ on:
       - rpsgt-v3/scripts/test-readiness-shell.mjs
       - rpsgt-v3/scripts/test-mock-system.mjs
       - rpsgt-v3/scripts/test-mock-shell.mjs
+      - rpsgt-v3/scripts/test-reports-system.mjs
+      - rpsgt-v3/scripts/test-reports-shell.mjs
       - .github/workflows/rpsgt-v3-question-bank.yml
   pull_request:
     branches:
@@ -43,10 +52,12 @@ on:
       - rpsgt-v3/review.html
       - rpsgt-v3/readiness.html
       - rpsgt-v3/mock.html
+      - rpsgt-v3/reports.html
       - rpsgt-v3/assets/practice.css
       - rpsgt-v3/assets/review.css
       - rpsgt-v3/assets/readiness.css
       - rpsgt-v3/assets/mock.css
+      - rpsgt-v3/assets/reports.css
       - rpsgt-v3/core/storage.js
       - rpsgt-v3/core/app-shell.js
       - rpsgt-v3/core/practice.js
@@ -55,7 +66,12 @@ on:
       - rpsgt-v3/core/readiness.js
       - rpsgt-v3/core/mock-engine.js
       - rpsgt-v3/core/mock.js
+      - rpsgt-v3/core/study-feedback-engine.js
+      - rpsgt-v3/core/reports-engine.js
+      - rpsgt-v3/core/reports.js
+      - rpsgt-v3/data/study-sources/**
       - rpsgt-v3/scripts/extract-question-bank.mjs
+      - rpsgt-v3/scripts/generate-feedback-index.mjs
       - rpsgt-v3/scripts/validate-question-bank.mjs
       - rpsgt-v3/scripts/test-practice-pools.mjs
       - rpsgt-v3/scripts/test-practice-shell.mjs
@@ -64,6 +80,8 @@ on:
       - rpsgt-v3/scripts/test-readiness-shell.mjs
       - rpsgt-v3/scripts/test-mock-system.mjs
       - rpsgt-v3/scripts/test-mock-shell.mjs
+      - rpsgt-v3/scripts/test-reports-system.mjs
+      - rpsgt-v3/scripts/test-reports-shell.mjs
       - .github/workflows/rpsgt-v3-question-bank.yml
 
 permissions:
@@ -91,10 +109,13 @@ jobs:
           RPSGT_EXTRACTION_DATE: 2026-08-01
         run: node rpsgt-v3/scripts/extract-question-bank.mjs
 
+      - name: Generate compact learner-feedback index
+        run: node rpsgt-v3/scripts/generate-feedback-index.mjs
+
       - name: Validate question bank
         run: node rpsgt-v3/scripts/validate-question-bank.mjs
 
-      - name: Validate practice, review, readiness, and mock systems
+      - name: Validate practice, review, readiness, mock, and reports systems
         run: |
           node --check rpsgt-v3/core/storage.js
           node --check rpsgt-v3/core/app-shell.js
@@ -104,6 +125,10 @@ jobs:
           node --check rpsgt-v3/core/readiness.js
           node --check rpsgt-v3/core/mock-engine.js
           node --check rpsgt-v3/core/mock.js
+          node --check rpsgt-v3/core/study-feedback-engine.js
+          node --check rpsgt-v3/core/reports-engine.js
+          node --check rpsgt-v3/core/reports.js
+          node --check rpsgt-v3/scripts/generate-feedback-index.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
           node rpsgt-v3/scripts/test-practice-shell.mjs
           node rpsgt-v3/scripts/test-review-system.mjs
@@ -111,11 +136,13 @@ jobs:
           node rpsgt-v3/scripts/test-readiness-shell.mjs
           node rpsgt-v3/scripts/test-mock-system.mjs
           node rpsgt-v3/scripts/test-mock-shell.mjs
+          node rpsgt-v3/scripts/test-reports-system.mjs
+          node rpsgt-v3/scripts/test-reports-shell.mjs
 
       - name: Commit generated modules
         run: |
           if git diff --quiet -- rpsgt-v3/data/question-bank; then
-            echo "Generated question bank is already current."
+            echo "Generated question bank and learner-feedback index are already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
