@@ -8,6 +8,11 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Shared responsive shell inspired by the clearer CPSGT navigation pattern.
 - One versioned browser-storage record: `spg_rpsgt_v3`, currently at schema version 2.
 - Read-only detection and preview of the current RPSGT storage records.
+- A pure legacy-migration engine now builds an in-memory, preview-only candidate and never writes, deletes, or modifies legacy storage.
+- Migration validation covers Practice totals, domain/task statistics, explicit history modes, missed/mastered/flagged IDs, Guided Trail position and checkpoints, awards, labs, notes, searches, readiness-like records, mock-style records, and Math Coach data.
+- The compact feedback index validates question IDs without loading question prompts, options, answers, rationales, or textbook content into migration code.
+- Unknown IDs, duplicate IDs, manual-review remediation IDs, malformed records, ambiguous history modes, and legacy JSON parse failures are reported rather than silently reassigned.
+- Source fingerprints detect duplicate migration attempts, and every draft retains the current v3 state as the rollback baseline. Import remains hard-disabled.
 - Canonical four-domain, twelve-task blueprint data shared across learning modules.
 - Complete 2,887-question bank extracted into 13 validated task modules.
 - Full Practice Center with domain/task filtering and lazy task-module loading.
@@ -25,7 +30,7 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - All 12 RPSGT task codes have a defined source sequence, and 20 topic families provide more specific routes for instrumentation, artifact, staging, respiratory scoring, calculations, PAP, pediatrics, safety, and related weak areas.
 - Rule-sensitive feedback begins with the current official AASM section before textbook reinforcement and focused practice.
 - Chapter and section titles are navigation aids only. The app does not reproduce textbook prose, figures, tables, proprietary scoring rules, or publisher question banks.
-- GitHub Actions validates full-bank reconstruction, learner/quality separation, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, and the Reports Center’s read-only boundary.
+- GitHub Actions validates full-bank reconstruction, learner/quality separation, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and legacy-migration safeguards.
 - Interactive desktop/mobile browser regression is still required before merge; the available development environment blocks localhost and local-file URLs by organization policy.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All development pages are marked `noindex,nofollow`.
@@ -47,11 +52,11 @@ Private Drive URLs are not placed in public learner data. Public release resourc
 - `spg_mathcoach_lesson_59b`
 - `spg_math_notes_59b_*`
 
-The preview does not import, overwrite, or delete any legacy record. `createMigrationDraft()` builds an in-memory candidate only. A user-facing import action must not be enabled until field mapping and regression tests are complete.
+`getLegacySnapshot()` reads these records without modification. `createMigrationDraft()` produces an in-memory candidate with field mappings, source fingerprint, validation findings, duplicate detection, and rollback metadata. It does not import, overwrite, or delete any record. `canImport` and `migration.importEnabled` remain `false`; no user-facing import action is enabled.
 
 ## Remaining release gates
 
-1. Complete storage migration tests for legacy Practice, Review, Guided Trail, notes, and mock-style records.
+1. Validate migration against representative real browser exports and resolve every malformed or ambiguous legacy field before enabling import.
 2. Complete Guided Trail checkpoint and report parity.
 3. Migrate and validate the laboratory catalog and individual lab experiences.
 4. Add mock-result drill-down and printable/exportable study summaries only after report contracts remain stable.
