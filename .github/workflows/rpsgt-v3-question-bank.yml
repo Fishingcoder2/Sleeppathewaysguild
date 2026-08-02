@@ -7,70 +7,7 @@ on:
     paths:
       - RPSGTv2.2026.html
       - RPSGTv2.2026-core.html
-      - rpsgt-v3/study.html
-      - rpsgt-v3/practice.html
-      - rpsgt-v3/review.html
-      - rpsgt-v3/readiness.html
-      - rpsgt-v3/mock.html
-      - rpsgt-v3/labs.html
-      - rpsgt-v3/lab-hookup.html
-      - rpsgt-v3/lab-scoring.html
-      - rpsgt-v3/lab-respiratory.html
-      - rpsgt-v3/lab-instrumentation.html
-      - rpsgt-v3/lab-pap.html
-      - rpsgt-v3/lab-troubleshooting.html
-      - rpsgt-v3/lab-math-coach.html
-      - rpsgt-v3/reports.html
-      - rpsgt-v3/assets/study.css
-      - rpsgt-v3/assets/practice.css
-      - rpsgt-v3/assets/review.css
-      - rpsgt-v3/assets/readiness.css
-      - rpsgt-v3/assets/mock.css
-      - rpsgt-v3/assets/labs.css
-      - rpsgt-v3/assets/hookup.css
-      - rpsgt-v3/assets/scoring.css
-      - rpsgt-v3/assets/respiratory.css
-      - rpsgt-v3/assets/instrumentation.css
-      - rpsgt-v3/assets/pap.css
-      - rpsgt-v3/assets/troubleshooting.css
-      - rpsgt-v3/assets/math-coach.css
-      - rpsgt-v3/assets/reports.css
-      - rpsgt-v3/core/storage.js
-      - rpsgt-v3/core/migration-engine.js
-      - rpsgt-v3/core/legacy-migration.js
-      - rpsgt-v3/core/app-shell.js
-      - rpsgt-v3/core/guided-trail-engine.js
-      - rpsgt-v3/core/guided-trail-report.js
-      - rpsgt-v3/core/lab-catalog-engine.js
-      - rpsgt-v3/core/labs.js
-      - rpsgt-v3/core/hookup-lab-engine.js
-      - rpsgt-v3/core/lab-hookup.js
-      - rpsgt-v3/core/scoring-lab-engine.js
-      - rpsgt-v3/core/lab-scoring.js
-      - rpsgt-v3/core/respiratory-lab-engine.js
-      - rpsgt-v3/core/lab-respiratory.js
-      - rpsgt-v3/core/instrumentation-lab-engine.js
-      - rpsgt-v3/core/lab-instrumentation.js
-      - rpsgt-v3/core/pap-lab-engine.js
-      - rpsgt-v3/core/lab-pap.js
-      - rpsgt-v3/core/troubleshooting-lab-engine.js
-      - rpsgt-v3/core/lab-troubleshooting.js
-      - rpsgt-v3/core/math-coach-engine.js
-      - rpsgt-v3/core/lab-math-coach.js
-      - rpsgt-v3/core/study.js
-      - rpsgt-v3/core/practice.js
-      - rpsgt-v3/core/review.js
-      - rpsgt-v3/core/readiness-engine.js
-      - rpsgt-v3/core/readiness.js
-      - rpsgt-v3/core/mock-engine.js
-      - rpsgt-v3/core/mock.js
-      - rpsgt-v3/core/study-feedback-engine.js
-      - rpsgt-v3/core/reports-engine.js
-      - rpsgt-v3/core/reports.js
-      - rpsgt-v3/data/labs/**
-      - rpsgt-v3/data/study-sources/**
-      - rpsgt-v3/tests/fixtures/migration/**
-      - rpsgt-v3/scripts/**
+      - rpsgt-v3/**
       - .github/workflows/rpsgt-v3-question-bank.yml
   pull_request:
     branches:
@@ -78,70 +15,7 @@ on:
     paths:
       - RPSGTv2.2026.html
       - RPSGTv2.2026-core.html
-      - rpsgt-v3/study.html
-      - rpsgt-v3/practice.html
-      - rpsgt-v3/review.html
-      - rpsgt-v3/readiness.html
-      - rpsgt-v3/mock.html
-      - rpsgt-v3/labs.html
-      - rpsgt-v3/lab-hookup.html
-      - rpsgt-v3/lab-scoring.html
-      - rpsgt-v3/lab-respiratory.html
-      - rpsgt-v3/lab-instrumentation.html
-      - rpsgt-v3/lab-pap.html
-      - rpsgt-v3/lab-troubleshooting.html
-      - rpsgt-v3/lab-math-coach.html
-      - rpsgt-v3/reports.html
-      - rpsgt-v3/assets/study.css
-      - rpsgt-v3/assets/practice.css
-      - rpsgt-v3/assets/review.css
-      - rpsgt-v3/assets/readiness.css
-      - rpsgt-v3/assets/mock.css
-      - rpsgt-v3/assets/labs.css
-      - rpsgt-v3/assets/hookup.css
-      - rpsgt-v3/assets/scoring.css
-      - rpsgt-v3/assets/respiratory.css
-      - rpsgt-v3/assets/instrumentation.css
-      - rpsgt-v3/assets/pap.css
-      - rpsgt-v3/assets/troubleshooting.css
-      - rpsgt-v3/assets/math-coach.css
-      - rpsgt-v3/assets/reports.css
-      - rpsgt-v3/core/storage.js
-      - rpsgt-v3/core/migration-engine.js
-      - rpsgt-v3/core/legacy-migration.js
-      - rpsgt-v3/core/app-shell.js
-      - rpsgt-v3/core/guided-trail-engine.js
-      - rpsgt-v3/core/guided-trail-report.js
-      - rpsgt-v3/core/lab-catalog-engine.js
-      - rpsgt-v3/core/labs.js
-      - rpsgt-v3/core/hookup-lab-engine.js
-      - rpsgt-v3/core/lab-hookup.js
-      - rpsgt-v3/core/scoring-lab-engine.js
-      - rpsgt-v3/core/lab-scoring.js
-      - rpsgt-v3/core/respiratory-lab-engine.js
-      - rpsgt-v3/core/lab-respiratory.js
-      - rpsgt-v3/core/instrumentation-lab-engine.js
-      - rpsgt-v3/core/lab-instrumentation.js
-      - rpsgt-v3/core/pap-lab-engine.js
-      - rpsgt-v3/core/lab-pap.js
-      - rpsgt-v3/core/troubleshooting-lab-engine.js
-      - rpsgt-v3/core/lab-troubleshooting.js
-      - rpsgt-v3/core/math-coach-engine.js
-      - rpsgt-v3/core/lab-math-coach.js
-      - rpsgt-v3/core/study.js
-      - rpsgt-v3/core/practice.js
-      - rpsgt-v3/core/review.js
-      - rpsgt-v3/core/readiness-engine.js
-      - rpsgt-v3/core/readiness.js
-      - rpsgt-v3/core/mock-engine.js
-      - rpsgt-v3/core/mock.js
-      - rpsgt-v3/core/study-feedback-engine.js
-      - rpsgt-v3/core/reports-engine.js
-      - rpsgt-v3/core/reports.js
-      - rpsgt-v3/data/labs/**
-      - rpsgt-v3/data/study-sources/**
-      - rpsgt-v3/tests/fixtures/migration/**
-      - rpsgt-v3/scripts/**
+      - rpsgt-v3/**
       - .github/workflows/rpsgt-v3-question-bank.yml
 
 permissions:
@@ -197,6 +71,8 @@ jobs:
           node --check rpsgt-v3/core/lab-pap.js
           node --check rpsgt-v3/core/troubleshooting-lab-engine.js
           node --check rpsgt-v3/core/lab-troubleshooting.js
+          node --check rpsgt-v3/core/pediatric-lab-engine.js
+          node --check rpsgt-v3/core/lab-pediatric.js
           node --check rpsgt-v3/core/math-coach-engine.js
           node --check rpsgt-v3/core/lab-math-coach.js
           node --check rpsgt-v3/core/study.js
@@ -227,6 +103,8 @@ jobs:
           node rpsgt-v3/scripts/test-pap-lab-shell.mjs
           node rpsgt-v3/scripts/test-troubleshooting-lab-system.mjs
           node rpsgt-v3/scripts/test-troubleshooting-lab-shell.mjs
+          node rpsgt-v3/scripts/test-pediatric-lab-system.mjs
+          node rpsgt-v3/scripts/test-pediatric-lab-shell.mjs
           node rpsgt-v3/scripts/test-math-coach-system.mjs
           node rpsgt-v3/scripts/test-math-coach-shell.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
