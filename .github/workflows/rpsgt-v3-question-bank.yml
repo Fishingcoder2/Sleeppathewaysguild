@@ -15,6 +15,7 @@ on:
       - rpsgt-v3/labs.html
       - rpsgt-v3/lab-hookup.html
       - rpsgt-v3/lab-scoring.html
+      - rpsgt-v3/lab-respiratory.html
       - rpsgt-v3/lab-math-coach.html
       - rpsgt-v3/reports.html
       - rpsgt-v3/assets/study.css
@@ -25,6 +26,7 @@ on:
       - rpsgt-v3/assets/labs.css
       - rpsgt-v3/assets/hookup.css
       - rpsgt-v3/assets/scoring.css
+      - rpsgt-v3/assets/respiratory.css
       - rpsgt-v3/assets/math-coach.css
       - rpsgt-v3/assets/reports.css
       - rpsgt-v3/core/storage.js
@@ -39,6 +41,8 @@ on:
       - rpsgt-v3/core/lab-hookup.js
       - rpsgt-v3/core/scoring-lab-engine.js
       - rpsgt-v3/core/lab-scoring.js
+      - rpsgt-v3/core/respiratory-lab-engine.js
+      - rpsgt-v3/core/lab-respiratory.js
       - rpsgt-v3/core/math-coach-engine.js
       - rpsgt-v3/core/lab-math-coach.js
       - rpsgt-v3/core/study.js
@@ -70,6 +74,7 @@ on:
       - rpsgt-v3/labs.html
       - rpsgt-v3/lab-hookup.html
       - rpsgt-v3/lab-scoring.html
+      - rpsgt-v3/lab-respiratory.html
       - rpsgt-v3/lab-math-coach.html
       - rpsgt-v3/reports.html
       - rpsgt-v3/assets/study.css
@@ -80,6 +85,7 @@ on:
       - rpsgt-v3/assets/labs.css
       - rpsgt-v3/assets/hookup.css
       - rpsgt-v3/assets/scoring.css
+      - rpsgt-v3/assets/respiratory.css
       - rpsgt-v3/assets/math-coach.css
       - rpsgt-v3/assets/reports.css
       - rpsgt-v3/core/storage.js
@@ -94,6 +100,8 @@ on:
       - rpsgt-v3/core/lab-hookup.js
       - rpsgt-v3/core/scoring-lab-engine.js
       - rpsgt-v3/core/lab-scoring.js
+      - rpsgt-v3/core/respiratory-lab-engine.js
+      - rpsgt-v3/core/lab-respiratory.js
       - rpsgt-v3/core/math-coach-engine.js
       - rpsgt-v3/core/lab-math-coach.js
       - rpsgt-v3/core/study.js
@@ -157,6 +165,8 @@ jobs:
           node --check rpsgt-v3/core/lab-hookup.js
           node --check rpsgt-v3/core/scoring-lab-engine.js
           node --check rpsgt-v3/core/lab-scoring.js
+          node --check rpsgt-v3/core/respiratory-lab-engine.js
+          node --check rpsgt-v3/core/lab-respiratory.js
           node --check rpsgt-v3/core/math-coach-engine.js
           node --check rpsgt-v3/core/lab-math-coach.js
           node --check rpsgt-v3/core/study.js
@@ -179,6 +189,8 @@ jobs:
           node rpsgt-v3/scripts/test-hookup-lab-shell.mjs
           node rpsgt-v3/scripts/test-scoring-lab-system.mjs
           node rpsgt-v3/scripts/test-scoring-lab-shell.mjs
+          node rpsgt-v3/scripts/test-respiratory-lab-system.mjs
+          node rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
           node rpsgt-v3/scripts/test-math-coach-system.mjs
           node rpsgt-v3/scripts/test-math-coach-shell.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
