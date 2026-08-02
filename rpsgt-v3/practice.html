@@ -11,7 +11,7 @@
 <body data-module="practice">
 <div class="app-shell">
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Practice Center</strong><span>Validated development practice slice</span></span></a>
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Practice Center</strong><span>Complete modular question bank</span></span></a>
   <div class="top-actions"><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
@@ -25,37 +25,44 @@
 </aside>
 <main class="main">
 <section class="hero">
-  <div><div class="eyebrow">Module 2 · practice-slice milestone</div><h1>Practice and Exam Center</h1><p class="lead">Test the new shared question engine with <strong data-slice-count>36</strong> validated questions covering every direct RPSGT task code.</p></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Small slice, full workflow.</h2><p>Use this development set to verify filtering, answer feedback, progress recording, missed-question handling, and mobile behavior before the complete bank is connected.</p></aside>
+  <div><div class="eyebrow">Module 2 · full-bank milestone</div><h1>Practice and Exam Center</h1><p class="lead">Build focused sessions from <strong data-bank-total>2,887</strong> preserved RPSGT source records across all four domains and twelve direct task codes.</p></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Practice content and quality-review content now travel on separate paths.</h2><p>General learner sessions exclude every manual-review record. The separate quality-review pool keeps those records visible for inspection without affecting learner progress.</p></aside>
 </section>
-<section class="section notice"><strong>Development boundary:</strong> This is not the mock exam and is not yet the complete question bank. It writes only to the new <code>spg_rpsgt_v3</code> progress record and does not import or change legacy RPSGT data.</section>
-<section class="section notice" data-practice-load>Loading the validated practice modules…</section>
+<section class="section notice"><strong>Development boundary:</strong> This is not yet the readiness check or 175-question mock exam. Learner-mode answers write only to <code>spg_rpsgt_v3</code>; quality-review attempts are never added to learner totals, missed questions, mastery, readiness, or reports.</section>
+<section class="section notice" data-practice-load>Loading the complete question-bank manifest…</section>
 <section class="section card practice-setup hidden" data-practice-setup>
-  <div class="section-head"><div><div class="eyebrow">Choose a session</div><h2>Start focused practice</h2></div><span class="status green">36 validated questions</span></div>
+  <div class="section-head"><div><div class="eyebrow">Choose a session</div><h2>Start focused practice</h2></div><span class="status green"><span data-module-total>13</span> task modules</span></div>
+  <div class="bank-summary" aria-label="Question bank summary">
+    <div><span>Total preserved records</span><strong data-bank-total>2,887</strong></div>
+    <div><span>Learner-practice pool</span><strong data-learner-total>2,327</strong></div>
+    <div><span>Quality-review pool</span><strong data-quality-total>560</strong></div>
+  </div>
   <div class="practice-controls">
+    <label>Practice mode<select data-practice-mode><option value="learner" selected>Learner practice</option><option value="quality">Quality review</option></select></label>
     <label>Domain<select data-practice-domain><option value="all">All domains</option></select></label>
     <label>Task<select data-practice-task><option value="all">All tasks</option></select></label>
-    <label>Session size<select data-practice-size><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="all">All available questions</option></select></label>
+    <label>Session size<select data-practice-size><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="25">25 questions</option><option value="50">50 questions</option><option value="100">100 questions</option><option value="all">All filtered questions</option></select></label>
   </div>
+  <div class="mode-notice learner" data-mode-notice></div>
   <div class="actions"><button class="btn primary" type="button" data-start-practice>Start practice</button></div>
 </section>
 <section class="section practice-session hidden" data-practice-shell>
   <div class="card question-card" data-question-panel>
-    <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span></div><span class="status gold" data-question-difficulty>Difficulty</span></div>
+    <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span><span class="status quality hidden" data-question-review>Manual review record</span></div><span class="status gold" data-question-difficulty>Difficulty</span></div>
     <div class="question-prompt" data-question-prompt></div>
     <div class="practice-choices" data-question-choices></div>
     <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
     <div class="question-actions"><button class="btn secondary" type="button" data-change-filters>Change filters</button><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
   </div>
   <aside class="session-rail">
-    <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Bank slice</span><strong data-slice-count>36</strong></div></div></div>
-    <div class="card"><h3>Overall v3 record</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-stat="answered">0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="session-stat"><span>Missed</span><strong data-stat="missed">0</strong></div></div></div>
+    <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span data-progress-policy>Recorded in the v3 learner record</span></p></div>
+    <div class="card"><h3>Overall v3 learner record</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-stat="answered">0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="session-stat"><span>Missed</span><strong data-stat="missed">0</strong></div></div></div>
   </aside>
   <div class="card session-complete hidden" data-session-complete>
-    <span class="status green">Session complete</span><h2>Practice result</h2><div class="complete-score" data-complete-score>0 / 0</div><div class="complete-percent" data-complete-percent>0%</div><p>Your answers were recorded only in the new RPSGT v3 development record.</p><div class="actions"><button class="btn primary" type="button" data-restart-session>Practice this selection again</button><button class="btn secondary" type="button" data-change-filters>Choose different filters</button></div>
+    <span class="status green">Session complete</span><h2>Practice result</h2><div class="complete-score" data-complete-score>0 / 0</div><div class="complete-percent" data-complete-percent>0%</div><p data-complete-policy></p><div class="actions"><button class="btn primary" type="button" data-restart-session>Practice this selection again</button><button class="btn secondary" type="button" data-change-filters>Choose different filters</button></div>
   </div>
 </section>
-<footer class="footer">Development branch only · Full readiness and mock-exam systems remain in the preserved application</footer>
+<footer class="footer">Development branch only · Readiness checks and the 175-question mock exam remain separate migration milestones</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
