@@ -2,7 +2,7 @@
   'use strict';
   const host=document.querySelector('[data-lab-catalog]');const summaryHost=document.querySelector('[data-lab-summary]');const engine=window.RPSGTLabCatalogEngine;
   if(!host) return;
-  const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
+  const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const statusLabel=status=>status==='legacy-linked'?'Preserved lab available':status==='v3-ready'?'v3 lab ready':'Cataloged · migration pending';
   const statusClass=status=>status==='legacy-linked'?'gold':status==='v3-ready'?'green':'quality';
   function render(catalog,report){
