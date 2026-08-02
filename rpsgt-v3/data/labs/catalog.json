@@ -1,14 +1,14 @@
 {
   "meta": {
     "name": "RPSGT v3 laboratory catalog",
-    "version": 1,
+    "version": 2,
     "developmentOnly": true,
     "individualLabParityComplete": false,
     "progressRecord": "spg_rpsgt_v3.labs",
     "copyrightBoundary": "Catalog descriptions and task mappings are app-authored. Legacy lab content and protected source material are not copied into this catalog."
   },
   "labs": [
-    {"id":"hookup","title":"Hookup and Electrode Placement","shortTitle":"Hookup","icon":"◎","description":"Landmarks, measurements, placement, impedance, patient preparation, and correction of poor contact.","taskCodes":["D2A","D2B"],"progressKey":"hookup","status":"catalog-only","plannedRoute":"lab-hookup.html","legacyHref":null},
+    {"id":"hookup","title":"Hookup and Electrode Placement","shortTitle":"Hookup","icon":"◎","description":"Landmarks, measurements, placement, impedance, patient preparation, and correction of poor contact.","taskCodes":["D2A","D2B"],"progressKey":"hookup","status":"v3-ready","plannedRoute":"lab-hookup.html","legacyHref":null},
     {"id":"ekg","title":"EKG Recognition and Response","shortTitle":"EKG","icon":"♡","description":"Rhythm recognition, interval timing, sleep-study documentation, urgent findings, and escalation boundaries.","taskCodes":["D2B","D3C"],"progressKey":"ekg","status":"legacy-linked","plannedRoute":"lab-ekg.html","legacyHref":"../ekg.2026.html"},
     {"id":"scoring","title":"Sleep Staging and Event Scoring","shortTitle":"Scoring","icon":"▥","description":"Epoch review, stage criteria, arousals, respiratory events, limb movements, and scoring artifacts.","taskCodes":["D3A","D3B","D3C"],"progressKey":"scoring","status":"catalog-only","plannedRoute":"lab-scoring.html","legacyHref":null},
     {"id":"respiratory","title":"Respiratory Signals and Event Recognition","shortTitle":"Respiratory","icon":"≈","description":"Airflow, effort, oximetry, CO2, snore, event classification, and signal-quality decisions.","taskCodes":["D2A","D2B","D3B"],"progressKey":"respiratory","status":"catalog-only","plannedRoute":"lab-respiratory.html","legacyHref":null},
