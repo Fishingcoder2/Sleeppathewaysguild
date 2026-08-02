@@ -15,13 +15,7 @@ for(const meta of manifest.modules||[]){
       id:question.id,
       domain:question.domain,
       taskCode:question.taskCode,
-      task:question.task||"",
       topic:question.topic||"",
-      questionType:question.questionType||"",
-      difficulty:question.difficulty||"",
-      reportCategory:question.reportCategory||"",
-      referenceKeys:Array.isArray(question.referenceKeys)?question.referenceKeys:[],
-      studyRecommendationKeys:Array.isArray(question.studyRecommendationKeys)?question.studyRecommendationKeys:[],
       manualReviewRecommended:Boolean(question.qa&&question.qa.manualReviewRecommended)
     });
   }
@@ -37,12 +31,13 @@ for(const record of records){taskCounts[record.taskCode]=(taskCounts[record.task
 const payload={
   meta:{
     name:"RPSGT v3 compact learner-feedback index",
-    version:1,
+    version:2,
     sourceManifestSha256:sha256(JSON.stringify(manifest)),
     questionCount:records.length,
     learnerEligibleCount:learnerCount,
     qualityReviewCount:qualityCount,
     recordsContainQuestionText:false,
+    recordFields:["id","domain","taskCode","topic","manualReviewRecommended"],
     developmentOnly:true
   },
   taskCounts,
@@ -50,4 +45,4 @@ const payload={
   records
 };
 await writeFile(join(bankDir,"feedback-index.json"),JSON.stringify(payload),"utf8");
-console.log(`Generated feedback index with ${records.length} records (${learnerCount} learner eligible, ${qualityCount} quality review).`);
+console.log(`Generated compact feedback index with ${records.length} records (${learnerCount} learner eligible, ${qualityCount} quality review).`);
