@@ -5,5 +5,5 @@ for(const script of ['core/lab-catalog-engine.js','core/labs.js']) if(!html.incl
 if(html.indexOf('core/lab-catalog-engine.js')>html.indexOf('core/labs.js')) throw new Error('Laboratory catalog engine must load before the controller.');
 if(/RPSGTStorage\.save|localStorage\.(?:setItem|removeItem|clear)/.test(js)) throw new Error('Laboratory catalog controller must remain read only.');
 if(!js.includes("data/labs/catalog.json")||!js.includes('validateCatalog')||!js.includes('engine.summarize')) throw new Error('Laboratory controller is not driven by the canonical catalog engine.');
-if(!html.includes('Hookup, Scoring, Respiratory, Instrumentation, and Math Coach are v3-ready')||!html.includes('visibly disabled')) throw new Error('Individual laboratory and remaining parity boundaries are not visible to learners.');
+if(!html.includes('Hookup, Scoring, Respiratory, Instrumentation, PAP, and Math Coach are v3-ready')||!html.includes('visibly disabled')) throw new Error('Individual laboratory and remaining parity boundaries are not visible to learners.');
 console.log('Laboratory catalog page selector, script-order, ready-lab, and read-only contracts passed.');
