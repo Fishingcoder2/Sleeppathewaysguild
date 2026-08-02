@@ -19,7 +19,12 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Separate 25-, 50-, and 100-question Readiness Checks use the 2,327 learner-practice records only.
 - Readiness sessions preserve weighted domain allocation, task balancing, question-family deduplication, raw scoring, an internal difficulty-weighted gauge, domain results, and weak-task study targets.
 - Readiness history and resumable active sessions live under `readiness`, separate from ordinary Practice, Review, and Mock records.
-- GitHub Actions validates full-bank reconstruction, practice/review separation, readiness allocations, JavaScript syntax, and page-selector contracts.
+- Separate 175-question Mock-Style Practice uses 150 scored-style items and 25 mixed unscored-style items.
+- The scored mock set preserves D1 30, D2 41, D3 38, and D4 41; all 12 direct task codes are represented.
+- Mock attempts support randomized construction, question-family deduplication, previous/next navigation, a question palette, flags, save-and-resume, optional elapsed-time tracking, scored-domain results, weak-task targets, and separate history.
+- The optional mock timer is off by default, never auto-submits, and uses 180 minutes only as an exam-time reference.
+- Mock results do not write to ordinary Practice totals, Review lists, or Readiness history.
+- GitHub Actions validates full-bank reconstruction, Practice/Review separation, Readiness allocations, Mock scored/pretest structure, JavaScript syntax, and page-selector contracts.
 - Interactive browser regression is still required before merge; the current container blocks localhost and file URLs by organization policy.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All pages are marked `noindex,nofollow` during development.
@@ -36,8 +41,8 @@ The preview does not import, overwrite, or delete any legacy record. `createMigr
 
 ## Next milestone
 
-1. Recreate the 175-question mock exam as a separate system with 150 scored-style and 25 unscored-style items.
-2. Preserve D1 30, D2 41, D3 38, and D4 41 scored-style weighting, timing, navigation, resume behavior, and history.
-3. Connect Practice, Review, Readiness, and Mock results to modular reports without combining their histories.
-4. Continue Guided Trail and laboratory migration without changing the current public application.
+1. Connect Practice, Review, Readiness, and Mock results to modular reports without combining their histories.
+2. Add mock-result drill-down and printable/exportable study summaries only after report contracts are validated.
+3. Continue Guided Trail and laboratory migration without changing the current public application.
+4. Complete storage migration tests for legacy Practice, Review, Trail, notes, and mock-style records.
 5. Complete interactive desktop/mobile browser regression before considering the draft pull request mergeable for release.
