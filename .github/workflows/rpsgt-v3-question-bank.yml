@@ -141,7 +141,7 @@ jobs:
 
       - name: Commit generated modules
         run: |
-          if git diff --quiet -- rpsgt-v3/data/question-bank; then
+          if [ -z "$(git status --porcelain -- rpsgt-v3/data/question-bank)" ]; then
             echo "Generated question bank and learner-feedback index are already current."
             exit 0
           fi
