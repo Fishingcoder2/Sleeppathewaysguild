@@ -1,0 +1,13 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,controller,catalog]=await Promise.all([readFile(join(root,'lab-pediatric.html'),'utf8'),readFile(join(root,'core','lab-pediatric.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const selector of ['data-pediatric-start','data-pediatric-summary','data-pediatric-stations','data-pediatric-workspace']) if(!html.includes(selector)) throw new Error(`Pediatric page is missing ${selector}.`);
+for(const script of ['core/storage.js','core/app-shell.js','core/pediatric-lab-engine.js','core/lab-pediatric.js']) if(!html.includes(script)) throw new Error(`Pediatric page does not load ${script}.`);
+if(html.indexOf('core/pediatric-lab-engine.js')>html.indexOf('core/lab-pediatric.js')) throw new Error('Pediatric engine must load before the controller.');
+if(!html.includes('do not reproduce proprietary pediatric scoring thresholds, tables, figures, or source prose')||!html.includes('current AASM guidance')) throw new Error('Pediatric evidence and clinical boundary is not visible.');
+if(!html.includes('Pediatric lab results do not change ordinary Practice, Readiness, Mock, remediation, or Guided Trail history')) throw new Error('Pediatric storage separation is not visible.');
+if(/localStorage\.(?:setItem|removeItem|clear)/.test(controller)) throw new Error('Pediatric controller must not write browser storage directly.');
+if(!controller.includes('RPSGTStorage.save')||!controller.includes('state.saved.labs=nextLabs')) throw new Error('Pediatric controller must write only through the versioned labs record.');
+for(const module of ['d1a.json','d1c.json','d3a.json','d3b.json','d4a.json']) if(!controller.includes(module)) throw new Error(`Pediatric controller does not load ${module}.`);
+for(const forbidden of ['state.saved.practice','state.saved.readiness','state.saved.mock','state.saved.review','state.saved.guidedTrail']) if(controller.includes(forbidden)) throw new Error(`Pediatric controller must not write ${forbidden}.`);
+const entry=catalog.labs.find(item=>item.id==='pediatric');if(!entry||entry.status!=='v3-ready'||entry.plannedRoute!=='lab-pediatric.html') throw new Error('Pediatric catalog route is not activated.');
+console.log('Pediatric page, evidence boundary, storage isolation, script order, task modules, and catalog route contracts passed.');
