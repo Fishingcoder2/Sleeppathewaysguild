@@ -5,17 +5,23 @@ on:
     branches:
       - build/rpsgt-v3-modular
     paths:
+      - RPSGTv2.2026.html
       - RPSGTv2.2026-core.html
+      - rpsgt-v3/core/practice.js
       - rpsgt-v3/scripts/extract-question-bank.mjs
       - rpsgt-v3/scripts/validate-question-bank.mjs
+      - rpsgt-v3/scripts/test-practice-pools.mjs
       - .github/workflows/rpsgt-v3-question-bank.yml
   pull_request:
     branches:
       - main
     paths:
+      - RPSGTv2.2026.html
       - RPSGTv2.2026-core.html
+      - rpsgt-v3/core/practice.js
       - rpsgt-v3/scripts/extract-question-bank.mjs
       - rpsgt-v3/scripts/validate-question-bank.mjs
+      - rpsgt-v3/scripts/test-practice-pools.mjs
       - .github/workflows/rpsgt-v3-question-bank.yml
 
 permissions:
@@ -45,6 +51,11 @@ jobs:
 
       - name: Validate question bank
         run: node rpsgt-v3/scripts/validate-question-bank.mjs
+
+      - name: Validate practice pool separation
+        run: |
+          node --check rpsgt-v3/core/practice.js
+          node rpsgt-v3/scripts/test-practice-pools.mjs
 
       - name: Commit generated modules
         run: |
