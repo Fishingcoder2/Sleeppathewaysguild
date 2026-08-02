@@ -1,0 +1,41 @@
+{
+  "$fixture": {
+    "name": "source-derived-complete",
+    "provenance": "sanitized-source-derived",
+    "realBrowserExport": false,
+    "capturedAt": "2026-08-02T15:00:00.000Z",
+    "purpose": "Exercise every recognized legacy record family without representing a real learner export."
+  },
+  "records": {
+    "spg_rpsgtv2_2026_evolved_v10_5_1": {
+      "stats": {
+        "answered": 3,
+        "correct": 2,
+        "byDomain": {"D1": {"answered": 3, "correct": 2}},
+        "byTask": {"D1A": {"answered": 3, "correct": 2}},
+        "history": [
+          {"id": "imp-038", "mode": "practice", "correct": true, "time": "2026-01-01T00:00:00.000Z"},
+          {"id": "imp-056", "mode": "practice", "correct": false, "time": "2026-01-02T00:00:00.000Z"},
+          {"id": "exp-002", "mode": "practice", "correct": true, "time": "2026-01-03T00:00:00.000Z"}
+        ]
+      },
+      "readinessHistory": [{"id": "imp-038", "mode": "readiness", "correct": true}],
+      "mockHistory": [{"id": "imp-056", "mode": "mock", "correct": false}],
+      "missedIds": ["imp-056"],
+      "masteredIds": ["imp-038"],
+      "flaggedIds": ["exp-002"],
+      "trailAwards": {"tasks": {"D1A": {"score": 80}}, "domains": {}},
+      "trailStudyMarks": {"D1A": true},
+      "lastTrailPost": {"domain": "D1", "task": "D1A"},
+      "trailDomain": "D1",
+      "trailFocus": {"domain": "D1", "task": "D1A"},
+      "trailCheckpointHistory": [{"scope": "task", "domain": "D1", "task": "D1A", "score": 80, "total": 5, "correct": 4}],
+      "lab": {"catalogIndex": 1, "completed": ["hookup"]},
+      "notes": {"title": "Study", "body": "Review staging."},
+      "searches": {"learn": "filters", "glossary": "arousal", "refs": "AASM"}
+    },
+    "spg_rpsgtv2_flash_flags_v1262a": ["exp-002"],
+    "spg_mathcoach_lesson_59b": {"lesson": 3, "completed": true},
+    "spg_math_notes_59b_rate": "Remember the rate formula."
+  }
+}
