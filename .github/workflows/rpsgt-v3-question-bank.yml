@@ -7,11 +7,13 @@ on:
     paths:
       - RPSGTv2.2026.html
       - RPSGTv2.2026-core.html
+      - rpsgt-v3/study.html
       - rpsgt-v3/practice.html
       - rpsgt-v3/review.html
       - rpsgt-v3/readiness.html
       - rpsgt-v3/mock.html
       - rpsgt-v3/reports.html
+      - rpsgt-v3/assets/study.css
       - rpsgt-v3/assets/practice.css
       - rpsgt-v3/assets/review.css
       - rpsgt-v3/assets/readiness.css
@@ -21,6 +23,9 @@ on:
       - rpsgt-v3/core/migration-engine.js
       - rpsgt-v3/core/legacy-migration.js
       - rpsgt-v3/core/app-shell.js
+      - rpsgt-v3/core/guided-trail-engine.js
+      - rpsgt-v3/core/guided-trail-report.js
+      - rpsgt-v3/core/study.js
       - rpsgt-v3/core/practice.js
       - rpsgt-v3/core/review.js
       - rpsgt-v3/core/readiness-engine.js
@@ -31,20 +36,8 @@ on:
       - rpsgt-v3/core/reports-engine.js
       - rpsgt-v3/core/reports.js
       - rpsgt-v3/data/study-sources/**
-      - rpsgt-v3/scripts/extract-question-bank.mjs
-      - rpsgt-v3/scripts/generate-feedback-index.mjs
-      - rpsgt-v3/scripts/validate-question-bank.mjs
-      - rpsgt-v3/scripts/test-practice-pools.mjs
-      - rpsgt-v3/scripts/test-practice-shell.mjs
-      - rpsgt-v3/scripts/test-review-system.mjs
-      - rpsgt-v3/scripts/test-readiness-system.mjs
-      - rpsgt-v3/scripts/test-readiness-shell.mjs
-      - rpsgt-v3/scripts/test-mock-system.mjs
-      - rpsgt-v3/scripts/test-mock-shell.mjs
-      - rpsgt-v3/scripts/test-reports-system.mjs
-      - rpsgt-v3/scripts/test-reports-shell.mjs
-      - rpsgt-v3/scripts/test-storage-migration.mjs
-      - rpsgt-v3/scripts/test-legacy-migration.mjs
+      - rpsgt-v3/tests/fixtures/migration/**
+      - rpsgt-v3/scripts/**
       - .github/workflows/rpsgt-v3-question-bank.yml
   pull_request:
     branches:
@@ -52,11 +45,13 @@ on:
     paths:
       - RPSGTv2.2026.html
       - RPSGTv2.2026-core.html
+      - rpsgt-v3/study.html
       - rpsgt-v3/practice.html
       - rpsgt-v3/review.html
       - rpsgt-v3/readiness.html
       - rpsgt-v3/mock.html
       - rpsgt-v3/reports.html
+      - rpsgt-v3/assets/study.css
       - rpsgt-v3/assets/practice.css
       - rpsgt-v3/assets/review.css
       - rpsgt-v3/assets/readiness.css
@@ -66,6 +61,9 @@ on:
       - rpsgt-v3/core/migration-engine.js
       - rpsgt-v3/core/legacy-migration.js
       - rpsgt-v3/core/app-shell.js
+      - rpsgt-v3/core/guided-trail-engine.js
+      - rpsgt-v3/core/guided-trail-report.js
+      - rpsgt-v3/core/study.js
       - rpsgt-v3/core/practice.js
       - rpsgt-v3/core/review.js
       - rpsgt-v3/core/readiness-engine.js
@@ -76,20 +74,8 @@ on:
       - rpsgt-v3/core/reports-engine.js
       - rpsgt-v3/core/reports.js
       - rpsgt-v3/data/study-sources/**
-      - rpsgt-v3/scripts/extract-question-bank.mjs
-      - rpsgt-v3/scripts/generate-feedback-index.mjs
-      - rpsgt-v3/scripts/validate-question-bank.mjs
-      - rpsgt-v3/scripts/test-practice-pools.mjs
-      - rpsgt-v3/scripts/test-practice-shell.mjs
-      - rpsgt-v3/scripts/test-review-system.mjs
-      - rpsgt-v3/scripts/test-readiness-system.mjs
-      - rpsgt-v3/scripts/test-readiness-shell.mjs
-      - rpsgt-v3/scripts/test-mock-system.mjs
-      - rpsgt-v3/scripts/test-mock-shell.mjs
-      - rpsgt-v3/scripts/test-reports-system.mjs
-      - rpsgt-v3/scripts/test-reports-shell.mjs
-      - rpsgt-v3/scripts/test-storage-migration.mjs
-      - rpsgt-v3/scripts/test-legacy-migration.mjs
+      - rpsgt-v3/tests/fixtures/migration/**
+      - rpsgt-v3/scripts/**
       - .github/workflows/rpsgt-v3-question-bank.yml
 
 permissions:
@@ -123,12 +109,15 @@ jobs:
       - name: Validate question bank
         run: node rpsgt-v3/scripts/validate-question-bank.mjs
 
-      - name: Validate practice, review, readiness, mock, reports, and migration systems
+      - name: Validate study, practice, review, readiness, mock, reports, and migration systems
         run: |
           node --check rpsgt-v3/core/storage.js
           node --check rpsgt-v3/core/migration-engine.js
           node --check rpsgt-v3/core/legacy-migration.js
           node --check rpsgt-v3/core/app-shell.js
+          node --check rpsgt-v3/core/guided-trail-engine.js
+          node --check rpsgt-v3/core/guided-trail-report.js
+          node --check rpsgt-v3/core/study.js
           node --check rpsgt-v3/core/practice.js
           node --check rpsgt-v3/core/review.js
           node --check rpsgt-v3/core/readiness-engine.js
@@ -139,6 +128,9 @@ jobs:
           node --check rpsgt-v3/core/reports-engine.js
           node --check rpsgt-v3/core/reports.js
           node --check rpsgt-v3/scripts/generate-feedback-index.mjs
+          node --check rpsgt-v3/scripts/validate-storage-export.mjs
+          node rpsgt-v3/scripts/test-guided-trail-system.mjs
+          node rpsgt-v3/scripts/test-guided-trail-shell.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
           node rpsgt-v3/scripts/test-practice-shell.mjs
           node rpsgt-v3/scripts/test-review-system.mjs
@@ -149,6 +141,7 @@ jobs:
           node rpsgt-v3/scripts/test-reports-system.mjs
           node rpsgt-v3/scripts/test-reports-shell.mjs
           node rpsgt-v3/scripts/test-storage-migration.mjs
+          node rpsgt-v3/scripts/test-storage-export-fixtures.mjs
           node rpsgt-v3/scripts/test-legacy-migration.mjs
 
       - name: Commit generated modules
