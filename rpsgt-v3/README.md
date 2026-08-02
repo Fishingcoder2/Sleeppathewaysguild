@@ -8,11 +8,19 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Shared responsive shell inspired by the clearer CPSGT navigation pattern.
 - One versioned browser-storage record: `spg_rpsgt_v3`, currently at schema version 2.
 - Read-only detection and preview of the current RPSGT storage records.
-- A pure legacy-migration engine now builds an in-memory, preview-only candidate and never writes, deletes, or modifies legacy storage.
+- `core/migration-engine.js` is a pure legacy-migration engine. It accepts supplied records as data, builds an in-memory report, and never reads from or writes to browser storage directly.
+- `core/storage.js` only discovers the recognized browser-storage records and passes a read-only snapshot to the engine. `core/legacy-migration.js` remains a compatibility alias.
+- Migration discovery records key presence, byte size, parse status, record type, source priority, and stable source hashes.
 - Migration validation covers Practice totals, domain/task statistics, explicit history modes, missed/mastered/flagged IDs, Guided Trail position and checkpoints, awards, labs, notes, searches, readiness-like records, mock-style records, and Math Coach data.
 - The compact feedback index validates question IDs without loading question prompts, options, answers, rationales, or textbook content into migration code.
-- Unknown IDs, duplicate IDs, manual-review remediation IDs, malformed records, ambiguous history modes, and legacy JSON parse failures are reported rather than silently reassigned.
-- Source fingerprints detect duplicate migration attempts, and every draft retains the current v3 state as the rollback baseline. Import remains hard-disabled.
+- Learner-practice IDs, manual-review IDs, unknown IDs, malformed IDs, and duplicates are classified separately. Manual-review records never enter learner missed or mastered remediation.
+- Practice, Readiness, and Mock histories remain separate. Unclassifiable history stays unresolved rather than being guessed into a report family.
+- `D2A/D2C` statistics remain unresolved and are never silently reassigned.
+- Flash-flag conflicts use explicit source priority and are reported for manual review; conflicting sources are not silently merged.
+- Unknown fields, malformed records, impossible totals, count mismatches, source conflicts, and parse failures are preserved in structured blocking, warning, notice, and unresolved sections.
+- Stable migration fingerprints include source hashes, target schema version, and migration-engine version. Duplicate fingerprints and existing non-empty v3 data are blocking conditions.
+- Every preview includes rollback metadata, the prior v3 checksum, a backup snapshot, write-verification requirements, and restore-on-failure instructions. Import remains hard-disabled.
+- The deterministic migration test matrix covers 26 fixture scenarios plus a compatibility test against the generated 2,887-record feedback index.
 - Canonical four-domain, twelve-task blueprint data shared across learning modules.
 - Complete 2,887-question bank extracted into 13 validated task modules.
 - Full Practice Center with domain/task filtering and lazy task-module loading.
@@ -30,7 +38,7 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - All 12 RPSGT task codes have a defined source sequence, and 20 topic families provide more specific routes for instrumentation, artifact, staging, respiratory scoring, calculations, PAP, pediatrics, safety, and related weak areas.
 - Rule-sensitive feedback begins with the current official AASM section before textbook reinforcement and focused practice.
 - Chapter and section titles are navigation aids only. The app does not reproduce textbook prose, figures, tables, proprietary scoring rules, or publisher question banks.
-- GitHub Actions validates full-bank reconstruction, learner/quality separation, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and legacy-migration safeguards.
+- GitHub Actions validates full-bank reconstruction, learner/quality separation, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and storage-migration safeguards.
 - Interactive desktop/mobile browser regression is still required before merge; the available development environment blocks localhost and local-file URLs by organization policy.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All development pages are marked `noindex,nofollow`.
@@ -52,7 +60,7 @@ Private Drive URLs are not placed in public learner data. Public release resourc
 - `spg_mathcoach_lesson_59b`
 - `spg_math_notes_59b_*`
 
-`getLegacySnapshot()` reads these records without modification. `createMigrationDraft()` produces an in-memory candidate with field mappings, source fingerprint, validation findings, duplicate detection, and rollback metadata. It does not import, overwrite, or delete any record. `canImport` and `migration.importEnabled` remain `false`; no user-facing import action is enabled.
+`getLegacySnapshot()` reads these records without modification. `createMigrationDraft()` passes that snapshot to the pure engine and returns an in-memory report containing `draft`, `summary`, `issues`, `unresolved`, `fieldMappings`, `sourceManifest`, `validation`, `fingerprint`, conflict-resolution details, and rollback metadata. It does not import, overwrite, or delete any record. `canImport` and `migration.importEnabled` remain `false`; no user-facing import action is enabled.
 
 ## Remaining release gates
 
