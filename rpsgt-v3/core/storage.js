@@ -11,10 +11,11 @@
   const MATH_NOTE_PREFIX="spg_math_notes_59b_";
 
   function defaultState(){
+    const now=new Date().toISOString();
     return {
       schemaVersion:SCHEMA_VERSION,
-      createdAt:new Date().toISOString(),
-      updatedAt:new Date().toISOString(),
+      createdAt:now,
+      updatedAt:now,
       lastLocation:"index.html",
       learner:{displayName:"",settings:{}},
       progress:{answered:0,correct:0,byDomain:{},byTask:{},history:[]},
@@ -24,7 +25,18 @@
       mock:{history:[],activeSession:null},
       labs:{},
       notes:{general:"",math:{}},
-      migration:{status:"not-started",sourceKeys:[],previewedAt:null,importedAt:null}
+      migration:{
+        status:"not-started",
+        sourceKeys:[],
+        previewedAt:null,
+        importedAt:null,
+        sourceFingerprint:null,
+        migrationSchemaVersion:null,
+        importEnabled:false,
+        rollbackProtected:true,
+        lastValidation:null,
+        history:[]
+      }
     };
   }
 
@@ -62,72 +74,104 @@
     save(state);
   }
 
-  function safeJson(raw){
-    try{return raw?JSON.parse(raw):null;}catch(error){return null;}
+  function byteSize(raw){
+    if(typeof TextEncoder!=="undefined") return new TextEncoder().encode(raw).length;
+    try{return unescape(encodeURIComponent(raw)).length;}catch(error){return raw.length;}
   }
 
-  function listMathNotes(){
-    const notes={};
+  function parseLegacy(key,raw,parseErrors){
+    try{return raw===null?null:JSON.parse(raw);}catch(error){
+      parseErrors.push({key:key,message:error&&error.message?error.message:"Invalid JSON."});
+      return null;
+    }
+  }
+
+  function getLegacySnapshot(){
+    const sources=[];
+    const parseErrors=[];
+    LEGACY_KEYS.forEach(function(key){
+      const raw=localStorage.getItem(key);
+      if(raw===null) return;
+      sources.push({key:key,bytes:byteSize(raw),parsed:parseLegacy(key,raw,parseErrors),raw:raw});
+    });
     for(let i=0;i<localStorage.length;i+=1){
       const key=localStorage.key(i);
-      if(key&&key.indexOf(MATH_NOTE_PREFIX)===0) notes[key.slice(MATH_NOTE_PREFIX.length)]=localStorage.getItem(key)||"";
+      if(!key||key.indexOf(MATH_NOTE_PREFIX)!==0) continue;
+      const raw=localStorage.getItem(key)||"";
+      sources.push({key:key,bytes:byteSize(raw),parsed:null,raw:raw});
     }
-    return notes;
+    sources.sort(function(a,b){return a.key.localeCompare(b.key);});
+    return {
+      readOnly:true,
+      sources:sources,
+      parseErrors:parseErrors,
+      summary:{
+        sourceCount:sources.length,
+        sourceKeys:sources.map(function(item){return item.key;}),
+        totalBytes:sources.reduce(function(sum,item){return sum+item.bytes;},0),
+        parseErrorCount:parseErrors.length,
+        safeToPreview:true
+      }
+    };
   }
 
   function previewLegacy(){
-    const found=[];
-    LEGACY_KEYS.forEach(function(key){
-      const raw=localStorage.getItem(key);
-      if(raw!==null) found.push({key:key,bytes:new Blob([raw]).size,parsed:safeJson(raw),raw:raw});
-    });
-    const mathNotes=listMathNotes();
-    Object.keys(mathNotes).forEach(function(name){
-      const raw=mathNotes[name];
-      found.push({key:MATH_NOTE_PREFIX+name,bytes:new Blob([raw]).size,parsed:null,raw:raw});
-    });
-
-    const primary=found.find(function(item){return item.key==="spg_rpsgtv2_2026_evolved_v10_5_1";});
+    const snapshot=getLegacySnapshot();
+    const primary=snapshot.sources.find(function(item){return item.key==="spg_rpsgtv2_2026_evolved_v10_5_1";});
     const old=primary&&primary.parsed&&typeof primary.parsed==="object"?primary.parsed:{};
     const stats=old.stats&&typeof old.stats==="object"?old.stats:{};
-    const summary={
-      sourceCount:found.length,
-      sourceKeys:found.map(function(item){return item.key;}),
-      totalBytes:found.reduce(function(sum,item){return sum+item.bytes;},0),
-      answered:Number(stats.answered||0),
-      correct:Number(stats.correct||0),
-      missed:Array.isArray(old.missedIds)?old.missedIds.length:0,
-      mastered:Array.isArray(old.masteredIds)?old.masteredIds.length:0,
-      flagged:Array.isArray(old.flaggedIds)?old.flaggedIds.length:0,
-      history:Array.isArray(stats.history)?stats.history.length:0,
-      taskAwards:old.trailAwards&&old.trailAwards.tasks?Object.keys(old.trailAwards.tasks).length:0,
-      domainAwards:old.trailAwards&&old.trailAwards.domains?Object.keys(old.trailAwards.domains).length:0,
-      hasGeneralNotes:Boolean(old.notes&&(old.notes.body||old.notes.title)),
-      mathNotes:Object.keys(mathNotes).length,
-      safeToPreview:true
+    return {
+      summary:Object.assign({},snapshot.summary,{
+        answered:Number(stats.answered||0),
+        correct:Number(stats.correct||0),
+        missed:Array.isArray(old.missedIds)?old.missedIds.length:0,
+        mastered:Array.isArray(old.masteredIds)?old.masteredIds.length:0,
+        flagged:Array.isArray(old.flaggedIds)?old.flaggedIds.length:0,
+        history:Array.isArray(stats.history)?stats.history.length:0,
+        taskAwards:old.trailAwards&&old.trailAwards.tasks?Object.keys(old.trailAwards.tasks).length:0,
+        domainAwards:old.trailAwards&&old.trailAwards.domains?Object.keys(old.trailAwards.domains).length:0,
+        hasGeneralNotes:Boolean(old.notes&&(old.notes.body||old.notes.title)),
+        mathNotes:snapshot.sources.filter(function(item){return item.key.indexOf(MATH_NOTE_PREFIX)===0;}).length
+      }),
+      sources:snapshot.sources.map(function(item){return {key:item.key,bytes:item.bytes,validJson:item.parsed!==null};}),
+      parseErrors:snapshot.parseErrors.slice()
     };
-    return {summary:summary,sources:found.map(function(item){return {key:item.key,bytes:item.bytes,validJson:item.parsed!==null};})};
   }
 
-  function createMigrationDraft(){
-    const preview=previewLegacy();
-    const primaryRaw=localStorage.getItem("spg_rpsgtv2_2026_evolved_v10_5_1");
-    const old=safeJson(primaryRaw)||{};
-    const draft=defaultState();
-    draft.progress=merge(draft.progress,old.stats||{});
-    draft.review.missedIds=Array.isArray(old.missedIds)?old.missedIds.slice():[];
-    draft.review.masteredIds=Array.isArray(old.masteredIds)?old.masteredIds.slice():[];
-    draft.review.flaggedIds=Array.isArray(old.flaggedIds)?old.flaggedIds.slice():[];
-    draft.guidedStudy.trailAwards=merge(draft.guidedStudy.trailAwards,old.trailAwards||{});
-    draft.guidedStudy.trailStudyMarks=old.trailStudyMarks||{};
-    draft.guidedStudy.lastTrailPost=old.lastTrailPost||null;
-    draft.notes.general=old.notes&&old.notes.body?old.notes.body:"";
-    draft.notes.math=listMathNotes();
-    draft.migration.status="preview-only";
-    draft.migration.sourceKeys=preview.summary.sourceKeys;
-    draft.migration.previewedAt=new Date().toISOString();
-    return draft;
+  function createMigrationDraft(options){
+    const engine=window.RPSGTLegacyMigration;
+    if(!engine||typeof engine.buildDraft!=="function"){
+      return {
+        status:"blocked",
+        canImport:false,
+        error:"legacy-migration-engine-unavailable",
+        state:null,
+        validation:{valid:false,errors:[{code:"engine-unavailable",message:"Load core/legacy-migration.js before building a migration draft."}],warnings:[],malformedRecords:[],unresolvedQuestionIds:[]},
+        rollback:{protected:true,importEnabled:false,strategy:"retain-current-v3-state-and-discard-preview"}
+      };
+    }
+    const supplied=options||{};
+    return engine.buildDraft(supplied.snapshot||getLegacySnapshot(),{
+      createDefaultState:defaultState,
+      currentState:supplied.currentState||load(),
+      questionIndex:supplied.questionIndex||[],
+      now:supplied.now
+    });
   }
 
-  window.RPSGTStorage={NEW_KEY:NEW_KEY,SCHEMA_VERSION:SCHEMA_VERSION,load:load,save:save,rememberLocation:rememberLocation,previewLegacy:previewLegacy,createMigrationDraft:createMigrationDraft};
+  window.RPSGTStorage={
+    NEW_KEY:NEW_KEY,
+    SCHEMA_VERSION:SCHEMA_VERSION,
+    LEGACY_KEYS:LEGACY_KEYS.slice(),
+    MATH_NOTE_PREFIX:MATH_NOTE_PREFIX,
+    createDefaultState:defaultState,
+    defaultState:defaultState,
+    load:load,
+    save:save,
+    rememberLocation:rememberLocation,
+    getLegacySnapshot:getLegacySnapshot,
+    previewLegacy:previewLegacy,
+    createMigrationDraft:createMigrationDraft,
+    buildLegacyMigrationDraft:createMigrationDraft
+  };
 })();
