@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "RPSGT v3 laboratory catalog",
-    "version": 5,
+    "version": 6,
     "developmentOnly": true,
     "individualLabParityComplete": false,
     "progressRecord": "spg_rpsgt_v3.labs",
@@ -12,7 +12,7 @@
     {"id":"ekg","title":"EKG Recognition and Response","shortTitle":"EKG","icon":"♡","description":"Rhythm recognition, interval timing, sleep-study documentation, urgent findings, and escalation boundaries.","taskCodes":["D2B","D3C"],"progressKey":"ekg","status":"legacy-linked","plannedRoute":"lab-ekg.html","legacyHref":"../ekg.2026.html"},
     {"id":"scoring","title":"Sleep Staging and Event Scoring","shortTitle":"Scoring","icon":"▥","description":"Epoch review, stage criteria, arousals, respiratory events, limb movements, and scoring artifacts.","taskCodes":["D3A","D3B","D3C"],"progressKey":"scoring","status":"v3-ready","plannedRoute":"lab-scoring.html","legacyHref":null},
     {"id":"respiratory","title":"Respiratory Signals and Event Recognition","shortTitle":"Respiratory","icon":"≈","description":"Airflow, effort, oximetry, CO2, snore, event classification, and signal-quality decisions.","taskCodes":["D2A","D2B","D3B"],"progressKey":"respiratory","status":"v3-ready","plannedRoute":"lab-respiratory.html","legacyHref":null},
-    {"id":"pap","title":"PAP and Titration","shortTitle":"PAP","icon":"↗","description":"Interfaces, pressure concepts, event response, leak, comfort, acclimation, and documentation.","taskCodes":["D4A","D4B","D4C"],"progressKey":"pap","status":"catalog-only","plannedRoute":"lab-pap.html","legacyHref":null},
+    {"id":"pap","title":"PAP and Titration","shortTitle":"PAP","icon":"↗","description":"Interfaces, pressure concepts, event response, leak, comfort, acclimation, and documentation.","taskCodes":["D4A","D4B","D4C"],"progressKey":"pap","status":"v3-ready","plannedRoute":"lab-pap.html","legacyHref":null},
     {"id":"instrumentation","title":"Instrumentation, Filters, and Signal Pathways","shortTitle":"Instrumentation","icon":"⌁","description":"Montages, sensitivities, sampling, filters, amplifiers, polarity, calibration, and troubleshooting.","taskCodes":["D2A","D2B","D2C"],"progressKey":"instrumentation","status":"v3-ready","plannedRoute":"lab-instrumentation.html","legacyHref":null},
     {"id":"pediatric","title":"Pediatric and Infant Sleep","shortTitle":"Pediatrics","icon":"☆","description":"Age-specific setup, staging context, respiratory scoring, CO2 monitoring, caregiver support, and safety.","taskCodes":["D1A","D1C","D3A","D3B","D4A"],"progressKey":"pediatric","status":"catalog-only","plannedRoute":"lab-pediatric.html","legacyHref":null},
     {"id":"daytime-testing","title":"MSLT and MWT Protocols","shortTitle":"MSLT/MWT","icon":"☀","description":"Preparation, timing, nap and trial structure, documentation, validity risks, and protocol boundaries.","taskCodes":["D1A","D2C","D3A"],"progressKey":"daytime-testing","status":"catalog-only","plannedRoute":"lab-daytime-testing.html","legacyHref":null},
