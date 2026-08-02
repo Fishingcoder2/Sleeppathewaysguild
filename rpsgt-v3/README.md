@@ -34,17 +34,19 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Separate 25-, 50-, and 100-question Readiness Checks preserve weighted domain allocation, task balancing, question-family deduplication, raw scoring, an internal study-weighted gauge, domain results, and weak-task study targets.
 - Separate 175-question Mock-Style Practice uses 150 scored-style and 25 mixed unscored-style items, preserving D1 30, D2 41, D3 38, and D4 41 across the scored set.
 - Mock attempts support randomized construction, navigation, a 175-question palette, flags, save-and-resume, optional elapsed-time tracking, scored-domain results, weak-task targets, and separate history.
-- Practice, Review, Readiness, Mock, and Guided Trail records remain technically and visibly separate.
-- A canonical ten-family laboratory catalog now defines stable IDs, progress keys, blueprint-task mappings, migration status, planned routes, and confirmed preserved destinations.
+- Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab records remain technically and visibly separate.
+- A canonical ten-family laboratory catalog defines stable IDs, progress keys, blueprint-task mappings, migration status, planned routes, and confirmed preserved destinations.
 - The laboratory catalog reads mapped `completed`, `started`, `lastLab`, per-lab completion objects, and legacy `catalogIndex` shapes without modifying them.
-- Only the confirmed preserved EKG destination is linked. Catalog-only laboratories remain visibly disabled until individual parity is complete.
+- Hookup and Math Coach now have individual v3 laboratory experiences. The preserved EKG destination remains linked; the other catalog-only laboratories remain disabled until their individual parity work is complete.
+- The Hookup lab uses a pure progress engine, six app-authored workflow stations, and a ten-question learner-eligible D2A/D2B checkpoint. All stations plus an 80% checkpoint are required for completion, and failed retries never erase completion.
+- The Math Coach lab uses learner-eligible D3C calculation questions, protected attempt history, migrated lesson-state visibility, and an 80% completion threshold.
 - The modular Reports Center reads learner records without writing to them and provides task-level progress, missed/mastered status, separate diagnostic histories, Guided Trail status, and Coach Bob study directions.
 - Reports use a compact generated feedback index containing question IDs and classification metadata only; it contains no prompt, option, answer, or rationale text.
 - Six library sources are outlined into focused chapter/section locations: the AASM Scoring Manual v3, Fundamentals of Sleep Technology, Polysomnography for the Sleep Technologist, A Clinical Guide to Pediatric Sleep, the AAST terminology reference, and a sleep-stage scoring companion.
 - All 12 RPSGT task codes have a defined source sequence, and 20 topic families provide more specific routes for instrumentation, artifact, staging, respiratory scoring, calculations, PAP, pediatrics, safety, and related weak areas.
 - Rule-sensitive feedback begins with the current official AASM section before textbook reinforcement and focused practice.
 - Chapter and section titles are navigation aids only. The app does not reproduce textbook prose, figures, tables, proprietary scoring rules, or publisher question banks.
-- GitHub Actions validates full-bank reconstruction, learner/quality separation, Guided Trail checkpoints and reporting, laboratory catalog contracts, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and storage-migration safeguards.
+- GitHub Actions validates full-bank reconstruction, learner/quality separation, Guided Trail checkpoints and reporting, laboratory catalog contracts, Hookup and Math Coach laboratory behavior, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and storage-migration safeguards.
 - Interactive desktop/mobile browser regression is still required before merge; no browser interaction pass is claimed.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All development pages are marked `noindex,nofollow`.
@@ -71,7 +73,7 @@ Private Drive URLs are not placed in public learner data. Public release resourc
 ## Remaining release gates
 
 1. Validate migration against representative real browser exports and resolve every malformed or ambiguous legacy field before enabling import.
-2. Migrate and validate each individual laboratory experience; the catalog alone does not establish laboratory parity.
+2. Migrate and validate the remaining individual laboratory experiences; Hookup and Math Coach do not establish full laboratory parity.
 3. Add mock-result drill-down.
 4. Add printable or exportable study summaries after report contracts remain stable.
 5. Complete interactive desktop/mobile browser regression before considering the draft pull request ready for release.
