@@ -44,9 +44,9 @@
     if(/artifact|interference|drift|erratic|signal loss|poor signal|failed signal|saturat|clipping|60[- ]hz|50[- ]hz|waveform/.test(text)) return 'signal-artifact';
     if(/sensor|electrode|lead|belt|probe|impedance|loose|disconnect|reposition|secure|contact/.test(text)) return 'sensor-contact';
     if(/equipment|hardware|device|system|amplifier|connector|video|clock|synchroni[sz]|software|acquisition|damaged|missing|contaminat/.test(text)) return 'equipment-system';
-    if(/correct|replace|repair|recheck|assess|fix|intervention|best next step|first action|respond/.test(text)) return 'corrective-action';
-    if(/document|technical note|lights out|lights on|time|record|note|handoff/.test(text)) return 'documentation';
     if(/report|verify|interpretation|limitation|underestimat|overestimat|data quality|study integrity|accurate|valid|mismatch|discrepancy/.test(text)) return 'report-integrity';
+    if(/document|technical note|lights out|lights on|time|record|note|handoff/.test(text)) return 'documentation';
+    if(/correct|replace|repair|recheck|assess|fix|intervention|best next step|first action|respond/.test(text)) return 'corrective-action';
     return 'other';
   }
   function eligibleQuestions(records){
