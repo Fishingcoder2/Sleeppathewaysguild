@@ -20,20 +20,23 @@
       learner:{displayName:"",settings:{}},
       progress:{answered:0,correct:0,byDomain:{},byTask:{},history:[]},
       review:{missedIds:[],masteredIds:[],flaggedIds:[]},
-      guidedStudy:{trailAwards:{tasks:{},domains:{}},trailStudyMarks:{},lastTrailPost:null},
+      guidedStudy:{trailAwards:{tasks:{},domains:{}},trailStudyMarks:{},lastTrailPost:null,trailDomain:null,trailFocus:null,checkpointHistory:[]},
       readiness:{history:[],activeSession:null},
       mock:{history:[],activeSession:null},
       labs:{},
-      notes:{general:"",math:{}},
+      notes:{general:"",title:"",searches:{},math:{},mathCoachLesson:null},
       migration:{
         status:"not-started",
+        engineVersion:null,
+        targetSchemaVersion:null,
         sourceKeys:[],
+        sourceHashes:[],
         previewedAt:null,
         importedAt:null,
         sourceFingerprint:null,
-        migrationSchemaVersion:null,
         importEnabled:false,
         rollbackProtected:true,
+        previousV3Checksum:null,
         lastValidation:null,
         history:[]
       }
@@ -138,20 +141,27 @@
     };
   }
 
+  function blockedDraft(){
+    return {
+      status:"blocked",
+      canImport:false,
+      error:"migration-engine-unavailable",
+      draft:null,
+      state:null,
+      summary:{blockingIssueCount:1,warningIssueCount:0,canImport:false},
+      issues:{blocking:[{severity:"blocking",blocking:true,code:"engine-unavailable",path:"core/migration-engine.js",message:"Load core/migration-engine.js before building a migration draft."}],warnings:[],notices:[]},
+      unresolved:{unknownFields:[],malformedRecords:[],unknownQuestionIds:[],malformedQuestionIds:[],duplicateQuestionIds:[],manualReviewQuestionIds:[],crossListQuestionIds:[],ambiguousTaskRecords:[],historyRecords:[],sourceConflicts:[],unsupportedShapes:[]},
+      validation:{valid:false,passesBlockingValidation:false,blockingCount:1,warningCount:0,importFeatureEnabled:false},
+      rollback:{protected:true,importEnabled:false,legacyKeysUntouched:true,strategy:["retain-current-v3-state","discard-preview"]}
+    };
+  }
+
   function createMigrationDraft(options){
-    const engine=window.RPSGTLegacyMigration;
-    if(!engine||typeof engine.buildDraft!=="function"){
-      return {
-        status:"blocked",
-        canImport:false,
-        error:"legacy-migration-engine-unavailable",
-        state:null,
-        validation:{valid:false,errors:[{code:"engine-unavailable",message:"Load core/legacy-migration.js before building a migration draft."}],warnings:[],malformedRecords:[],unresolvedQuestionIds:[]},
-        rollback:{protected:true,importEnabled:false,strategy:"retain-current-v3-state-and-discard-preview"}
-      };
-    }
+    const engine=window.RPSGTMigrationEngine||window.RPSGTLegacyMigration;
+    if(!engine||typeof engine.buildMigrationReport!=="function"&&typeof engine.buildDraft!=="function") return blockedDraft();
     const supplied=options||{};
-    return engine.buildDraft(supplied.snapshot||getLegacySnapshot(),{
+    const build=typeof engine.buildMigrationReport==="function"?engine.buildMigrationReport:engine.buildDraft;
+    return build(supplied.snapshot||getLegacySnapshot(),{
       createDefaultState:defaultState,
       currentState:supplied.currentState||load(),
       questionIndex:supplied.questionIndex||[],
