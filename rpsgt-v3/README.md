@@ -6,7 +6,7 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 
 - Five connected learner destinations: Dashboard, Guided Study, Practice & Exam, Skills Labs, and Reports.
 - Shared responsive shell inspired by the clearer CPSGT navigation pattern.
-- One new versioned browser-storage record: `spg_rpsgt_v3`.
+- One versioned browser-storage record: `spg_rpsgt_v3`, now at schema version 2.
 - Read-only detection and preview of the current RPSGT storage records.
 - Canonical four-domain, twelve-task blueprint data shared by Guided Study and Practice.
 - Complete 2,887-question bank extracted into 13 validated task modules.
@@ -16,6 +16,11 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Missed Question Review and Mastered Question Review use the complete learner-practice bank.
 - Correct missed answers move to mastered; incorrect mastered answers return to missed.
 - Quality-review records remain excluded from learner remediation lists.
+- Separate 25-, 50-, and 100-question Readiness Checks use the 2,327 learner-practice records only.
+- Readiness sessions preserve weighted domain allocation, task balancing, question-family deduplication, raw scoring, an internal difficulty-weighted gauge, domain results, and weak-task study targets.
+- Readiness history and resumable active sessions live under `readiness`, separate from ordinary Practice, Review, and Mock records.
+- GitHub Actions validates full-bank reconstruction, practice/review separation, readiness allocations, JavaScript syntax, and page-selector contracts.
+- Interactive browser regression is still required before merge; the current container blocks localhost and file URLs by organization policy.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All pages are marked `noindex,nofollow` during development.
 
@@ -31,8 +36,8 @@ The preview does not import, overwrite, or delete any legacy record. `createMigr
 
 ## Next milestone
 
-1. Build readiness checks separately from ordinary practice.
-2. Preserve readiness history and focused study recommendations.
-3. Recreate the 175-question mock exam with preserved weighting, timing, navigation, and history.
-4. Connect complete-bank results to modular reports.
-5. Continue Guided Trail and laboratory migration without changing the current public application.
+1. Recreate the 175-question mock exam as a separate system with 150 scored-style and 25 unscored-style items.
+2. Preserve D1 30, D2 41, D3 38, and D4 41 scored-style weighting, timing, navigation, resume behavior, and history.
+3. Connect Practice, Review, Readiness, and Mock results to modular reports without combining their histories.
+4. Continue Guided Trail and laboratory migration without changing the current public application.
+5. Complete interactive desktop/mobile browser regression before considering the draft pull request mergeable for release.
