@@ -12,7 +12,7 @@
 <div class="app-shell">
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Practice Center</strong><span>Complete modular question bank</span></span></a>
-  <div class="top-actions"><a href="review.html?list=missed">Review missed</a><a href="index.html">Dashboard</a></div>
+  <div class="top-actions"><a href="readiness.html">Readiness check</a><a href="review.html?list=missed">Review missed</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
@@ -26,12 +26,13 @@
 <main class="main">
 <section class="hero">
   <div><div class="eyebrow">Module 2 · full-bank milestone</div><h1>Practice and Exam Center</h1><p class="lead">Build focused sessions from <strong data-bank-total>2,887</strong> preserved RPSGT source records across all four domains and twelve direct task codes.</p></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Practice content and quality-review content now travel on separate paths.</h2><p>General learner sessions exclude every manual-review record. The separate quality-review pool keeps those records visible for inspection without affecting learner progress.</p></aside>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Practice, remediation, and readiness now have separate jobs.</h2><p>Focused practice builds skills, review manages missed and mastered items, and readiness creates a separate weighted diagnostic record.</p></aside>
 </section>
-<section class="section notice"><strong>Development boundary:</strong> This is not yet the readiness check or 175-question mock exam. Learner-mode answers write only to <code>spg_rpsgt_v3</code>; quality-review attempts are never added to learner totals, missed questions, mastery, readiness, or reports.</section>
-<section class="section grid grid-2" aria-label="Focused review options">
+<section class="section notice"><strong>Development boundary:</strong> Learner practice writes to the ordinary v3 progress record. Quality review never affects learner progress. Readiness results are stored separately, and the 175-question mock exam remains its own future milestone.</section>
+<section class="section grid grid-3" aria-label="Practice and diagnostic options">
   <article class="card"><span class="status">Remediation</span><h2>Missed Question Review</h2><p>Retry questions currently stored in the missed list. A correct answer moves the question to mastered.</p><div class="actions"><a class="btn secondary" href="review.html?list=missed">Review missed questions</a></div></article>
   <article class="card"><span class="status green">Maintenance</span><h2>Mastered Question Review</h2><p>Recheck mastered questions. An incorrect answer returns the question to the missed list for renewed study.</p><div class="actions"><a class="btn secondary" href="review.html?list=mastered">Review mastered questions</a></div></article>
+  <article class="card"><span class="status gold">Diagnostic</span><h2>Readiness Check</h2><p>Take a weighted 25-, 50-, or 100-question mixed check with separate results and weak-task study targets.</p><div class="actions"><a class="btn primary" href="readiness.html">Open readiness checks</a></div></article>
 </section>
 <section class="section notice" data-practice-load>Loading the complete question-bank manifest…</section>
 <section class="section card practice-setup hidden" data-practice-setup>
@@ -66,7 +67,7 @@
     <span class="status green">Session complete</span><h2>Practice result</h2><div class="complete-score" data-complete-score>0 / 0</div><div class="complete-percent" data-complete-percent>0%</div><p data-complete-policy></p><div class="actions"><button class="btn primary" type="button" data-restart-session>Practice this selection again</button><button class="btn secondary" type="button" data-change-filters>Choose different filters</button></div>
   </div>
 </section>
-<footer class="footer">Development branch only · Readiness checks and the 175-question mock exam remain separate migration milestones</footer>
+<footer class="footer">Development branch only · The 175-question mock exam remains a separate migration milestone</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
