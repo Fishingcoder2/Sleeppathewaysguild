@@ -17,6 +17,7 @@ on:
       - rpsgt-v3/lab-scoring.html
       - rpsgt-v3/lab-respiratory.html
       - rpsgt-v3/lab-instrumentation.html
+      - rpsgt-v3/lab-pap.html
       - rpsgt-v3/lab-math-coach.html
       - rpsgt-v3/reports.html
       - rpsgt-v3/assets/study.css
@@ -29,6 +30,7 @@ on:
       - rpsgt-v3/assets/scoring.css
       - rpsgt-v3/assets/respiratory.css
       - rpsgt-v3/assets/instrumentation.css
+      - rpsgt-v3/assets/pap.css
       - rpsgt-v3/assets/math-coach.css
       - rpsgt-v3/assets/reports.css
       - rpsgt-v3/core/storage.js
@@ -47,6 +49,8 @@ on:
       - rpsgt-v3/core/lab-respiratory.js
       - rpsgt-v3/core/instrumentation-lab-engine.js
       - rpsgt-v3/core/lab-instrumentation.js
+      - rpsgt-v3/core/pap-lab-engine.js
+      - rpsgt-v3/core/lab-pap.js
       - rpsgt-v3/core/math-coach-engine.js
       - rpsgt-v3/core/lab-math-coach.js
       - rpsgt-v3/core/study.js
@@ -80,6 +84,7 @@ on:
       - rpsgt-v3/lab-scoring.html
       - rpsgt-v3/lab-respiratory.html
       - rpsgt-v3/lab-instrumentation.html
+      - rpsgt-v3/lab-pap.html
       - rpsgt-v3/lab-math-coach.html
       - rpsgt-v3/reports.html
       - rpsgt-v3/assets/study.css
@@ -92,6 +97,7 @@ on:
       - rpsgt-v3/assets/scoring.css
       - rpsgt-v3/assets/respiratory.css
       - rpsgt-v3/assets/instrumentation.css
+      - rpsgt-v3/assets/pap.css
       - rpsgt-v3/assets/math-coach.css
       - rpsgt-v3/assets/reports.css
       - rpsgt-v3/core/storage.js
@@ -110,6 +116,8 @@ on:
       - rpsgt-v3/core/lab-respiratory.js
       - rpsgt-v3/core/instrumentation-lab-engine.js
       - rpsgt-v3/core/lab-instrumentation.js
+      - rpsgt-v3/core/pap-lab-engine.js
+      - rpsgt-v3/core/lab-pap.js
       - rpsgt-v3/core/math-coach-engine.js
       - rpsgt-v3/core/lab-math-coach.js
       - rpsgt-v3/core/study.js
@@ -177,6 +185,8 @@ jobs:
           node --check rpsgt-v3/core/lab-respiratory.js
           node --check rpsgt-v3/core/instrumentation-lab-engine.js
           node --check rpsgt-v3/core/lab-instrumentation.js
+          node --check rpsgt-v3/core/pap-lab-engine.js
+          node --check rpsgt-v3/core/lab-pap.js
           node --check rpsgt-v3/core/math-coach-engine.js
           node --check rpsgt-v3/core/lab-math-coach.js
           node --check rpsgt-v3/core/study.js
@@ -203,6 +213,8 @@ jobs:
           node rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
           node rpsgt-v3/scripts/test-instrumentation-lab-system.mjs
           node rpsgt-v3/scripts/test-instrumentation-lab-shell.mjs
+          node rpsgt-v3/scripts/test-pap-lab-system.mjs
+          node rpsgt-v3/scripts/test-pap-lab-shell.mjs
           node rpsgt-v3/scripts/test-math-coach-system.mjs
           node rpsgt-v3/scripts/test-math-coach-shell.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
