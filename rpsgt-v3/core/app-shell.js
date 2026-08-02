@@ -40,7 +40,7 @@
   function rememberClicks(){
     document.querySelectorAll("a[href]").forEach(function(link){
       const href=link.getAttribute("href")||"";
-      if(!/^(index|study|practice|review|readiness|labs|reports)\.html(?:[?#]|$)/.test(href)) return;
+      if(!/^(index|study|practice|review|readiness|mock|labs|reports)\.html(?:[?#]|$)/.test(href)) return;
       link.addEventListener("click",function(){window.RPSGTStorage&&window.RPSGTStorage.rememberLocation(href.split("#")[0]);});
     });
   }
