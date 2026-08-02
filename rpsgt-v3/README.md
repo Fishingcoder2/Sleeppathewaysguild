@@ -2,12 +2,17 @@
 
 This directory is the non-destructive modular rebuild of the Sleep Pathways Guild RPSGT application.
 
-## Foundation milestone
+## Current development milestones
 
 - Five connected learner destinations: Dashboard, Guided Study, Practice & Exam, Skills Labs, and Reports.
 - Shared responsive shell inspired by the clearer CPSGT navigation pattern.
 - One new versioned browser-storage record: `spg_rpsgt_v3`.
 - Read-only detection and preview of the current RPSGT storage records.
+- Canonical four-domain, twelve-task blueprint data shared by Guided Study and Practice.
+- Complete 2,887-question bank extracted into 13 validated task modules.
+- Full Practice Center with domain/task filtering and lazy task-module loading.
+- Learner practice excludes all 560 manual-review records by default.
+- Separate quality-review mode preserves those 560 records without changing learner progress.
 - Existing public RPSGT and laboratory files remain unchanged.
 - All pages are marked `noindex,nofollow` during development.
 
@@ -23,8 +28,8 @@ The preview does not import, overwrite, or delete any legacy record. `createMigr
 
 ## Next milestone
 
-1. Extract canonical RPSGT domain, task, subtask, study-target, and source identifiers.
-2. Extract the question bank without changing wording, answers, explanations, or mappings.
-3. Add automated uniqueness and referential-integrity checks.
-4. Connect a small practice slice to the new question engine.
-5. Compare results against the preserved RPSGT application before expanding migration.
+1. Add missed-question and mastered-question review sessions against the complete bank.
+2. Build readiness checks separately from ordinary practice.
+3. Recreate the 175-question mock exam with preserved weighting, timing, navigation, and history.
+4. Connect complete-bank results to modular reports.
+5. Continue Guided Trail and laboratory migration without changing the current public application.
