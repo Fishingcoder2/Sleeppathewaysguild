@@ -1,7 +1,7 @@
 (function(){
   "use strict";
   const NEW_KEY="spg_rpsgt_v3";
-  const SCHEMA_VERSION=1;
+  const SCHEMA_VERSION=2;
   const LEGACY_KEYS=[
     "spg_rpsgtv2_2026_evolved_v10_5_1",
     "spg_rpsgtv2_flash_flags_v1262a",
@@ -20,6 +20,7 @@
       progress:{answered:0,correct:0,byDomain:{},byTask:{},history:[]},
       review:{missedIds:[],masteredIds:[],flaggedIds:[]},
       guidedStudy:{trailAwards:{tasks:{},domains:{}},trailStudyMarks:{},lastTrailPost:null},
+      readiness:{history:[],activeSession:null},
       mock:{history:[],activeSession:null},
       labs:{},
       notes:{general:"",math:{}},
