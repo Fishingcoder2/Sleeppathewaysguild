@@ -12,7 +12,7 @@
 <div class="app-shell">
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Practice Center</strong><span>Complete modular question bank</span></span></a>
-  <div class="top-actions"><a href="index.html">Dashboard</a></div>
+  <div class="top-actions"><a href="review.html?list=missed">Review missed</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
@@ -29,6 +29,10 @@
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Practice content and quality-review content now travel on separate paths.</h2><p>General learner sessions exclude every manual-review record. The separate quality-review pool keeps those records visible for inspection without affecting learner progress.</p></aside>
 </section>
 <section class="section notice"><strong>Development boundary:</strong> This is not yet the readiness check or 175-question mock exam. Learner-mode answers write only to <code>spg_rpsgt_v3</code>; quality-review attempts are never added to learner totals, missed questions, mastery, readiness, or reports.</section>
+<section class="section grid grid-2" aria-label="Focused review options">
+  <article class="card"><span class="status">Remediation</span><h2>Missed Question Review</h2><p>Retry questions currently stored in the missed list. A correct answer moves the question to mastered.</p><div class="actions"><a class="btn secondary" href="review.html?list=missed">Review missed questions</a></div></article>
+  <article class="card"><span class="status green">Maintenance</span><h2>Mastered Question Review</h2><p>Recheck mastered questions. An incorrect answer returns the question to the missed list for renewed study.</p><div class="actions"><a class="btn secondary" href="review.html?list=mastered">Review mastered questions</a></div></article>
+</section>
 <section class="section notice" data-practice-load>Loading the complete question-bank manifest…</section>
 <section class="section card practice-setup hidden" data-practice-setup>
   <div class="section-head"><div><div class="eyebrow">Choose a session</div><h2>Start focused practice</h2></div><span class="status green"><span data-module-total>13</span> task modules</span></div>
