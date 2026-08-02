@@ -1,0 +1,29 @@
+{
+  "$fixture": {
+    "name": "source-derived-conflicts",
+    "provenance": "sanitized-source-derived",
+    "realBrowserExport": false,
+    "capturedAt": "2026-08-02T15:00:00.000Z",
+    "purpose": "Exercise blocking conflict, unknown-ID, ambiguous-task, and source-priority reporting."
+  },
+  "records": {
+    "spg_rpsgtv2_2026_evolved_v10_5_1": {
+      "stats": {
+        "answered": "2",
+        "correct": "1",
+        "byDomain": {"D1": {"answered": "2", "correct": "1"}},
+        "byTask": {"D1A": {"answered": 1, "correct": 1}, "D2A/D2C": {"answered": 1, "correct": 0}},
+        "history": [{"id": "imp-038", "mode": "practice", "correct": true}, {"id": "imp-056", "mode": "mystery", "correct": false}]
+      },
+      "missedIds": ["imp-038", "unknown-question"],
+      "masteredIds": ["imp-038"],
+      "flaggedIds": ["imp-038"],
+      "labs": {"completed": ["ekg"]},
+      "lab": {"completed": ["hookup"]},
+      "futureField": {"preserve": true}
+    },
+    "spg_rpsgtv2_flash_flags_v1262a": ["imp-056"],
+    "spg_flash_flags_59b": {"exp-002": true},
+    "spg_math_notes_59b_": "Missing note identifier"
+  }
+}
