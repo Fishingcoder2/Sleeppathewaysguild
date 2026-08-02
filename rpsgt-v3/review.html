@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Question Review v3 | Sleep Pathways Guild</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/practice.css">
+<link rel="stylesheet" href="assets/review.css">
+</head>
+<body data-module="practice">
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Question Review</strong><span data-review-list-label>Focused remediation</span></span></a>
+  <div class="top-actions"><a href="practice.html">Practice Center</a><a href="index.html">Dashboard</a></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
+  <a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+</aside>
+<main class="main">
+<section class="hero review-hero">
+  <div><div class="eyebrow">Module 2 · remediation milestone</div><h1 data-review-list-label>Question Review</h1><p class="lead">Retry questions from the complete learner-practice bank. Correct missed questions move to mastered; incorrect mastered questions return to missed.</p><div class="actions"><a class="btn secondary" href="review.html?list=missed">Review missed</a><a class="btn secondary" href="review.html?list=mastered">Review mastered</a></div></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Mastery is demonstrated, not permanent.</h2><p>A later incorrect answer returns the item to the missed list so your review queue reflects current performance.</p></aside>
+</section>
+<section class="section review-summary">
+  <div class="stat-grid"><div class="stat"><span>Missed list</span><strong data-missed-total>0</strong></div><div class="stat"><span>Mastered list</span><strong data-mastered-total>0</strong></div><div class="stat"><span>Loaded for this review</span><strong data-review-count>0</strong></div><div class="stat"><span>Unresolved IDs</span><strong data-unresolved-count>0</strong></div></div>
+</section>
+<section class="section notice" data-review-load>Loading your review list…</section>
+<section class="section practice-session hidden" data-review-shell>
+  <div class="card question-card hidden" data-question-panel>
+    <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span></div><span class="status gold" data-question-difficulty>Difficulty</span></div>
+    <div class="question-prompt" data-question-prompt></div>
+    <div class="practice-choices" data-question-choices></div>
+    <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
+    <div class="question-actions"><a class="btn secondary" href="practice.html">Return to practice</a><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
+  </div>
+  <aside class="session-rail"><div class="card"><h3>This review</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Questions</span><strong data-review-count>0</strong></div></div></div></aside>
+  <div class="card session-complete hidden" data-review-complete><span class="status green">Review complete</span><h2>Review result</h2><div class="complete-score" data-complete-score>0 / 0</div><div class="complete-percent" data-complete-percent>0%</div><div class="actions"><a class="btn primary" href="review.html?list=missed">Review current missed list</a><a class="btn secondary" href="review.html?list=mastered">Review mastered list</a></div></div>
+</section>
+<section class="section card hidden review-empty" data-review-empty><span class="status">Nothing to review</span><h2>Your list is empty</h2><p data-empty-message></p><div class="actions"><a class="btn primary" href="practice.html">Open learner practice</a></div></section>
+<footer class="footer">Development branch only · Quality-review records are excluded from learner remediation lists</footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+<script src="core/review.js"></script>
+</body>
+</html>
