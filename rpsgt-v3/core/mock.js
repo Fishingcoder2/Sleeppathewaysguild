@@ -1,6 +1,7 @@
 (function(){
   "use strict";
 
+  const drilldown=window.RPSGTMockDrilldown;
   const state={manifest:null,blueprint:null,bank:[],questionMap:new Map(),taskMap:new Map(),session:null,timerId:null};
   const $=selector=>document.querySelector(selector);
   const $all=selector=>Array.from(document.querySelectorAll(selector));
@@ -36,13 +37,15 @@
   function saveActive(){const root=mockStore();root.mock.activeSession=state.session;saveRoot(root);}
   function clearActive(){const root=mockStore();root.mock.activeSession=null;saveRoot(root);}
 
+  function detailHref(row){return row&&row.sessionId?"reports.html?mock="+encodeURIComponent(String(row.sessionId))+"#mock-detail":"reports.html#mock-detail";}
+
   function renderHistory(){
     const root=mockStore();const history=root.mock.history.slice().reverse();setText("[data-mock-history-count]",history.length+" saved");
     const host=$("[data-mock-history]");
     if(!history.length){host.innerHTML='<div class="empty">No completed mock attempts are saved yet.</div>';return;}
     host.innerHTML='<div class="mock-history-list">'+history.slice(0,10).map(row=>{
       const date=row.completedAt?new Date(row.completedAt).toLocaleString():"Saved attempt";
-      return '<div class="mock-history-row"><div><strong>'+date+'</strong><small>'+row.answeredTotal+'/175 answered · '+row.scoredCorrect+'/150 scored correct</small></div><strong>'+row.scoredPercent+'%</strong><span>'+row.weightedPercent+'% weighted</span><span>'+(row.timed?formatElapsed(row.elapsedMs):"Untimed")+'</span></div>';
+      return '<div class="mock-history-row"><div><strong>'+date+'</strong><small>'+row.answeredTotal+'/175 answered · '+row.scoredCorrect+'/150 scored correct</small></div><strong>'+row.scoredPercent+'%</strong><span>'+row.weightedPercent+'% weighted</span><span>'+(row.timed?formatElapsed(row.elapsedMs):"Untimed")+'</span><a class="btn secondary compact" href="'+detailHref(row)+'">View details</a></div>';
     }).join("")+'</div>';
   }
 
@@ -124,13 +127,18 @@
     state.session.completedAt=Date.now();
     const questionsById=Object.fromEntries(state.session.items.map(item=>[String(item.id),state.questionMap.get(String(item.id))]));
     const summary=window.RPSGTMockEngine.summarize(state.session.items,questionsById,state.session.answers);
-    const result={sessionId:state.session.sessionId,completedAt:new Date(state.session.completedAt).toISOString(),timed:Boolean(state.session.timed),elapsedMs:elapsedMs(state.session),answeredTotal:summary.answeredTotal,scoredCount:summary.scoredCount,pretestCount:summary.pretestCount,scoredCorrect:summary.scoredCorrect,scoredPercent:summary.scoredPercent,weightedPercent:summary.weightedPercent,byDomain:summary.byDomain,weakestTasks:summary.weakestTasks,scoredMissedIds:summary.scoredMissedIds,unansweredCount:summary.unansweredIds.length};
+    const itemResults=drilldown.compactItemResults(state.session.items,questionsById,state.session.answers,state.session.flags||[]);
+    const taskBreakdown=drilldown.taskRows({itemResults:itemResults},state.questionMap);
+    const flaggedIds=itemResults.filter(item=>item.flagged).map(item=>item.id);
+    const unansweredIds=itemResults.filter(item=>!item.answered).map(item=>item.id);
+    const result={resultVersion:2,sessionId:state.session.sessionId,completedAt:new Date(state.session.completedAt).toISOString(),timed:Boolean(state.session.timed),elapsedMs:elapsedMs(state.session),answeredTotal:summary.answeredTotal,scoredCount:summary.scoredCount,pretestCount:summary.pretestCount,scoredCorrect:summary.scoredCorrect,scoredPercent:summary.scoredPercent,weightedPercent:summary.weightedPercent,byDomain:summary.byDomain,weakestTasks:summary.weakestTasks,scoredMissedIds:summary.scoredMissedIds,unansweredCount:unansweredIds.length,unansweredIds:unansweredIds,flaggedCount:flaggedIds.length,flaggedIds:flaggedIds,taskBreakdown:taskBreakdown,itemResults:itemResults};
     const root=mockStore();root.mock.history.push(result);if(root.mock.history.length>20) root.mock.history=root.mock.history.slice(-20);root.mock.activeSession=null;saveRoot(root);stopTimer();renderResults(result);
   }
 
   function renderResults(result){
     hide("[data-mock-home]");hide("[data-mock-shell]");show("[data-mock-results]");
     setText("[data-result-correct]",result.scoredCorrect+" / 150");setText("[data-result-percent]",result.scoredPercent+"%");setText("[data-result-weighted]",result.weightedPercent+"%");setText("[data-result-time]",result.timed?formatElapsed(result.elapsedMs):"Not timed");setText("[data-result-answered]",result.answeredTotal+" / 175");
+    const reportLink=$("[data-result-report-link]");if(reportLink) reportLink.href=detailHref(result);
     const domainHost=$("[data-mock-domain-results]");domainHost.innerHTML=["D1","D2","D3","D4"].map(code=>{const row=result.byDomain[code]||{correct:0,total:0,percent:0};return '<div class="readiness-domain-card"><strong>'+code+'</strong><div class="progress"><span style="width:'+row.percent+'%"></span></div><span>'+row.correct+' / '+row.total+' scored correct · '+row.percent+'%</span></div>';}).join("");
     const weakHost=$("[data-mock-weak-results]");
     weakHost.innerHTML=(result.weakestTasks||[]).map((task,index)=>{const blueprintTask=state.taskMap.get(task.taskCode);const next=blueprintTask&&blueprintTask.nextAction?blueprintTask.nextAction:"Review this task, then run focused practice.";const keys=(task.recommendationKeys||[]).slice(0,4).join(", ");return '<article class="readiness-target"><div class="readiness-target-rank">'+(index+1)+'</div><div><h3>'+task.taskCode+' · '+(blueprintTask?blueprintTask.title:task.title)+'</h3><p>'+task.correct+' / '+task.total+' correct · '+task.percent+'% · '+task.missed+' missed</p><p>'+next+'</p>'+(keys?'<small>Study keys: '+keys+'</small>':'')+'</div></article>';}).join("")||'<div class="empty">No weak-task pattern was available from the scored answers.</div>';
@@ -141,6 +149,6 @@
   }
 
   function showError(error){const host=$("[data-mock-load]");host.className="section notice error";host.textContent="The mock system could not be loaded. "+error.message;}
-  async function init(){try{await loadBank();hide("[data-mock-load]");bind();renderHome();}catch(error){showError(error);}}
+  async function init(){try{if(!drilldown) throw new Error("The mock drill-down module is unavailable.");await loadBank();hide("[data-mock-load]");bind();renderHome();}catch(error){showError(error);}}
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init);else init();
 })();
