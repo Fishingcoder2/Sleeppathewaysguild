@@ -57,7 +57,7 @@
 <section class="section hidden" data-mock-results>
   <div class="card"><span class="status green">Mock attempt complete</span><h2>175-question mock-style study summary</h2><div class="mock-result-grid"><div><span>Scored set</span><strong data-result-correct>0 / 150</strong></div><div><span>Scored percent</span><strong data-result-percent>0%</strong></div><div><span>Study-weighted</span><strong data-result-weighted>0%</strong></div><div><span>Timer</span><strong data-result-time>Not timed</strong></div><div><span>Answered</span><strong data-result-answered>0 / 175</strong></div><div><span>Unscored-style mix</span><strong>25</strong></div></div><p class="tiny">Study-weighted is an internal learning gauge. It is not an official scaled score or passing prediction.</p></div>
   <section class="card"><h2>Scored domain breakdown</h2><div class="grid grid-2" data-mock-domain-results></div></section>
-  <section class="card"><h2>Weak-task study recommendations</h2><div class="readiness-target-list" data-mock-weak-results></div><div class="actions"><a class="btn primary" href="practice.html">Open focused practice</a><a class="btn secondary" href="readiness.html">Run a readiness check</a><button class="btn secondary" type="button" data-new-mock>Return to mock home</button></div></section>
+  <section class="card"><h2>Weak-task study recommendations</h2><div class="readiness-target-list" data-mock-weak-results></div><div class="actions"><a class="btn primary" href="practice.html">Open focused practice</a><a class="btn secondary" href="readiness.html">Run a readiness check</a><a class="btn secondary" data-result-report-link href="reports.html#mock-detail">Open detailed result</a><button class="btn secondary" type="button" data-new-mock>Return to mock home</button></div></section>
 </section>
 <footer class="footer">Development branch only · Interactive desktop/mobile browser regression is required before merge</footer>
 </main>
@@ -67,6 +67,7 @@
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
 <script src="core/mock-engine.js"></script>
+<script src="core/mock-drilldown-engine.js"></script>
 <script src="core/mock.js"></script>
 </body>
 </html>
