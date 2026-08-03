@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "description": "Development-only Playwright regression harness for the isolated RPSGT v3 rebuild.",
-  "type": "module",
   "engines": {
     "node": ">=22"
   },
