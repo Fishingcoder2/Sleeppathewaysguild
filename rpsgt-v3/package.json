@@ -1,0 +1,19 @@
+{
+  "name": "spg-rpsgt-v3-browser-regression",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Development-only Playwright regression harness for the isolated RPSGT v3 rebuild.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test:browser": "playwright test --config=playwright.config.mjs",
+    "test:browser:headed": "playwright test --config=playwright.config.mjs --headed",
+    "test:browser:ui": "playwright test --config=playwright.config.mjs --ui",
+    "test:browser:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.54.2"
+  }
+}
