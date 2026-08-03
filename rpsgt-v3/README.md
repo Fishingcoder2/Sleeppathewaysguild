@@ -42,9 +42,9 @@ The catalog reads mapped `completed`, `started`, `lastLab`, per-lab completion o
 ### Shared laboratory completion contract
 
 - Workflow stations are app-authored educational prompts.
-- Checkpoints use validated learner-eligible question-bank records.
+- Checkpoints use validated learner-eligible question-bank records; the EKG laboratory also uses a separately disclosed and validated app-authored supplement because its mapped extracted pool contains only eight eligible records.
 - Manual-review, invalid-answer, duplicate, ambiguous, and unrelated records are excluded.
-- Source question objects remain unchanged.
+- Extracted-bank and supplemental source objects remain unchanged.
 - Selection is deterministic under a supplied seed for testing.
 - Completion requires every laboratory station plus an 80% checkpoint unless the laboratory has an explicitly documented equivalent contract.
 - Failed retries remain in bounded history and never erase completion.
@@ -77,7 +77,11 @@ The native EKG laboratory uses seven stations:
 6. Assess symptoms and urgency, then follow facility escalation and emergency procedures.
 7. Document onset, duration, pattern, symptoms, interventions, response, notifications, unresolved concerns, and limitations.
 
-Its ten-question checkpoint uses learner-eligible D2B and D3C records. It does not copy the legacy generated rhythm strips, embedded legacy quiz, proprietary scoring rules, or textbook figures. The laboratory is educational review rather than cardiac diagnosis; current AASM guidance, physician orders, facility cardiac-rhythm and emergency procedures, equipment instructions, medical direction, and supervised competency remain authoritative. The detailed decision record is in `data/labs/ekg-rebuild-assessment.md`.
+The mapped extracted bank contains eight eligible EKG records: seven D2B and one D3C. The implementation preserves that source truth instead of shrinking the checkpoint or silently admitting unrelated questions. It adds seven original Sleep Pathways Guild workflow questions in `data/labs/ekg-checkpoint-supplement.json`: three D2B and four D3C. The combined eligible pool contains ten D2B and five D3C records, allowing every standard checkpoint to select five from each task code.
+
+The supplement is labeled `appAuthored`, validates independently from the extracted bank, and cannot load unless its metadata count matches its records. CI verifies its IDs, task codes, answer validity, source labels, exact extracted-bank count, balanced 5/5 selection, source immutability, and absence of its prompts from the preserved legacy page. Neither the supplement nor the laboratory copies the legacy generated rhythm strips, embedded quiz, proprietary scoring rules, textbook prose, figures, or tables.
+
+The laboratory is educational review rather than cardiac diagnosis; current AASM guidance, physician orders, facility cardiac-rhythm and emergency procedures, equipment instructions, medical direction, and supervised competency remain authoritative. The detailed decision record is in `data/labs/ekg-rebuild-assessment.md`.
 
 ## Automated validation
 
@@ -86,7 +90,7 @@ GitHub Actions validates:
 - Full-bank reconstruction, hashes, ordering, schema, and learner/quality separation.
 - Practice, Review, Readiness, Mock, Guided Trail, Reports, and migration contracts.
 - All ten native laboratory engines, controllers, routes, storage boundaries, completion rules, deterministic selection, history limits, source immutability, and learner-facing scope boundaries.
-- Preservation sentinels for the unchanged public EKG page while the v3 catalog points to `lab-ekg.html`.
+- EKG extracted-bank and supplement counts, balanced task allocation, supplement metadata and originality boundaries, plus preservation sentinels for the unchanged public EKG page while the v3 catalog points to `lab-ekg.html`.
 - Compact feedback-index counts and source-map referential integrity.
 - JavaScript syntax and HTML selector/script-order contracts.
 - Reports read-only enforcement and legacy-storage read-only enforcement.
