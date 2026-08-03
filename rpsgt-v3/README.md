@@ -21,6 +21,7 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Completed Mock attempts now use a compact result-version-2 evidence record for task and question drill-down. It stores question IDs, order, role, answer index, correctness, unanswered state, and flags without duplicating prompt, option, answer, or rationale text.
 - Guided Trail uses learner-eligible task checkpoints, an 80% task-award threshold, study marks, task/domain awards, bounded history, and a read-only Reports summary.
 - Reports remain read-only and keep Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab records separate. The Mock report supports attempt selection, domain and task detail, unanswered and flagged review, and lazy question reconstruction from the current validated bank.
+- A dedicated read-only Study Summary page provides print/PDF presentation and local JSON/CSV downloads. Learner-name inclusion is opt-in and off by default; notes, searches, question text, answer text, rationales, private links, and raw browser state remain excluded.
 - Six library sources are outlined into focused study locations without reproducing protected prose, figures, tables, proprietary scoring rules, or publisher question banks.
 - All 12 task codes and 20 topic families have source-routing contracts. Rule-sensitive feedback starts with the current official source before textbook reinforcement and focused practice.
 
@@ -110,6 +111,31 @@ The drill-down provides:
 
 Older result-version-1 attempts remain visible. Because they did not store compact item evidence, the report labels them **aggregate-only** and does not fabricate question answers, flags, or unanswered IDs. The drill-down controller never calls `RPSGTStorage.save` or a browser-storage write method.
 
+## Printable and exportable study summary
+
+`study-summary.html` is a dedicated development-only, `noindex,nofollow` page linked from Reports. It loads the v3 record read-only and builds one stable summary object with schema `spg-rpsgt-study-summary/v1`.
+
+The summary includes:
+
+- Practice totals and accuracy.
+- Missed, mastered, and flagged queue counts.
+- All twelve blueprint task rows.
+- Latest Readiness and Mock results while preserving their existing history ordering.
+- Guided Trail study marks, checkpoints, task awards, and domain awards.
+- Completion status for all ten native Skills Labs.
+- A three-item study plan using the same Practice, Readiness, and Mock evidence hierarchy as Reports.
+
+The learner may:
+
+- Use the browser print dialog to print the report or save it as PDF.
+- Download a structured JSON summary.
+- Download a CSV metrics file.
+- Opt in to learner-name inclusion; the checkbox is off by default.
+
+The summary contract excludes question prompts, option text, selected-answer text, correct-answer text, rationales, notes, searches, private links, raw browser state, and proprietary source content. The controller does not load `core/app-shell.js`, call `RPSGTStorage.save`, or invoke `localStorage.setItem`, `removeItem`, or `clear`. Downloads are created locally with browser `Blob` URLs and are not uploaded by the page.
+
+Automated tests use deliberate private sentinel values to verify that default JSON and CSV exports do not leak learner name, notes, searches, private URLs, question-like text, checkpoint responses, or source-object mutations. Actual browser print layout, PDF saving, and file-download behavior remain part of interactive regression.
+
 ## Automated validation
 
 GitHub Actions validates:
@@ -117,6 +143,7 @@ GitHub Actions validates:
 - Full-bank reconstruction, hashes, ordering, schema, and learner/quality separation.
 - Practice, Review, Readiness, Mock, Guided Trail, Reports, and migration contracts.
 - Mock result-version-2 compact storage, absence of duplicated question and answer text, task aggregation, missed/unanswered/flagged filters, current-bank question reconstruction, source immutability, completed-attempt links, lazy loading, aggregate-only fallback, and read-only Reports behavior.
+- Printable study-summary schema, privacy flags, diagnostic ordering, twelve-task aggregation, Guided Trail and laboratory aggregation, study-plan weighting, learner-name opt-in, JSON/CSV exclusion boundaries, source immutability, print CSS, local-download controls, script order, and read-only routing.
 - All ten native laboratory engines, controllers, routes, storage boundaries, completion rules, deterministic selection, history limits, source immutability, and learner-facing scope boundaries.
 - EKG extracted-bank and supplement counts, balanced task allocation, supplement metadata and originality boundaries, plus preservation sentinels for the unchanged public EKG page while the v3 catalog points to `lab-ekg.html`.
 - Compact feedback-index counts and source-map referential integrity.
@@ -125,7 +152,7 @@ GitHub Actions validates:
 - Twenty-six deterministic storage-migration scenarios and sanitized source-derived fixtures.
 - Browser-export envelope metadata, recognized-key filtering, source immutability, no-write capture-page boundaries, private-file Git protection, and raw-value-free validation summaries.
 
-Automated laboratory parity, Mock drill-down contracts, and browser-export tooling tests do not establish interactive browser parity or prove representative real learner exports have passed.
+Automated laboratory parity, Mock drill-down contracts, printable-summary contracts, and browser-export tooling tests do not establish interactive browser parity or prove representative real learner exports have passed.
 
 ## Library-backed feedback hierarchy
 
@@ -163,7 +190,6 @@ The existing `tests/fixtures/migration/source-derived-*.json` records remain exp
 ## Remaining release gates
 
 1. Capture and validate representative real browser exports from the current application, review every generated summary, and resolve every malformed or ambiguous field. Tooling is ready; no real learner sample is committed or claimed as passed.
-2. Add printable or exportable study summaries after report contracts remain stable.
-3. Complete interactive desktop and mobile browser regression before considering the draft pull request ready for release.
+2. Complete interactive desktop and mobile browser regression, including print/PDF layout and JSON/CSV download behavior, before considering the draft pull request ready for release.
 
 Existing public RPSGT and laboratory files remain unchanged. All development pages are marked `noindex,nofollow`. PR #35 must remain draft and unmerged until the release gates are satisfied.
