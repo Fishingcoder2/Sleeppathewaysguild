@@ -40,4 +40,6 @@ Before replacing a live app file:
 
 Sleep Pathways Guild: `admin@sleeppathwaysguild.com`
 
+Official project contact verified August 3, 2026. Do not use `admin@sleeppathsguild.com` in public pages, applications, documentation, or social profiles.
+
 This is an independent educational project and is not an official BRPT or AASM product.
