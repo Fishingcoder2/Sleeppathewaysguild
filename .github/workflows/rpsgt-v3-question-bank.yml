@@ -52,6 +52,7 @@ jobs:
       - name: Validate study, practice, review, readiness, mock, laboratories, reports, and migration systems
         run: |
           node --check rpsgt-v3/core/storage.js
+          node --check rpsgt-v3/core/migration-export.js
           node --check rpsgt-v3/core/migration-engine.js
           node --check rpsgt-v3/core/legacy-migration.js
           node --check rpsgt-v3/core/app-shell.js
@@ -91,6 +92,7 @@ jobs:
           node --check rpsgt-v3/core/reports.js
           node --check rpsgt-v3/scripts/generate-feedback-index.mjs
           node --check rpsgt-v3/scripts/validate-storage-export.mjs
+          node --check rpsgt-v3/scripts/validate-private-exports.mjs
           node rpsgt-v3/scripts/test-guided-trail-system.mjs
           node rpsgt-v3/scripts/test-guided-trail-shell.mjs
           node rpsgt-v3/scripts/test-lab-catalog.mjs
@@ -126,6 +128,7 @@ jobs:
           node rpsgt-v3/scripts/test-reports-shell.mjs
           node rpsgt-v3/scripts/test-storage-migration.mjs
           node rpsgt-v3/scripts/test-storage-export-fixtures.mjs
+          node rpsgt-v3/scripts/test-migration-export-capture.mjs
           node rpsgt-v3/scripts/test-legacy-migration.mjs
 
       - name: Commit generated modules
