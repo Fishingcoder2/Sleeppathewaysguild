@@ -6,7 +6,7 @@
   const stationHost=document.querySelector('[data-ekg-stations]');
   const startButton=document.querySelector('[data-ekg-start]');
   if(!workspace||!summaryHost||!stationHost||!startButton)return;
-  const state={saved:null,questions:[],bank:[]};
+  const state={saved:null,questions:[],bank:[],supplementMeta:null};
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
   async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
@@ -23,7 +23,7 @@
   }
   function renderSession(){
     workspace.hidden=false;
-    workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D2B · D3C EKG checkpoint</div><h2>Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-ekg-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint draws EKG-relevant learner questions from the validated signal-quality, response, calculation, and reporting banks. It does not reproduce the legacy generated rhythm strips.</p><form data-ekg-form>${state.questions.map((question,index)=>`<fieldset class="ekg-question"><legend><span>${index+1}</span>${esc(question.prompt)}</legend>${question.options.map(option=>`<label><input type="radio" name="ekg-${esc(question.id)}" value="${esc(option)}"> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score EKG checkpoint</button></div></form><div data-ekg-result></div>`;
+    workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D2B · D3C EKG checkpoint</div><h2>Ten EKG workflow questions</h2></div><button class="btn secondary" type="button" data-ekg-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint combines EKG-relevant records from the validated learner bank with a transparent seven-question, app-authored EKG workflow supplement. The supplement fills the documented D2B/D3C coverage gap and does not reproduce the legacy generated rhythm strips or quiz.</p><form data-ekg-form>${state.questions.map((question,index)=>`<fieldset class="ekg-question"><legend><span>${index+1}</span>${esc(question.prompt)}</legend>${question.options.map(option=>`<label><input type="radio" name="ekg-${esc(question.id)}" value="${esc(option)}"> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score EKG checkpoint</button></div></form><div data-ekg-result></div>`;
     workspace.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function renderResult(record){
@@ -35,7 +35,7 @@
   function startSession(){
     saveLabs(engine.start(state.saved.labs,new Date().toISOString()));
     state.questions=engine.selectQuestions(state.bank,engine.SESSION_SIZE,'ekg|'+new Date().toISOString());
-    if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>EKG checkpoint unavailable.</strong> Fewer than ten eligible EKG learner-practice questions were found.</div>';return;}
+    if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>EKG checkpoint unavailable.</strong> Fewer than ten eligible combined EKG checkpoint questions were found.</div>';return;}
     renderSummary();renderStations();renderSession();
   }
   function submit(form){
@@ -45,8 +45,11 @@
   async function init(){
     try{
       if(!engine||!window.RPSGTStorage)throw new Error('A required EKG lab module is unavailable.');
-      state.saved=window.RPSGTStorage.load();const modules=await Promise.all(['data/question-bank/d2b.json','data/question-bank/d3c.json'].map(loadJson));state.bank=modules.flatMap(module=>module.questions||[]);
-      if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE)throw new Error('The validated D2B/D3C banks do not contain enough eligible EKG questions.');
+      state.saved=window.RPSGTStorage.load();
+      const [d2b,d3c,supplement]=await Promise.all(['data/question-bank/d2b.json','data/question-bank/d3c.json','data/labs/ekg-checkpoint-supplement.json'].map(loadJson));
+      if(!supplement||!supplement.meta||supplement.meta.appAuthored!==true||!Array.isArray(supplement.questions)||supplement.meta.questionCount!==supplement.questions.length)throw new Error('The app-authored EKG supplement failed its metadata contract.');
+      state.supplementMeta=supplement.meta;state.bank=[...(d2b.questions||[]),...(d3c.questions||[]),...supplement.questions];
+      if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE)throw new Error('The validated bank and app-authored EKG supplement do not contain enough eligible questions.');
       renderSummary();renderStations();
     }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>EKG lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;}
   }
