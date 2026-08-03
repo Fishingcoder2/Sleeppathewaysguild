@@ -4,7 +4,7 @@
   root.RPSGTEkgLabEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.0.0';
+  const VERSION='1.0.1';
   const LAB_ID='ekg';
   const SESSION_SIZE=10;
   const PASS_PERCENT=80;
@@ -32,8 +32,9 @@
   function isEkgRelevant(record){
     const text=combinedText(record);
     const strong=/\becg\b|\bekg\b|electrocardio|cardiac rhythm|dysrhythm|arrhythm|heart rate|r-r|p wave|qrs|pr interval|qt interval|sinus brady|sinus tach|atrial fibrillation|atrial flutter|junctional|premature atrial|\bpac\b|premature ventricular|\bpvc\b|ventricular tach|ventricular fibrillation|asystole|cardiac pause|av block|heart block|bigeminy|trigeminy|ectopy|wide[- ]complex/.test(text);
-    const mapped=/(^|\s)ekg-tech-support(\s|$)/.test(text)&&/(heart rate|cardiac|ecg|ekg|rhythm|dysrhythm|arrhythm|p wave|qrs|pr interval|qt interval|chest pain|palpitation|syncope|bradycard|tachycard|ventricular|atrial|asystole|ectopy)/.test(text);
-    return strong||mapped;
+    const mapped=/(^|\s)ekg-tech-support(\s|$)/.test(text);
+    const cardiacSafety=/(chest pain|cardiopulmonary|palpitation|syncope|faint|diaphores|cardiac symptom)/.test(text)&&/(assess|emergency|safety|protocol|response|notify|physician|medical director)/.test(text);
+    return strong||mapped||cardiacSafety;
   }
   function classifyFamily(record){
     const text=combinedText(record);
