@@ -28,7 +28,7 @@
   <div><div class="eyebrow">Module 4 · modular reporting</div><h1>Progress, diagnostics, Trail, and study directions</h1><p class="lead">Practice, remediation, Readiness, Mock, and Guided Trail evidence remain separate. This page reads those records and turns weak areas into a textbook- and guideline-backed study route.</p></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Study the cause, not only the score.</h2><p>Start with the current official rule when one applies, use a core textbook to understand the concept, then return to focused practice.</p></aside>
 </section>
-<section class="section notice"><strong>Reporting boundary:</strong> This page is read only. It does not change answers, missed or mastered lists, Readiness history, Mock history, Guided Trail progress, or legacy data.</section>
+<section class="section notice"><strong>Reporting boundary:</strong> This page is read only. It does not change answers, missed or mastered lists, Readiness history, Mock history, Guided Trail progress, or legacy data. Mock question review reconstructs text from the current validated bank; compact history stores IDs and answer indexes rather than duplicate prompts or answers.</section>
 <section class="section notice" data-reports-load>Loading the v3 progress record and library outline map…</section>
 <div class="hidden" data-reports-content>
 <section class="section" aria-labelledby="snapshot-title">
@@ -43,7 +43,7 @@
 <section class="section grid report-grid" aria-label="Report families">
   <article class="card report-family"><span class="status">Skill building</span><h2>Practice and remediation</h2><p>Ordinary practice attempts, task accuracy, missed questions, mastered questions, and review activity.</p><div class="report-family-metrics" data-practice-family></div><a class="btn secondary" href="#practice-report">View practice report</a></article>
   <article class="card report-family"><span class="status gold">Diagnostic</span><h2>Readiness Checks</h2><p>Weighted 25-, 50-, and 100-question checks remain separate from ordinary practice.</p><div class="report-family-metrics" data-readiness-family></div><a class="btn secondary" href="#readiness-report">View readiness report</a></article>
-  <article class="card report-family"><span class="status green">Full length</span><h2>175-question Mock</h2><p>Scored-style percentage, timing, domain results, and weak tasks remain in Mock history only.</p><div class="report-family-metrics" data-mock-family></div><a class="btn secondary" href="#mock-report">View mock report</a></article>
+  <article class="card report-family"><span class="status green">Full length</span><h2>175-question Mock</h2><p>Scored-style percentage, timing, domain results, weak tasks, and completed-attempt drill-down remain in Mock history only.</p><div class="report-family-metrics" data-mock-family></div><a class="btn secondary" href="#mock-detail">View mock drill-down</a></article>
   <article class="card report-family"><span class="status quality">Guided Trail</span><h2>Trail and awards</h2><p>Study marks, task and domain awards, current position, and checkpoint attempts remain in the Guided Trail record.</p><div class="report-family-metrics" data-trail-family></div><a class="btn secondary" href="#guided-trail-report">View Trail report</a></article>
 </section>
 <section class="section card coach-plan" id="study-plan">
@@ -64,6 +64,11 @@
   <article class="card" id="readiness-report"><div class="section-head"><div><div class="eyebrow">Separate diagnostic history</div><h2>Readiness Check report</h2></div><a class="btn secondary" href="readiness.html">Open Readiness</a></div><div data-readiness-report></div></article>
   <article class="card" id="mock-report"><div class="section-head"><div><div class="eyebrow">Separate full-length history</div><h2>175-question Mock report</h2></div><a class="btn secondary" href="mock.html">Open Mock</a></div><div data-mock-report></div></article>
 </section>
+<section class="section card mock-drilldown" id="mock-detail">
+  <div class="section-head"><div><div class="eyebrow">Completed-attempt evidence</div><h2>Mock result drill-down</h2></div><span class="status green">Read only</span></div>
+  <p class="report-intro">Choose a completed attempt to review scored domains, all task families, unanswered and flagged items, and—when compact v2 evidence exists—the saved question-by-question response. Older attempts remain visible as aggregate-only history.</p>
+  <div data-mock-drilldown><div class="empty-report">Loading completed Mock history…</div></div>
+</section>
 <section class="section card source-shelf" id="source-outlines">
   <div class="section-head"><div><div class="eyebrow">Study source shelf</div><h2>Outlined textbooks and official references</h2></div><span class="status green" data-outline-count>0 outlined sections</span></div>
   <p class="report-intro">These outlines are navigation aids for books already represented in the Sleep Pathways Guild library. Public learner feedback identifies chapter or section locations without exposing private Drive files or copying protected content.</p><div data-source-outlines></div>
@@ -80,7 +85,9 @@
 <script src="core/study-feedback-engine.js"></script>
 <script src="core/reports-engine.js"></script>
 <script src="core/guided-trail-engine.js"></script>
+<script src="core/mock-drilldown-engine.js"></script>
 <script src="core/reports.js"></script>
 <script src="core/guided-trail-report.js"></script>
+<script src="core/mock-result-report.js"></script>
 </body>
 </html>
