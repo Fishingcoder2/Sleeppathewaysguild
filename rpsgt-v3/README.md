@@ -18,8 +18,9 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Learner Practice uses 2,327 eligible records; 560 manual-review records remain in a separate Quality Review pool.
 - Full Practice Center, Missed Review, Mastered Review, weighted 25/50/100 Readiness Checks, and separate 175-question Mock-Style Practice are implemented.
 - The Mock preserves 150 scored-style and 25 mixed unscored-style questions, scored domain allocation D1 30, D2 41, D3 38, D4 41, all 12 task codes, navigation, flags, save/resume, and an optional study stopwatch.
+- Completed Mock attempts now use a compact result-version-2 evidence record for task and question drill-down. It stores question IDs, order, role, answer index, correctness, unanswered state, and flags without duplicating prompt, option, answer, or rationale text.
 - Guided Trail uses learner-eligible task checkpoints, an 80% task-award threshold, study marks, task/domain awards, bounded history, and a read-only Reports summary.
-- Reports remain read-only and keep Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab records separate.
+- Reports remain read-only and keep Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab records separate. The Mock report supports attempt selection, domain and task detail, unanswered and flagged review, and lazy question reconstruction from the current validated bank.
 - Six library sources are outlined into focused study locations without reproducing protected prose, figures, tables, proprietary scoring rules, or publisher question banks.
 - All 12 task codes and 20 topic families have source-routing contracts. Rule-sensitive feedback starts with the current official source before textbook reinforcement and focused practice.
 
@@ -84,12 +85,38 @@ The supplement is labeled `appAuthored`, validates independently from the extrac
 
 The laboratory is educational review rather than cardiac diagnosis; current AASM guidance, physician orders, facility cardiac-rhythm and emergency procedures, equipment instructions, medical direction, and supervised competency remain authoritative. The detailed decision record is in `data/labs/ekg-rebuild-assessment.md`.
 
+## Mock result drill-down
+
+Newly completed Mock attempts use `resultVersion: 2`. The result record preserves the existing score, study-weighted gauge, domain results, weak tasks, and twenty-attempt history limit, and adds compact per-item evidence:
+
+- Question ID and original session position.
+- Scored-style or mixed unscored-style role.
+- Domain and task code.
+- Answered or unanswered state.
+- Correctness.
+- Flagged state.
+- Selected option index rather than selected answer text.
+
+The compact record does not duplicate prompts, options, correct answers, selected answer text, or rationales. The read-only Reports controller loads the compact feedback index for task aggregation and loads the applicable question-bank modules only after the learner selects **Load question review**.
+
+The drill-down provides:
+
+- Completed-attempt selection and direct links from Mock history and the completion screen.
+- Overall score, study-weighted gauge, answered, unanswered, flagged, timing, and detail-level indicators.
+- Scored results for D1 through D4.
+- All task-family totals, correct, missed, unanswered, flags, and mixed unscored-style counts.
+- Filters for missed scored-style items, unanswered items, flagged items, and all questions.
+- Reconstructed prompt, learner answer, correct answer, rationale, task, and topic from the current validated bank.
+
+Older result-version-1 attempts remain visible. Because they did not store compact item evidence, the report labels them **aggregate-only** and does not fabricate question answers, flags, or unanswered IDs. The drill-down controller never calls `RPSGTStorage.save` or a browser-storage write method.
+
 ## Automated validation
 
 GitHub Actions validates:
 
 - Full-bank reconstruction, hashes, ordering, schema, and learner/quality separation.
 - Practice, Review, Readiness, Mock, Guided Trail, Reports, and migration contracts.
+- Mock result-version-2 compact storage, absence of duplicated question and answer text, task aggregation, missed/unanswered/flagged filters, current-bank question reconstruction, source immutability, completed-attempt links, lazy loading, aggregate-only fallback, and read-only Reports behavior.
 - All ten native laboratory engines, controllers, routes, storage boundaries, completion rules, deterministic selection, history limits, source immutability, and learner-facing scope boundaries.
 - EKG extracted-bank and supplement counts, balanced task allocation, supplement metadata and originality boundaries, plus preservation sentinels for the unchanged public EKG page while the v3 catalog points to `lab-ekg.html`.
 - Compact feedback-index counts and source-map referential integrity.
@@ -98,7 +125,7 @@ GitHub Actions validates:
 - Twenty-six deterministic storage-migration scenarios and sanitized source-derived fixtures.
 - Browser-export envelope metadata, recognized-key filtering, source immutability, no-write capture-page boundaries, private-file Git protection, and raw-value-free validation summaries.
 
-Automated laboratory parity and browser-export tooling tests do not establish interactive browser parity or prove representative real learner exports have passed.
+Automated laboratory parity, Mock drill-down contracts, and browser-export tooling tests do not establish interactive browser parity or prove representative real learner exports have passed.
 
 ## Library-backed feedback hierarchy
 
@@ -136,8 +163,7 @@ The existing `tests/fixtures/migration/source-derived-*.json` records remain exp
 ## Remaining release gates
 
 1. Capture and validate representative real browser exports from the current application, review every generated summary, and resolve every malformed or ambiguous field. Tooling is ready; no real learner sample is committed or claimed as passed.
-2. Add mock-result drill-down.
-3. Add printable or exportable study summaries after report contracts remain stable.
-4. Complete interactive desktop and mobile browser regression before considering the draft pull request ready for release.
+2. Add printable or exportable study summaries after report contracts remain stable.
+3. Complete interactive desktop and mobile browser regression before considering the draft pull request ready for release.
 
 Existing public RPSGT and laboratory files remain unchanged. All development pages are marked `noindex,nofollow`. PR #35 must remain draft and unmerged until the release gates are satisfied.
