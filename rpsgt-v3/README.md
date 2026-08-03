@@ -1,75 +1,104 @@
 # RPSGT Learning Center v3 — Modular Rebuild
 
-This directory is the non-destructive modular rebuild of the Sleep Pathways Guild RPSGT application.
+This directory is the non-destructive modular rebuild of the Sleep Pathways Guild RPSGT application. It remains development-only and does not replace the current public app.
 
 ## Current development milestones
 
 - Five connected learner destinations: Dashboard, Guided Study, Practice & Exam, Skills Labs, and Reports.
 - Shared responsive shell inspired by the clearer CPSGT navigation pattern.
 - One versioned browser-storage record: `spg_rpsgt_v3`, currently at schema version 2.
-- Read-only detection and preview of the current RPSGT storage records.
-- `core/migration-engine.js` is a pure legacy-migration engine. It accepts supplied records as data, builds an in-memory report, and never reads from or writes to browser storage directly.
-- `core/storage.js` only discovers the recognized browser-storage records and passes a read-only snapshot to the engine. `core/legacy-migration.js` remains a compatibility alias.
-- Migration discovery records key presence, byte size, parse status, record type, source priority, and stable source hashes.
-- Migration validation covers Practice totals, domain/task statistics, explicit history modes, missed/mastered/flagged IDs, Guided Trail position and checkpoints, awards, labs, notes, searches, readiness-like records, mock-style records, and Math Coach data.
-- Learner-practice IDs, manual-review IDs, unknown IDs, malformed IDs, and duplicates are classified separately. Manual-review records never enter learner missed or mastered remediation.
-- Practice, Readiness, and Mock histories remain separate. Unclassifiable history stays unresolved rather than being guessed into a report family.
-- `D2A/D2C` statistics remain unresolved and are never silently reassigned.
-- Flash-flag conflicts use explicit source priority and are reported for manual review; conflicting sources are not silently merged.
-- Unknown fields, malformed records, impossible totals, count mismatches, source conflicts, and parse failures are preserved in structured blocking, warning, notice, and unresolved sections.
-- Stable migration fingerprints include source hashes, target schema version, and migration-engine version. Duplicate fingerprints and existing non-empty v3 data are blocking conditions.
-- Every preview includes rollback metadata, the prior v3 checksum, a backup snapshot, write-verification requirements, and restore-on-failure instructions. Import remains hard-disabled.
-- The deterministic migration matrix covers 26 unit scenarios, a compatibility test against the generated 2,887-record feedback index, and two sanitized source-derived export fixtures.
-- `scripts/validate-storage-export.mjs` validates supplied JSON exports without writing browser storage. The included fixtures are explicitly marked `realBrowserExport: false`; representative real learner exports remain a release gate.
-- Canonical four-domain, twelve-task blueprint data is shared across learning modules.
-- Guided Trail study marks, current focus, five-question task checkpoints, task awards, domain awards, and checkpoint history now use a pure engine and the versioned v3 record.
-- Guided Trail checkpoints use learner-eligible task records only, exclude manual-review and `D2A/D2C` records, require 80% for a task award, retain failed attempts, and never enter ordinary Practice, Readiness, or Mock history.
-- The Reports Center provides a read-only Guided Trail report with current position, study marks, task/domain awards, and checkpoint history.
+- Read-only detection and preview of recognized legacy RPSGT browser-storage records.
+- `core/migration-engine.js` is pure and accepts supplied records as data; it never reads from or writes to browser storage directly.
+- `core/storage.js` discovers recognized legacy records and passes a read-only snapshot to the engine. Import remains hard-disabled through `canImport: false` and `migration.importEnabled: false`.
+- Migration validation covers Practice totals, domain/task statistics, missed/mastered/flagged IDs, Guided Trail state, awards, labs, notes, searches, readiness-like history, mock-style history, Math Coach records, malformed data, conflicts, duplicate fingerprints, rollback metadata, and source immutability.
+- Learner-practice, manual-review, unknown, malformed, duplicate, and ambiguous records remain separately classified. `D2A/D2C` data is never silently reassigned.
+- Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab histories remain technically and visibly separate.
 - Complete 2,887-question bank extracted into 13 validated task modules.
-- Full Practice Center with domain/task filtering and lazy task-module loading.
-- Learner Practice uses 2,327 eligible records and excludes all 560 manual-review records.
-- Separate Quality Review preserves those 560 records without changing learner progress.
-- Missed Question Review and Mastered Question Review use the complete learner-practice bank.
-- Correct missed answers move to mastered; incorrect mastered answers return to missed.
-- Separate 25-, 50-, and 100-question Readiness Checks preserve weighted domain allocation, task balancing, question-family deduplication, raw scoring, an internal study-weighted gauge, domain results, and weak-task study targets.
-- Separate 175-question Mock-Style Practice uses 150 scored-style and 25 mixed unscored-style items, preserving D1 30, D2 41, D3 38, and D4 41 across the scored set.
-- Mock attempts support randomized construction, navigation, a 175-question palette, flags, save-and-resume, optional elapsed-time tracking, scored-domain results, weak-task targets, and separate history.
-- Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab records remain technically and visibly separate.
-- A canonical ten-family laboratory catalog defines stable IDs, progress keys, blueprint-task mappings, migration status, planned routes, and confirmed preserved destinations.
-- The laboratory catalog reads mapped `completed`, `started`, `lastLab`, per-lab completion objects, and legacy `catalogIndex` shapes without modifying them.
-- Hookup, Sleep Staging and Event Scoring, Respiratory Signals and Event Recognition, Instrumentation, Filters, and Signal Pathways, PAP and Titration, Integrated Troubleshooting, Pediatric and Infant Sleep, MSLT and MWT Protocols, and Math Coach now have individual v3 laboratory experiences. The preserved EKG destination remains linked while its preserve-versus-rebuild decision remains open.
-- The Hookup lab uses a pure progress engine, six app-authored workflow stations, and a ten-question learner-eligible D2A/D2B checkpoint. All stations plus an 80% checkpoint are required for completion, and failed retries never erase completion.
-- The Sleep Staging and Event-Scoring lab uses a pure progress engine, seven app-authored review stations, and a ten-question checkpoint balanced across learner-eligible D3A, D3B, and D3C records. It excludes manual-review records, deduplicates prompts and IDs, preserves source-object immutability, requires all stations plus 80%, and keeps failed retries in bounded history without erasing completion.
-- The scoring lab classifies broad question families only to improve checkpoint variety. It does not add scoring criteria or reproduce proprietary AASM scoring-manual text, figures, or tables; rule-sensitive decisions remain tied to current official guidance.
-- The Respiratory lab uses a pure progress engine, seven app-authored signal-pathway stations, and a respiratory-relevant ten-question checkpoint balanced across learner-eligible D2A, D2B, and D3B records. It excludes manual-review records, duplicate prompts, duplicate IDs, and unrelated setup or troubleshooting questions.
-- Respiratory completion requires all seven stations plus 80%. Failed retries remain in bounded lab history without erasing completion, and broad signal families are used only to improve checkpoint variety—not to add or reproduce proprietary scoring criteria.
-- The Instrumentation lab uses a pure progress engine, seven app-authored signal-pathway stations, and an instrumentation-relevant ten-question checkpoint across learner-eligible D2A, D2B, and D2C records. It covers derivations, polarity, amplifiers, sensitivity, calibration, filters, sampling, digital acquisition, and artifact troubleshooting.
-- Instrumentation eligibility excludes manual-review records, duplicate prompts, duplicate IDs, unrelated questions, and ambiguous `D2A/D2C` records. Completion requires all seven stations plus 80%; failed retries remain in bounded lab history without erasing completion.
-- The PAP and Titration lab uses a pure progress engine, seven app-authored workflow stations, and a PAP-relevant ten-question checkpoint balanced across learner-eligible D4A, D4B, and D4C records. It covers orders and protocol boundaries, interfaces, acclimation, event-response reasoning, leak troubleshooting, advanced-mode awareness, and documentation.
-- PAP eligibility excludes manual-review records, duplicate prompts, duplicate IDs, and unrelated treatment-domain questions. Completion requires all seven stations plus 80%; failed retries remain in bounded lab history without erasing completion. App-authored station text does not reproduce proprietary titration tables, manufacturer manuals, or facility protocols.
-- The Integrated Troubleshooting lab uses a pure progress engine, seven app-authored workflow stations, and a troubleshooting-relevant ten-question checkpoint across learner-eligible D2B, D2C, and D3C records. Its workflow moves from patient safety and problem definition through source localization, channel/video correlation, least-disruptive correction, escalation, and documentation.
-- Troubleshooting eligibility excludes manual-review records, duplicate prompts, duplicate IDs, unrelated questions, and ambiguous cross-task records. Completion requires all seven stations plus 80%; failed retries remain in bounded lab history without erasing completion. App-authored station text does not replace facility emergency procedures, equipment manuals, orders, current technical guidance, or supervised competency.
-- The Pediatric and Infant Sleep lab uses a pure progress engine, seven app-authored workflow stations, and a pediatric-relevant ten-question checkpoint balanced across learner-eligible D1A, D1C, D3A, D3B, and D4A records. It covers developmental context, caregiver preparation, age-adapted setup, developmental staging, respiratory and gas-exchange monitoring, safety, and documentation.
-- Pediatric eligibility uses pediatric source mappings and explicit pediatric or infant terminology, while excluding manual-review records, duplicate prompts, duplicate IDs, and unrelated adult-only questions. Completion requires all seven stations plus 80%; failed retries remain in bounded lab history without erasing completion. App-authored station text does not reproduce proprietary pediatric scoring thresholds, tables, figures, or source prose.
-- The MSLT and MWT Protocols lab uses a pure progress engine, seven app-authored workflow stations, and a daytime-testing-relevant ten-question checkpoint balanced across learner-eligible D1A, D2C, and D3A records. It covers indication and developmental appropriateness, sleep schedule evidence, medications and substances, preceding attended PSG, controlled daytime conditions, nap-trial acquisition, reporting, validity, and MWT boundaries.
-- MSLT/MWT eligibility uses the `aasm-mslt-mwt` source mapping and explicit daytime-testing terminology while excluding manual-review records, duplicate prompts, duplicate IDs, invalid answers, and unrelated questions. Completion requires all seven stations plus 80%; failed retries remain in bounded lab history without erasing completion. The lab does not reproduce the complete protocol boxes, diagnostic criteria, scoring rules, or report template, and it makes the pediatric MWT validation limitation visible.
-- The Math Coach lab uses learner-eligible D3C calculation questions, protected attempt history, migrated lesson-state visibility, and an 80% completion threshold.
-- The modular Reports Center reads learner records without writing to them and provides task-level progress, missed/mastered status, separate diagnostic histories, Guided Trail status, and Coach Bob study directions.
-- Reports use a compact generated feedback index containing question IDs and classification metadata only; it contains no prompt, option, answer, or rationale text.
-- Six library sources are outlined into focused chapter/section locations: the AASM Scoring Manual v3, Fundamentals of Sleep Technology, Polysomnography for the Sleep Technologist, A Clinical Guide to Pediatric Sleep, the AAST terminology reference, and a sleep-stage scoring companion.
-- All 12 RPSGT task codes have a defined source sequence, and 20 topic families provide more specific routes for instrumentation, artifact, staging, respiratory scoring, calculations, PAP, pediatrics, safety, and related weak areas.
-- Rule-sensitive feedback begins with the current official AASM section before textbook reinforcement and focused practice.
-- Chapter and section titles are navigation aids only. The app does not reproduce textbook prose, figures, tables, proprietary scoring rules, or publisher question banks.
-- GitHub Actions validates full-bank reconstruction, learner/quality separation, Guided Trail checkpoints and reporting, laboratory catalog contracts, Hookup, Scoring, Respiratory, Instrumentation, PAP, Integrated Troubleshooting, Pediatric, MSLT/MWT, and Math Coach laboratory behavior, Readiness allocation, Mock structure, feedback-index counts, source-map referential integrity, JavaScript syntax, selector contracts, Reports read-only enforcement, and storage-migration safeguards.
-- Interactive desktop/mobile browser regression is still required before merge; no browser interaction pass is claimed.
-- Existing public RPSGT and laboratory files remain unchanged.
-- All development pages are marked `noindex,nofollow`.
+- Learner Practice uses 2,327 eligible records; 560 manual-review records remain in a separate Quality Review pool.
+- Full Practice Center, Missed Review, Mastered Review, weighted 25/50/100 Readiness Checks, and separate 175-question Mock-Style Practice are implemented.
+- The Mock preserves 150 scored-style and 25 mixed unscored-style questions, scored domain allocation D1 30, D2 41, D3 38, D4 41, all 12 task codes, navigation, flags, save/resume, and an optional study stopwatch.
+- Guided Trail uses learner-eligible task checkpoints, an 80% task-award threshold, study marks, task/domain awards, bounded history, and a read-only Reports summary.
+- Reports remain read-only and keep Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab records separate.
+- Six library sources are outlined into focused study locations without reproducing protected prose, figures, tables, proprietary scoring rules, or publisher question banks.
+- All 12 task codes and 20 topic families have source-routing contracts. Rule-sensitive feedback starts with the current official source before textbook reinforcement and focused practice.
+
+## Complete native Skills Laboratory parity
+
+The canonical catalog contains ten stable laboratory families. All ten now use native v3 routes, versioned Skills Lab progress, deterministic test contracts, and isolated history:
+
+1. Hookup and Electrode Placement
+2. EKG Recognition and Response
+3. Sleep Staging and Event Scoring
+4. Respiratory Signals and Event Recognition
+5. PAP and Titration
+6. Instrumentation, Filters, and Signal Pathways
+7. Pediatric and Infant Sleep
+8. MSLT and MWT Protocols
+9. Integrated Troubleshooting
+10. Math Coach
+
+The catalog reads mapped `completed`, `started`, `lastLab`, per-lab completion objects, and legacy `catalogIndex` shapes without modifying them. Each native laboratory writes only to `spg_rpsgt_v3.labs` through `RPSGTStorage.save`.
+
+### Shared laboratory completion contract
+
+- Workflow stations are app-authored educational prompts.
+- Checkpoints use validated learner-eligible question-bank records.
+- Manual-review, invalid-answer, duplicate, ambiguous, and unrelated records are excluded.
+- Source question objects remain unchanged.
+- Selection is deterministic under a supplied seed for testing.
+- Completion requires every laboratory station plus an 80% checkpoint unless the laboratory has an explicitly documented equivalent contract.
+- Failed retries remain in bounded history and never erase completion.
+- Reapplying the same session ID never double-counts an attempt.
+- Laboratory results do not write ordinary Practice, Review, Readiness, Mock, or Guided Trail history.
+
+### Laboratory-specific scope
+
+- **Hookup:** six placement and preparation stations plus a learner-eligible D2A/D2B checkpoint.
+- **Scoring:** seven review stations and a D3A/D3B/D3C checkpoint; broad families improve variety without reproducing AASM scoring criteria.
+- **Respiratory:** seven signal-pathway stations and a D2A/D2B/D3B checkpoint covering airflow, effort, oxygen, carbon dioxide, snore, event context, and signal quality.
+- **Instrumentation:** seven acquisition and troubleshooting stations and a D2A/D2B/D2C checkpoint covering derivations, polarity, amplifiers, sensitivity, calibration, filters, sampling, and artifact.
+- **PAP:** seven order-to-handoff stations and a D4A/D4B/D4C checkpoint covering interfaces, acclimation, event response, leak, advanced-mode awareness, and documentation.
+- **Integrated Troubleshooting:** seven safety-to-documentation stations and a D2B/D2C/D3C checkpoint covering patient events, equipment, signal pathways, corrective action, escalation, and study integrity.
+- **Pediatric and Infant Sleep:** seven developmental and caregiver-centered stations and a D1A/D1C/D3A/D3B/D4A checkpoint covering setup, staging context, respiratory and gas-exchange monitoring, safety, and documentation.
+- **MSLT/MWT:** seven preparation-to-reporting stations and a D1A/D2C/D3A checkpoint covering sleep scheduling evidence, medications and substances, preceding attended PSG, controlled daytime conditions, trial acquisition, validity, and MWT boundaries. Pediatric MWT normative interpretation is not presented as validated.
+- **Math Coach:** learner-eligible D3C calculation questions, migrated lesson-state visibility, protected attempt history, and an 80% threshold.
+
+### Native EKG rebuild decision
+
+The preserve-versus-rebuild assessment selected a native v3 EKG laboratory. The older public `ekg.2026.html` page remains unchanged for current public users and historical reference, but it is no longer the v3 catalog route.
+
+The native EKG laboratory uses seven stations:
+
+1. Verify tracing validity and signal quality.
+2. Determine rate and regularity.
+3. Review P waves and atrial activity.
+4. Review PR/QRS features and the atrial-ventricular relationship.
+5. Classify a broad pattern and correlate patient, video, respiratory, oxygen, movement, and neighboring-channel context.
+6. Assess symptoms and urgency, then follow facility escalation and emergency procedures.
+7. Document onset, duration, pattern, symptoms, interventions, response, notifications, unresolved concerns, and limitations.
+
+Its ten-question checkpoint uses learner-eligible D2B and D3C records. It does not copy the legacy generated rhythm strips, embedded legacy quiz, proprietary scoring rules, or textbook figures. The laboratory is educational review rather than cardiac diagnosis; current AASM guidance, physician orders, facility cardiac-rhythm and emergency procedures, equipment instructions, medical direction, and supervised competency remain authoritative. The detailed decision record is in `data/labs/ekg-rebuild-assessment.md`.
+
+## Automated validation
+
+GitHub Actions validates:
+
+- Full-bank reconstruction, hashes, ordering, schema, and learner/quality separation.
+- Practice, Review, Readiness, Mock, Guided Trail, Reports, and migration contracts.
+- All ten native laboratory engines, controllers, routes, storage boundaries, completion rules, deterministic selection, history limits, source immutability, and learner-facing scope boundaries.
+- Preservation sentinels for the unchanged public EKG page while the v3 catalog points to `lab-ekg.html`.
+- Compact feedback-index counts and source-map referential integrity.
+- JavaScript syntax and HTML selector/script-order contracts.
+- Reports read-only enforcement and legacy-storage read-only enforcement.
+- Twenty-six deterministic storage-migration scenarios and sanitized source-derived fixtures.
+
+Automated laboratory parity does not establish interactive browser parity.
 
 ## Library-backed feedback hierarchy
 
 1. Current official rule or protocol source when the topic is version-sensitive.
 2. Core sleep-technology textbook chapter for conceptual understanding.
-3. Technical, pediatric, or visual companion source when it improves recognition or application.
+3. Technical, pediatric, cardiac, or visual companion source when it improves recognition or application.
 4. Guided Study and focused practice to verify repair of the weak area.
 
 Private Drive URLs are not placed in public learner data. Public release resources must use approved official, open-access, or clearly disclosed optional resource links.
@@ -82,12 +111,13 @@ Private Drive URLs are not placed in public learner data. Public release resourc
 - `spg_mathcoach_lesson_59b`
 - `spg_math_notes_59b_*`
 
-`getLegacySnapshot()` reads these records without modification. `createMigrationDraft()` passes that snapshot to the pure engine and returns an in-memory report containing `draft`, `summary`, `issues`, `unresolved`, `fieldMappings`, `sourceManifest`, `validation`, `fingerprint`, conflict-resolution details, and rollback metadata. It does not import, overwrite, or delete any record. `canImport` and `migration.importEnabled` remain `false`; no user-facing import action is enabled.
+`getLegacySnapshot()` reads these records without modification. `createMigrationDraft()` produces an in-memory report containing the draft, summary, issues, unresolved fields, mappings, source manifest, validation, fingerprint, conflict-resolution details, and rollback metadata. It does not import, overwrite, or delete any record.
 
 ## Remaining release gates
 
-1. Validate migration against representative real browser exports and resolve every malformed or ambiguous legacy field before enabling import.
-2. Make the EKG preserve-versus-rebuild decision; the nine native v3 labs do not establish full laboratory parity.
-3. Add mock-result drill-down.
-4. Add printable or exportable study summaries after report contracts remain stable.
-5. Complete interactive desktop/mobile browser regression before considering the draft pull request ready for release.
+1. Validate migration against representative real browser exports and resolve every malformed or ambiguous field before enabling import.
+2. Add mock-result drill-down.
+3. Add printable or exportable study summaries after report contracts remain stable.
+4. Complete interactive desktop and mobile browser regression before considering the draft pull request ready for release.
+
+Existing public RPSGT and laboratory files remain unchanged. All development pages are marked `noindex,nofollow`. PR #35 must remain draft and unmerged until the release gates are satisfied.
