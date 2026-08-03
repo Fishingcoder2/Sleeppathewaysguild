@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "RPSGT v3 laboratory catalog",
-    "version": 8,
+    "version": 9,
     "developmentOnly": true,
     "individualLabParityComplete": false,
     "progressRecord": "spg_rpsgt_v3.labs",
@@ -15,7 +15,7 @@
     {"id":"pap","title":"PAP and Titration","shortTitle":"PAP","icon":"↗","description":"Interfaces, pressure concepts, event response, leak, comfort, acclimation, and documentation.","taskCodes":["D4A","D4B","D4C"],"progressKey":"pap","status":"v3-ready","plannedRoute":"lab-pap.html","legacyHref":null},
     {"id":"instrumentation","title":"Instrumentation, Filters, and Signal Pathways","shortTitle":"Instrumentation","icon":"⌁","description":"Montages, sensitivities, sampling, filters, amplifiers, polarity, calibration, and troubleshooting.","taskCodes":["D2A","D2B","D2C"],"progressKey":"instrumentation","status":"v3-ready","plannedRoute":"lab-instrumentation.html","legacyHref":null},
     {"id":"pediatric","title":"Pediatric and Infant Sleep","shortTitle":"Pediatrics","icon":"☆","description":"Age-specific setup, staging context, respiratory scoring, CO2 monitoring, caregiver support, and safety.","taskCodes":["D1A","D1C","D3A","D3B","D4A"],"progressKey":"pediatric","status":"v3-ready","plannedRoute":"lab-pediatric.html","legacyHref":null},
-    {"id":"daytime-testing","title":"MSLT and MWT Protocols","shortTitle":"MSLT/MWT","icon":"☀","description":"Preparation, timing, nap and trial structure, documentation, validity risks, and protocol boundaries.","taskCodes":["D1A","D2C","D3A"],"progressKey":"daytime-testing","status":"catalog-only","plannedRoute":"lab-daytime-testing.html","legacyHref":null},
+    {"id":"daytime-testing","title":"MSLT and MWT Protocols","shortTitle":"MSLT/MWT","icon":"☀","description":"Preparation, timing, nap and trial structure, documentation, validity risks, and protocol boundaries.","taskCodes":["D1A","D2C","D3A"],"progressKey":"daytime-testing","status":"v3-ready","plannedRoute":"lab-daytime-testing.html","legacyHref":null},
     {"id":"troubleshooting","title":"Integrated Troubleshooting","shortTitle":"Troubleshooting","icon":"⚙","description":"Artifact recognition, equipment failure, patient events, corrective action, documentation, and escalation.","taskCodes":["D2B","D2C","D3C"],"progressKey":"troubleshooting","status":"v3-ready","plannedRoute":"lab-troubleshooting.html","legacyHref":null},
     {"id":"math-coach","title":"Math Coach","shortTitle":"Math Coach","icon":"∑","description":"Indices, sleep calculations, timing, units, formula practice, lesson state, notes, and flagged review.","taskCodes":["D3C"],"progressKey":"math-coach","status":"v3-ready","plannedRoute":"lab-math-coach.html","legacyHref":null}
   ]
