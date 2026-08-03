@@ -8,6 +8,7 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Shared responsive shell inspired by the clearer CPSGT navigation pattern.
 - One versioned browser-storage record: `spg_rpsgt_v3`, currently at schema version 2.
 - Read-only detection and preview of recognized legacy RPSGT browser-storage records.
+- A same-origin, read-only private browser export utility for collecting representative migration samples without rendering stored values or changing legacy or v3 storage.
 - `core/migration-engine.js` is pure and accepts supplied records as data; it never reads from or writes to browser storage directly.
 - `core/storage.js` discovers recognized legacy records and passes a read-only snapshot to the engine. Import remains hard-disabled through `canImport: false` and `migration.importEnabled: false`.
 - Migration validation covers Practice totals, domain/task statistics, missed/mastered/flagged IDs, Guided Trail state, awards, labs, notes, searches, readiness-like history, mock-style history, Math Coach records, malformed data, conflicts, duplicate fingerprints, rollback metadata, and source immutability.
@@ -95,8 +96,9 @@ GitHub Actions validates:
 - JavaScript syntax and HTML selector/script-order contracts.
 - Reports read-only enforcement and legacy-storage read-only enforcement.
 - Twenty-six deterministic storage-migration scenarios and sanitized source-derived fixtures.
+- Browser-export envelope metadata, recognized-key filtering, source immutability, no-write capture-page boundaries, private-file Git protection, and raw-value-free validation summaries.
 
-Automated laboratory parity does not establish interactive browser parity.
+Automated laboratory parity and browser-export tooling tests do not establish interactive browser parity or prove representative real learner exports have passed.
 
 ## Library-backed feedback hierarchy
 
@@ -117,9 +119,23 @@ Private Drive URLs are not placed in public learner data. Public release resourc
 
 `getLegacySnapshot()` reads these records without modification. `createMigrationDraft()` produces an in-memory report containing the draft, summary, issues, unresolved fields, mappings, source manifest, validation, fingerprint, conflict-resolution details, and rollback metadata. It does not import, overwrite, or delete any record.
 
+## Representative real-browser capture workflow
+
+`migration-export.html` is a development-only, `noindex,nofollow` utility that must be opened from the same browser origin as the legacy app. It uses `getLegacySnapshot()` and intentionally does not load `core/app-shell.js`, because the ordinary shell remembers navigation in v3 storage. The capture controller does not call `localStorage.setItem`, `removeItem`, or `clear`, and it does not call `RPSGTStorage.save` or `rememberLocation`.
+
+The downloaded envelope uses schema `spg-rpsgt-legacy-storage-export/v1`, sets `$capture.realBrowserExport: true`, and includes only recognized legacy keys. Raw values are required for local field validation, so the page requires an explicit privacy acknowledgment before download and never renders those values.
+
+Raw samples belong in `tests/private-exports/`, where `.gitignore` excludes every file except the handling instructions. Run:
+
+`node rpsgt-v3/scripts/validate-private-exports.mjs --write-summary`
+
+The batch validator rejects source-derived fixtures and unsupported envelopes when they are presented as real samples, filters unrelated keys, fails on blocking migration issues, and fails if import unexpectedly becomes enabled. Its generated summary includes fingerprints, source keys, byte counts, parse status, record types, priorities, and issue counts, but no raw stored values.
+
+The existing `tests/fixtures/migration/source-derived-*.json` records remain explicitly marked `realBrowserExport: false`. They validate known shapes but do not satisfy the representative real-browser release gate.
+
 ## Remaining release gates
 
-1. Validate migration against representative real browser exports and resolve every malformed or ambiguous field before enabling import.
+1. Capture and validate representative real browser exports from the current application, review every generated summary, and resolve every malformed or ambiguous field. Tooling is ready; no real learner sample is committed or claimed as passed.
 2. Add mock-result drill-down.
 3. Add printable or exportable study summaries after report contracts remain stable.
 4. Complete interactive desktop and mobile browser regression before considering the draft pull request ready for release.
