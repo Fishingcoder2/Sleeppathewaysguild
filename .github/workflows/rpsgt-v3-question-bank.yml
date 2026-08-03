@@ -92,6 +92,8 @@ jobs:
           node --check rpsgt-v3/core/reports-engine.js
           node --check rpsgt-v3/core/reports.js
           node --check rpsgt-v3/core/mock-result-report.js
+          node --check rpsgt-v3/core/study-summary-engine.js
+          node --check rpsgt-v3/core/study-summary.js
           node --check rpsgt-v3/scripts/generate-feedback-index.mjs
           node --check rpsgt-v3/scripts/validate-storage-export.mjs
           node --check rpsgt-v3/scripts/validate-private-exports.mjs
@@ -130,6 +132,8 @@ jobs:
           node rpsgt-v3/scripts/test-mock-drilldown-shell.mjs
           node rpsgt-v3/scripts/test-reports-system.mjs
           node rpsgt-v3/scripts/test-reports-shell.mjs
+          node rpsgt-v3/scripts/test-study-summary-system.mjs
+          node rpsgt-v3/scripts/test-study-summary-shell.mjs
           node rpsgt-v3/scripts/test-storage-migration.mjs
           node rpsgt-v3/scripts/test-storage-export-fixtures.mjs
           node rpsgt-v3/scripts/test-migration-export-capture.mjs
