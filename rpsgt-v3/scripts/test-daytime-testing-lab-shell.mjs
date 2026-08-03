@@ -1,0 +1,12 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,controller,catalog]=await Promise.all([readFile(join(root,'lab-daytime-testing.html'),'utf8'),readFile(join(root,'core','lab-daytime-testing.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const selector of ['data-daytime-start','data-daytime-summary','data-daytime-stations','data-daytime-workspace'])if(!html.includes(selector))throw new Error(`MSLT/MWT page is missing ${selector}.`);
+for(const script of ['core/storage.js','core/daytime-testing-lab-engine.js','core/lab-daytime-testing.js'])if(!html.includes(script))throw new Error(`MSLT/MWT page does not load ${script}.`);
+if(html.indexOf('core/daytime-testing-lab-engine.js')>html.indexOf('core/lab-daytime-testing.js'))throw new Error('MSLT/MWT engine must load before the controller.');
+if(!controller.includes("data/question-bank/d1a.json")||!controller.includes("data/question-bank/d2c.json")||!controller.includes("data/question-bank/d3a.json"))throw new Error('MSLT/MWT controller must load the mapped D1A/D2C/D3A modules.');
+if(!controller.includes('RPSGTStorage.save')||/localStorage\.(?:setItem|removeItem|clear)/.test(controller))throw new Error('MSLT/MWT progress must write only through versioned storage.');
+for(const forbidden of ['saved.practice','saved.readiness','saved.mock','saved.guidedTrail','saved.review'])if(controller.includes(forbidden))throw new Error(`MSLT/MWT controller must not write ${forbidden}.`);
+if(!html.includes('2024 AASM pediatric MSLT protocol')||!html.includes('MWT is not validated in people under 18 years of age')||!html.includes('do not reproduce the complete protocol boxes'))throw new Error('MSLT/MWT source, pediatric MWT limitation, and content boundary must be visible.');
+if(!html.includes('Complete all seven stations')||!html.includes('80%'))throw new Error('MSLT/MWT completion rule must be visible.');
+const lab=catalog.labs.find(item=>item.id==='daytime-testing');if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-daytime-testing.html')throw new Error('MSLT/MWT catalog route is not v3-ready.');
+console.log('MSLT/MWT page, source boundary, pediatric MWT limitation, storage isolation, script order, task modules, and catalog route contracts passed.');
