@@ -10,11 +10,18 @@ const context={globalThis:{},Date,JSON,Map,Math,Object,Array,String,Number,Boole
 const engine=context.globalThis.RPSGTGuidedTrailEngine;assert.ok(engine);
 const tasks=engine.taskList(blueprint);assert.equal(tasks.length,12);
 const task=tasks[0];
-const questions=Array.from({length:8},(_,index)=>({id:`q-${index}`,taskCode:task.code,prompt:`Question ${index}`,options:['A','B'],answer:index%2?'A':'B',qa:{manualReviewRecommended:false}}));
-questions.push({id:'manual',taskCode:task.code,prompt:'Manual',options:['A','B'],answer:'A',qa:{manualReviewRecommended:true}});
+const questions=Array.from({length:8},(_,index)=>({id:`q-${index}`,taskCode:task.code,prompt:`Complete question prompt ${index}?`,options:['A','B'],answer:index%2?'A':'B',qa:{manualReviewRecommended:false}}));
+questions.push({id:'manual',taskCode:task.code,prompt:'Manual review question?',options:['A','B'],answer:'A',qa:{manualReviewRecommended:true}});
+questions.push({id:'truncated-dots',taskCode:task.code,prompt:'A literally incomplete question...',options:['A','B'],answer:'A',qa:{manualReviewRecommended:false}});
+questions.push({id:'truncated-ellipsis',taskCode:task.code,prompt:'Another literally incomplete question…',options:['A','B'],answer:'A',qa:{manualReviewRecommended:false}});
+questions.push({id:'placeholder',taskCode:task.code,prompt:'Placeholder question text',options:['A','B'],answer:'A',qa:{manualReviewRecommended:false}});
+questions.push({id:'blank-option',taskCode:task.code,prompt:'Question with a blank choice?',options:['A',''],answer:'A',qa:{manualReviewRecommended:false}});
 const sourceQuestions=JSON.stringify(questions);
+assert.equal(engine.completePrompt('A complete clinical question?'),true);
+assert.equal(engine.completePrompt('A literally incomplete question...'),false);
+assert.equal(engine.completePrompt('Another incomplete question…'),false);
 const first=engine.selectQuestions(questions,task.code,5,'fixed-seed');const second=engine.selectQuestions(questions,task.code,5,'fixed-seed');
-assert.deepEqual(first.map(item=>item.id),second.map(item=>item.id));assert.equal(first.length,5);assert.ok(first.every(item=>item.id!=='manual'));assert.equal(JSON.stringify(questions),sourceQuestions);
+assert.deepEqual(first.map(item=>item.id),second.map(item=>item.id));assert.equal(first.length,5);assert.ok(first.every(item=>!['manual','truncated-dots','truncated-ellipsis','placeholder','blank-option'].includes(item.id)));assert.equal(JSON.stringify(questions),sourceQuestions);
 let guided=engine.markTaskStudy({},task.code,'2026-08-02T12:00:00.000Z');assert.equal(guided.trailStudyMarks[task.code].completed,true);assert.equal(guided.trailFocus.task,task.code);
 const fourCorrect=Object.fromEntries(first.map((question,index)=>[question.id,index<4?question.answer:(question.answer==='A'?'B':'A')]));
 const passed=engine.gradeCheckpoint({taskCode:task.code,questions:first,answers:fourCorrect,completedAt:'2026-08-02T12:05:00.000Z'});assert.equal(passed.score,80);assert.equal(passed.passed,true);
@@ -23,4 +30,4 @@ const failed=engine.gradeCheckpoint({taskCode:task.code,questions:first,answers:
 const sameDomain=tasks.filter(item=>item.domain===task.domain);for(const remaining of sameDomain.slice(1)){const record={...passed,id:`award-${remaining.code}`,task:remaining.code,domain:remaining.domain,completedAt:`2026-08-02T12:${remaining.code.endsWith('B')?'20':'30'}:00.000Z`};guided=engine.applyCheckpoint(guided,record,blueprint);}assert.ok(guided.trailAwards.domains[task.domain]);
 const report=engine.summary(guided,blueprint);assert.equal(report.counts.taskAwards,3);assert.equal(report.counts.domainAwards,1);assert.equal(report.counts.checkpoints,4);assert.equal(report.domains.find(item=>item.id===task.domain).taskAwards,3);
 const legacy=engine.normalizeState({trailStudyMarks:{[task.code]:true},trailCheckpointHistory:[passed]});assert.equal(legacy.trailStudyMarks[task.code].source,'legacy');assert.equal(legacy.checkpointHistory.length,1);
-console.log('Guided Trail engine, task checkpoint, award, legacy-normalization, and immutability contracts passed.');
+console.log('Guided Trail engine, incomplete-stem exclusion, task checkpoint, award, legacy-normalization, and immutability contracts passed.');
