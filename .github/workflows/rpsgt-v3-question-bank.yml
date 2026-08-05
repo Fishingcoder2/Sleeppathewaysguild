@@ -67,6 +67,8 @@ jobs:
           node --check rpsgt-v3/core/flashcards.js
           node --check rpsgt-v3/core/review-queue.js
           node --check rpsgt-v3/core/practice-prefill.js
+          node --check rpsgt-v3/core/practice-question-actions.js
+          node --check rpsgt-v3/core/practice-learner-repair.js
           node --check rpsgt-v3/core/lab-catalog-engine.js
           node --check rpsgt-v3/core/labs.js
           node --check rpsgt-v3/core/hookup-lab-engine.js
@@ -136,6 +138,7 @@ jobs:
           node rpsgt-v3/scripts/test-math-coach-shell.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
           node rpsgt-v3/scripts/test-practice-shell.mjs
+          node rpsgt-v3/scripts/test-practice-actions.mjs
           node rpsgt-v3/scripts/test-review-system.mjs
           node rpsgt-v3/scripts/test-readiness-system.mjs
           node rpsgt-v3/scripts/test-readiness-shell.mjs
