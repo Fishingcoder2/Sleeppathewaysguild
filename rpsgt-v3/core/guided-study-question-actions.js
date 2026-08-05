@@ -4,8 +4,10 @@
   const storage=window.RPSGTStorage;
   const flashcards=window.RPSGTFlashcardStore;
   const engine=window.RPSGTGuidedTrailEngine;
+  const resources=window.RPSGTStudyResourceCatalog;
   const checkpointHost=document.querySelector('[data-checkpoint-workspace]');
   if(!storage||!flashcards||!engine||!checkpointHost) return;
+  if(resources) resources.load().catch(()=>null);
 
   const state={activeTaskCode:null,moduleCache:new Map(),taskMap:new Map(),blueprintLoading:null};
   const pending=new WeakSet();
@@ -15,11 +17,39 @@
     .replace(/\uFFFD/g,'');
   const normalize=value=>clean(value).trim().toLowerCase().replace(/\s+/g,' ');
   const sameId=(left,right)=>String(left)===String(right);
+  const coachHeadings=['Start with the clinical clue.','Picture the technologist’s next decision.','Name the finding before choosing.','Use the stem to narrow the pathway.','Separate the key clue from the distractors.'];
 
   async function loadJson(path){
     const response=await fetch(path,{cache:'no-store'});
     if(!response.ok) throw new Error(path+' HTTP '+response.status);
     return response.json();
+  }
+
+  function safeCoachClue(question){
+    const answer=normalize(question&&question.answer);
+    const candidates=[question&&question.coachBobNote,question&&question.whyTricky,question&&question.rationale]
+      .map(value=>clean(value).trim())
+      .filter(Boolean)
+      .filter(value=>!answer||!normalize(value).includes(answer));
+    if(candidates.length) return candidates[0];
+    const topic=clean(question&&question.topic||'this RPSGT concept').trim();
+    return 'Focus on '+topic+'. Identify the finding or action the stem is testing, then remove choices that do not fit that clinical pathway.';
+  }
+
+  function coachHeading(question){
+    const topic=clean(question&&question.topic||'RPSGT review');
+    let hash=0;
+    for(let index=0;index<topic.length;index+=1) hash=(hash*31+topic.charCodeAt(index))>>>0;
+    return coachHeadings[hash%coachHeadings.length];
+  }
+
+  function enhanceCoach(question){
+    const panel=checkpointHost.querySelector('.coach-question-panel');
+    if(!panel||checkpointHost.querySelector('.answer-status')) return;
+    const heading=panel.querySelector('h3');
+    const paragraphs=[...panel.querySelectorAll('p')].filter(node=>!node.classList.contains('coach-boundary'));
+    if(heading) heading.textContent=coachHeading(question);
+    if(paragraphs[0]) paragraphs[0].textContent=safeCoachClue(question);
   }
 
   async function ensureBlueprint(){
@@ -67,13 +97,12 @@
 
   function taskContext(question){
     const task=state.taskMap.get(question.taskCode)||{};
-    const verified=window.RPSGTGuidedStudyResources;
     return {
       domainTitle:task.domainName||question.domain,
       taskTitle:task.title||question.task,
       taskCode:question.taskCode,
       sourceContext:'Guided Study checkpoint',
-      recommendedResources:verified&&verified.isReady()?verified.titlesForTask(question.taskCode):[]
+      recommendedResources:resources&&resources.isReady()?resources.titlesForQuestion(question):[]
     };
   }
 
@@ -145,12 +174,14 @@
   async function enhance(){
     enhanceExplanationControl();
     const pane=checkpointHost.querySelector('.checkpoint-question-pane');
-    if(!pane||pane.querySelector('[data-guided-question-actions]')||pending.has(pane)) return;
+    if(!pane||pending.has(pane)) return;
     pending.add(pane);
     try{
       await ensureBlueprint();
       const question=await resolveCurrentQuestion();
-      if(!question||!pane.isConnected||pane.querySelector('[data-guided-question-actions]')) return;
+      if(!question||!pane.isConnected) return;
+      enhanceCoach(question);
+      if(pane.querySelector('[data-guided-question-actions]')) return;
       const options=pane.querySelector('.checkpoint-options');
       if(options) options.insertAdjacentElement('afterend',makeActions(question));
     }catch(error){console.warn('Guided Study question actions were not added.',error);}finally{pending.delete(pane);}
