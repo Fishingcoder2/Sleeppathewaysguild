@@ -30,13 +30,15 @@
 </section>
 <section class="section"><div class="notice"><strong>Source boundary:</strong> Domain and task terminology is preserved from the current app. Study targets are app-authored paraphrases. Checkpoints draw only from validated learner-practice records and exclude manual-review and D2A/D2C records.</div></section>
 <section class="section card" data-guided-trail-dashboard><p>Loading Guided Trail progress…</p></section>
-<section class="section card checkpoint-workspace" data-checkpoint-workspace hidden></section>
 <section class="section blueprint-map" data-blueprint-map><div class="card"><p>Loading the canonical RPSGT learning map…</p></div></section>
 <section class="section notice"><strong>Storage boundary:</strong> Guided Trail marks, checkpoint attempts, and awards are written only to the versioned <code>spg_rpsgt_v3</code> record. Legacy browser keys remain read only and no migration import is enabled.</section>
 <footer class="footer">Development branch only · Current public RPSGT content remains unchanged</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+<div class="checkpoint-overlay" data-checkpoint-overlay hidden>
+  <section class="checkpoint-workspace checkpoint-modal" data-checkpoint-workspace role="dialog" aria-modal="true" aria-labelledby="checkpoint-title" tabindex="-1"></section>
+</div>
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
