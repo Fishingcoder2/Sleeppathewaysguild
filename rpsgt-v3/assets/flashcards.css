@@ -5,6 +5,7 @@
 .flashcard-filters select,.flashcard-dialog input,.flashcard-dialog textarea{width:100%;border:1px solid #b8ccd8;border-radius:12px;background:#fff;color:#17384d;padding:11px 12px;font:inherit}
 .flashcard-filters select:focus,.flashcard-dialog input:focus,.flashcard-dialog textarea:focus{outline:3px solid rgba(34,132,166,.22);border-color:#2284a6}
 .flashcard-stage{display:grid;gap:16px;max-width:980px;margin-inline:auto}
+.flashcard-stage[hidden],.flashcard-empty[hidden]{display:none}
 .flashcard-toolbar,.flashcard-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px}
 .flashcard-position{display:grid;text-align:center;gap:3px}.flashcard-position span{color:#617887;font-size:.84rem}
 .flashcard{position:relative;width:100%;min-height:500px;border:0;background:transparent;padding:0;perspective:1400px;text-align:left;color:inherit;cursor:pointer}
