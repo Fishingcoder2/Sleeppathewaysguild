@@ -4,7 +4,7 @@
   root.RPSGTGuidedTrailEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.0.0';
+  const VERSION='1.1.0';
   const PASS_PERCENT=80;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
@@ -32,10 +32,26 @@
       checkpointHistory:Array.isArray(source.checkpointHistory)?clone(source.checkpointHistory):Array.isArray(source.trailCheckpointHistory)?clone(source.trailCheckpointHistory):[]
     };
   }
+  function completePrompt(value){
+    const prompt=String(value||'').trim();
+    if(prompt.length<12) return false;
+    if(/(?:\.{3,}|…)\s*$/.test(prompt)) return false;
+    if(/\b(?:tbd|to be completed|incomplete question|placeholder)\b/i.test(prompt)) return false;
+    return true;
+  }
+  function eligibleQuestion(record,taskCode){
+    if(!record||record.taskCode!==taskCode) return false;
+    if(record.qa&&record.qa.manualReviewRecommended||record.manualReviewRecommended) return false;
+    if(!completePrompt(record.prompt)) return false;
+    if(!Array.isArray(record.options)||record.options.length<2) return false;
+    if(record.options.some(option=>!String(option==null?'':option).trim())) return false;
+    if(!String(record.answer==null?'':record.answer).trim()||!record.options.includes(record.answer)) return false;
+    return true;
+  }
   function hash(text){let value=2166136261;for(let i=0;i<String(text).length;i+=1){value^=String(text).charCodeAt(i);value=Math.imul(value,16777619);}return value>>>0;}
   function seededRandom(seed){let state=hash(seed)||1;return function(){state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;};}
   function selectQuestions(records,taskCode,count,seed){
-    const eligible=(records||[]).filter(record=>record&&record.taskCode===taskCode&&!(record.qa&&record.qa.manualReviewRecommended)&&!record.manualReviewRecommended&&Array.isArray(record.options)&&record.options.includes(record.answer));
+    const eligible=(records||[]).filter(record=>eligibleQuestion(record,taskCode));
     const copy=eligible.slice();const random=seededRandom(seed||taskCode);
     for(let i=copy.length-1;i>0;i-=1){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
     return copy.slice(0,Math.max(0,Number(count)||5)).map(clone);
@@ -89,5 +105,5 @@
     });
     return {state,rows,domains,counts:{studyMarks:rows.filter(row=>row.studyMarked).length,taskAwards:rows.filter(row=>row.award).length,domainAwards:domains.filter(domain=>domain.award).length,checkpoints:state.checkpointHistory.length},latestCheckpoint:state.checkpointHistory[0]||null,currentFocus:state.trailFocus||state.lastTrailPost||null};
   }
-  return {VERSION,PASS_PERCENT,normalizeState,taskList,taskMap,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
+  return {VERSION,PASS_PERCENT,normalizeState,taskList,taskMap,completePrompt,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
 });
