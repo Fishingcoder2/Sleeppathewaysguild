@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const root=path.resolve(here,'..');
+const read=relative=>fs.readFileSync(path.join(root,relative),'utf8');
+const study=read('study.html');
+const practice=read('practice.html');
+const completion=read('core/guided-study-completion.js');
+const actions=read('core/guided-study-question-actions.js');
+const resources=read('core/study-resource-catalog.js');
+
+assert.match(study,/assets\/guided-study-completion\.css/);
+assert.match(study,/core\/study-resource-catalog\.js/);
+assert.match(study,/core\/guided-study-completion\.js/);
+assert.ok(study.indexOf('guided-study-completion.js')<study.indexOf('core/study.js'),'completion layer must mount before the controller starts');
+assert.match(practice,/core\/practice-prefill\.js/);
+assert.match(completion,/Retake with five new questions/);
+assert.match(completion,/Begin the next domain/);
+assert.match(completion,/Review missed questions/);
+assert.match(completion,/seenCeremonyIds/);
+assert.match(actions,/titlesForQuestion\(question\)/);
+assert.match(resources,/topicFamilyFiles/);
+assert.match(resources,/titlesForQuestion/);
+console.log('Guided Study completion shell contract passed.');
