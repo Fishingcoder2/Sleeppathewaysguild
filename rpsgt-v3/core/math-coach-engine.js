@@ -4,76 +4,126 @@
   root.RPSGTMathCoachEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.0.1';
-  const LAB_ID='math-coach';
-  const SESSION_SIZE=10;
+  const VERSION='2.0.0';
   const PASS_PERCENT=80;
+  const INDEPENDENT_ADVANCE_PERCENT=67;
   const HISTORY_LIMIT=20;
+  const STAGES=['learn','worked','guided','independent','mastery','complete'];
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const safeNumber=(value,fallback=0)=>Number.isFinite(Number(value))?Number(value):fallback;
-  const normalizedPrompt=value=>String(value||'').trim().toLowerCase().replace(/\s+/g,' ');
-  const mathTopic=value=>/(calcul|math|index|efficiency|latency|waso|\btst\b|\bahi\b|\brdi\b|\brei\b|\bplm|sleep period)/i.test(String(value||''));
-  function eligibleQuestions(records){
-    const seen=new Set();
-    return (Array.isArray(records)?records:[]).filter(record=>{
-      if(!record||record.taskCode!=='D3C') return false;
-      if(record.manualReviewRecommended||record.qa&&record.qa.manualReviewRecommended) return false;
-      if(!Array.isArray(record.options)||!record.options.includes(record.answer)) return false;
-      if(String(record.questionType||'').toLowerCase()!=='calculation'&&!mathTopic(record.topic)) return false;
-      const prompt=normalizedPrompt(record.prompt);
-      if(!prompt||seen.has(prompt)) return false;
-      seen.add(prompt);
-      return true;
-    }).map(clone);
+  const nowValue=value=>value||new Date().toISOString();
+
+  function validateQuestion(question,path,issues){
+    if(!isObject(question)){issues.push({code:'invalid-question',path});return;}
+    if(!String(question.id||'').trim()) issues.push({code:'missing-question-id',path});
+    if(!String(question.prompt||'').trim()) issues.push({code:'missing-question-prompt',path});
+    if(!Number.isFinite(Number(question.answer))) issues.push({code:'invalid-question-answer',path});
+    if(!String(question.unit||'').trim()) issues.push({code:'missing-question-unit',path});
   }
-  function hash(text){let value=2166136261;for(let index=0;index<String(text).length;index+=1){value^=String(text).charCodeAt(index);value=Math.imul(value,16777619);}return value>>>0;}
-  function seededRandom(seed){let state=hash(seed)||1;return function(){state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;};}
-  function selectQuestions(records,count,seed){
-    const copy=eligibleQuestions(records);const random=seededRandom(seed||LAB_ID);
-    for(let index=copy.length-1;index>0;index-=1){const swap=Math.floor(random()*(index+1));[copy[index],copy[swap]]=[copy[swap],copy[index]];}
-    return copy.slice(0,Math.max(0,safeNumber(count,SESSION_SIZE)));
+  function validateCatalog(catalog){
+    const issues=[];const skills=Array.isArray(catalog&&catalog.skills)?catalog.skills:[];const ids=new Set();
+    if(!skills.length) issues.push({code:'missing-skills',path:'skills'});
+    skills.forEach((skill,index)=>{
+      const path='skills['+index+']';const id=String(skill&&skill.id||'');
+      if(!id) issues.push({code:'missing-skill-id',path});else if(ids.has(id)) issues.push({code:'duplicate-skill-id',path,id});else ids.add(id);
+      ['title','formula','lesson','memoryClue','coachBobNote'].forEach(key=>{if(!String(skill&&skill[key]||'').trim())issues.push({code:'missing-skill-field',path:path+'.'+key});});
+      if(!Array.isArray(skill&&skill.variables)||!skill.variables.length) issues.push({code:'missing-variables',path});
+      if(!isObject(skill&&skill.workedExample)||!Array.isArray(skill.workedExample.steps)||skill.workedExample.steps.length<2) issues.push({code:'invalid-worked-example',path});
+      ['guided','independent','mastery'].forEach(group=>{
+        const rows=Array.isArray(skill&&skill[group])?skill[group]:[];
+        if(group==='guided'&&rows.length<2) issues.push({code:'guided-retry-required',path});
+        if(group==='independent'&&rows.length<3) issues.push({code:'independent-practice-too-small',path});
+        if(group==='mastery'&&rows.length<5) issues.push({code:'mastery-check-too-small',path});
+        rows.forEach((question,qIndex)=>validateQuestion(question,path+'.'+group+'['+qIndex+']',issues));
+      });
+      if(!Array.isArray(skill&&skill.studyResources)||!skill.studyResources.length) issues.push({code:'missing-study-resources',path});
+    });
+    return {valid:issues.length===0,issues,count:skills.length};
   }
-  function gradeSession(input){
-    const questions=Array.isArray(input&&input.questions)?input.questions:[];
-    const answers=isObject(input&&input.answers)?input.answers:{};
-    const completedAt=input&&input.completedAt||new Date().toISOString();
-    const passPercent=Number.isFinite(Number(input&&input.passPercent))?Number(input.passPercent):PASS_PERCENT;
-    const responses=questions.map(question=>{const selected=answers[String(question.id)]??null;return {id:question.id,selected,correct:selected===question.answer,topic:question.topic||null};});
-    const correct=responses.filter(response=>response.correct).length;const total=questions.length;const percent=total?Math.round(correct/total*100):0;
-    return {id:'math-coach-'+completedAt,source:'v3-lab-math-coach',labId:LAB_ID,taskCode:'D3C',correct,total,percent,passed:total>0&&percent>=passPercent,passPercent,completedAt,questionIds:questions.map(question=>question.id),responses};
+  function skillMap(catalog){return new Map((catalog&&catalog.skills||[]).map(skill=>[String(skill.id),skill]));}
+  function defaultSkill(){return {status:'not-started',stage:'learn',startedAt:null,updatedAt:null,masteredAt:null,guidedAttempts:0,independentAttempts:0,masteryAttempts:0,bestIndependentPercent:0,bestMasteryPercent:0,lastFeedback:null,history:[]};}
+  function normalizeSkill(value){
+    const source=isObject(value)?value:{};const base=defaultSkill();
+    Object.keys(base).forEach(key=>{if(source[key]!==undefined)base[key]=clone(source[key]);});
+    if(!STAGES.includes(base.stage)) base.stage='learn';
+    if(base.masteredAt||base.status==='mastered') base.status='mastered';
+    else if(base.startedAt||base.status==='in-progress') base.status='in-progress';
+    else base.status='not-started';
+    base.guidedAttempts=Math.max(0,safeNumber(base.guidedAttempts,0));
+    base.independentAttempts=Math.max(0,safeNumber(base.independentAttempts,0));
+    base.masteryAttempts=Math.max(0,safeNumber(base.masteryAttempts,0));
+    base.bestIndependentPercent=Math.max(0,Math.min(100,safeNumber(base.bestIndependentPercent,0)));
+    base.bestMasteryPercent=Math.max(0,Math.min(100,safeNumber(base.bestMasteryPercent,0)));
+    base.history=Array.isArray(base.history)?base.history.filter(isObject).slice(0,HISTORY_LIMIT).map(clone):[];
+    return base;
   }
-  function normalizeRecord(value,completedFromList){
-    const source=isObject(value)?value:{};const history=Array.isArray(source.history)?source.history.filter(isObject).map(clone):[];
-    const completed=Boolean(source.completed)||Boolean(completedFromList);
-    return {status:completed?'completed':source.status==='in-progress'?'in-progress':'not-started',completed,startedAt:source.startedAt||null,updatedAt:source.updatedAt||null,completedAt:source.completedAt||null,attempts:Math.max(history.length,0,safeNumber(source.attempts,history.length)),bestPercent:Math.max(0,Math.min(100,safeNumber(source.bestPercent,0))),latestSession:isObject(source.latestSession)?clone(source.latestSession):history[0]||null,history};
+  function normalizeState(value,catalog){
+    const source=isObject(value)?value:{};const skills={};
+    (catalog&&catalog.skills||[]).forEach(skill=>{skills[skill.id]=normalizeSkill(source.skills&&source.skills[skill.id]);});
+    return {skills,currentSkill:skillMap(catalog).has(source.currentSkill)?source.currentSkill:null,updatedAt:source.updatedAt||null};
   }
-  function normalizeLabs(value){
-    const labs=isObject(value)?clone(value):{};const completed=new Set(Array.isArray(labs.completed)?labs.completed.map(String):[]);const started=isObject(labs.started)?clone(labs.started):{};
-    return {labs,completed,started,record:normalizeRecord(labs[LAB_ID],completed.has(LAB_ID))};
+  function updateSkill(value,catalog,skillId,mutator,time){
+    const next=normalizeState(value,catalog);if(!next.skills[skillId]) return next;
+    const record=next.skills[skillId];mutator(record);record.updatedAt=nowValue(time);next.currentSkill=skillId;next.updatedAt=record.updatedAt;return next;
   }
-  function start(value,startedAt){
-    const normalized=normalizeLabs(value);const time=startedAt||new Date().toISOString();const record=normalized.record;
-    if(!record.startedAt) record.startedAt=time;if(record.status==='not-started') record.status='in-progress';record.updatedAt=time;
-    normalized.started[LAB_ID]=isObject(normalized.started[LAB_ID])?normalized.started[LAB_ID]:{startedAt:record.startedAt};
-    normalized.labs.started=normalized.started;normalized.labs.lastLab=LAB_ID;normalized.labs[LAB_ID]=record;return normalized.labs;
+  function startSkill(value,catalog,skillId,time){
+    return updateSkill(value,catalog,skillId,record=>{record.startedAt=record.startedAt||nowValue(time);if(record.status==='not-started')record.status='in-progress';if(record.stage==='complete'&&record.status!=='mastered')record.stage='learn';},time);
   }
-  function applySession(value,session){
-    const normalized=normalizeLabs(value);const record=normalized.record;const safe=clone(session);const time=safe.completedAt||new Date().toISOString();
-    const alreadyRecorded=record.history.some(item=>item&&item.id===safe.id);
-    record.startedAt=record.startedAt||time;record.updatedAt=time;record.latestSession=safe;record.history=[safe,...record.history.filter(item=>item&&item.id!==safe.id)].slice(0,HISTORY_LIMIT);
-    if(!alreadyRecorded) record.attempts=Math.max(0,safeNumber(record.attempts,0))+1;
-    record.bestPercent=Math.max(record.bestPercent,safeNumber(safe.percent,0));
-    if(safe.passed){record.completed=true;record.status='completed';record.completedAt=record.completedAt||time;normalized.completed.add(LAB_ID);}else if(!record.completed){record.status='in-progress';}
-    normalized.started[LAB_ID]=isObject(normalized.started[LAB_ID])?normalized.started[LAB_ID]:{startedAt:record.startedAt};
-    normalized.labs.started=normalized.started;normalized.labs.completed=[...normalized.completed].sort();normalized.labs.lastLab=LAB_ID;normalized.labs[LAB_ID]=record;return normalized.labs;
+  function setStage(value,catalog,skillId,stage,time){
+    if(!STAGES.includes(stage)) return normalizeState(value,catalog);
+    return updateSkill(value,catalog,skillId,record=>{record.startedAt=record.startedAt||nowValue(time);if(record.status==='not-started')record.status='in-progress';record.stage=stage;},time);
   }
-  function summary(value){const normalized=normalizeLabs(value);return clone(normalized.record);}
-  function legacyLessonSummary(value){
-    if(value===null||value===undefined) return {present:false};
-    if(!isObject(value)) return {present:true,type:Array.isArray(value)?'array':typeof value,value:clone(value)};
-    const known={};['lesson','currentLesson','index','completed','score','updatedAt'].forEach(key=>{if(value[key]!==undefined) known[key]=clone(value[key]);});
-    return {present:true,type:'object',known,unknownKeys:Object.keys(value).filter(key=>!Object.prototype.hasOwnProperty.call(known,key)).sort()};
+  function numericResult(question,rawValue){
+    const raw=String(rawValue==null?'':rawValue).trim();
+    if(!raw) return {answered:false,correct:false,value:null,message:'Enter a number before checking your work.'};
+    const value=Number(raw.replace(/,/g,''));
+    if(!Number.isFinite(value)) return {answered:true,correct:false,value:null,message:'Use numbers only. Add the unit after the calculation, not inside the answer box.'};
+    const answer=Number(question.answer);const tolerance=Math.max(0,safeNumber(question.tolerance,0.01));
+    if(Math.abs(value-answer)<=tolerance) return {answered:true,correct:true,value,answer,unit:question.unit,message:question.success||'Correct. Your setup and unit match the expected result.'};
+    const match=(question.commonErrors||[]).find(item=>Number.isFinite(Number(item.value))&&Math.abs(value-Number(item.value))<=Math.max(0,safeNumber(item.tolerance,tolerance)));
+    return {answered:true,correct:false,value,answer,unit:question.unit,message:match&&match.message||question.hint||'Recheck the formula, denominator, unit conversion, and rounding.'};
   }
-  return {VERSION,LAB_ID,SESSION_SIZE,PASS_PERCENT,HISTORY_LIMIT,eligibleQuestions,selectQuestions,gradeSession,normalizeLabs,start,applySession,summary,legacyLessonSummary};
+  function gradeSet(questions,answers){
+    const rows=(Array.isArray(questions)?questions:[]).map(question=>{
+      const result=numericResult(question,isObject(answers)?answers[question.id]:undefined);
+      return {id:question.id,prompt:question.prompt,selected:result.value,answer:Number(question.answer),unit:question.unit,correct:result.correct,message:result.message};
+    });
+    const correct=rows.filter(row=>row.correct).length;const total=rows.length;const percent=total?Math.round(correct/total*100):0;
+    return {correct,total,percent,responses:rows};
+  }
+  function historyEntry(kind,result,time){return {kind,correct:result.correct,total:result.total,percent:result.percent,completedAt:nowValue(time)};}
+  function recordGuided(value,catalog,skillId,result,time){
+    return updateSkill(value,catalog,skillId,record=>{
+      record.guidedAttempts+=1;record.lastFeedback=clone(result);
+      record.history=[{kind:'guided',correct:Boolean(result.correct),questionId:result.questionId||null,completedAt:nowValue(time)},...record.history].slice(0,HISTORY_LIMIT);
+      if(result.correct) record.stage='independent';
+    },time);
+  }
+  function recordIndependent(value,catalog,skillId,result,time,advancePercent){
+    const threshold=Number.isFinite(Number(advancePercent))?Number(advancePercent):Number(catalog&&catalog.independentAdvancePercent)||INDEPENDENT_ADVANCE_PERCENT;
+    return updateSkill(value,catalog,skillId,record=>{
+      record.independentAttempts+=1;record.bestIndependentPercent=Math.max(record.bestIndependentPercent,safeNumber(result.percent,0));record.lastFeedback=clone(result);
+      record.history=[historyEntry('independent',result,time),...record.history].slice(0,HISTORY_LIMIT);
+      record.stage=result.percent>=threshold?'mastery':'independent';
+    },time);
+  }
+  function awardFor(skill,record,time){return {id:'math-skill-'+skill.id,title:skill.shortTitle+' mastery medal',skillTitle:skill.title,earnedAt:record.masteredAt||nowValue(time),message:'You built the formula, checked the units, and demonstrated mastery.'};}
+  function recordMastery(value,catalog,skillId,result,time,passPercent){
+    const map=skillMap(catalog);const skill=map.get(skillId);const threshold=Number.isFinite(Number(passPercent))?Number(passPercent):Number(catalog&&catalog.passPercent)||PASS_PERCENT;let earnedNow=false;
+    const next=updateSkill(value,catalog,skillId,record=>{
+      record.masteryAttempts+=1;record.bestMasteryPercent=Math.max(record.bestMasteryPercent,safeNumber(result.percent,0));record.lastFeedback=clone(result);
+      record.history=[historyEntry('mastery',result,time),...record.history].slice(0,HISTORY_LIMIT);
+      if(result.percent>=threshold){earnedNow=record.status!=='mastered';record.status='mastered';record.stage='complete';record.masteredAt=record.masteredAt||nowValue(time);}else if(record.status!=='mastered') record.stage='mastery';
+    },time);
+    return {state:next,passed:result.percent>=threshold,earnedNow,award:result.percent>=threshold&&skill?awardFor(skill,next.skills[skillId],time):null};
+  }
+  function resetForPractice(value,catalog,skillId,time){return setStage(value,catalog,skillId,'guided',time);}
+  function reviewSkill(value,catalog,skillId,time){return setStage(value,catalog,skillId,'learn',time);}
+  function nextSkillId(catalog,skillId){const ids=(catalog&&catalog.skills||[]).map(skill=>skill.id);const index=ids.indexOf(skillId);return index>=0&&index<ids.length-1?ids[index+1]:null;}
+  function summary(value,catalog){
+    const state=normalizeState(value,catalog);const rows=(catalog&&catalog.skills||[]).map(skill=>({id:skill.id,title:skill.title,shortTitle:skill.shortTitle,category:skill.category,...clone(state.skills[skill.id])}));
+    return {state,rows,counts:{total:rows.length,started:rows.filter(row=>row.status!=='not-started').length,mastered:rows.filter(row=>row.status==='mastered').length,attempts:rows.reduce((sum,row)=>sum+row.masteryAttempts,0)},current:state.currentSkill};
+  }
+  return {VERSION,PASS_PERCENT,INDEPENDENT_ADVANCE_PERCENT,HISTORY_LIMIT,STAGES,validateCatalog,skillMap,normalizeSkill,normalizeState,startSkill,setStage,numericResult,gradeSet,recordGuided,recordIndependent,recordMastery,resetForPractice,reviewSkill,nextSkillId,summary};
 });
