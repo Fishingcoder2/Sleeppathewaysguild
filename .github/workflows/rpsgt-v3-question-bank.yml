@@ -58,6 +58,15 @@ jobs:
           node --check rpsgt-v3/core/app-shell.js
           node --check rpsgt-v3/core/guided-trail-engine.js
           node --check rpsgt-v3/core/guided-trail-report.js
+          node --check rpsgt-v3/core/study-resource-catalog.js
+          node --check rpsgt-v3/core/guided-study-learner-ui.js
+          node --check rpsgt-v3/core/guided-study-question-actions.js
+          node --check rpsgt-v3/core/guided-study-completion.js
+          node --check rpsgt-v3/core/flashcard-engine.js
+          node --check rpsgt-v3/core/flashcard-store.js
+          node --check rpsgt-v3/core/flashcards.js
+          node --check rpsgt-v3/core/review-queue.js
+          node --check rpsgt-v3/core/practice-prefill.js
           node --check rpsgt-v3/core/lab-catalog-engine.js
           node --check rpsgt-v3/core/labs.js
           node --check rpsgt-v3/core/hookup-lab-engine.js
@@ -99,6 +108,10 @@ jobs:
           node --check rpsgt-v3/scripts/validate-private-exports.mjs
           node rpsgt-v3/scripts/test-guided-trail-system.mjs
           node rpsgt-v3/scripts/test-guided-trail-shell.mjs
+          node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
+          node rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
+          node rpsgt-v3/scripts/test-flashcard-engine.mjs
+          node rpsgt-v3/scripts/test-flashcard-shell.mjs
           node rpsgt-v3/scripts/test-lab-catalog.mjs
           node rpsgt-v3/scripts/test-labs-shell.mjs
           node rpsgt-v3/scripts/test-hookup-lab-system.mjs
