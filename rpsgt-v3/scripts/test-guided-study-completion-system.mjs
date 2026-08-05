@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const engine=require('../core/guided-study-completion.js');
+const storageGuard=require('../core/guided-study-storage-guard.js');
+const coachSafety=require('../core/guided-study-coach-safety.js');
 
 const saved={
   review:{missedIds:['old']},
@@ -34,5 +36,19 @@ assert.equal(engine.nextTaskRoute(blueprint,'D1C').next.code,'D2A');
 
 const records=[{id:'q1'},{id:'q2'},{id:'q3'},{id:'q4'},{id:'q5'},{id:'q6'}];
 assert.deepEqual(engine.filterRetakeRecords(records,['q1','q2'],5).map(item=>item.id),['q3','q4','q5','q6']);
+
+const before={review:{flaggedIds:['q1']},flashcards:{cards:{one:{id:'one'}}},awards:{seenCeremonyIds:['guided-task:D1A']},guidedStudy:{checkpointHistory:[]}};
+const after={review:{flaggedIds:[]},flashcards:{cards:{}},awards:{seenCeremonyIds:[]},guidedStudy:{checkpointHistory:[record]}};
+const reconciled=storageGuard.reconcile(before,after);
+assert.deepEqual(reconciled.review.flaggedIds,['q1'],'review state must survive a Guided Study save');
+assert.ok(reconciled.flashcards.cards.one,'flashcards must survive a Guided Study save');
+assert.deepEqual(reconciled.awards.seenCeremonyIds,['guided-task:D1A'],'ceremony history must survive a Guided Study save');
+assert.deepEqual(reconciled.guidedStudy.checkpointHistory,[record],'the newest Guided Study branch must be retained');
+
+const clue=coachSafety.clueForTopic('Medication Effects');
+assert.match(clue,/Medication Effects/);
+assert.doesNotMatch(clue,/SSRI|antidepressant|correct answer/i,'pre-score guidance must remain answer-neutral');
 assert.equal(engine.VERSION,'1.0.0');
+assert.equal(storageGuard.VERSION,'1.0.0');
+assert.equal(coachSafety.VERSION,'1.0.0');
 console.log('Guided Study completion system contract passed.');
