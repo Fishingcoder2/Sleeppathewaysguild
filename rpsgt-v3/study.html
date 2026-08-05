@@ -13,7 +13,7 @@
 <div class="app-shell">
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Guided Study</strong><span>Four-domain RPSGT learning map</span></span></a>
-  <div class="top-actions"><a href="reports.html#guided-trail-report">Trail report</a><a href="index.html">Dashboard</a></div>
+  <div class="top-actions"><a href="flashcards.html">Flashcards</a><a href="review-queue.html?list=flagged">Saved questions</a><a href="reports.html#guided-trail-report">Trail report</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
@@ -37,14 +37,15 @@
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
-<div class="checkpoint-overlay" data-checkpoint-overlay hidden>
-  <section class="checkpoint-workspace checkpoint-modal" data-checkpoint-workspace role="dialog" aria-modal="true" aria-labelledby="checkpoint-title" tabindex="-1"></section>
-</div>
+<div class="checkpoint-overlay" data-checkpoint-overlay hidden><section class="checkpoint-workspace checkpoint-modal" data-checkpoint-workspace role="dialog" aria-modal="true" aria-labelledby="checkpoint-title" tabindex="-1"></section></div>
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
 <script src="core/guided-trail-engine.js"></script>
+<script src="core/flashcard-engine.js"></script>
+<script src="core/flashcard-store.js"></script>
 <script src="core/guided-study-learner-ui.js"></script>
+<script src="core/guided-study-question-actions.js"></script>
 <script src="core/study.js"></script>
 </body>
 </html>
