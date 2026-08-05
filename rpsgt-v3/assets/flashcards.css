@@ -1,0 +1,29 @@
+.flashcard-hero{align-items:stretch}
+.flashcard-filter-card{display:grid;gap:18px}
+.flashcard-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.flashcard-filters label,.flashcard-dialog label{display:grid;gap:7px;font-weight:850;color:#23445a}
+.flashcard-filters select,.flashcard-dialog input,.flashcard-dialog textarea{width:100%;border:1px solid #b8ccd8;border-radius:12px;background:#fff;color:#17384d;padding:11px 12px;font:inherit}
+.flashcard-filters select:focus,.flashcard-dialog input:focus,.flashcard-dialog textarea:focus{outline:3px solid rgba(34,132,166,.22);border-color:#2284a6}
+.flashcard-stage{display:grid;gap:16px;max-width:980px;margin-inline:auto}
+.flashcard-toolbar,.flashcard-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px}
+.flashcard-position{display:grid;text-align:center;gap:3px}.flashcard-position span{color:#617887;font-size:.84rem}
+.flashcard{position:relative;width:100%;min-height:500px;border:0;background:transparent;padding:0;perspective:1400px;text-align:left;color:inherit;cursor:pointer}
+.flashcard-sheet{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;padding:52px clamp(24px,6vw,72px);border:1px solid #d6c77c;border-radius:24px;background:linear-gradient(165deg,#fffef0,#fff8c9);box-shadow:0 22px 60px rgba(17,47,64,.18);backface-visibility:hidden;transition:transform .55s ease;overflow:auto}
+.flashcard-front{transform:rotateY(0deg)}.flashcard-back{transform:rotateY(180deg);align-items:stretch;justify-content:flex-start;background:linear-gradient(165deg,#fff,#edf8fb);border-color:#9fc8d7}
+.flashcard.is-flipped .flashcard-front{transform:rotateY(-180deg)}.flashcard.is-flipped .flashcard-back{transform:rotateY(0deg)}
+.flashcard-face-label{position:absolute;top:22px;left:24px;text-transform:uppercase;letter-spacing:.1em;font-weight:900;font-size:.74rem;color:#6e672f}
+.flashcard-topic{display:inline-flex;border-radius:999px;background:#e5f2f7;color:#1f6079;padding:7px 12px;font-size:.8rem;font-weight:900;text-align:center}
+.flashcard-front-text{max-width:780px;text-align:center;font-size:clamp(1.4rem,3vw,2.25rem);font-weight:850;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+.flashcard-flip-hint{position:absolute;bottom:24px;color:#6d7239;font-size:.82rem;font-weight:800}
+.flashcard-answer{font-size:clamp(1.35rem,2.5vw,2rem);font-weight:900;color:#174e63;line-height:1.35;padding-right:20px;overflow-wrap:anywhere}
+.flashcard-back-section{display:grid;gap:6px;border-top:1px solid #d8e7ed;padding-top:14px;line-height:1.55}.flashcard-back-section strong{color:#204f62}.flashcard-back-section[hidden]{display:none}
+.coach-back{border:1px solid #e8d48b;border-radius:14px;background:#fff9df;padding:14px}.coach-back strong{color:#775d12}
+.flashcard-resource-list{display:flex;flex-wrap:wrap;gap:8px}.flashcard-resource-list span{display:inline-flex;border:1px solid #bdd4df;border-radius:999px;background:#edf6fa;color:#245a70;padding:6px 9px;font-size:.78rem;font-weight:850}
+.flashcard-actions{justify-content:center;flex-wrap:wrap}.flashcard-actions .btn.active{background:#1f6d88;color:#fff;border-color:#1f6d88}
+.flashcard-empty{text-align:center;display:grid;justify-items:center;gap:12px}
+.flashcard-dialog-overlay{position:fixed;inset:0;z-index:1100;background:rgba(5,22,31,.72);display:grid;place-items:center;padding:20px}.flashcard-dialog-overlay[hidden]{display:none}
+.flashcard-dialog{width:min(760px,100%);max-height:min(92vh,900px);overflow:auto;padding:24px}.flashcard-dialog form{display:grid;gap:16px}.custom-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+body.flashcard-dialog-open{overflow:hidden}
+@media(max-width:900px){.flashcard-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.custom-card-grid{grid-template-columns:1fr}.flashcard{min-height:560px}}
+@media(max-width:600px){.flashcard-filters{grid-template-columns:1fr}.flashcard-toolbar{position:sticky;top:0;z-index:5}.flashcard{min-height:610px}.flashcard-sheet{padding:52px 22px 48px;border-radius:18px}.flashcard-back{font-size:.95rem}.flashcard-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.flashcard-actions .btn{width:100%}.flashcard-dialog-overlay{padding:0;align-items:end}.flashcard-dialog{width:100%;max-height:94vh;border-radius:22px 22px 0 0}}
+@media(prefers-reduced-motion:reduce){.flashcard-sheet{transition:none!important}.flashcard-flip-hint{animation:none!important}}
