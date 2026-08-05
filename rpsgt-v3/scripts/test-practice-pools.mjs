@@ -38,7 +38,7 @@ const syntheticCases=[
   [{...valid,prompt:"This prompt trails off..."},"ellipsis-ending prompt"],
   [{...valid,prompt:"Incomplete question"},"placeholder prompt"],
   [{...valid,qa:{manualReviewRecommended:true}},"manual-review record"],
-  [{...valid,taskCode:"D2A/D2C"},"cross-task record"],
+  [{...valid,taskCode:"D2A/D2C",qa:{manualReviewRecommended:true}},"cross-task review record"],
   [{...valid,options:["One",""]},"blank choice"],
   [{...valid,answer:"Three"},"answer outside choices"]
 ];
