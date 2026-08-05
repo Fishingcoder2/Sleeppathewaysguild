@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "rpsgt-v3-learning-center",
+  "compatibility_date": "2026-04-13",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".",
+    "exclude": [
+      "node_modules",
+      "tests",
+      "test-results",
+      "playwright-report",
+      "README.md",
+      "browser-regression-matrix.md",
+      "package.json",
+      "package-lock.json",
+      "playwright.config.js",
+      "wrangler.jsonc",
+      ".gitignore"
+    ]
+  }
+}
