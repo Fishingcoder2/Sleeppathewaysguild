@@ -1,0 +1,31 @@
+/* Learner-facing Guided Study safeguards. Internal mappings remain available to code but not as learner labels. */
+.task-map-card details[data-resource-panel="true"]{display:none}
+.task-map-card details[data-resource-panel="true"][data-resource-ready="true"]{display:block}
+.resource-title-chip{display:inline-flex;align-items:center;border:1px solid #bdd4df;border-radius:999px;background:#edf6fa;color:#245a70;padding:7px 10px;font-size:.78rem;font-weight:850;line-height:1.25}
+
+.checkpoint-question h2,
+#checkpoint-title{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  -webkit-box-orient:initial!important;
+  -webkit-line-clamp:unset!important;
+  line-clamp:unset!important;
+}
+
+.checkpoint-question-meta{justify-content:flex-start}
+.checkpoint-modal,.checkpoint-question-pane,.checkpoint-question{min-width:0}
+
+@media(max-width:700px){
+  .resource-title-chip{width:100%;border-radius:12px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .checkpoint-progress span,.coach-question-panel{animation:none!important;transition:none!important}
+}
