@@ -21,9 +21,14 @@
 
 .checkpoint-question-meta{justify-content:flex-start}
 .checkpoint-modal,.checkpoint-question-pane,.checkpoint-question{min-width:0}
+.guided-question-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid #d5e2e9}
+.guided-question-actions .btn.active{background:#1f6d88;color:#fff;border-color:#1f6d88}
+.guided-question-action-status{flex-basis:100%;min-height:1.35em;color:#24734f;font-size:.85rem;font-weight:800}
 
 @media(max-width:700px){
   .resource-title-chip{width:100%;border-radius:12px}
+  .guided-question-actions{display:grid;grid-template-columns:1fr}
+  .guided-question-actions .btn{width:100%}
 }
 
 @media(prefers-reduced-motion:reduce){
