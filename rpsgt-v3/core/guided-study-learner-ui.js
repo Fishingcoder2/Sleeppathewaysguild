@@ -147,9 +147,7 @@
     const coach=checkpointHost.querySelector('.coach-question-panel');
     if(coach){
       const heading=coach.querySelector('h3');
-      if(heading&&String(heading.textContent||'').trim()==='Slow down and match the task.'){
-        heading.textContent=headingForTopic(topicFromCheckpoint());
-      }
+      if(heading&&String(heading.textContent||'').trim()==='Slow down and match the task.') heading.textContent=headingForTopic(topicFromCheckpoint());
     }
   }
 
@@ -158,6 +156,11 @@
     sanitizeTaskCards();
     sanitizeCheckpoint();
   }
+
+  window.RPSGTGuidedStudyResources={
+    titlesForTask(taskCode){return resourceTitlesForTask(String(taskCode||'')).slice();},
+    isReady(){return state.resourcesReady;}
+  };
 
   const observer=new MutationObserver(sanitizeAll);
   observer.observe(mapHost,{childList:true,subtree:true});
