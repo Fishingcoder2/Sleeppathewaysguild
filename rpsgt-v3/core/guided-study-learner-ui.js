@@ -67,10 +67,11 @@
   function replaceResourceList(card){
     const details=[...card.querySelectorAll('details')].find(node=>node.querySelector('.data-chip-list'));
     if(!details) return;
-    details.dataset.resourcePanel='true';
+    if(details.dataset.resourcePanel!=='true') details.dataset.resourcePanel='true';
     const summary=details.querySelector('summary');
-    if(summary) summary.textContent='Recommended study resources';
-    if(!state.resourcesReady){details.hidden=true;return;}
+    if(summary&&summary.textContent!=='Recommended study resources') summary.textContent='Recommended study resources';
+    if(!state.resourcesReady){if(!details.hidden) details.hidden=true;return;}
+    if(details.dataset.resourceReady==='true') return;
     const titles=resourceTitlesForTask(card.id);
     if(!titles.length){details.remove();return;}
     const list=details.querySelector('.data-chip-list');
@@ -81,7 +82,7 @@
       item.textContent=title;
       return item;
     }));
-    details.hidden=false;
+    if(details.hidden) details.hidden=false;
     details.dataset.resourceReady='true';
   }
 
@@ -96,8 +97,14 @@
     if(!summaryHost) return;
     const items=[...summaryHost.children];
     if(items.length<4) return;
-    items[2].innerHTML='<strong>5</strong> questions per checkpoint';
-    items[3].innerHTML='<strong>80%</strong> task-award goal';
+    if(items[2].dataset.learnerMetric!=='checkpoint-size'){
+      items[2].innerHTML='<strong>5</strong> questions per checkpoint';
+      items[2].dataset.learnerMetric='checkpoint-size';
+    }
+    if(items[3].dataset.learnerMetric!=='award-goal'){
+      items[3].innerHTML='<strong>80%</strong> task-award goal';
+      items[3].dataset.learnerMetric='award-goal';
+    }
   }
 
   function topicFromCheckpoint(){
@@ -117,12 +124,14 @@
     const header=checkpointHost.querySelector('.checkpoint-modal-head');
     if(header){
       const eyebrow=header.querySelector('.eyebrow');
-      if(eyebrow) eyebrow.textContent='Guided Study checkpoint';
+      if(eyebrow&&eyebrow.textContent!=='Guided Study checkpoint') eyebrow.textContent='Guided Study checkpoint';
       const label=header.querySelector('.checkpoint-task-label');
-      if(label){
+      if(label&&!label.dataset.learnerTitle){
         const raw=String(label.textContent||'').trim();
         const parts=raw.split('·').map(value=>value.trim()).filter(Boolean);
-        label.textContent=parts.length>1?parts.slice(1).join(' · '):raw.replace(/^D[1-4][A-C]\s*/i,'').trim();
+        const title=parts.length>1?parts.slice(1).join(' · '):raw.replace(/^D[1-4][A-C]\s*/i,'').trim();
+        label.textContent=title;
+        label.dataset.learnerTitle='true';
       }
     }
 
@@ -131,7 +140,7 @@
       [...meta.children].forEach(node=>{
         const text=String(node.textContent||'').trim();
         if(/^Exact task mapping:/i.test(text)) node.remove();
-        else if(node.classList.contains('status')&&taskCodePattern.test(text)) node.textContent='RPSGT review';
+        else if(node.classList.contains('status')&&taskCodePattern.test(text)&&text!=='RPSGT review') node.textContent='RPSGT review';
       });
     }
 
