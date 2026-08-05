@@ -9,7 +9,11 @@
 
   const state={activeTaskCode:null,moduleCache:new Map(),taskMap:new Map(),blueprintLoading:null};
   const pending=new WeakSet();
-  const normalize=value=>String(value==null?'':value).trim().toLowerCase().replace(/\s+/g,' ');
+  const clean=value=>String(value==null?'':value)
+    .replace(/Medication-associated\s+\?Prozac eyes\?\s*\/\s*SSRI-related NREM eye movements/gi,'Medication-associated “Prozac eyes” (SSRI-related NREM eye movements)')
+    .replace(/\?Prozac eyes\?/gi,'“Prozac eyes”')
+    .replace(/\uFFFD/g,'');
+  const normalize=value=>clean(value).trim().toLowerCase().replace(/\s+/g,' ');
   const sameId=(left,right)=>String(left)===String(right);
 
   async function loadJson(path){
@@ -59,10 +63,7 @@
   }
 
   function contains(list,id){return list.some(value=>sameId(value,id));}
-  function toggleList(list,id,enabled){
-    const filtered=list.filter(value=>!sameId(value,id));
-    return enabled?filtered.concat([id]):filtered;
-  }
+  function toggleList(list,id,enabled){const filtered=list.filter(value=>!sameId(value,id));return enabled?filtered.concat([id]):filtered;}
 
   function taskContext(question){
     const task=state.taskMap.get(question.taskCode)||{};
@@ -152,9 +153,7 @@
       if(!question||!pane.isConnected||pane.querySelector('[data-guided-question-actions]')) return;
       const options=pane.querySelector('.checkpoint-options');
       if(options) options.insertAdjacentElement('afterend',makeActions(question));
-    }catch(error){
-      console.warn('Guided Study question actions were not added.',error);
-    }finally{pending.delete(pane);}
+    }catch(error){console.warn('Guided Study question actions were not added.',error);}finally{pending.delete(pane);}
   }
 
   document.addEventListener('click',event=>{
