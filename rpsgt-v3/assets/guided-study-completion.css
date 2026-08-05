@@ -1,0 +1,90 @@
+.checkpoint-route-panel{
+  margin:18px 0 0;
+  padding:18px;
+  border:1px solid #b8cfdb;
+  border-radius:18px;
+  background:linear-gradient(145deg,#f7fcfe,#eef7fb);
+}
+.checkpoint-route-panel h3{margin:0 0 6px;color:var(--navy,#12324d)}
+.checkpoint-route-panel p{margin:0;color:var(--muted,#62727e)}
+.checkpoint-route-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.guided-award-overlay{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(7,28,48,.72);
+  backdrop-filter:blur(4px);
+}
+.guided-award-overlay[hidden]{display:none}
+.guided-award-dialog{
+  position:relative;
+  width:min(560px,100%);
+  max-height:min(720px,calc(100vh - 40px));
+  overflow:auto;
+  padding:28px;
+  text-align:center;
+  border:1px solid #e1c371;
+  border-radius:24px;
+  background:linear-gradient(160deg,#fffdf5,#fff5d8 62%,#edf8fb);
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  animation:guided-award-arrive .32s ease-out both;
+}
+.guided-award-dialog:focus{outline:3px solid #79b9d5;outline-offset:4px}
+.guided-award-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:42px;
+  height:42px;
+  border:1px solid #cbb779;
+  border-radius:50%;
+  background:#fff;
+  color:#4f3b14;
+  font-size:1.45rem;
+  line-height:1;
+}
+.guided-award-medal{
+  display:grid;
+  place-items:center;
+  width:126px;
+  height:126px;
+  margin:4px auto 18px;
+  border:8px solid #fff7d2;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff7b8,#e0ad35 62%,#9b6a0d);
+  box-shadow:0 13px 30px rgba(112,75,12,.28);
+  font-size:4.4rem;
+}
+.guided-award-dialog h2{margin:7px 0 8px;font-size:clamp(1.55rem,5vw,2.3rem);color:var(--navy,#12324d)}
+.guided-award-skill{margin:0 auto;max-width:46ch;color:#405562;font-size:1.02rem}
+.guided-award-coach{
+  margin:20px 0 0;
+  padding:16px;
+  text-align:left;
+  border:1px solid #c8ac68;
+  border-left:6px solid #946d20;
+  border-radius:16px;
+  background:linear-gradient(180deg,#f8edcf,#edddb0);
+  color:#211b12;
+}
+.guided-award-coach p{margin:5px 0 0}
+.guided-award-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px}
+body.guided-award-open{overflow:hidden}
+@keyframes guided-award-arrive{
+  from{opacity:0;transform:translateY(18px) scale(.96)}
+  to{opacity:1;transform:none}
+}
+@media(max-width:640px){
+  .checkpoint-route-actions{display:grid;grid-template-columns:1fr}
+  .checkpoint-route-actions .btn{width:100%;justify-content:center;text-align:center}
+  .guided-award-overlay{align-items:end;padding:0}
+  .guided-award-dialog{width:100%;max-height:92vh;border-radius:24px 24px 0 0;padding:25px 18px calc(24px + env(safe-area-inset-bottom))}
+  .guided-award-medal{width:108px;height:108px;font-size:3.7rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .guided-award-dialog{animation:none}
+  .guided-award-medal{transition:none}
+}
