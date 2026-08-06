@@ -1,0 +1,42 @@
+name: RPSGT mobile practice check
+
+on:
+  push:
+    branches:
+      - fix/rpsgt-mobile-practice-modal
+  pull_request:
+    paths:
+      - RPSGTv2.2026.html
+      - RPSGTv2.2026-app.html
+      - assets/rpsgt-mobile-practice-fix.js
+      - .github/workflows/rpsgt-mobile-practice-check.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check repair JavaScript syntax
+        run: node --check assets/rpsgt-mobile-practice-fix.js
+      - name: Check launcher JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path('RPSGTv2.2026.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S | re.I)
+          assert scripts, 'No launcher script found'
+          Path('/tmp/rpsgt-launcher.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/rpsgt-launcher.js
+      - name: Verify preserved app and repair links
+        run: |
+          test "$(git hash-object RPSGTv2.2026-app.html)" = "74f61ae203c3ca634cf9e58de5d7bbdae67eebed"
+          test "$(wc -c < RPSGTv2.2026-app.html)" -gt 10000000
+          grep -q 'id="app-data"' RPSGTv2.2026-app.html
+          grep -q 'RPSGTv2.2026-app.html' RPSGTv2.2026.html
+          grep -q 'assets/rpsgt-mobile-practice-fix.js' RPSGTv2.2026.html
+          grep -q '__spgMobilePracticeFix' assets/rpsgt-mobile-practice-fix.js
