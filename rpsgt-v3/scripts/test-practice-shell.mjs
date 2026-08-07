@@ -37,4 +37,16 @@ if(!repair.includes("heading.textContent='Recommended study resources'")) throw 
 if(!repair.includes("feedback.querySelectorAll('.feedback-references')")) throw new Error('Raw feedback reference removal is missing.');
 for(const hook of ['flaggedIds','reviewLaterIds','addQuestion','aria-live']){if(!actions.includes(hook)) throw new Error(`Practice question actions are missing ${hook}.`);}
 
-console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,mobileModal:true},null,2));
+// Practice completion regression contract.
+if(!js.includes('?"Submit Practice":"Next question"')) throw new Error('The final answered Practice question does not expose a clear Submit Practice action.');
+if(js.includes('View session result')) throw new Error('The ambiguous final Practice label "View session result" returned.');
+if(!/function nextQuestion\(\)[\s\S]*?state\.index\+=1;[\s\S]*?renderComplete\(\)/.test(js)) throw new Error('Practice final navigation no longer reaches the completion state.');
+if(!html.includes('<h2>Practice Complete</h2>')||!html.includes('aria-label="Practice complete"')) throw new Error('Focused Practice completion state is missing.');
+for(const destination of ['review.html?list=missed','study.html','index.html']){
+  if(!html.includes(`href="${destination}"`)) throw new Error(`Practice completion is missing next-action destination ${destination}.`);
+}
+if(!html.includes('not an official BRPT score')) throw new Error('Practice completion score disclaimer is missing.');
+if(!css.includes('.question-actions .btn.primary')||!css.includes('.practice-question-action-row .btn.secondary')) throw new Error('Practice primary/secondary action hierarchy styling is missing.');
+if(!css.includes('.practice-session:not(.hidden) .question-actions{grid-template-columns:1fr}')) throw new Error('Practice mobile primary action no longer occupies a clear single-column control area.');
+
+console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,mobileModal:true,submitPractice:true,focusedCompletion:true,nextActions:true},null,2));
