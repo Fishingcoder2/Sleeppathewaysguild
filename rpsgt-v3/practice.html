@@ -51,9 +51,9 @@
   <div class="mode-notice learner" data-mode-notice><strong>Learner-ready questions only:</strong> Incomplete prompts, invalid answer sets, and questions that are not learner-ready are excluded without changing the preserved source bank.</div>
   <div class="actions"><button class="btn primary" type="button" data-start-practice>Start practice</button></div>
 </section>
-<section class="section practice-session hidden" data-practice-shell>
+<section class="section practice-session hidden" data-practice-shell role="dialog" aria-modal="true" aria-label="Practice session" tabindex="-1">
   <div class="card question-card" data-question-panel>
-    <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span></div><span class="status gold" data-question-difficulty>Difficulty</span></div>
+    <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span><span class="status gold hidden" data-question-review></span></div><span class="status gold" data-question-difficulty>Difficulty</span><button class="practice-close" type="button" data-change-filters aria-label="Close practice session">×</button></div>
     <div class="question-prompt" data-question-prompt></div>
     <div class="practice-choices" data-question-choices></div>
     <div class="practice-question-tools" data-practice-question-actions></div>
