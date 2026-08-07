@@ -1,0 +1,28 @@
+{
+  "id":"aasm-central-hypersomnolence-2021",
+  "shortTitle":"AASM Central Disorders of Hypersomnolence Treatment Guideline",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"clinical practice guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2021,
+  "verifiedAt":"2026-08-07",
+  "citation":"Maski K, Trotti LM, Kotagal S, et al. Treatment of central disorders of hypersomnolence: an American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med. 2021;17(9):1881-1893.",
+  "doi":"10.5664/jcsm.9328",
+  "driveFileId":"15RVWofuPwjFpxj48Q9n_UCPhQ0RuXO-w",
+  "driveFileName":"jcsm.9328.pdf",
+  "currencyNote":"This guideline updates earlier AASM treatment practice parameters for narcolepsy and other hypersomnias of central origin and was verified from the Guild Drive copy on 2026-08-07.",
+  "bestFor":"Current treatment concepts for narcolepsy, idiopathic hypersomnia, Kleine-Levin syndrome, hypersomnia due to medical conditions, and pediatric narcolepsy after diagnosis has been established.",
+  "mappedTaskCodes":["D1A"],
+  "mappingRationale":{"D1A":"Supports current disease/treatment context for central disorders of hypersomnolence during clinical assessment and disorder recognition. It is not an MSLT/MWT procedure source."},
+  "authorityBoundary":"Use ICSD-3-TR for diagnostic classification and the current AASM adult/pediatric MSLT protocols for daytime-testing procedures. This guideline addresses treatment, not diagnostic-test performance or scoring.",
+  "copyrightUse":"Use citation, public section headings, original summaries, and learning objectives. Do not reproduce substantial recommendation wording, evidence tables, or protected passages.",
+  "sections":[
+    {"id":"hypersomnolence-scope","label":"Guideline scope and update of prior hypersomnia treatment parameters"},
+    {"id":"hypersomnolence-adult-narcolepsy","label":"Adult narcolepsy treatment"},
+    {"id":"hypersomnolence-idiopathic","label":"Adult idiopathic hypersomnia treatment"},
+    {"id":"hypersomnolence-kleine-levin","label":"Kleine-Levin syndrome treatment"},
+    {"id":"hypersomnolence-secondary","label":"Hypersomnia due to medical conditions"},
+    {"id":"hypersomnolence-pediatric-narcolepsy","label":"Pediatric narcolepsy treatment"}
+  ]
+}
