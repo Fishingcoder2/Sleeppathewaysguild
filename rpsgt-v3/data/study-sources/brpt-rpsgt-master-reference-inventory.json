@@ -1,10 +1,10 @@
 {
   "meta": {
     "name": "BRPT RPSGT Recommended Reading Master Inventory",
-    "version": 1,
+    "version": 2,
     "verifiedAt": "2026-08-07",
     "officialRecommendedReadingsUrl": "https://brpt.org/rpsgt/recommended-readings/",
-    "purpose": "Canonical audit of current BRPT RPSGT exam documents, suggested primary references, named AASM guidance, and high-value Guild additions. Separates BRPT listing, source identity/version, Guild library availability, V3 outline status, and authority role.",
+    "purpose": "Canonical audit of current BRPT RPSGT exam documents, suggested primary references, named AASM guidance, BRPT-listed textbooks, and high-value Guild additions. Separates BRPT listing, source identity/version, Guild library availability, V3 outline status, and authority role.",
     "statusRule": "Never substitute an older library edition, a related title, or a broad society resource for the exact current source identity without an explicit currency boundary.",
     "copyrightBoundary": "Store bibliographic metadata, public headings, original summaries, mappings, and lawful locators only. Do not reproduce protected textbook cases/questions, scoring-manual rules, diagnostic criteria, figures, tables, or substantial passages."
   },
@@ -28,10 +28,10 @@
       "role": "exam policy and candidate-information authority",
       "brptStatus": "official current candidate resource",
       "currentIdentity": "current BRPT RPSGT Candidate Handbook; verify revision date before release",
-      "libraryStatus": "Drive copy exists, but its revision must not be assumed current solely from file presence",
+      "libraryStatus": "Drive copy exists; revision currency must be verified before release",
       "v3Status": "structured; deeper section outline pending",
       "sourceId": "brpt-handbook",
-      "nextAction": "Verify current revision, then outline exam-item guidance, candidate responsibilities, eligibility/policy, and testing information."
+      "nextAction": "Verify current revision, then deepen exam-item guidance, candidate responsibilities, eligibility/policy, and testing-information locators."
     }
   ],
   "primaryManualsAndClassification": [
@@ -45,7 +45,7 @@
       "libraryStatus": "Guild library copy available",
       "v3Status": "structured source record present",
       "sourceId": "aasm-scoring-manual-v3",
-      "nextAction": "Deepen concept-to-section locators while preserving proprietary rule text boundaries."
+      "nextAction": "Deepen concept-to-section locators while preserving proprietary rule-text boundaries."
     },
     {
       "priority": 4,
@@ -57,7 +57,7 @@
       "libraryStatus": "older full ICSD-3 copy available; ICSD-3-TR supplemental material available; current full ICSD-3-TR copy not verified",
       "v3Status": "structured source plus six-family diagnostic taxonomy present",
       "sourceId": "icsd-3-tr",
-      "nextAction": "Build disorder-level concept crosswalks from lawful/current materials and flag older questions/textbook concepts that cross changed diagnostic areas."
+      "nextAction": "Deepen disorder-level concept crosswalks and flag older content that crosses changed diagnostic areas."
     }
   ],
   "brptListedAasmGuidance": [
@@ -68,7 +68,7 @@
       "brptListedTitle": "Practice Parameters for Oral Appliance Therapy",
       "verifiedIdentity": "AASM/AADSM oral appliance clinical practice guideline, 2015",
       "role": "current/applicable professional guidance",
-      "libraryStatus": "official/free source available; local exact-file audit not required for use",
+      "libraryStatus": "official/free source available",
       "v3Status": "structured",
       "sourceId": "aasm-oral-appliance-2015",
       "nextAction": "Retain D4B mapping and verify current AASM index status at release."
@@ -77,31 +77,34 @@
       "priority": 11,
       "id": "aasm-pediatric-respiratory-psg-2011",
       "title": "Practice Parameters for the Respiratory Indications for Polysomnography in Children",
-      "verifiedIdentity": "Aurora et al., Sleep, 2011;34(3):379-388; DOI 10.1093/sleep/34.3.379",
-      "role": "pediatric PSG indication guidance; legacy/current-applicability review required",
-      "libraryStatus": "lawful free full text available; Guild Article & Guideline Map already identifies this source family; exact local full-text copy not confirmed",
-      "v3Status": "source record pending",
-      "nextAction": "Create source record with explicit currency boundary and map only pediatric PSG indication concepts."
+      "verifiedIdentity": "Aurora et al., SLEEP. 2011;34(3):379-388; DOI 10.1093/sleep/34.3.379",
+      "role": "pediatric PSG indication guidance; legacy/applicable",
+      "libraryStatus": "exact Guild Drive copy content-verified; duplicate also present",
+      "v3Status": "structured and task-mapped with current-rule boundary",
+      "sourceId": "aasm-pediatric-respiratory-psg-2011",
+      "nextAction": "Use for pediatric respiratory PSG indication context; current AASM Scoring Manual Version 3 controls scoring."
     },
     {
       "priority": 12,
       "id": "aasm-pediatric-nonresp-psg-mslt-2012",
       "title": "Practice Parameters for the Non-Respiratory Indications for Polysomnography and Multiple Sleep Latency Testing for Children",
-      "verifiedIdentity": "Aurora et al., Sleep, 2012;35(11):1467-1473; DOI 10.5665/sleep.2190",
-      "role": "pediatric non-respiratory PSG/MSLT indication guidance; legacy/current-applicability review required",
-      "libraryStatus": "lawful free full text available; exact local full-text copy not confirmed",
-      "v3Status": "source record pending",
-      "nextAction": "Create source record and cross-check with the 2024 pediatric MSLT protocol before learner-facing recommendations."
+      "verifiedIdentity": "Aurora et al., SLEEP. 2012;35(11):1467-1473; DOI 10.5665/sleep.2190",
+      "role": "pediatric non-respiratory PSG/MSLT indication guidance; legacy/applicable",
+      "libraryStatus": "exact Guild Drive copy content-verified; duplicate also present",
+      "v3Status": "structured and task-mapped with 2024 pediatric MSLT boundary",
+      "sourceId": "aasm-pediatric-nonresp-psg-mslt-2012",
+      "nextAction": "Use for indication-level context; 2024 AASM pediatric MSLT guidance controls current protocol details."
     },
     {
       "priority": 13,
       "id": "aasm-pediatric-bedtime-behavior-2006",
       "title": "Practice Parameters for Behavioral Treatment of Bedtime Problems and Night Wakings in Infants and Young Children",
-      "verifiedIdentity": "Morgenthaler et al., Sleep, 2006;29(10):1277-1281",
-      "role": "behavioral pediatric treatment guidance; currency review required",
-      "libraryStatus": "official AASM PDF freely available; local exact-file copy not confirmed",
-      "v3Status": "source record pending",
-      "nextAction": "Create bounded D1B/D4B-support record; current ICSD terminology and newer guidance must control if different."
+      "verifiedIdentity": "Morgenthaler et al., SLEEP. 2006;29(10):1277-1281",
+      "role": "behavioral pediatric treatment guidance; legacy/applicable",
+      "libraryStatus": "exact Guild Drive copy content-verified; duplicate also present",
+      "v3Status": "structured and task-mapped with current terminology boundary",
+      "sourceId": "aasm-pediatric-bedtime-behavior-2006",
+      "nextAction": "Use for caregiver-education and behavioral-treatment context; current ICSD terminology/newer guidance controls when different."
     },
     {
       "priority": 14,
@@ -110,9 +113,10 @@
       "brptListedTitle": "Practice Parameters: The Treatment of Restless Legs Syndrome and Periodic Limb Movement Disorder in Adults",
       "verifiedIdentity": "Winkelman et al., J Clin Sleep Med. 2025;21(1):137-152; DOI 10.5664/jcsm.11390",
       "role": "current treatment guidance",
-      "libraryStatus": "lawful free full text available; exact Guild library copy not confirmed",
-      "v3Status": "missing current source record",
-      "nextAction": "Add the 2025 guideline as the current source identity; do not preserve an older practice-parameter identity as current."
+      "libraryStatus": "exact Guild Drive copy content-verified",
+      "v3Status": "structured current source",
+      "sourceId": "aasm-rls-plmd-2025",
+      "nextAction": "Keep the 2025 guideline as the current identity rather than the superseded 2012 practice parameter."
     },
     {
       "priority": 15,
@@ -120,9 +124,10 @@
       "title": "Treatment of Central Disorders of Hypersomnolence: An AASM Clinical Practice Guideline",
       "verifiedIdentity": "Maski et al., J Clin Sleep Med. 2021;17(9):1881-1893; DOI 10.5664/jcsm.9328",
       "role": "current treatment guidance",
-      "libraryStatus": "lawful free full text available; exact Guild library copy not confirmed",
-      "v3Status": "source record pending",
-      "nextAction": "Create source record and connect to ICSD hypersomnolence taxonomy without conflating diagnosis with treatment."
+      "libraryStatus": "exact Guild Drive copy content-verified",
+      "v3Status": "structured current source",
+      "sourceId": "aasm-central-hypersomnolence-2021",
+      "nextAction": "Connect treatment concepts to ICSD hypersomnolence taxonomy without conflating diagnosis with treatment."
     },
     {
       "priority": 16,
@@ -142,7 +147,7 @@
       "verifiedIdentity": "AASM clinical practice guideline, 2017",
       "role": "adult OSA diagnostic-testing authority",
       "libraryStatus": "professional source available",
-      "v3Status": "structured; AASM focused-update watch already recorded",
+      "v3Status": "structured; AASM focused-update watch recorded",
       "sourceId": "aasm-adult-osa-diagnostic-testing-2017",
       "nextAction": "Maintain update watch and keep HSAT technical guidance subordinate to current AASM diagnostic guidance."
     },
@@ -151,10 +156,11 @@
       "id": "aasm-adult-osa-evaluation-management-2009",
       "title": "Clinical Guideline for the Evaluation, Management and Long-term Care of Obstructive Sleep Apnea in Adults",
       "verifiedIdentity": "Epstein et al., J Clin Sleep Med. 2009;5(3):263-276",
-      "role": "broad adult OSA evaluation/management guidance; older guideline requiring currency boundaries",
-      "libraryStatus": "lawful free full text available; exact local copy not confirmed",
-      "v3Status": "source record pending",
-      "nextAction": "Create historical/applicable source record and defer newer diagnostic, PAP, oral-appliance, longitudinal, and surgical guidance where those sources supersede narrower content."
+      "role": "broad adult OSA evaluation/management guidance; legacy/applicable",
+      "libraryStatus": "exact uploaded/library source verified",
+      "v3Status": "structured with supersession boundaries",
+      "sourceId": "aasm-adult-osa-evaluation-management-2009",
+      "nextAction": "Defer newer diagnostic, PAP, oral-appliance, longitudinal, and surgical guidance where those sources supersede narrower content."
     },
     {
       "priority": 19,
@@ -162,7 +168,7 @@
       "title": "Clinical Guidelines for the Manual Titration of Positive Airway Pressure in Patients with Obstructive Sleep Apnea",
       "verifiedIdentity": "AASM PAP titration guideline, 2008",
       "role": "manual PAP titration guidance with current-rule boundary",
-      "libraryStatus": "official source available",
+      "libraryStatus": "official/local source available",
       "v3Status": "structured and integrated",
       "sourceId": "aasm-manual-pap-titration-2008",
       "nextAction": "Keep current AASM scoring rules and newer PAP-treatment guidance controlling when requirements differ."
@@ -184,9 +190,10 @@
       "title": "Use of Polysomnography and Home Sleep Apnea Tests for the Longitudinal Management of Obstructive Sleep Apnea in Adults",
       "verifiedIdentity": "Caples et al., J Clin Sleep Med. 2021;17(6):1287-1293; DOI 10.5664/jcsm.9240",
       "role": "current longitudinal-testing clinical guidance statement",
-      "libraryStatus": "lawful free full text available; exact local copy not confirmed",
-      "v3Status": "source record pending",
-      "nextAction": "Add source record and map follow-up/reassessment testing concepts without broadening it into initial diagnostic guidance."
+      "libraryStatus": "exact Guild Drive copy content-verified",
+      "v3Status": "structured current source",
+      "sourceId": "aasm-osa-longitudinal-testing-2021",
+      "nextAction": "Map follow-up/reassessment testing concepts without broadening it into initial diagnostic guidance."
     },
     {
       "priority": 22,
@@ -211,7 +218,7 @@
       "v3Status": "deep outline present with chapter/appendix mappings",
       "sourceId": "fundamentals-sleep-technology-3e",
       "editionStatus": "matches BRPT-listed edition",
-      "nextAction": "Continue deeper concept locators; reduce overuse by improving exact routing, not by suppressing this text."
+      "nextAction": "Continue deeper concept locators; reduce overuse by improving exact routing rather than suppressing the text."
     },
     {
       "priority": 31,
@@ -229,12 +236,13 @@
       "priority": 32,
       "id": "pediatric-sleep-pearls-1e",
       "title": "Pediatric Sleep Pearls",
-      "verifiedIdentity": "DelRosso, Beck, Berry, Wagner, Marcus; 1st edition; Elsevier; ISBN 9780323392778; published 2016",
+      "verifiedIdentity": "DelRosso, Berry, Beck, Wagner, Marcus; 1st edition; Elsevier; ISBN 9780323392778; 2017",
       "role": "BRPT-listed pediatric case-based textbook",
-      "libraryStatus": "exact-title Guild library copy not located in current audit",
-      "v3Status": "missing",
-      "editionStatus": "BRPT title verified; latest/first edition identified",
-      "nextAction": "Verify lawful access. When available, outline case topics and learning concepts only; never copy cases/questions."
+      "libraryStatus": "exact-title full Guild Drive copy content-verified",
+      "v3Status": "structured with copyright-safe pediatric learning clusters",
+      "sourceId": "pediatric-sleep-pearls-1e",
+      "editionStatus": "matches BRPT-listed title/edition family",
+      "nextAction": "Deepen topic locators without copying cases/questions; current AASM/ICSD guidance controls version-sensitive content."
     },
     {
       "priority": 33,
@@ -254,11 +262,11 @@
       "title": "Sleep Medicine Pearls, Third Edition",
       "verifiedIdentity": "Berry & Wagner; 3rd edition; Elsevier; ISBN 9781455770519; published 2014",
       "role": "BRPT-listed case-based textbook",
-      "libraryStatus": "Guild library currently has 2nd edition; exact 3rd-edition full text not located",
-      "v3Status": "legacy 2nd-edition outline exists; current 3rd-edition outline missing",
+      "libraryStatus": "3rd-edition lawful access user-confirmed in Kindle; Guild Drive has 2nd edition",
+      "v3Status": "3rd-edition outline pending; 2nd-edition source structured for provisional teaching use",
       "legacySourceId": "sleep-medicine-pearls-2e",
-      "editionStatus": "wrong edition in current library/V3 outline",
-      "nextAction": "Keep 2nd edition explicitly legacy. Verify lawful 3rd-edition access before creating current-edition locators."
+      "editionStatus": "current-edition access confirmed but current-edition locators not yet structured",
+      "nextAction": "Continue provisional 2nd-edition use with current-authority checks; build 3rd-edition locators later from lawful user-shared contents/selected sections."
     }
   ],
   "addedValueHighPriority": [
@@ -266,10 +274,10 @@
       "id": "aasm-pediatric-mslt-mwt-2024",
       "title": "Recommended Protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in Children",
       "role": "current high-value pediatric protocol beyond the BRPT page's named adult protocol",
-      "libraryStatus": "uploaded/library source available",
+      "libraryStatus": "Guild library source available",
       "v3Status": "structured",
       "sourceId": "aasm-pediatric-mslt-mwt-2024",
-      "nextAction": "Use to update pediatric daytime-testing content and to bound the older 2012 pediatric non-respiratory PSG/MSLT practice parameter."
+      "nextAction": "Use to control current pediatric daytime-testing procedure details and bound the 2012 practice parameter."
     },
     {
       "id": "principles-practice-pediatric-sleep-2e",
@@ -278,7 +286,23 @@
       "libraryStatus": "Guild Drive copy available",
       "v3Status": "not yet a dedicated structured source package",
       "editionStatus": "2nd edition, 2014",
-      "nextAction": "Outline after the current BRPT-listed core set; use as pediatric depth, not as a substitute for current AASM/ICSD authority."
+      "nextAction": "Outline selectively after the BRPT core set; use as pediatric depth, not as a substitute for current AASM/ICSD authority."
+    },
+    {
+      "id": "principles-practice-sleep-medicine-2021",
+      "title": "Principles and Practice of Sleep Medicine, 2021 two-volume set",
+      "role": "high-value comprehensive supplemental sleep-medicine textbook",
+      "libraryStatus": "Guild Drive copy available",
+      "v3Status": "not yet a dedicated structured source package",
+      "nextAction": "Selectively outline RPSGT-relevant chapters that fill verified concept gaps; do not attempt a cover-to-cover import first."
+    },
+    {
+      "id": "allergy-and-sleep-2019",
+      "title": "Allergy and Sleep: Basic Principles and Clinical Practice",
+      "role": "specialty added-value reference",
+      "libraryStatus": "Guild Drive copy available",
+      "v3Status": "not yet structured",
+      "nextAction": "Use selectively for airway/allergy/sleep-disordered-breathing concepts when it adds value beyond core authority sources."
     },
     {
       "id": "aast-technical-guidance-layer",
@@ -286,7 +310,7 @@
       "role": "high-value technologist-specific professional guidance",
       "libraryStatus": "multiple current and legacy documents available",
       "v3Status": "multiple structured records already present",
-      "nextAction": "Continue adding only task-applicable documents with explicit current/legacy boundaries and never substitute AAST terminology support for technical guidance."
+      "nextAction": "Continue adding only task-applicable documents with explicit current/legacy boundaries."
     }
   ],
   "auditSummary": {
@@ -295,18 +319,10 @@
     "brptListedAasmGuidance": 13,
     "brptListedTextbooks": 5,
     "brptRecommendedUniverseCountExcludingExamDocuments": 20,
-    "knownCurrentV3StructuredAmongBrptRecommended": 11,
-    "knownPendingOrEditionGapAmongBrptRecommended": 9,
+    "knownCurrentV3StructuredAmongBrptRecommended": 19,
+    "knownPendingOrEditionGapAmongBrptRecommended": 1,
     "highestPriorityGaps": [
-      "AASM 2025 RLS/PLMD guideline",
-      "AASM 2021 central disorders of hypersomnolence guideline",
-      "AASM 2011 pediatric respiratory PSG indications",
-      "AASM 2012 pediatric non-respiratory PSG/MSLT indications",
-      "AASM 2006 pediatric bedtime/night-waking behavioral treatment",
-      "AASM 2009 adult OSA evaluation/management/long-term care",
-      "AASM 2021 longitudinal PSG/HSAT management guidance",
-      "Pediatric Sleep Pearls exact library/source package",
-      "Sleep Medicine Pearls 3rd-edition library/source package"
+      "Sleep Medicine Pearls, Third Edition: build current-edition outline/locators from lawful user-shared Kindle contents or selected sections"
     ]
   }
 }
