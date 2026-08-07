@@ -44,6 +44,16 @@
       link.addEventListener("click",function(){window.RPSGTStorage&&window.RPSGTStorage.rememberLocation(href.split("#")[0]);});
     });
   }
+  function ensureDisclosureLinks(){
+    document.querySelectorAll('.footer').forEach(function(footer){
+      if(footer.querySelector('a[href="sources-disclosures.html"]')) return;
+      footer.appendChild(document.createTextNode(' · '));
+      const link=document.createElement('a');
+      link.href='sources-disclosures.html';
+      link.textContent='Sources & disclosures';
+      footer.appendChild(link);
+    });
+  }
   function renderMigrationPreview(){
     const host=document.querySelector("[data-migration-preview]");
     if(!host||!window.RPSGTStorage) return;
@@ -60,7 +70,7 @@
       </div>\
       <p class="notice"><strong>No data was imported or changed.</strong> The actual import button will be added only after field-by-field migration tests pass.</p>';
   }
-  function init(){setActiveNav();renderSnapshot();rememberClicks();renderMigrationPreview();}
+  function init(){setActiveNav();renderSnapshot();rememberClicks();ensureDisclosureLinks();renderMigrationPreview();}
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
   window.RPSGTApp={modules:modules,refresh:renderSnapshot};
 })();
