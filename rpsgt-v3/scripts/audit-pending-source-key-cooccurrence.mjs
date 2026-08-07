@@ -11,6 +11,8 @@ const bankManifest=JSON.parse(await readFile(join(bankRoot,'manifest.json'),'utf
 const sourceManifest=JSON.parse(await readFile(join(sourceRoot,'manifest.json'),'utf8'));
 const aliases=JSON.parse(await readFile(join(sourceRoot,sourceManifest.sourceKeyAliasFile),'utf8'));
 const pendingKeys=Object.keys(aliases.pendingSourceKeys||{});
+const legacyKeys=Object.keys(aliases.legacyUmbrellaKeys||{});
+const auditedKeys=[...new Set([...pendingKeys,...legacyKeys])];
 
 const previousFetch=globalThis.fetch;
 const previousCatalog=globalThis.RPSGTStudyResourceCatalog;
@@ -20,9 +22,7 @@ globalThis.fetch=async input=>{
   try{
     const body=await readFile(join(appRoot,relative),'utf8');
     return {ok:true,status:200,json:async()=>JSON.parse(body)};
-  }catch(error){
-    return {ok:false,status:404,json:async()=>{throw error;}};
-  }
+  }catch(error){return {ok:false,status:404,json:async()=>{throw error;}};}
 };
 delete globalThis.RPSGTStudyResourceCatalog;
 
@@ -35,16 +35,10 @@ try{
   const catalog=globalThis.RPSGTStudyResourceCatalog;
   await catalog.load();
 
-  const audit=Object.fromEntries(pendingKeys.map(key=>[key,{
-    questions:0,
-    inReferenceKeys:0,
-    inStudyRecommendationKeys:0,
-    tasks:new Map(),
-    topics:new Map(),
-    coSourceIds:new Map(),
-    coMatchedKeys:new Map(),
-    coConceptKeys:new Map(),
-    sampleIds:[]
+  const audit=Object.fromEntries(auditedKeys.map(key=>[key,{
+    classification:legacyKeys.includes(key)?'legacyUmbrella':'pendingSource',
+    questions:0,inReferenceKeys:0,inStudyRecommendationKeys:0,
+    tasks:new Map(),topics:new Map(),coSourceIds:new Map(),coMatchedKeys:new Map(),coConceptKeys:new Map(),sampleIds:[]
   }]));
 
   for(const module of bankManifest.modules||[]){
@@ -53,7 +47,7 @@ try{
       const refs=(Array.isArray(question.referenceKeys)?question.referenceKeys:[]).map(String);
       const recs=(Array.isArray(question.studyRecommendationKeys)?question.studyRecommendationKeys:[]).map(String);
       const all=new Set([...refs,...recs]);
-      const hit=pendingKeys.filter(key=>all.has(key));
+      const hit=auditedKeys.filter(key=>all.has(key));
       if(!hit.length) continue;
       const resolved=catalog.resolveQuestion(question);
       for(const key of hit){
@@ -72,9 +66,10 @@ try{
   }
 
   const output={};
-  for(const key of pendingKeys){
+  for(const key of auditedKeys){
     const row=audit[key];
     output[key]={
+      classification:row.classification,
       questions:row.questions,
       keyPlacement:{referenceKeys:row.inReferenceKeys,studyRecommendationKeys:row.inStudyRecommendationKeys},
       taskDistribution:ranked(row.tasks).map(([taskCode,count])=>({taskCode,count})),
@@ -88,7 +83,8 @@ try{
 
   console.log(JSON.stringify({
     pendingSourceKeyCount:pendingKeys.length,
-    pendingSourceKeys:output
+    legacyUmbrellaKeyCount:legacyKeys.length,
+    auditedNonExactSourceKeys:output
   },null,2));
 }finally{
   if(previousFetch===undefined) delete globalThis.fetch; else globalThis.fetch=previousFetch;
