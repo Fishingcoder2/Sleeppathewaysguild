@@ -49,13 +49,14 @@ jobs:
       - name: Validate question bank
         run: node rpsgt-v3/scripts/validate-question-bank.mjs
 
-      - name: Validate study, practice, review, readiness, mock, laboratories, reports, and migration systems
+      - name: Validate study, practice, review, readiness, mock, laboratories, reports, migration, and front-door systems
         run: |
           node --check rpsgt-v3/core/storage.js
           node --check rpsgt-v3/core/migration-export.js
           node --check rpsgt-v3/core/migration-engine.js
           node --check rpsgt-v3/core/legacy-migration.js
           node --check rpsgt-v3/core/app-shell.js
+          node --check rpsgt-v3/core/home-dashboard.js
           node --check rpsgt-v3/core/guided-trail-engine.js
           node --check rpsgt-v3/core/guided-trail-report.js
           node --check rpsgt-v3/core/study-resource-catalog.js
@@ -108,6 +109,8 @@ jobs:
           node --check rpsgt-v3/scripts/generate-feedback-index.mjs
           node --check rpsgt-v3/scripts/validate-storage-export.mjs
           node --check rpsgt-v3/scripts/validate-private-exports.mjs
+          node rpsgt-v3/scripts/test-home-shell.mjs
+          node rpsgt-v3/scripts/test-brpt-official-resources.mjs
           node rpsgt-v3/scripts/test-guided-trail-system.mjs
           node rpsgt-v3/scripts/test-guided-trail-shell.mjs
           node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
