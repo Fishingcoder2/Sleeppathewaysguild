@@ -28,6 +28,7 @@ for(const token of [
 ]){
   if(!source.includes(token)) throw new Error(`Practice Coach integration is missing ${token}.`);
 }
+if(!source.includes("const body=submitted")||!source.includes("?reviewHtml(payload,question,correct,selected)")) throw new Error('Practice Coach no longer keeps scored-only review content behind the submitted state.');
 for(const token of [
   'data-practice-coach',
   'core/coach-bob-engine.js',
@@ -50,4 +51,4 @@ if(coach.priorPracticeMisses(storage,'q1',false)!==2) throw new Error('Practice 
 if(coach.priorPracticeMisses(storage,'q1',true)!==1) throw new Error('Practice Coach did not exclude the just-recorded incorrect attempt.');
 if(coach.priorPracticeMisses(storage,'q2',false)!==1) throw new Error('Practice Coach history filtering crossed question IDs.');
 
-console.log(JSON.stringify({eventDriven:true,sharedCoachEngine:true,verifiedResources:true,repeatMissHistory:true,preAnswerCollapsed:true,scoredReviewOpens:true,mobileStyles:true},null,2));
+console.log(JSON.stringify({eventDriven:true,sharedCoachEngine:true,verifiedResources:true,repeatMissHistory:true,preAnswerCollapsed:true,scoredOnlyReview:true,scoredReviewOpens:true,mobileStyles:true},null,2));
