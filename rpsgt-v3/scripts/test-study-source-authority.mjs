@@ -10,12 +10,13 @@ const plans=JSON.parse(await readFile(join(sourceRoot,'task-plans.json'),'utf8')
 
 const requiredSources=[
   'brpt-blueprint.json','brpt-handbook.json','brpt-refs.json','aasm-scoring-manual-v3.json','icsd-3-tr.json',
-  'aasm-adult-mslt-mwt-2021.json','aasm-pediatric-mslt-mwt-2024.json','aasm-adult-osa-diagnostic-testing-2017.json',
+  'aasm-adult-mslt-mwt-2021.json','aasm-pediatric-mslt-mwt-2024.json','aasm-pediatric-respiratory-psg-2011.json',
+  'aasm-pediatric-nonresp-psg-mslt-2012.json','aasm-pediatric-bedtime-behavior-2006.json','aasm-adult-osa-diagnostic-testing-2017.json',
   'aasm-oral-appliance-2015.json','aasm-surgical-referral-osa-2021.json','aasm-manual-pap-titration-2008.json','aasm-pap-treatment-2019.json',
   'aast-patient-assessment-vitals-2022.json','aast-patient-education-2020.json','aast-standard-psg-2021.json',
   'aast-hsat-2020.json','aast-end-tidal-co2-2018.json','aast-transcutaneous-co2-2018.json',
-  'aast-pap-acclimation-2022.json','aast-pap-titration-2021.json',
-  'aast-oral-appliance-titration-2018.json','aast-supplemental-low-flow-oxygen.json'
+  'aast-pap-acclimation-2022.json','aast-pap-titration-2021.json','aast-oral-appliance-titration-2018.json','aast-supplemental-low-flow-oxygen.json',
+  'pediatric-sleep-pearls-1e.json'
 ];
 for(const file of requiredSources){if(!manifest.sourceFiles.includes(file)) throw new Error(`Study-source manifest is missing ${file}`);}
 if(manifest.coreLibraryAuditFile!=='core-library-audit.json') throw new Error('Core library audit is not registered in the study-source manifest.');
@@ -58,6 +59,10 @@ assertExactTasks('aast-transcutaneous-co2-2018',['D2A','D2B','D2C']);
 assertExactTasks('aasm-adult-osa-diagnostic-testing-2017',['D2B']);
 assertExactTasks('aasm-adult-mslt-mwt-2021',['D2B','D3C']);
 assertExactTasks('aasm-pediatric-mslt-mwt-2024',['D2B','D3C']);
+assertExactTasks('aasm-pediatric-respiratory-psg-2011',['D1A','D2B']);
+assertExactTasks('aasm-pediatric-nonresp-psg-mslt-2012',['D1A','D2B']);
+assertExactTasks('aasm-pediatric-bedtime-behavior-2006',['D1B','D4B']);
+assertExactTasks('pediatric-sleep-pearls-1e',['D1A','D1B','D2B','D2C','D3B','D4A','D4B']);
 assertExactTasks('aast-pap-titration-2021',['D4A']);
 assertExactTasks('aasm-oral-appliance-2015',['D4B']);
 assertExactTasks('aasm-surgical-referral-osa-2021',['D4B']);
@@ -86,14 +91,27 @@ if(pearls2.currentBrptListedEdition!=='3rd edition') throw new Error('Sleep Medi
 if(!/AASM Scoring Manual Version 3 controls current scoring rules/i.test(pearls2.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(pearls2.authorityBoundary||'')) throw new Error('Sleep Medicine Pearls 2e current-authority correction boundary is missing.');
 if(!Array.isArray(pearls2.versionSensitiveReviewRequiredFor)||pearls2.versionSensitiveReviewRequiredFor.length<5) throw new Error('Sleep Medicine Pearls 2e version-sensitive review queue is missing.');
 
+const pediatricPearls=sourceDocs['pediatric-sleep-pearls-1e'];
+if(!pediatricPearls||pediatricPearls.currentAuthority!==false||pediatricPearls.sourceRole!=='studySupport') throw new Error('Pediatric Sleep Pearls is not bounded as study support.');
+if(!/AASM Scoring Manual Version 3 controls scoring rules/i.test(pediatricPearls.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(pediatricPearls.authorityBoundary||'')) throw new Error('Pediatric Sleep Pearls current-authority boundary is incomplete.');
+if(pediatricPearls.driveFileId!=='1AqRh1joLFq_pzYQHIYZMjaKNhkDJqk-d') throw new Error('Pediatric Sleep Pearls verified Drive holding is not protected.');
+
+for(const sourceId of ['aasm-pediatric-respiratory-psg-2011','aasm-pediatric-nonresp-psg-mslt-2012','aasm-pediatric-bedtime-behavior-2006']){
+  const source=sourceDocs[sourceId];
+  if(!source||source.currentAuthority!==false||source.sourceRole!=='legacyGuidance') throw new Error(`${sourceId} must remain explicitly legacy/applicable guidance rather than current authority.`);
+}
+if(!/2024 AASM pediatric MSLT protocol controls current MSLT preparation, administration, and reporting details/i.test(sourceDocs['aasm-pediatric-nonresp-psg-mslt-2012'].authorityBoundary||'')) throw new Error('2012 pediatric PSG/MSLT source does not defer current MSLT protocol details to the 2024 AASM guidance.');
+if(!/Current AASM Scoring Manual Version 3 controls scoring and technical definitions/i.test(sourceDocs['aasm-pediatric-respiratory-psg-2011'].authorityBoundary||'')) throw new Error('2011 pediatric respiratory PSG source does not defer scoring to AASM Version 3.');
+if(!/Current ICSD-3-TR terminology controls diagnostic classification/i.test(sourceDocs['aasm-pediatric-bedtime-behavior-2006'].authorityBoundary||'')) throw new Error('2006 pediatric bedtime source does not defer current terminology to ICSD-3-TR.');
+
 const auditIds=new Set((coreAudit.coreSources||[]).map(item=>item.sourceId));
 for(const id of ['brpt-blueprint','brpt-handbook','aasm-scoring-manual-v3','icsd-3-tr','fundamentals-sleep-technology-3e','polysomnography-sleep-technologist-2014','pediatric-sleep-pearls-1e','clinical-guide-pediatric-sleep-3e','sleep-medicine-pearls-3e']){
   if(!auditIds.has(id)) throw new Error(`Core library audit is missing ${id}.`);
 }
 const pearls3=(coreAudit.coreSources||[]).find(item=>item.sourceId==='sleep-medicine-pearls-3e');
-if(!pearls3||!/library has 2nd edition/i.test(pearls3.libraryAvailability||'')) throw new Error('Sleep Medicine Pearls edition mismatch is not documented.');
+if(!pearls3||!/2nd edition/i.test(pearls3.libraryAvailability||'')||!/Kindle/i.test(pearls3.libraryAvailability||'')) throw new Error('Sleep Medicine Pearls access/edition boundary is not documented.');
 const pedsPearls=(coreAudit.coreSources||[]).find(item=>item.sourceId==='pediatric-sleep-pearls-1e');
-if(!pedsPearls||!/not found/i.test(pedsPearls.libraryAvailability||'')) throw new Error('Pediatric Sleep Pearls library gap is not documented.');
+if(!pedsPearls||!/Drive copy verified/i.test(pedsPearls.libraryAvailability||'')||!/structured/i.test(pedsPearls.v3OutlineStatus||'')) throw new Error('Pediatric Sleep Pearls verified holding and structured status are not documented.');
 
 const diagnostic=sourceDocs['aasm-adult-osa-diagnostic-testing-2017'];
 if(!/focused update project as in development/i.test(diagnostic.currencyNote||'')) throw new Error('Adult OSA diagnostic guideline update-watch metadata is missing.');
@@ -133,9 +151,11 @@ console.log(JSON.stringify({
   coreLibraryAuditProtected:true,
   icsdCurrentDiagnosticAuthority:true,
   icsdLegacyFullTextBoundaryProtected:true,
-  sleepMedicinePearlsEditionGapProtected:true,
+  sleepMedicinePearlsEditionBoundaryProtected:true,
   sleepMedicinePearls2eProvisionalUseProtected:true,
-  pediatricSleepPearlsGapProtected:true,
+  pediatricSleepPearlsStructured:true,
+  pediatricLegacyGuidanceBoundariesProtected:true,
+  pediatric2012CurrentMsltBoundaryProtected:true,
   scoringManualCurrentAuthority:true,
   diagnosticGuidelineUpdateWatch:true,
   aastTerminologyBoundaryProtected:true,
