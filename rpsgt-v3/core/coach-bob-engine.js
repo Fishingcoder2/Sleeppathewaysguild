@@ -5,10 +5,11 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.0';
+  const VERSION='1.0.1';
   const text=value=>String(value==null?'':value).replace(/\uFFFD/g,'').trim();
   const normalize=value=>text(value).toLowerCase().replace(/[“”]/g,'"').replace(/[’]/g,"'").replace(/\s+/g,' ');
   const unique=values=>[...new Set((Array.isArray(values)?values:[]).map(text).filter(Boolean))];
+  const escapeRx=value=>String(value).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 
   const taskPractice={
     D1A:'In the sleep lab, connect the history and clinical clue to the study plan before thinking about a scored event.',
@@ -50,8 +51,10 @@
     const value=normalize(candidate);
     const answer=normalize(question&&question.answer);
     if(!value||!answer) return false;
-    if(answer.length>=2&&value.includes(answer)) return true;
-    return false;
+    if(/^[a-z0-9]+$/i.test(answer)&&answer.length<=4){
+      return new RegExp(`(^|[^a-z0-9])${escapeRx(answer)}([^a-z0-9]|$)`,'i').test(value);
+    }
+    return value.includes(answer);
   }
 
   function safePreMessage(candidate,question,fallback){
@@ -62,7 +65,8 @@
   function genericPre(question,compass){
     const type=text(question&&question.questionType).toLowerCase();
     const typeCue=type?`Treat this as a ${type} item. `:'';
-    return `${typeCue}${compass.prompt} Then eliminate choices that answer a nearby question instead of the one the stem actually asks.`;
+    const candidate=`${typeCue}${compass.prompt} Then eliminate choices that answer a nearby question instead of the one the stem actually asks.`;
+    return containsAnswerLeak(candidate,question)?'Identify the task being tested, choose the evidence you would use to defend a decision, and eliminate choices that answer a different question.':candidate;
   }
 
   function examTrap(question){
@@ -133,23 +137,22 @@
     const priorMisses=Math.max(0,Number(input.priorMisses)||0);
     const resources=unique(input.resources).slice(0,3);
     const compass=compassFor(question);
-    const whyTricky=phase==='pre'?'':text(question.whyTricky);
-    const rationale=phase==='pre'?'':text(question.rationale);
+    const mentor=mentorMessage(question,phase,compass,priorMisses);
     return {
       version:VERSION,
       phase,
       label:phase==='pre'?'Coach Bob hint':'Coach Bob review',
       headline:headline(phase,compass,priorMisses),
-      mentorMessage:mentorMessage(question,phase,compass,priorMisses),
+      mentorMessage:mentor,
       compass,
       examTrap:examTrap(question),
       practiceConnection:practiceConnection(question),
       nextAction:nextAction(question,phase,resources,priorMisses),
-      rationale,
-      whyTricky,
+      rationale:phase==='pre'?'':text(question.rationale),
+      whyTricky:phase==='pre'?'':text(question.whyTricky),
       resources,
       repeatPattern:phase==='incorrect'&&priorMisses>0,
-      answerLeakFree:phase==='pre'&&!containsAnswerLeak(mentorMessage(question,'pre',compass,priorMisses),question)
+      answerLeakFree:phase==='pre'&&!containsAnswerLeak(mentor,question)
     };
   }
 
