@@ -58,14 +58,29 @@
     <div class="practice-choices" data-question-choices></div>
     <div class="practice-question-tools" data-practice-question-actions></div>
     <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
-    <div class="question-actions"><button class="btn secondary" type="button" data-change-filters>Change filters</button><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
+    <div class="question-actions" aria-label="Primary practice action"><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
   </div>
   <aside class="session-rail">
     <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span data-progress-policy>Recorded in the v3 learner record</span></p></div>
     <div class="card"><h3>Overall v3 learner record</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-stat="answered">0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="session-stat"><span>Missed</span><strong data-stat="missed">0</strong></div></div></div>
   </aside>
-  <div class="card session-complete hidden" data-session-complete>
-    <span class="status green">Session complete</span><h2>Practice result</h2><div class="complete-score" data-complete-score>0 / 0</div><div class="complete-percent" data-complete-percent>0%</div><p data-complete-policy></p><div class="actions"><button class="btn primary" type="button" data-restart-session>Practice this selection again</button><button class="btn secondary" type="button" data-change-filters>Choose different filters</button></div>
+  <div class="card session-complete hidden" data-session-complete tabindex="-1" aria-label="Practice complete">
+    <span class="status green">Practice complete</span>
+    <h2>Practice Complete</h2>
+    <p class="completion-lead">Your focused practice session is finished.</p>
+    <div class="completion-score-grid" aria-label="Practice session result">
+      <div><span>Score</span><strong class="complete-score" data-complete-score>0 / 0</strong></div>
+      <div><span>Accuracy</span><strong class="complete-percent" data-complete-percent>0%</strong></div>
+    </div>
+    <p data-complete-policy></p>
+    <p class="completion-note">Use this result to choose your next learning action. Practice results are educational feedback, not an official BRPT score, credential decision, or passing prediction.</p>
+    <div class="completion-next-actions">
+      <button class="btn primary" type="button" data-restart-session>Practice this selection again</button>
+      <a class="btn secondary" href="review.html?list=missed">Review missed questions</a>
+      <a class="btn secondary" href="study.html">Continue Guided Study</a>
+      <a class="btn secondary" href="index.html">Return to dashboard</a>
+      <button class="btn secondary" type="button" data-change-filters>Choose different filters</button>
+    </div>
   </div>
 </section>
 <footer class="footer">Development branch only · Practice, Review, Readiness, and Mock histories remain separate</footer>
