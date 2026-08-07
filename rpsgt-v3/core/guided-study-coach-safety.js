@@ -6,7 +6,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.0';
+  const VERSION='1.0.1';
   const headings=[
     'Start with the clinical clue.',
     'Picture the technologist’s next decision.',
@@ -33,20 +33,24 @@
     const doc=win.document;
     const host=doc.querySelector('[data-checkpoint-workspace]');
     if(!host) return null;
+    const sanitizedPanels=new WeakSet();
 
     function sanitize(){
       if(host.querySelector('.answer-status')) return;
       const panel=host.querySelector('.coach-question-panel');
-      if(!panel) return;
+      if(!panel||sanitizedPanels.has(panel)) return;
+      sanitizedPanels.add(panel);
       const topic=text(host.querySelector('.checkpoint-question-meta .status')?.textContent);
       const heading=panel.querySelector('h3');
       const paragraph=[...panel.querySelectorAll('p')].find(node=>!node.classList.contains('coach-boundary'));
-      if(heading) heading.textContent=headingForTopic(topic);
-      if(paragraph) paragraph.textContent=clueForTopic(topic);
+      const safeHeading=headingForTopic(topic);
+      const safeClue=clueForTopic(topic);
+      if(heading&&heading.textContent!==safeHeading) heading.textContent=safeHeading;
+      if(paragraph&&paragraph.textContent!==safeClue) paragraph.textContent=safeClue;
     }
 
     const observer=new win.MutationObserver(sanitize);
-    observer.observe(host,{childList:true,subtree:true,characterData:true});
+    observer.observe(host,{childList:true,subtree:true});
     sanitize();
     return {observer,sanitize};
   }
