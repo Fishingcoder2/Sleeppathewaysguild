@@ -33,6 +33,7 @@ try{
   const levels={exact:0,topic:0,task:0,none:0};
   const officialLevels={exact:0,topic:0,task:0,none:0};
   const unresolvedCounts=new Map();
+  const conceptCounts=new Map();
   const sourceCounts=new Map();
   const noneIds=[];
   let total=0;
@@ -53,6 +54,7 @@ try{
         crossTaskTotal+=1;
       }
       for(const key of result.unresolvedKeys||[]) unresolvedCounts.set(key,(unresolvedCounts.get(key)||0)+1);
+      for(const key of result.conceptKeys||[]) conceptCounts.set(key,(conceptCounts.get(key)||0)+1);
       for(const sourceId of result.sourceIds||[]) sourceCounts.set(sourceId,(sourceCounts.get(sourceId)||0)+1);
       if(level==='none') noneIds.push(String(question.id));
     }
@@ -62,8 +64,10 @@ try{
   if(officialLevels.none!==0) throw new Error(`Verified resource resolution failed for ${officialLevels.none} official-task questions.`);
   if(levels.exact===0) throw new Error('No questions resolved through Level 1 exact provenance.');
 
-  const unresolvedTop=[...unresolvedCounts.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,20).map(([key,count])=>({key,count}));
-  const sourceTop=[...sourceCounts.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,15).map(([sourceId,count])=>({sourceId,count}));
+  const rank=map=>[...map.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+  const unresolvedTop=rank(unresolvedCounts).slice(0,20).map(([key,count])=>({key,count}));
+  const conceptTop=rank(conceptCounts).slice(0,20).map(([key,count])=>({key,count}));
+  const sourceTop=rank(sourceCounts).slice(0,15).map(([sourceId,count])=>({sourceId,count}));
   const pct=value=>Number((value*100/Math.max(1,total)).toFixed(1));
 
   console.log(JSON.stringify({
@@ -75,8 +79,10 @@ try{
     percentages:{exact:pct(levels.exact),topic:pct(levels.topic),task:pct(levels.task),none:pct(levels.none)},
     taskFallbackNeededByCurrentBank:levels.task>0,
     noneIds:noneIds.slice(0,25),
-    distinctUnresolvedKeys:unresolvedCounts.size,
-    unresolvedTop,
+    distinctUnresolvedSourceKeys:unresolvedCounts.size,
+    unresolvedSourceTop:unresolvedTop,
+    distinctConceptKeys:conceptCounts.size,
+    conceptTop,
     sourceTop,
     allOfficialQuestionsHaveVerifiedPath:true
   },null,2));
