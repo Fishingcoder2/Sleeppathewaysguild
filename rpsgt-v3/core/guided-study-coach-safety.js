@@ -6,7 +6,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.1';
+  const VERSION='1.0.0';
   const headings=[
     'Start with the clinical clue.',
     'Picture the technologist’s next decision.',
