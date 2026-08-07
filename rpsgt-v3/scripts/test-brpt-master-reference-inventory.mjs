@@ -40,8 +40,8 @@ if(!/2025/.test(rls.verifiedIdentity||'')||!/current/i.test(rls.role||'')) throw
 const manifestIds=new Set(manifest.sourceFiles.map(file=>file.replace(/\.json$/,'')));
 const structuredCurrent=recommended.filter(item=>manifestIds.has(item.sourceId||item.id)||manifestIds.has(item.id)).length;
 const currentGaps=recommended.length-structuredCurrent;
-if(structuredCurrent!==14) throw new Error(`Expected 14 currently structured BRPT recommended-reading sources after the Drive holdings audit, found ${structuredCurrent}.`);
-if(currentGaps!==6) throw new Error(`Expected 6 remaining BRPT source/edition gaps after the Drive holdings audit, found ${currentGaps}.`);
+if(structuredCurrent!==15) throw new Error(`Expected 15 currently structured BRPT recommended-reading sources after the adult OSA guideline integration, found ${structuredCurrent}.`);
+if(currentGaps!==5) throw new Error(`Expected 5 remaining BRPT source/edition gaps after the adult OSA guideline integration, found ${currentGaps}.`);
 
 const holdingById=new Map((holdings.verifiedHoldings||[]).map(item=>[item.sourceId,item]));
 for(const sourceId of ['aasm-rls-plmd-2025','aasm-central-hypersomnolence-2021','aasm-osa-longitudinal-testing-2021']){
@@ -54,6 +54,11 @@ for(const sourceId of ['aasm-pediatric-respiratory-psg-2011','aasm-pediatric-bed
   if(!holding||holding.identityVerifiedFromContent!==true) throw new Error(`${sourceId} local holding is not protected as content-verified.`);
 }
 
+const osa2009=JSON.parse(await readFile(join(sourceRoot,'aasm-adult-osa-evaluation-management-2009.json'),'utf8'));
+if(osa2009.currentAuthority!==false) throw new Error('The 2009 adult OSA guideline must remain explicitly non-current for superseded narrower guidance.');
+if(!/2017 adult OSA diagnostic-testing guideline/.test(osa2009.authorityBoundary||'')||!/2021 longitudinal/.test(osa2009.authorityBoundary||'')) throw new Error('Adult OSA 2009 supersession boundaries are incomplete.');
+if(!manifestIds.has('aasm-adult-osa-evaluation-management-2009')) throw new Error('Adult OSA 2009 source is not integrated into the source manifest.');
+
 console.log(JSON.stringify({
   officialExamDocuments:inventory.officialExamDocuments.length,
   recommendedUniverse:inventory.auditSummary.brptRecommendedUniverseCountExcludingExamDocuments,
@@ -63,6 +68,7 @@ console.log(JSON.stringify({
   structuredCurrent,
   currentGaps,
   driveHoldingsVerified:true,
+  adultOsa2009Integrated:true,
   icsdCurrencyBoundary:true,
   sleepMedicinePearlsEditionBoundary:true,
   pediatricSleepPearlsGapProtected:true,
