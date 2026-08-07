@@ -88,7 +88,17 @@
     }
   }
 
+  function promotePrimaryDestinations(){
+    const hero=$('.hero.brpt-hero');
+    const firstModule=$('.module-card.study');
+    const destinationSection=firstModule&&firstModule.closest('.section');
+    if(!hero||!destinationSection) return;
+    destinationSection.classList.add('front-door-destinations');
+    hero.insertAdjacentElement('afterend',destinationSection);
+  }
+
   function init(){
+    promotePrimaryDestinations();
     loadResources();
     loadManifestCount();
   }
