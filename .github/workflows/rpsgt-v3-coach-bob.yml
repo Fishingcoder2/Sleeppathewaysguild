@@ -11,6 +11,9 @@ on:
       - rpsgt-v3/core/guided-study-question-actions.js
       - rpsgt-v3/study.html
       - rpsgt-v3/scripts/test-coach-bob-engine.mjs
+      - rpsgt-v3/scripts/test-guided-trail-system.mjs
+      - rpsgt-v3/scripts/test-guided-trail-shell.mjs
+      - rpsgt-v3/scripts/test-guided-study-completion-system.mjs
       - rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
       - .github/workflows/rpsgt-v3-coach-bob.yml
   pull_request:
@@ -23,6 +26,9 @@ on:
       - rpsgt-v3/core/guided-study-question-actions.js
       - rpsgt-v3/study.html
       - rpsgt-v3/scripts/test-coach-bob-engine.mjs
+      - rpsgt-v3/scripts/test-guided-trail-system.mjs
+      - rpsgt-v3/scripts/test-guided-trail-shell.mjs
+      - rpsgt-v3/scripts/test-guided-study-completion-system.mjs
       - rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
       - .github/workflows/rpsgt-v3-coach-bob.yml
 
@@ -44,5 +50,11 @@ jobs:
           node --check rpsgt-v3/core/guided-study-question-actions.js
       - name: Validate Coach Bob reasoning engine
         run: node rpsgt-v3/scripts/test-coach-bob-engine.mjs
+      - name: Validate Guided Trail system
+        run: node rpsgt-v3/scripts/test-guided-trail-system.mjs
+      - name: Validate Guided Trail shell
+        run: node rpsgt-v3/scripts/test-guided-trail-shell.mjs
+      - name: Validate Guided Study completion system
+        run: node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
       - name: Validate Guided Study Coach Bob shell
         run: node rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
