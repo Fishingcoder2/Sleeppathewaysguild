@@ -6,7 +6,9 @@ on:
       - build/rpsgt-v3-modular
     paths:
       - rpsgt-v3/data/study-sources/**
+      - rpsgt-v3/core/study-resource-catalog.js
       - rpsgt-v3/scripts/test-study-source-authority.mjs
+      - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
@@ -15,7 +17,9 @@ on:
       - main
     paths:
       - rpsgt-v3/data/study-sources/**
+      - rpsgt-v3/core/study-resource-catalog.js
       - rpsgt-v3/scripts/test-study-source-authority.mjs
+      - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
@@ -32,6 +36,8 @@ jobs:
           node-version: 22
       - name: Validate study-source authority and mappings
         run: node rpsgt-v3/scripts/test-study-source-authority.mjs
+      - name: Validate exact question-to-source resolution
+        run: node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - name: Validate ICSD diagnostic taxonomy and boundaries
         run: node rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - name: Validate BRPT master reference inventory
