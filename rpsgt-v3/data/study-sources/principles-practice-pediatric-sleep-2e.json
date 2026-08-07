@@ -1,0 +1,32 @@
+{
+  "id":"principles-practice-pediatric-sleep-2e",
+  "shortTitle":"Principles and Practice of Pediatric Sleep Medicine",
+  "fullTitle":"Principles and Practice of Pediatric Sleep Medicine",
+  "edition":"2nd",
+  "publicationYear":2014,
+  "editors":["Stephen H. Sheldon","Richard Ferber","Meir H. Kryger","David Gozal"],
+  "publisher":"Elsevier",
+  "isbn":"9781455703180",
+  "ebookIsbn":"9781455733323",
+  "sourceType":"high-value supplemental pediatric textbook",
+  "sourceRole":"studySupport",
+  "currentAuthority":false,
+  "verifiedAt":"2026-08-07",
+  "driveFileId":"1GplexPKkb-rsVxbNXCnl0_4h9iCDl8uW",
+  "driveFileName":"Principles and Practice of Pediatric Sleep Medicine 2nd Edition (2014) by Stephen H. Sheldon.pdf",
+  "libraryStatus":"Exact second-edition Guild Drive holding verified from the book title page, copyright page, editor list, and ISBN metadata on 2026-08-07.",
+  "bestFor":"Pediatric sleep physiology and development, insomnia and behavioral sleep concerns, hypersomnolence, respiratory physiology, sleep-disordered breathing, pediatric OSA consequences, comorbidity, and deeper pediatric clinical reasoning.",
+  "referenceKeys":["principles-practice-pediatric-sleep"],
+  "mappedTaskCodes":["D1A","D1B","D2B","D3B","D4A","D4B"],
+  "authorityBoundary":"This 2014 textbook is supplemental study support, not current scoring or diagnostic authority. Current AASM Scoring Manual Version 3 controls scoring and technical definitions; ICSD-3-TR controls current diagnostic classification; current AASM pediatric testing and treatment guidance controls when newer recommendations or terminology differ.",
+  "copyrightUse":"Use bibliographic metadata, section/chapter titles, original Sleep Pathways Guild study summaries, and concept locators only. Do not reproduce textbook prose, tables, figures, review material, or substantial protected passages.",
+  "sections":[
+    {"id":"pppsm-foundations","label":"Pediatric sleep development, clinical relationships, and family context","taskCodes":["D1A","D1B"]},
+    {"id":"pppsm-insomnias","label":"Section I: The Insomnias (sleep onset and maintenance difficulties)","taskCodes":["D1A","D1B","D4B"]},
+    {"id":"pppsm-hypersomnias","label":"Section II: The Hypersomnias","taskCodes":["D1A","D2B"]},
+    {"id":"pppsm-respiratory-physiology","label":"Chapter 23: Respiratory Physiology and Pathophysiology During Sleep","taskCodes":["D1A","D3B"]},
+    {"id":"pppsm-sleep-breathing","label":"Section III: Sleep and Breathing Disorders","taskCodes":["D1A","D2B","D3B","D4A","D4B"]},
+    {"id":"pppsm-pediatric-osa","label":"Pediatric snoring and obstructive sleep apnea diagnosis, consequences, and treatment context","taskCodes":["D1A","D2B","D3B","D4A","D4B"]},
+    {"id":"pppsm-medication-comorbidity","label":"Medication effects and pediatric medical/neurobehavioral comorbidity context","taskCodes":["D1A"]}
+  ]
+}
