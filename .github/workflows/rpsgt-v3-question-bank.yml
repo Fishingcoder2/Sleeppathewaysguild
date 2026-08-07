@@ -60,6 +60,9 @@ jobs:
           node --check rpsgt-v3/core/guided-trail-engine.js
           node --check rpsgt-v3/core/guided-trail-report.js
           node --check rpsgt-v3/core/study-resource-catalog.js
+          node --check rpsgt-v3/core/coach-bob-engine.js
+          node --check rpsgt-v3/core/guided-study-coach.js
+          node --check rpsgt-v3/core/guided-study-coach-safety.js
           node --check rpsgt-v3/core/guided-study-learner-ui.js
           node --check rpsgt-v3/core/guided-study-question-actions.js
           node --check rpsgt-v3/core/guided-study-completion.js
@@ -112,6 +115,7 @@ jobs:
           node rpsgt-v3/scripts/test-home-shell.mjs
           node rpsgt-v3/scripts/test-brpt-official-resources.mjs
           node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
+          node rpsgt-v3/scripts/test-coach-bob-engine.mjs
           node rpsgt-v3/scripts/test-guided-trail-system.mjs
           node rpsgt-v3/scripts/test-guided-trail-shell.mjs
           node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
