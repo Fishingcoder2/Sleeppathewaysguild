@@ -22,13 +22,13 @@ for(const [key,sourceId] of Object.entries(aliases.verifiedAliases||{})){
 for(const key of ['brpt-blueprint','brpt-handbook','brpt-refs']){
   if(!(aliases.contextOnlyKeys||[]).includes(key)) throw new Error(`${key} must remain context-only for learner-facing exact recommendations.`);
 }
-for(const key of ['aasm-mslt-mwt','aasm-pap-titration','sleep-medicine-essentials-review']){
+for(const key of ['aasm-mslt-mwt','aasm-pap-titration','aast-abg']){
   if(!Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},key)) throw new Error(`${key} must remain pending source provenance until exact identity is verified.`);
 }
 for(const key of ['report-math','pediatric-psg','pap-troubleshooting','patient-safety']){
   if(!Object.prototype.hasOwnProperty.call(aliases.conceptKeys||{},key)) throw new Error(`${key} must be classified as a learning/concept key rather than missing provenance.`);
 }
-for(const resolvedKey of ['principles-practice-pediatric-sleep','atlas-eeg-sleep']){
+for(const resolvedKey of ['principles-practice-pediatric-sleep','atlas-eeg-sleep','sleep-medicine-essentials-review']){
   if(Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},resolvedKey)) throw new Error(`${resolvedKey} should no longer be pending after verified source-package registration.`);
 }
 
@@ -82,6 +82,14 @@ try{
   if(!/AASM Scoring Manual Version 3 controls sleep staging/i.test(atlasSource.authorityBoundary||'')) throw new Error('Sleep EEG atlas does not defer current staging/scoring authority to AASM Version 3.');
   if(!Array.isArray(atlasSource.editors)||!atlasSource.editors.includes('Magdy Y. Morgan')||atlasSource.editors.includes('Undevia')) throw new Error('Sleep EEG atlas verified editor metadata is not protected.');
 
+  const essentials=catalog.resolveQuestion({taskCode:'D1A',studyRecommendationKeys:['sleep-medicine-essentials-review'],referenceKeys:[]});
+  if(essentials.level!=='exact'||essentials.sourceIds[0]!=='sleep-medicine-essentials-review-2008') throw new Error('Sleep Medicine: Essentials and Review key does not resolve to the verified Lee-Chiong 2008 source.');
+  const essentialsSource=JSON.parse(await readFile(join(sourceRoot,'sleep-medicine-essentials-review-2008.json'),'utf8'));
+  if(essentialsSource.currentAuthority!==false||essentialsSource.sourceRole!=='studySupport') throw new Error('Sleep Medicine: Essentials and Review must remain supplemental study support.');
+  if(essentialsSource.printIsbn!=='9780195306590'||essentialsSource.publicationYear!==2008||!/Teofilo Lee-Chiong/.test(essentialsSource.author||'')) throw new Error('Sleep Medicine: Essentials and Review verified bibliographic identity is not protected.');
+  if(!/No exact full Guild Drive copy was located/i.test(essentialsSource.libraryStatus||'')) throw new Error('Sleep Medicine: Essentials and Review must not be represented as a verified local full-text holding.');
+  if(!/AASM Scoring Manual Version 3 controls scoring/i.test(essentialsSource.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(essentialsSource.authorityBoundary||'')) throw new Error('Sleep Medicine: Essentials and Review current-authority boundary is incomplete.');
+
   const childResp=catalog.resolveQuestion({taskCode:'D2B',referenceKeys:['aasm-child-respiratory-psg'],studyRecommendationKeys:[]});
   if(childResp.level!=='exact'||childResp.sourceIds[0]!=='aasm-pediatric-respiratory-psg-2011') throw new Error('Pediatric respiratory PSG exact alias does not resolve to the verified 2011 AASM source.');
 
@@ -119,6 +127,8 @@ try{
     sleepEegAtlasExact:true,
     sleepEegAtlasAuthorityBoundary:true,
     sleepEegAtlasEditorCorrectionProtected:true,
+    sleepMedicineEssentialsExact:true,
+    sleepMedicineEssentialsNoLocalCopyBoundary:true,
     pediatricRespiratoryAliasExact:true,
     icsdExact:true,
     topicFallback:true,
