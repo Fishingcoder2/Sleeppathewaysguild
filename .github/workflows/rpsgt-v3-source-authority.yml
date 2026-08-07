@@ -7,6 +7,7 @@ on:
     paths:
       - rpsgt-v3/data/study-sources/**
       - rpsgt-v3/scripts/test-study-source-authority.mjs
+      - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
   pull_request:
     branches:
@@ -14,6 +15,7 @@ on:
     paths:
       - rpsgt-v3/data/study-sources/**
       - rpsgt-v3/scripts/test-study-source-authority.mjs
+      - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
 
 jobs:
@@ -28,3 +30,5 @@ jobs:
           node-version: 22
       - name: Validate study-source authority and mappings
         run: node rpsgt-v3/scripts/test-study-source-authority.mjs
+      - name: Validate ICSD diagnostic taxonomy and boundaries
+        run: node rpsgt-v3/scripts/test-icsd-taxonomy.mjs
