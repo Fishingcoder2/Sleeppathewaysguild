@@ -111,6 +111,7 @@ jobs:
           node --check rpsgt-v3/scripts/validate-private-exports.mjs
           node rpsgt-v3/scripts/test-home-shell.mjs
           node rpsgt-v3/scripts/test-brpt-official-resources.mjs
+          node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
           node rpsgt-v3/scripts/test-guided-trail-system.mjs
           node rpsgt-v3/scripts/test-guided-trail-shell.mjs
           node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
