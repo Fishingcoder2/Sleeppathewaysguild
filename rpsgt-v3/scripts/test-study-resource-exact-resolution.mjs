@@ -22,13 +22,13 @@ for(const [key,sourceId] of Object.entries(aliases.verifiedAliases||{})){
 for(const key of ['brpt-blueprint','brpt-handbook','brpt-refs']){
   if(!(aliases.contextOnlyKeys||[]).includes(key)) throw new Error(`${key} must remain context-only for learner-facing exact recommendations.`);
 }
-for(const key of ['aasm-mslt-mwt','aasm-pap-titration','aast-abg']){
+for(const key of ['aasm-mslt-mwt','aasm-pap-titration']){
   if(!Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},key)) throw new Error(`${key} must remain pending source provenance until exact identity is verified.`);
 }
-for(const key of ['report-math','pediatric-psg','pap-troubleshooting','patient-safety']){
+for(const key of ['report-math','pediatric-psg','pap-troubleshooting','patient-safety','aast-abg','aast-safety-infection']){
   if(!Object.prototype.hasOwnProperty.call(aliases.conceptKeys||{},key)) throw new Error(`${key} must be classified as a learning/concept key rather than missing provenance.`);
 }
-for(const resolvedKey of ['principles-practice-pediatric-sleep','atlas-eeg-sleep','sleep-medicine-essentials-review']){
+for(const resolvedKey of ['principles-practice-pediatric-sleep','atlas-eeg-sleep','sleep-medicine-essentials-review','aap-pediatric-osa']){
   if(Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},resolvedKey)) throw new Error(`${resolvedKey} should no longer be pending after verified source-package registration.`);
 }
 
@@ -53,19 +53,12 @@ try{
   if(!catalog||typeof catalog.load!=='function'||typeof catalog.resolveQuestion!=='function') throw new Error('Study resource catalog does not expose the exact-resolution API.');
   await catalog.load();
 
-  const scoringQuestion={
-    taskCode:'D3A',
-    topic:'',
-    studyRecommendationKeys:['fundamentals-scoring','brpt-handbook','aasm-scoring-current'],
-    referenceKeys:['brpt-blueprint','brpt-refs']
-  };
+  const scoringQuestion={taskCode:'D3A',topic:'',studyRecommendationKeys:['fundamentals-scoring','brpt-handbook','aasm-scoring-current'],referenceKeys:['brpt-blueprint','brpt-refs']};
   const scoring=catalog.resolveQuestion(scoringQuestion);
   if(scoring.level!=='exact') throw new Error(`Expected exact scoring resolution, got ${scoring.level}.`);
   if(scoring.sourceIds[0]!=='aasm-scoring-manual-v3') throw new Error('Current AASM scoring authority must rank ahead of textbook support for exact scoring keys.');
   if(!scoring.sourceIds.includes('fundamentals-sleep-technology-3e')) throw new Error('Exact Fundamentals scoring support was not preserved alongside current AASM authority.');
-  for(const forbidden of ['brpt-blueprint','brpt-handbook','brpt-refs']){
-    if(scoring.sourceIds.includes(forbidden)) throw new Error(`${forbidden} leaked into learner-facing exact recommendations.`);
-  }
+  for(const forbidden of ['brpt-blueprint','brpt-handbook','brpt-refs']) if(scoring.sourceIds.includes(forbidden)) throw new Error(`${forbidden} leaked into learner-facing exact recommendations.`);
   if(!scoring.matchedKeys.includes('aasm-scoring-current')||!scoring.matchedKeys.includes('fundamentals-scoring')) throw new Error('Exact matched-key evidence is incomplete.');
   if(JSON.stringify(catalog.titlesForQuestion(scoringQuestion))!==JSON.stringify(scoring.titles)) throw new Error('titlesForQuestion compatibility no longer matches resolveQuestion().');
 
@@ -90,6 +83,13 @@ try{
   if(!/No exact full Guild Drive copy was located/i.test(essentialsSource.libraryStatus||'')) throw new Error('Sleep Medicine: Essentials and Review must not be represented as a verified local full-text holding.');
   if(!/AASM Scoring Manual Version 3 controls scoring/i.test(essentialsSource.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(essentialsSource.authorityBoundary||'')) throw new Error('Sleep Medicine: Essentials and Review current-authority boundary is incomplete.');
 
+  const aapOsa=catalog.resolveQuestion({taskCode:'D3B',studyRecommendationKeys:['aap-pediatric-osa'],referenceKeys:[]});
+  if(aapOsa.level!=='exact'||aapOsa.sourceIds[0]!=='aap-childhood-osa-guideline-2012') throw new Error('AAP pediatric OSA key does not resolve to the verified 2012 AAP guideline.');
+  const aapSource=JSON.parse(await readFile(join(sourceRoot,'aap-childhood-osa-guideline-2012.json'),'utf8'));
+  if(aapSource.currentAuthority!==false||aapSource.sourceRole!=='legacyGuidance'||aapSource.doi!=='10.1542/peds.2012-1671') throw new Error('AAP childhood OSA guideline identity/current-authority boundary is not protected.');
+  if(!/uncomplicated childhood OSA in primary care/i.test(aapSource.authorityBoundary||'')) throw new Error('AAP childhood OSA scope boundary is missing.');
+  if(!/AASM Scoring Manual Version 3 controls scoring/i.test(aapSource.authorityBoundary||'')) throw new Error('AAP childhood OSA source does not defer scoring authority to AASM Version 3.');
+
   const childResp=catalog.resolveQuestion({taskCode:'D2B',referenceKeys:['aasm-child-respiratory-psg'],studyRecommendationKeys:[]});
   if(childResp.level!=='exact'||childResp.sourceIds[0]!=='aasm-pediatric-respiratory-psg-2011') throw new Error('Pediatric respiratory PSG exact alias does not resolve to the verified 2011 AASM source.');
 
@@ -106,16 +106,16 @@ try{
   if(!ambiguous.unresolvedKeys.includes('aasm-mslt-mwt')) throw new Error('Ambiguous AASM MSLT/MWT shorthand was not preserved as unresolved source evidence.');
   if(!ambiguous.sourceIds.length) throw new Error('Task fallback returned no verified resources.');
 
-  const concept=catalog.resolveQuestion({taskCode:'D3C',topic:'',referenceKeys:['report-math'],studyRecommendationKeys:[]});
-  if(concept.level!=='task') throw new Error(`Concept-only key should fall through to a verified study path, got ${concept.level}.`);
-  if(!concept.conceptKeys.includes('report-math')) throw new Error('Report math was not surfaced as a learning/concept key.');
-  if(concept.unresolvedKeys.includes('report-math')) throw new Error('Report math was incorrectly counted as unresolved provenance.');
+  for(const conceptKey of ['report-math','aast-abg','aast-safety-infection']){
+    const concept=catalog.resolveQuestion({taskCode:conceptKey==='report-math'?'D3C':'D4C',topic:'',referenceKeys:[conceptKey],studyRecommendationKeys:[]});
+    if(concept.level!=='task') throw new Error(`${conceptKey} should fall through to a verified task study path, got ${concept.level}.`);
+    if(!concept.conceptKeys.includes(conceptKey)) throw new Error(`${conceptKey} was not surfaced as a learning/concept key.`);
+    if(concept.unresolvedKeys.includes(conceptKey)) throw new Error(`${conceptKey} was incorrectly counted as unresolved provenance.`);
+  }
 
   const contextOnly=catalog.resolveQuestion({taskCode:'D1A',topic:'',referenceKeys:['brpt-blueprint','brpt-refs'],studyRecommendationKeys:['brpt-handbook']});
   if(contextOnly.level!=='task') throw new Error(`BRPT context-only keys must not trigger exact learner recommendations; got ${contextOnly.level}.`);
-  for(const forbidden of ['brpt-blueprint','brpt-handbook','brpt-refs']){
-    if(contextOnly.sourceIds.includes(forbidden)) throw new Error(`${forbidden} leaked into task fallback recommendations.`);
-  }
+  for(const forbidden of ['brpt-blueprint','brpt-handbook','brpt-refs']) if(contextOnly.sourceIds.includes(forbidden)) throw new Error(`${forbidden} leaked into task fallback recommendations.`);
 
   console.log(JSON.stringify({
     exactResolution:true,
@@ -129,6 +129,9 @@ try{
     sleepEegAtlasEditorCorrectionProtected:true,
     sleepMedicineEssentialsExact:true,
     sleepMedicineEssentialsNoLocalCopyBoundary:true,
+    aapChildhoodOsaExact:true,
+    aapChildhoodOsaLegacyBoundary:true,
+    aastConceptShorthandsProtected:true,
     pediatricRespiratoryAliasExact:true,
     icsdExact:true,
     topicFallback:true,
