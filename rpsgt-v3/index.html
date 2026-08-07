@@ -1,1 +1,91 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>RPSGT Learning Center v3 | Sleep Pathways Guild</title><meta name="description" content="Development shell for the modular Sleep Pathways Guild RPSGT learning application."><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="assets/rpsgt-v3.css"></head><body data-module="home"><div class="app-shell"><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Learning Center v3</strong><span>Modular development build</span></span></a><div class="top-actions"><a class="hide-mobile" href="../RPSGTv2.2026.html">Current RPSGT app</a><a href="../index.html">Guild home</a></div></header><div class="layout"><aside class="sidebar"><div class="nav-label">Learning Center</div><a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a><a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a><a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a><a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a><a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a><div class="nav-label">Development status</div><div class="notice">This branch is isolated from the live RPSGT application.</div></aside><main class="main"><section class="hero"><div><div class="eyebrow">RPSGT v3 foundation milestone</div><h1>One learning center. Five focused modules.</h1><p class="lead">This shell applies the clearer CPSGT experience to the deeper RPSGT curriculum while keeping Guided Study, Practice, Mock Exams, Labs, and Reports independently maintainable.</p><div class="actions"><a class="btn primary" data-continue href="study.html">Continue where I left off</a><a class="btn secondary" href="study.html">Open Guided Study</a></div></div><aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Build the path before moving the content.</h2><p>This milestone establishes navigation, shared progress storage, and safe migration preview. The current educational content remains untouched.</p></aside></section><section class="section"><div class="section-head"><div><div class="eyebrow">Progress snapshot</div><h2>Shared across every module</h2></div><p>These values use the new v3 storage record. Legacy values remain read-only until migration testing is complete.</p></div><div class="stat-grid"><div class="stat"><span>Questions answered</span><strong data-stat="answered">0</strong></div><div class="stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="stat"><span>Missed questions</span><strong data-stat="missed">0</strong></div><div class="stat"><span>Trail awards</span><strong data-stat="awards">0</strong></div></div></section><section class="section"><div class="section-head"><div><div class="eyebrow">Choose a learning task</div><h2>Focused destinations</h2></div></div><div class="grid grid-4"><article class="card module-card study"><h3>Guided Study</h3><p>Four RPSGT domains, blueprint tasks, Trail levels, flashcards, glossary, checkpoints, and Coach Bob guidance.</p><div class="actions"><a class="btn secondary" href="study.html">Enter study center</a></div></article><article class="card module-card practice"><h3>Practice & Exam</h3><p>Quick practice, domain and task practice, missed review, readiness checks, and the 175-question mock exam.</p><div class="actions"><a class="btn secondary" href="practice.html">Enter practice center</a></div></article><article class="card module-card labs"><h3>Skills Labs</h3><p>Hookup, EKG, scoring, respiratory, PAP, instrumentation, pediatric, MSLT/MWT, troubleshooting, and Math Coach.</p><div class="actions"><a class="btn secondary" href="labs.html">Enter lab center</a></div></article><article class="card module-card reports"><h3>Reports</h3><p>Progress, Guided Trail, readiness, mock, missed-question, recommendation, and printable learner reports.</p><div class="actions"><a class="btn secondary" href="reports.html">Open reports</a></div></article></div></section><section class="section card"><div class="section-head"><div><div class="eyebrow">Migration safety</div><h2>Legacy progress preview</h2></div><span class="status green">No writes</span></div><div data-migration-preview></div><div class="actions"><a class="btn secondary" href="migration-export.html">Open private browser export utility</a></div></section><footer class="footer">Sleep Pathways Guild · RPSGT v3 development shell · Not yet the public application</footer></main></div><nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav></div><script src="core/storage.js"></script><script src="core/app-shell.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BRPT RPSGT Exam Prep Learning Center | Sleep Pathways Guild</title>
+<meta name="description" content="Sleep Pathways Guild RPSGT exam-preparation learning center organized around the BRPT RPSGT blueprint, Guided Study, practice, readiness checks, mock exams, skills labs, and reports.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+</head>
+<body data-module="home">
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Learning Center</strong><span>BRPT-aligned exam preparation</span></span></a>
+  <div class="top-actions"><a href="practice.html">Practice Center</a><a href="../index.html">Guild home</a></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
+  <a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+  <div class="nav-label">Exam framework</div>
+  <div class="notice"><strong>BRPT first.</strong><br>Study is organized by the 4 RPSGT domains and 12 task families used throughout this learning center.</div>
+</aside>
+<main class="main">
+<section class="hero brpt-hero">
+  <div>
+    <div class="eyebrow">BRPT RPSGT exam preparation</div>
+    <h1>Know the blueprint. Build the skills. Prove your readiness.</h1>
+    <p class="lead">Prepare for the RPSGT credential with one pathway that connects the BRPT exam framework to Guided Study, focused practice, readiness checks, a 175-question mock-style exam, technical skills labs, and progress reports.</p>
+    <div class="actions"><a class="btn primary" data-continue href="study.html">Continue where I left off</a><a class="btn secondary" href="study.html">Study the BRPT domains</a><a class="btn secondary" href="practice.html">Practice questions</a></div>
+  </div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Study what the exam is asking you to do.</h2><p>Don’t memorize a pile of disconnected facts. Start with the BRPT task, learn the rule or clinical pathway behind it, then practice until you can recognize the best next action under exam pressure.</p></aside>
+</section>
+
+<section class="section card brpt-exam-card">
+  <div class="section-head"><div><div class="eyebrow">BRPT exam framework</div><h2>Your RPSGT blueprint at a glance</h2></div><span class="status green">4 domains · 12 tasks</span></div>
+  <p class="brpt-intro">The learning center uses the current app blueprint mapping to organize study and reporting. Percentages below are the blueprint weights carried in the validated RPSGT v3 data package.</p>
+  <div class="brpt-domain-grid">
+    <article class="brpt-domain"><span class="brpt-code">D1</span><strong class="brpt-weight">20%</strong><h3>Clinical Overview, Education, Patient Support</h3><p>Patient assessment, education, and therapy support.</p><small>30 of 150 scored-style mock questions</small></article>
+    <article class="brpt-domain"><span class="brpt-code">D2</span><strong class="brpt-weight">27.3%</strong><h3>Sleep Study Preparation and Performance</h3><p>Technical preparation, study performance, response, and documentation.</p><small>41 of 150 scored-style mock questions</small></article>
+    <article class="brpt-domain"><span class="brpt-code">D3</span><strong class="brpt-weight">25.3%</strong><h3>Scoring, Reporting, and Data Verification</h3><p>Adult and pediatric scoring plus report generation and verification.</p><small>38 of 150 scored-style mock questions</small></article>
+    <article class="brpt-domain"><span class="brpt-code">D4</span><strong class="brpt-weight">27.3%</strong><h3>Treatment and Intervention</h3><p>PAP, alternative therapy awareness, and supplemental oxygen.</p><small>41 of 150 scored-style mock questions</small></article>
+  </div>
+  <div class="brpt-exam-facts">
+    <div><span>Full mock</span><strong>175 questions</strong><small>150 scored-style + 25 mixed unscored-style</small></div>
+    <div><span>Blueprint coverage</span><strong>12 task families</strong><small>Every domain stays visible in study and reporting</small></div>
+    <div><span>Question bank</span><strong>2,887 mapped records</strong><small>Learner-eligible and quality-review records remain separated</small></div>
+  </div>
+  <div class="actions"><a class="btn primary" href="mock.html">Open 175-question mock</a><a class="btn secondary" href="readiness.html">Run a readiness check</a><a class="btn secondary" href="study.html">Open Guided Study</a></div>
+</section>
+
+<section class="section card authority-card">
+  <div class="section-head"><div><div class="eyebrow">How answers are governed</div><h2>Official source first, textbook second</h2></div></div>
+  <p class="brpt-intro">When a topic is rule-sensitive or version-sensitive, the learning pathway should follow the controlling exam or professional authority before reinforcement from a textbook or supplemental resource.</p>
+  <div class="authority-flow" aria-label="RPSGT study source hierarchy">
+    <div><span>1</span><strong>BRPT blueprint &amp; candidate handbook</strong><small>Exam domains, tasks, format, and policies</small></div>
+    <div><span>2</span><strong>Current AASM scoring &amp; official guidance</strong><small>Scoring rules and applicable diagnostic or treatment guidance</small></div>
+    <div><span>3</span><strong>BRPT-listed primary references</strong><small>Fundamentals and other listed texts for deeper understanding</small></div>
+    <div><span>4</span><strong>AAST technical guidance &amp; supplemental sources</strong><small>Technologist workflow, technical reinforcement, and clinical enrichment where applicable</small></div>
+  </div>
+  <div class="notice"><strong>Independent preparation tool:</strong> Sleep Pathways Guild is not the BRPT and does not represent BRPT endorsement. Learners should always verify current eligibility, examination policies, and official source versions with the credentialing organization.</div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div><div class="eyebrow">Progress snapshot</div><h2>Your RPSGT preparation</h2></div><p>Use the same progress record across Guided Study, Practice, Labs, and Reports.</p></div>
+  <div class="stat-grid"><div class="stat"><span>Questions answered</span><strong data-stat="answered">0</strong></div><div class="stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="stat"><span>Missed questions</span><strong data-stat="missed">0</strong></div><div class="stat"><span>Trail awards</span><strong data-stat="awards">0</strong></div></div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div><div class="eyebrow">Choose your next move</div><h2>Focused learning destinations</h2></div></div>
+  <div class="grid grid-4">
+    <article class="card module-card study"><h3>Guided Study</h3><p>Work through the four RPSGT domains and 12 task families with study targets, checkpoints, flashcards, and Coach Bob guidance.</p><div class="actions"><a class="btn secondary" href="study.html">Enter study center</a></div></article>
+    <article class="card module-card practice"><h3>Practice &amp; Exam</h3><p>Quick practice, domain and task practice, missed review, readiness checks, and the 175-question mock-style exam.</p><div class="actions"><a class="btn secondary" href="practice.html">Enter practice center</a></div></article>
+    <article class="card module-card labs"><h3>Skills Labs</h3><p>Hookup, EKG, scoring, respiratory, PAP, instrumentation, pediatric, MSLT/MWT, troubleshooting, and Math Coach.</p><div class="actions"><a class="btn secondary" href="labs.html">Enter lab center</a></div></article>
+    <article class="card module-card reports"><h3>Reports</h3><p>See task-level progress, Guided Trail results, readiness, mock, missed-question, and study recommendations.</p><div class="actions"><a class="btn secondary" href="reports.html">Open reports</a></div></article>
+  </div>
+</section>
+
+<footer class="footer">Sleep Pathways Guild · Independent BRPT RPSGT exam-preparation learning center</footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+</body>
+</html>
