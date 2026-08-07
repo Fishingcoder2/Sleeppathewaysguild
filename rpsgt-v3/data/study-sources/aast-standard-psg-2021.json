@@ -1,0 +1,22 @@
+{
+  "id":"aast-standard-psg-2021",
+  "shortTitle":"AAST Standard Polysomnography Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"Updated December 2021",
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/AAST-PSG-Guideline-Final.pdf",
+  "bestFor":"Standard attended PSG preparation and monitoring, required physiologic signal families, recording quality, physiologic cross-correlation, artifact recognition, intervention awareness, and technical documentation.",
+  "mappedTaskCodes":["D2A","D2B","D2C"],
+  "mappingRationale":{"D2A":"Supports technical preparation for standard attended PSG and the relevant physiologic/technical monitors.","D2B":"Directly addresses performance and monitoring of standard polysomnography.","D2C":"Directly addresses maintaining recording quality, recognizing artifact versus physiology, responding under facility protocols, and documentation."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial guideline text, tables, figures, or proprietary material.",
+  "sections":[
+    {"id":"aast-psg-scope","label":"Scope and role of standard attended polysomnography"},
+    {"id":"aast-psg-preparation","label":"Sleep study preparation and technical setup"},
+    {"id":"aast-psg-signal-families","label":"Physiologic signal families and standard PSG monitoring"},
+    {"id":"aast-psg-quality","label":"Recording quality, physiologic correlation, and artifact recognition"},
+    {"id":"aast-psg-response-documentation","label":"Technologist response and technical documentation"}
+  ]
+}
