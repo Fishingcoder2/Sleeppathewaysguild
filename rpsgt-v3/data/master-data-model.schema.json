@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sleeppathwaysguild.com/rpsgt-v3/data/master-data-model.schema.json",
+  "title": "Sleep Pathways Guild RPSGT v3 Master Data Model",
+  "description": "Canonical relationship model for blueprint structure, concepts, questions, sources, visuals, flashcards, math skills, lab stations, review status, and currency status.",
+  "type": "object",
+  "required": ["meta", "domains", "tasks", "topics", "conceptFamilies", "concepts", "sources", "questions", "visualAssets", "flashcards", "mathSkills", "labStations"],
+  "properties": {
+    "meta": { "$ref": "#/$defs/meta" },
+    "domains": { "type": "array", "items": { "$ref": "#/$defs/domain" } },
+    "tasks": { "type": "array", "items": { "$ref": "#/$defs/task" } },
+    "topics": { "type": "array", "items": { "$ref": "#/$defs/topic" } },
+    "conceptFamilies": { "type": "array", "items": { "$ref": "#/$defs/conceptFamily" } },
+    "concepts": { "type": "array", "items": { "$ref": "#/$defs/concept" } },
+    "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
+    "questions": { "type": "array", "items": { "$ref": "#/$defs/question" } },
+    "visualAssets": { "type": "array", "items": { "$ref": "#/$defs/visualAsset" } },
+    "flashcards": { "type": "array", "items": { "$ref": "#/$defs/flashcard" } },
+    "mathSkills": { "type": "array", "items": { "$ref": "#/$defs/mathSkill" } },
+    "labStations": { "type": "array", "items": { "$ref": "#/$defs/labStation" } }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 2, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$" },
+    "isoDate": { "type": ["string", "null"], "format": "date" },
+    "isoDateTime": { "type": ["string", "null"], "format": "date-time" },
+    "reviewStatus": {
+      "type": "string",
+      "enum": ["active", "sme-reviewed", "needs-review", "legacy", "duplicate-family-member", "retired"]
+    },
+    "currencyStatus": {
+      "type": "string",
+      "enum": ["current", "current-version-dependent", "legacy-background", "superseded", "needs-verification"]
+    },
+    "verificationStatus": {
+      "type": "string",
+      "enum": ["verified", "partially-verified", "mapped-not-locator-verified", "needs-verification", "unresolved"]
+    },
+    "sourceRole": {
+      "type": "string",
+      "enum": ["questionDevelopment", "currentAuthority", "studySupport", "blueprintAlignment", "visualProvenance"]
+    },
+    "sourceType": {
+      "type": "string",
+      "enum": [
+        "BRPT Handbook / Candidate Handbook",
+        "BRPT Blueprint / Job Analysis",
+        "Textbook / Book",
+        "Workbook",
+        "Peer-reviewed Article",
+        "AASM Scoring Manual / AASM Guideline",
+        "AAST Guideline / Technical Guideline",
+        "ICSD-3-TR",
+        "Manufacturer Instructions",
+        "Government / Safety Standard",
+        "Laboratory Protocol / Policy",
+        "Other authoritative source"
+      ]
+    },
+    "visualAssetStatus": {
+      "type": "string",
+      "enum": [
+        "READY — PUBLIC DOMAIN",
+        "READY — ATTRIBUTION REQUIRED",
+        "CONDITIONAL — SHAREALIKE / OTHER TERMS",
+        "REFERENCE ONLY — REDRAW REQUIRED",
+        "RESTRICTED — DO NOT USE"
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "required": ["modelVersion", "project", "updatedAt"],
+      "properties": {
+        "modelVersion": { "type": "string" },
+        "project": { "const": "Sleep Pathways Guild RPSGT v3" },
+        "updatedAt": { "$ref": "#/$defs/isoDateTime" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "domain": {
+      "type": "object",
+      "required": ["domainId", "title", "reviewStatus"],
+      "properties": {
+        "domainId": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "blueprintWeight": { "type": ["number", "null"], "minimum": 0 },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" }
+      },
+      "additionalProperties": true
+    },
+    "task": {
+      "type": "object",
+      "required": ["taskId", "domainId", "title", "reviewStatus"],
+      "properties": {
+        "taskId": { "$ref": "#/$defs/id" },
+        "domainId": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "studyTargets": { "type": "array", "items": { "type": "string" } },
+        "blueprintLocator": { "type": ["string", "null"] },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" }
+      },
+      "additionalProperties": true
+    },
+    "topic": {
+      "type": "object",
+      "required": ["topicId", "taskIds", "title", "reviewStatus"],
+      "properties": {
+        "topicId": { "$ref": "#/$defs/id" },
+        "taskIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" }
+      },
+      "additionalProperties": true
+    },
+    "conceptFamily": {
+      "type": "object",
+      "required": ["conceptFamilyId", "topicId", "taskIds", "title", "learningObjective", "reviewStatus"],
+      "properties": {
+        "conceptFamilyId": { "$ref": "#/$defs/id" },
+        "topicId": { "$ref": "#/$defs/id" },
+        "taskIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "title": { "type": "string", "minLength": 1 },
+        "learningObjective": { "type": "string", "minLength": 1 },
+        "nearDuplicateFamilyIds": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" }
+      },
+      "additionalProperties": true
+    },
+    "concept": {
+      "type": "object",
+      "required": ["conceptId", "conceptFamilyId", "taskIds", "title", "reviewStatus"],
+      "properties": {
+        "conceptId": { "$ref": "#/$defs/id" },
+        "conceptFamilyId": { "$ref": "#/$defs/id" },
+        "taskIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "title": { "type": "string", "minLength": 1 },
+        "skillType": { "type": "string" },
+        "ruleSensitive": { "type": "boolean", "default": false },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" },
+        "currencyStatus": { "$ref": "#/$defs/currencyStatus" }
+      },
+      "additionalProperties": true
+    },
+    "sourceLocator": {
+      "type": "object",
+      "properties": {
+        "chapter": { "type": ["string", "null"] },
+        "section": { "type": ["string", "null"] },
+        "page": { "type": ["string", "null"] },
+        "figure": { "type": ["string", "null"] },
+        "table": { "type": ["string", "null"] },
+        "rule": { "type": ["string", "null"] },
+        "other": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["sourceId", "sourceType", "title", "currencyStatus", "verificationStatus"],
+      "properties": {
+        "sourceId": { "$ref": "#/$defs/id" },
+        "sourceType": { "$ref": "#/$defs/sourceType" },
+        "title": { "type": "string", "minLength": 1 },
+        "editionVersion": { "type": ["string", "null"] },
+        "authors": { "type": "array", "items": { "type": "string" } },
+        "journal": { "type": ["string", "null"] },
+        "doi": { "type": ["string", "null"] },
+        "url": { "type": ["string", "null"] },
+        "driveId": { "type": ["string", "null"] },
+        "locator": { "$ref": "#/$defs/sourceLocator" },
+        "currencyStatus": { "$ref": "#/$defs/currencyStatus" },
+        "verificationStatus": { "$ref": "#/$defs/verificationStatus" },
+        "authorityRoles": { "type": "array", "items": { "$ref": "#/$defs/sourceRole" }, "uniqueItems": true },
+        "supersededBySourceId": { "type": ["string", "null"] },
+        "verifiedAt": { "$ref": "#/$defs/isoDate" }
+      },
+      "additionalProperties": true
+    },
+    "sourceLink": {
+      "type": "object",
+      "required": ["sourceId", "role"],
+      "properties": {
+        "sourceId": { "$ref": "#/$defs/id" },
+        "role": { "$ref": "#/$defs/sourceRole" },
+        "locatorOverride": { "$ref": "#/$defs/sourceLocator" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "question": {
+      "type": "object",
+      "required": ["questionId", "domainId", "taskId", "topicId", "conceptFamilyId", "conceptId", "prompt", "options", "answer", "reviewStatus"],
+      "properties": {
+        "questionId": { "$ref": "#/$defs/id" },
+        "legacyQuestionId": { "type": ["string", "null"] },
+        "domainId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "topicId": { "$ref": "#/$defs/id" },
+        "conceptFamilyId": { "$ref": "#/$defs/id" },
+        "conceptId": { "$ref": "#/$defs/id" },
+        "prompt": { "type": "string", "minLength": 1 },
+        "options": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "type": "string", "minLength": 1 } },
+        "answer": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string" },
+        "questionType": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "cognitiveLevel": { "type": ["string", "null"] },
+        "visualAssetId": { "type": ["string", "null"] },
+        "visualItemType": { "type": ["string", "null"], "enum": [null, "Identify", "Find the feature", "Troubleshoot", "Best next action", "Compare", "Workflow / sequence"] },
+        "sourceLinks": { "type": "array", "items": { "$ref": "#/$defs/sourceLink" } },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" },
+        "currencyStatus": { "$ref": "#/$defs/currencyStatus" },
+        "manualReviewRecommended": { "type": "boolean", "default": false },
+        "mockEligible": { "type": "boolean", "default": true },
+        "nearDuplicateQuestionIds": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+        "qa": { "type": "object", "additionalProperties": true }
+      },
+      "additionalProperties": true
+    },
+    "visualAsset": {
+      "type": "object",
+      "required": ["assetId", "title", "visualType", "domainId", "taskIds", "topicId", "conceptFamilyId", "learningObjective", "assetStatus", "createdBySPG", "altText"],
+      "properties": {
+        "assetId": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "visualType": { "type": "string", "minLength": 1 },
+        "domainId": { "$ref": "#/$defs/id" },
+        "taskIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "topicId": { "$ref": "#/$defs/id" },
+        "conceptFamilyId": { "$ref": "#/$defs/id" },
+        "conceptIds": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+        "learningObjective": { "type": "string", "minLength": 1 },
+        "sourceType": { "type": ["string", "null"] },
+        "sourceId": { "type": ["string", "null"] },
+        "sourceURL": { "type": ["string", "null"] },
+        "sourceDriveId": { "type": ["string", "null"] },
+        "originalLocator": { "type": ["string", "null"] },
+        "license": { "type": ["string", "null"] },
+        "licenseURL": { "type": ["string", "null"] },
+        "attributionRequired": { "type": "boolean" },
+        "attributionText": { "type": ["string", "null"] },
+        "derivativesAllowed": { "type": ["boolean", "null"] },
+        "commercialUseAllowed": { "type": ["boolean", "null"] },
+        "assetStatus": { "$ref": "#/$defs/visualAssetStatus" },
+        "createdBySPG": { "type": "boolean" },
+        "currentAuthorityCheck": { "$ref": "#/$defs/verificationStatus" },
+        "smeReviewStatus": { "$ref": "#/$defs/reviewStatus" },
+        "altText": { "type": "string", "minLength": 1 },
+        "filePath": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "flashcard": {
+      "type": "object",
+      "required": ["flashcardId", "domainId", "taskId", "topicId", "conceptFamilyId", "conceptId", "front", "back", "reviewStatus"],
+      "properties": {
+        "flashcardId": { "$ref": "#/$defs/id" },
+        "domainId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "topicId": { "$ref": "#/$defs/id" },
+        "conceptFamilyId": { "$ref": "#/$defs/id" },
+        "conceptId": { "$ref": "#/$defs/id" },
+        "front": { "type": "string", "minLength": 1 },
+        "back": { "type": "string", "minLength": 1 },
+        "visualAssetId": { "type": ["string", "null"] },
+        "commonConfusion": { "type": ["string", "null"] },
+        "memoryClue": { "type": ["string", "null"] },
+        "coachBobNote": { "type": ["string", "null"] },
+        "sourceLinks": { "type": "array", "items": { "$ref": "#/$defs/sourceLink" } },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" }
+      },
+      "additionalProperties": true
+    },
+    "mathSkill": {
+      "type": "object",
+      "required": ["mathSkillId", "domainId", "taskIds", "topicId", "conceptFamilyId", "title", "formula", "units", "reviewStatus"],
+      "properties": {
+        "mathSkillId": { "$ref": "#/$defs/id" },
+        "domainId": { "$ref": "#/$defs/id" },
+        "taskIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "topicId": { "$ref": "#/$defs/id" },
+        "conceptFamilyId": { "$ref": "#/$defs/id" },
+        "conceptIds": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+        "title": { "type": "string", "minLength": 1 },
+        "formula": { "type": "string", "minLength": 1 },
+        "variables": { "type": "array", "items": { "type": "object", "required": ["symbol", "meaning"], "properties": { "symbol": { "type": "string" }, "meaning": { "type": "string" }, "unit": { "type": ["string", "null"] } } } },
+        "units": { "type": "array", "items": { "type": "string" } },
+        "workedExample": { "type": "string" },
+        "commonMistake": { "type": "string" },
+        "visualAssetIds": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+        "sourceLinks": { "type": "array", "items": { "$ref": "#/$defs/sourceLink" } },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" }
+      },
+      "additionalProperties": true
+    },
+    "labStation": {
+      "type": "object",
+      "required": ["labStationId", "labId", "domainId", "taskIds", "topicId", "conceptFamilyId", "title", "steps", "reviewStatus"],
+      "properties": {
+        "labStationId": { "$ref": "#/$defs/id" },
+        "labId": { "$ref": "#/$defs/id" },
+        "domainId": { "$ref": "#/$defs/id" },
+        "taskIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "topicId": { "$ref": "#/$defs/id" },
+        "conceptFamilyId": { "$ref": "#/$defs/id" },
+        "conceptIds": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+        "title": { "type": "string", "minLength": 1 },
+        "steps": { "type": "array", "minItems": 6, "items": { "type": "string" }, "contains": { "const": "Explain why" } },
+        "visualAssetIds": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+        "sourceLinks": { "type": "array", "items": { "$ref": "#/$defs/sourceLink" } },
+        "currentAuthorityCheck": { "$ref": "#/$defs/verificationStatus" },
+        "reviewStatus": { "$ref": "#/$defs/reviewStatus" }
+      },
+      "additionalProperties": true
+    }
+  }
+}
