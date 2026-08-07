@@ -9,10 +9,11 @@ const manifest=JSON.parse(await readFile(join(sourceRoot,'manifest.json'),'utf8'
 const plans=JSON.parse(await readFile(join(sourceRoot,'task-plans.json'),'utf8')).taskPlans;
 
 const requiredSources=[
-  'brpt-blueprint.json','brpt-handbook.json','brpt-refs.json',
-  'aasm-adult-mslt-mwt-2021.json','aasm-pediatric-mslt-mwt-2024.json',
+  'brpt-blueprint.json','brpt-handbook.json','brpt-refs.json','aasm-scoring-manual-v3.json',
+  'aasm-adult-mslt-mwt-2021.json','aasm-pediatric-mslt-mwt-2024.json','aasm-adult-osa-diagnostic-testing-2017.json',
   'aasm-oral-appliance-2015.json','aasm-surgical-referral-osa-2021.json',
-  'aast-patient-assessment-vitals-2022.json','aast-standard-psg-2021.json',
+  'aast-patient-assessment-vitals-2022.json','aast-patient-education-2020.json','aast-standard-psg-2021.json',
+  'aast-hsat-2020.json','aast-end-tidal-co2-2018.json','aast-transcutaneous-co2-2018.json',
   'aast-pap-acclimation-2022.json','aast-pap-titration-2021.json',
   'aast-oral-appliance-titration-2018.json','aast-supplemental-low-flow-oxygen.json'
 ];
@@ -45,14 +46,19 @@ function assertExactTasks(sourceId,expected){
   if(JSON.stringify(actual)!==JSON.stringify(expected)) throw new Error(`${sourceId} task mapping changed. Expected ${expected.join(', ')}, got ${actual.join(', ')}.`);
 }
 
+assertExactTasks('aast-patient-assessment-vitals-2022',['D1A']);
+assertExactTasks('aast-patient-education-2020',['D1B']);
+assertExactTasks('aast-pap-acclimation-2022',['D1C','D4A']);
+assertExactTasks('aast-standard-psg-2021',['D2A','D2B','D2C']);
+assertExactTasks('aast-hsat-2020',['D2A','D2B','D2C']);
+assertExactTasks('aast-end-tidal-co2-2018',['D2A','D2B','D2C']);
+assertExactTasks('aast-transcutaneous-co2-2018',['D2A','D2B','D2C']);
+assertExactTasks('aasm-adult-osa-diagnostic-testing-2017',['D2B']);
 assertExactTasks('aasm-adult-mslt-mwt-2021',['D2B','D3C']);
 assertExactTasks('aasm-pediatric-mslt-mwt-2024',['D2B','D3C']);
+assertExactTasks('aast-pap-titration-2021',['D4A']);
 assertExactTasks('aasm-oral-appliance-2015',['D4B']);
 assertExactTasks('aasm-surgical-referral-osa-2021',['D4B']);
-assertExactTasks('aast-patient-assessment-vitals-2022',['D1A']);
-assertExactTasks('aast-standard-psg-2021',['D2A','D2B','D2C']);
-assertExactTasks('aast-pap-acclimation-2022',['D1C','D4A']);
-assertExactTasks('aast-pap-titration-2021',['D4A']);
 assertExactTasks('aast-oral-appliance-titration-2018',['D4B']);
 assertExactTasks('aast-supplemental-low-flow-oxygen',['D4C']);
 
@@ -61,10 +67,23 @@ if(terms.currentAuthority!==false||terms.sourceRole!=='studySupport'||!/must not
 const oxygen=sourceDocs['aast-supplemental-low-flow-oxygen'];
 if(oxygen.sourceType!=='AAST sleep-technologist core competency'||!/not an AAST Technical Guideline/i.test(oxygen.sourceIdentityNote||'')) throw new Error('AAST supplemental oxygen source is not clearly identified as a core competency rather than a technical guideline.');
 
+const scoring=sourceDocs['aasm-scoring-manual-v3'];
+if(scoring.currentAuthority!==true||scoring.sourceRole!=='currentAuthority'||!/Version 3 released February 2023/i.test(scoring.versionStatus||'')) throw new Error('AASM Scoring Manual Version 3 is not protected as the current scoring authority.');
+if(!scoring.erratum||scoring.erratum.date!=='February 2024') throw new Error('AASM Scoring Manual Version 3 erratum metadata is missing.');
+
+const diagnostic=sourceDocs['aasm-adult-osa-diagnostic-testing-2017'];
+if(!/focused update project as in development/i.test(diagnostic.currencyNote||'')) throw new Error('Adult OSA diagnostic guideline update-watch metadata is missing.');
+const hsat=sourceDocs['aast-hsat-2020'];
+if(!/Current AASM diagnostic guidance and current AASM Scoring Manual requirements control/i.test(hsat.authorityBoundary||'')) throw new Error('AAST HSAT authority boundary is missing.');
+for(const sourceId of ['aast-end-tidal-co2-2018','aast-transcutaneous-co2-2018']){
+  if(!/Current AASM Scoring Manual/i.test(sourceDocs[sourceId].authorityBoundary||'')) throw new Error(`${sourceId} does not defer current scoring rules to AASM.`);
+}
+
 const professionalSources=[
-  'aasm-adult-mslt-mwt-2021','aasm-pediatric-mslt-mwt-2024','aasm-oral-appliance-2015','aasm-surgical-referral-osa-2021',
-  'aast-patient-assessment-vitals-2022','aast-standard-psg-2021','aast-pap-acclimation-2022','aast-pap-titration-2021',
-  'aast-oral-appliance-titration-2018','aast-supplemental-low-flow-oxygen'
+  'aasm-scoring-manual-v3','aasm-adult-mslt-mwt-2021','aasm-pediatric-mslt-mwt-2024','aasm-adult-osa-diagnostic-testing-2017',
+  'aasm-oral-appliance-2015','aasm-surgical-referral-osa-2021','aast-patient-assessment-vitals-2022','aast-patient-education-2020',
+  'aast-standard-psg-2021','aast-hsat-2020','aast-end-tidal-co2-2018','aast-transcutaneous-co2-2018',
+  'aast-pap-acclimation-2022','aast-pap-titration-2021','aast-oral-appliance-titration-2018','aast-supplemental-low-flow-oxygen'
 ];
 for(const sourceId of professionalSources){
   const source=sourceDocs[sourceId];
@@ -75,7 +94,7 @@ if(!adult.erratum||adult.erratum.doi!=='10.5664/jcsm.10100') throw new Error('Ad
 const surgery=sourceDocs['aasm-surgical-referral-osa-2021'];
 if(!/replaces the previously published 2010 AASM surgical guideline/i.test(surgery.currencyNote||'')) throw new Error('AASM surgical-referral supersession note is missing.');
 
-for(const taskCode of ['D1A','D1C','D2A','D2B','D2C','D4A','D4B','D4C']){
+for(const taskCode of officialTasks){
   const sequence=plans[taskCode].sequence.map(item=>item.sourceId);
   const fundamentalsIndex=sequence.indexOf('fundamentals-sleep-technology-3e');
   if(fundamentalsIndex<0) continue;
@@ -86,12 +105,12 @@ for(const taskCode of ['D1A','D1C','D2A','D2B','D2C','D4A','D4B','D4C']){
 console.log(JSON.stringify({
   sourceFiles:manifest.sourceFiles.length,
   brptBlueprintFirstAcrossTasks:true,
-  adultMsltTasks:tasksUsing('aasm-adult-mslt-mwt-2021'),
-  pediatricMsltTasks:tasksUsing('aasm-pediatric-mslt-mwt-2024'),
-  alternativeTherapySources:tasksUsing('aasm-oral-appliance-2015').length+tasksUsing('aasm-surgical-referral-osa-2021').length+tasksUsing('aast-oral-appliance-titration-2018').length,
-  oxygenCompetencyTasks:tasksUsing('aast-supplemental-low-flow-oxygen'),
+  allTwelveTasksProfessionalBeforeTextbook:true,
+  patientEducationTasks:tasksUsing('aast-patient-education-2020'),
+  hsatTasks:tasksUsing('aast-hsat-2020'),
+  co2TechnicalGuidance:[tasksUsing('aast-end-tidal-co2-2018'),tasksUsing('aast-transcutaneous-co2-2018')],
+  scoringManualCurrentAuthority:true,
+  diagnosticGuidelineUpdateWatch:true,
   aastTerminologyBoundaryProtected:true,
-  oxygenSourceTypeProtected:true,
-  professionalGuidanceBeforeFundamentals:true,
   sectionReferencesValidated:true
 },null,2));
