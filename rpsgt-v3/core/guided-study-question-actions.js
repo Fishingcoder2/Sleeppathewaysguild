@@ -48,8 +48,10 @@
     if(!panel||checkpointHost.querySelector('.answer-status')) return;
     const heading=panel.querySelector('h3');
     const paragraphs=[...panel.querySelectorAll('p')].filter(node=>!node.classList.contains('coach-boundary'));
-    if(heading) heading.textContent=coachHeading(question);
-    if(paragraphs[0]) paragraphs[0].textContent=safeCoachClue(question);
+    const nextHeading=coachHeading(question);
+    const nextClue=safeCoachClue(question);
+    if(heading&&heading.textContent!==nextHeading) heading.textContent=nextHeading;
+    if(paragraphs[0]&&paragraphs[0].textContent!==nextClue) paragraphs[0].textContent=nextClue;
   }
 
   async function ensureBlueprint(){
@@ -168,7 +170,8 @@
     const toggle=checkpointHost.querySelector('[data-coach-toggle]');
     const submitted=Boolean(checkpointHost.querySelector('.answer-status'));
     if(!toggle||!submitted) return;
-    toggle.textContent=toggle.getAttribute('aria-expanded')==='true'?'Hide explanation':'Review explanation';
+    const label=toggle.getAttribute('aria-expanded')==='true'?'Hide explanation':'Review explanation';
+    if(toggle.textContent!==label) toggle.textContent=label;
   }
 
   async function enhance(){
@@ -180,8 +183,8 @@
       await ensureBlueprint();
       const question=await resolveCurrentQuestion();
       if(!question||!pane.isConnected) return;
-      enhanceCoach(question);
       if(pane.querySelector('[data-guided-question-actions]')) return;
+      enhanceCoach(question);
       const options=pane.querySelector('.checkpoint-options');
       if(options) options.insertAdjacentElement('afterend',makeActions(question));
     }catch(error){console.warn('Guided Study question actions were not added.',error);}finally{pending.delete(pane);}
