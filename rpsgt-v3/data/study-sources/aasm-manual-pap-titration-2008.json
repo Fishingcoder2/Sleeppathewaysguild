@@ -1,0 +1,24 @@
+{
+  "id":"aasm-manual-pap-titration-2008",
+  "shortTitle":"AASM Manual PAP Titration Guideline",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"AASM PAP titration clinical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2008,
+  "verifiedAt":"2026-08-07",
+  "citation":"Positive Airway Pressure Titration Task Force of the American Academy of Sleep Medicine. Clinical guidelines for the manual titration of positive airway pressure in patients with obstructive sleep apnea. J Clin Sleep Med. 2008;4(2):157-171.",
+  "officialUrl":"https://aasm.org/resources/clinicalguidelines/040210.pdf",
+  "currencyNote":"AASM continues to list Manual Titration of Positive Airway Pressure in OSA in its active practice-guideline index when verified 2026-08-07. Because this source is older, current AASM Scoring Manual rules and newer applicable PAP treatment guidance must control when newer requirements differ.",
+  "bestFor":"Manual CPAP/BPAP titration framework, pre-titration education/acclimatization, event-driven pressure adjustment concepts, treatment-response assessment, and titration quality concepts for OSA.",
+  "mappedTaskCodes":["D4A"],
+  "mappingRationale":{"D4A":"Directly addresses manual PAP administration and titration during attended PSG."},
+  "copyrightUse":"Use citation, high-level guideline topics, original summaries, and learning objectives. Do not reproduce substantial titration algorithms, pressure tables, or recommendation wording.",
+  "sections":[
+    {"id":"aasm-manual-pap-scope","label":"Scope and manual PAP titration framework"},
+    {"id":"aasm-manual-pap-prep","label":"Education, mask fitting, and acclimatization before titration"},
+    {"id":"aasm-manual-pap-adjustment","label":"Event-driven CPAP/BPAP adjustment concepts"},
+    {"id":"aasm-manual-pap-switching","label":"CPAP intolerance and BPAP transition concepts"},
+    {"id":"aasm-manual-pap-quality","label":"Titration quality and treatment-response assessment"}
+  ]
+}
