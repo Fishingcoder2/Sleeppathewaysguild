@@ -1,0 +1,24 @@
+{
+  "id":"aasm-adult-osa-diagnostic-testing-2017",
+  "shortTitle":"AASM Adult OSA Diagnostic Testing Guideline",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"clinical practice guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2017,
+  "verifiedAt":"2026-08-07",
+  "citation":"Kapur VK, Auckley DH, Chowdhuri S, et al. Clinical practice guideline for diagnostic testing for adult obstructive sleep apnea: an American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med. 2017;13(3):479-504.",
+  "officialPdf":"https://www.aasm.org/resources/clinicalguidelines/diagnostic-testing-osa.pdf",
+  "currencyNote":"The 2017 guideline remains the existing AASM adult OSA diagnostic-testing guideline, but AASM lists a focused update project as in development in 2026. Re-verify before production release and before relying on version-sensitive patient-selection details.",
+  "bestFor":"Adult OSA diagnostic-testing pathway, when PSG versus HSAT is appropriate, technically adequate HSAT concepts, and escalation after negative/inconclusive/technically inadequate HSAT.",
+  "mappedTaskCodes":["D2B"],
+  "mappingRationale":{"D2B":"Provides the clinical diagnostic-testing framework that should govern how HSAT technical guidance is interpreted during procedure-related study preparation and performance."},
+  "copyrightUse":"Use citation, high-level recommendation topics, original summaries, and learning objectives. Do not reproduce substantial recommendation text, evidence tables, or protected material.",
+  "sections":[
+    {"id":"aasm-dx-osa-framework","label":"Adult OSA diagnostic-testing framework"},
+    {"id":"aasm-dx-osa-psg-hsat","label":"PSG versus technically adequate HSAT"},
+    {"id":"aasm-dx-osa-hsat-followup","label":"Negative, inconclusive, or technically inadequate HSAT follow-up"},
+    {"id":"aasm-dx-osa-complex-patients","label":"Clinical situations favoring polysomnography over HSAT"},
+    {"id":"aasm-dx-osa-update-watch","label":"AASM focused diagnostic-guideline update in development"}
+  ]
+}
