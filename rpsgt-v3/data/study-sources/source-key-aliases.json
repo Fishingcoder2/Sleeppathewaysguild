@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "verifiedAt": "2026-08-07",
-  "policy": "Level 1 exact resolution may use only source-record referenceKeys or aliases explicitly listed here. Similar wording is never enough to invent provenance. Context-only keys are excluded from learner-facing exact recommendations. Learning/concept keys describe what to study rather than where the fact came from and must not be counted as missing provenance. Pending source keys remain unresolved until a specific source identity is verified and structured.",
+  "policy": "Level 1 exact resolution may use only source-record referenceKeys or aliases explicitly listed here. Similar wording is never enough to invent provenance. Context-only keys are excluded from learner-facing exact recommendations. Learning/concept keys describe what to study rather than where the fact came from. Legacy umbrella keys are retained for migration/QA but are intentionally ignored as exact provenance because historical usage spans multiple specific sources. Pending source keys are reserved only for genuinely unresolved source identities.",
   "contextOnlyKeys": ["brpt-blueprint","brpt-handbook","brpt-refs"],
   "verifiedAliases": {
     "aasm-scoring":"aasm-scoring-manual-v3",
@@ -56,8 +56,9 @@
     "sleep-hygiene":"Patient-education concept spanning multiple sources.",
     "uas-therapy":"Therapy concept; exact source provenance is separate."
   },
-  "pendingSourceKeys": {
-    "aasm-mslt-mwt":"Ambiguous between adult and pediatric protocol identities without additional question-level evidence.",
-    "aasm-pap-titration":"Potentially overlaps the AASM manual titration guideline and other PAP guidance; do not infer the exact source from this shorthand alone."
-  }
+  "legacyUmbrellaKeys": {
+    "aasm-mslt-mwt":"Historical umbrella key used across adult/pediatric daytime testing, reporting, medication, safety, and calculation questions. Do not map it to one protocol; use specific adult/pediatric MSLT/MWT keys and other exact sources already present on the question.",
+    "aasm-pap-titration":"Historical umbrella key used broadly across PAP, oxygen, calculations, troubleshooting, technical, and reporting questions. Do not equate it with the 2008 manual PAP titration guideline; use the explicit aasm-manual-pap-titration key and other exact current sources where present."
+  },
+  "pendingSourceKeys": {}
 }
