@@ -7,6 +7,7 @@ const root=resolve(here,'..');
 const sourceRoot=join(root,'data','study-sources');
 const manifest=JSON.parse(await readFile(join(sourceRoot,'manifest.json'),'utf8'));
 const inventory=JSON.parse(await readFile(join(sourceRoot,manifest.brptMasterReferenceInventoryFile),'utf8'));
+const holdings=JSON.parse(await readFile(join(sourceRoot,manifest.libraryHoldingsAuditFile),'utf8'));
 
 if(inventory.officialExamDocuments.length!==2) throw new Error('BRPT master inventory must keep Blueprint and Candidate Handbook as two separate official exam documents.');
 if(inventory.primaryManualsAndClassification.length!==2) throw new Error('BRPT master inventory must include the AASM Scoring Manual and ICSD as separate core references.');
@@ -15,6 +16,7 @@ if(inventory.brptListedTextbooks.length!==5) throw new Error(`Expected 5 BRPT-li
 if(inventory.auditSummary.brptRecommendedUniverseCountExcludingExamDocuments!==20) throw new Error('BRPT recommended-reading universe count must remain 20 unless the official BRPT page is re-verified and intentionally updated.');
 
 const all=[...inventory.officialExamDocuments,...inventory.primaryManualsAndClassification,...inventory.brptListedAasmGuidance,...inventory.brptListedTextbooks];
+const recommended=[...inventory.primaryManualsAndClassification,...inventory.brptListedAasmGuidance,...inventory.brptListedTextbooks];
 const ids=new Set();
 for(const item of all){
   if(!item.id||!item.title) throw new Error('Every master-inventory record requires id and title.');
@@ -35,18 +37,32 @@ if(!/older full ICSD-3 copy/i.test(icsd.libraryStatus||'')||!/ICSD-3-TR, 2023/i.
 const rls=inventory.brptListedAasmGuidance.find(item=>item.id==='aasm-rls-plmd-2025');
 if(!/2025/.test(rls.verifiedIdentity||'')||!/current/i.test(rls.role||'')) throw new Error('Current 2025 AASM RLS/PLMD guideline identity is not protected.');
 
-const structured=all.filter(item=>/structured/.test(String(item.v3Status||''))).length;
-const gaps=inventory.auditSummary.knownPendingOrEditionGapAmongBrptRecommended;
-if(structured<11) throw new Error(`Structured BRPT-reference coverage regressed below the audited baseline: ${structured}.`);
-if(gaps!==9) throw new Error(`Expected 9 audited BRPT source/edition gaps, found ${gaps}. Re-verify the official page before changing this baseline.`);
+const manifestIds=new Set(manifest.sourceFiles.map(file=>file.replace(/\.json$/,'')));
+const structuredCurrent=recommended.filter(item=>manifestIds.has(item.sourceId||item.id)||manifestIds.has(item.id)).length;
+const currentGaps=recommended.length-structuredCurrent;
+if(structuredCurrent!==14) throw new Error(`Expected 14 currently structured BRPT recommended-reading sources after the Drive holdings audit, found ${structuredCurrent}.`);
+if(currentGaps!==6) throw new Error(`Expected 6 remaining BRPT source/edition gaps after the Drive holdings audit, found ${currentGaps}.`);
+
+const holdingById=new Map((holdings.verifiedHoldings||[]).map(item=>[item.sourceId,item]));
+for(const sourceId of ['aasm-rls-plmd-2025','aasm-central-hypersomnolence-2021','aasm-osa-longitudinal-testing-2021']){
+  const holding=holdingById.get(sourceId);
+  if(!holding||holding.identityVerifiedFromContent!==true) throw new Error(`${sourceId} is missing content-verified Guild Drive provenance.`);
+  if(!manifestIds.has(sourceId)) throw new Error(`${sourceId} has verified Drive provenance but is not integrated into the V3 source manifest.`);
+}
+for(const sourceId of ['aasm-pediatric-respiratory-psg-2011','aasm-pediatric-bedtime-behavior-2006']){
+  const holding=holdingById.get(sourceId);
+  if(!holding||holding.identityVerifiedFromContent!==true) throw new Error(`${sourceId} local holding is not protected as content-verified.`);
+}
 
 console.log(JSON.stringify({
   officialExamDocuments:inventory.officialExamDocuments.length,
   recommendedUniverse:inventory.auditSummary.brptRecommendedUniverseCountExcludingExamDocuments,
   aasmGuidance:inventory.brptListedAasmGuidance.length,
   textbooks:inventory.brptListedTextbooks.length,
-  structuredBaseline:structured,
-  auditedGaps:gaps,
+  originalAuditGapSnapshot:inventory.auditSummary.knownPendingOrEditionGapAmongBrptRecommended,
+  structuredCurrent,
+  currentGaps,
+  driveHoldingsVerified:true,
   icsdCurrencyBoundary:true,
   sleepMedicinePearlsEditionBoundary:true,
   pediatricSleepPearlsGapProtected:true,
