@@ -12,6 +12,7 @@
     ambiguousKeys:new Set(),
     contextOnlyKeys:new Set(),
     conceptKeys:new Set(),
+    legacyUmbrellaKeys:new Set(),
     pendingSourceKeys:new Set()
   };
   const text=value=>String(value==null?'':value).trim();
@@ -68,6 +69,7 @@
       state.ambiguousKeys.clear();
       state.contextOnlyKeys=new Set((Array.isArray(aliases&&aliases.contextOnlyKeys)?aliases.contextOnlyKeys:[]).map(normalizeKey).filter(Boolean));
       state.conceptKeys=new Set(Object.keys(aliases&&aliases.conceptKeys||{}).map(normalizeKey).filter(Boolean));
+      state.legacyUmbrellaKeys=new Set(Object.keys(aliases&&aliases.legacyUmbrellaKeys||{}).map(normalizeKey).filter(Boolean));
       state.pendingSourceKeys=new Set(Object.keys(aliases&&aliases.pendingSourceKeys||{}).map(normalizeKey).filter(Boolean));
 
       sources.forEach(source=>{
@@ -118,6 +120,7 @@
     const ids=[];
     const matchedKeys=[];
     const conceptKeys=[];
+    const legacyKeys=[];
     const unresolvedKeys=[];
     keys.forEach(key=>{
       if(state.contextOnlyKeys.has(key)) return;
@@ -127,6 +130,8 @@
         matchedKeys.push(key);
       }else if(state.conceptKeys.has(key)){
         conceptKeys.push(key);
+      }else if(state.legacyUmbrellaKeys.has(key)){
+        legacyKeys.push(key);
       }else{
         unresolvedKeys.push(key);
       }
@@ -134,7 +139,7 @@
     const firstSeen=new Map();
     ids.forEach((id,index)=>{if(!firstSeen.has(id)) firstSeen.set(id,index);});
     const sourceIds=unique(ids).sort((a,b)=>sourceRank(a)-sourceRank(b)||(firstSeen.get(a)||0)-(firstSeen.get(b)||0));
-    return {sourceIds,matchedKeys:unique(matchedKeys),conceptKeys:unique(conceptKeys),unresolvedKeys:unique(unresolvedKeys)};
+    return {sourceIds,matchedKeys:unique(matchedKeys),conceptKeys:unique(conceptKeys),legacyKeys:unique(legacyKeys),unresolvedKeys:unique(unresolvedKeys)};
   }
 
   function familyScore(family,question){
@@ -171,28 +176,18 @@
 
   function resolutionPayload(level,sourceIds,extra={}){
     const ids=unique(sourceIds).filter(id=>state.sources.has(id)).slice(0,3);
-    return Object.assign({
-      level,
-      sourceIds:ids,
-      titles:ids.map(id=>state.sourceTitles.get(id)||id)
-    },extra);
+    return Object.assign({level,sourceIds:ids,titles:ids.map(id=>state.sourceTitles.get(id)||id)},extra);
   }
 
   function resolveQuestion(question){
     if(!state.loaded||!question) return resolutionPayload('none',[]);
     const exact=exactResolution(question);
-    const evidence={matchedKeys:exact.matchedKeys,conceptKeys:exact.conceptKeys,unresolvedKeys:exact.unresolvedKeys};
-    if(exact.sourceIds.length){
-      return resolutionPayload('exact',exact.sourceIds,evidence);
-    }
+    const evidence={matchedKeys:exact.matchedKeys,conceptKeys:exact.conceptKeys,legacyKeys:exact.legacyKeys,unresolvedKeys:exact.unresolvedKeys};
+    if(exact.sourceIds.length) return resolutionPayload('exact',exact.sourceIds,evidence);
     const topicIds=topicSourceIds(question);
-    if(topicIds.length){
-      return resolutionPayload('topic',topicIds,evidence);
-    }
+    if(topicIds.length) return resolutionPayload('topic',topicIds,evidence);
     const taskIds=taskFallbackSourceIds(question&&question.taskCode);
-    if(taskIds.length){
-      return resolutionPayload('task',taskIds,evidence);
-    }
+    if(taskIds.length) return resolutionPayload('task',taskIds,evidence);
     return resolutionPayload('none',[],evidence);
   }
 
