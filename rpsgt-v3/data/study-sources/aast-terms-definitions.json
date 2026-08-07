@@ -1,1 +1,13 @@
-{"id":"aast-terms-definitions","shortTitle":"AAST Terms and Definitions","year":"library edition","sourceType":"professional terminology reference","bestFor":"Terminology repair, abbreviations, instrumentation vocabulary, testing language, and therapy language.","copyrightUse":"Use as a terminology cross-check. Public learner content must use original definitions or properly attributed brief quotations only.","sections":[{"id":"aast-terms-core","label":"Alphabetical terminology reference"}]}
+{
+  "id":"aast-terms-definitions",
+  "shortTitle":"AAST Terms and Definitions",
+  "publisher":"American Association of Sleep Technologists",
+  "year":"library edition",
+  "sourceType":"professional terminology reference",
+  "sourceRole":"studySupport",
+  "currentAuthority":false,
+  "authorityBoundary":"Terminology support only. This resource must not be substituted for an AAST technical guideline, technical standard, AASM scoring rule, BRPT exam policy, or other controlling professional guidance.",
+  "bestFor":"Terminology repair, abbreviations, instrumentation vocabulary, testing language, and therapy language.",
+  "copyrightUse":"Use as a terminology cross-check. Public learner content must use original definitions or properly attributed brief quotations only.",
+  "sections":[{"id":"aast-terms-core","label":"Alphabetical terminology reference"}]
+}
