@@ -39,6 +39,7 @@
     "artifact-troubleshooting": "Learning concept spanning technical texts and professional guidance.",
     "ekg-tech-support": "Learning/support concept rather than a bibliographic source identity.",
     "filter-sensitivity": "Instrumentation concept rather than a bibliographic source identity.",
+    "hipaa": "Regulatory/privacy learning concept; a single bibliographic source is not implied by this key.",
     "hypersomnia": "Clinical concept spanning ICSD classification and current treatment/testing guidance.",
     "infection": "Safety/infection concept spanning multiple professional sources.",
     "medication-effects": "Learning concept spanning multiple texts and current treatment guidance.",
