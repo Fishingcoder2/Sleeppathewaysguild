@@ -6,16 +6,18 @@ const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,'..');
 const html=await readFile(join(root,'practice.html'),'utf8');
 const css=await readFile(join(root,'assets','practice.css'),'utf8');
+const coachCss=await readFile(join(root,'assets','practice-coach.css'),'utf8');
 const js=await readFile(join(root,'core','practice.js'),'utf8');
 const repair=await readFile(join(root,'core','practice-learner-repair.js'),'utf8');
 const actions=await readFile(join(root,'core','practice-question-actions.js'),'utf8');
+const practiceCoach=await readFile(join(root,'core','practice-coach.js'),'utf8');
 
 const requiredAttributes=[
   'data-practice-load','data-practice-setup','data-practice-mode','data-practice-domain',
   'data-practice-task','data-practice-size','data-mode-notice','data-start-practice',
   'data-practice-shell','data-question-panel','data-question-number','data-question-task',
   'data-question-difficulty','data-question-review','data-question-prompt','data-question-choices','data-practice-question-actions',
-  'data-answer-feedback','data-submit-answer','data-next-question','data-session-answered',
+  'data-practice-coach','data-answer-feedback','data-submit-answer','data-next-question','data-session-answered',
   'data-session-correct','data-session-accuracy','data-session-pool','data-active-mode',
   'data-progress-policy','data-session-complete','data-complete-score','data-complete-percent',
   'data-complete-policy','data-bank-total','data-module-total'
@@ -31,11 +33,19 @@ if(!css.includes('.practice-session:not(.hidden){position:fixed')||!css.includes
 if(!css.includes('touch-action:manipulation')) throw new Error('Practice touch-target optimization is missing.');
 if(!html.includes('core/guided-trail-engine.js')||!html.includes('core/practice-learner-repair.js')) throw new Error('Shared eligibility repair scripts are missing.');
 if(!html.includes('core/practice-question-actions.js')||!html.includes('core/study-resource-catalog.js')) throw new Error('Practice learner action/resource scripts are missing.');
+if(!html.includes('core/coach-bob-engine.js')||!html.includes('core/practice-coach.js')||!html.includes('assets/practice-coach.css')) throw new Error('Practice Coach Bob dependencies are missing.');
 if(!js.includes('data/question-bank/manifest.json')) throw new Error('Practice engine does not load the full-bank manifest.');
 if(!repair.includes('eligibleQuestion(question,question&&question.taskCode)')) throw new Error('Practice repair does not reuse the pure learner eligibility helper.');
 if(!repair.includes("heading.textContent='Recommended study resources'")) throw new Error('Verified resource-title heading is missing.');
 if(!repair.includes("feedback.querySelectorAll('.feedback-references')")) throw new Error('Raw feedback reference removal is missing.');
 for(const hook of ['flaggedIds','reviewLaterIds','addQuestion','aria-live']){if(!actions.includes(hook)) throw new Error(`Practice question actions are missing ${hook}.`);}
+
+// Coach Bob Practice regression contract.
+if(practiceCoach.includes('MutationObserver')) throw new Error('Practice Coach Bob regressed to MutationObserver rendering.');
+for(const token of ["rpsgt:practice-question","[data-submit-answer]","RPSGTCoachBobEngine","RPSGTStudyResourceCatalog","priorPracticeMisses","Verified study resources","Reasoning Compass"]){
+  if(!practiceCoach.includes(token)) throw new Error(`Practice Coach Bob is missing ${token}.`);
+}
+if(!coachCss.includes('.practice-coach-panel')||!coachCss.includes('@media(max-width:800px)')) throw new Error('Practice Coach Bob responsive styling is missing.');
 
 // Practice completion regression contract.
 if(!js.includes('?"Submit Practice":"Next question"')) throw new Error('The final answered Practice question does not expose a clear Submit Practice action.');
@@ -49,4 +59,4 @@ if(!html.includes('not an official BRPT score')) throw new Error('Practice compl
 if(!css.includes('.question-actions .btn.primary')||!css.includes('.practice-question-action-row .btn.secondary')) throw new Error('Practice primary/secondary action hierarchy styling is missing.');
 if(!css.includes('.practice-session:not(.hidden) .question-actions{grid-template-columns:1fr}')) throw new Error('Practice mobile primary action no longer occupies a clear single-column control area.');
 
-console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,mobileModal:true,submitPractice:true,focusedCompletion:true,nextActions:true},null,2));
+console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,mobileModal:true,submitPractice:true,focusedCompletion:true,nextActions:true},null,2));
