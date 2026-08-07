@@ -32,7 +32,10 @@ if(!html.includes('coach-bob-avatar.jpg')) throw new Error('The RPSGT V3 front d
 if(!html.includes('meta name="robots" content="noindex,nofollow"')) throw new Error('Development noindex protection is missing from the RPSGT V3 front door.');
 if(!js.includes("data/brpt-official-resources.json")) throw new Error('Home dashboard does not load the verified BRPT resource catalog.');
 if(!js.includes("data/question-bank/manifest.json")) throw new Error('Home dashboard does not refresh the deployed question-bank count from the manifest.');
+if(!js.includes('promotePrimaryDestinations')||!js.includes("insertAdjacentElement('afterend',destinationSection)")) throw new Error('Primary learning destinations are not promoted directly below the hero.');
 if(!css.includes('.official-resource-grid')||!css.includes('.reasoning-compass')) throw new Error('BRPT resource board or Coach Bob compass styles are missing.');
+if(!css.includes('.front-door-destinations')||!css.includes('@media(min-width:821px) and (max-width:1050px)')) throw new Error('Compact tablet/desktop front-door destination layout is missing.');
+if(!css.includes('.brpt-hero{grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);align-items:start;min-height:0')) throw new Error('Home hero is not explicitly content-height and compact.');
 
 const hierarchy=[
   'BRPT official exam information',
@@ -60,6 +63,9 @@ if(!shell.includes("href='sources-disclosures.html'")) throw new Error('Shared V
 
 console.log(JSON.stringify({
   brptFrontDoor:true,
+  compactHero:true,
+  primaryDestinationsPromoted:true,
+  tabletTwoColumnHero:true,
   officialResourceBoard:true,
   coachBobCharacter:true,
   reasoningCompass:true,
