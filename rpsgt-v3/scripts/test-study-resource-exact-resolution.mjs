@@ -22,13 +22,15 @@ for(const [key,sourceId] of Object.entries(aliases.verifiedAliases||{})){
 for(const key of ['brpt-blueprint','brpt-handbook','brpt-refs']){
   if(!(aliases.contextOnlyKeys||[]).includes(key)) throw new Error(`${key} must remain context-only for learner-facing exact recommendations.`);
 }
-for(const key of ['aasm-mslt-mwt','aasm-pap-titration','atlas-eeg-sleep']){
+for(const key of ['aasm-mslt-mwt','aasm-pap-titration','sleep-medicine-essentials-review']){
   if(!Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},key)) throw new Error(`${key} must remain pending source provenance until exact identity is verified.`);
 }
 for(const key of ['report-math','pediatric-psg','pap-troubleshooting','patient-safety']){
   if(!Object.prototype.hasOwnProperty.call(aliases.conceptKeys||{},key)) throw new Error(`${key} must be classified as a learning/concept key rather than missing provenance.`);
 }
-if(Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},'principles-practice-pediatric-sleep')) throw new Error('Principles and Practice of Pediatric Sleep Medicine should no longer be pending after source-package registration.');
+for(const resolvedKey of ['principles-practice-pediatric-sleep','atlas-eeg-sleep']){
+  if(Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},resolvedKey)) throw new Error(`${resolvedKey} should no longer be pending after verified source-package registration.`);
+}
 
 const previousFetch=globalThis.fetch;
 const previousCatalog=globalThis.RPSGTStudyResourceCatalog;
@@ -73,6 +75,13 @@ try{
   const pediatricPrinciples=catalog.resolveQuestion({taskCode:'D3B',studyRecommendationKeys:['principles-practice-pediatric-sleep'],referenceKeys:[]});
   if(pediatricPrinciples.level!=='exact'||pediatricPrinciples.sourceIds[0]!=='principles-practice-pediatric-sleep-2e') throw new Error('Principles and Practice of Pediatric Sleep Medicine exact source key does not resolve to the verified 2nd-edition source package.');
 
+  const atlas=catalog.resolveQuestion({taskCode:'D3A',studyRecommendationKeys:['atlas-eeg-sleep'],referenceKeys:[]});
+  if(atlas.level!=='exact'||atlas.sourceIds[0]!=='atlas-electroencephalography-sleep-medicine-2012') throw new Error('Sleep EEG atlas exact source key does not resolve to the verified 2012 Attarian/Morgan atlas.');
+  const atlasSource=JSON.parse(await readFile(join(sourceRoot,'atlas-electroencephalography-sleep-medicine-2012.json'),'utf8'));
+  if(atlasSource.currentAuthority!==false||atlasSource.sourceRole!=='studySupport') throw new Error('Sleep EEG atlas must remain supplemental study support.');
+  if(!/AASM Scoring Manual Version 3 controls sleep staging/i.test(atlasSource.authorityBoundary||'')) throw new Error('Sleep EEG atlas does not defer current staging/scoring authority to AASM Version 3.');
+  if(!Array.isArray(atlasSource.editors)||!atlasSource.editors.includes('Magdy Y. Morgan')||atlasSource.editors.includes('Undevia')) throw new Error('Sleep EEG atlas verified editor metadata is not protected.');
+
   const childResp=catalog.resolveQuestion({taskCode:'D2B',referenceKeys:['aasm-child-respiratory-psg'],studyRecommendationKeys:[]});
   if(childResp.level!=='exact'||childResp.sourceIds[0]!=='aasm-pediatric-respiratory-psg-2011') throw new Error('Pediatric respiratory PSG exact alias does not resolve to the verified 2011 AASM source.');
 
@@ -107,6 +116,9 @@ try{
     conceptKeysSeparatedFromProvenance:true,
     pediatricSleepPearlsExact:true,
     pediatricPrinciplesExact:true,
+    sleepEegAtlasExact:true,
+    sleepEegAtlasAuthorityBoundary:true,
+    sleepEegAtlasEditorCorrectionProtected:true,
     pediatricRespiratoryAliasExact:true,
     icsdExact:true,
     topicFallback:true,
