@@ -17,9 +17,7 @@ globalThis.fetch=async input=>{
   try{
     const body=await readFile(join(appRoot,relative),'utf8');
     return {ok:true,status:200,json:async()=>JSON.parse(body)};
-  }catch(error){
-    return {ok:false,status:404,json:async()=>{throw error;}};
-  }
+  }catch(error){return {ok:false,status:404,json:async()=>{throw error;}};}
 };
 delete globalThis.RPSGTStudyResourceCatalog;
 
@@ -34,6 +32,7 @@ try{
   const officialLevels={exact:0,topic:0,task:0,none:0};
   const unresolvedCounts=new Map();
   const conceptCounts=new Map();
+  const legacyCounts=new Map();
   const sourceCounts=new Map();
   const noneIds=[];
   let total=0;
@@ -47,14 +46,10 @@ try{
       const result=catalog.resolveQuestion(question);
       const level=Object.prototype.hasOwnProperty.call(levels,result.level)?result.level:'none';
       levels[level]+=1;
-      if(officialTasks.has(String(question.taskCode||''))){
-        officialTotal+=1;
-        officialLevels[level]+=1;
-      }else{
-        crossTaskTotal+=1;
-      }
+      if(officialTasks.has(String(question.taskCode||''))){officialTotal+=1;officialLevels[level]+=1;} else crossTaskTotal+=1;
       for(const key of result.unresolvedKeys||[]) unresolvedCounts.set(key,(unresolvedCounts.get(key)||0)+1);
       for(const key of result.conceptKeys||[]) conceptCounts.set(key,(conceptCounts.get(key)||0)+1);
+      for(const key of result.legacyKeys||[]) legacyCounts.set(key,(legacyCounts.get(key)||0)+1);
       for(const sourceId of result.sourceIds||[]) sourceCounts.set(sourceId,(sourceCounts.get(sourceId)||0)+1);
       if(level==='none') noneIds.push(String(question.id));
     }
@@ -63,10 +58,11 @@ try{
   if(total!==bankManifest.meta.questionCount) throw new Error(`Question-bank coverage audit read ${total} questions; manifest reports ${bankManifest.meta.questionCount}.`);
   if(officialLevels.none!==0) throw new Error(`Verified resource resolution failed for ${officialLevels.none} official-task questions.`);
   if(levels.exact===0) throw new Error('No questions resolved through Level 1 exact provenance.');
+  if(unresolvedCounts.size!==0) throw new Error(`Full-bank provenance audit still has ${unresolvedCounts.size} unresolved source key(s): ${[...unresolvedCounts.keys()].join(', ')}.`);
 
   const rank=map=>[...map.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
-  const unresolvedTop=rank(unresolvedCounts).slice(0,20).map(([key,count])=>({key,count}));
   const conceptTop=rank(conceptCounts).slice(0,20).map(([key,count])=>({key,count}));
+  const legacyTop=rank(legacyCounts).slice(0,20).map(([key,count])=>({key,count}));
   const sourceTop=rank(sourceCounts).slice(0,15).map(([sourceId,count])=>({sourceId,count}));
   const pct=value=>Number((value*100/Math.max(1,total)).toFixed(1));
 
@@ -79,12 +75,15 @@ try{
     percentages:{exact:pct(levels.exact),topic:pct(levels.topic),task:pct(levels.task),none:pct(levels.none)},
     taskFallbackNeededByCurrentBank:levels.task>0,
     noneIds:noneIds.slice(0,25),
-    distinctUnresolvedSourceKeys:unresolvedCounts.size,
-    unresolvedSourceTop:unresolvedTop,
+    distinctUnresolvedSourceKeys:0,
+    unresolvedSourceTop:[],
+    distinctLegacyUmbrellaKeys:legacyCounts.size,
+    legacyUmbrellaTop:legacyTop,
     distinctConceptKeys:conceptCounts.size,
     conceptTop,
     sourceTop,
-    allOfficialQuestionsHaveVerifiedPath:true
+    allOfficialQuestionsHaveVerifiedPath:true,
+    zeroUnresolvedProvenance:true
   },null,2));
 }finally{
   if(previousFetch===undefined) delete globalThis.fetch; else globalThis.fetch=previousFetch;
