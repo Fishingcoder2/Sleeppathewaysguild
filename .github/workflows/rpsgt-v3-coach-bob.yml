@@ -1,0 +1,48 @@
+name: Validate RPSGT v3 Coach Bob
+
+on:
+  push:
+    branches:
+      - build/rpsgt-v3-modular
+    paths:
+      - rpsgt-v3/core/coach-bob-engine.js
+      - rpsgt-v3/core/guided-study-coach.js
+      - rpsgt-v3/core/guided-study-coach-safety.js
+      - rpsgt-v3/core/guided-study-question-actions.js
+      - rpsgt-v3/study.html
+      - rpsgt-v3/scripts/test-coach-bob-engine.mjs
+      - rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
+      - .github/workflows/rpsgt-v3-coach-bob.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - rpsgt-v3/core/coach-bob-engine.js
+      - rpsgt-v3/core/guided-study-coach.js
+      - rpsgt-v3/core/guided-study-coach-safety.js
+      - rpsgt-v3/core/guided-study-question-actions.js
+      - rpsgt-v3/study.html
+      - rpsgt-v3/scripts/test-coach-bob-engine.mjs
+      - rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
+      - .github/workflows/rpsgt-v3-coach-bob.yml
+
+jobs:
+  validate-coach-bob:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: build/rpsgt-v3-modular
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check Coach Bob module syntax
+        run: |
+          node --check rpsgt-v3/core/coach-bob-engine.js
+          node --check rpsgt-v3/core/guided-study-coach.js
+          node --check rpsgt-v3/core/guided-study-coach-safety.js
+          node --check rpsgt-v3/core/guided-study-question-actions.js
+      - name: Validate Coach Bob reasoning engine
+        run: node rpsgt-v3/scripts/test-coach-bob-engine.mjs
+      - name: Validate Guided Study Coach Bob shell
+        run: node rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
