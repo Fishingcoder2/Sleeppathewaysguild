@@ -1,0 +1,30 @@
+name: Validate RPSGT v3 source authority
+
+on:
+  push:
+    branches:
+      - build/rpsgt-v3-modular
+    paths:
+      - rpsgt-v3/data/study-sources/**
+      - rpsgt-v3/scripts/test-study-source-authority.mjs
+      - .github/workflows/rpsgt-v3-source-authority.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - rpsgt-v3/data/study-sources/**
+      - rpsgt-v3/scripts/test-study-source-authority.mjs
+      - .github/workflows/rpsgt-v3-source-authority.yml
+
+jobs:
+  validate-source-authority:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: build/rpsgt-v3-modular
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate study-source authority and mappings
+        run: node rpsgt-v3/scripts/test-study-source-authority.mjs
