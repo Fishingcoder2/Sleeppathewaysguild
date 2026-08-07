@@ -80,6 +80,12 @@ if(!icsd.libraryAvailability||icsd.libraryAvailability.currentFullTextVerifiedIn
 const requiredIcsdSections=['Insomnia Disorders','Sleep-Related Breathing Disorders','Central Disorders of Hypersomnolence','Circadian Rhythm Sleep-Wake Disorders','Parasomnias','Sleep-Related Movement Disorders'];
 for(const label of requiredIcsdSections){if(!(icsd.sections||[]).some(section=>section.label===label)) throw new Error(`ICSD-3-TR outline is missing ${label}.`);}
 
+const pearls2=sourceDocs['sleep-medicine-pearls-2e'];
+if(!pearls2||pearls2.currentAuthority!==false||pearls2.sourceRole!=='studySupport'||!/active provisional teaching source/i.test(pearls2.usageStatus||'')) throw new Error('Sleep Medicine Pearls 2e is not protected as provisional study support.');
+if(pearls2.currentBrptListedEdition!=='3rd edition') throw new Error('Sleep Medicine Pearls 2e does not identify the current BRPT-listed 3rd edition.');
+if(!/AASM Scoring Manual Version 3 controls current scoring rules/i.test(pearls2.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(pearls2.authorityBoundary||'')) throw new Error('Sleep Medicine Pearls 2e current-authority correction boundary is missing.');
+if(!Array.isArray(pearls2.versionSensitiveReviewRequiredFor)||pearls2.versionSensitiveReviewRequiredFor.length<5) throw new Error('Sleep Medicine Pearls 2e version-sensitive review queue is missing.');
+
 const auditIds=new Set((coreAudit.coreSources||[]).map(item=>item.sourceId));
 for(const id of ['brpt-blueprint','brpt-handbook','aasm-scoring-manual-v3','icsd-3-tr','fundamentals-sleep-technology-3e','polysomnography-sleep-technologist-2014','pediatric-sleep-pearls-1e','clinical-guide-pediatric-sleep-3e','sleep-medicine-pearls-3e']){
   if(!auditIds.has(id)) throw new Error(`Core library audit is missing ${id}.`);
@@ -128,6 +134,7 @@ console.log(JSON.stringify({
   icsdCurrentDiagnosticAuthority:true,
   icsdLegacyFullTextBoundaryProtected:true,
   sleepMedicinePearlsEditionGapProtected:true,
+  sleepMedicinePearls2eProvisionalUseProtected:true,
   pediatricSleepPearlsGapProtected:true,
   scoringManualCurrentAuthority:true,
   diagnosticGuidelineUpdateWatch:true,
