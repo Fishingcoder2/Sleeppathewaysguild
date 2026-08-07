@@ -1,0 +1,25 @@
+{
+  "id":"aasm-pediatric-mslt-mwt-2024",
+  "shortTitle":"AASM Pediatric MSLT Protocol (2024)",
+  "publisher":"American Academy of Sleep Medicine / Journal of Clinical Sleep Medicine",
+  "sourceType":"official AASM protocol guidance",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2024,
+  "verifiedAt":"2026-08-07",
+  "citation":"Maski KP, Amos LB, Carter JC, Koch EE, Kazmi U, Rosen CL. Recommended protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in children: guidance from the American Academy of Sleep Medicine. J Clin Sleep Med. 2024;20(4):631-641.",
+  "doi":"10.5664/jcsm.10974",
+  "libraryFile":"2024 - Pediatric MSLT and MWT Protocols - Maski et al AASM.pdf",
+  "bestFor":"Pediatric PSG-MSLT preparation and administration, pretest sleep scheduling, medication/substance planning, age and developmental considerations, test conditions, data acquisition, documentation, and reporting. The paper states there was insufficient evidence to specify a recommended pediatric MWT protocol and therefore focuses on MSLT.",
+  "mappedTaskCodes":["D2B","D3C"],
+  "mappingRationale":{"D2B":"Directly addresses technical staff administering pediatric PSG-MSLT and protocol execution.","D3C":"Includes data acquisition, documentation, and reporting procedures relevant to report generation and verification."},
+  "copyrightUse":"Use article title, citation, section/box names, original summaries, and learning objectives. Avoid reproducing substantial protocol text, boxes, figures, or tables.",
+  "sections":[
+    {"id":"peds-mslt-background","label":"Background and pediatric testing context"},
+    {"id":"peds-mslt-planning","label":"Planning and sleep-wake scheduling before MSLT"},
+    {"id":"peds-mslt-preparation","label":"MSLT clinical guidance and patient preparation"},
+    {"id":"peds-mslt-protocol","label":"Pediatric MSLT protocol and testing conditions"},
+    {"id":"peds-mslt-acquisition-reporting","label":"Data acquisition, documentation, and reporting procedures"},
+    {"id":"peds-mslt-special-populations","label":"Age, neurodevelopmental/neurological, and delayed-phase considerations"}
+  ]
+}
