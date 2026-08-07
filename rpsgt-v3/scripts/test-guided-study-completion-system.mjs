@@ -45,10 +45,13 @@ assert.ok(reconciled.flashcards.cards.one,'flashcards must survive a Guided Stud
 assert.deepEqual(reconciled.awards.seenCeremonyIds,['guided-task:D1A'],'ceremony history must survive a Guided Study save');
 assert.deepEqual(reconciled.guidedStudy.checkpointHistory,[record],'the newest Guided Study branch must be retained');
 
-const clue=coachSafety.clueForTopic('Medication Effects');
-assert.match(clue,/Medication Effects/);
-assert.doesNotMatch(clue,/SSRI|antidepressant|correct answer/i,'pre-score guidance must remain answer-neutral');
+const safe=coachSafety.safePreAnswer('Start by identifying the signal family.','N2','Use the evidence in the stem.');
+assert.equal(safe,'Start by identifying the signal family.');
+const blocked=coachSafety.safePreAnswer('Choose N2 because it is correct.','N2','Use the evidence in the stem.');
+assert.equal(blocked,'Use the evidence in the stem.','pre-score safety must replace answer-leaking guidance');
+assert.equal(coachSafety.containsAnswer('Remove choices that do not fit.','REM'),false,'short answer tokens must not match inside unrelated words');
+assert.equal(coachSafety.containsAnswer('The answer is REM.','REM'),true);
 assert.equal(engine.VERSION,'1.0.0');
 assert.equal(storageGuard.VERSION,'1.0.0');
-assert.equal(coachSafety.VERSION,'1.0.0');
+assert.equal(coachSafety.VERSION,'2.0.0');
 console.log('Guided Study completion system contract passed.');
