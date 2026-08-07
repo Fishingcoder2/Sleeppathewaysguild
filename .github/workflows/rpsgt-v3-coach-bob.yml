@@ -9,12 +9,18 @@ on:
       - rpsgt-v3/core/guided-study-coach.js
       - rpsgt-v3/core/guided-study-coach-safety.js
       - rpsgt-v3/core/guided-study-question-actions.js
+      - rpsgt-v3/core/practice-coach.js
+      - rpsgt-v3/core/practice-question-actions.js
+      - rpsgt-v3/assets/practice-coach.css
       - rpsgt-v3/study.html
+      - rpsgt-v3/practice.html
       - rpsgt-v3/scripts/test-coach-bob-engine.mjs
       - rpsgt-v3/scripts/test-guided-trail-system.mjs
       - rpsgt-v3/scripts/test-guided-trail-shell.mjs
       - rpsgt-v3/scripts/test-guided-study-completion-system.mjs
       - rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
+      - rpsgt-v3/scripts/test-practice-coach.mjs
+      - rpsgt-v3/scripts/test-practice-shell.mjs
       - .github/workflows/rpsgt-v3-coach-bob.yml
   pull_request:
     branches:
@@ -24,12 +30,18 @@ on:
       - rpsgt-v3/core/guided-study-coach.js
       - rpsgt-v3/core/guided-study-coach-safety.js
       - rpsgt-v3/core/guided-study-question-actions.js
+      - rpsgt-v3/core/practice-coach.js
+      - rpsgt-v3/core/practice-question-actions.js
+      - rpsgt-v3/assets/practice-coach.css
       - rpsgt-v3/study.html
+      - rpsgt-v3/practice.html
       - rpsgt-v3/scripts/test-coach-bob-engine.mjs
       - rpsgt-v3/scripts/test-guided-trail-system.mjs
       - rpsgt-v3/scripts/test-guided-trail-shell.mjs
       - rpsgt-v3/scripts/test-guided-study-completion-system.mjs
       - rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
+      - rpsgt-v3/scripts/test-practice-coach.mjs
+      - rpsgt-v3/scripts/test-practice-shell.mjs
       - .github/workflows/rpsgt-v3-coach-bob.yml
 
 jobs:
@@ -48,6 +60,7 @@ jobs:
           node --check rpsgt-v3/core/guided-study-coach.js
           node --check rpsgt-v3/core/guided-study-coach-safety.js
           node --check rpsgt-v3/core/guided-study-question-actions.js
+          node --check rpsgt-v3/core/practice-coach.js
       - name: Validate Coach Bob reasoning engine
         run: node rpsgt-v3/scripts/test-coach-bob-engine.mjs
       - name: Validate Guided Trail system
@@ -58,3 +71,7 @@ jobs:
         run: node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
       - name: Validate Guided Study Coach Bob shell
         run: node rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
+      - name: Validate Practice Coach Bob
+        run: |
+          node rpsgt-v3/scripts/test-practice-coach.mjs
+          node rpsgt-v3/scripts/test-practice-shell.mjs
