@@ -1,0 +1,20 @@
+{
+  "id":"brpt-handbook",
+  "shortTitle":"BRPT RPSGT Candidate Handbook",
+  "publisher":"Board of Registered Polysomnographic Technologists",
+  "sourceType":"official candidate handbook",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://brpt.org/rpsgt/rpsgt-handbook/",
+  "bestFor":"Credential process, exam administration, eligibility/policy orientation, testing procedures, scoring/reporting orientation, and official preparation expectations.",
+  "copyrightUse":"Use concise original summaries and public navigation facts. Link learners to BRPT for current requirements and full policy wording.",
+  "sections":[
+    {"id":"brpt-handbook-intro","label":"Introduction and credential purpose"},
+    {"id":"brpt-handbook-exam-overview","label":"Examination overview"},
+    {"id":"brpt-handbook-blueprint","label":"Current RPSGT exam blueprint and exam items"},
+    {"id":"brpt-handbook-test-session","label":"Testing session and Pearson VUE administration"},
+    {"id":"brpt-handbook-scoring","label":"Test scoring and score reporting"},
+    {"id":"brpt-handbook-primary-references","label":"Primary references and preparation guidance"}
+  ]
+}
