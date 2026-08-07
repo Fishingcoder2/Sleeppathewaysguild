@@ -312,7 +312,7 @@
     appendQualityDetails(feedback,question);
     $("[data-submit-answer]").classList.add("hidden");
     $("[data-next-question]").classList.remove("hidden");
-    $("[data-next-question]").textContent=state.index===state.session.length-1?"View session result":"Next question";
+    $("[data-next-question]").textContent=state.index===state.session.length-1?"Submit Practice":"Next question";
     recordAnswer(question,isCorrect,selectedAnswer);
     updateSessionStats();
   }
@@ -337,6 +337,7 @@
     $("[data-complete-policy]").textContent=state.mode==="quality"
       ?"This quality-review session was not added to learner progress, missed questions, mastery, readiness, or reports."
       :"These answers were recorded only in the new RPSGT v3 learner record.";
+    if(typeof complete.focus==="function") complete.focus({preventScroll:false});
   }
 
   function changeFilters(){
