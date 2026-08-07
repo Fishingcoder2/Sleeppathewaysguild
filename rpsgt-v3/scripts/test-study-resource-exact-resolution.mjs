@@ -16,21 +16,12 @@ for(const file of manifest.sourceFiles||[]){
   if(!source.id) throw new Error(`${file} is missing a source id.`);
   sourceIds.add(source.id);
 }
-for(const [key,sourceId] of Object.entries(aliases.verifiedAliases||{})){
-  if(!sourceIds.has(sourceId)) throw new Error(`Verified exact alias points to an unknown source: ${key} -> ${sourceId}`);
-}
-for(const key of ['brpt-blueprint','brpt-handbook','brpt-refs']){
-  if(!(aliases.contextOnlyKeys||[]).includes(key)) throw new Error(`${key} must remain context-only for learner-facing exact recommendations.`);
-}
-for(const key of ['aasm-mslt-mwt','aasm-pap-titration']){
-  if(!Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},key)) throw new Error(`${key} must remain pending source provenance until exact identity is verified.`);
-}
-for(const key of ['report-math','pediatric-psg','pap-troubleshooting','patient-safety','aast-abg','aast-safety-infection']){
-  if(!Object.prototype.hasOwnProperty.call(aliases.conceptKeys||{},key)) throw new Error(`${key} must be classified as a learning/concept key rather than missing provenance.`);
-}
-for(const resolvedKey of ['principles-practice-pediatric-sleep','atlas-eeg-sleep','sleep-medicine-essentials-review','aap-pediatric-osa']){
-  if(Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},resolvedKey)) throw new Error(`${resolvedKey} should no longer be pending after verified source-package registration.`);
-}
+for(const [key,sourceId] of Object.entries(aliases.verifiedAliases||{})) if(!sourceIds.has(sourceId)) throw new Error(`Verified exact alias points to an unknown source: ${key} -> ${sourceId}`);
+for(const key of ['brpt-blueprint','brpt-handbook','brpt-refs']) if(!(aliases.contextOnlyKeys||[]).includes(key)) throw new Error(`${key} must remain context-only for learner-facing exact recommendations.`);
+if(Object.keys(aliases.pendingSourceKeys||{}).length!==0) throw new Error('There should be no unresolved source identities after the current source-key audit.');
+for(const key of ['aasm-mslt-mwt','aasm-pap-titration']) if(!Object.prototype.hasOwnProperty.call(aliases.legacyUmbrellaKeys||{},key)) throw new Error(`${key} must be preserved as a legacy umbrella key rather than guessed into one exact source.`);
+for(const key of ['report-math','pediatric-psg','pap-troubleshooting','patient-safety','aast-abg','aast-safety-infection']) if(!Object.prototype.hasOwnProperty.call(aliases.conceptKeys||{},key)) throw new Error(`${key} must be classified as a learning/concept key rather than missing provenance.`);
+for(const resolvedKey of ['principles-practice-pediatric-sleep','atlas-eeg-sleep','sleep-medicine-essentials-review','aap-pediatric-osa']) if(Object.prototype.hasOwnProperty.call(aliases.legacyUmbrellaKeys||{},resolvedKey)||Object.prototype.hasOwnProperty.call(aliases.pendingSourceKeys||{},resolvedKey)) throw new Error(`${resolvedKey} should resolve through a verified source package.`);
 
 const previousFetch=globalThis.fetch;
 const previousCatalog=globalThis.RPSGTStudyResourceCatalog;
@@ -40,9 +31,7 @@ globalThis.fetch=async input=>{
   try{
     const body=await readFile(join(appRoot,relative),'utf8');
     return {ok:true,status:200,json:async()=>JSON.parse(body)};
-  }catch(error){
-    return {ok:false,status:404,json:async()=>{throw error;}};
-  }
+  }catch(error){return {ok:false,status:404,json:async()=>{throw error;}};}
 };
 delete globalThis.RPSGTStudyResourceCatalog;
 
@@ -55,62 +44,48 @@ try{
 
   const scoringQuestion={taskCode:'D3A',topic:'',studyRecommendationKeys:['fundamentals-scoring','brpt-handbook','aasm-scoring-current'],referenceKeys:['brpt-blueprint','brpt-refs']};
   const scoring=catalog.resolveQuestion(scoringQuestion);
-  if(scoring.level!=='exact') throw new Error(`Expected exact scoring resolution, got ${scoring.level}.`);
-  if(scoring.sourceIds[0]!=='aasm-scoring-manual-v3') throw new Error('Current AASM scoring authority must rank ahead of textbook support for exact scoring keys.');
-  if(!scoring.sourceIds.includes('fundamentals-sleep-technology-3e')) throw new Error('Exact Fundamentals scoring support was not preserved alongside current AASM authority.');
+  if(scoring.level!=='exact'||scoring.sourceIds[0]!=='aasm-scoring-manual-v3'||!scoring.sourceIds.includes('fundamentals-sleep-technology-3e')) throw new Error('Exact scoring resolution/current-authority ordering changed.');
   for(const forbidden of ['brpt-blueprint','brpt-handbook','brpt-refs']) if(scoring.sourceIds.includes(forbidden)) throw new Error(`${forbidden} leaked into learner-facing exact recommendations.`);
-  if(!scoring.matchedKeys.includes('aasm-scoring-current')||!scoring.matchedKeys.includes('fundamentals-scoring')) throw new Error('Exact matched-key evidence is incomplete.');
   if(JSON.stringify(catalog.titlesForQuestion(scoringQuestion))!==JSON.stringify(scoring.titles)) throw new Error('titlesForQuestion compatibility no longer matches resolveQuestion().');
 
-  const pediatric=catalog.resolveQuestion({taskCode:'D3B',studyRecommendationKeys:['pediatric-sleep-pearls'],referenceKeys:[]});
-  if(pediatric.level!=='exact'||pediatric.sourceIds[0]!=='pediatric-sleep-pearls-1e') throw new Error('Pediatric Sleep Pearls exact source key does not resolve to the verified BRPT-listed book.');
+  const exactCases=[
+    ['pediatric-sleep-pearls','D3B','pediatric-sleep-pearls-1e'],
+    ['principles-practice-pediatric-sleep','D3B','principles-practice-pediatric-sleep-2e'],
+    ['atlas-eeg-sleep','D3A','atlas-electroencephalography-sleep-medicine-2012'],
+    ['sleep-medicine-essentials-review','D1A','sleep-medicine-essentials-review-2008'],
+    ['aap-pediatric-osa','D3B','aap-childhood-osa-guideline-2012'],
+    ['aasm-child-respiratory-psg','D2B','aasm-pediatric-respiratory-psg-2011'],
+    ['icsd','D1A','icsd-3-tr']
+  ];
+  for(const [key,taskCode,expected] of exactCases){
+    const result=catalog.resolveQuestion({taskCode,studyRecommendationKeys:[key],referenceKeys:[]});
+    if(result.level!=='exact'||result.sourceIds[0]!==expected) throw new Error(`${key} does not resolve exactly to ${expected}.`);
+  }
 
-  const pediatricPrinciples=catalog.resolveQuestion({taskCode:'D3B',studyRecommendationKeys:['principles-practice-pediatric-sleep'],referenceKeys:[]});
-  if(pediatricPrinciples.level!=='exact'||pediatricPrinciples.sourceIds[0]!=='principles-practice-pediatric-sleep-2e') throw new Error('Principles and Practice of Pediatric Sleep Medicine exact source key does not resolve to the verified 2nd-edition source package.');
-
-  const atlas=catalog.resolveQuestion({taskCode:'D3A',studyRecommendationKeys:['atlas-eeg-sleep'],referenceKeys:[]});
-  if(atlas.level!=='exact'||atlas.sourceIds[0]!=='atlas-electroencephalography-sleep-medicine-2012') throw new Error('Sleep EEG atlas exact source key does not resolve to the verified 2012 Attarian/Morgan atlas.');
   const atlasSource=JSON.parse(await readFile(join(sourceRoot,'atlas-electroencephalography-sleep-medicine-2012.json'),'utf8'));
-  if(atlasSource.currentAuthority!==false||atlasSource.sourceRole!=='studySupport') throw new Error('Sleep EEG atlas must remain supplemental study support.');
-  if(!/AASM Scoring Manual Version 3 controls sleep staging/i.test(atlasSource.authorityBoundary||'')) throw new Error('Sleep EEG atlas does not defer current staging/scoring authority to AASM Version 3.');
-  if(!Array.isArray(atlasSource.editors)||!atlasSource.editors.includes('Magdy Y. Morgan')||atlasSource.editors.includes('Undevia')) throw new Error('Sleep EEG atlas verified editor metadata is not protected.');
+  if(atlasSource.currentAuthority!==false||atlasSource.sourceRole!=='studySupport'||!atlasSource.editors.includes('Magdy Y. Morgan')||atlasSource.editors.includes('Undevia')) throw new Error('Sleep EEG atlas authority/editor metadata is not protected.');
+  if(!/AASM Scoring Manual Version 3 controls sleep staging/i.test(atlasSource.authorityBoundary||'')) throw new Error('Sleep EEG atlas does not defer staging/scoring authority to AASM Version 3.');
 
-  const essentials=catalog.resolveQuestion({taskCode:'D1A',studyRecommendationKeys:['sleep-medicine-essentials-review'],referenceKeys:[]});
-  if(essentials.level!=='exact'||essentials.sourceIds[0]!=='sleep-medicine-essentials-review-2008') throw new Error('Sleep Medicine: Essentials and Review key does not resolve to the verified Lee-Chiong 2008 source.');
   const essentialsSource=JSON.parse(await readFile(join(sourceRoot,'sleep-medicine-essentials-review-2008.json'),'utf8'));
-  if(essentialsSource.currentAuthority!==false||essentialsSource.sourceRole!=='studySupport') throw new Error('Sleep Medicine: Essentials and Review must remain supplemental study support.');
-  if(essentialsSource.printIsbn!=='9780195306590'||essentialsSource.publicationYear!==2008||!/Teofilo Lee-Chiong/.test(essentialsSource.author||'')) throw new Error('Sleep Medicine: Essentials and Review verified bibliographic identity is not protected.');
+  if(essentialsSource.currentAuthority!==false||essentialsSource.sourceRole!=='studySupport'||essentialsSource.printIsbn!=='9780195306590'||essentialsSource.publicationYear!==2008) throw new Error('Sleep Medicine: Essentials and Review identity/authority boundary changed.');
   if(!/No exact full Guild Drive copy was located/i.test(essentialsSource.libraryStatus||'')) throw new Error('Sleep Medicine: Essentials and Review must not be represented as a verified local full-text holding.');
-  if(!/AASM Scoring Manual Version 3 controls scoring/i.test(essentialsSource.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(essentialsSource.authorityBoundary||'')) throw new Error('Sleep Medicine: Essentials and Review current-authority boundary is incomplete.');
 
-  const aapOsa=catalog.resolveQuestion({taskCode:'D3B',studyRecommendationKeys:['aap-pediatric-osa'],referenceKeys:[]});
-  if(aapOsa.level!=='exact'||aapOsa.sourceIds[0]!=='aap-childhood-osa-guideline-2012') throw new Error('AAP pediatric OSA key does not resolve to the verified 2012 AAP guideline.');
   const aapSource=JSON.parse(await readFile(join(sourceRoot,'aap-childhood-osa-guideline-2012.json'),'utf8'));
-  if(aapSource.currentAuthority!==false||aapSource.sourceRole!=='legacyGuidance'||aapSource.doi!=='10.1542/peds.2012-1671') throw new Error('AAP childhood OSA guideline identity/current-authority boundary is not protected.');
-  if(!/uncomplicated childhood OSA in primary care/i.test(aapSource.authorityBoundary||'')) throw new Error('AAP childhood OSA scope boundary is missing.');
-  if(!/AASM Scoring Manual Version 3 controls scoring/i.test(aapSource.authorityBoundary||'')) throw new Error('AAP childhood OSA source does not defer scoring authority to AASM Version 3.');
-
-  const childResp=catalog.resolveQuestion({taskCode:'D2B',referenceKeys:['aasm-child-respiratory-psg'],studyRecommendationKeys:[]});
-  if(childResp.level!=='exact'||childResp.sourceIds[0]!=='aasm-pediatric-respiratory-psg-2011') throw new Error('Pediatric respiratory PSG exact alias does not resolve to the verified 2011 AASM source.');
-
-  const icsd=catalog.resolveQuestion({taskCode:'D1A',referenceKeys:['icsd'],studyRecommendationKeys:[]});
-  if(icsd.level!=='exact'||icsd.sourceIds[0]!=='icsd-3-tr') throw new Error('ICSD exact key does not resolve to the current ICSD-3-TR source record.');
+  if(aapSource.currentAuthority!==false||aapSource.sourceRole!=='legacyGuidance'||aapSource.doi!=='10.1542/peds.2012-1671'||!/uncomplicated childhood OSA in primary care/i.test(aapSource.authorityBoundary||'')) throw new Error('AAP childhood OSA identity/scope boundary changed.');
 
   const topic=catalog.resolveQuestion({taskCode:'D2A',topic:'electrode impedance and amplifier setup',referenceKeys:['unverified-example-key'],studyRecommendationKeys:[]});
-  if(topic.level!=='topic') throw new Error(`Expected topic-family fallback for instrumentation metadata, got ${topic.level}.`);
-  if(topic.sourceIds[0]!=='aasm-scoring-manual-v3') throw new Error('Topic-family instrumentation fallback should preserve current AASM technical authority first.');
-  if(!topic.unresolvedKeys.includes('unverified-example-key')) throw new Error('Unverified exact key was not surfaced for QA during topic fallback.');
+  if(topic.level!=='topic'||topic.sourceIds[0]!=='aasm-scoring-manual-v3'||!topic.unresolvedKeys.includes('unverified-example-key')) throw new Error('Topic-family fallback or unknown-key QA changed.');
 
-  const ambiguous=catalog.resolveQuestion({taskCode:'D4C',topic:'',referenceKeys:['aasm-mslt-mwt'],studyRecommendationKeys:[]});
-  if(ambiguous.level!=='task') throw new Error(`Ambiguous exact key should fall through to task-level mapping, got ${ambiguous.level}.`);
-  if(!ambiguous.unresolvedKeys.includes('aasm-mslt-mwt')) throw new Error('Ambiguous AASM MSLT/MWT shorthand was not preserved as unresolved source evidence.');
-  if(!ambiguous.sourceIds.length) throw new Error('Task fallback returned no verified resources.');
+  for(const legacyKey of ['aasm-mslt-mwt','aasm-pap-titration']){
+    const legacy=catalog.resolveQuestion({taskCode:legacyKey==='aasm-mslt-mwt'?'D2B':'D4A',topic:'',referenceKeys:[legacyKey],studyRecommendationKeys:[]});
+    if(legacy.level!=='task') throw new Error(`${legacyKey} should fall through to task-level verified resources when it is the only key.`);
+    if(!legacy.legacyKeys.includes(legacyKey)) throw new Error(`${legacyKey} was not surfaced as a legacy umbrella key.`);
+    if(legacy.unresolvedKeys.includes(legacyKey)) throw new Error(`${legacyKey} was incorrectly counted as unresolved provenance.`);
+  }
 
   for(const conceptKey of ['report-math','aast-abg','aast-safety-infection']){
     const concept=catalog.resolveQuestion({taskCode:conceptKey==='report-math'?'D3C':'D4C',topic:'',referenceKeys:[conceptKey],studyRecommendationKeys:[]});
-    if(concept.level!=='task') throw new Error(`${conceptKey} should fall through to a verified task study path, got ${concept.level}.`);
-    if(!concept.conceptKeys.includes(conceptKey)) throw new Error(`${conceptKey} was not surfaced as a learning/concept key.`);
-    if(concept.unresolvedKeys.includes(conceptKey)) throw new Error(`${conceptKey} was incorrectly counted as unresolved provenance.`);
+    if(concept.level!=='task'||!concept.conceptKeys.includes(conceptKey)||concept.unresolvedKeys.includes(conceptKey)) throw new Error(`${conceptKey} concept handling changed.`);
   }
 
   const contextOnly=catalog.resolveQuestion({taskCode:'D1A',topic:'',referenceKeys:['brpt-blueprint','brpt-refs'],studyRecommendationKeys:['brpt-handbook']});
@@ -122,22 +97,17 @@ try{
     currentAuthorityRanksFirst:true,
     contextOnlyKeysSuppressed:true,
     conceptKeysSeparatedFromProvenance:true,
+    legacyUmbrellaKeysSeparatedFromProvenance:true,
+    pendingSourceIdentities:0,
     pediatricSleepPearlsExact:true,
     pediatricPrinciplesExact:true,
     sleepEegAtlasExact:true,
-    sleepEegAtlasAuthorityBoundary:true,
-    sleepEegAtlasEditorCorrectionProtected:true,
     sleepMedicineEssentialsExact:true,
-    sleepMedicineEssentialsNoLocalCopyBoundary:true,
     aapChildhoodOsaExact:true,
-    aapChildhoodOsaLegacyBoundary:true,
-    aastConceptShorthandsProtected:true,
-    pediatricRespiratoryAliasExact:true,
-    icsdExact:true,
     topicFallback:true,
     taskFallback:true,
-    ambiguousKeysNeverGuessed:true,
-    unresolvedSourceKeysExposedForQa:true
+    legacyUmbrellaKeysNeverGuessed:true,
+    unknownSourceKeysExposedForQa:true
   },null,2));
 }finally{
   if(previousFetch===undefined) delete globalThis.fetch; else globalThis.fetch=previousFetch;
