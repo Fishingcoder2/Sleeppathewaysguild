@@ -1,0 +1,16 @@
+{
+  "verifiedAt":"2026-08-07",
+  "purpose":"Record lawful source access confirmed by the Sleep Pathways Guild owner when the source is not directly available to the V3 build system. User-confirmed access does not equal content verification or a completed V3 outline.",
+  "copyrightBoundary":"Use owner-provided table-of-contents information, screenshots, selected pages, bibliographic metadata, and original summaries when outlining. Do not copy proprietary cases, questions, figures, tables, or substantial passages.",
+  "userConfirmedAccess":[
+    {
+      "sourceId":"sleep-medicine-pearls-3e",
+      "title":"Sleep Medicine Pearls, Third Edition",
+      "platform":"Kindle",
+      "accessStatus":"lawful access confirmed by Guild owner on 2026-08-07",
+      "contentVerifiedByV3":false,
+      "structuredInV3":false,
+      "nextAction":"When this source is needed, use owner-provided table of contents, screenshots, or selected sections to build a copyright-safe current-edition outline and then add the source record to the manifest."
+    }
+  ]
+}
