@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "verifiedAt": "2026-08-07",
   "policy": "Level 1 exact resolution may use only source-record referenceKeys or aliases explicitly listed here. Similar wording is never enough to invent provenance. Context-only keys are excluded from learner-facing exact recommendations. Learning/concept keys describe what to study rather than where the fact came from and must not be counted as missing provenance. Pending source keys remain unresolved until a specific source identity is verified and structured.",
   "contextOnlyKeys": [
@@ -64,7 +64,6 @@
     "aasm-pap-titration": "Potentially overlaps the AASM manual titration guideline and other PAP guidance; do not infer the exact source from this shorthand alone.",
     "aast-abg": "A source family is implied, but no exact verified ABG source package is currently registered.",
     "aast-safety-infection": "A source family is implied, but no exact verified source identity is registered for this combined shorthand.",
-    "atlas-eeg-sleep": "A book/source family is implied, but the exact edition/source package has not yet been registered.",
     "sleep-medicine-essentials-review": "A source is implied, but the exact title/edition/source package is not currently registered."
   }
 }
