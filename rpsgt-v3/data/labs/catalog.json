@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "name": "RPSGT v3 laboratory catalog",
+    "version": 10,
+    "developmentOnly": true,
+    "individualLabParityComplete": true,
+    "progressRecord": "spg_rpsgt_v3.labs",
+    "copyrightBoundary": "Catalog descriptions and task mappings are app-authored. Legacy lab content and protected source material are not copied into this catalog."
+  },
+  "labs": [
+    {"id":"hookup","title":"Hookup and Electrode Placement","shortTitle":"Hookup","icon":"◎","description":"Landmarks, measurements, placement, impedance, patient preparation, and correction of poor contact.","taskCodes":["D2A","D2B"],"progressKey":"hookup","status":"v3-ready","plannedRoute":"lab-hookup.html","legacyHref":null},
+    {"id":"ekg","title":"EKG Recognition and Response","shortTitle":"EKG","icon":"♡","description":"Signal validity, rate and rhythm review, patient assessment, sleep-study documentation, urgent findings, and escalation boundaries.","taskCodes":["D2B","D3C"],"progressKey":"ekg","status":"v3-ready","plannedRoute":"lab-ekg.html","legacyHref":null},
+    {"id":"scoring","title":"Sleep Staging and Event Scoring","shortTitle":"Scoring","icon":"▥","description":"Epoch review, stage criteria, arousals, respiratory events, limb movements, and scoring artifacts.","taskCodes":["D3A","D3B","D3C"],"progressKey":"scoring","status":"v3-ready","plannedRoute":"lab-scoring.html","legacyHref":null},
+    {"id":"respiratory","title":"Respiratory Signals and Event Recognition","shortTitle":"Respiratory","icon":"≈","description":"Airflow, effort, oximetry, CO2, snore, event classification, and signal-quality decisions.","taskCodes":["D2A","D2B","D3B"],"progressKey":"respiratory","status":"v3-ready","plannedRoute":"lab-respiratory.html","legacyHref":null},
+    {"id":"pap","title":"PAP and Titration","shortTitle":"PAP","icon":"↗","description":"Interfaces, pressure concepts, event response, leak, comfort, acclimation, and documentation.","taskCodes":["D4A","D4B","D4C"],"progressKey":"pap","status":"v3-ready","plannedRoute":"lab-pap.html","legacyHref":null},
+    {"id":"instrumentation","title":"Instrumentation, Filters, and Signal Pathways","shortTitle":"Instrumentation","icon":"⌁","description":"Montages, sensitivities, sampling, filters, amplifiers, polarity, calibration, and troubleshooting.","taskCodes":["D2A","D2B","D2C"],"progressKey":"instrumentation","status":"v3-ready","plannedRoute":"lab-instrumentation.html","legacyHref":null},
+    {"id":"pediatric","title":"Pediatric and Infant Sleep","shortTitle":"Pediatrics","icon":"☆","description":"Age-specific setup, staging context, respiratory scoring, CO2 monitoring, caregiver support, and safety.","taskCodes":["D1A","D1C","D3A","D3B","D4A"],"progressKey":"pediatric","status":"v3-ready","plannedRoute":"lab-pediatric.html","legacyHref":null},
+    {"id":"daytime-testing","title":"MSLT and MWT Protocols","shortTitle":"MSLT/MWT","icon":"☀","description":"Preparation, timing, nap and trial structure, documentation, validity risks, and protocol boundaries.","taskCodes":["D1A","D2C","D3A"],"progressKey":"daytime-testing","status":"v3-ready","plannedRoute":"lab-daytime-testing.html","legacyHref":null},
+    {"id":"troubleshooting","title":"Integrated Troubleshooting","shortTitle":"Troubleshooting","icon":"⚙","description":"Artifact recognition, equipment failure, patient events, corrective action, documentation, and escalation.","taskCodes":["D2B","D2C","D3C"],"progressKey":"troubleshooting","status":"v3-ready","plannedRoute":"lab-troubleshooting.html","legacyHref":null},
+    {"id":"math-coach","title":"Math Coach","shortTitle":"Math Coach","icon":"∑","description":"Indices, sleep calculations, timing, units, formula practice, lesson state, notes, and flagged review.","taskCodes":["D3C"],"progressKey":"math-coach","status":"v3-ready","plannedRoute":"lab-math-coach.html","legacyHref":null}
+  ]
+}

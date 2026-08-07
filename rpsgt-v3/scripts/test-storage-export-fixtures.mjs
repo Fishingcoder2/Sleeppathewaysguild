@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+import {normalizeExport,validateExport} from './validate-storage-export.mjs';
+const here=dirname(fileURLToPath(import.meta.url));const fixtures=join(here,'..','tests','fixtures','migration');
+const complete=JSON.parse(await readFile(join(fixtures,'source-derived-complete.json'),'utf8'));
+const conflicts=JSON.parse(await readFile(join(fixtures,'source-derived-conflicts.json'),'utf8'));
+assert.equal(complete.$fixture.realBrowserExport,false);assert.equal(conflicts.$fixture.realBrowserExport,false);
+const snapshot=normalizeExport(complete);assert.equal(snapshot.sources.length,4);const before=JSON.stringify(complete);
+const first=validateExport(complete);const second=validateExport(complete);assert.equal(first.fingerprint,second.fingerprint);assert.equal(first.validation.passesBlockingValidation,true);assert.equal(first.canImport,false);assert.equal(first.draft.guidedStudy.checkpointHistory.length,1);assert.equal(first.draft.readiness.history.length,1);assert.equal(first.draft.mock.history.length,1);assert.equal(JSON.stringify(complete),before);
+const blocked=validateExport(conflicts);assert.equal(blocked.validation.passesBlockingValidation,false);assert.equal(blocked.canImport,false);assert.ok(blocked.issues.blocking.some(item=>item.code==='invalid-question-id'));assert.ok(blocked.issues.blocking.some(item=>item.code==='conflicting-source'));assert.ok(blocked.unresolved.ambiguousTaskRecords.length);assert.ok(blocked.unresolved.unknownFields.some(item=>item.path==='futureField'));
+console.log('Source-derived migration fixtures and storage-export validator contracts passed. Real browser-export validation remains a separate release gate.');

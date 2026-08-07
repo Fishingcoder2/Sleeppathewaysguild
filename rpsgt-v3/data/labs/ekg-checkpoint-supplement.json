@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "name": "RPSGT v3 EKG checkpoint supplement",
+    "version": 1,
+    "developmentOnly": true,
+    "appAuthored": true,
+    "questionCount": 7,
+    "taskCodes": ["D2B", "D3C"],
+    "purpose": "Provide transparent EKG workflow coverage where the extracted learner bank contains fewer than ten eligible D2B/D3C records.",
+    "sourceBasis": [
+      "Sleep-technologist ECG acquisition, electrode-contact, signal-quality, artifact, and cardiac-monitoring concepts",
+      "Broad rhythm-family recognition and patient-first response concepts"
+    ],
+    "copyrightBoundary": "These questions are original Sleep Pathways Guild wording. They do not reproduce the preserved legacy EKG quiz, generated strips, textbook prose, figures, tables, or proprietary scoring criteria."
+  },
+  "questions": [
+    {
+      "id": "v3-ekg-supp-d2b-001",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Monitor and respond during the study",
+      "topic": "ECG contamination in neighboring channels",
+      "questionType": "app-authored-lab",
+      "prompt": "An ECG-like waveform begins appearing simultaneously in several EEG and EOG channels while the primary ECG tracing remains stable. What should the technologist do first?",
+      "options": [
+        "Label the pattern as ventricular ectopy",
+        "Inspect electrode contact, lead placement, and cross-channel artifact before interpreting the rhythm",
+        "Increase every high-frequency filter until the waveform disappears",
+        "Ignore the pattern because it is outside the ECG channel"
+      ],
+      "answer": "Inspect electrode contact, lead placement, and cross-channel artifact before interpreting the rhythm",
+      "rationale": "Cardiac activity can contaminate neighboring channels. Verify the signal source and electrode pathway before assigning a rhythm label.",
+      "referenceKeys": ["ekg-tech-support", "artifact-troubleshooting"],
+      "studyRecommendationKeys": ["ekg-tech-support", "artifact-troubleshooting"],
+      "source": "Sleep Pathways Guild app-authored EKG supplement",
+      "qa": {"manualReviewRecommended": false, "appAuthored": true}
+    },
+    {
+      "id": "v3-ekg-supp-d2b-002",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Monitor and respond during the study",
+      "topic": "Loose ECG electrode and electrode pop",
+      "questionType": "app-authored-lab",
+      "prompt": "A sudden sharp ECG deflection follows movement of a visibly loose electrode and is not accompanied by a patient, pulse, or neighboring-channel change. What is the best next action?",
+      "options": [
+        "Record the event as ventricular tachycardia",
+        "Restore electrode contact, secure the lead, and verify the tracing again",
+        "Terminate the study immediately without assessing the signal",
+        "Reduce the display size and continue without documentation"
+      ],
+      "answer": "Restore electrode contact, secure the lead, and verify the tracing again",
+      "rationale": "The timing and loose contact support artifact. Correct the electrode pathway and confirm signal quality before interpreting the event.",
+      "referenceKeys": ["ekg-tech-support", "artifact-troubleshooting"],
+      "studyRecommendationKeys": ["ekg-tech-support", "artifact-troubleshooting"],
+      "source": "Sleep Pathways Guild app-authored EKG supplement",
+      "qa": {"manualReviewRecommended": false, "appAuthored": true}
+    },
+    {
+      "id": "v3-ekg-supp-d2b-003",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Monitor and respond during the study",
+      "topic": "Symptomatic rhythm change",
+      "questionType": "app-authored-lab",
+      "prompt": "During a sleep study, an abrupt ECG change appears and the patient reports chest pressure and dizziness. What is the technologist's priority?",
+      "options": [
+        "Finish measuring every interval before entering the room",
+        "Assess the patient promptly and follow the facility emergency and notification pathway while verifying the tracing",
+        "Wait for the pattern to resolve before documenting it",
+        "Make an independent cardiac diagnosis and begin treatment"
+      ],
+      "answer": "Assess the patient promptly and follow the facility emergency and notification pathway while verifying the tracing",
+      "rationale": "Patient assessment and facility escalation procedures take priority over completing a detailed rhythm interpretation.",
+      "referenceKeys": ["ekg-tech-support", "safety-emergency"],
+      "studyRecommendationKeys": ["ekg-tech-support", "safety-emergency"],
+      "source": "Sleep Pathways Guild app-authored EKG supplement",
+      "qa": {"manualReviewRecommended": false, "appAuthored": true}
+    },
+    {
+      "id": "v3-ekg-supp-d3c-001",
+      "domain": "D3",
+      "taskCode": "D3C",
+      "task": "Analyze, report, and document study findings",
+      "topic": "Systematic ECG review sequence",
+      "questionType": "app-authored-lab",
+      "prompt": "Which sequence best supports a consistent sleep-technologist review of a new ECG pattern?",
+      "options": [
+        "Name the rhythm, change filters, then assess the patient",
+        "Verify the tracing, review rate and regularity, inspect atrial activity and PR/QRS relationships, then correlate the patient and neighboring channels",
+        "Review oxygen saturation only, then document a diagnosis",
+        "Measure the QRS complex first and ignore signal quality"
+      ],
+      "answer": "Verify the tracing, review rate and regularity, inspect atrial activity and PR/QRS relationships, then correlate the patient and neighboring channels",
+      "rationale": "A repeatable validity-to-context sequence reduces premature labeling and keeps the tracing connected to the patient and the full PSG record.",
+      "referenceKeys": ["ekg-tech-support"],
+      "studyRecommendationKeys": ["ekg-tech-support"],
+      "source": "Sleep Pathways Guild app-authored EKG supplement",
+      "qa": {"manualReviewRecommended": false, "appAuthored": true}
+    },
+    {
+      "id": "v3-ekg-supp-d3c-002",
+      "domain": "D3",
+      "taskCode": "D3C",
+      "task": "Analyze, report, and document study findings",
+      "topic": "Movement-correlated ECG artifact",
+      "questionType": "app-authored-lab",
+      "prompt": "Repetitive ECG deflections occur only during large body movements and appear at the same time in several PSG channels. How should this pattern be handled?",
+      "options": [
+        "Treat it as a confirmed ventricular rhythm",
+        "Correlate video and neighboring channels, identify likely movement artifact, correct the signal pathway, and document any limitation",
+        "Delete the affected segment from the study",
+        "Change the scored sleep stage to explain the waveform"
+      ],
+      "answer": "Correlate video and neighboring channels, identify likely movement artifact, correct the signal pathway, and document any limitation",
+      "rationale": "Simultaneous movement-linked deflections across channels support artifact and require correlation, correction, and transparent documentation.",
+      "referenceKeys": ["ekg-tech-support", "artifact-troubleshooting", "fundamentals-reporting"],
+      "studyRecommendationKeys": ["ekg-tech-support", "artifact-troubleshooting", "fundamentals-reporting"],
+      "source": "Sleep Pathways Guild app-authored EKG supplement",
+      "qa": {"manualReviewRecommended": false, "appAuthored": true}
+    },
+    {
+      "id": "v3-ekg-supp-d3c-003",
+      "domain": "D3",
+      "taskCode": "D3C",
+      "task": "Analyze, report, and document study findings",
+      "topic": "EKG event documentation",
+      "questionType": "app-authored-lab",
+      "prompt": "Which note best documents a clinically important ECG change during polysomnography?",
+      "options": [
+        "Abnormal rhythm observed",
+        "Cardiac problem diagnosed during sleep",
+        "Record the onset and duration, observed rate or pattern, signal validity, patient symptoms, interventions, response, notifications, and unresolved limitations",
+        "No note is needed if the waveform later returns to baseline"
+      ],
+      "answer": "Record the onset and duration, observed rate or pattern, signal validity, patient symptoms, interventions, response, notifications, and unresolved limitations",
+      "rationale": "A complete factual note supports interpretation and handoff without exceeding the technologist's diagnostic role.",
+      "referenceKeys": ["ekg-tech-support", "fundamentals-reporting"],
+      "studyRecommendationKeys": ["ekg-tech-support", "fundamentals-reporting"],
+      "source": "Sleep Pathways Guild app-authored EKG supplement",
+      "qa": {"manualReviewRecommended": false, "appAuthored": true}
+    },
+    {
+      "id": "v3-ekg-supp-d3c-004",
+      "domain": "D3",
+      "taskCode": "D3C",
+      "task": "Analyze, report, and document study findings",
+      "topic": "Persistent ECG signal limitation",
+      "questionType": "app-authored-lab",
+      "prompt": "ECG signal quality remains intermittently poor despite repeated electrode and lead corrections. What is the most appropriate reporting action?",
+      "options": [
+        "Report a definite normal rhythm for the entire night",
+        "Document the corrective actions, the remaining periods of limited interpretability, and the effect on the study record",
+        "Remove every affected epoch from the recording",
+        "Replace the ECG channel with pulse oximeter rate and omit the limitation"
+      ],
+      "answer": "Document the corrective actions, the remaining periods of limited interpretability, and the effect on the study record",
+      "rationale": "Persistent limitations must be described transparently so the interpreting clinician understands what could and could not be evaluated.",
+      "referenceKeys": ["ekg-tech-support", "artifact-troubleshooting", "fundamentals-reporting"],
+      "studyRecommendationKeys": ["ekg-tech-support", "artifact-troubleshooting", "fundamentals-reporting"],
+      "source": "Sleep Pathways Guild app-authored EKG supplement",
+      "qa": {"manualReviewRecommended": false, "appAuthored": true}
+    }
+  ]
+}

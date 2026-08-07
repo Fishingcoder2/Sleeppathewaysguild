@@ -1,0 +1,10 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js,catalog]=await Promise.all([readFile(join(root,'lab-pap.html'),'utf8'),readFile(join(root,'core','lab-pap.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const selector of ['data-pap-start','data-pap-summary','data-pap-stations','data-pap-workspace']) if(!html.includes(selector)) throw new Error(`PAP page is missing ${selector}.`);
+for(const script of ['core/storage.js','core/pap-lab-engine.js','core/lab-pap.js']) if(!html.includes(script)) throw new Error(`PAP page does not load ${script}.`);
+if(html.indexOf('core/pap-lab-engine.js')>html.indexOf('core/lab-pap.js')) throw new Error('PAP engine must load before its controller.');
+for(const token of ['data/question-bank/d4a.json','data/question-bank/d4b.json','data/question-bank/d4c.json','eligibleQuestions','selectQuestions','gradeSession','setStation','applySession','RPSGTStorage.save']) if(!js.includes(token)) throw new Error(`PAP controller is missing ${token}.`);
+if(/localStorage\.(?:setItem|removeItem|clear)/.test(js)) throw new Error('PAP controller must write only through versioned RPSGT storage.');
+if(!html.includes('do not reproduce proprietary titration tables')||!html.includes('all seven PAP stations')||!html.includes('80% or higher')) throw new Error('PAP clinical and completion boundaries must be visible.');
+const lab=catalog.labs.find(item=>item.id==='pap');if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-pap.html') throw new Error('The laboratory catalog does not route the v3-ready PAP lab.');
+console.log('PAP page, clinical boundary, storage isolation, script order, and catalog route contracts passed.');

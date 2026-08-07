@@ -1,0 +1,10 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js,catalog]=await Promise.all([readFile(join(root,'lab-hookup.html'),'utf8'),readFile(join(root,'core','lab-hookup.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const selector of ['data-hookup-start','data-hookup-summary','data-hookup-stations','data-hookup-workspace']) if(!html.includes(selector)) throw new Error(`Hookup page is missing ${selector}.`);
+for(const script of ['core/storage.js','core/hookup-lab-engine.js','core/lab-hookup.js']) if(!html.includes(script)) throw new Error(`Hookup page does not load ${script}.`);
+if(html.indexOf('core/hookup-lab-engine.js')>html.indexOf('core/lab-hookup.js')) throw new Error('Hookup engine must load before its controller.');
+for(const token of ['data/question-bank/d2a.json','data/question-bank/d2b.json','eligibleQuestions','selectQuestions','gradeSession','setStation','applySession','RPSGTStorage.save']) if(!js.includes(token)) throw new Error(`Hookup controller is missing ${token}.`);
+if(/localStorage\.(?:setItem|removeItem|clear)/.test(js)) throw new Error('Hookup controller must write only through versioned RPSGT storage.');
+if(!html.includes('do not replace current AASM instructions')||!html.includes('all six workflow stations')||!html.includes('80% or higher')) throw new Error('Hookup evidence and completion boundaries must be visible.');
+const lab=catalog.labs.find(item=>item.id==='hookup');if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-hookup.html') throw new Error('The laboratory catalog does not route the v3-ready Hookup lab.');
+console.log('Hookup page, evidence boundary, storage isolation, script order, and catalog route contracts passed.');

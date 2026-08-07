@@ -1,0 +1,168 @@
+name: Build RPSGT v3 question bank
+
+on:
+  push:
+    branches:
+      - build/rpsgt-v3-modular
+    paths:
+      - RPSGTv2.2026.html
+      - RPSGTv2.2026-core.html
+      - rpsgt-v3/**
+      - .github/workflows/rpsgt-v3-question-bank.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - RPSGTv2.2026.html
+      - RPSGTv2.2026-core.html
+      - rpsgt-v3/**
+      - .github/workflows/rpsgt-v3-question-bank.yml
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  extract-and-validate:
+    if: github.ref_name == 'build/rpsgt-v3-modular' || github.head_ref == 'build/rpsgt-v3-modular'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out development branch
+        uses: actions/checkout@v4
+        with:
+          ref: build/rpsgt-v3-modular
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Extract task modules
+        env:
+          RPSGT_EXTRACTION_DATE: 2026-08-01
+        run: node rpsgt-v3/scripts/extract-question-bank.mjs
+
+      - name: Generate compact learner-feedback index
+        run: node rpsgt-v3/scripts/generate-feedback-index.mjs
+
+      - name: Validate question bank
+        run: node rpsgt-v3/scripts/validate-question-bank.mjs
+
+      - name: Validate study, practice, review, readiness, mock, laboratories, reports, and migration systems
+        run: |
+          node --check rpsgt-v3/core/storage.js
+          node --check rpsgt-v3/core/migration-export.js
+          node --check rpsgt-v3/core/migration-engine.js
+          node --check rpsgt-v3/core/legacy-migration.js
+          node --check rpsgt-v3/core/app-shell.js
+          node --check rpsgt-v3/core/guided-trail-engine.js
+          node --check rpsgt-v3/core/guided-trail-report.js
+          node --check rpsgt-v3/core/study-resource-catalog.js
+          node --check rpsgt-v3/core/guided-study-learner-ui.js
+          node --check rpsgt-v3/core/guided-study-question-actions.js
+          node --check rpsgt-v3/core/guided-study-completion.js
+          node --check rpsgt-v3/core/flashcard-engine.js
+          node --check rpsgt-v3/core/flashcard-store.js
+          node --check rpsgt-v3/core/flashcards.js
+          node --check rpsgt-v3/core/review-queue.js
+          node --check rpsgt-v3/core/practice-prefill.js
+          node --check rpsgt-v3/core/practice-question-actions.js
+          node --check rpsgt-v3/core/practice-learner-repair.js
+          node --check rpsgt-v3/core/lab-catalog-engine.js
+          node --check rpsgt-v3/core/labs.js
+          node --check rpsgt-v3/core/hookup-lab-engine.js
+          node --check rpsgt-v3/core/lab-hookup.js
+          node --check rpsgt-v3/core/scoring-lab-engine.js
+          node --check rpsgt-v3/core/lab-scoring.js
+          node --check rpsgt-v3/core/respiratory-lab-engine.js
+          node --check rpsgt-v3/core/lab-respiratory.js
+          node --check rpsgt-v3/core/instrumentation-lab-engine.js
+          node --check rpsgt-v3/core/lab-instrumentation.js
+          node --check rpsgt-v3/core/pap-lab-engine.js
+          node --check rpsgt-v3/core/lab-pap.js
+          node --check rpsgt-v3/core/troubleshooting-lab-engine.js
+          node --check rpsgt-v3/core/lab-troubleshooting.js
+          node --check rpsgt-v3/core/pediatric-lab-engine.js
+          node --check rpsgt-v3/core/lab-pediatric.js
+          node --check rpsgt-v3/core/daytime-testing-lab-engine.js
+          node --check rpsgt-v3/core/lab-daytime-testing.js
+          node --check rpsgt-v3/core/ekg-lab-engine.js
+          node --check rpsgt-v3/core/lab-ekg.js
+          node --check rpsgt-v3/core/math-coach-engine.js
+          node --check rpsgt-v3/core/lab-math-coach.js
+          node --check rpsgt-v3/core/study.js
+          node --check rpsgt-v3/core/practice.js
+          node --check rpsgt-v3/core/review.js
+          node --check rpsgt-v3/core/readiness-engine.js
+          node --check rpsgt-v3/core/readiness.js
+          node --check rpsgt-v3/core/mock-engine.js
+          node --check rpsgt-v3/core/mock-drilldown-engine.js
+          node --check rpsgt-v3/core/mock.js
+          node --check rpsgt-v3/core/study-feedback-engine.js
+          node --check rpsgt-v3/core/reports-engine.js
+          node --check rpsgt-v3/core/reports.js
+          node --check rpsgt-v3/core/mock-result-report.js
+          node --check rpsgt-v3/core/study-summary-engine.js
+          node --check rpsgt-v3/core/study-summary.js
+          node --check rpsgt-v3/scripts/generate-feedback-index.mjs
+          node --check rpsgt-v3/scripts/validate-storage-export.mjs
+          node --check rpsgt-v3/scripts/validate-private-exports.mjs
+          node rpsgt-v3/scripts/test-guided-trail-system.mjs
+          node rpsgt-v3/scripts/test-guided-trail-shell.mjs
+          node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
+          node rpsgt-v3/scripts/test-guided-study-completion-shell.mjs
+          node rpsgt-v3/scripts/test-flashcard-engine.mjs
+          node rpsgt-v3/scripts/test-flashcard-shell.mjs
+          node rpsgt-v3/scripts/test-lab-catalog.mjs
+          node rpsgt-v3/scripts/test-labs-shell.mjs
+          node rpsgt-v3/scripts/test-hookup-lab-system.mjs
+          node rpsgt-v3/scripts/test-hookup-lab-shell.mjs
+          node rpsgt-v3/scripts/test-scoring-lab-system.mjs
+          node rpsgt-v3/scripts/test-scoring-lab-shell.mjs
+          node rpsgt-v3/scripts/test-respiratory-lab-system.mjs
+          node rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
+          node rpsgt-v3/scripts/test-instrumentation-lab-system.mjs
+          node rpsgt-v3/scripts/test-instrumentation-lab-shell.mjs
+          node rpsgt-v3/scripts/test-pap-lab-system.mjs
+          node rpsgt-v3/scripts/test-pap-lab-shell.mjs
+          node rpsgt-v3/scripts/test-troubleshooting-lab-system.mjs
+          node rpsgt-v3/scripts/test-troubleshooting-lab-shell.mjs
+          node rpsgt-v3/scripts/test-pediatric-lab-system.mjs
+          node rpsgt-v3/scripts/test-pediatric-lab-shell.mjs
+          node rpsgt-v3/scripts/test-daytime-testing-lab-system.mjs
+          node rpsgt-v3/scripts/test-daytime-testing-lab-shell.mjs
+          node rpsgt-v3/scripts/test-ekg-lab-system.mjs
+          node rpsgt-v3/scripts/test-ekg-lab-shell.mjs
+          node rpsgt-v3/scripts/test-math-coach-system.mjs
+          node rpsgt-v3/scripts/test-math-coach-shell.mjs
+          node rpsgt-v3/scripts/test-practice-pools.mjs
+          node rpsgt-v3/scripts/test-practice-shell.mjs
+          node rpsgt-v3/scripts/test-practice-actions.mjs
+          node rpsgt-v3/scripts/test-review-system.mjs
+          node rpsgt-v3/scripts/test-readiness-system.mjs
+          node rpsgt-v3/scripts/test-readiness-shell.mjs
+          node rpsgt-v3/scripts/test-mock-system.mjs
+          node rpsgt-v3/scripts/test-mock-shell.mjs
+          node rpsgt-v3/scripts/test-mock-drilldown-system.mjs
+          node rpsgt-v3/scripts/test-mock-drilldown-shell.mjs
+          node rpsgt-v3/scripts/test-reports-system.mjs
+          node rpsgt-v3/scripts/test-reports-shell.mjs
+          node rpsgt-v3/scripts/test-study-summary-system.mjs
+          node rpsgt-v3/scripts/test-study-summary-shell.mjs
+          node rpsgt-v3/scripts/test-storage-migration.mjs
+          node rpsgt-v3/scripts/test-storage-export-fixtures.mjs
+          node rpsgt-v3/scripts/test-migration-export-capture.mjs
+          node rpsgt-v3/scripts/test-legacy-migration.mjs
+
+      - name: Commit generated modules
+        run: |
+          if [ -z "$(git status --porcelain -- rpsgt-v3/data/question-bank)" ]; then
+            echo "Generated question bank and learner-feedback index are already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rpsgt-v3/data/question-bank
+          git commit -m "Generate validated RPSGT v3 question modules [skip ci]"
+          git push origin HEAD:build/rpsgt-v3-modular

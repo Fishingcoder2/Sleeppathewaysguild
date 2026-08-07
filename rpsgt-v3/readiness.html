@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Readiness Check v3 | Sleep Pathways Guild</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/practice.css">
+<link rel="stylesheet" href="assets/readiness.css">
+</head>
+<body data-module="practice">
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Readiness Check</strong><span>Weighted diagnostic study runs</span></span></a>
+  <div class="top-actions"><a href="practice.html">Practice Center</a><a href="index.html">Dashboard</a></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
+  <a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+</aside>
+<main class="main">
+<section class="hero readiness-hero">
+  <div><div class="eyebrow">Module 2 · readiness milestone</div><h1>Readiness Check</h1><p class="lead">Run a weighted, task-balanced diagnostic using only the <strong>2,327 learner-practice records</strong>. Readiness history stays separate from ordinary practice and the future 175-question mock exam.</p></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Use readiness to find your next study move.</h2><p>The study-weighted percentage is an internal learning gauge, not an official BRPT score prediction.</p></aside>
+</section>
+<section class="section notice"><strong>Preserved design:</strong> choose 25, 50, or 100 questions. Each run follows the four-domain weight pattern, balances tasks within each domain, removes repeated question families, and excludes every manual-review record.</section>
+<section class="section notice" data-readiness-load>Loading the readiness blueprint and question-bank manifest…</section>
+<section class="section hidden" data-readiness-home>
+  <div class="readiness-size-grid">
+    <article class="card readiness-size-card"><span class="status">Quick run</span><h2>25-question check</h2><p>Fast mixed coverage for a warm-up or a short diagnostic reset.</p><div class="domain-allocation" data-allocation="25"></div><button class="btn secondary" type="button" data-start-readiness="25">Start 25</button></article>
+    <article class="card readiness-size-card recommended"><span class="status gold">Recommended</span><h2>50-question readiness</h2><p>Enough volume to surface meaningful domain and weak-task patterns.</p><div class="domain-allocation" data-allocation="50"></div><button class="btn primary" type="button" data-start-readiness="50">Start 50</button></article>
+    <article class="card readiness-size-card"><span class="status">Longer build</span><h2>100-question run</h2><p>Broader stamina and diagnostic coverage before the full mock milestone.</p><div class="domain-allocation" data-allocation="100"></div><button class="btn secondary" type="button" data-start-readiness="100">Start 100</button></article>
+  </div>
+  <section class="card readiness-history-card"><div class="section-head"><div><div class="eyebrow">Separate diagnostic record</div><h2>Recent readiness checks</h2></div><span class="status" data-readiness-history-count>0 saved</span></div><div data-readiness-history></div></section>
+</section>
+<section class="section practice-session hidden" data-readiness-shell>
+  <div class="card question-card" data-question-panel>
+    <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span></div><span class="status gold" data-question-difficulty>Difficulty</span></div>
+    <div class="readiness-progress"><span data-readiness-progress></span></div>
+    <div class="question-prompt" data-question-prompt></div>
+    <div class="practice-choices" data-question-choices></div>
+    <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
+    <div class="question-actions"><button class="btn secondary" type="button" data-quit-readiness>End check</button><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
+  </div>
+  <aside class="session-rail"><div class="card"><h3>This readiness check</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Raw accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Questions</span><strong data-session-size>0</strong></div></div><p class="rail-note">Results are saved only in the readiness record.</p></div></aside>
+</section>
+<section class="section hidden" data-readiness-results>
+  <div class="card readiness-result-card"><span class="status green">Readiness check complete</span><h2>Diagnostic result</h2><div class="readiness-score-grid"><div><span>Raw score</span><strong data-result-score>0%</strong><small data-result-correct>0 / 0 correct</small></div><div><span>Study-weighted</span><strong data-result-weighted>0%</strong><small>Internal learning gauge</small></div><div><span>Answered</span><strong data-result-answered>0</strong><small>This readiness check</small></div></div><p class="tiny">The study-weighted result gives slightly more credit to harder applied items. It is not an official exam-score estimate.</p></div>
+  <section class="card"><h2>Domain breakdown</h2><div class="grid grid-2" data-domain-results></div></section>
+  <section class="card"><h2>Weak-task study targets</h2><div class="readiness-target-list" data-weak-task-results></div><div class="actions"><a class="btn primary" href="practice.html">Open focused practice</a><a class="btn secondary" href="review.html?list=missed">Review learner missed list</a><button class="btn secondary" type="button" data-new-readiness>Choose another readiness check</button></div></section>
+</section>
+<footer class="footer">Development branch only · The 175-question mock exam remains a separate migration milestone</footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+<script src="core/readiness-engine.js"></script>
+<script src="core/readiness.js"></script>
+</body>
+</html>

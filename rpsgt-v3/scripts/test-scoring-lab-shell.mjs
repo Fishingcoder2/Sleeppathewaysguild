@@ -1,0 +1,10 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js,catalog]=await Promise.all([readFile(join(root,'lab-scoring.html'),'utf8'),readFile(join(root,'core','lab-scoring.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const selector of ['data-scoring-start','data-scoring-summary','data-scoring-stations','data-scoring-workspace']) if(!html.includes(selector)) throw new Error(`Scoring page is missing ${selector}.`);
+for(const script of ['core/storage.js','core/scoring-lab-engine.js','core/lab-scoring.js']) if(!html.includes(script)) throw new Error(`Scoring page does not load ${script}.`);
+if(html.indexOf('core/scoring-lab-engine.js')>html.indexOf('core/lab-scoring.js')) throw new Error('Scoring engine must load before its controller.');
+for(const token of ['data/question-bank/d3a.json','data/question-bank/d3b.json','data/question-bank/d3c.json','eligibleQuestions','selectQuestions','gradeSession','setStation','applySession','RPSGTStorage.save']) if(!js.includes(token)) throw new Error(`Scoring controller is missing ${token}.`);
+if(/localStorage\.(?:setItem|removeItem|clear)/.test(js)) throw new Error('Scoring controller must write only through versioned RPSGT storage.');
+if(!html.includes('do not reproduce or replace proprietary AASM scoring-manual text')||!html.includes('all seven review stations')||!html.includes('80% or higher')||!html.includes('current official AASM guidance')) throw new Error('Scoring evidence and completion boundaries must be visible.');
+const lab=catalog.labs.find(item=>item.id==='scoring');if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-scoring.html') throw new Error('The laboratory catalog does not route the v3-ready Scoring lab.');
+console.log('Scoring page, AASM-first evidence boundary, storage isolation, script order, and catalog route contracts passed.');

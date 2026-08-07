@@ -1,0 +1,10 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js,catalog]=await Promise.all([readFile(join(root,'lab-troubleshooting.html'),'utf8'),readFile(join(root,'core','lab-troubleshooting.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const selector of ['data-troubleshooting-start','data-troubleshooting-summary','data-troubleshooting-stations','data-troubleshooting-workspace'])if(!html.includes(selector))throw new Error(`Troubleshooting page is missing ${selector}.`);
+for(const script of ['core/storage.js','core/troubleshooting-lab-engine.js','core/lab-troubleshooting.js'])if(!html.includes(script))throw new Error(`Troubleshooting page does not load ${script}.`);
+if(html.indexOf('core/troubleshooting-lab-engine.js')>html.indexOf('core/lab-troubleshooting.js'))throw new Error('Troubleshooting engine must load before its controller.');
+for(const token of ['data/question-bank/d2b.json','data/question-bank/d2c.json','data/question-bank/d3c.json','eligibleQuestions','selectQuestions','gradeSession','setStation','applySession','RPSGTStorage.save'])if(!js.includes(token))throw new Error(`Troubleshooting controller is missing ${token}.`);
+if(/localStorage\.(?:setItem|removeItem|clear)/.test(js))throw new Error('Troubleshooting controller must write only through versioned RPSGT storage.');
+if(!html.includes('do not replace facility emergency procedures')||!html.includes('all seven troubleshooting stations')||!html.includes('80% or higher'))throw new Error('Troubleshooting evidence, scope, and completion boundaries must be visible.');
+const lab=catalog.labs.find(item=>item.id==='troubleshooting');if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-troubleshooting.html')throw new Error('The laboratory catalog does not route the v3-ready Troubleshooting lab.');
+console.log('Troubleshooting page, scope boundary, storage isolation, script order, and catalog route contracts passed.');

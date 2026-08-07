@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';import {execFileSync} from 'node:child_process';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');
+const files=['core/math-coach-engine.js','core/math-coach-view-base.js','core/math-coach-view-practice.js','core/math-coach.js'];for(const file of files)execFileSync(process.execPath,['--check',join(root,file)]);
+const [html,controller,redirect,manifest,css]=await Promise.all([readFile(join(root,'math-coach.html'),'utf8'),readFile(join(root,'core','math-coach.js'),'utf8'),readFile(join(root,'lab-math-coach.html'),'utf8'),readFile(join(root,'data','math-coach','manifest.json'),'utf8').then(JSON.parse),readFile(join(root,'assets','math-coach.css'),'utf8')]);
+for(const selector of ['data-math-summary','data-math-catalog','data-math-workspace','data-math-award-overlay'])assert.match(html,new RegExp(selector));
+for(const script of ['core/storage.js','core/math-coach-engine.js','core/math-coach-view-base.js','core/math-coach-view-practice.js','core/math-coach.js'])assert.match(html,new RegExp(script.replaceAll('/','\\/')));
+assert.ok(html.indexOf('math-coach-engine.js')<html.indexOf('math-coach-view-base.js')&&html.indexOf('math-coach-view-base.js')<html.indexOf('math-coach-view-practice.js')&&html.indexOf('math-coach-view-practice.js')<html.indexOf('core/math-coach.js'));
+for(const phrase of ['Learn the formula → demonstrate mastery','not a Skills Lab simulation','curated skill'])assert.match(html,new RegExp(phrase,'i'));
+for(const token of ['data/math-coach/manifest.json','skillFiles','RPSGTStorage.save','recordMastery','seenCeremonyIds'])assert.match(controller,new RegExp(token.replaceAll('/','\\/')));
+assert.doesNotMatch(controller,/localStorage\.(?:setItem|removeItem|clear)/);assert.match(redirect,/url=math-coach\.html/);assert.equal(manifest.skillFiles.length,4);assert.match(css,/prefers-reduced-motion/);assert.match(html,/aria-labelledby="math-award-title"/);
+console.log('Standalone Math Coach shell, v3-only storage, modular staged flow, source boundary, and award accessibility contracts passed.');
