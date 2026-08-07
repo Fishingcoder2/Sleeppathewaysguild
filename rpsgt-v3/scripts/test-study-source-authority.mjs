@@ -9,15 +9,17 @@ const manifest=JSON.parse(await readFile(join(sourceRoot,'manifest.json'),'utf8'
 const plans=JSON.parse(await readFile(join(sourceRoot,'task-plans.json'),'utf8')).taskPlans;
 
 const requiredSources=[
-  'brpt-blueprint.json','brpt-handbook.json','brpt-refs.json','aasm-scoring-manual-v3.json',
+  'brpt-blueprint.json','brpt-handbook.json','brpt-refs.json','aasm-scoring-manual-v3.json','icsd-3-tr.json',
   'aasm-adult-mslt-mwt-2021.json','aasm-pediatric-mslt-mwt-2024.json','aasm-adult-osa-diagnostic-testing-2017.json',
-  'aasm-oral-appliance-2015.json','aasm-surgical-referral-osa-2021.json',
+  'aasm-oral-appliance-2015.json','aasm-surgical-referral-osa-2021.json','aasm-manual-pap-titration-2008.json','aasm-pap-treatment-2019.json',
   'aast-patient-assessment-vitals-2022.json','aast-patient-education-2020.json','aast-standard-psg-2021.json',
   'aast-hsat-2020.json','aast-end-tidal-co2-2018.json','aast-transcutaneous-co2-2018.json',
   'aast-pap-acclimation-2022.json','aast-pap-titration-2021.json',
   'aast-oral-appliance-titration-2018.json','aast-supplemental-low-flow-oxygen.json'
 ];
 for(const file of requiredSources){if(!manifest.sourceFiles.includes(file)) throw new Error(`Study-source manifest is missing ${file}`);}
+if(manifest.coreLibraryAuditFile!=='core-library-audit.json') throw new Error('Core library audit is not registered in the study-source manifest.');
+const coreAudit=JSON.parse(await readFile(join(sourceRoot,manifest.coreLibraryAuditFile),'utf8'));
 
 const sourceDocs={};
 for(const file of manifest.sourceFiles){
@@ -71,6 +73,22 @@ const scoring=sourceDocs['aasm-scoring-manual-v3'];
 if(scoring.currentAuthority!==true||scoring.sourceRole!=='currentAuthority'||!/Version 3 released February 2023/i.test(scoring.versionStatus||'')) throw new Error('AASM Scoring Manual Version 3 is not protected as the current scoring authority.');
 if(!scoring.erratum||scoring.erratum.date!=='February 2024') throw new Error('AASM Scoring Manual Version 3 erratum metadata is missing.');
 
+const icsd=sourceDocs['icsd-3-tr'];
+if(icsd.currentAuthority!==true||icsd.sourceRole!=='currentAuthority'||icsd.publicationYear!==2023) throw new Error('ICSD-3-TR is not protected as current diagnostic authority.');
+if(!/not a substitute for the current AASM Scoring Manual/i.test(icsd.authorityBoundary||'')) throw new Error('ICSD-3-TR scoring boundary is missing.');
+if(!icsd.libraryAvailability||icsd.libraryAvailability.currentFullTextVerifiedInLibrary!==false||!/must not be represented as the 2023 ICSD-3-TR/i.test(icsd.libraryAvailability.olderFullTextBoundary||'')) throw new Error('ICSD older-edition/current-text-revision boundary is missing.');
+const requiredIcsdSections=['Insomnia Disorders','Sleep-Related Breathing Disorders','Central Disorders of Hypersomnolence','Circadian Rhythm Sleep-Wake Disorders','Parasomnias','Sleep-Related Movement Disorders'];
+for(const label of requiredIcsdSections){if(!(icsd.sections||[]).some(section=>section.label===label)) throw new Error(`ICSD-3-TR outline is missing ${label}.`);}
+
+const auditIds=new Set((coreAudit.coreSources||[]).map(item=>item.sourceId));
+for(const id of ['brpt-blueprint','brpt-handbook','aasm-scoring-manual-v3','icsd-3-tr','fundamentals-sleep-technology-3e','polysomnography-sleep-technologist-2014','pediatric-sleep-pearls-1e','clinical-guide-pediatric-sleep-3e','sleep-medicine-pearls-3e']){
+  if(!auditIds.has(id)) throw new Error(`Core library audit is missing ${id}.`);
+}
+const pearls3=(coreAudit.coreSources||[]).find(item=>item.sourceId==='sleep-medicine-pearls-3e');
+if(!pearls3||!/library has 2nd edition/i.test(pearls3.libraryAvailability||'')) throw new Error('Sleep Medicine Pearls edition mismatch is not documented.');
+const pedsPearls=(coreAudit.coreSources||[]).find(item=>item.sourceId==='pediatric-sleep-pearls-1e');
+if(!pedsPearls||!/not found/i.test(pedsPearls.libraryAvailability||'')) throw new Error('Pediatric Sleep Pearls library gap is not documented.');
+
 const diagnostic=sourceDocs['aasm-adult-osa-diagnostic-testing-2017'];
 if(!/focused update project as in development/i.test(diagnostic.currencyNote||'')) throw new Error('Adult OSA diagnostic guideline update-watch metadata is missing.');
 const hsat=sourceDocs['aast-hsat-2020'];
@@ -80,9 +98,9 @@ for(const sourceId of ['aast-end-tidal-co2-2018','aast-transcutaneous-co2-2018']
 }
 
 const professionalSources=[
-  'aasm-scoring-manual-v3','aasm-adult-mslt-mwt-2021','aasm-pediatric-mslt-mwt-2024','aasm-adult-osa-diagnostic-testing-2017',
-  'aasm-oral-appliance-2015','aasm-surgical-referral-osa-2021','aast-patient-assessment-vitals-2022','aast-patient-education-2020',
-  'aast-standard-psg-2021','aast-hsat-2020','aast-end-tidal-co2-2018','aast-transcutaneous-co2-2018',
+  'aasm-scoring-manual-v3','icsd-3-tr','aasm-adult-mslt-mwt-2021','aasm-pediatric-mslt-mwt-2024','aasm-adult-osa-diagnostic-testing-2017',
+  'aasm-oral-appliance-2015','aasm-surgical-referral-osa-2021','aasm-manual-pap-titration-2008','aasm-pap-treatment-2019',
+  'aast-patient-assessment-vitals-2022','aast-patient-education-2020','aast-standard-psg-2021','aast-hsat-2020','aast-end-tidal-co2-2018','aast-transcutaneous-co2-2018',
   'aast-pap-acclimation-2022','aast-pap-titration-2021','aast-oral-appliance-titration-2018','aast-supplemental-low-flow-oxygen'
 ];
 for(const sourceId of professionalSources){
@@ -106,9 +124,11 @@ console.log(JSON.stringify({
   sourceFiles:manifest.sourceFiles.length,
   brptBlueprintFirstAcrossTasks:true,
   allTwelveTasksProfessionalBeforeTextbook:true,
-  patientEducationTasks:tasksUsing('aast-patient-education-2020'),
-  hsatTasks:tasksUsing('aast-hsat-2020'),
-  co2TechnicalGuidance:[tasksUsing('aast-end-tidal-co2-2018'),tasksUsing('aast-transcutaneous-co2-2018')],
+  coreLibraryAuditProtected:true,
+  icsdCurrentDiagnosticAuthority:true,
+  icsdLegacyFullTextBoundaryProtected:true,
+  sleepMedicinePearlsEditionGapProtected:true,
+  pediatricSleepPearlsGapProtected:true,
   scoringManualCurrentAuthority:true,
   diagnosticGuidelineUpdateWatch:true,
   aastTerminologyBoundaryProtected:true,
