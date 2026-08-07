@@ -8,7 +8,7 @@
   "editionStatus":"October 2018; still listed by AAST when verified 2026-08-07",
   "verifiedAt":"2026-08-07",
   "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/Transcutaneous-CO2-Monitoring-1.pdf",
-  "authorityBoundary":"Use for technologist transcutaneous-monitor setup, sensor application, calibration, signal-quality monitoring, troubleshooting, safety, and documentation. This 2018 document cites an older AASM Scoring Manual version; current AASM scoring rules must control current hypoventilation definitions, thresholds, and reporting requirements.",
+  "authorityBoundary":"Use for technologist transcutaneous-monitor setup, sensor application, calibration, signal-quality monitoring, troubleshooting, safety, and documentation. This 2018 document cites an older AASM Scoring Manual version; the Current AASM Scoring Manual must control current hypoventilation definitions, thresholds, scoring rules, and reporting requirements.",
   "bestFor":"Transcutaneous CO2 monitoring during diagnostic and therapeutic PSG, equipment/sensor preparation, calibration, site and signal-quality considerations, troubleshooting, patient-safety considerations, treatment-response monitoring, and documentation.",
   "mappedTaskCodes":["D2A","D2B","D2C"],
   "mappingRationale":{"D2A":"Supports technical preparation and sensor/equipment considerations for transcutaneous CO2 monitoring.","D2B":"Supports performance of transcutaneous monitoring during diagnostic and therapeutic sleep testing.","D2C":"Supports calibration verification, troubleshooting, signal-quality response, safety awareness, and technical documentation."},
