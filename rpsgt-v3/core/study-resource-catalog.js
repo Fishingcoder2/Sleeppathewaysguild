@@ -11,7 +11,8 @@
     sourceKeyMap:new Map(),
     ambiguousKeys:new Set(),
     contextOnlyKeys:new Set(),
-    intentionallyUnresolved:new Set()
+    conceptKeys:new Set(),
+    pendingSourceKeys:new Set()
   };
   const text=value=>String(value==null?'':value).trim();
   const normalize=value=>text(value).toLowerCase().replace(/[–—]/g,'-').replace(/\s+/g,' ');
@@ -66,7 +67,8 @@
       state.sourceKeyMap.clear();
       state.ambiguousKeys.clear();
       state.contextOnlyKeys=new Set((Array.isArray(aliases&&aliases.contextOnlyKeys)?aliases.contextOnlyKeys:[]).map(normalizeKey).filter(Boolean));
-      state.intentionallyUnresolved=new Set(Object.keys(aliases&&aliases.intentionallyUnresolved||{}).map(normalizeKey).filter(Boolean));
+      state.conceptKeys=new Set(Object.keys(aliases&&aliases.conceptKeys||{}).map(normalizeKey).filter(Boolean));
+      state.pendingSourceKeys=new Set(Object.keys(aliases&&aliases.pendingSourceKeys||{}).map(normalizeKey).filter(Boolean));
 
       sources.forEach(source=>{
         const id=text(source&&source.id);
@@ -115,6 +117,7 @@
     ].map(normalizeKey).filter(Boolean));
     const ids=[];
     const matchedKeys=[];
+    const conceptKeys=[];
     const unresolvedKeys=[];
     keys.forEach(key=>{
       if(state.contextOnlyKeys.has(key)) return;
@@ -122,6 +125,8 @@
       if(sourceId&&state.sources.has(sourceId)){
         ids.push(sourceId);
         matchedKeys.push(key);
+      }else if(state.conceptKeys.has(key)){
+        conceptKeys.push(key);
       }else{
         unresolvedKeys.push(key);
       }
@@ -129,7 +134,7 @@
     const firstSeen=new Map();
     ids.forEach((id,index)=>{if(!firstSeen.has(id)) firstSeen.set(id,index);});
     const sourceIds=unique(ids).sort((a,b)=>sourceRank(a)-sourceRank(b)||(firstSeen.get(a)||0)-(firstSeen.get(b)||0));
-    return {sourceIds,matchedKeys:unique(matchedKeys),unresolvedKeys:unique(unresolvedKeys)};
+    return {sourceIds,matchedKeys:unique(matchedKeys),conceptKeys:unique(conceptKeys),unresolvedKeys:unique(unresolvedKeys)};
   }
 
   function familyScore(family,question){
@@ -176,18 +181,19 @@
   function resolveQuestion(question){
     if(!state.loaded||!question) return resolutionPayload('none',[]);
     const exact=exactResolution(question);
+    const evidence={matchedKeys:exact.matchedKeys,conceptKeys:exact.conceptKeys,unresolvedKeys:exact.unresolvedKeys};
     if(exact.sourceIds.length){
-      return resolutionPayload('exact',exact.sourceIds,{matchedKeys:exact.matchedKeys,unresolvedKeys:exact.unresolvedKeys});
+      return resolutionPayload('exact',exact.sourceIds,evidence);
     }
     const topicIds=topicSourceIds(question);
     if(topicIds.length){
-      return resolutionPayload('topic',topicIds,{matchedKeys:[],unresolvedKeys:exact.unresolvedKeys});
+      return resolutionPayload('topic',topicIds,evidence);
     }
     const taskIds=taskFallbackSourceIds(question&&question.taskCode);
     if(taskIds.length){
-      return resolutionPayload('task',taskIds,{matchedKeys:[],unresolvedKeys:exact.unresolvedKeys});
+      return resolutionPayload('task',taskIds,evidence);
     }
-    return resolutionPayload('none',[],{matchedKeys:[],unresolvedKeys:exact.unresolvedKeys});
+    return resolutionPayload('none',[],evidence);
   }
 
   function titlesForQuestion(question){return resolveQuestion(question).titles;}
