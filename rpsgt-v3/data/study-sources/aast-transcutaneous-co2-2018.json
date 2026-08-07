@@ -1,0 +1,25 @@
+{
+  "id":"aast-transcutaneous-co2-2018",
+  "shortTitle":"AAST Transcutaneous CO2 Monitoring Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"October 2018; still listed by AAST when verified 2026-08-07",
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/Transcutaneous-CO2-Monitoring-1.pdf",
+  "authorityBoundary":"Use for technologist transcutaneous-monitor setup, sensor application, calibration, signal-quality monitoring, troubleshooting, safety, and documentation. This 2018 document cites an older AASM Scoring Manual version; current AASM scoring rules must control current hypoventilation definitions, thresholds, and reporting requirements.",
+  "bestFor":"Transcutaneous CO2 monitoring during diagnostic and therapeutic PSG, equipment/sensor preparation, calibration, site and signal-quality considerations, troubleshooting, patient-safety considerations, treatment-response monitoring, and documentation.",
+  "mappedTaskCodes":["D2A","D2B","D2C"],
+  "mappingRationale":{"D2A":"Supports technical preparation and sensor/equipment considerations for transcutaneous CO2 monitoring.","D2B":"Supports performance of transcutaneous monitoring during diagnostic and therapeutic sleep testing.","D2C":"Supports calibration verification, troubleshooting, signal-quality response, safety awareness, and technical documentation."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial procedures, figures, equipment illustrations, or superseded scoring thresholds.",
+  "sections":[
+    {"id":"aast-tcco2-scope","label":"Scope and indications for transcutaneous CO2 monitoring"},
+    {"id":"aast-tcco2-equipment","label":"Equipment, sensor application, and site considerations"},
+    {"id":"aast-tcco2-calibration","label":"Calibration and technical preparation"},
+    {"id":"aast-tcco2-recording","label":"Continuous recording and signal-quality monitoring"},
+    {"id":"aast-tcco2-troubleshooting","label":"Troubleshooting, verification, and corrective actions"},
+    {"id":"aast-tcco2-safety","label":"Sensor-temperature and skin-safety considerations"},
+    {"id":"aast-tcco2-documentation","label":"Technologist monitoring and documentation"}
+  ]
+}
