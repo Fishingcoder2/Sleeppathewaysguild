@@ -1,0 +1,24 @@
+{
+  "id":"aast-oral-appliance-titration-2018",
+  "shortTitle":"AAST Oral Appliance Titration Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"2018 technical guideline; still listed by AAST when verified 2026-08-07",
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/OAT-2.pdf",
+  "authorityBoundary":"Use for the technologist role in oral-appliance efficacy/titration studies. Current AASM scoring rules and the AASM/AADSM oral-appliance clinical practice guideline govern their respective clinical and scoring domains.",
+  "bestFor":"Technologist preparation, PSG recording, patient interaction, oral-appliance adjustment workflow, technical documentation, and efficacy-study concepts when oral appliance therapy is ordered.",
+  "mappedTaskCodes":["D4B"],
+  "mappingRationale":{"D4B":"Directly addresses technologist performance of oral-appliance titration/efficacy testing as part of alternative OSA therapy."},
+  "copyrightUse":"Use title, section headings, original summaries, and learning objectives. Do not reproduce titration algorithms, technical tables, or substantial protected text.",
+  "sections":[
+    {"id":"aast-oat-scope","label":"Scope and indications for oral-appliance titration"},
+    {"id":"aast-oat-referral-review","label":"Referral, chart review, and preparation"},
+    {"id":"aast-oat-recording","label":"PSG recording techniques and physiologic monitoring"},
+    {"id":"aast-oat-titration","label":"Oral-appliance adjustment and titration workflow"},
+    {"id":"aast-oat-documentation","label":"Technical documentation and recording summary"},
+    {"id":"aast-oat-reporting","label":"Results reporting and follow-up roles"}
+  ]
+}
