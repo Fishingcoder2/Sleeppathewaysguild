@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "modelVersion": "1.0.0",
+    "project": "Sleep Pathways Guild RPSGT v3",
+    "updatedAt": "2026-08-07T09:04:00Z",
+    "notes": "Canonical registry scaffold. Existing question-bank records remain authoritative until they are migrated and verified into this model. No legacy wording is changed by this file."
+  },
+  "domains": [],
+  "tasks": [],
+  "topics": [],
+  "conceptFamilies": [],
+  "concepts": [],
+  "sources": [],
+  "questions": [],
+  "visualAssets": [],
+  "flashcards": [],
+  "mathSkills": [],
+  "labStations": []
+}
