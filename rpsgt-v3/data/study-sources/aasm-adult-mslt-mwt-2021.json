@@ -1,0 +1,26 @@
+{
+  "id":"aasm-adult-mslt-mwt-2021",
+  "shortTitle":"AASM Adult MSLT/MWT Protocol (2021)",
+  "publisher":"American Academy of Sleep Medicine / Journal of Clinical Sleep Medicine",
+  "sourceType":"official AASM protocol guidance",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2021,
+  "verifiedAt":"2026-08-07",
+  "citation":"Krahn LE, Arand DL, Avidan AY, et al. Recommended protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in adults: guidance from the American Academy of Sleep Medicine. J Clin Sleep Med. 2021;17(12):2489-2498.",
+  "doi":"10.5664/jcsm.9620",
+  "officialContextUrl":"https://aasm.org/updated-protocols-available-for-evaluation-of-daytime-sleepiness-and-alertness/",
+  "erratum":{"year":2022,"doi":"10.5664/jcsm.10100","note":"Use the protocol with its published 2022 erratum, including corrected recording-montage language."},
+  "bestFor":"Adult MSLT and MWT patient preparation, medication/substance planning, sleep before testing, scheduling, testing conditions, data acquisition, documentation, and standardized reporting.",
+  "mappedTaskCodes":["D2B","D3C"],
+  "mappingRationale":{"D2B":"Directly addresses administration and standardized performance of adult MSLT/MWT procedures.","D3C":"Directly addresses documentation and standardized reporting of daytime testing."},
+  "copyrightUse":"Use citation, protocol topic headings, erratum awareness, original summaries, and learning objectives. Do not reproduce substantial protocol boxes, tables, figures, or protected text.",
+  "sections":[
+    {"id":"adult-mslt-mwt-planning","label":"Patient preparation, medication/substance planning, and sleep before testing"},
+    {"id":"adult-mslt-protocol","label":"Adult Multiple Sleep Latency Test protocol"},
+    {"id":"adult-mwt-protocol","label":"Adult Maintenance of Wakefulness Test protocol"},
+    {"id":"adult-daytest-acquisition","label":"Recording montage, testing conditions, and data acquisition"},
+    {"id":"adult-daytest-documentation","label":"Documentation and standardized reporting"},
+    {"id":"adult-daytest-erratum","label":"2022 published erratum to recording-montage language"}
+  ]
+}
