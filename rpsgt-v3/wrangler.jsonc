@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  // Deployment marker: RPSGT v3 mobile Practice and Coach Bob repair, 2026-08-07.
+  // Deployment marker: BRPT-first RPSGT v3 dashboard refresh, 2026-08-07.
   "name": "rpsgt-v3-learning-center",
   "compatibility_date": "2026-04-13",
   "observability": {
