@@ -1,0 +1,40 @@
+{
+  "id": "icsd-3-tr",
+  "shortTitle": "ICSD-3-TR",
+  "fullTitle": "International Classification of Sleep Disorders, Third Edition, Text Revision",
+  "publisher": "American Academy of Sleep Medicine",
+  "sourceType": "diagnostic classification",
+  "sourceRole": "currentAuthority",
+  "currentAuthority": true,
+  "publicationYear": 2023,
+  "editionStatus": "Third Edition, Text Revision (ICSD-3-TR)",
+  "verifiedAt": "2026-08-07",
+  "officialContextUrl": "https://aasm.org/clinical-resources/international-classification-sleep-disorders/",
+  "officialSupplementUrl": "https://aasm.org/wp-content/uploads/2023/05/ICSD-3-Text-Revision-Supplemental-Material.pdf",
+  "brptReferenceStatus": "BRPT currently lists International Classification of Sleep Disorders, 3rd edition among RPSGT recommended readings; current AASM diagnostic authority is ICSD-3-TR (2023).",
+  "authorityBoundary": "Use ICSD-3-TR for current sleep-disorder classification, terminology, and diagnostic-criteria context. It is not a substitute for the current AASM Scoring Manual when the question asks how to score a PSG event, nor for a current treatment guideline when treatment recommendations are the controlling issue.",
+  "libraryAvailability": {
+    "currentFullTextVerifiedInLibrary": false,
+    "olderFullTextDriveId": "1mHfkjE1IFRfPp4s4ky76oWTETD6J7pCm",
+    "olderFullTextTitle": "ICSD-3-pdf",
+    "olderFullTextBoundary": "The library full-text copy is ICSD-3 and must not be represented as the 2023 ICSD-3-TR current text.",
+    "currentSupplementalMaterialAvailable": true,
+    "currentSupplementalMaterialTitle": "ICSD-3-TR Summary of Diagnostic Criteria Changes"
+  },
+  "bestFor": "Current sleep-disorder classification, disorder families, diagnostic terminology, diagnostic-criteria changes, and distinguishing related sleep disorders during RPSGT preparation.",
+  "mappedTaskCodes": ["D1A"],
+  "mappingRationale": {
+    "D1A": "The current BRPT blueprint explicitly includes sleep disorders in patient information and clinical assessment; ICSD-3-TR is the current AASM diagnostic classification source."
+  },
+  "referenceKeys": ["icsd", "icsd-3", "icsd-3-tr"],
+  "copyrightUse": "Use bibliographic metadata, public category names, the public table of contents, public diagnostic-change summaries, and independently authored SPG learning objectives. Do not reproduce proprietary diagnostic text or substantial protected passages from the ICSD.",
+  "sections": [
+    {"id": "icsd3tr-insomnia", "label": "Insomnia Disorders"},
+    {"id": "icsd3tr-breathing", "label": "Sleep-Related Breathing Disorders"},
+    {"id": "icsd3tr-hypersomnolence", "label": "Central Disorders of Hypersomnolence"},
+    {"id": "icsd3tr-circadian", "label": "Circadian Rhythm Sleep-Wake Disorders"},
+    {"id": "icsd3tr-parasomnias", "label": "Parasomnias"},
+    {"id": "icsd3tr-movement", "label": "Sleep-Related Movement Disorders"},
+    {"id": "icsd3tr-appendices", "label": "Sleep-related medical/neurological disorders and diagnostic-code appendices"}
+  ]
+}
