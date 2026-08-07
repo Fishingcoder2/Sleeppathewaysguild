@@ -1,0 +1,28 @@
+{
+  "id":"aasm-rls-plmd-2025",
+  "shortTitle":"AASM RLS and PLMD Treatment Guideline",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"clinical practice guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2025,
+  "verifiedAt":"2026-08-07",
+  "citation":"Winkelman JW, Berkowski JA, DelRosso LM, et al. Treatment of restless legs syndrome and periodic limb movement disorder: an American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med. 2025;21(1):137-152.",
+  "doi":"10.5664/jcsm.11390",
+  "driveFileId":"18K7K5CeKo54jYAVqdXaYNNoJer1YVrNN",
+  "driveFileName":"2025 - AASM Guideline for RLS and PLMD Treatment - Winkelman et al.pdf",
+  "currencyNote":"This 2025 guideline explicitly updates the 2012 AASM practice parameter and reflects the current AASM treatment recommendations for RLS and PLMD when verified 2026-08-07.",
+  "bestFor":"Current treatment framework for restless legs syndrome and periodic limb movement disorder in adults and pediatric patients, including treatment classes, iron-status context, augmentation awareness, and distinctions between RLS and PLMD treatment questions.",
+  "mappedTaskCodes":["D1A"],
+  "mappingRationale":{"D1A":"Supports current disorder/treatment context for RLS and PLMD during clinical assessment and disorder recognition. It is not a PSG scoring-rule source."},
+  "authorityBoundary":"Use ICSD-3-TR for diagnostic classification and the current AASM Scoring Manual for PLMS scoring rules. This guideline controls treatment guidance, not event scoring or diagnostic criteria.",
+  "copyrightUse":"Use citation, public headings, original summaries, and learning objectives. Do not reproduce substantial recommendation wording, evidence tables, or protected passages.",
+  "sections":[
+    {"id":"rls-plmd-scope","label":"Guideline scope and 2012 practice-parameter update"},
+    {"id":"rls-plmd-good-practice","label":"Good-practice treatment context and contributing factors"},
+    {"id":"rls-plmd-adult-rls","label":"Adult RLS treatment recommendations"},
+    {"id":"rls-plmd-special-populations","label":"Special adult populations"},
+    {"id":"rls-plmd-adult-plmd","label":"Adult PLMD treatment recommendations"},
+    {"id":"rls-plmd-pediatric","label":"Pediatric RLS treatment recommendations"}
+  ]
+}
