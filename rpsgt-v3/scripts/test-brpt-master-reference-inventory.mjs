@@ -8,6 +8,7 @@ const sourceRoot=join(root,'data','study-sources');
 const manifest=JSON.parse(await readFile(join(sourceRoot,'manifest.json'),'utf8'));
 const inventory=JSON.parse(await readFile(join(sourceRoot,manifest.brptMasterReferenceInventoryFile),'utf8'));
 const holdings=JSON.parse(await readFile(join(sourceRoot,manifest.libraryHoldingsAuditFile),'utf8'));
+const userAccess=JSON.parse(await readFile(join(sourceRoot,manifest.userAccessHoldingsFile),'utf8'));
 
 if(inventory.officialExamDocuments.length!==2) throw new Error('BRPT master inventory must keep Blueprint and Candidate Handbook as two separate official exam documents.');
 if(inventory.primaryManualsAndClassification.length!==2) throw new Error('BRPT master inventory must include the AASM Scoring Manual and ICSD as separate core references.');
@@ -29,7 +30,9 @@ for(const required of ['brpt-blueprint','brpt-handbook','aasm-scoring-manual-v3'
 }
 
 const pearls=inventory.brptListedTextbooks.find(item=>item.id==='sleep-medicine-pearls-3e');
-if(!/2nd edition/i.test(pearls.libraryStatus||'')||!/wrong edition/i.test(pearls.editionStatus||'')) throw new Error('Sleep Medicine Pearls edition mismatch is no longer protected.');
+if(!/2nd edition/i.test(pearls.libraryStatus||'')) throw new Error('The older local Sleep Medicine Pearls 2e holding is no longer documented in the master inventory.');
+const userPearls=(userAccess.userConfirmedAccess||[]).find(item=>item.sourceId==='sleep-medicine-pearls-3e');
+if(!userPearls||!/Kindle/i.test(userPearls.platform||'')||userPearls.contentVerifiedByV3!==false||userPearls.structuredInV3!==false) throw new Error('User-confirmed Kindle access to Sleep Medicine Pearls 3e is not correctly separated from V3 content verification/structuring.');
 const pediatricPearls=inventory.brptListedTextbooks.find(item=>item.id==='pediatric-sleep-pearls-1e');
 if(!/not located/i.test(pediatricPearls.libraryStatus||'')) throw new Error('Pediatric Sleep Pearls library gap is no longer explicit.');
 const icsd=inventory.primaryManualsAndClassification.find(item=>item.id==='icsd-3-tr');
@@ -68,9 +71,9 @@ console.log(JSON.stringify({
   structuredCurrent,
   currentGaps,
   driveHoldingsVerified:true,
+  sleepMedicinePearls3eUserAccess:true,
   adultOsa2009Integrated:true,
   icsdCurrencyBoundary:true,
-  sleepMedicinePearlsEditionBoundary:true,
   pediatricSleepPearlsGapProtected:true,
   rls2025IdentityProtected:true
 },null,2));
