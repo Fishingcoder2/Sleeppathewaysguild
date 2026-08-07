@@ -5,7 +5,7 @@
 })(typeof globalThis!=="undefined"?globalThis:this,function(){
   "use strict";
 
-  const VERSION="1.0.0";
+  const VERSION="1.0.1";
   const DEFAULTS={
     count:10,
     mode:"practice",
@@ -34,8 +34,8 @@
     const n=Date.parse(value||"");
     return Number.isFinite(n)?n:null;
   };
-  const hours=(value)=>Math.max(0,Number(value)||0)*60*60*1000;
-  const minutes=(value)=>Math.max(0,Number(value)||0)*60*1000;
+  const hours=value=>Math.max(0,Number(value)||0)*60*60*1000;
+  const minutes=value=>Math.max(0,Number(value)||0)*60*1000;
 
   function slug(value){
     return String(value||"").toLowerCase().normalize("NFKD")
@@ -49,16 +49,20 @@
   }
 
   function conceptFamilyId(question){
-    const explicit=toId(question&&(question.conceptFamilyId||question.conceptFamily));
+    if(!isObject(question)) return "";
+    const explicit=toId(question.conceptFamilyId||question.conceptFamily);
     if(explicit) return explicit;
-    const task=toId(question&&(question.taskId||question.taskCode))||"UNMAPPED";
-    const topic=slug(question&&question.topic);
-    return "legacy:"+task+":"+topic;
+    const task=toId(question.taskId||question.taskCode);
+    const rawTopic=toId(question.topic);
+    if(!task&&!rawTopic) return "";
+    return "legacy:"+(task||"UNMAPPED")+":"+slug(rawTopic);
   }
 
   function conceptId(question){
-    const explicit=toId(question&&question.conceptId);
-    return explicit||conceptFamilyId(question)+":general";
+    if(!isObject(question)) return "";
+    const explicit=toId(question.conceptId);
+    const family=conceptFamilyId(question);
+    return explicit||(family?family+":general":"");
   }
 
   function defaultState(){
@@ -97,7 +101,7 @@
   }
 
   function safeEligible(question){
-    if(!question||!questionId(question)) return false;
+    if(!question||!questionId(question)||!conceptFamilyId(question)) return false;
     if(question.reviewStatus==="retired"||question.status==="retired") return false;
     if(question.qa&&question.qa.manualReviewRecommended||question.manualReviewRecommended) return false;
     if(!String(question.prompt||"").trim()) return false;
@@ -140,16 +144,31 @@
     let tier;
     let reason;
 
-    if(familyStat.attempts===0){tier=0;reason="unseen-concept";}
-    else if(qStat.attempts===0){tier=1;reason=remediationReady?"fresh-remediation-question":"unseen-question";}
-    else {
+    if(familyStat.attempts===0){
+      tier=0;
+      reason="unseen-concept";
+    }else if(qStat.attempts===0){
+      tier=remediationReady?0.75:1;
+      reason=remediationReady?"fresh-remediation-question":"unseen-question";
+    }else{
       const recentQuestion=qAge<hours(options.recentQuestionCooldownHours);
       const recentConcept=familyAge<hours(options.recentConceptCooldownHours);
-      if(remediationReady&&!qStat.lastIncorrectAt){tier=1.25;reason="alternate-remediation-question";}
-      else if(qStat.mastered&&!recentQuestion){tier=2;reason="older-mastered-question";}
-      else if(!qStat.mastered&&!recentQuestion){tier=2.1;reason="older-reviewed-question";}
-      else if(qStat.mastered){tier=3;reason="recent-mastered-question";}
-      else {tier=3.2;reason="recent-reviewed-question";}
+      if(remediationReady&&!qStat.lastIncorrectAt){
+        tier=1.25;
+        reason="alternate-remediation-question";
+      }else if(qStat.mastered&&!recentQuestion){
+        tier=2;
+        reason="older-mastered-question";
+      }else if(!qStat.mastered&&!recentQuestion){
+        tier=2.1;
+        reason="older-reviewed-question";
+      }else if(qStat.mastered){
+        tier=3;
+        reason="recent-mastered-question";
+      }else{
+        tier=3.2;
+        reason="recent-reviewed-question";
+      }
       if(recentConcept) tier+=0.15;
       if(qStat.lastIncorrectAt&&remediationReady) tier+=0.35;
     }
@@ -164,15 +183,16 @@
       qAge,
       familyAge,
       qStat,
-      familyStat
+      familyStat,
+      tieBreaker:0
     };
   }
 
-  function compareRank(a,b,rng){
+  function compareRank(a,b){
     if(a.tier!==b.tier) return a.tier-b.tier;
     if(a.qAge!==b.qAge) return b.qAge-a.qAge;
     if(a.familyAge!==b.familyAge) return b.familyAge-a.familyAge;
-    return rng()-0.5;
+    return a.tieBreaker-b.tieBreaker;
   }
 
   function buildRankedPool(records,options){
@@ -186,10 +206,13 @@
       .filter(safeEligible)
       .filter(question=>!excluded.has(questionId(question)))
       .map(question=>rankQuestion(question,state,config,nowMs))
-      .map(row=>Object.assign(row,{avoidFamily:avoidFamilies.has(row.conceptFamilyId)}))
+      .map(row=>Object.assign(row,{
+        avoidFamily:avoidFamilies.has(row.conceptFamilyId),
+        tieBreaker:rng()
+      }))
       .sort((a,b)=>{
         if(a.avoidFamily!==b.avoidFamily) return a.avoidFamily?1:-1;
-        return compareRank(a,b,rng);
+        return compareRank(a,b);
       });
   }
 
@@ -236,6 +259,15 @@
     });
   }
 
+  function quotaValue(question,field){
+    if(!question) return "";
+    if(field==="domain") return toId(question.domain||question.domainId);
+    if(field==="domainId") return toId(question.domainId||question.domain);
+    if(field==="task"||field==="taskCode") return toId(question.taskCode||question.taskId);
+    if(field==="taskId") return toId(question.taskId||question.taskCode);
+    return toId(question[field]);
+  }
+
   function selectByQuotas(records,options){
     const config=modeOptions(options);
     const quotas=isObject(config.quotas)?config.quotas:{};
@@ -246,16 +278,20 @@
 
     Object.keys(quotas).forEach(key=>{
       const count=Math.max(0,Number(quotas[key])||0);
-      const pool=(records||[]).filter(question=>toId(question&&question[quotaField])===toId(key));
+      const pool=(records||[]).filter(question=>quotaValue(question,quotaField)===toId(key));
       const rows=selectQuestions(pool,Object.assign({},config,{
         count,
         excludeQuestionIds:Array.from(usedIds),
         avoidConceptFamilyIds:Array.from(usedFamilies)
       }));
-      rows.forEach(question=>{usedIds.add(questionId(question));usedFamilies.add(conceptFamilyId(question));selected.push(question);});
+      rows.forEach(question=>{
+        usedIds.add(questionId(question));
+        usedFamilies.add(conceptFamilyId(question));
+        selected.push(question);
+      });
     });
 
-    const target=Object.values(quotas).reduce((sum,value)=>sum+(Math.max(0,Number(value)||0)),0);
+    const target=Object.values(quotas).reduce((sum,value)=>sum+Math.max(0,Number(value)||0),0);
     if(selected.length<target){
       const extras=selectQuestions(records,Object.assign({},config,{
         count:target-selected.length,
@@ -269,13 +305,14 @@
 
   function recordAttempt(value,input){
     const state=normalizeState(value);
-    const question=input&&input.question||{};
-    const qid=questionId(question)||toId(input&&input.questionId);
-    const familyId=conceptFamilyId(question)||toId(input&&input.conceptFamilyId);
+    const supplied=isObject(input)?input:{};
+    const question=isObject(supplied.question)?supplied.question:{};
+    const qid=questionId(question)||toId(supplied.questionId);
+    const familyId=conceptFamilyId(question)||toId(supplied.conceptFamilyId);
     if(!qid||!familyId) return state;
-    const at=input&&input.at||new Date().toISOString();
-    const correct=Boolean(input&&input.correct);
-    const remediationDelay=minutes(input&&input.remediationDelayMinutes!=null?input.remediationDelayMinutes:DEFAULTS.remediationDelayMinutes);
+    const at=supplied.at||new Date().toISOString();
+    const correct=Boolean(supplied.correct);
+    const remediationDelay=minutes(supplied.remediationDelayMinutes!=null?supplied.remediationDelayMinutes:DEFAULTS.remediationDelayMinutes);
 
     function update(bucket,id){
       const stat=statFor(bucket,id);
@@ -306,11 +343,12 @@
 
   function recordSession(value,input){
     const state=normalizeState(value);
-    const questions=Array.isArray(input&&input.questions)?input.questions:[];
+    const supplied=isObject(input)?input:{};
+    const questions=Array.isArray(supplied.questions)?supplied.questions:[];
     const record={
-      sessionId:toId(input&&input.sessionId)||"session-"+Date.now(),
-      mode:input&&input.mode||"practice",
-      completedAt:input&&input.completedAt||new Date().toISOString(),
+      sessionId:toId(supplied.sessionId)||"session-"+Date.now(),
+      mode:supplied.mode||"practice",
+      completedAt:supplied.completedAt||new Date().toISOString(),
       questionIds:questions.map(questionId).filter(Boolean),
       conceptFamilyIds:Array.from(new Set(questions.map(conceptFamilyId).filter(Boolean)))
     };
