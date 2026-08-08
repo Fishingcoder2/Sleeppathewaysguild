@@ -172,7 +172,7 @@ jobs:
             exit 0
           fi
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+Fishingcoder2@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add rpsgt-v3/data/question-bank
           git commit -m "Generate validated RPSGT v3 question modules [skip ci]"
           git push origin HEAD:build/rpsgt-v3-modular
