@@ -20,7 +20,8 @@ const imported=[
   ['ats-diaphragm-pacing-phrenic-nerve-2016.json','ats-diaphragm-pacing-phrenic-nerve-2016'],
   ['aap-apnea-prematurity-2016.json','aap-apnea-prematurity-2016'],
   ['treating-apnea-prematurity-2022.json','treating-apnea-prematurity-2022'],
-  ['pediatric-sleep-pearls-1e.json','pediatric-sleep-pearls-1e']
+  ['pediatric-sleep-pearls-1e.json','pediatric-sleep-pearls-1e'],
+  ['principles-practice-pediatric-sleep-2e.json','principles-practice-pediatric-sleep-2e']
 ];
 
 const docs=new Map();
@@ -38,6 +39,10 @@ for(const [file,id] of imported){
 
 const scoring=JSON.parse(await readFile(join(sourceRoot,'aasm-scoring-manual-v3.json'),'utf8'));
 if(scoring.currentAuthority!==true||scoring.sourceRole!=='currentAuthority') throw new Error('AASM Scoring Manual Version 3 lost current-authority status.');
+const adultDaytest=JSON.parse(await readFile(join(sourceRoot,'aasm-adult-mslt-mwt-2021.json'),'utf8'));
+const pediatricDaytest=JSON.parse(await readFile(join(sourceRoot,'aasm-pediatric-mslt-mwt-2024.json'),'utf8'));
+if(adultDaytest.currentAuthority!==true||pediatricDaytest.currentAuthority!==true) throw new Error('Current adult/pediatric AASM daytime-test protocol authority is not preserved.');
+if(!adultDaytest.erratum||adultDaytest.erratum.year!==2022) throw new Error('Adult AASM MSLT/MWT 2022 erratum awareness is missing.');
 
 const atlas=docs.get('atlas-polysomnography-2e');
 if(!Array.isArray(atlas.excludedLegacySections)||!atlas.excludedLegacySections.some(item=>/MSLT protocol/i.test(item))) throw new Error('Atlas of Polysomnography legacy protocol exclusions are not protected.');
@@ -70,6 +75,12 @@ for(const task of ['D1C','D2A','D3C','D4C']) if(!(psp.mappedTaskCodes||[]).inclu
 if((psp.sections||[]).some(section=>/year-old|newborn infant with|girl with|boy with/i.test(section.label||''))) throw new Error('Pediatric Sleep Pearls learner metadata contains case-opening patient text instead of section-level mapping only.');
 if(!/Do not reproduce patient cases, case-opening titles/i.test(psp.copyrightUse||'')) throw new Error('Pediatric Sleep Pearls case-content copyright boundary is missing.');
 
+const pppsm=docs.get('principles-practice-pediatric-sleep-2e');
+if(pppsm.mappedChapterCount!==49||(pppsm.sections||[]).length!==49) throw new Error('Principles and Practice of Pediatric Sleep Medicine must preserve all 49 audited chapter/page mappings.');
+for(const task of ['D1C','D2A','D2C','D3C','D4C']) if(!(pppsm.mappedTaskCodes||[]).includes(task)) throw new Error(`Pediatric Sleep Medicine deeper task coverage is missing ${task}.`);
+const pppsm49=(pppsm.sections||[]).find(section=>section.id==='PPPSM2-CH49');
+if(!pppsm49||!/Polysomnography and MSLT.*379–389/i.test(pppsm49.label||'')) throw new Error('Pediatric Sleep Medicine Chapter 49 PSG/MSLT locator is missing or changed.');
+
 function family(list,id){return list.find(item=>item.id===id);}
 function sourceOrder(item){return (item&&Array.isArray(item.recommendations)?item.recommendations:[]).map(row=>Array.isArray(row)?row[0]:'').filter(Boolean);}
 
@@ -98,7 +109,11 @@ const aop=sourceOrder(family(topicsB,'apnea-of-prematurity'));
 const expectedAop=['aasm-scoring-manual-v3','aap-apnea-prematurity-2016','treating-apnea-prematurity-2022','atlas-infant-polysomnography-2003'];
 if(JSON.stringify(aop)!==JSON.stringify(expectedAop)) throw new Error(`AOP routing must remain AASM scoring context → 2016 AAP report → 2022 review → infant PSG atlas; got ${aop.join(', ')}.`);
 const pediatric=sourceOrder(family(topicsB,'pediatric'));
-if(pediatric[0]!=='aasm-scoring-manual-v3'||!pediatric.includes('pediatric-sleep-pearls-1e')||pediatric.indexOf('pediatric-sleep-pearls-1e')<pediatric.indexOf('aasm-scoring-manual-v3')) throw new Error(`Pediatric routing must preserve AASM authority and include Pediatric Sleep Pearls as case-based support; got ${pediatric.join(', ')}.`);
+for(const sourceId of ['pediatric-sleep-pearls-1e','principles-practice-pediatric-sleep-2e']) if(!pediatric.includes(sourceId)) throw new Error(`Pediatric routing is missing ${sourceId}.`);
+if(pediatric[0]!=='aasm-scoring-manual-v3') throw new Error(`Pediatric routing must preserve AASM authority first; got ${pediatric.join(', ')}.`);
+const daytests=sourceOrder(family(topicsB,'daytests-hsat'));
+for(const sourceId of ['aasm-scoring-manual-v3','aasm-adult-mslt-mwt-2021','aasm-pediatric-mslt-mwt-2024','principles-practice-pediatric-sleep-2e']) if(!daytests.includes(sourceId)) throw new Error(`Day-test routing is missing ${sourceId}.`);
+if(daytests.indexOf('aasm-adult-mslt-mwt-2021')>daytests.indexOf('principles-practice-pediatric-sleep-2e')||daytests.indexOf('aasm-pediatric-mslt-mwt-2024')>daytests.indexOf('principles-practice-pediatric-sleep-2e')) throw new Error('Current AASM adult/pediatric MSLT/MWT protocols must outrank older textbook day-test support.');
 const gasExchange=sourceOrder(family(topicsB,'gas-exchange'));
 if(gasExchange[0]!=='aasm-scoring-manual-v3'||gasExchange[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Gas-exchange routing must remain AASM first, ERS specialty support second; got ${gasExchange.join(', ')}.`);
 const adultRespiratory=sourceOrder(family(topicsB,'adult-respiratory'));
@@ -116,10 +131,13 @@ console.log(JSON.stringify({
   driveAuditedSources:imported.length,
   supplementalOnly:true,
   aasmAuthorityPreserved:true,
+  currentDaytestProtocolsSurfaced:true,
+  adultDaytestErratumProtected:true,
   cardiacSpecialtyRouting:true,
   infantSpecialtyRouting:true,
   pediatricPearlsSectionMerge:true,
   pediatricPearlsCasesNotCopied:true,
+  pediatricMedicineChapterMap:true,
   apneaPrematurityDedicatedRouting:true,
   aopNicuVsPsgBoundary:true,
   lowerPriorityAopHistoryExcluded:true,
