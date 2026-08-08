@@ -36,6 +36,7 @@ if(!js.includes("data/brpt-official-resources.json")) throw new Error('Home dash
 if(!js.includes("data/question-bank/manifest.json")) throw new Error('Home dashboard does not refresh the deployed question-bank count from the manifest.');
 if(!js.includes('promotePrimaryDestinations')||!js.includes("insertAdjacentElement('afterend',destinationSection)")) throw new Error('Primary learning destinations are not promoted directly below the hero.');
 if(!js.includes('normalizeAchievementCopy')||!js.includes('Task badges and domain medals')||!js.includes('Sleep Pathways Guild educational achievements')) throw new Error('Home dashboard does not normalize Guild task-badge and domain-medal terminology.');
+if(!js.includes('suppressOptionalBookShelf')||!js.includes("getElementById('rpsgt-book-shelf')")||!js.includes('MutationObserver')) throw new Error('Learner-facing optional book shelf suppression is not protected.');
 if(!css.includes('.official-resource-grid')||!css.includes('.reasoning-compass')) throw new Error('BRPT resource board or Coach Bob compass styles are missing.');
 if(!css.includes('.front-door-destinations')||!css.includes('@media(min-width:821px) and (max-width:1050px)')) throw new Error('Compact tablet/desktop front-door destination layout is missing.');
 if(!css.includes('.brpt-hero{grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);align-items:start;min-height:0')) throw new Error('Home hero is not explicitly content-height and compact.');
@@ -113,5 +114,6 @@ console.log(JSON.stringify({
   referenceCenterReadOnly:true,
   referenceCenterPrivateLibraryHidden:true,
   guildAchievementTerminology:true,
+  optionalBookShelfSuppressed:true,
   developmentNoindex:true
 },null,2));
