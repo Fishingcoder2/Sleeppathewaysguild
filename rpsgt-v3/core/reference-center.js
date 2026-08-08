@@ -43,7 +43,8 @@
   function sourceStatus(source){
     if(source.currentAuthority===true||source.sourceRole==='currentAuthority') return 'Current authority';
     if(source.sourceRole==='legacyGuidance') return 'Legacy / applicable';
-    return text(source.editionStatus||source.brptReferenceStatus||'Study support');
+    if(source.brptReferenceStatus) return 'BRPT-listed reference';
+    return 'Study support';
   }
 
   function externalUrl(source){
@@ -167,12 +168,13 @@
     const url=externalUrl(source);
     const publisher=text(source.publisher);
     const status=sourceStatus(source);
-    const year=text(source.year||source.publicationYear||source.verifiedAt);
+    const year=text(source.year||source.publicationYear);
+    const editionYear=text(source.editionStatus||source.effectiveFramework||source.currentIdentity||source.edition||year);
     const bestFor=text(source.bestFor);
     return '<article class="card reference-card" data-authority="'+authority.rank+'">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Authority level '+authority.rank+'</div><h2>'+escapeHtml(title)+'</h2></div><div class="reference-badges"><span class="status">'+escapeHtml(authority.label)+'</span><span class="status '+(status==='Current authority'?'green':'')+'">'+escapeHtml(status)+'</span></div></div>'+
       '<div class="reference-citation"><span class="reference-citation-label">'+escapeHtml(citation.label)+'</span><em>'+escapeHtml(citation.value)+'</em></div>'+
-      '<div class="reference-meta"><div><span>Source type</span><strong>'+escapeHtml(text(source.sourceType)||'Reference')+'</strong></div><div><span>Publisher / organization</span><strong>'+escapeHtml(publisher||'See citation')+'</strong></div><div><span>Edition / year</span><strong>'+escapeHtml(text(source.editionStatus||source.edition||year)||'See citation')+'</strong></div></div>'+
+      '<div class="reference-meta"><div><span>Source type</span><strong>'+escapeHtml(text(source.sourceType)||'Reference')+'</strong></div><div><span>Publisher / organization</span><strong>'+escapeHtml(publisher||'See citation')+'</strong></div><div><span>Edition / year</span><strong>'+escapeHtml(editionYear||'See citation')+'</strong></div></div>'+
       (bestFor?'<p class="reference-best-for"><strong>Best for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
       (tasks.length?'<div class="reference-task-list" aria-label="Mapped RPSGT tasks">'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
       (sections.length?'<details class="reference-sections"><summary>Relevant sections / chapters</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(section.label)+'</li>').join('')+'</ul></details>':'')+
