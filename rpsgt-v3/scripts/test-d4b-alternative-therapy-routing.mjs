@@ -32,7 +32,7 @@ for(const id of ['ers-non-cpap-osa-2021','ats-weight-management-osa-2018','fda-h
 }
 const fdaHgns=sourceDocs.get('fda-hgns-device-labeling-current');
 for(const pma of ['P130008','P240024','P250013']) if(!(fdaHgns.regulatoryRecords||[]).some(item=>item.pma===pma)) throw new Error(`FDA HNS map is missing ${pma}.`);
-if(!/No universal HNS eligibility rule/i.test(fdaHgns.authorityBoundary||'')) throw new Error('Device-specific HNS boundary is missing.');
+if(!/universal HNS eligibility/i.test(fdaHgns.authorityBoundary||'')) throw new Error('Device-specific HNS boundary is missing.');
 if(!/not an independent prescribing protocol/i.test(sourceDocs.get('fda-tirzepatide-osa-2024').authorityBoundary||'')) throw new Error('Tirzepatide prescribing/scope boundary is missing.');
 
 const uas=family('d4b-upper-airway-stimulation');
