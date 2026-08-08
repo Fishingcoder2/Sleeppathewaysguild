@@ -97,8 +97,24 @@
     hero.insertAdjacentElement('afterend',destinationSection);
   }
 
+  function normalizeAchievementCopy(){
+    const host=$('#guild-achievements');
+    if(!host) return;
+    const heading=host.querySelector('.section-head h2');
+    if(heading&&heading.textContent.trim()==='Merit badges and domain medals') heading.textContent='Task badges and domain medals';
+    host.querySelectorAll('.guild-achievement-card p').forEach(node=>{
+      if(node.textContent.trim()==='Task merit badges earned in this domain.') node.textContent='Task badges earned in this domain.';
+    });
+    host.querySelectorAll('.guild-achievement-line span').forEach(node=>{
+      if(node.textContent.trim()==='Merit badges') node.textContent='Task badges';
+    });
+    const note=host.querySelector('.book-affiliate-note');
+    if(note) note.innerHTML='<strong>Achievement note:</strong> These are Sleep Pathways Guild educational achievements. They are not BRPT-issued credentials, official exam results, or passing predictions.';
+  }
+
   function init(){
     promotePrimaryDestinations();
+    normalizeAchievementCopy();
     loadResources();
     loadManifestCount();
   }
