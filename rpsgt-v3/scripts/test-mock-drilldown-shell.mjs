@@ -14,8 +14,14 @@ assert.ok(mockJs.includes("root.mock.history.length>20"),"Mock history must rema
 for(const selector of ["id=\"mock-detail\"","data-mock-drilldown"])assert.ok(reportsHtml.includes(selector),`Reports page is missing ${selector}.`);
 for(const script of ["core/mock-drilldown-engine.js","core/mock-result-report.js"])assert.ok(reportsHtml.includes(script),`Reports page is missing ${script}.`);
 assert.ok(reportsHtml.indexOf("core/mock-drilldown-engine.js")<reportsHtml.indexOf("core/mock-result-report.js"),"Mock drill-down engine must load before its report controller.");
-for(const boundary of ["compact history stores IDs and answer indexes","Older attempts remain visible as aggregate-only history","Read only"])assert.ok(reportsHtml.includes(boundary),`Reports page is missing drill-down boundary text: ${boundary}`);
+for(const boundary of [
+  "Completed Mock review reconnects saved response evidence to the current validated question bank without copying full question content into the progress record.",
+  "when question-level evidence is available",
+  "summary-only history",
+  "Read only"
+])assert.ok(reportsHtml.includes(boundary),`Reports page is missing learner-facing drill-down boundary text: ${boundary}`);
+assert.equal(/compact history stores IDs and answer indexes|compact v2 evidence|aggregate-only history/i.test(reportsHtml),false,"Reports page must not expose developer-era Mock storage terminology.");
 assert.equal(/RPSGTStorage\.save|localStorage\.(?:setItem|removeItem|clear)/.test(reportJs),false,"Mock drill-down report must remain read only.");
 for(const token of ["feedback-index.json","manifest.json","Aggregate-only historical attempt","data-mock-filter","data-mock-load-review","questionRows","replaceState"])assert.ok(reportJs.includes(token),`Mock drill-down report is missing ${token}.`);
 assert.ok(engine.includes("selectedIndex")&&engine.includes("prompt")&&engine.includes("correctAnswer"),"Drill-down engine must store answer indexes and reconstruct display text separately.");
-console.log("Mock v2 history, completed-result links, read-only Reports drill-down, lazy question reconstruction, and aggregate-only fallback shell contracts passed.");
+console.log("Mock v2 history, completed-result links, learner-facing read-only Reports drill-down, lazy question reconstruction, and summary-only fallback shell contracts passed.");
