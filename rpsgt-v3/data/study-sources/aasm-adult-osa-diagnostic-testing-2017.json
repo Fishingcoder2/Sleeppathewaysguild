@@ -6,19 +6,20 @@
   "sourceRole":"currentAuthority",
   "currentAuthority":true,
   "publicationYear":2017,
-  "verifiedAt":"2026-08-07",
+  "verifiedAt":"2026-08-08",
   "citation":"Kapur VK, Auckley DH, Chowdhuri S, et al. Clinical practice guideline for diagnostic testing for adult obstructive sleep apnea: an American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med. 2017;13(3):479-504.",
   "officialPdf":"https://www.aasm.org/resources/clinicalguidelines/diagnostic-testing-osa.pdf",
-  "currencyNote":"The 2017 guideline remains the existing AASM adult OSA diagnostic-testing guideline, but AASM lists a focused update project as in development in 2026. Re-verify before production release and before relying on version-sensitive patient-selection details.",
-  "bestFor":"Adult OSA diagnostic-testing pathway, when PSG versus HSAT is appropriate, technically adequate HSAT concepts, and escalation after negative/inconclusive/technically inadequate HSAT.",
-  "mappedTaskCodes":["D2B"],
-  "mappingRationale":{"D2B":"Provides the clinical diagnostic-testing framework that should govern how HSAT technical guidance is interpreted during procedure-related study preparation and performance."},
+  "currencyNote":"The 2017 guideline remains listed as the active adult OSA diagnostic-testing guideline in the 2026-08-08 authority audit. Re-verify before production release if AASM publishes a focused update.",
+  "bestFor":"Adult OSA diagnostic-testing pathway, clinical context for PSG versus HSAT selection, technically adequate HSAT concepts, and escalation after negative, inconclusive, or technically inadequate HSAT.",
+  "mappedTaskCodes":["D1A","D2A","D2B"],
+  "mappingRationale":{"D1A":"Supports clinical assessment context for selecting an appropriate adult OSA diagnostic pathway.","D2A":"Supports preparation decisions that differ between attended PSG and HSAT while technical execution comes from current AAST/AASM sources.","D2B":"Provides the clinical diagnostic-testing framework governing procedure selection and follow-up."},
+  "authorityBoundary":"Use for adult OSA diagnostic test selection. AAST HSAT guidance controls technologist HSAT workflow and the current AASM Scoring Manual controls scoring/technical rules where applicable.",
   "copyrightUse":"Use citation, high-level recommendation topics, original summaries, and learning objectives. Do not reproduce substantial recommendation text, evidence tables, or protected material.",
   "sections":[
     {"id":"aasm-dx-osa-framework","label":"Adult OSA diagnostic-testing framework"},
     {"id":"aasm-dx-osa-psg-hsat","label":"PSG versus technically adequate HSAT"},
     {"id":"aasm-dx-osa-hsat-followup","label":"Negative, inconclusive, or technically inadequate HSAT follow-up"},
     {"id":"aasm-dx-osa-complex-patients","label":"Clinical situations favoring polysomnography over HSAT"},
-    {"id":"aasm-dx-osa-update-watch","label":"AASM focused diagnostic-guideline update in development"}
+    {"id":"aasm-dx-osa-update-watch","label":"Currentness watch for future AASM focused updates"}
   ]
 }
