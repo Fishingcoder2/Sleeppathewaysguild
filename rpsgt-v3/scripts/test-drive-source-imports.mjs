@@ -17,7 +17,9 @@ const imported=[
   ['sleep-technician-guide-2009.json','sleep-technician-guide-2009'],
   ['ers-handbook-respiratory-sleep-medicine-2e.json','ers-handbook-respiratory-sleep-medicine-2e'],
   ['principles-practice-sleep-medicine-7e.json','principles-practice-sleep-medicine-7e'],
-  ['ats-diaphragm-pacing-phrenic-nerve-2016.json','ats-diaphragm-pacing-phrenic-nerve-2016']
+  ['ats-diaphragm-pacing-phrenic-nerve-2016.json','ats-diaphragm-pacing-phrenic-nerve-2016'],
+  ['aap-apnea-prematurity-2016.json','aap-apnea-prematurity-2016'],
+  ['treating-apnea-prematurity-2022.json','treating-apnea-prematurity-2022']
 ];
 
 const docs=new Map();
@@ -53,6 +55,14 @@ const diaphragm=docs.get('ats-diaphragm-pacing-phrenic-nerve-2016');
 if((diaphragm.sections||[]).length!==8) throw new Error('ATS diaphragm-pacing map must preserve all eight verified patient-education sections.');
 if(!/distinct therapy from transvenous phrenic-nerve stimulation for adult central sleep apnea/i.test(diaphragm.therapyIdentityBoundary||'')) throw new Error('Diaphragm-pacing therapy identity boundary is missing.');
 
+const aapAop=docs.get('aap-apnea-prematurity-2016');
+if((aapAop.sections||[]).length!==9) throw new Error('2016 AAP apnea-of-prematurity map must preserve all nine staged sections.');
+if(!/five years unless reaffirmed or revised/i.test(aapAop.currencyNote||'')) throw new Error('2016 AAP apnea-of-prematurity legacy-currentness warning is missing.');
+if(!/NICU bedside-monitoring definitions.*not interchangeable with PSG scoring rules/i.test(aapAop.authorityBoundary||'')) throw new Error('AOP NICU-monitoring versus PSG-scoring boundary is missing.');
+const aop2022=docs.get('treating-apnea-prematurity-2022');
+if((aop2022.sections||[]).length!==10) throw new Error('2022 AOP treatment review must preserve all ten staged sections.');
+if(!/narrative review, not a guideline/i.test(aop2022.currencyNote||'')) throw new Error('2022 AOP narrative-review boundary is missing.');
+
 function family(list,id){return list.find(item=>item.id===id);}
 function sourceOrder(item){return (item&&Array.isArray(item.recommendations)?item.recommendations:[]).map(row=>Array.isArray(row)?row[0]:'').filter(Boolean);}
 
@@ -76,6 +86,10 @@ if(clinical[0]!=='principles-practice-sleep-medicine-7e') throw new Error(`Clini
 
 const infant=sourceOrder(family(topicsB,'infant-psg'));
 if(infant[0]!=='aasm-scoring-manual-v3'||infant[1]!=='atlas-infant-polysomnography-2003') throw new Error(`Infant PSG source order must remain AASM first, infant atlas second; got ${infant.join(', ')}.`);
+if(infant.includes('aap-apnea-prematurity-2016')||infant.includes('treating-apnea-prematurity-2022')) throw new Error('Apnea-of-prematurity clinical sources must stay in their dedicated neonatal topic rather than generic infant PSG routing.');
+const aop=sourceOrder(family(topicsB,'apnea-of-prematurity'));
+const expectedAop=['aasm-scoring-manual-v3','aap-apnea-prematurity-2016','treating-apnea-prematurity-2022','atlas-infant-polysomnography-2003'];
+if(JSON.stringify(aop)!==JSON.stringify(expectedAop)) throw new Error(`AOP routing must remain AASM scoring context → 2016 AAP report → 2022 review → infant PSG atlas; got ${aop.join(', ')}.`);
 const gasExchange=sourceOrder(family(topicsB,'gas-exchange'));
 if(gasExchange[0]!=='aasm-scoring-manual-v3'||gasExchange[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Gas-exchange routing must remain AASM first, ERS specialty support second; got ${gasExchange.join(', ')}.`);
 const adultRespiratory=sourceOrder(family(topicsB,'adult-respiratory'));
@@ -87,6 +101,7 @@ const existingEeg=JSON.parse(await readFile(join(sourceRoot,'atlas-electroenceph
 if(!Array.isArray(existingEeg.editors)||!existingEeg.editors.includes('Magdy Y. Morgan')||existingEeg.editors.includes('Undevia')) throw new Error('Corrected Sleep EEG atlas identity regressed to the stale Drive-map attribution.');
 
 if(manifest.sourceFiles.some(file=>/\.csv$/i.test(file)||/Webapp_Import/i.test(file))) throw new Error('Cumulative Drive import exports must not be registered as learner source files.');
+if(manifest.sourceFiles.some(file=>/(?:aop|apnea).*2011|(?:aop|apnea).*2013|2011.*(?:aop|apnea)|2013.*(?:aop|apnea)/i.test(file))) throw new Error('Lower-priority 2011/2013 AOP historical reviews should not enter routine learner source routing without a specific gap justification.');
 
 console.log(JSON.stringify({
   driveAuditedSources:imported.length,
@@ -94,6 +109,9 @@ console.log(JSON.stringify({
   aasmAuthorityPreserved:true,
   cardiacSpecialtyRouting:true,
   infantSpecialtyRouting:true,
+  apneaPrematurityDedicatedRouting:true,
+  aopNicuVsPsgBoundary:true,
+  lowerPriorityAopHistoryExcluded:true,
   csaAuthorityOverlay:true,
   workflowAndArtifactRouting:true,
   respiratorySpecialtyRouting:true,
