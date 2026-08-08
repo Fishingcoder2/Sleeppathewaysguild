@@ -13,9 +13,10 @@
   "verifiedAt":"2026-08-08",
   "driveFileId":"1AqRh1joLFq_pzYQHIYZMjaKNhkDJqk-d",
   "driveFileName":"Pediatric Sleep Pearls (2017) Lourdes M. DelRosso, MD, FAASM.pdf",
-  "libraryStatus":"Exact-title full Guild Drive holding verified. The 2026-08-08 staged source map verifies 96 cases across 18 source-authored thematic sections with 1-based local-PDF page ranges; learner-facing V3 stores only section-level metadata and original Guild study directions, not case content.",
+  "libraryStatus":"Exact-title full Guild Drive holding verified. The 2026-08-08 staged source map verifies 96 cases across 18 source-authored thematic sections with 1-based local-PDF page ranges; learner-facing V3 stores only section-level metadata and original Guild study directions, not case content. Nine hidden compatibility aliases preserve existing task-plan references while the learner Reference Center shows only the 18 audited sections.",
   "mappedCaseCount":96,
   "mappedThematicSectionCount":18,
+  "legacyTaskPlanAliasCount":9,
   "apaCitation":"DelRosso, L. M., Berry, R. B., Beck, S. E., Wagner, M. H., & Marcus, C. L. (2017). Pediatric sleep pearls. Elsevier.",
   "brptReferenceStatus":"Current BRPT RPSGT recommended-reading textbook family; use as pediatric teaching support rather than a current scoring or diagnostic authority.",
   "bestFor":"Case-based pediatric clinical reasoning, pediatric PSG indications and acquisition context, common pediatric PSG findings, artifacts, developmental sleep concepts, sleep-disordered breathing, pediatric titration context, hypersomnolence, behavioral/circadian problems, parasomnias, movement disorders, treatment context, genetic/medical/neurologic comorbidity, and medication-effect review.",
@@ -41,6 +42,15 @@
     {"id":"PSP-S15","label":"Sleep and neurologic conditions (local PDF pp. 266–298)","taskCodes":["D1A","D2C","D3B","D4A","D4C"]},
     {"id":"PSP-S16","label":"Sleep and psychiatric conditions (local PDF pp. 299–304)","taskCodes":["D1A","D1B"]},
     {"id":"PSP-S17","label":"Sleep and neurodevelopmental disorders (local PDF pp. 305–310)","taskCodes":["D1A","D1B"]},
-    {"id":"PSP-S18","label":"Drug effects on sleep (local PDF pp. 311–327)","taskCodes":["D1A","D1B","D2B","D3B","D4C"]}
+    {"id":"PSP-S18","label":"Drug effects on sleep (local PDF pp. 311–327)","taskCodes":["D1A","D1B","D2B","D3B","D4C"]},
+    {"id":"psp-assessment","label":"Pediatric assessment and clinical reasoning","taskCodes":["D1A","D2B"],"hiddenFromLearner":true,"aliasFor":["PSP-S01"]},
+    {"id":"psp-sleep-health","label":"Pediatric sleep health and sleep hygiene","taskCodes":["D1A","D1B"],"hiddenFromLearner":true,"aliasFor":["PSP-S05"]},
+    {"id":"psp-psg-artifact","label":"Pediatric PSG and artifact recognition","taskCodes":["D2A","D2B","D2C","D3B","D3C"],"hiddenFromLearner":true,"aliasFor":["PSP-S02","PSP-S03","PSP-S04"]},
+    {"id":"psp-pediatric-scoring-context","label":"Pediatric PSG scoring context","taskCodes":["D2C","D3B","D3C","D4C"],"hiddenFromLearner":true,"aliasFor":["PSP-S02","PSP-S03","PSP-S09"]},
+    {"id":"psp-hypersomnolence","label":"Pediatric hypersomnolence","taskCodes":["D1A","D1B","D2B","D3C"],"hiddenFromLearner":true,"aliasFor":["PSP-S07"]},
+    {"id":"psp-insomnia-circadian","label":"Pediatric insomnia and circadian disorders","taskCodes":["D1A","D1B","D4B"],"hiddenFromLearner":true,"aliasFor":["PSP-S06","PSP-S08"]},
+    {"id":"psp-sdb-treatment","label":"Pediatric sleep-disordered breathing and titration","taskCodes":["D1A","D1C","D2C","D3B","D4A","D4B","D4C"],"hiddenFromLearner":true,"aliasFor":["PSP-S09","PSP-S10"]},
+    {"id":"psp-parasomnia-movement","label":"Pediatric parasomnias and movement disorders","taskCodes":["D1A","D1B","D2B","D3B"],"hiddenFromLearner":true,"aliasFor":["PSP-S12","PSP-S13"]},
+    {"id":"psp-comorbidity-medications","label":"Pediatric comorbidity and medication effects","taskCodes":["D1A","D1B","D2B","D2C","D3B","D4C"],"hiddenFromLearner":true,"aliasFor":["PSP-S14","PSP-S15","PSP-S16","PSP-S17","PSP-S18"]}
   ]
 }
