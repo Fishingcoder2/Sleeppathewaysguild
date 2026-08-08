@@ -62,7 +62,7 @@ For every laboratory: open from the catalog, complete at least one workflow stat
 | Instrumentation, Filters, and Signal Pathways | `lab-instrumentation.html` | Required | Required | Required | Required | Required | Not run |
 | Pediatric and Infant Sleep | `lab-pediatric.html` | Required | Required | Required | Required | Required | Not run |
 | MSLT and MWT Protocols | `lab-daytime-testing.html` | Required | Required | Required | Required | Required | Not run |
-| Integrated Troubleshooting | `lab-troubleshooting.html` | Required | Required | Required | Required | Required | Required | Not run |
+| Integrated Troubleshooting | `lab-troubleshooting.html` | Required | Required | Required | Required | Required | Not run |
 | Math Coach | `lab-math-coach.html` | Required | Required | Required | Required | Required | Not run |
 
 ## Responsive and accessibility review
