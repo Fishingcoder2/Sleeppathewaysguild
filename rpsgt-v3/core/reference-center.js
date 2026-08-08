@@ -85,7 +85,7 @@
     return [
       ...(Array.isArray(source.sections)?source.sections:[]),
       ...(Array.isArray(source.appendices)?source.appendices:[])
-    ].filter(item=>item&&text(item.label));
+    ].filter(item=>item&&item.hiddenFromLearner!==true&&text(item.label));
   }
 
   function searchableText(source){
