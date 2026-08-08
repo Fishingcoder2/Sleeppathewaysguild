@@ -16,6 +16,7 @@
   "libraryStatus":"Exact-title full Guild Drive holding verified. The 2026-08-08 staged source map verifies 96 cases across 18 source-authored thematic sections with 1-based local-PDF page ranges; learner-facing V3 stores only section-level metadata and original Guild study directions, not case content.",
   "mappedCaseCount":96,
   "mappedThematicSectionCount":18,
+  "apaCitation":"DelRosso, L. M., Berry, R. B., Beck, S. E., Wagner, M. H., & Marcus, C. L. (2017). Pediatric sleep pearls. Elsevier.",
   "brptReferenceStatus":"Current BRPT RPSGT recommended-reading textbook family; use as pediatric teaching support rather than a current scoring or diagnostic authority.",
   "bestFor":"Case-based pediatric clinical reasoning, pediatric PSG indications and acquisition context, common pediatric PSG findings, artifacts, developmental sleep concepts, sleep-disordered breathing, pediatric titration context, hypersomnolence, behavioral/circadian problems, parasomnias, movement disorders, treatment context, genetic/medical/neurologic comorbidity, and medication-effect review.",
   "referenceKeys":["pediatric-sleep-pearls","pediatric-sleep","pediatric-psg"],
