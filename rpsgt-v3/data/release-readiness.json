@@ -17,9 +17,17 @@
       "currentStatus": "Chromium is available in the development runtime, but the runtime cannot reach the deployed Worker preview, so deployed-site pixel and interaction verification is not claimed."
     },
     "isolatedWorkerExactHeadDeployment": {
-      "complete": false,
+      "complete": true,
       "evidenceRequired": "Confirm a successful rpsgt-v3-learning-center Cloudflare Worker check whose head SHA exactly matches the release candidate commit.",
-      "currentStatus": "The exact current-head isolated Worker check has not yet been observed in the GitHub check list."
+      "currentStatus": "Passed on validated candidate f2fe0f0782744c0b92c102326ed1109cf7f16312. Cloudflare Workers Builds: rpsgt-v3-learning-center completed successfully with version ecae03af-54de-43f5-b7e2-1ce1ce326025 on 2026-08-08.",
+      "evidence": {
+        "candidateSha": "f2fe0f0782744c0b92c102326ed1109cf7f16312",
+        "worker": "rpsgt-v3-learning-center",
+        "buildId": "381d20bf-c567-449e-8660-e25bcddafed5",
+        "versionId": "ecae03af-54de-43f5-b7e2-1ce1ce326025",
+        "result": "success",
+        "verifiedAt": "2026-08-08"
+      }
     }
   }
 }
