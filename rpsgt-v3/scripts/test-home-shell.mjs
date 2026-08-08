@@ -80,6 +80,7 @@ for(const marker of [
 }
 if(disclosures.includes('drive.google.com')||disclosures.includes('amazon.com')) throw new Error('Learner-facing Reference Center exposes a private-library or storefront destination.');
 if(!referenceCss.includes('.reference-filter-grid')||!referenceCss.includes('@media(max-width:560px)')) throw new Error('Reference Center responsive filter layout is missing.');
+if(!referenceCss.includes('.reference-authority-note')) throw new Error('Reference Center authority/currency note styling is missing.');
 for(const marker of [
   "data/study-sources/manifest.json",
   "data/blueprint.json",
@@ -92,7 +93,9 @@ for(const marker of [
   "label:'Core reference'",
   "label:'Supplemental'",
   "label:'APA citation'",
-  "label:'Recorded source citation'"
+  "label:'Recorded source citation'",
+  'source.authorityBoundary',
+  'Authority / currency note:'
 ]){
   if(!referenceJs.includes(marker)) throw new Error(`Reference Center controller is missing ${marker}`);
 }
@@ -113,6 +116,7 @@ console.log(JSON.stringify({
   referenceCenter:true,
   referenceCenterReadOnly:true,
   referenceCenterPrivateLibraryHidden:true,
+  referenceAuthorityNotes:true,
   guildAchievementTerminology:true,
   optionalBookShelfSuppressed:true,
   developmentNoindex:true
