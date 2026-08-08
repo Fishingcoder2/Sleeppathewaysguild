@@ -15,7 +15,8 @@ const imported=[
   ['central-sleep-apnea-pathophysiologic-classification-2023.json','central-sleep-apnea-pathophysiologic-classification-2023'],
   ['atlas-polysomnography-2e.json','atlas-polysomnography-2e'],
   ['sleep-technician-guide-2009.json','sleep-technician-guide-2009'],
-  ['ers-handbook-respiratory-sleep-medicine-2e.json','ers-handbook-respiratory-sleep-medicine-2e']
+  ['ers-handbook-respiratory-sleep-medicine-2e.json','ers-handbook-respiratory-sleep-medicine-2e'],
+  ['principles-practice-sleep-medicine-7e.json','principles-practice-sleep-medicine-7e']
 ];
 
 const docs=new Map();
@@ -40,6 +41,13 @@ const technician=docs.get('sleep-technician-guide-2009');
 if(!Array.isArray(technician.excludedLegacySections)||technician.excludedLegacySections.length!==7||!technician.excludedLegacySections.every(item=>/AASM 2007/i.test(item))) throw new Error('Sleep Technician Guide AASM 2007 legacy-rule exclusions are not protected.');
 for(const forbidden of ['STG-19','STG-20','STG-21','STG-22','STG-23','STG-24','STG-25']) if((technician.sections||[]).some(section=>section.id===forbidden)) throw new Error(`Legacy technician-guide scoring section leaked into learner routing: ${forbidden}`);
 
+const ppsm=docs.get('principles-practice-sleep-medicine-7e');
+const officialTasks=['D1A','D1B','D1C','D2A','D2B','D2C','D3A','D3B','D3C','D4A','D4B','D4C'];
+if(JSON.stringify(ppsm.mappedTaskCodes)!==JSON.stringify(officialTasks)) throw new Error('PPSM 7e no longer represents all 12 official RPSGT tasks from the Drive task-coverage map.');
+if((ppsm.sections||[]).length!==23) throw new Error('PPSM 7e compact map must preserve the 23 verified book sections.');
+if(!/exact local PDF page locators remain intentionally pending/i.test(ppsm.libraryStatus||'')) throw new Error('PPSM 7e must preserve the no-guessed-page-locators boundary.');
+if((ppsm.sections||[]).some(section=>'pageStart' in section||'pageEnd' in section)) throw new Error('PPSM 7e compact map contains guessed page locators.');
+
 function family(list,id){return list.find(item=>item.id===id);}
 function sourceOrder(item){return (item&&Array.isArray(item.recommendations)?item.recommendations:[]).map(row=>Array.isArray(row)?row[0]:'').filter(Boolean);}
 
@@ -54,6 +62,11 @@ const instrumentation=sourceOrder(family(topicsA,'instrumentation'));
 if(instrumentation[0]!=='aasm-scoring-manual-v3'||instrumentation[1]!=='sleep-technician-guide-2009') throw new Error(`Instrumentation source order must remain AASM first, practical workflow support second; got ${instrumentation.join(', ')}.`);
 const artifacts=sourceOrder(family(topicsA,'artifact-troubleshooting'));
 if(artifacts[0]!=='aasm-scoring-manual-v3'||artifacts[1]!=='atlas-polysomnography-2e'||artifacts[2]!=='sleep-technician-guide-2009') throw new Error(`Artifact routing must remain AASM → PSG atlas → technician workflow; got ${artifacts.join(', ')}.`);
+
+const physiology=sourceOrder(family(topicsA,'sleep-physiology'));
+if(!physiology.includes('principles-practice-sleep-medicine-7e')) throw new Error('PPSM 7e is missing from broad sleep-physiology routing.');
+const clinical=sourceOrder(family(topicsA,'clinical-disorders'));
+if(clinical[0]!=='principles-practice-sleep-medicine-7e') throw new Error(`Clinical-disorder textbook routing should begin with PPSM 7e; got ${clinical.join(', ')}.`);
 
 const infant=sourceOrder(family(topicsB,'infant-psg'));
 if(infant[0]!=='aasm-scoring-manual-v3'||infant[1]!=='atlas-infant-polysomnography-2003') throw new Error(`Infant PSG source order must remain AASM first, infant atlas second; got ${infant.join(', ')}.`);
@@ -76,6 +89,9 @@ console.log(JSON.stringify({
   csaAuthorityOverlay:true,
   workflowAndArtifactRouting:true,
   respiratorySpecialtyRouting:true,
+  ppsmAllOfficialTasks:true,
+  ppsmVerifiedSections:23,
+  ppsmNoGuessedPages:true,
   legacyScoringSectionsExcluded:true,
   correctedEegAtlasIdentityProtected:true,
   cumulativeCsvExcluded:true,
