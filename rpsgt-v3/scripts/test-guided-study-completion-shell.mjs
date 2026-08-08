@@ -31,6 +31,13 @@ assert.match(completion,/Retake with five new questions/);
 assert.match(completion,/Begin the next domain/);
 assert.match(completion,/Review missed questions/);
 assert.match(completion,/seenCeremonyIds/);
+assert.match(completion,/Sleep Pathways Guild educational achievement/);
+assert.match(completion,/80% Guided Study checkpoint goal/);
+assert.match(completion,/task badge/);
+assert.match(completion,/domain medal/);
+for(const awardName of ['Clinical Guide','Study Signal Scout','Scoring Pathfinder','Therapy Trail Guide']){
+  assert.ok(completion.includes(awardName),`Guided Study completion layer is missing named Guild domain medal: ${awardName}`);
+}
 assert.match(storageGuard,/data-trail-mark/);
 assert.match(storageGuard,/data-checkpoint-score/);
 
