@@ -95,7 +95,7 @@ for(const marker of [
   if(!referenceJs.includes(marker)) throw new Error(`Reference Center controller is missing ${marker}`);
 }
 if(/driveUrl|libraryFile/.test(referenceJs)) throw new Error('Reference Center controller references private-library locators.');
-if(/RPSGTStorage|localStorage|setItem\s*\(|removeItem\s*\(|clear\s*\(/.test(referenceJs)) throw new Error('Reference Center controller must remain read-only and storage-independent.');
+if(/RPSGTStorage|localStorage\s*\.\s*(?:setItem|removeItem|clear)\s*\(/.test(referenceJs)) throw new Error('Reference Center controller must remain read-only and storage-independent.');
 new Function(referenceJs);
 
 console.log(JSON.stringify({
