@@ -1,10 +1,11 @@
 # RPSGT v3 interactive browser regression matrix
 
-**Scope:** PR #35 on `build/rpsgt-v3-modular` only  
-**Release state:** preparation complete; interactive gate not yet passed  
-**Safety boundary:** keep PR #35 draft and unmerged; do not enable legacy import; do not modify public or legacy application files.
+**Scope:** current release candidate on `build/rpsgt-v3-modular`  
+**Release state:** automated validation is active; interactive/manual browser gate not yet passed  
+**Safety boundary:** keep the public RPSGT entry point on `RPSGTv2.2026.html`, keep V3 `noindex,nofollow`, and do not enable legacy import until the manual release gates are complete.  
+**Machine guard:** `data/release-readiness.json` + `scripts/test-release-readiness.mjs` prevent an accidental public V3 switch while any required manual gate remains incomplete.
 
-This matrix separates automated Playwright evidence from required human browser review. A green automated run is useful evidence, but it is not a substitute for the manual desktop, tablet, mobile, print-preview, Save as PDF, and downloaded-file checks listed below.
+This matrix separates automated evidence from required human browser review. A green automated run is useful evidence, but it is not a substitute for the manual desktop, tablet, mobile, print-preview, Save as PDF, downloaded-file, and representative same-origin migration-export checks listed below.
 
 ## Required environments
 
@@ -61,7 +62,7 @@ For every laboratory: open from the catalog, complete at least one workflow stat
 | Instrumentation, Filters, and Signal Pathways | `lab-instrumentation.html` | Required | Required | Required | Required | Required | Not run |
 | Pediatric and Infant Sleep | `lab-pediatric.html` | Required | Required | Required | Required | Required | Not run |
 | MSLT and MWT Protocols | `lab-daytime-testing.html` | Required | Required | Required | Required | Required | Not run |
-| Integrated Troubleshooting | `lab-troubleshooting.html` | Required | Required | Required | Required | Required | Not run |
+| Integrated Troubleshooting | `lab-troubleshooting.html` | Required | Required | Required | Required | Required | Required | Not run |
 | Math Coach | `lab-math-coach.html` | Required | Required | Required | Required | Required | Not run |
 
 ## Responsive and accessibility review
@@ -117,7 +118,8 @@ For each actual run, append a dated entry rather than overwriting prior evidence
 
 | Date/time | Commit SHA | Tester | Browser/device | Scope | Result | Defects / evidence |
 |---|---|---|---|---|---|---|
-| — | `a0d5c5005874794289a3ff1bdc67df56872a58ea` | — | Preparation baseline | Matrix and harness audit | Not run | No interactive pass claimed |
+| Historical baseline | `a0d5c5005874794289a3ff1bdc67df56872a58ea` | — | Preparation baseline | Matrix and harness audit | Not run | No interactive pass claimed |
+| 2026-08-08 | `a3596773885e6242c6f08d70e4ae662444b64af4` | GitHub Actions | Automated source/static contracts | Release-readiness guard | Passed | All top-level V3 HTML remains `noindex,nofollow`; public RPSGT structured-data target remains V2; isolated Worker identity is protected. This is not a manual browser pass. |
 
 ## Release-gate completion rule
 
@@ -130,4 +132,4 @@ Do not mark the interactive gate passed until:
 5. Browser print preview and a saved PDF have been visually inspected.
 6. Legacy storage preservation has been verified with a representative same-origin browser profile.
 7. Every defect is resolved or explicitly documented as a release blocker.
-8. PR #35 remains draft and unmerged until the separate representative real-browser export gate is also complete.
+8. All three manual gates in `data/release-readiness.json` are explicitly marked complete with dated evidence before the public homepage or structured-data RPSGT target is changed from V2 to V3.
