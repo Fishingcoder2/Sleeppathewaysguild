@@ -74,7 +74,18 @@ for(const marker of [
   'data-reference-results',
   'assets/reference-center.css',
   'core/reference-center.js',
-  'Full Sources &amp; Disclosures'
+  'Full Sources &amp; Disclosures',
+  'BRPT · Exam framework',
+  '1 · AASM scoring / technical',
+  '2 · AASM accreditation / protocol',
+  '3 · AASM clinical / protocol / classification',
+  '4 · AAST technical / competency / scope',
+  '5 · Core references',
+  '6 · Supplemental',
+  'Local and device-specific overlay',
+  'Do not invent a universal oxygen titration protocol',
+  'OSA PAP/CPAP-BPAP, adult CSA/ASV, and hypoventilation/NIV',
+  'AAST Standard PSG is not presented as pediatric PSG authority'
 ]){
   if(!disclosures.includes(marker)) throw new Error(`RPSGT Reference Center is missing ${marker}`);
 }
@@ -86,16 +97,22 @@ for(const marker of [
   "data/blueprint.json",
   'manifest.taskPlanFile',
   'manifest.sourceFiles',
+  'manifest.authorityRegistryFile',
+  'authorityRulesBySource',
   'Promise.allSettled',
-  "label:'BRPT official'",
-  "label:'AASM / classification'",
-  "label:'AAST guidance'",
+  "label:'BRPT exam framework'",
+  "1:'AASM scoring / technical'",
+  "2:'AASM accreditation / protocol'",
+  "3:'AASM clinical / protocol'",
+  "4:'AAST technical / competency'",
   "label:'Core reference'",
   "label:'Supplemental'",
   "label:'APA citation'",
   "label:'Recorded source citation'",
   'source.authorityBoundary',
-  'Authority / currency note:'
+  'Precedence:',
+  'Authority / currency note:',
+  'audited authority rules are available for learner lookup'
 ]){
   if(!referenceJs.includes(marker)) throw new Error(`Reference Center controller is missing ${marker}`);
 }
@@ -112,6 +129,12 @@ console.log(JSON.stringify({
   coachBobCharacter:true,
   reasoningCompass:true,
   authorityHierarchy:hierarchy.length,
+  auditedReferenceAuthorityLevels:6,
+  brptExamFrameworkSeparate:true,
+  localDeviceOverlayProtected:true,
+  oxygenUniversalProtocolBlocked:true,
+  papPathwaysSeparated:true,
+  pediatricStandardPsgExclusion:true,
   disclosuresGlobal:true,
   referenceCenter:true,
   referenceCenterReadOnly:true,
