@@ -70,9 +70,14 @@ if((aop2022.sections||[]).length!==10) throw new Error('2022 AOP treatment revie
 if(!/narrative review, not a guideline/i.test(aop2022.currencyNote||'')) throw new Error('2022 AOP narrative-review boundary is missing.');
 
 const psp=docs.get('pediatric-sleep-pearls-1e');
-if(psp.mappedCaseCount!==96||psp.mappedThematicSectionCount!==18||(psp.sections||[]).length!==18) throw new Error('Pediatric Sleep Pearls must preserve the audited 96-case / 18-section aggregate map.');
+const pspVisible=(psp.sections||[]).filter(section=>section.hiddenFromLearner!==true);
+const pspAliases=(psp.sections||[]).filter(section=>section.hiddenFromLearner===true);
+if(psp.mappedCaseCount!==96||psp.mappedThematicSectionCount!==18||pspVisible.length!==18) throw new Error('Pediatric Sleep Pearls must preserve the audited 96-case / 18-section learner map.');
+const requiredPspAliases=['psp-assessment','psp-sleep-health','psp-psg-artifact','psp-pediatric-scoring-context','psp-hypersomnolence','psp-insomnia-circadian','psp-sdb-treatment','psp-parasomnia-movement','psp-comorbidity-medications'];
+if(psp.legacyTaskPlanAliasCount!==requiredPspAliases.length||pspAliases.length!==requiredPspAliases.length) throw new Error('Pediatric Sleep Pearls hidden task-plan alias count changed.');
+for(const aliasId of requiredPspAliases){const alias=pspAliases.find(section=>section.id===aliasId);if(!alias||!Array.isArray(alias.aliasFor)||!alias.aliasFor.length) throw new Error(`Pediatric Sleep Pearls compatibility alias is missing or unmapped: ${aliasId}`);}
 for(const task of ['D1C','D2A','D3C','D4C']) if(!(psp.mappedTaskCodes||[]).includes(task)) throw new Error(`Pediatric Sleep Pearls deeper task coverage is missing ${task}.`);
-if((psp.sections||[]).some(section=>/year-old|newborn infant with|girl with|boy with/i.test(section.label||''))) throw new Error('Pediatric Sleep Pearls learner metadata contains case-opening patient text instead of section-level mapping only.');
+if(pspVisible.some(section=>/year-old|newborn infant with|girl with|boy with/i.test(section.label||''))) throw new Error('Pediatric Sleep Pearls learner metadata contains case-opening patient text instead of section-level mapping only.');
 if(!/Do not reproduce patient cases, case-opening titles/i.test(psp.copyrightUse||'')) throw new Error('Pediatric Sleep Pearls case-content copyright boundary is missing.');
 
 const pppsm=docs.get('principles-practice-pediatric-sleep-2e');
@@ -136,6 +141,7 @@ console.log(JSON.stringify({
   cardiacSpecialtyRouting:true,
   infantSpecialtyRouting:true,
   pediatricPearlsSectionMerge:true,
+  pediatricPearlsCompatibilityAliases:true,
   pediatricPearlsCasesNotCopied:true,
   pediatricMedicineChapterMap:true,
   apneaPrematurityDedicatedRouting:true,
