@@ -11,6 +11,7 @@ on:
       - rpsgt-v3/scripts/test-study-source-authority.mjs
       - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
+      - rpsgt-v3/scripts/test-drive-source-imports.mjs
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
@@ -25,6 +26,7 @@ on:
       - rpsgt-v3/scripts/test-study-source-authority.mjs
       - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
+      - rpsgt-v3/scripts/test-drive-source-imports.mjs
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
@@ -44,6 +46,8 @@ jobs:
         run: node rpsgt-v3/scripts/test-study-source-authority.mjs
       - name: Validate exact question-to-source resolution
         run: node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
+      - name: Validate Drive-audited supplemental source imports
+        run: node rpsgt-v3/scripts/test-drive-source-imports.mjs
       - name: Audit study-resource coverage across full question bank
         run: node rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
       - name: Audit pending source-key co-occurrence
