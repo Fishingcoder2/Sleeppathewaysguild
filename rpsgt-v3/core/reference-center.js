@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  const state={manifest:null,blueprint:null,taskPlans:{},sources:[],sourceTasks:new Map(),sourceSectionsByTask:new Map()};
+  const state={manifest:null,blueprint:null,taskPlans:{},sources:[],sourceTasks:new Map(),sourceSectionsByTask:new Map(),authorityRulesBySource:new Map()};
   const $=selector=>document.querySelector(selector);
   const text=value=>String(value==null?'':value).trim();
   const normalize=value=>text(value).toLowerCase().replace(/[–—]/g,'-').replace(/\s+/g,' ');
@@ -18,12 +18,18 @@
 
   function authorityGroup(source){
     const id=normalize(source.id);
+    const rule=state.authorityRulesBySource.get(text(source.id));
     const haystack=normalize([source.publisher,source.sourceType,source.shortTitle,source.fullTitle].filter(Boolean).join(' | '));
-    if(id==='brpt-blueprint'||id==='brpt-handbook'||id==='brpt-refs') return {rank:1,label:'BRPT official'};
-    if(id.startsWith('aasm-')||id.startsWith('icsd-')||haystack.includes('american academy of sleep medicine')) return {rank:2,label:'AASM / classification'};
-    if(id.startsWith('aast-')||haystack.includes('american association of sleep technologists')) return {rank:3,label:'AAST guidance'};
-    if(haystack.includes('textbook')||source.brptReferenceStatus||/fundamentals|polysomnography|pediatric-sleep|principles-practice|clinical-guide|sleep-medicine-pearls|atlas-electroencephalography|sleep-medicine-essentials/.test(id)) return {rank:4,label:'Core reference'};
-    return {rank:5,label:'Supplemental'};
+    if(id==='brpt-blueprint'||id==='brpt-handbook'||id==='brpt-refs') return {rank:0,filter:'brpt',label:'BRPT exam framework',eyebrow:'Exam framework',precedence:''};
+    if(rule){
+      const labels={1:'AASM scoring / technical',2:'AASM accreditation / protocol',3:'AASM clinical / protocol',4:'AAST technical / competency'};
+      const level=Number(rule.level)||4;
+      return {rank:level,filter:String(level),label:labels[level]||('Authority level '+level),eyebrow:'Authority level '+level,precedence:text(rule.precedence)};
+    }
+    if(id.startsWith('aasm-')||id.startsWith('icsd-')||haystack.includes('american academy of sleep medicine')) return {rank:3,filter:'3',label:'AASM / classification',eyebrow:'Authority level 3',precedence:''};
+    if(id.startsWith('aast-')||haystack.includes('american association of sleep technologists')) return {rank:4,filter:'4',label:'AAST guidance',eyebrow:'Authority level 4',precedence:''};
+    if(haystack.includes('textbook')||source.brptReferenceStatus||/fundamentals|polysomnography|pediatric-sleep|principles-practice|clinical-guide|sleep-medicine-pearls|atlas-electroencephalography|sleep-medicine-essentials/.test(id)) return {rank:5,filter:'5',label:'Core reference',eyebrow:'Reference level 5',precedence:''};
+    return {rank:6,filter:'6',label:'Supplemental',eyebrow:'Reference level 6',precedence:''};
   }
 
   function citationRecord(source){
@@ -48,7 +54,7 @@
   }
 
   function externalUrl(source){
-    const url=text(source.officialUrl||source.publicUrl||source.publisherUrl);
+    const url=text(source.officialUrl||source.officialContextUrl||source.publicUrl||source.publisherUrl);
     if(/^https:\/\//i.test(url)) return url;
     const doi=text(source.doi);
     return doi?'https://doi.org/'+encodeURIComponent(doi).replace(/%2F/gi,'/'):'';
@@ -91,8 +97,9 @@
   function searchableText(source){
     const citation=citationRecord(source).value;
     const sections=allSections(source).map(item=>item.label).join(' | ');
+    const authority=authorityGroup(source);
     return normalize([
-      sourceTitle(source),source.shortTitle,source.publisher,source.sourceType,source.bestFor,citation,sections,
+      sourceTitle(source),source.shortTitle,source.publisher,source.sourceType,source.bestFor,citation,sections,authority.label,authority.precedence,
       ...taskCodesFor(source)
     ].filter(Boolean).join(' | '));
   }
@@ -139,7 +146,7 @@
     const authority=authorityGroup(source);
     if(filters.domain!=='all'&&!tasks.some(code=>code.startsWith(filters.domain))) return false;
     if(filters.task!=='all'&&!tasks.includes(filters.task)) return false;
-    if(filters.authority!=='all'&&String(authority.rank)!==filters.authority) return false;
+    if(filters.authority!=='all'&&authority.filter!==filters.authority) return false;
     if(filters.topic&&!searchableText(source).includes(filters.topic)) return false;
     return true;
   }
@@ -168,14 +175,15 @@
     const url=externalUrl(source);
     const publisher=text(source.publisher);
     const status=sourceStatus(source);
-    const year=text(source.year||source.publicationYear);
+    const year=text(source.year||source.publicationYear||source.effectiveDate);
     const editionYear=text(source.editionStatus||source.effectiveFramework||source.currentIdentity||source.edition||year);
     const bestFor=text(source.bestFor);
     const authorityNote=text(source.authorityBoundary||source.currencyNote||source.versionStatus);
-    return '<article class="card reference-card" data-authority="'+authority.rank+'">'+
-      '<div class="reference-card-head"><div><div class="eyebrow">Authority level '+authority.rank+'</div><h2>'+escapeHtml(title)+'</h2></div><div class="reference-badges"><span class="status">'+escapeHtml(authority.label)+'</span><span class="status '+(status==='Current authority'?'green':'')+'">'+escapeHtml(status)+'</span></div></div>'+
+    return '<article class="card reference-card" data-authority="'+escapeHtml(authority.filter)+'">'+
+      '<div class="reference-card-head"><div><div class="eyebrow">'+escapeHtml(authority.eyebrow)+'</div><h2>'+escapeHtml(title)+'</h2></div><div class="reference-badges"><span class="status">'+escapeHtml(authority.label)+'</span><span class="status '+(status==='Current authority'?'green':'')+'">'+escapeHtml(status)+'</span></div></div>'+
       '<div class="reference-citation"><span class="reference-citation-label">'+escapeHtml(citation.label)+'</span><em>'+escapeHtml(citation.value)+'</em></div>'+
       '<div class="reference-meta"><div><span>Source type</span><strong>'+escapeHtml(text(source.sourceType)||'Reference')+'</strong></div><div><span>Publisher / organization</span><strong>'+escapeHtml(publisher||'See citation')+'</strong></div><div><span>Edition / year</span><strong>'+escapeHtml(editionYear||'See citation')+'</strong></div></div>'+
+      (authority.precedence?'<p class="reference-authority-note"><strong>Precedence:</strong> '+escapeHtml(authority.precedence)+'</p>':'')+
       (bestFor?'<p class="reference-best-for"><strong>Best for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
       (authorityNote?'<p class="reference-authority-note"><strong>Authority / currency note:</strong> '+escapeHtml(authorityNote)+'</p>':'')+
       (tasks.length?'<div class="reference-task-list" aria-label="Mapped RPSGT tasks">'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
@@ -234,12 +242,19 @@
     try{
       const manifest=await loadJson('data/study-sources/manifest.json');
       state.manifest=manifest;
-      const [blueprint,plans]=await Promise.all([
+      const authorityPath=text(manifest.authorityRegistryFile);
+      const [blueprint,plans,authorityRegistry]=await Promise.all([
         loadJson('data/blueprint.json'),
-        loadJson('data/study-sources/'+String(manifest.taskPlanFile||'task-plans.json'))
+        loadJson('data/study-sources/'+String(manifest.taskPlanFile||'task-plans.json')),
+        authorityPath?loadJson('data/study-sources/'+authorityPath):Promise.resolve({rules:[]})
       ]);
       state.blueprint=blueprint;
       state.taskPlans=plans&&plans.taskPlans||{};
+      state.authorityRulesBySource.clear();
+      (Array.isArray(authorityRegistry&&authorityRegistry.rules)?authorityRegistry.rules:[]).forEach(rule=>{
+        const sourceId=text(rule&&rule.sourceId);
+        if(sourceId&&!state.authorityRulesBySource.has(sourceId)) state.authorityRulesBySource.set(sourceId,rule);
+      });
       registerTaskPlanMappings();
       const files=Array.isArray(manifest.sourceFiles)?manifest.sourceFiles:[];
       const settled=await Promise.allSettled(files.map(file=>loadJson('data/study-sources/'+file)));
@@ -251,7 +266,7 @@
       wireControls();
       render();
       status.className='section notice';
-      status.innerHTML='<strong>Reference index loaded.</strong> '+state.sources.length.toLocaleString()+' vetted source records are available for learner lookup.'+(failed?' '+failed+' source record'+(failed===1?'':'s')+' could not be loaded and are not shown.':'');
+      status.innerHTML='<strong>Reference index loaded.</strong> '+state.sources.length.toLocaleString()+' vetted source records and '+state.authorityRulesBySource.size.toLocaleString()+' audited authority rules are available for learner lookup.'+(failed?' '+failed+' source record'+(failed===1?'':'s')+' could not be loaded and are not shown.':'');
     }catch(error){
       status.className='section notice';
       status.innerHTML='<strong>Reference Center could not load.</strong> '+escapeHtml(error.message||String(error))+' Please return to the dashboard and try again.';
