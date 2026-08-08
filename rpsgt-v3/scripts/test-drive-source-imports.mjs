@@ -12,12 +12,17 @@ const topicsB=JSON.parse(await readFile(join(sourceRoot,'topic-families-b.json')
 const imported=[
   ['only-ekg-book-9e.json','only-ekg-book-9e'],
   ['atlas-infant-polysomnography-2003.json','atlas-infant-polysomnography-2003'],
-  ['central-sleep-apnea-pathophysiologic-classification-2023.json','central-sleep-apnea-pathophysiologic-classification-2023']
+  ['central-sleep-apnea-pathophysiologic-classification-2023.json','central-sleep-apnea-pathophysiologic-classification-2023'],
+  ['atlas-polysomnography-2e.json','atlas-polysomnography-2e'],
+  ['sleep-technician-guide-2009.json','sleep-technician-guide-2009'],
+  ['ers-handbook-respiratory-sleep-medicine-2e.json','ers-handbook-respiratory-sleep-medicine-2e']
 ];
 
+const docs=new Map();
 for(const [file,id] of imported){
   if(!manifest.sourceFiles.includes(file)) throw new Error(`Drive-audited source is not registered: ${file}`);
   const source=JSON.parse(await readFile(join(sourceRoot,file),'utf8'));
+  docs.set(id,source);
   if(source.id!==id) throw new Error(`${file} source id changed.`);
   if(source.currentAuthority!==false||source.sourceRole!=='studySupport') throw new Error(`${id} must remain supplemental study support, not current authority.`);
   if(!source.apaCitation) throw new Error(`${id} is missing its recorded APA citation.`);
@@ -29,6 +34,12 @@ for(const [file,id] of imported){
 const scoring=JSON.parse(await readFile(join(sourceRoot,'aasm-scoring-manual-v3.json'),'utf8'));
 if(scoring.currentAuthority!==true||scoring.sourceRole!=='currentAuthority') throw new Error('AASM Scoring Manual Version 3 lost current-authority status.');
 
+const atlas=docs.get('atlas-polysomnography-2e');
+if(!Array.isArray(atlas.excludedLegacySections)||!atlas.excludedLegacySections.some(item=>/MSLT protocol/i.test(item))) throw new Error('Atlas of Polysomnography legacy protocol exclusions are not protected.');
+const technician=docs.get('sleep-technician-guide-2009');
+if(!Array.isArray(technician.excludedLegacySections)||technician.excludedLegacySections.length!==7||!technician.excludedLegacySections.every(item=>/AASM 2007/i.test(item))) throw new Error('Sleep Technician Guide AASM 2007 legacy-rule exclusions are not protected.');
+for(const forbidden of ['STG-19','STG-20','STG-21','STG-22','STG-23','STG-24','STG-25']) if((technician.sections||[]).some(section=>section.id===forbidden)) throw new Error(`Legacy technician-guide scoring section leaked into learner routing: ${forbidden}`);
+
 function family(list,id){return list.find(item=>item.id===id);}
 function sourceOrder(item){return (item&&Array.isArray(item.recommendations)?item.recommendations:[]).map(row=>Array.isArray(row)?row[0]:'').filter(Boolean);}
 
@@ -36,11 +47,23 @@ const cardiac=sourceOrder(family(topicsA,'cardiac'));
 if(cardiac[0]!=='aasm-scoring-manual-v3'||cardiac[1]!=='only-ekg-book-9e') throw new Error(`Cardiac source order must remain AASM first, EKG support second; got ${cardiac.join(', ')}.`);
 
 const csa=sourceOrder(family(topicsA,'central-apnea'));
-for(const required of ['aasm-scoring-manual-v3','icsd-3-tr','central-sleep-apnea-pathophysiologic-classification-2023']) if(!csa.includes(required)) throw new Error(`Central-apnea routing is missing ${required}.`);
+for(const required of ['aasm-scoring-manual-v3','icsd-3-tr','central-sleep-apnea-pathophysiologic-classification-2023','ers-handbook-respiratory-sleep-medicine-2e']) if(!csa.includes(required)) throw new Error(`Central-apnea routing is missing ${required}.`);
 if(csa.indexOf('central-sleep-apnea-pathophysiologic-classification-2023')<csa.indexOf('aasm-scoring-manual-v3')||csa.indexOf('central-sleep-apnea-pathophysiologic-classification-2023')<csa.indexOf('icsd-3-tr')) throw new Error('CSA review must not outrank AASM/ICSD current authority.');
+
+const instrumentation=sourceOrder(family(topicsA,'instrumentation'));
+if(instrumentation[0]!=='aasm-scoring-manual-v3'||instrumentation[1]!=='sleep-technician-guide-2009') throw new Error(`Instrumentation source order must remain AASM first, practical workflow support second; got ${instrumentation.join(', ')}.`);
+const artifacts=sourceOrder(family(topicsA,'artifact-troubleshooting'));
+if(artifacts[0]!=='aasm-scoring-manual-v3'||artifacts[1]!=='atlas-polysomnography-2e'||artifacts[2]!=='sleep-technician-guide-2009') throw new Error(`Artifact routing must remain AASM → PSG atlas → technician workflow; got ${artifacts.join(', ')}.`);
 
 const infant=sourceOrder(family(topicsB,'infant-psg'));
 if(infant[0]!=='aasm-scoring-manual-v3'||infant[1]!=='atlas-infant-polysomnography-2003') throw new Error(`Infant PSG source order must remain AASM first, infant atlas second; got ${infant.join(', ')}.`);
+const gasExchange=sourceOrder(family(topicsB,'gas-exchange'));
+if(gasExchange[0]!=='aasm-scoring-manual-v3'||gasExchange[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Gas-exchange routing must remain AASM first, ERS specialty support second; got ${gasExchange.join(', ')}.`);
+const adultRespiratory=sourceOrder(family(topicsB,'adult-respiratory'));
+if(adultRespiratory[0]!=='aasm-scoring-manual-v3'||adultRespiratory[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Adult respiratory routing must remain AASM first, ERS specialty support second; got ${adultRespiratory.join(', ')}.`);
+
+const existingEeg=JSON.parse(await readFile(join(sourceRoot,'atlas-electroencephalography-sleep-medicine-2012.json'),'utf8'));
+if(!Array.isArray(existingEeg.editors)||!existingEeg.editors.includes('Magdy Y. Morgan')||existingEeg.editors.includes('Undevia')) throw new Error('Corrected Sleep EEG atlas identity regressed to the stale Drive-map attribution.');
 
 if(manifest.sourceFiles.some(file=>/\.csv$/i.test(file)||/Webapp_Import/i.test(file))) throw new Error('Cumulative Drive import exports must not be registered as learner source files.');
 
@@ -51,6 +74,10 @@ console.log(JSON.stringify({
   cardiacSpecialtyRouting:true,
   infantSpecialtyRouting:true,
   csaAuthorityOverlay:true,
+  workflowAndArtifactRouting:true,
+  respiratorySpecialtyRouting:true,
+  legacyScoringSectionsExcluded:true,
+  correctedEegAtlasIdentityProtected:true,
   cumulativeCsvExcluded:true,
   privateDriveUrlsNotLearnerFacing:true
 },null,2));
