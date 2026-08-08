@@ -28,6 +28,12 @@ if(html.includes('value="quality"')) throw new Error('Learner Practice still exp
 for(const term of ['Quality-review pool','Manual review record','QA status','Review target','Source mapping']){
   if(html.includes(term)) throw new Error(`Learner Practice exposes internal terminology: ${term}`);
 }
+for(const developerTerm of ['Development boundary','complete question-bank manifest','Total preserved records','Overall v3 learner record','Development branch only']){
+  if(html.includes(developerTerm)) throw new Error(`Practice Center exposes development-era wording: ${developerTerm}`);
+}
+for(const learnerMarker of ['Practice Center · Focused sessions','Practice boundary:','Available bank records','Overall learner record']){
+  if(!html.includes(learnerMarker)) throw new Error(`Practice Center learner presentation is missing ${learnerMarker}.`);
+}
 for(const difficulty of ['Easy','Intermediate','Hard']){
   if(!html.includes(`value="${difficulty}"`)) throw new Error(`Practice difficulty option ${difficulty} is missing.`);
 }
@@ -68,4 +74,4 @@ if(!html.includes('not an official BRPT score')) throw new Error('Practice compl
 if(!css.includes('.question-actions .btn.primary')||!css.includes('.practice-question-action-row .btn.secondary')) throw new Error('Practice primary/secondary action hierarchy styling is missing.');
 if(!css.includes('.practice-session:not(.hidden) .question-actions{grid-template-columns:1fr}')) throw new Error('Practice mobile primary action no longer occupies a clear single-column control area.');
 
-console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,difficultyFilter:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,submitPractice:true,focusedCompletion:true,nextActions:true},null,2));
+console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,submitPractice:true,focusedCompletion:true,nextActions:true},null,2));
