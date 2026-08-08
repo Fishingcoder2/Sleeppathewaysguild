@@ -54,6 +54,13 @@
       footer.appendChild(link);
     });
   }
+  function refreshCoachBobImage(){
+    document.querySelectorAll('img[src*="coach-bob"],img[data-coach-bob]').forEach(function(img){
+      img.src='assets/coach-bob-rpsgt.webp';
+      img.removeAttribute('srcset');
+      if(!img.alt) img.alt='Coach Bob, Sleep Pathways Guild learning mentor';
+    });
+  }
   function renderMigrationPreview(){
     const host=document.querySelector("[data-migration-preview]");
     if(!host||!window.RPSGTStorage) return;
@@ -70,7 +77,7 @@
       </div>\
       <p class="notice"><strong>No data was imported or changed.</strong> The actual import button will be added only after field-by-field migration tests pass.</p>';
   }
-  function init(){setActiveNav();renderSnapshot();rememberClicks();ensureDisclosureLinks();renderMigrationPreview();}
+  function init(){setActiveNav();renderSnapshot();rememberClicks();ensureDisclosureLinks();refreshCoachBobImage();renderMigrationPreview();}
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
   window.RPSGTApp={modules:modules,refresh:renderSnapshot};
 })();
