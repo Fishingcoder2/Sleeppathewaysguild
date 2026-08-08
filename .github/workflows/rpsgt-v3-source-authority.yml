@@ -6,12 +6,14 @@ on:
       - build/rpsgt-v3-modular
     paths:
       - rpsgt-v3/data/study-sources/**
+      - rpsgt-v3/data/authority/**
       - rpsgt-v3/data/question-bank/**
       - rpsgt-v3/core/study-resource-catalog.js
       - rpsgt-v3/scripts/test-study-source-authority.mjs
       - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
       - rpsgt-v3/scripts/test-drive-source-imports.mjs
+      - rpsgt-v3/scripts/test-current-authority-registry.mjs
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
@@ -21,12 +23,14 @@ on:
       - main
     paths:
       - rpsgt-v3/data/study-sources/**
+      - rpsgt-v3/data/authority/**
       - rpsgt-v3/data/question-bank/**
       - rpsgt-v3/core/study-resource-catalog.js
       - rpsgt-v3/scripts/test-study-source-authority.mjs
       - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
       - rpsgt-v3/scripts/test-drive-source-imports.mjs
+      - rpsgt-v3/scripts/test-current-authority-registry.mjs
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
@@ -48,6 +52,8 @@ jobs:
         run: node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - name: Validate Drive-audited supplemental source imports
         run: node rpsgt-v3/scripts/test-drive-source-imports.mjs
+      - name: Validate current authority registry and gap routing
+        run: node rpsgt-v3/scripts/test-current-authority-registry.mjs
       - name: Audit study-resource coverage across full question bank
         run: node rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
       - name: Audit pending source-key co-occurrence
