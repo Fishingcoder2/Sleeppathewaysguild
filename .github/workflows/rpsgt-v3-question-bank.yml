@@ -112,10 +112,12 @@ jobs:
           node --check rpsgt-v3/scripts/generate-feedback-index.mjs
           node --check rpsgt-v3/scripts/validate-storage-export.mjs
           node --check rpsgt-v3/scripts/validate-private-exports.mjs
+          node --check rpsgt-v3/scripts/test-current-authority-registry.mjs
           node --check rpsgt-v3/scripts/test-release-readiness.mjs
           node rpsgt-v3/scripts/test-home-shell.mjs
           node rpsgt-v3/scripts/test-brpt-official-resources.mjs
           node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
+          node rpsgt-v3/scripts/test-current-authority-registry.mjs
           node rpsgt-v3/scripts/test-coach-bob-engine.mjs
           node rpsgt-v3/scripts/test-guided-trail-system.mjs
           node rpsgt-v3/scripts/test-guided-trail-shell.mjs
