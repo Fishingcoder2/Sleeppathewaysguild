@@ -112,9 +112,24 @@
     if(note) note.innerHTML='<strong>Achievement note:</strong> These are Sleep Pathways Guild educational achievements. They are not BRPT-issued credentials, official exam results, or passing predictions.';
   }
 
+  function suppressOptionalBookShelf(){
+    const removeLearnerShelf=()=>{
+      document.getElementById('rpsgt-book-shelf')?.remove();
+      document.querySelectorAll('[data-rpsgt-settings-body] .rpsgt-settings-row').forEach(row=>{
+        const text=(row.textContent||'').trim();
+        if(/optional book suggestions|book preferences/i.test(text)) row.remove();
+      });
+    };
+    removeLearnerShelf();
+    if(typeof MutationObserver!=='function') return;
+    const observer=new MutationObserver(removeLearnerShelf);
+    observer.observe(document.body,{childList:true,subtree:true});
+  }
+
   function init(){
     promotePrimaryDestinations();
     normalizeAchievementCopy();
+    suppressOptionalBookShelf();
     loadResources();
     loadManifestCount();
   }
