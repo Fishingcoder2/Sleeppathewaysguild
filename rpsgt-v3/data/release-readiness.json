@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "developmentOnly": true,
+  "publicEntryTarget": "RPSGTv2.2026.html",
+  "v3EntryTarget": "rpsgt-v3/index.html",
+  "releasePolicy": "Do not switch the public RPSGT entry point from V2 to V3 while any manual release gate is incomplete. V3 development pages remain noindex,nofollow until release approval.",
+  "lastReviewed": "2026-08-08",
+  "manualGates": {
+    "representativeRealBrowserMigrationExports": {
+      "complete": false,
+      "evidenceRequired": "Capture representative same-origin legacy browser-storage exports with migration-export.html, validate them with validate-private-exports.mjs, review sanitized summaries, and resolve all blocking malformed or ambiguous fields.",
+      "currentStatus": "Tooling and deterministic fixtures pass, but no representative real learner browser export is claimed as validated."
+    },
+    "interactiveDesktopMobileRegression": {
+      "complete": false,
+      "evidenceRequired": "Complete interactive desktop and mobile browser regression across Dashboard, Guided Study, Practice, Mock, Readiness, Skills Labs, Reports, Reference Center, print/PDF output, and local JSON/CSV downloads.",
+      "currentStatus": "Chromium is available in the development runtime, but the runtime cannot reach the deployed Worker preview, so deployed-site pixel and interaction verification is not claimed."
+    },
+    "isolatedWorkerExactHeadDeployment": {
+      "complete": false,
+      "evidenceRequired": "Confirm a successful rpsgt-v3-learning-center Cloudflare Worker check whose head SHA exactly matches the release candidate commit.",
+      "currentStatus": "The exact current-head isolated Worker check has not yet been observed in the GitHub check list."
+    }
+  }
+}
