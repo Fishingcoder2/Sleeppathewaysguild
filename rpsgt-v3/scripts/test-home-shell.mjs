@@ -9,6 +9,8 @@ const css=await readFile(join(root,'assets','home.css'),'utf8');
 const js=await readFile(join(root,'core','home-dashboard.js'),'utf8');
 const shell=await readFile(join(root,'core','app-shell.js'),'utf8');
 const disclosures=await readFile(join(root,'sources-disclosures.html'),'utf8');
+const referenceCss=await readFile(join(root,'assets','reference-center.css'),'utf8');
+const referenceJs=await readFile(join(root,'core','reference-center.js'),'utf8');
 
 for(const marker of [
   'id="exam-map"',
@@ -61,6 +63,41 @@ for(const disclosure of [
 }
 if(!shell.includes("href='sources-disclosures.html'")) throw new Error('Shared V3 shell does not expose Sources & Disclosures globally.');
 
+for(const marker of [
+  'RPSGT APA-Style Reference Center',
+  'data-reference-domain',
+  'data-reference-task',
+  'data-reference-topic',
+  'data-reference-authority',
+  'data-reference-results',
+  'assets/reference-center.css',
+  'core/reference-center.js',
+  'Full Sources &amp; Disclosures'
+]){
+  if(!disclosures.includes(marker)) throw new Error(`RPSGT Reference Center is missing ${marker}`);
+}
+if(disclosures.includes('drive.google.com')||disclosures.includes('amazon.com')) throw new Error('Learner-facing Reference Center exposes a private-library or storefront destination.');
+if(!referenceCss.includes('.reference-filter-grid')||!referenceCss.includes('@media(max-width:560px)')) throw new Error('Reference Center responsive filter layout is missing.');
+for(const marker of [
+  "data/study-sources/manifest.json",
+  "data/blueprint.json",
+  'manifest.taskPlanFile',
+  'manifest.sourceFiles',
+  'Promise.allSettled',
+  "label:'BRPT official'",
+  "label:'AASM / classification'",
+  "label:'AAST guidance'",
+  "label:'Core reference'",
+  "label:'Supplemental'",
+  "label:'APA citation'",
+  "label:'Recorded source citation'"
+]){
+  if(!referenceJs.includes(marker)) throw new Error(`Reference Center controller is missing ${marker}`);
+}
+if(/driveUrl|libraryFile/.test(referenceJs)) throw new Error('Reference Center controller references private-library locators.');
+if(/RPSGTStorage|localStorage|setItem\s*\(|removeItem\s*\(|clear\s*\(/.test(referenceJs)) throw new Error('Reference Center controller must remain read-only and storage-independent.');
+new Function(referenceJs);
+
 console.log(JSON.stringify({
   brptFrontDoor:true,
   compactHero:true,
@@ -71,5 +108,8 @@ console.log(JSON.stringify({
   reasoningCompass:true,
   authorityHierarchy:hierarchy.length,
   disclosuresGlobal:true,
+  referenceCenter:true,
+  referenceCenterReadOnly:true,
+  referenceCenterPrivateLibraryHidden:true,
   developmentNoindex:true
 },null,2));
