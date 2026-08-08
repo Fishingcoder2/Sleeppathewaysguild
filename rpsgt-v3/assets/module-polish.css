@@ -1,0 +1,98 @@
+/* Shared learner-facing density and hierarchy polish for primary RPSGT V3 modules. */
+body[data-module="study"] .main,
+body[data-module="practice"] .main,
+body[data-module="labs"] .main,
+body[data-module="reports"] .main{padding-top:20px}
+
+body[data-module="study"] .hero,
+body[data-module="practice"] .hero,
+body[data-module="labs"] .hero,
+body[data-module="reports"] .hero{grid-template-columns:minmax(0,1.55fr) minmax(250px,.45fr);gap:16px;padding:22px;align-items:stretch;box-shadow:0 9px 24px rgba(8,43,87,.08)}
+
+body[data-module="study"] .hero>div:first-child,
+body[data-module="practice"] .hero>div:first-child,
+body[data-module="labs"] .hero>div:first-child,
+body[data-module="reports"] .hero>div:first-child{min-width:0}
+
+body[data-module="study"] .hero h1,
+body[data-module="practice"] .hero h1,
+body[data-module="labs"] .hero h1,
+body[data-module="reports"] .hero h1{max-width:24ch;font-size:clamp(1.9rem,4vw,2.85rem);margin-bottom:10px}
+
+body[data-module="study"] .hero .lead,
+body[data-module="practice"] .hero .lead,
+body[data-module="labs"] .hero .lead,
+body[data-module="reports"] .hero .lead{margin-bottom:0;max-width:76ch}
+
+body[data-module="study"] .coach-card,
+body[data-module="practice"] .coach-card,
+body[data-module="labs"] .coach-card,
+body[data-module="reports"] .coach-card{align-self:stretch;padding:16px;border-left-width:5px;box-shadow:none}
+
+body[data-module="study"] .coach-card h2,
+body[data-module="practice"] .coach-card h2,
+body[data-module="labs"] .coach-card h2,
+body[data-module="reports"] .coach-card h2{font-size:clamp(1.18rem,2vw,1.5rem);margin:9px 0 8px}
+
+body[data-module="study"] .coach-card p,
+body[data-module="practice"] .coach-card p,
+body[data-module="labs"] .coach-card p,
+body[data-module="reports"] .coach-card p{margin-bottom:0;font-size:.94rem}
+
+body[data-module="study"] .section,
+body[data-module="practice"] .section,
+body[data-module="labs"] .section,
+body[data-module="reports"] .section{margin-top:18px}
+
+body[data-module="study"] .section-head,
+body[data-module="practice"] .section-head,
+body[data-module="labs"] .section-head,
+body[data-module="reports"] .section-head{margin-bottom:10px}
+
+body[data-module="study"] .section-head h2,
+body[data-module="practice"] .section-head h2,
+body[data-module="labs"] .section-head h2,
+body[data-module="reports"] .section-head h2{margin-bottom:4px}
+
+body[data-module="study"] .main>.section.notice,
+body[data-module="practice"] .main>.section.notice,
+body[data-module="labs"] .main>.section.notice,
+body[data-module="reports"] .main>.section.notice{border:1px solid #ead7a6;border-left:5px solid var(--gold);box-shadow:none}
+
+body[data-module="practice"] .practice-setup,
+body[data-module="labs"] .lab-card,
+body[data-module="reports"] .report-family,
+body[data-module="study"] .domain-map-card{box-shadow:0 5px 16px rgba(18,50,77,.055)}
+
+body[data-module="labs"] .lab-card h2,
+body[data-module="reports"] .report-family h2{font-size:1.28rem}
+
+@media(max-width:1050px){
+  body[data-module="study"] .hero,
+  body[data-module="practice"] .hero,
+  body[data-module="labs"] .hero,
+  body[data-module="reports"] .hero{grid-template-columns:1fr}
+  body[data-module="study"] .coach-card,
+  body[data-module="practice"] .coach-card,
+  body[data-module="labs"] .coach-card,
+  body[data-module="reports"] .coach-card{max-width:none}
+}
+
+@media(max-width:760px){
+  body[data-module="study"] .main,
+  body[data-module="practice"] .main,
+  body[data-module="labs"] .main,
+  body[data-module="reports"] .main{padding-top:12px}
+  body[data-module="study"] .hero,
+  body[data-module="practice"] .hero,
+  body[data-module="labs"] .hero,
+  body[data-module="reports"] .hero{padding:16px;gap:12px}
+  body[data-module="study"] .hero h1,
+  body[data-module="practice"] .hero h1,
+  body[data-module="labs"] .hero h1,
+  body[data-module="reports"] .hero h1{font-size:clamp(1.75rem,8vw,2.25rem)}
+  body[data-module="study"] .section,
+  body[data-module="practice"] .section,
+  body[data-module="labs"] .section,
+  body[data-module="reports"] .section{margin-top:14px}
+}
