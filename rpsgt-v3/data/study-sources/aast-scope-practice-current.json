@@ -1,0 +1,21 @@
+{
+  "id":"aast-scope-practice-current",
+  "shortTitle":"AAST Scope of Practice",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"current professional scope statement",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://aastweb.org/career/scope-of-practice/",
+  "bestFor":"Professional-role boundaries for PAP titration, low-flow oxygen, capnography, pulse oximetry, EEG/EOG/EMG/ECG, airflow and effort monitoring, and audio/video within sleep technology practice.",
+  "mappedTaskCodes":["D2A","D2B","D2C","D3A","D3B","D4A","D4C"],
+  "authorityBoundary":"Defines professional-role boundaries only. It is subject to state law, facility policy, physician orders, and credentialing requirements, and must not be treated as a scoring rule or treatment algorithm.",
+  "copyrightUse":"Use public scope identity, high-level role categories, and original summaries. Do not reproduce substantial protected scope text.",
+  "sections":[
+    {"id":"aast-scope-monitoring","label":"Physiologic signal acquisition and monitoring scope"},
+    {"id":"aast-scope-pap","label":"PAP titration and therapy-support scope"},
+    {"id":"aast-scope-oxygen-co2","label":"Low-flow oxygen, capnography, and oximetry scope"},
+    {"id":"aast-scope-audio-video","label":"Audio/video and supporting monitoring scope"},
+    {"id":"aast-scope-local-boundary","label":"State-law, facility-policy, and physician-order boundaries"}
+  ]
+}
