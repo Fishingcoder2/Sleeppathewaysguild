@@ -98,9 +98,11 @@ if(csa.includes('ats-diaphragm-pacing-phrenic-nerve-2016')) throw new Error('Dia
 if(csa.indexOf('central-sleep-apnea-pathophysiologic-classification-2023')<csa.indexOf('aasm-scoring-manual-v3')||csa.indexOf('central-sleep-apnea-pathophysiologic-classification-2023')<csa.indexOf('icsd-3-tr')) throw new Error('CSA review must not outrank AASM/ICSD current authority.');
 
 const instrumentation=sourceOrder(family(topicsA,'instrumentation'));
-if(instrumentation[0]!=='aasm-scoring-manual-v3'||instrumentation[1]!=='sleep-technician-guide-2009') throw new Error(`Instrumentation source order must remain AASM first, practical workflow support second; got ${instrumentation.join(', ')}.`);
+const expectedInstrumentationLead=['aasm-scoring-manual-v3','aast-standard-psg-2021','aast-sleep-technician-role-current','aast-core-competencies-current','sleep-technician-guide-2009'];
+if(JSON.stringify(instrumentation.slice(0,expectedInstrumentationLead.length))!==JSON.stringify(expectedInstrumentationLead)) throw new Error(`Instrumentation routing must remain current AASM/AAST authority before the 2009 technician guide; got ${instrumentation.join(', ')}.`);
 const artifacts=sourceOrder(family(topicsA,'artifact-troubleshooting'));
-if(artifacts[0]!=='aasm-scoring-manual-v3'||artifacts[1]!=='atlas-polysomnography-2e'||artifacts[2]!=='sleep-technician-guide-2009') throw new Error(`Artifact routing must remain AASM → PSG atlas → technician workflow; got ${artifacts.join(', ')}.`);
+const expectedArtifactLead=['aasm-scoring-manual-v3','aast-standard-psg-2021','atlas-polysomnography-2e','sleep-technician-guide-2009'];
+if(JSON.stringify(artifacts.slice(0,expectedArtifactLead.length))!==JSON.stringify(expectedArtifactLead)) throw new Error(`Artifact routing must remain AASM → current AAST PSG workflow → visual atlas → technician workflow; got ${artifacts.join(', ')}.`);
 
 const physiology=sourceOrder(family(topicsA,'sleep-physiology'));
 if(!physiology.includes('principles-practice-sleep-medicine-7e')) throw new Error('PPSM 7e is missing from broad sleep-physiology routing.');
@@ -108,19 +110,22 @@ const clinical=sourceOrder(family(topicsA,'clinical-disorders'));
 if(clinical[0]!=='principles-practice-sleep-medicine-7e') throw new Error(`Clinical-disorder textbook routing should begin with PPSM 7e; got ${clinical.join(', ')}.`);
 
 const infant=sourceOrder(family(topicsB,'infant-psg'));
-if(infant[0]!=='aasm-scoring-manual-v3'||infant[1]!=='atlas-infant-polysomnography-2003') throw new Error(`Infant PSG source order must remain AASM first, infant atlas second; got ${infant.join(', ')}.`);
+if(infant[0]!=='aasm-scoring-manual-v3'||infant[1]!=='aast-core-competencies-current'||infant[2]!=='atlas-infant-polysomnography-2003') throw new Error(`Infant PSG routing must remain AASM first, age-specific AAST competency second, infant atlas third; got ${infant.join(', ')}.`);
+if(infant.includes('aast-standard-psg-2021')) throw new Error('AAST Standard PSG must not be routed as pediatric/infant PSG authority.');
 if(infant.includes('aap-apnea-prematurity-2016')||infant.includes('treating-apnea-prematurity-2022')) throw new Error('Apnea-of-prematurity clinical sources must stay in their dedicated neonatal topic rather than generic infant PSG routing.');
 const aop=sourceOrder(family(topicsB,'apnea-of-prematurity'));
 const expectedAop=['aasm-scoring-manual-v3','aap-apnea-prematurity-2016','treating-apnea-prematurity-2022','atlas-infant-polysomnography-2003'];
 if(JSON.stringify(aop)!==JSON.stringify(expectedAop)) throw new Error(`AOP routing must remain AASM scoring context → 2016 AAP report → 2022 review → infant PSG atlas; got ${aop.join(', ')}.`);
 const pediatric=sourceOrder(family(topicsB,'pediatric'));
-for(const sourceId of ['pediatric-sleep-pearls-1e','principles-practice-pediatric-sleep-2e']) if(!pediatric.includes(sourceId)) throw new Error(`Pediatric routing is missing ${sourceId}.`);
-if(pediatric[0]!=='aasm-scoring-manual-v3') throw new Error(`Pediatric routing must preserve AASM authority first; got ${pediatric.join(', ')}.`);
+for(const sourceId of ['aasm-pediatric-mslt-mwt-2024','aast-core-competencies-current','pediatric-sleep-pearls-1e','principles-practice-pediatric-sleep-2e']) if(!pediatric.includes(sourceId)) throw new Error(`Pediatric routing is missing ${sourceId}.`);
+if(pediatric[0]!=='aasm-scoring-manual-v3') throw new Error(`Pediatric routing must preserve AASM scoring authority first; got ${pediatric.join(', ')}.`);
+if(pediatric.includes('aast-standard-psg-2021')) throw new Error('AAST Standard PSG must not be routed as pediatric PSG authority.');
 const daytests=sourceOrder(family(topicsB,'daytests-hsat'));
-for(const sourceId of ['aasm-scoring-manual-v3','aasm-adult-mslt-mwt-2021','aasm-pediatric-mslt-mwt-2024','principles-practice-pediatric-sleep-2e']) if(!daytests.includes(sourceId)) throw new Error(`Day-test routing is missing ${sourceId}.`);
+for(const sourceId of ['aasm-scoring-manual-v3','aasm-adult-mslt-mwt-2021','aasm-pediatric-mslt-mwt-2024','aasm-adult-osa-diagnostic-testing-2017','aast-hsat-2020','principles-practice-pediatric-sleep-2e']) if(!daytests.includes(sourceId)) throw new Error(`Day-test routing is missing ${sourceId}.`);
 if(daytests.indexOf('aasm-adult-mslt-mwt-2021')>daytests.indexOf('principles-practice-pediatric-sleep-2e')||daytests.indexOf('aasm-pediatric-mslt-mwt-2024')>daytests.indexOf('principles-practice-pediatric-sleep-2e')) throw new Error('Current AASM adult/pediatric MSLT/MWT protocols must outrank older textbook day-test support.');
 const gasExchange=sourceOrder(family(topicsB,'gas-exchange'));
-if(gasExchange[0]!=='aasm-scoring-manual-v3'||gasExchange[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Gas-exchange routing must remain AASM first, ERS specialty support second; got ${gasExchange.join(', ')}.`);
+const expectedGasLead=['aasm-scoring-manual-v3','aast-end-tidal-co2-2018','aast-transcutaneous-co2-2018','ers-handbook-respiratory-sleep-medicine-2e'];
+if(JSON.stringify(gasExchange.slice(0,expectedGasLead.length))!==JSON.stringify(expectedGasLead)) throw new Error(`Gas-exchange routing must remain AASM scoring → distinct ETCO2/TcCO2 technical guidance → ERS specialty support; got ${gasExchange.join(', ')}.`);
 const adultRespiratory=sourceOrder(family(topicsB,'adult-respiratory'));
 if(adultRespiratory[0]!=='aasm-scoring-manual-v3'||adultRespiratory[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Adult respiratory routing must remain AASM first, ERS specialty support second; got ${adultRespiratory.join(', ')}.`);
 const diaphragmTopic=sourceOrder(family(topicsB,'diaphragm-pacing'));
@@ -136,6 +141,7 @@ console.log(JSON.stringify({
   driveAuditedSources:imported.length,
   supplementalOnly:true,
   aasmAuthorityPreserved:true,
+  currentAastWorkflowAheadOfLegacyGuides:true,
   currentDaytestProtocolsSurfaced:true,
   adultDaytestErratumProtected:true,
   cardiacSpecialtyRouting:true,
