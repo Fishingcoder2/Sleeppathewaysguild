@@ -83,7 +83,7 @@ for(const marker of [
   '5 · Core references',
   '6 · Supplemental',
   'Local and device-specific overlay',
-  'Do not invent a universal oxygen titration protocol',
+  'must not invent a universal oxygen titration protocol',
   'OSA PAP/CPAP-BPAP, adult CSA/ASV, and hypoventilation/NIV',
   'AAST Standard PSG is not presented as pediatric PSG authority'
 ]){
