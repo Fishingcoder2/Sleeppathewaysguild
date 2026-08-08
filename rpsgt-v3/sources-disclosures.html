@@ -28,19 +28,19 @@
   <div>
     <div class="eyebrow">References &amp; scope</div>
     <h1>RPSGT APA-Style Reference Center</h1>
-    <p class="lead">Find the sources that support a BRPT domain, task, or study topic without exposing the private Guild library. Search by domain, task, subject, or authority level, then open an official public source when one is available.</p>
+    <p class="lead">Find the sources that support a BRPT domain, task, or study topic without exposing the private Guild library. Search by domain, task, subject, or authority layer, then open an official public source when one is available.</p>
     <div class="actions"><a class="btn primary" href="#reference-filters">Search references</a><a class="btn secondary" href="#reference-scope">How sources are used</a></div>
   </div>
   <aside class="card coach-card coach-bob-home">
     <img data-coach-bob src="assets/coach-bob-rpsgt.webp" alt="Coach Bob, Sleep Pathways Guild learning mentor" width="104" height="128">
-    <div><span class="status gold">Coach Bob</span><h2>Start with the strongest applicable source.</h2><p>Use the task and topic filters to narrow the list. When a rule is version-sensitive, current professional guidance comes before reinforcement material.</p></div>
+    <div><span class="status gold">Coach Bob</span><h2>Start with the strongest applicable source.</h2><p>Use the task and topic filters to narrow the list. For version-sensitive rules, identify the controlling authority first, then use technical guidance and study references for application and reinforcement.</p></div>
   </aside>
 </section>
 
-<section class="section notice" data-reference-load><strong>Loading the RPSGT reference index…</strong> Building the learner-facing view from vetted source metadata.</section>
+<section class="section notice" data-reference-load><strong>Loading the RPSGT reference index…</strong> Building the learner-facing view from vetted source metadata and the current authority registry.</section>
 
 <section class="section card reference-controls" id="reference-filters" data-reference-controls>
-  <div class="section-head"><div><div class="eyebrow">Reference lookup</div><h2>Search by blueprint location or subject</h2><p>Filters use the existing RPSGT V3 source-to-task mappings. Private Drive locations, source keys, QA notes, and internal library records are not displayed.</p></div><span class="status green"><span data-reference-count>0</span>&nbsp;matches</span></div>
+  <div class="section-head"><div><div class="eyebrow">Reference lookup</div><h2>Search by blueprint location or subject</h2><p>Filters use the existing RPSGT V3 source-to-task mappings and the audited authority registry. Private Drive locations, source keys, QA notes, and internal library records are not displayed.</p></div><span class="status green"><span data-reference-count>0</span>&nbsp;matches</span></div>
   <div class="reference-filter-grid">
     <label>Domain
       <select data-reference-domain><option value="all">All domains</option></select>
@@ -53,17 +53,19 @@
     </label>
     <label>Authority
       <select data-reference-authority>
-        <option value="all">All authority levels</option>
-        <option value="1">1 · BRPT official</option>
-        <option value="2">2 · AASM / classification</option>
-        <option value="3">3 · AAST guidance</option>
-        <option value="4">4 · Core references</option>
-        <option value="5">5 · Supplemental</option>
+        <option value="all">All authority and reference levels</option>
+        <option value="brpt">BRPT · Exam framework</option>
+        <option value="1">1 · AASM scoring / technical</option>
+        <option value="2">2 · AASM accreditation / protocol</option>
+        <option value="3">3 · AASM clinical / protocol / classification</option>
+        <option value="4">4 · AAST technical / competency / scope</option>
+        <option value="5">5 · Core references</option>
+        <option value="6">6 · Supplemental</option>
       </select>
     </label>
     <div class="reference-clear"><button class="btn secondary" type="button" data-reference-clear>Clear filters</button></div>
   </div>
-  <div class="reference-summary"><strong data-reference-status>Reference index loading</strong><span>Results are ordered by the Sleep Pathways Guild source-authority hierarchy.</span></div>
+  <div class="reference-summary"><strong data-reference-status>Reference index loading</strong><span>Results are ordered by the Sleep Pathways Guild authority and study-support hierarchy.</span></div>
 </section>
 
 <section class="section reference-results" data-reference-results aria-live="polite"></section>
@@ -71,13 +73,19 @@
 <section class="section card reference-scope" id="reference-scope">
   <div class="section-head"><div><div class="eyebrow">Source authority &amp; learner protection</div><h2>What this Reference Center shows—and what it intentionally hides</h2></div></div>
   <div class="authority-key" aria-label="Sleep Pathways Guild source authority hierarchy">
-    <div><b>1 · BRPT official</b><small>Exam blueprint, handbook, and official credential information.</small></div>
-    <div><b>2 · AASM</b><small>Current scoring and applicable clinical or protocol guidance.</small></div>
-    <div><b>3 · AAST</b><small>Applicable technical and professional guidance.</small></div>
-    <div><b>4 · Core references</b><small>BRPT-listed textbooks and core reinforcement references.</small></div>
-    <div><b>5 · Supplemental</b><small>Additional educational context after stronger sources are identified.</small></div>
+    <div><b>BRPT · Exam framework</b><small>Exam blueprint, handbook, eligibility, candidate, and credential information. This orients exam preparation; it is not a clinical scoring hierarchy.</small></div>
+    <div><b>1 · AASM scoring / technical</b><small>Governing scoring rules and scoring-linked technical specifications. Use first when the issue is how an event, montage, technical specification, or report element is scored or defined.</small></div>
+    <div><b>2 · AASM accreditation / protocol</b><small>Facility protocol, accreditation, infection-control, and written-procedure requirements. These do not replace clinical or scoring rules.</small></div>
+    <div><b>3 · AASM clinical / protocol / classification</b><small>Current diagnostic, treatment, testing-protocol, and classification guidance for the clinical question at hand.</small></div>
+    <div><b>4 · AAST technical / competency / scope</b><small>Current technologist workflow, competency, professional-role, and scope guidance. Use beneath controlling AASM rules and above textbooks for procedural application.</small></div>
+    <div><b>5 · Core references</b><small>BRPT-listed textbooks and other core reinforcement references used after the controlling authority is identified.</small></div>
+    <div><b>6 · Supplemental</b><small>Additional specialty, visual, historical, or educational context that must not outrank current authority.</small></div>
   </div>
   <div class="reference-scope-grid section">
+    <div><strong>Local and device-specific overlay</strong><span>Physician orders, facility SOPs and emergency policies, state law, and manufacturer instructions remain required when execution is patient-specific, local, or device-specific. The Reference Center does not invent universal local thresholds or device procedures.</span></div>
+    <div><strong>Oxygen boundary</strong><span>Supplemental low-flow oxygen is treated as indication- and order-specific. The current audit does not identify a standalone AAST low-flow oxygen technical guideline, so the app must not invent a universal oxygen titration protocol.</span></div>
+    <div><strong>PAP pathway boundary</strong><span>OSA PAP/CPAP-BPAP, adult CSA/ASV, and hypoventilation/NIV are kept as separate authority pathways. Older or generic PAP material must not silently control a different treatment pathway.</span></div>
+    <div><strong>Pediatric boundary</strong><span>AAST Standard PSG is not presented as pediatric PSG authority because its stated scope excludes pediatric PSG. Current AASM infant/pediatric rules, applicable pediatric protocols, age-specific competency, facility policy, and supporting pediatric references are layered separately.</span></div>
     <div><strong>Citation integrity</strong><span>Explicit APA citations are displayed as stored. When a vetted source record contains another verified citation style, it is labeled “Recorded source citation” rather than silently rewritten.</span></div>
     <div><strong>Copyright boundary</strong><span>The center shows bibliographic information, original study directions, and section or chapter titles. It does not reproduce protected textbook prose, scoring rules, figures, tables, or proprietary question banks.</span></div>
     <div><strong>Private library boundary</strong><span>Internal Drive URLs, holdings records, source keys, audit notes, QA states, and library-management data remain hidden from learners.</span></div>
