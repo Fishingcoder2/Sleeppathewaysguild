@@ -1,24 +1,109 @@
 {
-  "schemaVersion":1,
-  "verifiedAt":"2026-08-08",
-  "purpose":"Machine-readable RPSGT V3 coverage/current-authority gap queue derived from the 2026-08-08 12-task and D2A audits. Gaps are implementation priorities, not learner score predictions.",
-  "taskGaps":[
-    {"rank":1,"priority":"P0","task":"D1A / cross-task","gap":"Full licensed current ICSD-3-TR exact-page map","nextAction":"Obtain licensed current ICSD-3-TR and build exact-page disease/criteria map. Until then, keep older ICSD-3 page locators explicitly legacy and require the current TR/current-guideline overlay."},
-    {"rank":2,"priority":"P0","task":"D4B","gap":"Current alternative-therapy synthesis","nextAction":"Route oral appliance, surgical referral, upper-airway stimulation, transvenous phrenic nerve stimulation, and other non-PAP therapies by indication. Use current authority first and preserve unresolved upper-airway-stimulation sourcing as a gap."},
-    {"rank":3,"priority":"P0","task":"D4C","gap":"Oxygen authority pathway","nextAction":"Build oxygen-by-indication routing for ordered low-flow oxygen, CSA/high-altitude/heart-failure context, PAP titration, hypoventilation/CO2 monitoring, safety, and documentation. Do not invent a universal oxygen titration protocol."},
-    {"rank":4,"priority":"P0","task":"D3B + D2A","gap":"Pediatric/infant scoring and technical-preparation crosswalk","nextAction":"Create an AASM-v3-first crosswalk for montage/setup, staging, arousals, respiratory events, CO2, MSLT preparation, age-specific care, and documentation. Do not treat AAST Standard PSG as pediatric PSG guidance."},
-    {"rank":5,"priority":"P1","task":"D4A + D1C","gap":"PAP modality separation","nextAction":"Separate OSA PAP, CSA/ASV, and hypoventilation/NIV pathways using current AASM treatment guidance, AAST technical workflow, orders, facility SOPs, and manufacturer instructions."},
-    {"rank":6,"priority":"P1","task":"D2C","gap":"Response/escalation policy layer","nextAction":"Use a universal recognize -> verify patient/signal -> document -> allowed technical correction -> escalate per policy framework. Keep emergency thresholds and facility configuration local."},
-    {"rank":7,"priority":"P1","task":"Cross-task","gap":"True Sleep Medicine Pearls, 3rd edition","nextAction":"Locate and verify the actual current third edition before mapping. Do not relabel the older library copy."},
-    {"rank":8,"priority":"P2","task":"Cross-task","gap":"Adult Principles and Practice exact page locators","nextAction":"Add exact page ranges only after reliable access to the oversized source. Do not guess."},
-    {"rank":9,"priority":"QA","task":"Registry hygiene","gap":"Two non-task Kilkenny metadata rows","nextAction":"Keep provenance/answer-key metadata out of official task counts, study surfaces, practice generation, and learner-facing imports."}
+  "schemaVersion": 1,
+  "verifiedAt": "2026-08-08",
+  "purpose": "Machine-readable RPSGT V3 coverage/current-authority gap queue derived from the 2026-08-08 12-task and D2A audits. Gaps are implementation priorities, not learner score predictions.",
+  "taskGaps": [
+    {
+      "rank": 1,
+      "priority": "P0",
+      "task": "D1A / cross-task",
+      "gap": "Full licensed current ICSD-3-TR exact-page map",
+      "nextAction": "Obtain licensed current ICSD-3-TR and build exact-page disease/criteria map. Until then, keep older ICSD-3 page locators explicitly legacy and require the current TR/current-guideline overlay."
+    },
+    {
+      "rank": 2,
+      "priority": "P0",
+      "task": "D4B",
+      "gap": "D4B alternative-therapy synthesis strengthened; dedicated current AASM UAS treatment authority remains unresolved",
+      "nextAction": "Maintain the new indication-specific D4B routes for oral appliances, surgery, UAS/HGNS, positional therapy, weight management/pharmacotherapy, and adult CSA alternatives. Keep FDA device/drug labeling and ERS/ATS guidelines as support/overlays, not AASM authority. Continue watching for a dedicated current AASM UAS clinical practice guideline; do not substitute textbook material.",
+      "progress": "2026-08-08 targeted synthesis added without changing the 15-rule governing authority registry."
+    },
+    {
+      "rank": 3,
+      "priority": "P0",
+      "task": "D4C",
+      "gap": "Oxygen authority pathway",
+      "nextAction": "Build oxygen-by-indication routing for ordered low-flow oxygen, CSA/high-altitude/heart-failure context, PAP titration, hypoventilation/CO2 monitoring, safety, and documentation. Do not invent a universal oxygen titration protocol."
+    },
+    {
+      "rank": 4,
+      "priority": "P0",
+      "task": "D3B + D2A",
+      "gap": "Pediatric/infant scoring and technical-preparation crosswalk",
+      "nextAction": "Create an AASM-v3-first crosswalk for montage/setup, staging, arousals, respiratory events, CO2, MSLT preparation, age-specific care, and documentation. Do not treat AAST Standard PSG as pediatric PSG guidance."
+    },
+    {
+      "rank": 5,
+      "priority": "P1",
+      "task": "D4A + D1C",
+      "gap": "PAP modality separation",
+      "nextAction": "Separate OSA PAP, CSA/ASV, and hypoventilation/NIV pathways using current AASM treatment guidance, AAST technical workflow, orders, facility SOPs, and manufacturer instructions."
+    },
+    {
+      "rank": 6,
+      "priority": "P1",
+      "task": "D2C",
+      "gap": "Response/escalation policy layer",
+      "nextAction": "Use a universal recognize -> verify patient/signal -> document -> allowed technical correction -> escalate per policy framework. Keep emergency thresholds and facility configuration local."
+    },
+    {
+      "rank": 7,
+      "priority": "P1",
+      "task": "Cross-task",
+      "gap": "True Sleep Medicine Pearls, 3rd edition",
+      "nextAction": "Locate and verify the actual current third edition before mapping. Do not relabel the older library copy."
+    },
+    {
+      "rank": 8,
+      "priority": "P2",
+      "task": "Cross-task",
+      "gap": "Adult Principles and Practice exact page locators",
+      "nextAction": "Add exact page ranges only after reliable access to the oversized source. Do not guess."
+    },
+    {
+      "rank": 9,
+      "priority": "QA",
+      "task": "Registry hygiene",
+      "gap": "Two non-task Kilkenny metadata rows",
+      "nextAction": "Keep provenance/answer-key metadata out of official task counts, study surfaces, practice generation, and learner-facing imports."
+    }
   ],
-  "d2aGaps":[
-    {"id":"GAP-D2A-01","priority":"P0","gap":"Pediatric/infant technical preparation synthesis","action":"Create an original SPG pediatric technical-prep module cross-walking AASM v3 infant/pediatric rules, current pediatric MSLT guidance, AAST age-specific competency, and facility policies. Use pediatric textbooks/atlases only as support."},
-    {"id":"GAP-D2A-02","priority":"P1","gap":"Supplemental low-flow oxygen technical detail","action":"Require physician order + facility oxygen protocol + current AAST competency/scope + applicable AASM treatment/scoring guidance. Avoid a universal titration protocol."},
-    {"id":"GAP-D2A-03","priority":"P1","gap":"Maintenance/cleaning/device-specific calibration layer","action":"Require manufacturer/facility SOP overlays for device-specific calibration and cleaning rather than treating general guidelines or textbooks as device instructions."},
-    {"id":"GAP-D2A-04","priority":"P1","gap":"PAP pathways need modality separation","action":"Split OSA PAP, CSA/ASV, and hypoventilation/NIV preparation pathways."},
-    {"id":"GAP-D2A-05","priority":"P2","gap":"Actigraphy device-level preparation","action":"Teach universal principles and require manufacturer instructions for device-specific operation."},
-    {"id":"GAP-D2A-06","priority":"P2","gap":"Video/privacy/storage workflow","action":"Keep technical camera positioning separate from local consent, privacy, retention, and storage policy."}
+  "d2aGaps": [
+    {
+      "id": "GAP-D2A-01",
+      "priority": "P0",
+      "gap": "Pediatric/infant technical preparation synthesis",
+      "action": "Create an original SPG pediatric technical-prep module cross-walking AASM v3 infant/pediatric rules, current pediatric MSLT guidance, AAST age-specific competency, and facility policies. Use pediatric textbooks/atlases only as support."
+    },
+    {
+      "id": "GAP-D2A-02",
+      "priority": "P1",
+      "gap": "Supplemental low-flow oxygen technical detail",
+      "action": "Require physician order + facility oxygen protocol + current AAST competency/scope + applicable AASM treatment/scoring guidance. Avoid a universal titration protocol."
+    },
+    {
+      "id": "GAP-D2A-03",
+      "priority": "P1",
+      "gap": "Maintenance/cleaning/device-specific calibration layer",
+      "action": "Require manufacturer/facility SOP overlays for device-specific calibration and cleaning rather than treating general guidelines or textbooks as device instructions."
+    },
+    {
+      "id": "GAP-D2A-04",
+      "priority": "P1",
+      "gap": "PAP pathways need modality separation",
+      "action": "Split OSA PAP, CSA/ASV, and hypoventilation/NIV preparation pathways."
+    },
+    {
+      "id": "GAP-D2A-05",
+      "priority": "P2",
+      "gap": "Actigraphy device-level preparation",
+      "action": "Teach universal principles and require manufacturer instructions for device-specific operation."
+    },
+    {
+      "id": "GAP-D2A-06",
+      "priority": "P2",
+      "gap": "Video/privacy/storage workflow",
+      "action": "Keep technical camera positioning separate from local consent, privacy, retention, and storage policy."
+    }
   ]
 }
