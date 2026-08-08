@@ -16,7 +16,8 @@ const imported=[
   ['atlas-polysomnography-2e.json','atlas-polysomnography-2e'],
   ['sleep-technician-guide-2009.json','sleep-technician-guide-2009'],
   ['ers-handbook-respiratory-sleep-medicine-2e.json','ers-handbook-respiratory-sleep-medicine-2e'],
-  ['principles-practice-sleep-medicine-7e.json','principles-practice-sleep-medicine-7e']
+  ['principles-practice-sleep-medicine-7e.json','principles-practice-sleep-medicine-7e'],
+  ['ats-diaphragm-pacing-phrenic-nerve-2016.json','ats-diaphragm-pacing-phrenic-nerve-2016']
 ];
 
 const docs=new Map();
@@ -48,6 +49,10 @@ if((ppsm.sections||[]).length!==23) throw new Error('PPSM 7e compact map must pr
 if(!/exact local PDF page locators remain intentionally pending/i.test(ppsm.libraryStatus||'')) throw new Error('PPSM 7e must preserve the no-guessed-page-locators boundary.');
 if((ppsm.sections||[]).some(section=>'pageStart' in section||'pageEnd' in section)) throw new Error('PPSM 7e compact map contains guessed page locators.');
 
+const diaphragm=docs.get('ats-diaphragm-pacing-phrenic-nerve-2016');
+if((diaphragm.sections||[]).length!==8) throw new Error('ATS diaphragm-pacing map must preserve all eight verified patient-education sections.');
+if(!/distinct therapy from transvenous phrenic-nerve stimulation for adult central sleep apnea/i.test(diaphragm.therapyIdentityBoundary||'')) throw new Error('Diaphragm-pacing therapy identity boundary is missing.');
+
 function family(list,id){return list.find(item=>item.id===id);}
 function sourceOrder(item){return (item&&Array.isArray(item.recommendations)?item.recommendations:[]).map(row=>Array.isArray(row)?row[0]:'').filter(Boolean);}
 
@@ -56,6 +61,7 @@ if(cardiac[0]!=='aasm-scoring-manual-v3'||cardiac[1]!=='only-ekg-book-9e') throw
 
 const csa=sourceOrder(family(topicsA,'central-apnea'));
 for(const required of ['aasm-scoring-manual-v3','icsd-3-tr','central-sleep-apnea-pathophysiologic-classification-2023','ers-handbook-respiratory-sleep-medicine-2e']) if(!csa.includes(required)) throw new Error(`Central-apnea routing is missing ${required}.`);
+if(csa.includes('ats-diaphragm-pacing-phrenic-nerve-2016')) throw new Error('Diaphragm pacing must not be routed as adult central-apnea transvenous PNS support.');
 if(csa.indexOf('central-sleep-apnea-pathophysiologic-classification-2023')<csa.indexOf('aasm-scoring-manual-v3')||csa.indexOf('central-sleep-apnea-pathophysiologic-classification-2023')<csa.indexOf('icsd-3-tr')) throw new Error('CSA review must not outrank AASM/ICSD current authority.');
 
 const instrumentation=sourceOrder(family(topicsA,'instrumentation'));
@@ -74,6 +80,8 @@ const gasExchange=sourceOrder(family(topicsB,'gas-exchange'));
 if(gasExchange[0]!=='aasm-scoring-manual-v3'||gasExchange[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Gas-exchange routing must remain AASM first, ERS specialty support second; got ${gasExchange.join(', ')}.`);
 const adultRespiratory=sourceOrder(family(topicsB,'adult-respiratory'));
 if(adultRespiratory[0]!=='aasm-scoring-manual-v3'||adultRespiratory[1]!=='ers-handbook-respiratory-sleep-medicine-2e') throw new Error(`Adult respiratory routing must remain AASM first, ERS specialty support second; got ${adultRespiratory.join(', ')}.`);
+const diaphragmTopic=sourceOrder(family(topicsB,'diaphragm-pacing'));
+if(diaphragmTopic[0]!=='ats-diaphragm-pacing-phrenic-nerve-2016') throw new Error('Diaphragm-pacing topic must lead with the distinct ATS patient-education source.');
 
 const existingEeg=JSON.parse(await readFile(join(sourceRoot,'atlas-electroencephalography-sleep-medicine-2012.json'),'utf8'));
 if(!Array.isArray(existingEeg.editors)||!existingEeg.editors.includes('Magdy Y. Morgan')||existingEeg.editors.includes('Undevia')) throw new Error('Corrected Sleep EEG atlas identity regressed to the stale Drive-map attribution.');
@@ -92,6 +100,7 @@ console.log(JSON.stringify({
   ppsmAllOfficialTasks:true,
   ppsmVerifiedSections:23,
   ppsmNoGuessedPages:true,
+  diaphragmPacingIdentityProtected:true,
   legacyScoringSectionsExcluded:true,
   correctedEegAtlasIdentityProtected:true,
   cumulativeCsvExcluded:true,
