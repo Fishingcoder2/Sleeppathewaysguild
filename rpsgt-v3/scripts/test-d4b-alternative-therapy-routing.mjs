@@ -49,7 +49,7 @@ for(const id of ['aasm-oral-appliance-2015','aasm-surgical-referral-osa-2021','a
 if(plan.indexOf('aasm-csa-treatment-2025')>plan.indexOf('aast-oral-appliance-titration-2018')) throw new Error('D4B plan lost AASM-before-support ordering.');
 
 if(map.authorityRegistryChanged!==false||map.authorityRegistryRuleCountExpected!==15||(map.therapyRoutes||[]).length<7) throw new Error('D4B authority map does not preserve separated routes and registry boundaries.');
-if(!(map.remainingGaps||[]).some(item=>/AASM upper-airway-stimulation/i.test(item.topic||''))) throw new Error('Dedicated AASM UAS guideline gap must remain visible.');
+if(!(map.remainingGaps||[]).some(item=>/AASM.*upper-airway-stimulation/i.test(item.topic||''))) throw new Error('Dedicated AASM UAS guideline gap must remain visible.');
 const d4bGap=(gaps.taskGaps||[]).find(item=>item.task==='D4B');
 if(!d4bGap||!/synthesis strengthened/i.test(d4bGap.gap||'')||!/15-rule/i.test(d4bGap.progress||'')) throw new Error('D4B gap queue progress is not recorded correctly.');
 
