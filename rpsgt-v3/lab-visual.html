@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Visual Skills Lab Prototype | Sleep Pathways Guild</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/labs.css">
+<link rel="stylesheet" href="assets/visual.css">
+</head>
+<body data-module="labs">
+<div class="app-shell">
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Visual Skills Lab</strong><span>Mini PSG Viewer prototype · visual recognition and scoring interaction</span></span></a><div class="top-actions"><a href="labs.html">Skills Labs</a><a href="reports.html">Reports</a></div></header>
+<div class="layout">
+<aside class="sidebar"><div class="nav-label">Learning Center</div><a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a><a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a><a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a><a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a><a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a></aside>
+<main class="main">
+<section class="hero"><div><div class="eyebrow">Development prototype · Visual Skills Engine</div><h1>Work with the tracing, not a screenshot of a tracing</h1><p class="lead">The first Mini PSG Viewer renders an original 30-second schematic sleep-study epoch from signal definitions, then reuses that same epoch for stage recognition and feature-location questions. This is the foundation for future full-night scoring, respiratory-event marking, artifact recognition, measurements, and disagreement review.</p><div class="actions"><button class="btn primary" type="button" data-visual-start>Start visual prototype</button><a class="btn secondary" href="lab-scoring.html">Open standard Scoring Lab</a></div></div><aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Read across channels before you decide.</h2><p>Use the complete displayed context. A visual scoring tool should teach you to correlate signals and features—not train you to guess from one isolated squiggle.</p></aside></section>
+<section class="section notice"><strong>Prototype and clinical boundary:</strong> The displayed signals are deterministic, original Sleep Pathways Guild schematic teaching signals. They are not a patient recording, copied scoring-manual figure, textbook figure, or validated substitute for current official scoring criteria. This prototype tests the viewer and interaction architecture; it is not yet a completed scoring competency lab.</section>
+<section class="section"><div class="section-head"><div><div class="eyebrow">Prototype record</div><h2>Visual practice history</h2></div><span class="status green">Stored only in spg_rpsgt_v3.labs.visual</span></div><div class="visual-summary" data-visual-summary><div><span>Status</span><strong>Loading…</strong></div></div></section>
+<section class="section card"><div class="section-head"><div><div class="eyebrow">Architecture target</div><h2>Built to grow from one epoch to a full-night study</h2></div><span class="status">Continuous-recording model</span></div><div class="visual-prototype-roadmap"><div><strong>Now · Recognition</strong><small>Canvas-rendered 30-second epoch, stage selection, and coarse time-region feature selection.</small></div><div><strong>Next · Annotation</strong><small>Precise point and click-drag events, measurement tools, neighboring-epoch navigation, signal controls, and additional visual packs.</small></div><div><strong>Later · Full night</strong><small>Indexed hundreds-to-1000+ epochs, chunked signal windows, hypnogram navigation, event lists, worker-based rendering, and learner-versus-teaching-key reports.</small></div></div></section>
+<section class="section card visual-workspace" data-visual-workspace hidden></section>
+<section class="section notice"><strong>Progress boundary:</strong> Prototype attempts are recorded only as Visual Skills Lab evidence. They do not alter Practice, Review, Readiness, Mock, Guided Trail, or the completed status of the existing Sleep Staging and Event-Scoring Lab.</section>
+<footer class="footer">Development branch only · Original schematic signals · Educational visual-recognition prototype</footer>
+</main></div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script><script src="core/app-shell.js"></script><script src="core/visual-lab-engine.js"></script><script src="core/visual-psg-renderer.js"></script><script src="core/lab-visual.js"></script>
+</body>
+</html>
