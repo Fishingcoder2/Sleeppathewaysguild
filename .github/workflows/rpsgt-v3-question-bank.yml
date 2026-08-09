@@ -93,6 +93,9 @@ jobs:
           node --check rpsgt-v3/core/lab-daytime-testing.js
           node --check rpsgt-v3/core/ekg-lab-engine.js
           node --check rpsgt-v3/core/lab-ekg.js
+          node --check rpsgt-v3/core/visual-lab-engine.js
+          node --check rpsgt-v3/core/visual-psg-renderer.js
+          node --check rpsgt-v3/core/lab-visual.js
           node --check rpsgt-v3/core/math-coach-engine.js
           node --check rpsgt-v3/core/lab-math-coach.js
           node --check rpsgt-v3/core/study.js
@@ -145,6 +148,7 @@ jobs:
           node rpsgt-v3/scripts/test-daytime-testing-lab-shell.mjs
           node rpsgt-v3/scripts/test-ekg-lab-system.mjs
           node rpsgt-v3/scripts/test-ekg-lab-shell.mjs
+          node rpsgt-v3/scripts/test-visual-lab.mjs
           node rpsgt-v3/scripts/test-math-coach-system.mjs
           node rpsgt-v3/scripts/test-math-coach-shell.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
