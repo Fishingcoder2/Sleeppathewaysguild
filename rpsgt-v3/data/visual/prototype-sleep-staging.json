@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "name": "RPSGT Visual Skills Engine prototype sleep-staging pack",
+    "version": 1,
+    "developmentOnly": true,
+    "appAuthored": true,
+    "sourceType": "app-authored-schematic",
+    "copyrightBoundary": "Deterministic schematic teaching signals only. No external PSG recording, scoring-manual figure, textbook figure, or third-party waveform is embedded.",
+    "clinicalBoundary": "Prototype recognition content only. It does not reproduce or replace current official scoring criteria or supervised scorer training."
+  },
+  "studies": [
+    {
+      "id": "schematic-n2-001",
+      "title": "Schematic 30-second N2 teaching epoch",
+      "durationSeconds": 30,
+      "sampleRate": 100,
+      "channels": [
+        {"label":"F3-M2","type":"eeg","amplitude":0.72,"phase":0.15},
+        {"label":"F4-M1","type":"eeg","amplitude":0.66,"phase":0.65},
+        {"label":"C3-M2","type":"eeg","amplitude":0.82,"phase":1.05,"features":[{"type":"k-complex","center":8.8,"strength":1.0},{"type":"spindle","start":13.4,"end":15.0,"frequency":13.0,"strength":0.95}]},
+        {"label":"C4-M1","type":"eeg","amplitude":0.78,"phase":1.35,"features":[{"type":"k-complex","center":8.9,"strength":0.85},{"type":"spindle","start":13.5,"end":15.1,"frequency":13.0,"strength":0.8}]},
+        {"label":"E1-M2","type":"eog","amplitude":0.42,"phase":0.4},
+        {"label":"E2-M2","type":"eog","amplitude":0.4,"phase":1.1},
+        {"label":"Chin EMG","type":"emg","amplitude":0.28,"phase":0.2},
+        {"label":"ECG","type":"ecg","amplitude":0.8,"heartRate":66},
+        {"label":"Airflow","type":"resp","amplitude":0.7,"frequency":0.24},
+        {"label":"SpO2","type":"spo2","amplitude":0.16,"baseline":96}
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id":"visual-stage-001",
+      "studyId":"schematic-n2-001",
+      "type":"stage-choice",
+      "taskCode":"D3A",
+      "prompt":"Which sleep stage is this schematic epoch designed to represent?",
+      "options":["W","N1","N2","N3","R"],
+      "answer":"N2",
+      "rationale":"This app-authored teaching epoch intentionally includes an N2-oriented EEG pattern with a prominent K-complex and sleep-spindle region. Use current official guidance for actual scoring criteria."
+    },
+    {
+      "id":"visual-feature-001",
+      "studyId":"schematic-n2-001",
+      "type":"region-choice",
+      "taskCode":"D3A",
+      "prompt":"Select the time region containing the sleep-spindle teaching feature in C3-M2.",
+      "channel":"C3-M2",
+      "regions":[
+        {"id":"r1","start":0,"end":5,"label":"0–5 s"},
+        {"id":"r2","start":5,"end":10,"label":"5–10 s"},
+        {"id":"r3","start":10,"end":15,"label":"10–15 s"},
+        {"id":"r4","start":15,"end":20,"label":"15–20 s"},
+        {"id":"r5","start":20,"end":25,"label":"20–25 s"},
+        {"id":"r6","start":25,"end":30,"label":"25–30 s"}
+      ],
+      "answer":"r3",
+      "rationale":"The schematic spindle burst is centered near 14 seconds. This is a teaching signal, not a copied clinical epoch."
+    },
+    {
+      "id":"visual-feature-002",
+      "studyId":"schematic-n2-001",
+      "type":"region-choice",
+      "taskCode":"D3A",
+      "prompt":"Select the time region containing the K-complex teaching feature in C3-M2.",
+      "channel":"C3-M2",
+      "regions":[
+        {"id":"r1","start":0,"end":5,"label":"0–5 s"},
+        {"id":"r2","start":5,"end":10,"label":"5–10 s"},
+        {"id":"r3","start":10,"end":15,"label":"10–15 s"},
+        {"id":"r4","start":15,"end":20,"label":"15–20 s"},
+        {"id":"r5","start":20,"end":25,"label":"20–25 s"},
+        {"id":"r6","start":25,"end":30,"label":"25–30 s"}
+      ],
+      "answer":"r2",
+      "rationale":"The schematic K-complex is centered near 9 seconds. The region-selection interaction is intentionally coarse in this first prototype; free-coordinate marking can be added later."
+    }
+  ]
+}
