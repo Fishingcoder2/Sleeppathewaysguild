@@ -4,7 +4,7 @@
   const host=document.querySelector('[data-respiratory-study-trail]');
   if(!host) return;
 
-  const state={trail:null,chapters:new Map(),activeIndex:0};
+  const state={trail:null,chapters:new Map(),activeIndex:0,taskEntryObserver:null};
   const text=value=>String(value==null?'':value).trim();
   const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -65,7 +65,34 @@
       '<p class="respiratory-trail-boundary">'+esc(state.trail.learnerBoundary)+'</p>';
   }
 
+  function addD4AEntryPoint(){
+    const taskCard=document.getElementById('D4A');
+    const actions=taskCard&&taskCard.querySelector('.trail-actions');
+    if(!actions) return false;
+    if(actions.querySelector('[data-respiratory-task-entry]')) return true;
+    const link=document.createElement('a');
+    link.className='btn secondary';
+    link.href='#respiratory-pap-trail';
+    link.dataset.respiratoryTaskEntry='true';
+    link.textContent='Open Respiratory/PAP Study Trail';
+    actions.prepend(link);
+    return true;
+  }
+
+  function wireD4AEntryPoint(){
+    if(addD4AEntryPoint()) return;
+    if(typeof MutationObserver!=='function') return;
+    state.taskEntryObserver=new MutationObserver(()=>{
+      if(addD4AEntryPoint()&&state.taskEntryObserver){
+        state.taskEntryObserver.disconnect();
+        state.taskEntryObserver=null;
+      }
+    });
+    state.taskEntryObserver.observe(document.body,{childList:true,subtree:true});
+  }
+
   async function init(){
+    wireD4AEntryPoint();
     try{
       const [trail,ppsm]=await Promise.all([
         loadJson('data/learner-trails/respiratory-pap.json'),
@@ -87,6 +114,8 @@
     if(!Number.isInteger(index)||index<0||index>=state.trail.steps.length||index===state.activeIndex) return;
     state.activeIndex=index;
     render();
+    const nextButton=host.querySelector('[data-respiratory-step="'+index+'"]');
+    if(nextButton) nextButton.focus({preventScroll:true});
   });
 
   init();

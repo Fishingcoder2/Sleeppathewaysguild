@@ -3,26 +3,27 @@
 .respiratory-trail-head p{max-width:72ch;margin:.45rem 0 0;color:var(--muted)}
 .respiratory-trail-shell{display:grid;grid-template-columns:minmax(190px,240px) minmax(0,1fr);gap:18px;align-items:start}
 .respiratory-trail-steps{display:grid;gap:7px;position:sticky;top:88px}
-.respiratory-trail-steps button{appearance:none;width:100%;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:10px 11px;display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:center;text-align:left;color:inherit;cursor:pointer}
-.respiratory-trail-steps button span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--soft);font-weight:800;font-size:.82rem}
+.respiratory-trail-steps button{appearance:none;width:100%;border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:10px 11px;display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:center;text-align:left;color:inherit;cursor:pointer}
+.respiratory-trail-steps button span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--sky);font-weight:800;font-size:.82rem}
 .respiratory-trail-steps button strong{font-size:.9rem;line-height:1.2}
-.respiratory-trail-steps button[aria-current="step"]{border-color:var(--accent);box-shadow:0 0 0 2px rgba(45,104,93,.12)}
-.respiratory-trail-steps button[aria-current="step"] span{background:var(--accent);color:#fff}
-.respiratory-trail-panel{border:1px solid var(--line);border-radius:18px;background:var(--card);padding:clamp(16px,2.3vw,24px)}
+.respiratory-trail-steps button[aria-current="step"]{border-color:var(--teal);box-shadow:0 0 0 2px rgba(15,138,155,.12)}
+.respiratory-trail-steps button[aria-current="step"] span{background:var(--teal);color:#fff}
+.respiratory-trail-steps button:focus-visible{outline:3px solid rgba(7,95,168,.28);outline-offset:2px}
+.respiratory-trail-panel{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:clamp(16px,2.3vw,24px)}
 .respiratory-trail-progress{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.86rem}
 .respiratory-trail-panel h3{font-size:clamp(1.25rem,2.2vw,1.7rem);margin:.8rem 0 1rem}
 .respiratory-trail-learning-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.respiratory-trail-learning-grid section{border:1px solid var(--line);border-radius:14px;padding:13px;background:var(--soft)}
+.respiratory-trail-learning-grid section{border:1px solid var(--line);border-radius:14px;padding:13px;background:var(--sky)}
 .respiratory-trail-learning-grid section>span{display:block;text-transform:uppercase;letter-spacing:.07em;font-size:.7rem;font-weight:800;color:var(--muted);margin-bottom:6px}
 .respiratory-trail-learning-grid p{margin:0;line-height:1.52}
 .respiratory-study-chapter strong,.respiratory-study-chapter small,.respiratory-study-chapter span{display:block}
 .respiratory-study-chapter strong{line-height:1.4}
 .respiratory-study-chapter span{font-size:.82rem;color:var(--muted);margin-top:5px}
 .respiratory-study-chapter small{margin-top:7px;color:var(--muted);font-weight:700}
-.respiratory-rule-warning{margin:12px 0 0;border-left:4px solid var(--gold,#b78103);background:var(--soft);border-radius:0 12px 12px 0;padding:12px 14px}
+.respiratory-rule-warning{margin:12px 0 0;border-left:4px solid var(--gold);background:#fff8e8;border-radius:0 12px 12px 0;padding:12px 14px}
 .respiratory-rule-warning p{margin:.3rem 0 0;line-height:1.5}
 .respiratory-trail-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}
-.respiratory-trail-link{border:0;background:transparent;padding:8px 2px;color:var(--accent);font:inherit;font-weight:800;text-decoration:none;cursor:pointer}
+.respiratory-trail-link{border:0;background:transparent;padding:8px 2px;color:var(--blue);font:inherit;font-weight:800;text-decoration:none;cursor:pointer}
 .respiratory-trail-link:hover,.respiratory-trail-link:focus-visible{text-decoration:underline}
 .respiratory-coach-note,.respiratory-trail-boundary{color:var(--muted);font-size:.84rem;line-height:1.45}
 .respiratory-coach-note{margin:.65rem 0 0}

@@ -97,6 +97,16 @@
     hero.insertAdjacentElement('afterend',destinationSection);
   }
 
+  function insertFeaturedRespiratoryTrail(){
+    const destinations=$('.front-door-destinations');
+    if(!destinations||$('[data-featured-respiratory-trail]')) return;
+    const section=document.createElement('section');
+    section.className='section card front-door-primary featured-study-trail';
+    section.dataset.featuredRespiratoryTrail='true';
+    section.innerHTML='<div class="section-head"><div><div class="eyebrow">Featured Study Trail · Respiratory / PAP</div><h2>Follow the respiratory pathway from scoring to escalation</h2></div><a class="btn primary" href="study.html#respiratory-pap-trail">Start Respiratory/PAP Study Trail</a></div><p class="brpt-intro">Work through OSA scoring, PAP treatment and titration, CSA distinctions, advanced PAP, hypoventilation/NIV, oxygen/CO₂, and escalation with current-authority warnings at each step.</p>';
+    destinations.insertAdjacentElement('afterend',section);
+  }
+
   function normalizeAchievementCopy(){
     const host=$('#guild-achievements');
     if(!host) return;
@@ -128,6 +138,7 @@
 
   function init(){
     promotePrimaryDestinations();
+    insertFeaturedRespiratoryTrail();
     normalizeAchievementCopy();
     suppressOptionalBookShelf();
     loadResources();
