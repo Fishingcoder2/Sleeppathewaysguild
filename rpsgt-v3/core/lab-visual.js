@@ -7,7 +7,7 @@
   const startButton=document.querySelector('[data-visual-start]');
   if(!workspace||!summaryHost||!startButton)return;
   const state={saved:null,pack:null,session:null,index:0,answers:{},locked:new Set(),finished:null,metrics:null};
-  const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
+  const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const formatDate=value=>value?new Date(value).toLocaleString():'—';
   async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
   function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=window.RPSGTStorage.save(state.saved);}
