@@ -16,6 +16,7 @@ on:
       - rpsgt-v3/scripts/test-current-authority-registry.mjs
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
+      - rpsgt-v3/scripts/test-principles-practice-7e-locators.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
   pull_request:
@@ -33,6 +34,7 @@ on:
       - rpsgt-v3/scripts/test-current-authority-registry.mjs
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
+      - rpsgt-v3/scripts/test-principles-practice-7e-locators.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
 
@@ -60,5 +62,7 @@ jobs:
         run: node rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - name: Validate ICSD diagnostic taxonomy and boundaries
         run: node rpsgt-v3/scripts/test-icsd-taxonomy.mjs
+      - name: Validate Principles and Practice 7e printed locators
+        run: node rpsgt-v3/scripts/test-principles-practice-7e-locators.mjs
       - name: Validate BRPT master reference inventory
         run: node rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
