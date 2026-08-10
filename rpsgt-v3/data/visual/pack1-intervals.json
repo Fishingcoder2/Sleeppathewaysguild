@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "name": "RPSGT Visual Skills Pack 1 interval supplement",
+    "version": 1,
+    "developmentOnly": true,
+    "appAuthored": true,
+    "sourceType": "app-authored-schematic",
+    "basePack": "prototype-sleep-staging.json",
+    "copyrightBoundary": "Question coordinates refer only to Sleep Pathways Guild-generated schematic signals."
+  },
+  "questions": [
+    {
+      "id": "visual-measure-n2-spindle",
+      "studyId": "schematic-n2-001",
+      "type": "interval-mark",
+      "taskCode": "D3A",
+      "prompt": "Drag from the beginning to the end of the spindle teaching burst in C3-M2.",
+      "target": {"channel":"C3-M2","start":13.4,"end":15.0},
+      "toleranceSeconds": 0.35,
+      "fallbackIntervals": [
+        {"label":"C3-M2 · 8.3–9.4 s","channel":"C3-M2","start":8.3,"end":9.4},
+        {"label":"C3-M2 · 13.4–15.0 s","channel":"C3-M2","start":13.4,"end":15.0},
+        {"label":"C4-M1 · 13.5–15.1 s","channel":"C4-M1","start":13.5,"end":15.1},
+        {"label":"C3-M2 · 18.0–20.0 s","channel":"C3-M2","start":18.0,"end":20.0}
+      ],
+      "rationale": "This interval exercise uses the same app-authored spindle teaching burst placed at approximately 13.4–15.0 seconds in C3-M2. It practices marking mechanics, not a proprietary scoring rule."
+    }
+  ]
+}
