@@ -16,7 +16,7 @@ const requiredSources=[
   'aast-patient-assessment-vitals-2022.json','aast-patient-education-2020.json','aast-standard-psg-2021.json',
   'aast-hsat-2020.json','aast-end-tidal-co2-2018.json','aast-transcutaneous-co2-2018.json',
   'aast-pap-acclimation-2022.json','aast-pap-titration-2021.json','aast-oral-appliance-titration-2018.json','aast-supplemental-low-flow-oxygen.json',
-  'pediatric-sleep-pearls-1e.json'
+  'pediatric-sleep-pearls-1e.json','sleep-medicine-pearls-3e.json','principles-practice-sleep-medicine-7e.json'
 ];
 for(const file of requiredSources){if(!manifest.sourceFiles.includes(file)) throw new Error(`Study-source manifest is missing ${file}`);}
 if(manifest.coreLibraryAuditFile!=='core-library-audit.json') throw new Error('Core library audit is not registered in the study-source manifest.');
@@ -91,6 +91,25 @@ if(pearls2.currentBrptListedEdition!=='3rd edition') throw new Error('Sleep Medi
 if(!/AASM Scoring Manual Version 3 controls current scoring rules/i.test(pearls2.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(pearls2.authorityBoundary||'')) throw new Error('Sleep Medicine Pearls 2e current-authority correction boundary is missing.');
 if(!Array.isArray(pearls2.versionSensitiveReviewRequiredFor)||pearls2.versionSensitiveReviewRequiredFor.length<5) throw new Error('Sleep Medicine Pearls 2e version-sensitive review queue is missing.');
 
+const pearls3Source=sourceDocs['sleep-medicine-pearls-3e'];
+if(!pearls3Source||pearls3Source.currentAuthority!==false||pearls3Source.sourceRole!=='studySupport') throw new Error('Sleep Medicine Pearls 3e must remain study support rather than governing authority.');
+if(pearls3Source.edition!=='3rd ed.'||pearls3Source.isbn13!=='9781455770519'||pearls3Source.bibliographicIdentityVerified!==true||pearls3Source.brptCurrentlyRecommended!==true) throw new Error('Sleep Medicine Pearls 3e verified bibliographic identity is incomplete.');
+if(pearls3Source.contentVerifiedByV3!==false||pearls3Source.structuredForLearnerMapping!==false||pearls3Source.mappingEnabled!==false) throw new Error('Sleep Medicine Pearls 3e must not be learner-mapped before direct content verification.');
+if((pearls3Source.referenceKeys||[]).length||(pearls3Source.mappedTaskCodes||[]).length||(pearls3Source.sections||[]).length) throw new Error('Sleep Medicine Pearls 3e inherited mappings before third-edition content verification.');
+if(!/Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators/i.test(pearls3Source.editionBoundary||'')) throw new Error('Sleep Medicine Pearls 3e edition-migration boundary is missing.');
+
+const principles7=sourceDocs['principles-practice-sleep-medicine-7e'];
+if(!principles7||principles7.currentAuthority!==false||principles7.sourceRole!=='studySupport'||principles7.isbn13!=='9780323661898') throw new Error('Principles and Practice 7e identity/support boundary is incomplete.');
+if(!(principles7.editors||[]).includes('Cathy A. Goldstein')||(principles7.editors||[]).some(name=>/Clete/i.test(name))) throw new Error('Principles and Practice 7e editor identity is incorrect.');
+if(!/AASM Scoring Manual Version 3 controls scoring and technical rules/i.test(principles7.authorityBoundary||'')||!/ICSD-3-TR controls diagnostic classification/i.test(principles7.authorityBoundary||'')) throw new Error('Principles and Practice 7e current-authority boundary is incomplete.');
+const verifiedLocators=principles7.verifiedChapterLocators||[];
+if(verifiedLocators.length<12) throw new Error('Principles and Practice 7e does not retain the verified high-value page locator set.');
+const locatorByChapter=new Map(verifiedLocators.map(item=>[item.chapter,item]));
+for(const [chapter,page] of [[1,3],[45,453],[65,623],[89,823],[111,1021],[115,1067],[123,1141],[143,1407],[168,1611],[177,1699],[196,1837],[197,1841]]){
+  if(locatorByChapter.get(chapter)?.printedStartPage!==page) throw new Error(`Principles and Practice 7e chapter ${chapter} locator changed or is missing.`);
+}
+for(const item of verifiedLocators){if(!Number.isInteger(item.printedStartPage)||item.printedStartPage<1) throw new Error(`Principles and Practice 7e has an invalid printed page locator for chapter ${item.chapter}.`);}
+
 const pediatricPearls=sourceDocs['pediatric-sleep-pearls-1e'];
 if(!pediatricPearls||pediatricPearls.currentAuthority!==false||pediatricPearls.sourceRole!=='studySupport') throw new Error('Pediatric Sleep Pearls is not bounded as study support.');
 if(!/AASM Scoring Manual Version 3 controls scoring rules/i.test(pediatricPearls.authorityBoundary||'')||!/ICSD-3-TR controls current diagnostic classification/i.test(pediatricPearls.authorityBoundary||'')) throw new Error('Pediatric Sleep Pearls current-authority boundary is incomplete.');
@@ -153,6 +172,10 @@ console.log(JSON.stringify({
   icsdLegacyFullTextBoundaryProtected:true,
   sleepMedicinePearlsEditionBoundaryProtected:true,
   sleepMedicinePearls2eProvisionalUseProtected:true,
+  sleepMedicinePearls3eBibliographicIdentityVerified:true,
+  sleepMedicinePearls3eContentMappingBlockedUntilVerified:true,
+  principlesPractice7ePrintedLocators:verifiedLocators.length,
+  principlesPractice7eEditorIdentityCorrected:true,
   pediatricSleepPearlsStructured:true,
   pediatricLegacyGuidanceBoundariesProtected:true,
   pediatric2012CurrentMsltBoundaryProtected:true,
