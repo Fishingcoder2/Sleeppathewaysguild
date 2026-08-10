@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,'..');
 const sourceRoot=join(root,'data','study-sources');
-const manifest=JSON.parse(await readFile(join(sourceRoot,'manifest.json'),'utf8'));
+const manifest=JSON.parse(await readFile(join(sourceRoot,manifestFileName()),'utf8'));
+function manifestFileName(){return 'manifest.json';}
 const inventory=JSON.parse(await readFile(join(sourceRoot,manifest.brptMasterReferenceInventoryFile),'utf8'));
 const holdings=JSON.parse(await readFile(join(sourceRoot,manifest.libraryHoldingsAuditFile),'utf8'));
 const userAccess=JSON.parse(await readFile(join(sourceRoot,manifest.userAccessHoldingsFile),'utf8'));
@@ -39,6 +40,7 @@ const pediatricPearls=inventory.brptListedTextbooks.find(item=>item.id==='pediat
 if(!/content-verified/i.test(pediatricPearls.libraryStatus||'')||pediatricPearls.sourceId!=='pediatric-sleep-pearls-1e'||!/structured/i.test(pediatricPearls.v3Status||'')) throw new Error('Pediatric Sleep Pearls verified Drive holding and structured V3 package are not documented.');
 const icsd=inventory.primaryManualsAndClassification.find(item=>item.id==='icsd-3-tr');
 if(!/older full ICSD-3 copy/i.test(icsd.libraryStatus||'')||!/ICSD-3-TR, 2023/i.test(icsd.currentIdentity||'')) throw new Error('ICSD-3 versus ICSD-3-TR currency boundary is missing.');
+if(!/19 exact public-supplement change locators/i.test(icsd.v3Status||'')||!/supplemental PDF page locators explicitly separate from full-book pages/i.test(icsd.nextAction||'')) throw new Error('ICSD-3-TR supplemental locator progress or full-book boundary is stale in the master inventory.');
 const rls=inventory.brptListedAasmGuidance.find(item=>item.id==='aasm-rls-plmd-2025');
 if(!/2025/.test(rls.verifiedIdentity||'')||!/current/i.test(rls.role||'')) throw new Error('Current 2025 AASM RLS/PLMD guideline identity is not protected.');
 
@@ -63,7 +65,7 @@ for(const sourceId of ['aasm-rls-plmd-2025','aasm-central-hypersomnolence-2021',
 }
 
 const ppsm=inventory.addedValueHighPriority.find(item=>item.id==='principles-practice-sleep-medicine-7e');
-if(!ppsm||ppsm.sourceId!=='principles-practice-sleep-medicine-7e'||!/12 directly verified printed chapter start pages/i.test(ppsm.v3Status||'')) throw new Error('Principles and Practice 7e verified locator progress is stale in the master inventory.');
+if(!ppsm||ppsm.sourceId!=='principles-practice-sleep-medicine-7e'||!/25 directly verified printed chapter start pages/i.test(ppsm.v3Status||'')) throw new Error('Principles and Practice 7e verified locator progress is stale in the master inventory.');
 
 const osa2009=JSON.parse(await readFile(join(sourceRoot,'aasm-adult-osa-evaluation-management-2009.json'),'utf8'));
 if(osa2009.currentAuthority!==false) throw new Error('The 2009 adult OSA guideline must remain explicitly non-current for superseded narrower guidance.');
@@ -85,6 +87,7 @@ console.log(JSON.stringify({
   sleepMedicinePearls3eBibliographicRecordRegistered:true,
   sleepMedicinePearls3eOnlyRemainingContentOutlineGap:true,
   principlesPractice7eLocatorProgressRecorded:true,
+  icsdSupplementalLocatorProgressRecorded:true,
   adultOsa2009Integrated:true,
   icsdCurrencyBoundary:true,
   rls2025IdentityProtected:true
