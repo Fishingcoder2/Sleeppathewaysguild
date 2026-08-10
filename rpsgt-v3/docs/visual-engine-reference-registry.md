@@ -32,6 +32,19 @@ Development-only provenance record for external technical references considered 
 | MDN Canvas / File / Pointer Events / Web Workers / OffscreenCanvas docs | Browser-native rendering, local files, touch/stylus/mouse input, worker architecture | Web platform documentation | Standards reference |
 | BIDS specification | Channel/event metadata conventions | Specification terms apply; no production code implied | Metadata-design reference |
 
+## Sleep Staging Pack 1 provenance
+
+Pack file: `data/visual/prototype-sleep-staging.json`, pack version 2.
+
+- `sourceType`: `app-authored-schematic`.
+- The five teaching epochs are generated from deterministic signal definitions in `core/visual-psg-renderer.js`; they are not captured PSG pages, patient recordings, screenshots, or copied tracings.
+- Stage-oriented characteristics were paraphrased from Sleep Pathways Guild project reference material covering adult sleep-stage recognition. No source figure, table, page image, or proprietary rule text was embedded in the pack.
+- The visual profiles are deliberately exaggerated/clean teaching constructions and must not be represented as physiologically complete patient examples.
+- Pack 1 currently contains schematic W, N1, N2, N3, and REM examples and teaching features for eye blink, vertex activity, spindle, K-complex, slow-wave activity, rapid eye movements, and a sawtooth-wave example.
+- Point-click targets are app-authored coordinates tied to those generated teaching features. They are not imported human-scoring annotations.
+- Pack scores are educational practice evidence only and must not be described as AASM ISR, inter-scorer reliability, clinical competency, or credentialing results.
+- Current official scoring guidance, facility policy, and supervised scorer training remain authoritative for real study scoring.
+
 ## Production provenance record
 
 Every production visual asset or signal pack should eventually carry a machine-readable provenance block containing at least:
@@ -47,4 +60,4 @@ Every production visual asset or signal pack should eventually carry a machine-r
 - `reviewedAt`
 - `notes`
 
-The first Mini PSG prototype uses only deterministic, app-authored schematic signals generated in the browser. It does not embed external PSG recordings, textbook/scoring-manual figures, or copied third-party waveform assets.
+The current Mini PSG teaching packs use deterministic, app-authored schematic signals generated in the browser. They do not embed external PSG recordings, textbook/scoring-manual figures, or copied third-party waveform assets.
