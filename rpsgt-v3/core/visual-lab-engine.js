@@ -4,23 +4,35 @@
   root.RPSGTVisualLabEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='0.1.0';
+  const VERSION='0.2.0';
   const LAB_ID='visual';
   const HISTORY_LIMIT=20;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const safeNumber=(value,fallback=0)=>Number.isFinite(Number(value))?Number(value):fallback;
+  function parsePoint(value){
+    const match=String(value==null?'':value).match(/^(.+)@(-?\d+(?:\.\d+)?)$/);
+    return match?{channel:match[1],time:Number(match[2])}:null;
+  }
+  function pointAnswer(question){
+    const target=question&&question.target||{};
+    const start=safeNumber(target.start,0),end=safeNumber(target.end,start);
+    return String(target.channel||'')+'@'+((start+end)/2).toFixed(2);
+  }
   function validatePack(pack){
     const issues=[];
     if(!pack||!pack.meta||pack.meta.appAuthored!==true) issues.push('pack-must-be-app-authored');
     const studies=Array.isArray(pack&&pack.studies)?pack.studies:[];
     const questions=Array.isArray(pack&&pack.questions)?pack.questions:[];
     const studyIds=new Set();
+    const channelsByStudy=new Map();
     studies.forEach(study=>{
       if(!study||!study.id) issues.push('missing-study-id');
       else if(studyIds.has(String(study.id))) issues.push('duplicate-study-id:'+study.id);
       else studyIds.add(String(study.id));
-      if(!Array.isArray(study&&study.channels)||!study.channels.length) issues.push('missing-study-channels:'+(study&&study.id||'unknown'));
+      const channels=Array.isArray(study&&study.channels)?study.channels:[];
+      channelsByStudy.set(String(study&&study.id),new Set(channels.map(channel=>String(channel&&channel.label))));
+      if(!channels.length) issues.push('missing-study-channels:'+(study&&study.id||'unknown'));
       if(!(safeNumber(study&&study.durationSeconds)>0)) issues.push('invalid-study-duration:'+(study&&study.id||'unknown'));
     });
     const questionIds=new Set();
@@ -28,12 +40,20 @@
       if(!question||!question.id) issues.push('missing-question-id');
       else if(questionIds.has(String(question.id))) issues.push('duplicate-question-id:'+question.id);
       else questionIds.add(String(question.id));
-      if(!studyIds.has(String(question&&question.studyId))) issues.push('unknown-study:'+String(question&&question.studyId));
-      if(!['stage-choice','region-choice'].includes(question&&question.type)) issues.push('unsupported-question-type:'+(question&&question.id||'unknown'));
+      const studyId=String(question&&question.studyId);
+      if(!studyIds.has(studyId)) issues.push('unknown-study:'+studyId);
+      if(!['stage-choice','region-choice','point-click'].includes(question&&question.type)) issues.push('unsupported-question-type:'+(question&&question.id||'unknown'));
       if(question&&question.type==='stage-choice'&&(!Array.isArray(question.options)||!question.options.includes(question.answer))) issues.push('invalid-stage-answer:'+(question.id||'unknown'));
       if(question&&question.type==='region-choice'){
         const regions=Array.isArray(question.regions)?question.regions:[];
         if(!regions.some(region=>region&&region.id===question.answer)) issues.push('invalid-region-answer:'+(question.id||'unknown'));
+      }
+      if(question&&question.type==='point-click'){
+        const target=question.target||{},channelSet=channelsByStudy.get(studyId)||new Set();
+        if(!target.channel||!channelSet.has(String(target.channel))) issues.push('invalid-point-channel:'+(question.id||'unknown'));
+        if(!Number.isFinite(Number(target.start))||!Number.isFinite(Number(target.end))||Number(target.end)<Number(target.start)) issues.push('invalid-point-window:'+(question.id||'unknown'));
+        const fallback=Array.isArray(question.fallbackPoints)?question.fallbackPoints:[];
+        fallback.forEach(point=>{if(!channelSet.has(String(point&&point.channel))||!Number.isFinite(Number(point&&point.time)))issues.push('invalid-fallback-point:'+(question.id||'unknown'));});
       }
     });
     return {valid:issues.length===0,issues,studyCount:studies.length,questionCount:questions.length};
@@ -46,7 +66,14 @@
     return {id:'visual-'+String(seed||new Date().toISOString()),questions,studies};
   }
   function gradeAnswer(question,selected){
-    return {id:question.id,selected:selected==null?null:String(selected),correct:String(selected)===String(question.answer),answer:question.answer,taskCode:question.taskCode||null,type:question.type};
+    let correct=false,answer=question.answer;
+    if(question.type==='point-click'){
+      const point=parsePoint(selected),target=question.target||{},tolerance=Math.max(0,safeNumber(question.toleranceSeconds,0));
+      const start=safeNumber(target.start)-tolerance,end=safeNumber(target.end)+tolerance;
+      correct=Boolean(point)&&point.channel===String(target.channel)&&point.time>=start&&point.time<=end;
+      answer=pointAnswer(question);
+    }else correct=String(selected)===String(question.answer);
+    return {id:question.id,selected:selected==null?null:String(selected),correct,answer,taskCode:question.taskCode||null,type:question.type};
   }
   function gradeSession(input){
     const questions=Array.isArray(input&&input.questions)?input.questions:[];
@@ -102,5 +129,5 @@
     return persist(normalized,time);
   }
   function summary(value){return clone(normalizeLabs(value).record);}
-  return {VERSION,LAB_ID,HISTORY_LIMIT,validatePack,buildSession,gradeAnswer,gradeSession,normalizeLabs,start,applySession,summary};
+  return {VERSION,LAB_ID,HISTORY_LIMIT,parsePoint,pointAnswer,validatePack,buildSession,gradeAnswer,gradeSession,normalizeLabs,start,applySession,summary};
 });
