@@ -54,10 +54,10 @@
       "role": "current diagnostic classification authority",
       "brptStatus": "BRPT page names ICSD, 3rd edition; current AASM classification is ICSD-3-TR",
       "currentIdentity": "ICSD-3-TR, 2023",
-      "libraryStatus": "older full ICSD-3 copy available; ICSD-3-TR supplemental material available; current full ICSD-3-TR copy not verified",
-      "v3Status": "structured source plus six-family diagnostic taxonomy present",
+      "libraryStatus": "older full ICSD-3 copy available; 8-page ICSD-3-TR supplemental change summary verified; current full licensed ICSD-3-TR copy not verified",
+      "v3Status": "structured source plus six-family diagnostic taxonomy and 19 exact public-supplement change locators",
       "sourceId": "icsd-3-tr",
-      "nextAction": "Deepen disorder-level concept crosswalks and flag older content that crosses changed diagnostic areas."
+      "nextAction": "Obtain a licensed full ICSD-3-TR for full-book disease/criteria page mapping. Until then, keep the 19 supplemental PDF page locators explicitly separate from full-book pages and retain older ICSD-3 locators as legacy only."
     }
   ],
   "brptListedAasmGuidance": [
@@ -295,10 +295,10 @@
       "title": "Principles and Practice of Sleep Medicine, Seventh Edition",
       "role": "high-value comprehensive supplemental sleep-medicine textbook",
       "libraryStatus": "exact 7th-edition Guild Drive source identity verified and searchable",
-      "v3Status": "structured with 23 section routes and 12 directly verified printed chapter start pages",
+      "v3Status": "structured with 23 section routes and 25 directly verified printed chapter start pages",
       "sourceId": "principles-practice-sleep-medicine-7e",
       "editionStatus": "7th edition, 2022",
-      "nextAction": "Selectively expand RPSGT-relevant printed chapter-page locators from the searchable Drive source; do not infer blanket ranges or attempt a cover-to-cover import first."
+      "nextAction": "Maintain the selective high-value locator set and expand only when a verified chapter materially improves RPSGT routing; never infer blanket page ranges or let textbook content outrank current AASM/ICSD/AAST guidance."
     },
     {
       "id": "allergy-and-sleep-2019",
