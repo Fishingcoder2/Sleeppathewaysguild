@@ -1,8 +1,8 @@
 {
   "meta": {
     "name": "BRPT RPSGT Recommended Reading Master Inventory",
-    "version": 2,
-    "verifiedAt": "2026-08-07",
+    "version": 3,
+    "verifiedAt": "2026-08-10",
     "officialRecommendedReadingsUrl": "https://brpt.org/rpsgt/recommended-readings/",
     "purpose": "Canonical audit of current BRPT RPSGT exam documents, suggested primary references, named AASM guidance, BRPT-listed textbooks, and high-value Guild additions. Separates BRPT listing, source identity/version, Guild library availability, V3 outline status, and authority role.",
     "statusRule": "Never substitute an older library edition, a related title, or a broad society resource for the exact current source identity without an explicit currency boundary.",
@@ -260,13 +260,14 @@
       "priority": 34,
       "id": "sleep-medicine-pearls-3e",
       "title": "Sleep Medicine Pearls, Third Edition",
-      "verifiedIdentity": "Berry & Wagner; 3rd edition; Elsevier; ISBN 9781455770519; published 2014",
+      "verifiedIdentity": "Berry & Wagner; 3rd edition; Saunders/Elsevier; ISBN 9781455770519; published 2014, copyright 2015",
       "role": "BRPT-listed case-based textbook",
       "libraryStatus": "3rd-edition lawful access user-confirmed in Kindle; Guild Drive has 2nd edition",
-      "v3Status": "3rd-edition outline pending; 2nd-edition source structured for provisional teaching use",
+      "v3Status": "verified bibliographic source record registered; direct third-edition content outline and locators remain pending",
+      "sourceId": "sleep-medicine-pearls-3e",
       "legacySourceId": "sleep-medicine-pearls-2e",
-      "editionStatus": "current-edition access confirmed but current-edition locators not yet structured",
-      "nextAction": "Continue provisional 2nd-edition use with current-authority checks; build 3rd-edition locators later from lawful user-shared contents/selected sections."
+      "editionStatus": "current third-edition identity verified; content mapping intentionally disabled until direct review",
+      "nextAction": "Use owner-provided third-edition contents or selected sections to build copyright-safe locators; never migrate second-edition page/case mappings by assumption."
     }
   ],
   "addedValueHighPriority": [
@@ -284,17 +285,20 @@
       "title": "Principles and Practice of Pediatric Sleep Medicine, Second Edition",
       "role": "high-value supplemental pediatric textbook",
       "libraryStatus": "Guild Drive copy available",
-      "v3Status": "not yet a dedicated structured source package",
+      "v3Status": "structured with 49 audited chapter/page mappings",
+      "sourceId": "principles-practice-pediatric-sleep-2e",
       "editionStatus": "2nd edition, 2014",
-      "nextAction": "Outline selectively after the BRPT core set; use as pediatric depth, not as a substitute for current AASM/ICSD authority."
+      "nextAction": "Use selectively as pediatric depth after current AASM/ICSD authority; continue locator refinement without reproducing protected content."
     },
     {
-      "id": "principles-practice-sleep-medicine-2021",
-      "title": "Principles and Practice of Sleep Medicine, 2021 two-volume set",
+      "id": "principles-practice-sleep-medicine-7e",
+      "title": "Principles and Practice of Sleep Medicine, Seventh Edition",
       "role": "high-value comprehensive supplemental sleep-medicine textbook",
-      "libraryStatus": "Guild Drive copy available",
-      "v3Status": "not yet a dedicated structured source package",
-      "nextAction": "Selectively outline RPSGT-relevant chapters that fill verified concept gaps; do not attempt a cover-to-cover import first."
+      "libraryStatus": "exact 7th-edition Guild Drive source identity verified and searchable",
+      "v3Status": "structured with 23 section routes and 12 directly verified printed chapter start pages",
+      "sourceId": "principles-practice-sleep-medicine-7e",
+      "editionStatus": "7th edition, 2022",
+      "nextAction": "Selectively expand RPSGT-relevant printed chapter-page locators from the searchable Drive source; do not infer blanket ranges or attempt a cover-to-cover import first."
     },
     {
       "id": "allergy-and-sleep-2019",
@@ -319,10 +323,11 @@
     "brptListedAasmGuidance": 13,
     "brptListedTextbooks": 5,
     "brptRecommendedUniverseCountExcludingExamDocuments": 20,
+    "manifestRepresentedAmongBrptRecommended": 20,
     "knownCurrentV3StructuredAmongBrptRecommended": 19,
     "knownPendingOrEditionGapAmongBrptRecommended": 1,
     "highestPriorityGaps": [
-      "Sleep Medicine Pearls, Third Edition: build current-edition outline/locators from lawful user-shared Kindle contents or selected sections"
+      "Sleep Medicine Pearls, Third Edition: bibliographic identity is verified and registered; build direct third-edition content outline/locators from lawful owner-shared Kindle contents or selected sections before learner mapping"
     ]
   }
 }
