@@ -8,7 +8,11 @@ on:
       - rpsgt-v3/data/study-sources/**
       - rpsgt-v3/data/authority/**
       - rpsgt-v3/data/question-bank/**
+      - rpsgt-v3/data/learner-trails/**
+      - rpsgt-v3/study.html
+      - rpsgt-v3/assets/respiratory-study-trail.css
       - rpsgt-v3/core/study-resource-catalog.js
+      - rpsgt-v3/core/respiratory-study-trail.js
       - rpsgt-v3/scripts/test-study-source-authority.mjs
       - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
@@ -17,6 +21,7 @@ on:
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-principles-practice-7e-locators.mjs
+      - rpsgt-v3/scripts/test-respiratory-study-trail.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
   pull_request:
@@ -26,7 +31,11 @@ on:
       - rpsgt-v3/data/study-sources/**
       - rpsgt-v3/data/authority/**
       - rpsgt-v3/data/question-bank/**
+      - rpsgt-v3/data/learner-trails/**
+      - rpsgt-v3/study.html
+      - rpsgt-v3/assets/respiratory-study-trail.css
       - rpsgt-v3/core/study-resource-catalog.js
+      - rpsgt-v3/core/respiratory-study-trail.js
       - rpsgt-v3/scripts/test-study-source-authority.mjs
       - rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
       - rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
@@ -35,6 +44,7 @@ on:
       - rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
       - rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - rpsgt-v3/scripts/test-principles-practice-7e-locators.mjs
+      - rpsgt-v3/scripts/test-respiratory-study-trail.mjs
       - rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
       - .github/workflows/rpsgt-v3-source-authority.yml
 
@@ -64,5 +74,7 @@ jobs:
         run: node rpsgt-v3/scripts/test-icsd-taxonomy.mjs
       - name: Validate Principles and Practice 7e printed locators
         run: node rpsgt-v3/scripts/test-principles-practice-7e-locators.mjs
+      - name: Validate respiratory/PAP learner Study Trail
+        run: node rpsgt-v3/scripts/test-respiratory-study-trail.mjs
       - name: Validate BRPT master reference inventory
         run: node rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs

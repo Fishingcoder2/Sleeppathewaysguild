@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "id": "respiratory-pap-pathway",
+  "title": "Respiratory & PAP Study Trail",
+  "description": "Follow the respiratory pathway from recognition and scoring through PAP, advanced therapy distinctions, oxygen/CO2 monitoring, and escalation. Each step keeps current authority separate from textbook study support.",
+  "learnerBoundary": "This trail supports RPSGT exam preparation. It does not replace physician orders, facility policy, scope requirements, manufacturer instructions, or current AASM/AAST authority.",
+  "steps": [
+    {
+      "id": "osa-scoring",
+      "title": "Recognize OSA and score the respiratory pattern",
+      "taskCode": "D3A",
+      "whyThisMatters": "Correct event recognition and scoring is the first branch point before treatment concepts make sense.",
+      "primaryAuthority": "AASM Scoring Manual Version 3 for adult respiratory scoring; ICSD-3-TR controls diagnostic classification.",
+      "studyChapter": 131,
+      "referenceTopic": "adult respiratory rules",
+      "warning": "Use AASM Version 3 for actual scoring rules. Do not use textbook wording or older scoring guidance to override current rules.",
+      "lab": {
+        "href": "lab-respiratory.html",
+        "label": "Respiratory Lab"
+      },
+      "navLabel": "OSA scoring"
+    },
+    {
+      "id": "osa-pap-treatment",
+      "title": "Connect OSA findings to PAP treatment concepts",
+      "taskCode": "D4A",
+      "whyThisMatters": "The learner needs to separate adult OSA PAP treatment from CSA and ventilation-support pathways before choosing a response.",
+      "primaryAuthority": "AASM Adult PAP Treatment Guideline for adult OSA PAP treatment and support concepts.",
+      "studyChapter": 132,
+      "referenceTopic": "adult OSA PAP treatment",
+      "warning": "This is the adult OSA PAP route. Do not generalize CPAP/APAP/BPAP treatment logic to CSA/ASV or hypoventilation/NIV.",
+      "lab": {
+        "href": "lab-pap.html",
+        "label": "PAP Lab"
+      },
+      "navLabel": "OSA PAP"
+    },
+    {
+      "id": "osa-manual-titration",
+      "title": "Apply the manual OSA titration pathway",
+      "taskCode": "D4A",
+      "whyThisMatters": "Manual CPAP/BPAP titration is a distinct technical workflow with its own treatment goal, response checks, and documentation needs.",
+      "primaryAuthority": "AASM manual PAP titration guidance with AAST PAP titration technical guidance; AASM Version 3 controls scoring.",
+      "studyChapter": 132,
+      "referenceTopic": "manual PAP titration",
+      "warning": "Do not generalize OSA pressure-adjustment logic to ASV or NIV. Rule-sensitive scoring remains controlled by AASM Version 3.",
+      "lab": {
+        "href": "lab-pap.html",
+        "label": "PAP Lab"
+      },
+      "navLabel": "Manual titration"
+    },
+    {
+      "id": "pap-support",
+      "title": "Troubleshoot comfort, interface, leak, and adherence barriers",
+      "taskCode": "D1C",
+      "whyThisMatters": "Many therapy failures are support problems rather than indications to change diagnosis or prescribe a different modality.",
+      "primaryAuthority": "AAST PAP acclimation/technical guidance and current scope/competency boundaries for technologist support.",
+      "studyChapter": 201,
+      "referenceTopic": "PAP acclimation",
+      "warning": "Comfort, interface, education, and adherence support can cross PAP modalities; they do not decide diagnosis, treatment indication, modality, or device settings.",
+      "lab": {
+        "href": "lab-troubleshooting.html",
+        "label": "Troubleshooting Lab"
+      },
+      "navLabel": "PAP support"
+    },
+    {
+      "id": "csa-distinction",
+      "title": "Distinguish central and treatment-emergent events",
+      "taskCode": "D3A",
+      "whyThisMatters": "Central events change the reasoning pathway; they should be recognized and scored correctly before treatment decisions are considered.",
+      "primaryAuthority": "AASM Scoring Manual Version 3 for event scoring; ICSD-3-TR for classification; 2025 AASM CSA guidance for treatment.",
+      "studyChapter": 124,
+      "referenceTopic": "central sleep apnea",
+      "warning": "Do not respond to central events by automatically applying the obstructive OSA pressure-increase pathway.",
+      "lab": {
+        "href": "lab-respiratory.html",
+        "label": "Respiratory Lab"
+      },
+      "navLabel": "CSA distinction"
+    },
+    {
+      "id": "csa-advanced-pap",
+      "title": "Separate CSA treatment from advanced PAP/ASV concepts",
+      "taskCode": "D4A",
+      "whyThisMatters": "Advanced PAP belongs in a CSA-specific pathway, not as an extension of the routine OSA titration algorithm.",
+      "primaryAuthority": "2025 AASM Adult Central Sleep Apnea Treatment Guideline.",
+      "studyChapter": 125,
+      "referenceTopic": "central sleep apnea",
+      "warning": "The 2025 AASM CSA guideline controls current adult CSA treatment recommendations. Device-specific execution still requires the order, facility protocol, scope requirements, and manufacturer instructions.",
+      "lab": {
+        "href": "lab-pap.html",
+        "label": "PAP Lab"
+      },
+      "navLabel": "CSA / ASV"
+    },
+    {
+      "id": "hypoventilation-niv",
+      "title": "Recognize hypoventilation and keep NIV separate",
+      "taskCode": "D4A",
+      "whyThisMatters": "Ventilation support and CO2 monitoring answer a different clinical problem than routine obstructive PAP titration.",
+      "primaryAuthority": "AASM Version 3 for scoring plus current ETCO2/TcCO2 technical guidance; local orders and device instructions govern NIV execution.",
+      "studyChapter": 138,
+      "referenceTopic": "respiratory rules",
+      "warning": "Do not derive universal NIV settings, backup rates, target volumes, alarms, or pressure-support rules from OSA PAP or textbook material.",
+      "lab": {
+        "href": "lab-respiratory.html",
+        "label": "Respiratory Lab"
+      },
+      "navLabel": "Hypoventilation / NIV"
+    },
+    {
+      "id": "oxygen-co2",
+      "title": "Route oxygen with ventilation and CO2 in mind",
+      "taskCode": "D4C",
+      "whyThisMatters": "Oxygen can improve saturation without correcting the underlying respiratory event or inadequate ventilation.",
+      "primaryAuthority": "Pathway-dependent current AASM/AAST guidance plus the physician order, facility protocol, and applicable device instructions.",
+      "studyChapter": 200,
+      "referenceTopic": "oxygen",
+      "warning": "Improved SpO2 alone does not establish adequate ventilation. Keep ordered oxygen, OSA PAP titration oxygen, CSA, altitude, hypoventilation, and pediatric/infant routes distinct.",
+      "lab": {
+        "href": "lab-respiratory.html",
+        "label": "Respiratory Lab"
+      },
+      "navLabel": "Oxygen / CO₂"
+    },
+    {
+      "id": "respiratory-escalation",
+      "title": "Recognize, verify, document, correct, and escalate",
+      "taskCode": "D2C",
+      "whyThisMatters": "The technologist must distinguish a signal problem, a permitted technical correction, and a patient-safety issue that requires escalation.",
+      "primaryAuthority": "Current AAST role/scope guidance, AASM laboratory requirements, physician orders, and facility policy.",
+      "studyChapter": 200,
+      "referenceTopic": "documentation",
+      "warning": "Use the sequence recognize → verify patient and signal → document → permitted technical correction → escalate per facility policy. If immediate patient danger is suspected, patient safety takes priority. Do not hard-code universal emergency or notification thresholds.",
+      "lab": {
+        "href": "lab-troubleshooting.html",
+        "label": "Troubleshooting Lab"
+      },
+      "navLabel": "Escalation"
+    }
+  ]
+}
