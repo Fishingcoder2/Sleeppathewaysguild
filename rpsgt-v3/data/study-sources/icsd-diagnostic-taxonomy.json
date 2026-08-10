@@ -1,16 +1,17 @@
 {
   "meta": {
     "name": "RPSGT V3 ICSD-3-TR Diagnostic Taxonomy",
-    "version": 1,
+    "version": 2,
     "sourceId": "icsd-3-tr",
     "builtFrom": [
       "AASM public ICSD-3-TR category information",
       "ICSD-3-TR Summary of Diagnostic Criteria Changes (supplemental material)"
     ],
-    "verifiedAt": "2026-08-07",
+    "verifiedAt": "2026-08-10",
     "purpose": "Provide a copyright-safe diagnostic concept and change-watch layer for RPSGT study mapping without reproducing proprietary ICSD diagnostic criteria.",
     "copyrightBoundary": "Do not store or display complete diagnostic criteria. Store category names, disorder names identified in public/supplemental materials, original SPG concept summaries, change-watch flags, and lawful locators only.",
     "authorityBoundary": "ICSD-3-TR controls current diagnostic classification and terminology. The current AASM Scoring Manual controls PSG event scoring; current applicable treatment guidelines control treatment recommendations.",
+    "locatorBoundary": "supplementalPdfPage values refer only to the public 8-page ICSD-3-TR Summary of Diagnostic Criteria Changes, counting its cover as PDF page 1. They are not full-book ICSD-3-TR page numbers.",
     "primaryBrptTask": "D1A",
     "secondaryTaskMappingStatus": "needs SME review before learner-facing use"
   },
@@ -24,8 +25,8 @@
         "recognize that comorbid sleep disorders may coexist and require differential-diagnosis reasoning"
       ],
       "changeWatch": [
-        {"topic": "Chronic Insomnia Disorder", "changeType": "diagnostic relationship / exclusion wording revised", "locator": "ICSD-3-TR supplemental summary and Table 1", "reviewLegacyContent": true},
-        {"topic": "Short-Term Insomnia Disorder", "changeType": "diagnostic relationship / exclusion wording revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true}
+        {"topic": "Chronic Insomnia Disorder", "changeType": "diagnostic relationship / exclusion wording revised", "locator": "ICSD-3-TR supplemental PDF p. 2; summary and Table 1", "supplementalPdfPage": 2, "reviewLegacyContent": true},
+        {"topic": "Short-Term Insomnia Disorder", "changeType": "diagnostic relationship / exclusion wording revised", "locator": "ICSD-3-TR supplemental PDF p. 2; Table 1", "supplementalPdfPage": 2, "reviewLegacyContent": true}
       ]
     },
     {
@@ -38,15 +39,15 @@
         "connect PAP-emergent central events with the diagnostic concept of treatment-emergent central sleep apnea without substituting diagnostic criteria for titration rules"
       ],
       "changeWatch": [
-        {"topic": "Obstructive Sleep Apnea (Adult)", "changeType": "diagnostic symptom/associated-condition criteria revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Obstructive Sleep Apnea (Pediatric)", "changeType": "criteria organization and explanatory/exclusion content revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Central Sleep Apnea Disorders", "changeType": "symptom criteria revised across central-apnea diagnoses", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Central Sleep Apnea Due to High-Altitude Periodic Breathing", "changeType": "diagnostic framing and testing evidence revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Primary Central Sleep Apnea of Infancy", "changeType": "monitoring/associated finding criteria revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Primary Central Sleep Apnea of Prematurity", "changeType": "monitoring/associated finding criteria revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Treatment-Emergent Central Sleep Apnea", "changeType": "central-event characterization and associated symptom/sign requirement revised", "locator": "ICSD-3-TR supplemental summary and Table 1", "reviewLegacyContent": true},
-        {"topic": "Congenital Central Alveolar Hypoventilation Syndrome", "changeType": "diagnostic framing expanded beyond a single genetic statement", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Sleep-Related Hypoxemia Disorder", "changeType": "diagnostic boundary revised to distinguish hypoxemia from hypoventilation and other sleep-related breathing disorders", "locator": "ICSD-3-TR supplemental summary and Table 1", "reviewLegacyContent": true}
+        {"topic": "Obstructive Sleep Apnea (Adult)", "changeType": "diagnostic symptom/associated-condition criteria revised", "locator": "ICSD-3-TR supplemental PDF p. 2; Table 1", "supplementalPdfPage": 2, "reviewLegacyContent": true},
+        {"topic": "Obstructive Sleep Apnea (Pediatric)", "changeType": "criteria organization and explanatory/exclusion content revised", "locator": "ICSD-3-TR supplemental PDF p. 3; Table 1", "supplementalPdfPage": 3, "reviewLegacyContent": true},
+        {"topic": "Central Sleep Apnea Disorders", "changeType": "symptom criteria revised across central-apnea diagnoses", "locator": "ICSD-3-TR supplemental PDF p. 3; Table 1", "supplementalPdfPage": 3, "reviewLegacyContent": true},
+        {"topic": "Central Sleep Apnea Due to High-Altitude Periodic Breathing", "changeType": "diagnostic framing and testing evidence revised", "locator": "ICSD-3-TR supplemental PDF p. 4; Table 1", "supplementalPdfPage": 4, "reviewLegacyContent": true},
+        {"topic": "Primary Central Sleep Apnea of Infancy", "changeType": "monitoring/associated finding criteria revised", "locator": "ICSD-3-TR supplemental PDF p. 4; Table 1", "supplementalPdfPage": 4, "reviewLegacyContent": true},
+        {"topic": "Primary Central Sleep Apnea of Prematurity", "changeType": "monitoring/associated finding criteria revised", "locator": "ICSD-3-TR supplemental PDF p. 4; Table 1", "supplementalPdfPage": 4, "reviewLegacyContent": true},
+        {"topic": "Treatment-Emergent Central Sleep Apnea", "changeType": "central-event characterization and associated symptom/sign requirement revised", "locator": "ICSD-3-TR supplemental PDF p. 5; summary and Table 1", "supplementalPdfPage": 5, "reviewLegacyContent": true},
+        {"topic": "Congenital Central Alveolar Hypoventilation Syndrome", "changeType": "diagnostic framing expanded beyond a single genetic statement", "locator": "ICSD-3-TR supplemental PDF p. 5; Table 1", "supplementalPdfPage": 5, "reviewLegacyContent": true},
+        {"topic": "Sleep-Related Hypoxemia Disorder", "changeType": "diagnostic boundary revised to distinguish hypoxemia from hypoventilation and other sleep-related breathing disorders", "locator": "ICSD-3-TR supplemental PDF p. 5; summary and Table 1", "supplementalPdfPage": 5, "reviewLegacyContent": true}
       ]
     },
     {
@@ -58,10 +59,10 @@
         "recognize that diagnostic classification and test-protocol validity are related but separate source roles"
       ],
       "changeWatch": [
-        {"topic": "Narcolepsy Type 1", "changeType": "accepted PSG/MSLT evidence pathway revised", "locator": "ICSD-3-TR supplemental summary and Table 1", "reviewLegacyContent": true},
-        {"topic": "Idiopathic Hypersomnia", "changeType": "additional exclusion/differentiation language added", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Kleine-Levin Syndrome", "changeType": "between-episode and episode-feature descriptions revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Hypersomnia Associated with a Medical Disorder", "changeType": "name/criteria content revised from prior edition wording", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true}
+        {"topic": "Narcolepsy Type 1", "changeType": "accepted PSG/MSLT evidence pathway revised", "locator": "ICSD-3-TR supplemental PDF p. 6; summary and Table 1", "supplementalPdfPage": 6, "reviewLegacyContent": true},
+        {"topic": "Idiopathic Hypersomnia", "changeType": "additional exclusion/differentiation language added", "locator": "ICSD-3-TR supplemental PDF p. 6; Table 1", "supplementalPdfPage": 6, "reviewLegacyContent": true},
+        {"topic": "Kleine-Levin Syndrome", "changeType": "between-episode and episode-feature descriptions revised", "locator": "ICSD-3-TR supplemental PDF p. 6; Table 1", "supplementalPdfPage": 6, "reviewLegacyContent": true},
+        {"topic": "Hypersomnia Associated with a Medical Disorder", "changeType": "name/criteria content revised from prior edition wording", "locator": "ICSD-3-TR supplemental PDF p. 7; Table 1", "supplementalPdfPage": 7, "reviewLegacyContent": true}
       ]
     },
     {
@@ -73,7 +74,7 @@
         "distinguish disorder classification from actigraphy acquisition/analysis procedures"
       ],
       "changeWatch": [
-        {"topic": "Circadian Rhythm Sleep-Wake Disorders documentation", "changeType": "sleep-log requirement strengthened and actigraphy support clarified for most CRSWDs", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true}
+        {"topic": "Circadian Rhythm Sleep-Wake Disorders documentation", "changeType": "sleep-log requirement strengthened and actigraphy support clarified for most CRSWDs", "locator": "ICSD-3-TR supplemental PDF p. 7; Table 1", "supplementalPdfPage": 7, "reviewLegacyContent": true}
       ]
     },
     {
@@ -85,7 +86,7 @@
         "use clinical history, observation, and appropriate testing context rather than a single PSG signal alone"
       ],
       "changeWatch": [
-        {"topic": "Sleep-Related Urologic Dysfunction", "changeType": "sleep enuresis content reorganized and additional urologic sleep diagnoses introduced/defined", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true}
+        {"topic": "Sleep-Related Urologic Dysfunction", "changeType": "sleep enuresis content reorganized and additional urologic sleep diagnoses introduced/defined", "locator": "ICSD-3-TR supplemental PDF p. 7; Table 1", "supplementalPdfPage": 7, "reviewLegacyContent": true}
       ]
     },
     {
@@ -97,8 +98,8 @@
         "separate diagnostic classification from AASM movement-event scoring rules"
       ],
       "changeWatch": [
-        {"topic": "Nocturnal Muscle Cramps", "changeType": "terminology and diagnostic wording revised from sleep-related leg cramps", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true},
-        {"topic": "Sleep-Related Bruxism", "changeType": "behavioral description and associated clinical-feature wording revised", "locator": "ICSD-3-TR Table 1", "reviewLegacyContent": true}
+        {"topic": "Nocturnal Muscle Cramps", "changeType": "terminology and diagnostic wording revised from sleep-related leg cramps", "locator": "ICSD-3-TR supplemental PDF p. 8; Table 1", "supplementalPdfPage": 8, "reviewLegacyContent": true},
+        {"topic": "Sleep-Related Bruxism", "changeType": "behavioral description and associated clinical-feature wording revised", "locator": "ICSD-3-TR supplemental PDF p. 8; Table 1", "supplementalPdfPage": 8, "reviewLegacyContent": true}
       ]
     }
   ],
@@ -106,6 +107,7 @@
     "Any question or lesson using an older textbook classification label that intersects a changeWatch topic must be reviewed against ICSD-3-TR before being marked current.",
     "Do not use ICSD-3-TR to override the current AASM Scoring Manual for event-scoring rules.",
     "Do not infer a diagnostic criterion that is not present in a verified current source locator.",
+    "The exact supplemental PDF-page locators identify where AASM publicly summarizes changed criteria; they do not supply full-book ICSD-3-TR page numbers.",
     "Question stems may test recognition, differentiation, testing context, or classification concepts using independently written language; they must not reproduce proprietary criteria verbatim.",
     "Older ICSD-3 and older textbook content may remain as background only when its currency boundary is explicit."
   ]
