@@ -54,8 +54,14 @@ const ppsm=docs.get('principles-practice-sleep-medicine-7e');
 const officialTasks=['D1A','D1B','D1C','D2A','D2B','D2C','D3A','D3B','D3C','D4A','D4B','D4C'];
 if(JSON.stringify(ppsm.mappedTaskCodes)!==JSON.stringify(officialTasks)) throw new Error('PPSM 7e no longer represents all 12 official RPSGT tasks from the Drive task-coverage map.');
 if((ppsm.sections||[]).length!==23) throw new Error('PPSM 7e compact map must preserve the 23 verified book sections.');
-if(!/exact local PDF page locators remain intentionally pending/i.test(ppsm.libraryStatus||'')) throw new Error('PPSM 7e must preserve the no-guessed-page-locators boundary.');
-if((ppsm.sections||[]).some(section=>'pageStart' in section||'pageEnd' in section)) throw new Error('PPSM 7e compact map contains guessed page locators.');
+if(ppsm.driveFileId!=='1U_vo1DLKt_jPceP7Jpn6xIq4lTQoHh1-') throw new Error('PPSM 7e verified Guild Drive identity changed.');
+if(!/searchable text.*printed chapter-page locators/i.test(ppsm.libraryStatus||'')) throw new Error('PPSM 7e searchable-Drive locator audit status is missing.');
+const ppsmLocators=ppsm.verifiedChapterLocators||[];
+const expectedPpsmLocators=[[1,3],[45,453],[65,623],[89,823],[111,1021],[115,1067],[123,1141],[143,1407],[168,1611],[177,1699],[196,1837],[197,1841]];
+if(ppsmLocators.length<expectedPpsmLocators.length) throw new Error('PPSM 7e verified printed-page locator set is incomplete.');
+const ppsmLocatorMap=new Map(ppsmLocators.map(item=>[item.chapter,item.printedStartPage]));
+for(const [chapter,page] of expectedPpsmLocators) if(ppsmLocatorMap.get(chapter)!==page) throw new Error(`PPSM 7e audited printed start page changed for chapter ${chapter}.`);
+if((ppsm.sections||[]).some(section=>'pageStart' in section||'pageEnd' in section)) throw new Error('PPSM 7e compact section map contains guessed blanket page ranges.');
 
 const diaphragm=docs.get('ats-diaphragm-pacing-phrenic-nerve-2016');
 if((diaphragm.sections||[]).length!==8) throw new Error('ATS diaphragm-pacing map must preserve all eight verified patient-education sections.');
@@ -158,7 +164,8 @@ console.log(JSON.stringify({
   respiratorySpecialtyRouting:true,
   ppsmAllOfficialTasks:true,
   ppsmVerifiedSections:23,
-  ppsmNoGuessedPages:true,
+  ppsmVerifiedPrintedLocators:ppsmLocators.length,
+  ppsmNoGuessedSectionRanges:true,
   diaphragmPacingIdentityProtected:true,
   legacyScoringSectionsExcluded:true,
   correctedEegAtlasIdentityProtected:true,
