@@ -75,6 +75,19 @@ def probe(url: str) -> tuple[int | None, str]:
     return None, url
 
 
+def auth_redirect(source: str, destination: str) -> bool:
+    """Return True when a public-looking link lands on a sign-in gate."""
+    src = urllib.parse.urlparse(source)
+    dest = urllib.parse.urlparse(destination)
+    if src.netloc.lower() == dest.netloc.lower():
+        return False
+    host = dest.netloc.lower()
+    path = dest.path.lower()
+    if host in {"accounts.google.com", "login.microsoftonline.com"}:
+        return True
+    return any(token in path for token in ("/signin", "/login", "/auth/"))
+
+
 def main() -> int:
     status, final_url, body, meta = fetch(URL)
     lines = ["Sleep Pathways Guild downloads hub inventory", f"Hub: {URL}", f"Hub status: {status}", ""]
@@ -100,10 +113,12 @@ def main() -> int:
             continue
         seen.add(key)
         code, dest = probe(absolute)
-        marker = "OK" if code is not None and code < 400 else "CHECK"
-        if code is None or code >= 400:
+        blocked_by_auth = auth_redirect(absolute, dest)
+        marker = "OK" if code is not None and code < 400 and not blocked_by_auth else "CHECK"
+        if code is None or code >= 400 or blocked_by_auth:
             failures += 1
-        lines.append(f"[{marker}] {code or 'ERR'} | {text} | {absolute}")
+        detail = " AUTH-REDIRECT" if blocked_by_auth else ""
+        lines.append(f"[{marker}] {code or 'ERR'}{detail} | {text} | {absolute}")
         if dest != absolute:
             lines.append(f"    -> {dest}")
 
