@@ -1,0 +1,83 @@
+name: RPSGT v3 Guided Study isolation matrix
+
+on:
+  push:
+    branches:
+      - release/rpsgt-v3-browser-parallel-2026-08-11
+    paths:
+      - '.github/workflows/rpsgt-v3-study-isolation-matrix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  isolate:
+    name: Study isolation (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: baseline
+            blocked: ''
+          - name: no-learner-ui
+            blocked: guided-study-learner-ui.js
+          - name: no-question-actions
+            blocked: guided-study-question-actions.js
+          - name: no-completion
+            blocked: guided-study-completion.js
+          - name: no-study-presentation
+            blocked: study-presentation.js
+          - name: no-respiratory-trail
+            blocked: respiratory-study-trail.js
+          - name: no-guided-coach
+            blocked: guided-study-coach.js
+          - name: no-resource-stack
+            blocked: study-resource-catalog.js,guided-study-question-actions.js,guided-study-coach.js
+          - name: minimal-study
+            blocked: guided-study-learner-ui.js,guided-study-question-actions.js,guided-study-completion.js,respiratory-study-trail.js,guided-study-coach.js,study-presentation.js
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - name: Checkout frozen release candidate
+        uses: actions/checkout@v4
+        with:
+          ref: c42bea72d8b5c85618a3780c33b4528ea52990a5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install diagnostic dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run isolation trial
+        shell: bash
+        env:
+          TRIAL_NAME: ${{ matrix.name }}
+          BLOCKED_SCRIPTS: ${{ matrix.blocked }}
+        run: |
+          python3 -m http.server 4173 --directory .. >/tmp/rpsgt-study-http.log 2>&1 &
+          cat >study-isolation-one.mjs <<'NODE'
+          import { chromium } from 'playwright';
+          const name=process.env.TRIAL_NAME||'trial';
+          const blocked=String(process.env.BLOCKED_SCRIPTS||'').split(',').map(value=>value.trim()).filter(Boolean);
+          const browser=await chromium.launch({headless:true});
+          const context=await browser.newContext({viewport:{width:1440,height:1000}});
+          const page=await context.newPage();
+          for(const file of blocked) await page.route(`**/core/${file}`,route=>route.abort());
+          const started=Date.now();
+          try{
+            await page.goto('http://127.0.0.1:4173/rpsgt-v3/study.html',{waitUntil:'load',timeout:8000});
+            const cards=await page.locator('.task-map-card').count();
+            console.log('ISOLATION_RESULT '+JSON.stringify({name,blocked,outcome:'loaded',elapsedMs:Date.now()-started,taskCards:cards}));
+            process.exit(0);
+          }catch(error){
+            console.log('ISOLATION_RESULT '+JSON.stringify({name,blocked,outcome:'timeout-or-error',elapsedMs:Date.now()-started,error:String(error.message||error).split('\n')[0]}));
+            process.exit(2);
+          }
+          NODE
+          node study-isolation-one.mjs
