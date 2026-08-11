@@ -25,7 +25,7 @@ const order=item=>(item?.recommendations||[]).map(row=>Array.isArray(row)?row[0]
 if(!Array.isArray(registry.rules)||registry.rules.length!==15) throw new Error('D4C work must not change the 15-rule governing authority registry.');
 if(manifest.d4cOxygenTherapyMapFile!=='../authority/d4c-oxygen-therapy-map-2026-08-08.json') throw new Error('D4C oxygen authority-map manifest pointer is missing.');
 if(!(manifest.topicFamilyFiles||[]).includes('topic-families-d4c.json')) throw new Error('D4C topic-family overlay is not registered.');
-if(questions?.meta?.questionCount!==117||questions?.meta?.recordsPreservedUnchanged!==true) throw new Error('D4C must preserve the 117-question extracted module unchanged.');
+if(questions?.meta?.questionCount!==122||questions?.meta?.recordsPreservedUnchanged!==true) throw new Error('D4C must preserve the 122-question extracted module unchanged.');
 
 const manualPap=sourceDocs.get('aasm-manual-pap-titration-2008');
 if(!(manualPap?.mappedTaskCodes||[]).includes('D4C')) throw new Error('AASM manual PAP titration source must map to D4C for its supplemental-oxygen section.');
