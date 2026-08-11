@@ -24,7 +24,7 @@ if(manifest.pediatricInfantCrosswalkFile!=='../authority/pediatric-infant-crossw
 if(!(manifest.topicFamilyFiles||[]).includes('topic-families-pediatric-crosswalk.json')) throw new Error('Pediatric/infant topic overlay is not registered.');
 if(manifest.schemaVersion<26) throw new Error('Study-source manifest schema must register the pediatric/infant crosswalk.');
 if(d2a?.meta?.recordsPreservedUnchanged!==true||d3b?.meta?.recordsPreservedUnchanged!==true) throw new Error('D2A and D3B extracted question modules must remain preserved unchanged.');
-if(d3b?.meta?.questionCount!==112) throw new Error('D3B preserved question count changed.');
+if(d3b?.meta?.questionCount!==113) throw new Error('D3B preserved question count changed.');
 
 if(map.authorityRegistryChanged!==false||map.authorityRegistryRuleCountExpected!==15||(map.routes||[]).length<11) throw new Error('Pediatric crosswalk must preserve the authority registry and all separated routes.');
 for(const key of ['technicalDigitalSpecifications','pediatricSleepStaging','infantSleepStaging','arousalRules','movementRules','pediatricRespiratoryRules']) if(!map.localAasmV3Locators?.[key]) throw new Error(`Missing AASM V3 local locator: ${key}.`);
