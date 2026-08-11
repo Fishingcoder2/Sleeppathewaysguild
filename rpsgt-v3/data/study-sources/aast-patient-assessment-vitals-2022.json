@@ -1,0 +1,21 @@
+{
+  "id":"aast-patient-assessment-vitals-2022",
+  "shortTitle":"AAST Patient Assessment & Vital Signs Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"Updated October 2022",
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/13.-Patient-Assessment-and-Vital-Signs-Measurement-and-Documentation.pdf",
+  "bestFor":"Sleep-technologist patient assessment, chart/history review, physical observations, vital signs and anthropometric measurement, and documentation before or during sleep testing.",
+  "mappedTaskCodes":["D1A"],
+  "mappingRationale":{"D1A":"Directly addresses collecting, assessing, measuring, and documenting patient information relevant to the sleep technologist's evaluation."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial guideline prose, tables, or illustrations.",
+  "sections":[
+    {"id":"aast-assessment-scope","label":"Scope and sleep-technologist assessment role"},
+    {"id":"aast-assessment-history","label":"Patient assessment and relevant history review"},
+    {"id":"aast-assessment-measures","label":"Height, weight, BMI, neck circumference, and vital signs"},
+    {"id":"aast-assessment-documentation","label":"Measurement and assessment documentation"}
+  ]
+}

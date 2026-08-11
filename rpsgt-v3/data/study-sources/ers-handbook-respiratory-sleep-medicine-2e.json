@@ -1,0 +1,32 @@
+{
+  "id":"ers-handbook-respiratory-sleep-medicine-2e",
+  "shortTitle":"ERS Handbook of Respiratory Sleep Medicine",
+  "fullTitle":"ERS Handbook of Respiratory Sleep Medicine",
+  "edition":"2nd ed.",
+  "publicationYear":2023,
+  "editors":["Maria R. Bonsignore","Winfried Randerath","Sophia E. Schiza","Anita K. Simonds"],
+  "publisher":"European Respiratory Society",
+  "sourceType":"supplemental respiratory sleep-medicine specialty handbook",
+  "sourceRole":"studySupport",
+  "currentAuthority":false,
+  "verifiedAt":"2026-08-08",
+  "driveFileId":"11tZr5ydm4PnhpaS8LlHaOAsI-KvqskbC",
+  "libraryStatus":"A staged RPSGT V3 source map records a Guild Drive copy with 64 mapped chapters/subchapters and all 12 official RPSGT tasks represented. Private Drive access remains internal and is not exposed to learners.",
+  "apaCitation":"Bonsignore, M. R., Randerath, W., Schiza, S. E., & Simonds, A. K. (Eds.). (2023). ERS handbook of respiratory sleep medicine (2nd ed.). European Respiratory Society.",
+  "referenceKeys":["ers-respiratory-sleep-handbook-2e"],
+  "mappedTaskCodes":["D1A","D1B","D1C","D2A","D2B","D2C","D3A","D3B","D3C","D4A","D4B","D4C"],
+  "bestFor":"Contemporary respiratory-sleep physiology and clinical context, sleep-disordered-breathing definitions and limitations, oximetry and respiratory polygraphy limitations, capnography/CO2 concepts, central sleep apnea, hypoventilation, PAP/NIV, oxygen, obesity hypoventilation, and pediatric respiratory-sleep topics.",
+  "authorityBoundary":"Current specialty study support, not the governing RPSGT rule source. Current AASM Scoring Manual Version 3 controls scoring and technical rules; ICSD-3-TR controls diagnostic classification; current AASM/AAST guidance, physician orders, facility policy, and manufacturer instructions control testing, PAP, oxygen, CO2 monitoring, central sleep apnea treatment, and other rule-sensitive care decisions when they differ from this handbook.",
+  "copyrightUse":"Use bibliographic metadata, chapter/subchapter titles, page locators, and original Sleep Pathways Guild study directions only. Do not reproduce proprietary figures, tables, algorithms, or substantial protected prose.",
+  "sections":[
+    {"id":"ERS-01","label":"Neurobiology and physiology of sleep and breathing","taskCodes":["D1A"]},
+    {"id":"ERS-02","label":"Definitions of sleep disordered breathing","taskCodes":["D1A","D3A","D3B"]},
+    {"id":"ERS-05","label":"Epidemiology of obstructive sleep apnoea, central sleep apnoea, and hypoventilation syndromes","taskCodes":["D1A"]},
+    {"id":"ERS-06","label":"Upper-airway obstruction, arousal threshold, muscle responsiveness, and respiratory drive","taskCodes":["D1A","D2C"]},
+    {"id":"ERS-07","label":"Pathophysiology of central sleep apnoea","taskCodes":["D1A","D2C","D3A"]},
+    {"id":"ERS-08","label":"Pathophysiology of hypoventilation","taskCodes":["D1A","D2C","D3A","D3B","D4C"]},
+    {"id":"ERS-10","label":"Central sleep apnoea: clinical aspects and consequences","taskCodes":["D1A","D2C"]},
+    {"id":"ERS-16","label":"Methods of different sleep tests","taskCodes":["D1A","D2A","D2B"]},
+    {"id":"ERS-17","label":"Limitations of oximetry and respiratory polygraphy compared with hospital-based PSG","taskCodes":["D2A","D2C","D3A","D3C"]}
+  ]
+}

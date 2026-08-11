@@ -1,0 +1,32 @@
+{
+  "id":"aap-apnea-prematurity-2016",
+  "shortTitle":"Apnea of Prematurity",
+  "fullTitle":"Apnea of Prematurity",
+  "publicationYear":2016,
+  "authors":["Eric C. Eichenwald","Committee on Fetus and Newborn"],
+  "publisher":"American Academy of Pediatrics",
+  "doi":"10.1542/peds.2015-3757",
+  "officialUrl":"https://doi.org/10.1542/peds.2015-3757",
+  "sourceType":"legacy/supporting neonatal clinical report",
+  "sourceRole":"studySupport",
+  "currentAuthority":false,
+  "verifiedAt":"2026-08-08",
+  "apaCitation":"Eichenwald, E. C., & Committee on Fetus and Newborn. (2016). Apnea of prematurity. Pediatrics, 137(1), e20153757. https://doi.org/10.1542/peds.2015-3757",
+  "referenceKeys":["aap-apnea-prematurity-2016"],
+  "mappedTaskCodes":["D1A","D1B","D1C","D2C","D3B","D3C","D4A"],
+  "bestFor":"Historical neonatal clinical context for apnea-of-prematurity definitions and patterns, gestational-age/natural-history concepts, cardiorespiratory monitoring, caffeine therapy context, noninvasive respiratory support, associated conditions, and discharge-observation concepts.",
+  "currencyNote":"Legacy/supporting source. The staged source map notes that the 2016 AAP clinical report states clinical reports expire after five years unless reaffirmed or revised, and current reaffirmation was not established in the mapping pass.",
+  "authorityBoundary":"Legacy neonatal clinical-context support only. Current neonatal guidance, physician orders, institutional NICU policy, and medication/device protocols govern management. Current AASM Scoring Manual Version 3 infant/pediatric respiratory rules govern PSG scoring when formal sleep-study scoring applies. NICU bedside-monitoring definitions, alarm thresholds, and response practices are not interchangeable with PSG scoring rules.",
+  "copyrightUse":"Use bibliographic metadata, section labels, page locators, and original Sleep Pathways Guild study directions only. Do not reproduce protected report prose, tables, figures, or substantial passages.",
+  "sections":[
+    {"id":"AAP-AOP-01","label":"Background: clinical significance, practice variability, and report scope (local PDF p. 1)","taskCodes":["D1A"]},
+    {"id":"AAP-AOP-02","label":"Definition/classification: central, obstructive, and mixed apnea patterns in preterm infants (local PDF p. 2)","taskCodes":["D1A","D2C","D3B"]},
+    {"id":"AAP-AOP-03","label":"Epidemiology and natural history: gestational age, PMA, and resolution context (local PDF pp. 2–3)","taskCodes":["D1A","D1B"]},
+    {"id":"AAP-AOP-04","label":"Monitoring: cardiorespiratory monitoring, bradycardia, and intermittent hypoxemia (local PDF pp. 2–3)","taskCodes":["D2C","D3B","D3C"]},
+    {"id":"AAP-AOP-05","label":"Treatment context: xanthine/caffeine therapy (local PDF pp. 3–4)","taskCodes":["D1A","D1C"]},
+    {"id":"AAP-AOP-06","label":"Treatment context: nasal CPAP and noninvasive respiratory support (local PDF p. 4)","taskCodes":["D1C","D2C","D4A"]},
+    {"id":"AAP-AOP-07","label":"Associated conditions: anemia/transfusion, GER, and other proposed contributors (local PDF p. 4)","taskCodes":["D1A","D2C"]},
+    {"id":"AAP-AOP-08","label":"Discharge context: observation of apnea/bradycardia and readiness concepts (local PDF pp. 4–5)","taskCodes":["D1B","D1C","D2C"]},
+    {"id":"AAP-AOP-09","label":"Summary/recommendations: 2016 practice recommendations and limitations (local PDF p. 5)","taskCodes":["D1A","D1B","D1C"]}
+  ]
+}

@@ -43,6 +43,11 @@
   }
   function learnerCount(){return Number(state.manifest?.meta?.questionCount||0)-Number(state.manifest?.integritySummary?.manualReviewRecommendedCount||0);}
   function qualityCount(){return Number(state.manifest?.integritySummary?.manualReviewRecommendedCount||0);}
+  function selectedDifficulty(){return $("[data-practice-difficulty]")?.value||"all";}
+  function matchesDifficulty(question,difficulty){
+    if(!difficulty||difficulty==="all") return true;
+    return String(question&&question.difficulty||"").trim().toLowerCase()===String(difficulty).trim().toLowerCase();
+  }
 
   function buildBlueprintMaps(){
     (state.blueprint?.domains||[]).forEach(function(domain){
@@ -125,12 +130,14 @@
   async function selectedPool(){
     const modules=selectedModuleMetadata();
     if(!modules.length) return [];
+    const difficulty=selectedDifficulty();
     const status=$("[data-practice-load]");
     status.className="section notice";
     status.textContent="Loading "+modules.length+" selected task module"+(modules.length===1?"":"s")+"…";
     const packages=await Promise.all(modules.map(loadModule));
     const pool=packages.flat().filter(function(question){
-      return state.mode==="quality"?isManualReview(question):!isManualReview(question);
+      const eligible=state.mode==="quality"?isManualReview(question):!isManualReview(question);
+      return eligible&&matchesDifficulty(question,difficulty);
     });
     state.activePoolSize=pool.length;
     return pool;
@@ -148,7 +155,7 @@
     setSetupBusy(true);
     try{
       const pool=await selectedPool();
-      if(!pool.length) throw new Error("No questions are available for this mode and filter selection.");
+      if(!pool.length) throw new Error("No learner-ready questions match the selected domain, task, and difficulty filters.");
       const requested=$("[data-practice-size]").value;
       const size=requested==="all"?pool.length:Math.min(Number(requested)||10,pool.length);
       state.session=shuffle(pool).slice(0,size);
@@ -245,6 +252,7 @@
       questionId:question.id,
       domain:question.domain,
       taskCode:question.taskCode,
+      difficulty:question.difficulty||null,
       correct:isCorrect,
       selectedAnswer:selectedAnswer,
       answeredAt:new Date().toISOString(),
@@ -312,8 +320,9 @@
     appendQualityDetails(feedback,question);
     $("[data-submit-answer]").classList.add("hidden");
     $("[data-next-question]").classList.remove("hidden");
-    $("[data-next-question]").textContent=state.index===state.session.length-1?"View session result":"Next question";
+    $("[data-next-question]").textContent=state.index===state.session.length-1?"Submit Practice":"Next question";
     recordAnswer(question,isCorrect,selectedAnswer);
+    if(window.RPSGTApp&&typeof window.RPSGTApp.playFeedbackSound==="function") window.RPSGTApp.playFeedbackSound(isCorrect?"correct":"incorrect");
     updateSessionStats();
   }
 
@@ -337,6 +346,7 @@
     $("[data-complete-policy]").textContent=state.mode==="quality"
       ?"This quality-review session was not added to learner progress, missed questions, mastery, readiness, or reports."
       :"These answers were recorded only in the new RPSGT v3 learner record.";
+    if(typeof complete.focus==="function") complete.focus({preventScroll:false});
   }
 
   function changeFilters(){

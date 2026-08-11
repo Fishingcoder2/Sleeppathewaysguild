@@ -1,0 +1,26 @@
+{
+  "id":"aasm-pediatric-bedtime-behavior-2006",
+  "shortTitle":"AASM Pediatric Bedtime/Night-Waking Behavioral Guidance (2006)",
+  "publisher":"American Academy of Sleep Medicine / SLEEP",
+  "sourceType":"AASM practice parameters",
+  "sourceRole":"legacyGuidance",
+  "currentAuthority":false,
+  "publicationYear":2006,
+  "verifiedAt":"2026-08-07",
+  "citation":"Morgenthaler TI et al. Practice Parameters for Behavioral Treatment of Bedtime Problems and Night Wakings in Infants and Young Children. SLEEP. 2006;29(10):1277-1281.",
+  "driveFileId":"1EaQSIDyV6WmXxdBD8ri3eF24lcp6EHDf",
+  "driveFileName":"PP_NightWakingsChildren.pdf",
+  "libraryStatus":"Exact Guild Drive copy previously content-verified; duplicate copy also present in the library.",
+  "bestFor":"Historical/applicable behavioral treatment context for pediatric bedtime problems and night wakings, especially caregiver education and recognition of behavioral-management approaches.",
+  "mappedTaskCodes":["D1B","D4B"],
+  "mappingRationale":{"D1B":"Supports caregiver-education concepts for pediatric bedtime and night-waking problems.","D4B":"Supports awareness of non-PAP behavioral treatment approaches at the RPSGT learning level."},
+  "authorityBoundary":"Use this BRPT-listed 2006 document as historical/applicable behavioral-treatment support. Current ICSD-3-TR terminology controls diagnostic classification, and newer applicable AASM guidance controls when treatment recommendations or terminology differ. This source does not establish current scoring rules.",
+  "copyrightUse":"Use citation, public topic identity, original summaries, and learning objectives. Do not reproduce recommendation wording, evidence tables, intervention protocols, or substantial passages.",
+  "sections":[
+    {"id":"peds-bedtime-behavior-scope","label":"Scope and behavioral sleep-problem context"},
+    {"id":"peds-bedtime-caregiver-education","label":"Caregiver education and behavioral sleep-support concepts"},
+    {"id":"peds-bedtime-treatment-families","label":"Behavioral intervention-family recognition without reproducing protocol text"},
+    {"id":"peds-bedtime-followup","label":"Follow-up, persistence, and escalation context"},
+    {"id":"peds-bedtime-current-terminology-boundary","label":"Current ICSD terminology and newer-guidance cross-check"}
+  ]
+}

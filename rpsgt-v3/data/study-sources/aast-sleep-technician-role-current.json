@@ -1,0 +1,21 @@
+{
+  "id":"aast-sleep-technician-role-current",
+  "shortTitle":"AAST Sleep Technician Role",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"current professional role and skills statement",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://aastweb.org/career/sleep-technician/",
+  "bestFor":"Role confirmation for equipment selection/calibration, sensor application, PAP interface fitting/desensitization, physiologic calibrations, and procedure execution by sleep technicians.",
+  "mappedTaskCodes":["D1B","D2A","D2B","D2C","D4A","D4C"],
+  "authorityBoundary":"Use as role/skills confirmation only. Detailed procedures come from current AASM/AAST technical guidance, physician orders, facility SOPs, and manufacturer instructions.",
+  "copyrightUse":"Use public role identity, high-level skill categories, and original summaries. Do not reproduce substantial protected role-page text.",
+  "sections":[
+    {"id":"aast-tech-role-equipment","label":"Equipment selection, preparation, and calibration role"},
+    {"id":"aast-tech-role-sensors","label":"Sensor and electrode application role"},
+    {"id":"aast-tech-role-biocal","label":"Physiologic calibration and procedure-execution role"},
+    {"id":"aast-tech-role-pap","label":"PAP interface fitting and desensitization role"},
+    {"id":"aast-tech-role-local-protocol","label":"Role execution within facility procedures and supervision"}
+  ]
+}

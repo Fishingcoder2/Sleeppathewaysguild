@@ -1,0 +1,31 @@
+{
+  "id":"aasm-adult-osa-evaluation-management-2009",
+  "shortTitle":"AASM Adult OSA Evaluation & Long-Term Care Guideline",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"clinical guideline",
+  "sourceRole":"brptListedLegacyApplicable",
+  "currentAuthority":false,
+  "publicationYear":2009,
+  "verifiedAt":"2026-08-07",
+  "citation":"Epstein LJ, Kristo D, Strollo PJ Jr, et al. Clinical guideline for the evaluation, management and long-term care of obstructive sleep apnea in adults. J Clin Sleep Med. 2009;5(3):263-276.",
+  "libraryStatus":"Exact 2009 full-text source was supplied and content-verified in the Sleep Pathways Guild project session on 2026-08-07. A separate 2015 AASM adapted visual summary of the guideline was also supplied and verified.",
+  "companionResource":{"title":"Evaluation, Management and Long-Term Care of OSA in Adults","publisher":"American Academy of Sleep Medicine","date":"August 2015","role":"adapted visual teaching summary of the 2009 guideline; not a separate controlling authority"},
+  "currencyNote":"BRPT continues to list this broad adult OSA guideline in its recommended-reading universe. It remains useful for the overall chronic-care framework, but newer AASM documents govern narrower topics where they supersede or update this 2009 guidance.",
+  "bestFor":"Broad adult OSA evaluation, patient education, chronic-disease management framework, treatment-option awareness, PAP support concepts, alternative-therapy awareness, and long-term follow-up context.",
+  "mappedTaskCodes":["D1A","D1B","D1C","D4A","D4B"],
+  "mappingRationale":{"D1A":"Supports broad adult OSA risk, symptom, history, examination, and evaluation concepts.","D1B":"Supports patient-education themes including disease understanding, treatment expectations, risk-factor modification, and drowsy-driving counseling.","D1C":"Supports therapy-support and adherence concepts within chronic OSA management.","D4A":"Provides broad PAP initiation, support, troubleshooting, adherence, and follow-up context, subordinate to newer PAP-specific guidance.","D4B":"Provides broad awareness of behavioral, oral-appliance, surgical, positional, and adjunctive alternatives, subordinate to newer therapy-specific guidance."},
+  "authorityBoundary":"Do not use this 2009 guideline as the controlling source when newer applicable AASM guidance exists. Use the 2017 adult OSA diagnostic-testing guideline for current diagnostic-testing guidance; the 2019 PAP treatment guideline and applicable PAP titration guidance for PAP treatment; the 2015 oral-appliance guideline for oral-appliance therapy; the 2021 surgical-referral guideline for surgical consultation; the 2021 longitudinal PSG/HSAT guidance statement for follow-up testing; and the current AASM Scoring Manual for scoring rules. Current ICSD classification controls diagnostic terminology where relevant.",
+  "copyrightUse":"Use bibliographic metadata, public section/figure topics, original summaries, learning objectives, and original redraw concepts only. Do not reproduce the guideline figures, flowcharts, tables, recommendation text, or substantial passages in V3.",
+  "sections":[
+    {"id":"osa-2009-evaluation","label":"Evaluation and clinical assessment framework"},
+    {"id":"osa-2009-objective-testing","label":"Objective testing and sleep-study context"},
+    {"id":"osa-2009-patient-education","label":"Patient education and chronic-care support"},
+    {"id":"osa-2009-pap","label":"PAP treatment and adherence framework"},
+    {"id":"osa-2009-behavioral","label":"Behavioral and positional treatment awareness"},
+    {"id":"osa-2009-oral-appliance","label":"Oral-appliance treatment awareness"},
+    {"id":"osa-2009-surgical","label":"Surgical treatment awareness"},
+    {"id":"osa-2009-adjunctive","label":"Adjunctive treatment awareness"},
+    {"id":"osa-2009-follow-up","label":"Outcome assessment and long-term follow-up"}
+  ],
+  "sourceAliases":["aasm-adult-osa-longterm","adult-osa-longterm","aasm-osa-longterm-2009"]
+}

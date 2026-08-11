@@ -1,0 +1,23 @@
+{
+  "id":"aast-standard-psg-2021",
+  "shortTitle":"AAST Standard Polysomnography Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"Updated December 2021; listed on the current AAST technical-guidelines index",
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/AAST-PSG-Guideline-Final.pdf",
+  "authorityBoundary":"Primary current technologist workflow source for standard attended adult PSG, subordinate to current AASM scoring rules. The guideline does not address pediatric PSG, HSAT, or therapeutic PAP/oxygen titration and must not be used as authority for those pathways.",
+  "bestFor":"Standard attended adult PSG preparation and monitoring, instrumentation, calibration, electrode preparation, recording quality, physiologic cross-correlation, artifact recognition, safety, technical documentation, and report-support workflow.",
+  "mappedTaskCodes":["D2A","D2B","D2C","D3C"],
+  "mappingRationale":{"D2A":"Supports technical preparation for standard attended adult PSG and relevant physiologic/technical monitors.","D2B":"Directly addresses performance and monitoring of standard adult polysomnography.","D2C":"Addresses recording quality, physiologic correlation, artifact response, safety, and documentation under facility protocols.","D3C":"Supports the technologist documentation and report-support workflow while current AASM reporting rules remain controlling."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial guideline text, tables, figures, or proprietary material.",
+  "sections":[
+    {"id":"aast-psg-scope","label":"Scope and role of standard attended adult polysomnography"},
+    {"id":"aast-psg-preparation","label":"Sleep study preparation and technical setup"},
+    {"id":"aast-psg-signal-families","label":"Physiologic signal families and standard PSG monitoring"},
+    {"id":"aast-psg-quality","label":"Recording quality, physiologic correlation, and artifact recognition"},
+    {"id":"aast-psg-response-documentation","label":"Technologist response, safety, technical documentation, and report support"}
+  ]
+}

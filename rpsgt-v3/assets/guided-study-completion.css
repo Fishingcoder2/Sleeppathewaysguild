@@ -15,22 +15,37 @@
   display:grid;
   place-items:center;
   padding:20px;
-  background:rgba(7,28,48,.72);
-  backdrop-filter:blur(4px);
+  background:rgba(7,28,48,.74);
+  backdrop-filter:blur(5px);
 }
 .guided-award-overlay[hidden]{display:none}
 .guided-award-dialog{
   position:relative;
+  isolation:isolate;
   width:min(560px,100%);
   max-height:min(720px,calc(100vh - 40px));
   overflow:auto;
-  padding:28px;
+  padding:30px 28px 27px;
   text-align:center;
-  border:1px solid #e1c371;
+  border:1px solid #d5bf7e;
+  border-top:7px solid #0d8298;
   border-radius:24px;
-  background:linear-gradient(160deg,#fffdf5,#fff5d8 62%,#edf8fb);
-  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  background:linear-gradient(160deg,#ffffff 0%,#fffaf0 58%,#edf8fb 100%);
+  box-shadow:0 28px 78px rgba(0,0,0,.31);
   animation:guided-award-arrive .32s ease-out both;
+}
+.guided-award-dialog:before{
+  content:"SLEEP PATHWAYS GUILD";
+  position:absolute;
+  z-index:-1;
+  right:-22px;
+  bottom:74px;
+  transform:rotate(-90deg);
+  color:rgba(13,130,152,.06);
+  font-size:1.15rem;
+  font-weight:950;
+  letter-spacing:.12em;
+  pointer-events:none;
 }
 .guided-award-dialog:focus{outline:3px solid #79b9d5;outline-offset:4px}
 .guided-award-close{
@@ -39,37 +54,53 @@
   right:12px;
   width:42px;
   height:42px;
-  border:1px solid #cbb779;
+  border:1px solid #c9d7dc;
   border-radius:50%;
   background:#fff;
-  color:#4f3b14;
+  color:#294553;
   font-size:1.45rem;
   line-height:1;
+  box-shadow:0 4px 12px rgba(8,43,87,.08);
 }
 .guided-award-medal{
+  position:relative;
   display:grid;
   place-items:center;
-  width:126px;
-  height:126px;
-  margin:4px auto 18px;
-  border:8px solid #fff7d2;
+  width:132px;
+  height:132px;
+  margin:3px auto 20px;
+  border:8px solid #fff8d9;
   border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#fff7b8,#e0ad35 62%,#9b6a0d);
-  box-shadow:0 13px 30px rgba(112,75,12,.28);
-  font-size:4.4rem;
+  background:radial-gradient(circle at 35% 28%,#fffbe1 0%,#f2cd70 38%,#d9a632 68%,#9b6a0d 100%);
+  box-shadow:0 0 0 3px #d8bd73,0 14px 31px rgba(112,75,12,.25);
+  font-size:4.1rem;
 }
+.guided-award-medal:before,.guided-award-medal:after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  bottom:-36px;
+  width:38px;
+  height:62px;
+  background:linear-gradient(180deg,#0d8298,#07586b);
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);
+}
+.guided-award-medal:before{left:24px;transform:rotate(9deg)}
+.guided-award-medal:after{right:24px;transform:rotate(-9deg)}
+.guided-award-dialog .eyebrow{margin-top:30px;color:#0b6c80;font-weight:950;letter-spacing:.08em}
 .guided-award-dialog h2{margin:7px 0 8px;font-size:clamp(1.55rem,5vw,2.3rem);color:var(--navy,#12324d)}
-.guided-award-skill{margin:0 auto;max-width:46ch;color:#405562;font-size:1.02rem}
+.guided-award-skill{margin:0 auto;max-width:46ch;color:#405562;font-size:1.02rem;line-height:1.5}
 .guided-award-coach{
   margin:20px 0 0;
-  padding:16px;
+  padding:16px 17px;
   text-align:left;
-  border:1px solid #c8ac68;
-  border-left:6px solid #946d20;
+  border:1px solid #c6dce3;
+  border-left:6px solid #0d8298;
   border-radius:16px;
-  background:linear-gradient(180deg,#f8edcf,#edddb0);
-  color:#211b12;
+  background:linear-gradient(180deg,#f8fcfd,#edf8fa);
+  color:#203640;
 }
+.guided-award-coach strong{color:var(--navy,#12324d)}
 .guided-award-coach p{margin:5px 0 0}
 .guided-award-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px}
 body.guided-award-open{overflow:hidden}
@@ -82,7 +113,10 @@ body.guided-award-open{overflow:hidden}
   .checkpoint-route-actions .btn{width:100%;justify-content:center;text-align:center}
   .guided-award-overlay{align-items:end;padding:0}
   .guided-award-dialog{width:100%;max-height:92vh;border-radius:24px 24px 0 0;padding:25px 18px calc(24px + env(safe-area-inset-bottom))}
-  .guided-award-medal{width:108px;height:108px;font-size:3.7rem}
+  .guided-award-dialog:before{display:none}
+  .guided-award-medal{width:112px;height:112px;font-size:3.55rem}
+  .guided-award-medal:before,.guided-award-medal:after{bottom:-31px;width:32px;height:53px}
+  .guided-award-medal:before{left:21px}.guided-award-medal:after{right:21px}
 }
 @media(prefers-reduced-motion:reduce){
   .guided-award-dialog{animation:none}

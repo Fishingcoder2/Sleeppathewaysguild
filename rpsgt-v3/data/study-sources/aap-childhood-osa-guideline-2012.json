@@ -1,0 +1,26 @@
+{
+  "id":"aap-childhood-osa-guideline-2012",
+  "shortTitle":"AAP Childhood OSA Guideline",
+  "fullTitle":"Diagnosis and Management of Childhood Obstructive Sleep Apnea Syndrome",
+  "publicationYear":2012,
+  "publisher":"American Academy of Pediatrics / Pediatrics",
+  "sourceType":"AAP clinical practice guideline",
+  "sourceRole":"legacyGuidance",
+  "currentAuthority":false,
+  "verifiedAt":"2026-08-07",
+  "citation":"Marcus CL, Brooks LJ, Draper KA, et al. Diagnosis and Management of Childhood Obstructive Sleep Apnea Syndrome. Pediatrics. 2012;130(3):576-584.",
+  "doi":"10.1542/peds.2012-1671",
+  "libraryStatus":"Exact official bibliographic identity verified from the American Academy of Pediatrics publication site on 2026-08-07. No exact Guild Drive full-text holding was verified during this audit.",
+  "referenceKeys":["aap-pediatric-osa"],
+  "mappedTaskCodes":["D1A","D2B","D3B","D4B"],
+  "bestFor":"Historical/applicable pediatric OSA recognition, diagnostic evaluation, treatment-option awareness, and follow-up context for uncomplicated childhood OSA.",
+  "authorityBoundary":"Use this 2012 AAP guideline as older/applicable pediatric OSA guidance, not as a scoring manual or a universal pediatric OSA rule source. Current AASM Scoring Manual Version 3 controls scoring and technical definitions; ICSD-3-TR controls current diagnostic classification; current AASM pediatric guidance controls newer sleep-testing procedures. Its scope is uncomplicated childhood OSA in primary care and should not be generalized to all complex pediatric sleep-disordered breathing.",
+  "copyrightUse":"Use citation, public scope/topic identity, original Sleep Pathways Guild summaries, and learning objectives only. Do not reproduce recommendation wording, tables, algorithms, figures, or substantial protected passages.",
+  "sections":[
+    {"id":"aap-osa-scope","label":"Scope: uncomplicated childhood OSA in primary care","taskCodes":["D1A"]},
+    {"id":"aap-osa-recognition","label":"Recognition and clinical evaluation context","taskCodes":["D1A"]},
+    {"id":"aap-osa-testing","label":"Diagnostic-testing context; current AASM procedure/scoring guidance controls","taskCodes":["D2B","D3B"]},
+    {"id":"aap-osa-treatment","label":"Treatment-option awareness and follow-up context","taskCodes":["D4B"]},
+    {"id":"aap-osa-current-boundary","label":"Current AASM/ICSD cross-check and complex-patient boundary","taskCodes":["D1A","D2B","D3B","D4B"]}
+  ]
+}

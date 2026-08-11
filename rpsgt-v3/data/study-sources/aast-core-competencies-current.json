@@ -1,0 +1,22 @@
+{
+  "id":"aast-core-competencies-current",
+  "shortTitle":"AAST Core Competencies for Sleep Technologists",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"current professional competency framework",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://aastweb.org/career/core-competencies/",
+  "bestFor":"Expected sleep-technologist competency areas including age-specific care, CO2 monitoring, HSAT, maintenance/cleaning/safety, pulse oximetry, PAP, patient assessment, PSG, scoring, education, and supplemental low-flow oxygen.",
+  "mappedTaskCodes":["D1A","D1B","D1C","D2A","D2B","D2C","D3A","D3B","D3C","D4A","D4B","D4C"],
+  "authorityBoundary":"Use to define expected professional competency, not as a scoring rule, diagnostic criterion, treatment algorithm, or device instruction. Detailed rules come from current AASM/AAST technical sources, physician orders, facility policy, and manufacturer instructions.",
+  "copyrightUse":"Use public competency titles, original summaries, and original learning objectives. Do not reproduce substantial protected competency text.",
+  "sections":[
+    {"id":"aast-competency-age-specific","label":"Age-specific care competency"},
+    {"id":"aast-competency-monitoring","label":"Physiologic monitoring and PSG/HSAT competency"},
+    {"id":"aast-competency-co2-oxygen","label":"CO2, pulse oximetry, and supplemental oxygen competency"},
+    {"id":"aast-competency-pap","label":"PAP and treatment-support competency"},
+    {"id":"aast-competency-maintenance","label":"Maintenance, cleaning, safety, and equipment competency"},
+    {"id":"aast-competency-assessment-education","label":"Assessment, scoring, reporting, and patient-education competency"}
+  ]
+}

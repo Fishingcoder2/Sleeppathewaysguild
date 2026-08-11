@@ -1,0 +1,33 @@
+{
+  "id":"only-ekg-book-9e",
+  "shortTitle":"The Only EKG Book You'll Ever Need",
+  "fullTitle":"The Only EKG Book You'll Ever Need",
+  "edition":"9th ed.",
+  "publicationYear":2019,
+  "author":"Malcolm S. Thaler",
+  "publisher":"Wolters Kluwer",
+  "sourceType":"supplemental ECG recognition textbook",
+  "sourceRole":"studySupport",
+  "currentAuthority":false,
+  "verifiedAt":"2026-08-08",
+  "driveFileId":"1WlFIceQiRzRj5YFwsn3ja6Du6fY86RYp",
+  "libraryStatus":"A staged RPSGT V3 source map records a Guild Drive copy and 31 mapped sections for ECG recognition support. Private Drive access remains internal and is not exposed to learners.",
+  "apaCitation":"Thaler, M. S. (2019). The only EKG book you'll ever need (9th ed.). Wolters Kluwer.",
+  "referenceKeys":["only-ekg-book-9e"],
+  "mappedTaskCodes":["D1A","D2C","D3A","D3B"],
+  "bestFor":"ECG waveform morphology, rate determination, sinus rhythms, supraventricular and ventricular arrhythmias, AV block, paced rhythms, QT concepts, and systematic rhythm review for sleep-technologist recognition practice.",
+  "authorityBoundary":"Supplemental ECG recognition support only. The current AASM Scoring Manual Version 3 cardiac rules govern sleep-study cardiac scoring and reporting, and current facility emergency/cardiac-response policy governs action. PSG ECG is not a diagnostic 12-lead ECG, and this source must not be used as a treatment, medication-dosing, or independent diagnostic authority.",
+  "copyrightUse":"Use bibliographic metadata, chapter/subsection titles, page locators, and original Sleep Pathways Guild study directions only. Do not reproduce proprietary figures, tracings, tables, questions, or substantial protected prose.",
+  "sections":[
+    {"id":"EKG-02","label":"Chapter 1: P waves, QRS complexes, T waves, and waveform morphology","taskCodes":["D2C","D3A","D3B"]},
+    {"id":"EKG-03","label":"Chapter 1: PR segment/interval, ST segment, QT interval, and straight-line measurements","taskCodes":["D2C","D3A"]},
+    {"id":"EKG-10","label":"Chapter 3: Heart-rate determination from the EKG","taskCodes":["D2C","D3A","D3B"]},
+    {"id":"EKG-11","label":"Chapter 3: Sinus-origin rhythms and sinus arrhythmias","taskCodes":["D2C","D3A","D3B"]},
+    {"id":"EKG-13","label":"Chapter 3: Supraventricular arrhythmias","taskCodes":["D2C","D3A"]},
+    {"id":"EKG-14","label":"Chapter 3: Ventricular arrhythmias","taskCodes":["D2C","D3A"]},
+    {"id":"EKG-15","label":"Chapter 3: Supraventricular versus ventricular tachyarrhythmia differentiation","taskCodes":["D2C","D3A"]},
+    {"id":"EKG-17","label":"Chapter 4: Atrioventricular blocks—first-, second-, and third-degree","taskCodes":["D2C","D3A"]},
+    {"id":"EKG-18","label":"Chapter 4: Bundle branch block","taskCodes":["D2C","D3A"]},
+    {"id":"EKG-20","label":"Chapter 4: Pacemakers and paced rhythms","taskCodes":["D1A","D2C","D3A"]}
+  ]
+}

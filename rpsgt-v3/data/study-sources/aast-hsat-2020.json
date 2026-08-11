@@ -1,0 +1,24 @@
+{
+  "id":"aast-hsat-2020",
+  "shortTitle":"AAST Home Sleep Apnea Testing Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"December 2020; still listed by AAST when verified 2026-08-07",
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/HSAT-Technical-Guideline-2020_FINAL_New-Template-1.pdf",
+  "authorityBoundary":"Use for sleep-technologist HSAT workflow, patient instruction, device application, signal acquisition, review, scoring/editing workflow, infection control, troubleshooting, and documentation. Current AASM diagnostic guidance and current AASM Scoring Manual requirements control patient-selection and scoring-rule questions if wording or criteria differ.",
+  "bestFor":"Adult HSAT technical workflow, device/sensor preparation, patient instruction, signal quality, technologist review, troubleshooting, infection control, and documentation.",
+  "mappedTaskCodes":["D2A","D2B","D2C"],
+  "mappingRationale":{"D2A":"Supports technical preparation and device/sensor considerations for HSAT.","D2B":"Directly addresses technologist performance of adult HSAT procedures and patient instruction.","D2C":"Supports recognition of inadequate data, technical troubleshooting, review, infection control, and documentation."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial procedure text, tables, device classifications, or protected passages.",
+  "sections":[
+    {"id":"aast-hsat-scope","label":"Scope and technologist role in adult HSAT"},
+    {"id":"aast-hsat-preparation","label":"Device, sensor, patient, and technical preparation"},
+    {"id":"aast-hsat-education","label":"Patient instruction and sensor application education"},
+    {"id":"aast-hsat-acquisition","label":"Data acquisition and signal-quality workflow"},
+    {"id":"aast-hsat-review","label":"Technologist review, scoring/editing workflow, and inadequate data"},
+    {"id":"aast-hsat-troubleshooting","label":"Troubleshooting, infection control, and documentation"}
+  ]
+}

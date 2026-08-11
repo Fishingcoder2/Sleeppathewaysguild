@@ -1,0 +1,29 @@
+{
+  "id":"aasm-osa-longitudinal-testing-2021",
+  "shortTitle":"AASM Longitudinal OSA Testing Guidance",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"clinical guidance statement",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2021,
+  "verifiedAt":"2026-08-07",
+  "citation":"Caples SM, Anderson WM, Calero K, Howell M, Hashmi SD. Use of polysomnography and home sleep apnea tests for the longitudinal management of obstructive sleep apnea in adults: an American Academy of Sleep Medicine clinical guidance statement. J Clin Sleep Med. 2021;17(6):1287-1293.",
+  "doi":"10.5664/jcsm.9240",
+  "driveFileId":"1gzLwt6DzgbwJTPOTVhPTVhtdA_dvisNj",
+  "driveFileName":"jcsm.9240.pdf",
+  "currencyNote":"Exact 2021 AASM clinical guidance statement verified from the Guild Drive copy on 2026-08-07. It addresses follow-up PSG/HSAT after OSA diagnosis and treatment, not initial diagnosis or PAP initiation.",
+  "bestFor":"Follow-up PSG/HSAT use in adults with established OSA, including persistent symptoms, response to non-PAP treatment, significant weight change, sleep-related hypoxemia/hypoventilation reassessment, cardiovascular change, and unexplained PAP device data.",
+  "mappedTaskCodes":["D2B","D4B"],
+  "mappingRationale":{"D2B":"Directly supports guideline-based follow-up PSG/HSAT procedure selection after OSA diagnosis/treatment.","D4B":"Directly supports recognition of follow-up testing after non-PAP interventions at the technologist-awareness level."},
+  "authorityBoundary":"Use the AASM adult OSA diagnostic-testing guideline for initial diagnosis, PAP titration/treatment guidance for therapy initiation, and the current AASM Scoring Manual for scoring rules. This source is limited to longitudinal follow-up testing after OSA is established.",
+  "copyrightUse":"Use citation, public guidance-topic headings, original summaries, and learning objectives. Do not reproduce substantial guidance wording, evidence tables, or protected passages.",
+  "sections":[
+    {"id":"osa-longitudinal-scope","label":"Scope: follow-up testing after established OSA"},
+    {"id":"osa-longitudinal-symptoms","label":"Persistent or recurrent symptoms despite therapy"},
+    {"id":"osa-longitudinal-nonpap","label":"Follow-up testing after non-PAP interventions"},
+    {"id":"osa-longitudinal-weight","label":"Clinically significant weight change"},
+    {"id":"osa-longitudinal-gas-exchange","label":"Reassessment of sleep-related hypoxemia or hypoventilation"},
+    {"id":"osa-longitudinal-cardiovascular","label":"Change in cardiovascular disease"},
+    {"id":"osa-longitudinal-device-data","label":"Unexplained PAP device-generated data"}
+  ]
+}

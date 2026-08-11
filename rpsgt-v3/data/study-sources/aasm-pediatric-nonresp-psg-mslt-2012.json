@@ -1,0 +1,27 @@
+{
+  "id":"aasm-pediatric-nonresp-psg-mslt-2012",
+  "shortTitle":"AASM Pediatric Non-Respiratory PSG/MSLT Indications (2012)",
+  "publisher":"American Academy of Sleep Medicine / SLEEP",
+  "sourceType":"AASM practice parameters",
+  "sourceRole":"legacyGuidance",
+  "currentAuthority":false,
+  "publicationYear":2012,
+  "verifiedAt":"2026-08-07",
+  "citation":"Aurora RN et al. Practice Parameters for the Non-Respiratory Indications for Polysomnography and Multiple Sleep Latency Testing for Children. SLEEP. 2012;35(11):1467-1473.",
+  "doi":"10.5665/sleep.2190",
+  "driveFileId":"1QEUgjoPRbYuwiT1xXnHyftL661qA-bF_",
+  "driveFileName":"aasm.35.11.1467.pdf",
+  "libraryStatus":"Exact Guild Drive copy verified from internal journal title/citation and document content on 2026-08-07; a duplicate copy is also present.",
+  "bestFor":"Historical/applicable pediatric non-respiratory PSG indication context and the clinical rationale for pediatric MSLT use. Use current pediatric MSLT protocol guidance for modern procedure details.",
+  "mappedTaskCodes":["D1A","D2B"],
+  "mappingRationale":{"D1A":"Supports recognition of non-respiratory pediatric clinical contexts that may lead to PSG or daytime testing.","D2B":"Supports indication-level procedure selection context; the 2024 AASM pediatric MSLT protocol controls current MSLT preparation and administration details."},
+  "authorityBoundary":"Use this BRPT-listed 2012 practice parameter for indication-level context only. The 2024 AASM pediatric MSLT protocol controls current MSLT preparation, administration, and reporting details. Current AASM Scoring Manual Version 3 controls scoring and technical definitions, and ICSD-3-TR controls current diagnostic classification.",
+  "copyrightUse":"Use citation, public topic identity, original summaries, and learning objectives. Do not reproduce recommendation wording, evidence tables, figures, or substantial passages.",
+  "sections":[
+    {"id":"peds-nonresp-psg-mslt-scope","label":"Scope and evidence context for pediatric non-respiratory PSG/MSLT indications"},
+    {"id":"peds-nonresp-psg-context","label":"Non-respiratory pediatric PSG indication context"},
+    {"id":"peds-nonresp-mslt-context","label":"Pediatric hypersomnolence and MSLT indication context"},
+    {"id":"peds-nonresp-neurobehavioral","label":"Neurologic, behavioral, and other non-respiratory sleep-evaluation context"},
+    {"id":"peds-nonresp-current-protocol-boundary","label":"2024 pediatric MSLT protocol and current AASM/ICSD cross-check"}
+  ]
+}

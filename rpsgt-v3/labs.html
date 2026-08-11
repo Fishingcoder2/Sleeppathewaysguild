@@ -7,11 +7,12 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/rpsgt-v3.css">
 <link rel="stylesheet" href="assets/labs.css">
+<link rel="stylesheet" href="assets/module-polish.css">
 </head>
 <body data-module="labs">
 <div class="app-shell">
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Skills Laboratory</strong><span>Canonical laboratory catalog</span></span></a>
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Skills Laboratory</strong><span>Applied RPSGT learning pathways</span></span></a>
   <div class="top-actions"><a href="reports.html">Reports</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
@@ -25,20 +26,21 @@
 </aside>
 <main class="main">
 <section class="hero">
-  <div><div class="eyebrow">Module 3 · native laboratory parity</div><h1>Skills Laboratory</h1><p class="lead">All ten laboratory families now use stable identifiers, blueprint-task mappings, native v3 routes, versioned progress keys, isolated attempt history, and validated completion contracts.</p><div class="lab-summary" data-lab-summary><div><span>Lab families</span><strong>—</strong></div></div></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>One screen, one skill pathway.</h2><p>Each laboratory now uses the same progress boundary: review the workflow stations, complete the validated checkpoint, inspect feedback, and return to Reports without mixing the result into ordinary practice or exam history.</p></aside>
+  <div><div class="eyebrow">Applied Learning · Skills Labs</div><h1>Practice one technical skill pathway at a time</h1><p class="lead">Build applied RPSGT skills across hookup, EKG, scoring, respiratory monitoring, instrumentation, PAP, troubleshooting, pediatric and infant sleep, MSLT/MWT protocols, and sleep-technology calculations.</p><div class="lab-summary" data-lab-summary><div><span>Lab families</span><strong>—</strong></div></div></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Learn the workflow, then check the skill.</h2><p>Choose one lab, work through its stations, complete the checkpoint, review the feedback, and use Reports to decide what to practice next.</p></aside>
 </section>
-<section class="section notice"><strong>Native laboratory boundary:</strong> Hookup, EKG, Scoring, Respiratory, Instrumentation, PAP, Integrated Troubleshooting, Pediatric and Infant Sleep, MSLT/MWT Protocols, and Math Coach are v3-ready and write only to the versioned Skills Lab record. The older public EKG page remains unchanged as a preserved standalone artifact, but the v3 catalog now opens the native EKG laboratory.</section>
-<section class="section card"><div class="section-head"><div><div class="eyebrow">Mapped laboratory progress</div><h2>Laboratory position</h2></div><span class="status green">Versioned record</span></div><p data-lab-last>No prior laboratory position is mapped.</p></section>
-<section class="section lab-catalog" data-lab-catalog><div class="card"><p>Loading the laboratory catalog…</p></div></section>
-<section class="section notice"><strong>Content boundary:</strong> <span data-lab-boundary>Catalog descriptions and task mappings are app-authored.</span></section>
-<footer class="footer">Development branch only · Native laboratory parity is automated; interactive desktop/mobile browser regression remains required before release.</footer>
+<section class="section notice"><strong>Lab learning boundary:</strong> Each Skills Lab keeps its own progress and attempt history. Lab activity does not change ordinary Practice, Readiness, or Mock results.</section>
+<section class="section card"><div class="section-head"><div><div class="eyebrow">Your Skills Lab progress</div><h2>Continue applied learning</h2></div><span class="status green">Skills Lab record</span></div><p data-lab-last>No prior laboratory position is mapped.</p></section>
+<section class="section lab-catalog" data-lab-catalog><div class="card"><p>Loading the Skills Lab catalog…</p></div></section>
+<section class="section notice"><strong>Learning scope:</strong> <span data-lab-boundary>Lab descriptions, workflow stations, and RPSGT task mappings are original Sleep Pathways Guild educational material unless a source is specifically identified.</span></section>
+<footer class="footer">Sleep Pathways Guild · Skills Labs are educational practice and do not represent an official BRPT credential, score, or passing prediction.</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
+<script src="core/learner-surface-guard.js"></script>
 <script src="core/lab-catalog-engine.js"></script>
 <script src="core/labs.js"></script>
 </body>

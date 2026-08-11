@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Reference Center | Sleep Pathways Guild</title>
+<meta name="description" content="Search the Sleep Pathways Guild RPSGT V3 reference center by BRPT domain, task, subject, and source authority.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/reference-center.css">
+</head>
+<body data-module="references">
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Reference Center</strong><span>Sleep Pathways Guild · RPSGT V3</span></span></a>
+  <div class="top-actions"><a href="index.html">Dashboard</a><a href="study.html">Guided Study</a><a href="practice.html">Practice</a></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" href="practice.html"><span>✓</span>Practice &amp; Exam</a>
+  <a class="nav-link" href="reports.html"><span>▤</span>Reports</a>
+</aside>
+<main class="main">
+<section class="hero reference-hero">
+  <div>
+    <div class="eyebrow">References &amp; scope</div>
+    <h1>RPSGT APA-Style Reference Center</h1>
+    <p class="lead">Find the sources that support a BRPT domain, task, or study topic without exposing the private Guild library. Search by domain, task, subject, or authority layer, then open an official public source when one is available.</p>
+    <div class="actions"><a class="btn primary" href="#reference-filters">Search references</a><a class="btn secondary" href="#reference-scope">How sources are used</a></div>
+  </div>
+  <aside class="card coach-card coach-bob-home">
+    <img data-coach-bob src="assets/coach-bob-rpsgt.webp" alt="Coach Bob, Sleep Pathways Guild learning mentor" width="104" height="128">
+    <div><span class="status gold">Coach Bob</span><h2>Start with the strongest applicable source.</h2><p>Use the task and topic filters to narrow the list. For version-sensitive rules, identify the controlling authority first, then use technical guidance and study references for application and reinforcement.</p></div>
+  </aside>
+</section>
+
+<section class="section notice" data-reference-load><strong>Loading the RPSGT reference index…</strong> Building the learner-facing view from vetted source metadata and the current authority registry.</section>
+
+<section class="section card reference-controls" id="reference-filters" data-reference-controls>
+  <div class="section-head"><div><div class="eyebrow">Reference lookup</div><h2>Search by blueprint location or subject</h2><p>Filters use the existing RPSGT V3 source-to-task mappings and the audited authority registry. Private Drive locations, source keys, QA notes, and internal library records are not displayed.</p></div><span class="status green"><span data-reference-count>0</span>&nbsp;matches</span></div>
+  <div class="reference-filter-grid">
+    <label>Domain
+      <select data-reference-domain><option value="all">All domains</option></select>
+    </label>
+    <label>Task
+      <select data-reference-task><option value="all">All tasks</option></select>
+    </label>
+    <label>Subject or topic
+      <input type="search" data-reference-topic placeholder="e.g., PAP titration, pediatric scoring, MSLT, artifact" autocomplete="off">
+    </label>
+    <label>Authority
+      <select data-reference-authority>
+        <option value="all">All authority and reference levels</option>
+        <option value="brpt">BRPT · Exam framework</option>
+        <option value="1">1 · AASM scoring / technical</option>
+        <option value="2">2 · AASM accreditation / protocol</option>
+        <option value="3">3 · AASM clinical / protocol / classification</option>
+        <option value="4">4 · AAST technical / competency / scope</option>
+        <option value="5">5 · Core references</option>
+        <option value="6">6 · Supplemental</option>
+      </select>
+    </label>
+    <div class="reference-clear"><button class="btn secondary" type="button" data-reference-clear>Clear filters</button></div>
+  </div>
+  <div class="reference-summary"><strong data-reference-status>Reference index loading</strong><span>Results are ordered by the Sleep Pathways Guild authority and study-support hierarchy.</span></div>
+</section>
+
+<section class="section reference-results" data-reference-results aria-live="polite"></section>
+
+<section class="section card reference-scope" id="reference-scope">
+  <div class="section-head"><div><div class="eyebrow">Source authority &amp; learner protection</div><h2>What this Reference Center shows—and what it intentionally hides</h2></div></div>
+  <div class="authority-key" aria-label="Sleep Pathways Guild source authority hierarchy">
+    <div><b>BRPT · Exam framework</b><small>Exam blueprint, handbook, eligibility, candidate, and credential information. This orients exam preparation; it is not a clinical scoring hierarchy.</small></div>
+    <div><b>1 · AASM scoring / technical</b><small>Governing scoring rules and scoring-linked technical specifications. Use first when the issue is how an event, montage, technical specification, or report element is scored or defined.</small></div>
+    <div><b>2 · AASM accreditation / protocol</b><small>Facility protocol, accreditation, infection-control, and written-procedure requirements. These do not replace clinical or scoring rules.</small></div>
+    <div><b>3 · AASM clinical / protocol / classification</b><small>Current diagnostic, treatment, testing-protocol, and classification guidance for the clinical question at hand.</small></div>
+    <div><b>4 · AAST technical / competency / scope</b><small>Current technologist workflow, competency, professional-role, and scope guidance. Use beneath controlling AASM rules and above textbooks for procedural application.</small></div>
+    <div><b>5 · Core references</b><small>BRPT-listed textbooks and other core reinforcement references used after the controlling authority is identified.</small></div>
+    <div><b>6 · Supplemental</b><small>Additional specialty, visual, historical, or educational context that must not outrank current authority.</small></div>
+  </div>
+  <div class="reference-scope-grid section">
+    <div><strong>Local and device-specific overlay</strong><span>Physician orders, facility SOPs and emergency policies, state law, and manufacturer instructions remain required when execution is patient-specific, local, or device-specific. The Reference Center does not invent universal local thresholds or device procedures.</span></div>
+    <div><strong>Oxygen boundary</strong><span>Supplemental low-flow oxygen is treated as indication- and order-specific. The current audit does not identify a standalone AAST low-flow oxygen technical guideline, so the app must not invent a universal oxygen titration protocol.</span></div>
+    <div><strong>PAP pathway boundary</strong><span>OSA PAP/CPAP-BPAP, adult CSA/ASV, and hypoventilation/NIV are kept as separate authority pathways. Older or generic PAP material must not silently control a different treatment pathway.</span></div>
+    <div><strong>Pediatric boundary</strong><span>AAST Standard PSG is not presented as pediatric PSG authority because its stated scope excludes pediatric PSG. Current AASM infant/pediatric rules, applicable pediatric protocols, age-specific competency, facility policy, and supporting pediatric references are layered separately.</span></div>
+    <div><strong>Citation integrity</strong><span>Explicit APA citations are displayed as stored. When a vetted source record contains another verified citation style, it is labeled “Recorded source citation” rather than silently rewritten.</span></div>
+    <div><strong>Copyright boundary</strong><span>The center shows bibliographic information, original study directions, and section or chapter titles. It does not reproduce protected textbook prose, scoring rules, figures, tables, or proprietary question banks.</span></div>
+    <div><strong>Private library boundary</strong><span>Internal Drive URLs, holdings records, source keys, audit notes, QA states, and library-management data remain hidden from learners.</span></div>
+    <div><strong>Current-source warning</strong><span>Certification requirements, scoring rules, protocols, and professional guidance can change. Version-sensitive material should be verified against the current controlling source.</span></div>
+    <div><strong>Independent educational use</strong><span>Sleep Pathways Guild is independent. References to BRPT, AASM, AAST, publishers, or professional literature do not imply endorsement.</span></div>
+    <div><strong>Educational achievements</strong><span>Guild badges, medals, practice scores, readiness results, and mock results are educational measures only—not BRPT credentials, official scores, or passing predictions.</span></div>
+  </div>
+
+  <details class="section card">
+    <summary><strong>Full Sources &amp; Disclosures</strong></summary>
+    <div class="reference-scope-grid section">
+      <div><strong>Independence</strong><span>Sleep Pathways Guild is not BRPT and is not affiliated with or endorsed by BRPT. BRPT names and materials are used for educational orientation and exam-preparation alignment.</span></div>
+      <div><strong>AASM &amp; AAST</strong><span>Use of AASM or AAST names, publications, standards, guidelines, or educational resources does not imply endorsement. Current applicable professional guidance should control rule-sensitive content.</span></div>
+      <div><strong>Educational use</strong><span>This learning center is for education and exam preparation, not a substitute for institutional policy, provider orders, current professional standards, clinical judgment, supervision, licensure requirements, or patient-specific decisions.</span></div>
+      <div><strong>Scores &amp; readiness</strong><span>Practice, Readiness, Mock, Guided Study, reports, badges, and progress indicators are educational measures only and are not official BRPT scores, credential decisions, or passing predictions.</span></div>
+      <div><strong>Question origin</strong><span>Sleep Pathways Guild practice questions are original educational items, not actual BRPT examination questions or copied proprietary question-bank material.</span></div>
+      <div><strong>Copyright</strong><span>Study recommendations, outlines, citations, objectives, and mappings point learners toward references without reproducing substantial protected passages, proprietary scoring rules, figures, tables, or question banks.</span></div>
+      <div><strong>Affiliate disclosure</strong><span>Some optional commercial destinations elsewhere in the Guild may use affiliate links. Official professional and public resources should remain visually distinguishable from commercial destinations.</span></div>
+      <div><strong>Privacy &amp; local learner data</strong><span>RPSGT V3 progress is designed to remain in the learner's browser unless a feature explicitly states otherwise. Private notes, raw browser state, question text, and private links are excluded from learner-facing reference results.</span></div>
+      <div><strong>External links</strong><span>External sites control their own content, availability, privacy practices, and current versions. Learners should verify current requirements and guidance at the authoritative destination.</span></div>
+      <div><strong>AI assistance &amp; human review</strong><span>AI tools may assist development, organization, coding, or source discovery. Production and rule-sensitive content still require source validation and human review.</span></div>
+      <div><strong>Content errors &amp; support</strong><span>Questionable content, broken links, suspected scoring issues, or technical errors should be reported for review rather than silently corrected without provenance.</span></div>
+    </div>
+  </details>
+
+  <div class="actions"><a class="btn secondary" href="https://sleeppathwaysguild.com/contact/" target="_blank" rel="noopener noreferrer">Report a reference or content issue ↗</a><a class="btn primary" href="study.html">Return to Guided Study</a></div>
+</section>
+
+<footer class="footer">Sleep Pathways Guild · Independent RPSGT educational preparation · <a href="sources-disclosures.html">Reference Center &amp; scope</a></footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+<script src="core/reference-center.js"></script>
+</body>
+</html>

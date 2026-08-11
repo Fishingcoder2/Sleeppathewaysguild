@@ -1,0 +1,24 @@
+{
+  "id":"aast-end-tidal-co2-2018",
+  "shortTitle":"AAST End-Tidal CO2 Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"May 2018; still listed on the current AAST technical-guidelines index",
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/End-Tidal-CO2-1.pdf",
+  "authorityBoundary":"Use for technologist capnography setup, acquisition, calibration, signal-quality monitoring, troubleshooting, cleaning, treatment-monitoring context, and documentation. Current AASM Scoring Manual rules control hypoventilation definitions, thresholds, scoring, and required reporting. Keep ETCO2 and TcCO2 distinct because sensor behavior and artifacts differ.",
+  "bestFor":"End-tidal carbon dioxide monitoring during diagnostic and therapeutic sleep testing, capnography equipment and sensor concepts, calibration, waveform/signal quality, troubleshooting, monitoring, and documentation.",
+  "mappedTaskCodes":["D2A","D2B","D2C","D3A","D3B","D4C"],
+  "mappingRationale":{"D2A":"Supports capnography equipment, application, calibration, and technical preparation.","D2B":"Supports performance and monitoring of ETCO2 during indicated sleep testing.","D2C":"Supports signal-quality troubleshooting, physiologic cross-checking, cleaning, and documentation.","D3A":"Supports recognition of valid CO2 signal context while AASM rules control adult scoring.","D3B":"Supports recognition of valid CO2 signal context while AASM rules control pediatric/infant scoring.","D4C":"Supports CO2 monitoring and ventilation context when oxygen or therapeutic interventions are used; oxygen administration remains order/facility-policy dependent."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial procedures, figures, or older scoring-rule text.",
+  "sections":[
+    {"id":"aast-etco2-scope","label":"Scope and indications for end-tidal CO2 monitoring"},
+    {"id":"aast-etco2-equipment","label":"Capnography equipment, sampling, and sensor concepts"},
+    {"id":"aast-etco2-calibration","label":"Calibration and technical preparation"},
+    {"id":"aast-etco2-recording","label":"Recording, waveform, and signal-quality monitoring"},
+    {"id":"aast-etco2-troubleshooting","label":"Troubleshooting, cleaning, and artifact recognition"},
+    {"id":"aast-etco2-documentation","label":"Technologist monitoring and documentation"}
+  ]
+}

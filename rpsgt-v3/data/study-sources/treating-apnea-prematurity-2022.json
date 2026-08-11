@@ -1,0 +1,33 @@
+{
+  "id":"treating-apnea-prematurity-2022",
+  "shortTitle":"Treating Apnea of Prematurity",
+  "fullTitle":"Treating Apnea of Prematurity",
+  "publicationYear":2022,
+  "authors":["Joseph V. Pergolizzi Jr.","Alexander Kraus","Peter Magnusson","Frank Breve","Katherine Mitchell","Robert B. Raffa","Jo Ann K. LeQuang","Giustino Varrassi"],
+  "publisher":"Cureus",
+  "doi":"10.7759/cureus.21783",
+  "officialUrl":"https://doi.org/10.7759/cureus.21783",
+  "sourceType":"supplemental neonatal treatment-landscape review",
+  "sourceRole":"studySupport",
+  "currentAuthority":false,
+  "verifiedAt":"2026-08-08",
+  "apaCitation":"Pergolizzi, J., Kraus, A., Magnusson, P., Breve, F., Mitchell, K., Raffa, R., LeQuang, J. A. K., & Varrassi, G. (2022). Treating apnea of prematurity. Cureus, 14(1), e21783. https://doi.org/10.7759/cureus.21783",
+  "referenceKeys":["treating-apnea-prematurity-2022"],
+  "mappedTaskCodes":["D1A","D1C","D2C","D3B","D4A"],
+  "bestFor":"Supporting overview of apnea-of-prematurity physiology/natural history, caffeine and methylxanthine treatment context, uncertainty around treatment timing and duration, noninvasive respiratory support, lower-evidence interventions, and evidence gaps.",
+  "currencyNote":"2022 narrative review, not a guideline. The source itself describes areas of limited consensus and should be used as a treatment-landscape/evidence-summary source rather than a protocol.",
+  "authorityBoundary":"Supplemental neonatal review only. Current neonatal guidance, prescribing information, physician orders, institutional protocols, device instructions, and facility policy govern treatment. Current AASM Scoring Manual Version 3 infant/pediatric respiratory rules govern PSG scoring when formal sleep-study scoring applies. Do not convert medication doses, respiratory-support settings, positioning discussion, or experimental interventions in this review into technologist instructions.",
+  "copyrightUse":"Use bibliographic metadata, section labels, page locators, and original Sleep Pathways Guild study directions only. Do not reproduce protected review prose, tables, figures, or substantial passages.",
+  "sections":[
+    {"id":"P-AOP-01","label":"Overview: AOP definition, risk, physiology, and natural history (local PDF pp. 1–2)","taskCodes":["D1A","D2C","D3B"]},
+    {"id":"P-AOP-02","label":"Review methods: evidence-search scope and limitations (local PDF p. 2)","taskCodes":["D1A"]},
+    {"id":"P-AOP-03","label":"Methylxanthines: caffeine and related mechanism/clinical-use context (local PDF pp. 2–4)","taskCodes":["D1A","D1C"]},
+    {"id":"P-AOP-04","label":"Caffeine timing: early treatment, duration, discontinuation, and uncertainty (local PDF pp. 3–4)","taskCodes":["D1A","D1C"]},
+    {"id":"P-AOP-05","label":"Other medical interventions: transfusion, CO2, and device/neuromodulation concepts (local PDF pp. 4–5)","taskCodes":["D1A","D2C"]},
+    {"id":"P-AOP-06","label":"Doxapram evidence and adverse-effect considerations (local PDF p. 5)","taskCodes":["D1A"]},
+    {"id":"P-AOP-07","label":"Respiratory support: CPAP and NIPPV treatment landscape (local PDF pp. 5–6)","taskCodes":["D1C","D2C","D4A"]},
+    {"id":"P-AOP-08","label":"Nonpharmacologic support: positioning, sensory stimulation, and stochastic resonance (local PDF p. 6)","taskCodes":["D1A","D2C"]},
+    {"id":"P-AOP-09","label":"Comparative therapy: caffeine/theophylline/aminophylline/doxapram context (local PDF pp. 6–7)","taskCodes":["D1A","D1C"]},
+    {"id":"P-AOP-10","label":"Conclusions: evidence gaps and need for clearer treatment guidance (local PDF p. 7)","taskCodes":["D1A"]}
+  ]
+}
