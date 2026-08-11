@@ -26,6 +26,9 @@ jobs:
       - name: Audit internal and live public links
         run: python scripts/link_audit.py --site-url https://sleeppathwaysguild.com --live
 
+      - name: Inventory public download buttons
+        run: python scripts/download_link_inventory.py
+
       - name: Upload website audit reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -34,3 +37,4 @@ jobs:
           path: |
             seo-audit-report.txt
             link-audit-report.txt
+            download-link-inventory.txt
