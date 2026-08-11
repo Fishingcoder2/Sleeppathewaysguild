@@ -7,6 +7,13 @@
     if(node&&node.textContent.trim()===from) node.textContent=to;
   }
 
+  function replaceMatchingText(node,pattern,replacement){
+    if(!node) return;
+    const current=node.textContent;
+    const next=current.replace(pattern,replacement);
+    if(next!==current) node.textContent=next;
+  }
+
   function normalizeSummary(){
     const dashboard=document.querySelector('[data-guided-trail-dashboard]');
     if(!dashboard) return;
@@ -35,7 +42,7 @@
         status.textContent=`${code} · ${DOMAIN_MEDALS[code]||'Domain'} medal earned`;
       }
       const detail=head.querySelector('small');
-      if(detail) detail.textContent=detail.textContent.replace(/task awards/gi,'task badges');
+      replaceMatchingText(detail,/task awards/gi,'task badges');
       const weight=head.querySelector('.domain-weight span');
       replaceExact(weight,'app blueprint weight','RPSGT study weight');
     });

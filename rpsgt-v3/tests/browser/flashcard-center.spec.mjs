@@ -1,11 +1,9 @@
 import {test,expect} from '@playwright/test';
 
-test.beforeEach(async({page})=>{
-  await page.addInitScript(()=>localStorage.clear());
-});
-
 test('custom RPSGT flashcards persist without duplicate cards or legacy writes',async({page})=>{
   await page.goto('flashcards.html');
+  await page.evaluate(()=>localStorage.clear());
+  await page.reload();
   await expect(page.locator('[data-card-empty]')).toBeVisible();
   await expect(page.locator('[data-card-stage]')).toBeHidden();
 
