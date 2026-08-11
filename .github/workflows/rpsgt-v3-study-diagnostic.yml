@@ -37,7 +37,7 @@ jobs:
           python3 -m http.server 4173 --directory .. >/tmp/rpsgt-study-http.log 2>&1 &
           SERVER_PID=$!
           trap 'kill $SERVER_PID || true' EXIT
-          cat >/tmp/study-isolation.mjs <<'NODE'
+          cat >study-isolation.mjs <<'NODE'
           import { chromium } from 'playwright';
           const base='http://127.0.0.1:4173/rpsgt-v3/study.html';
           const trials=[
@@ -69,4 +69,5 @@ jobs:
           }
           await browser.close();
           NODE
-          node /tmp/study-isolation.mjs
+          node study-isolation.mjs
+          rm -f study-isolation.mjs
