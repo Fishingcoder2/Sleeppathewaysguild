@@ -15,14 +15,24 @@ permissions:
 
 jobs:
   browser-regression:
+    name: Browser regression (${{ matrix.project }})
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - desktop-chromium
+          - tablet-chromium
+          - mobile-chromium
     defaults:
       run:
         working-directory: rpsgt-v3
     steps:
-      - name: Checkout exact branch head
+      - name: Checkout frozen release candidate
         uses: actions/checkout@v4
+        with:
+          ref: c42bea72d8b5c85618a3780c33b4528ea52990a5
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -35,14 +45,14 @@ jobs:
       - name: Install Chromium and system dependencies
         run: npx playwright install --with-deps chromium
 
-      - name: Run desktop tablet mobile regression
-        run: npm run test:browser
+      - name: Run ${{ matrix.project }} regression
+        run: npx playwright test --config=playwright.config.mjs --project=${{ matrix.project }}
 
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rpsgt-v3-playwright-report
+          name: rpsgt-v3-playwright-report-${{ matrix.project }}
           path: rpsgt-v3/playwright-report
           if-no-files-found: ignore
           retention-days: 14
@@ -51,7 +61,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: rpsgt-v3-playwright-failures
+          name: rpsgt-v3-playwright-failures-${{ matrix.project }}
           path: rpsgt-v3/test-results
           if-no-files-found: ignore
           retention-days: 14
