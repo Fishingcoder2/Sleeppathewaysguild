@@ -26,7 +26,7 @@ if(!Array.isArray(registry.rules)||registry.rules.length!==15) throw new Error('
 if(manifest.papModalitySeparationFile!=='../authority/pap-modality-separation-2026-08-08.json') throw new Error('PAP modality authority-map manifest pointer is missing.');
 if(!(manifest.topicFamilyFiles||[]).includes('topic-families-pap-modalities.json')) throw new Error('PAP modality topic-family overlay is not registered.');
 if(manifest.schemaVersion<27) throw new Error('Study-source manifest schema must register the PAP modality separation layer.');
-if(d1c?.meta?.questionCount!==77||d4a?.meta?.questionCount!==360) throw new Error('D1C/D4A preserved question counts changed.');
+if(d1c?.meta?.questionCount!==77||d4a?.meta?.questionCount!==363) throw new Error('D1C/D4A preserved question counts changed.');
 if(d1c?.meta?.recordsPreservedUnchanged!==true||d4a?.meta?.recordsPreservedUnchanged!==true) throw new Error('D1C/D4A extracted question modules must remain unchanged.');
 if(map.authorityRegistryChanged!==false||map.authorityRegistryRuleCountExpected!==15||(map.routes||[]).length!==7) throw new Error('PAP modality map must preserve seven routes and the 15-rule authority registry.');
 
