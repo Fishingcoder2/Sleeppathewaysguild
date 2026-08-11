@@ -1,0 +1,125 @@
+name: RPSGT v3 merged release validation
+
+on:
+  push:
+    branches:
+      - 'release/rpsgt-v3-*'
+    paths:
+      - 'rpsgt-v3/**'
+      - '.github/workflows/rpsgt-v3-release-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-app-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact release candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Rebuild generated question modules in the runner only
+        env:
+          RPSGT_EXTRACTION_DATE: 2026-08-01
+        run: |
+          node rpsgt-v3/scripts/extract-question-bank.mjs
+          node rpsgt-v3/scripts/generate-feedback-index.mjs
+      - name: Validate question bank
+        run: node rpsgt-v3/scripts/validate-question-bank.mjs
+      - name: Syntax-check all core modules including current-main foundations
+        run: |
+          find rpsgt-v3/core -maxdepth 1 -name '*.js' -print0 | sort -z | xargs -0 -n1 node --check
+          node -e "const fs=require('fs'); JSON.parse(fs.readFileSync('rpsgt-v3/data/master-data-model.schema.json','utf8')); JSON.parse(fs.readFileSync('rpsgt-v3/data/master-data-registry.json','utf8'));"
+      - name: Validate Study Practice Review Readiness Mock Labs Reports migration and release gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          tests=(
+            test-home-shell.mjs
+            test-brpt-official-resources.mjs
+            test-study-resource-exact-resolution.mjs
+            test-current-authority-registry.mjs
+            test-coach-bob-engine.mjs
+            test-guided-trail-system.mjs
+            test-guided-trail-shell.mjs
+            test-guided-study-completion-system.mjs
+            test-guided-study-completion-shell.mjs
+            test-flashcard-engine.mjs
+            test-flashcard-shell.mjs
+            test-lab-catalog.mjs
+            test-labs-shell.mjs
+            test-hookup-lab-system.mjs
+            test-hookup-lab-shell.mjs
+            test-scoring-lab-system.mjs
+            test-scoring-lab-shell.mjs
+            test-respiratory-lab-system.mjs
+            test-respiratory-lab-shell.mjs
+            test-instrumentation-lab-system.mjs
+            test-instrumentation-lab-shell.mjs
+            test-pap-lab-system.mjs
+            test-pap-lab-shell.mjs
+            test-troubleshooting-lab-system.mjs
+            test-troubleshooting-lab-shell.mjs
+            test-pediatric-lab-system.mjs
+            test-pediatric-lab-shell.mjs
+            test-daytime-testing-lab-system.mjs
+            test-daytime-testing-lab-shell.mjs
+            test-ekg-lab-system.mjs
+            test-ekg-lab-shell.mjs
+            test-visual-lab.mjs
+            test-math-coach-system.mjs
+            test-math-coach-shell.mjs
+            test-practice-pools.mjs
+            test-practice-shell.mjs
+            test-practice-actions.mjs
+            test-review-system.mjs
+            test-readiness-system.mjs
+            test-readiness-shell.mjs
+            test-mock-system.mjs
+            test-mock-shell.mjs
+            test-mock-drilldown-system.mjs
+            test-mock-drilldown-shell.mjs
+            test-reports-system.mjs
+            test-reports-shell.mjs
+            test-study-summary-system.mjs
+            test-study-summary-shell.mjs
+            test-storage-migration.mjs
+            test-storage-export-fixtures.mjs
+            test-migration-export-capture.mjs
+            test-legacy-migration.mjs
+            test-release-readiness.mjs
+          )
+          for test_file in "${tests[@]}"; do
+            echo "=== $test_file ==="
+            node "rpsgt-v3/scripts/$test_file"
+          done
+
+  source-authority-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact release candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate current source authority and exact routing
+        shell: bash
+        run: |
+          set -euo pipefail
+          node rpsgt-v3/scripts/test-study-source-authority.mjs
+          node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
+          node rpsgt-v3/scripts/test-drive-source-imports.mjs
+          node rpsgt-v3/scripts/test-current-authority-registry.mjs
+          node rpsgt-v3/scripts/test-study-resource-bank-coverage.mjs
+          node rpsgt-v3/scripts/audit-pending-source-key-cooccurrence.mjs
+          node rpsgt-v3/scripts/test-icsd-taxonomy.mjs
+          node rpsgt-v3/scripts/test-principles-practice-7e-locators.mjs
+          node rpsgt-v3/scripts/test-respiratory-study-trail.mjs
+          node rpsgt-v3/scripts/test-brpt-master-reference-inventory.mjs
