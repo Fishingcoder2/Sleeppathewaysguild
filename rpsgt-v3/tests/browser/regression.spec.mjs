@@ -152,7 +152,7 @@ test('migration export remains read-only and does not create v3 storage', async 
   expect(state.v3).toBeNull();
 });
 
-test('Practice starts a five-question learner session and records feedback', async ({ page }) => {
+test('Practice uses Next to check, shows reasoning, and supports previous-question navigation', async ({ page }) => {
   await page.goto('practice.html');
   await expect(page.locator('[data-practice-setup]')).toBeVisible();
   await page.locator('[data-practice-size]').selectOption('5');
@@ -160,13 +160,24 @@ test('Practice starts a five-question learner session and records feedback', asy
 
   await expect(page.locator('[data-practice-shell]')).toBeVisible();
   await expect(page.locator('[data-question-prompt]')).not.toBeEmpty();
-  const options = page.locator('[data-question-choices] input[type="radio"]');
-  await expect(options).toHaveCount(4);
-  await options.first().check();
-  await expect(page.locator('[data-submit-answer]')).toBeEnabled();
-  await page.locator('[data-submit-answer]').click();
+  await expect(page.locator('[data-question-choices] [data-choice-index]')).toHaveCount(4);
+  await expect(page.locator('[data-submit-answer]')).toHaveCount(0);
+  await expect(page.locator('[data-previous-question]')).toBeDisabled();
+
+  await page.locator('[data-choice-index]').first().click();
+  await expect(page.locator('[data-next-question]')).toBeEnabled();
+  await page.locator('[data-next-question]').click();
   await expect(page.locator('[data-answer-feedback]')).toBeVisible();
-  await expect(page.locator('[data-next-question]')).toBeVisible();
+  await expect(page.locator('[data-answer-feedback]')).toContainText('Reasoning');
+  await expect(page.locator('[data-answer-feedback]')).toContainText('Correct answer:');
+  await expect(page.locator('[data-next-question]')).toHaveText('Next question');
+
+  await page.locator('[data-next-question]').click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 2 of 5');
+  await expect(page.locator('[data-previous-question]')).toBeEnabled();
+  await page.locator('[data-previous-question]').click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 1 of 5');
+  await expect(page.locator('[data-answer-feedback]')).toBeVisible();
 });
 
 test('Readiness starts at the requested size and can end without entering Practice history', async ({ page }) => {
