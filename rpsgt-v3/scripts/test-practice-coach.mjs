@@ -15,7 +15,7 @@ if(typeof coach.priorPracticeMisses!=='function') throw new Error('Practice Coac
 if(source.includes('MutationObserver')) throw new Error('Practice Coach must remain event-driven and must not use MutationObserver.');
 for(const token of [
   "addEventListener('rpsgt:practice-question'",
-  "closest('[data-submit-answer]')",
+  "closest('[data-next-question]')",
   'RPSGTCoachBobEngine',
   'RPSGTStudyResourceCatalog',
   'resources.resolveQuestion(question)',
@@ -28,6 +28,7 @@ for(const token of [
 ]){
   if(!source.includes(token)) throw new Error(`Practice Coach integration is missing ${token}.`);
 }
+if(source.includes("closest('[data-submit-answer]')")) throw new Error('Practice Coach still depends on the removed Check answer control.');
 if(!source.includes("const body=submitted")||!source.includes("?reviewHtml(payload,question,correct,selected)")) throw new Error('Practice Coach no longer keeps scored-only review content behind the submitted state.');
 for(const token of [
   'data-practice-coach',
@@ -51,4 +52,4 @@ if(coach.priorPracticeMisses(storage,'q1',false)!==2) throw new Error('Practice 
 if(coach.priorPracticeMisses(storage,'q1',true)!==1) throw new Error('Practice Coach did not exclude the just-recorded incorrect attempt.');
 if(coach.priorPracticeMisses(storage,'q2',false)!==1) throw new Error('Practice Coach history filtering crossed question IDs.');
 
-console.log(JSON.stringify({eventDriven:true,sharedCoachEngine:true,verifiedResources:true,repeatMissHistory:true,preAnswerCollapsed:true,scoredOnlyReview:true,scoredReviewOpens:true,mobileStyles:true},null,2));
+console.log(JSON.stringify({eventDriven:true,sharedCoachEngine:true,verifiedResources:true,repeatMissHistory:true,preAnswerCollapsed:true,scoredOnlyReview:true,scoredReviewOpens:true,nextButtonScoring:true,mobileStyles:true},null,2));
