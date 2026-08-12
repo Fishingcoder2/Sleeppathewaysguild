@@ -55,3 +55,45 @@ test('Flashcard Center uses the v2-style library modal with custom cards and fla
   await expect(page.locator('[data-card-empty]')).toBeVisible();
   await expect(review).toBeHidden();
 });
+
+test('Previous and Next stay within the category opened from the flashcard library',async({page})=>{
+  await page.goto('flashcards.html');
+  await page.evaluate(()=>localStorage.clear());
+  await page.reload();
+
+  const dialog=page.locator('[data-custom-card-dialog]');
+  const review=page.locator('[data-card-stage]');
+  async function addCard(front,back,domain){
+    await page.locator('[data-custom-card-open]').first().click();
+    await dialog.locator('textarea[name="front"]').fill(front);
+    await dialog.locator('textarea[name="back"]').fill(back);
+    await dialog.locator('input[name="domain"]').fill(domain);
+    await dialog.getByRole('button',{name:'Save flashcard'}).click();
+    await expect(review).toBeVisible();
+    await page.locator('[data-card-close]').click();
+    await expect(review).toBeHidden();
+  }
+
+  await addCard('Core card one','Core answer one','Core Sleep Terms');
+  await addCard('Core card two','Core answer two','Core Sleep Terms');
+  await addCard('Cardiac card one','Cardiac answer one','Cardiac & ECG Recognition');
+
+  await page.locator('[data-card-tile]').filter({hasText:'Core card one'}).click();
+  await expect(page.locator('[data-card-front-topic]')).toHaveText('Core Sleep Terms');
+  await expect(page.locator('[data-card-position]')).toHaveText('Card 1 / 2');
+  await expect(page.locator('[data-card-front]')).toHaveText('Core card one');
+
+  await page.locator('[data-card-next]').click();
+  await expect(page.locator('[data-card-front-topic]')).toHaveText('Core Sleep Terms');
+  await expect(page.locator('[data-card-position]')).toHaveText('Card 2 / 2');
+  await expect(page.locator('[data-card-front]')).toHaveText('Core card two');
+
+  await page.locator('[data-card-next]').click();
+  await expect(page.locator('[data-card-position]')).toHaveText('Card 1 / 2');
+  await expect(page.locator('[data-card-front]')).toHaveText('Core card one');
+
+  await page.locator('[data-card-prev]').click();
+  await expect(page.locator('[data-card-position]')).toHaveText('Card 2 / 2');
+  await expect(page.locator('[data-card-front]')).toHaveText('Core card two');
+  await expect(page.locator('[data-card-front]')).not.toHaveText('Cardiac card one');
+});
