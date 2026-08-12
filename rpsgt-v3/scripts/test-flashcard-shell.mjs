@@ -48,6 +48,10 @@ assert.doesNotMatch(store,/IMPORT_ENABLED\s*=\s*true/);
 assert.match(ui,/function renderLibrary/);
 assert.match(ui,/function openReview/);
 assert.match(ui,/function closeReview/);
+assert.match(ui,/function reviewCards/);
+assert.match(ui,/function currentReviewCard/);
+assert.match(ui,/reviewCategory/);
+assert.match(ui,/categoryFor\(card\)===state\.reviewCategory/,'Modal Previous/Next must stay inside the category opened from the library.');
 assert.match(ui,/data-card-mastered/);
 assert.match(ui,/data-card-review-again/);
 assert.match(ui,/data-card-flag/);
@@ -59,4 +63,4 @@ assert.match(ui,/'ekg & cardiac terms':0/,'EKG & Cardiac Terms must stay in the 
 assert.match(ui,/'circadian rhythm sleep-wake disorders':1/,'Circadian Rhythm Sleep-Wake Disorders must use the photographed v2 pink note theme.');
 assert.match(ui,/'core sleep terms':2/,'Core Sleep Terms must use the photographed v2 blue note theme.');
 
-console.log('RPSGT Flashcard Center v2-style category library, photographed pastel palette, taped-note tiles, focused review modal, custom-card option, persistent flag/unflag, storage boundary, and responsive learner-control contracts passed.');
+console.log('RPSGT Flashcard Center v2-style category library, photographed pastel palette, category-scoped modal navigation, taped-note tiles, focused review modal, custom-card option, persistent flag/unflag, storage boundary, and responsive learner-control contracts passed.');
