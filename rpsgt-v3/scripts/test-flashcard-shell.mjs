@@ -54,5 +54,9 @@ assert.match(ui,/data-card-flag/);
 assert.match(ui,/data-card-shuffle/);
 assert.match(ui,/card\.flagged\?'Unflag':'Flag for review'/);
 assert.match(ui,/updateCurrent\(\{flagged:!card\.flagged\}\)/);
+assert.match(ui,/'cardiac & ecg recognition':0/,'Cardiac & ECG Recognition must use the photographed v2 yellow note theme.');
+assert.match(ui,/'ekg & cardiac terms':0/,'EKG & Cardiac Terms must stay in the v2 cardiac yellow family.');
+assert.match(ui,/'circadian rhythm sleep-wake disorders':1/,'Circadian Rhythm Sleep-Wake Disorders must use the photographed v2 pink note theme.');
+assert.match(ui,/'core sleep terms':2/,'Core Sleep Terms must use the photographed v2 blue note theme.');
 
-console.log('RPSGT Flashcard Center v2-style category library, taped-note tiles, focused review modal, custom-card option, persistent flag/unflag, storage boundary, and responsive learner-control contracts passed.');
+console.log('RPSGT Flashcard Center v2-style category library, photographed pastel palette, taped-note tiles, focused review modal, custom-card option, persistent flag/unflag, storage boundary, and responsive learner-control contracts passed.');
