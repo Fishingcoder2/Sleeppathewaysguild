@@ -116,16 +116,19 @@
       const feedback=document.querySelector('[data-answer-feedback]');
       if(!feedback||feedback.classList.contains('hidden')) return;
       const correct=feedback.classList.contains('correct');
-      render(question,correct?'correct':'incorrect',{correct,selected:selectedAnswer(),focus:true})
+      render(question,correct?'correct':'incorrect',{correct,selected:selectedAnswer(),focus:false})
         .catch(error=>console.warn('Coach Bob Practice review was not rendered.',error));
     }
 
     document.addEventListener('rpsgt:practice-question',event=>{
       const question=event&&event.detail&&event.detail.question;
-      if(question) renderPre(question);
+      if(question){
+        renderPre(question);
+        queueMicrotask(renderScored);
+      }
     });
     document.addEventListener('click',event=>{
-      if(event.target.closest('[data-submit-answer]')) queueMicrotask(renderScored);
+      if(event.target.closest('[data-next-question]')) queueMicrotask(renderScored);
     });
     if(resources) resources.load().catch(()=>null);
     return true;
