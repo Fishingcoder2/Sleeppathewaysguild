@@ -1,0 +1,26 @@
+.practice-modal-footer{display:grid;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.practice-modal-footer .practice-question-tools{margin-top:0}
+.practice-modal-footer .practice-question-action-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:stretch;border-top:0;padding-top:0}
+.practice-modal-footer .practice-question-action-row .btn{width:100%;min-width:0;justify-content:center}
+.practice-modal-footer .practice-question-action-status{grid-column:1/-1}
+.question-action-hint{margin:0;color:var(--muted);font-size:.86rem;line-height:1.45}
+.practice-modal-footer .question-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;justify-content:stretch;margin-top:0}
+.practice-modal-footer .question-actions .btn{width:100%;min-width:0;margin:0;min-height:48px}
+.practice-modal-footer .question-actions .btn.primary{margin-left:0}
+.feedback-result{display:block;margin-bottom:10px;font-size:1rem}
+.feedback-reasoning{display:grid;gap:8px;padding:12px;border-radius:12px;background:rgba(255,255,255,.48);border:1px solid currentColor}
+.feedback-reasoning h3{margin:0;font-size:1rem;color:inherit}
+.feedback-reasoning p{margin:0}
+@media(max-width:900px){.practice-modal-footer .practice-question-action-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){
+  .practice-session:not(.hidden) .practice-modal-footer{position:sticky;bottom:0;z-index:6;margin:18px -14px 0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(247,251,253,.98);border-top:1px solid var(--line);box-shadow:0 -10px 26px rgba(7,25,45,.08)}
+  .practice-session:not(.hidden) .practice-modal-footer .practice-question-action-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .practice-session:not(.hidden) .practice-modal-footer .practice-question-action-row .btn{min-height:42px}
+  .practice-session:not(.hidden) .practice-modal-footer .question-actions{position:static;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0;padding:0;background:transparent;border:0}
+  .practice-session:not(.hidden) .practice-modal-footer .question-actions .btn{width:100%;min-height:50px;margin:0}
+}
+@media(max-width:560px){
+  .practice-modal-footer .practice-question-action-row,.practice-session:not(.hidden) .practice-modal-footer .practice-question-action-row{grid-template-columns:1fr 1fr}
+  .practice-modal-footer .question-actions,.practice-session:not(.hidden) .practice-modal-footer .question-actions{grid-template-columns:1fr 1fr}
+  .question-action-hint{font-size:.82rem}
+}
