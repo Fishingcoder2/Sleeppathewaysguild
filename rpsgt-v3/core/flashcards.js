@@ -391,9 +391,11 @@
     openReview(result.card.id,tile||document.querySelector('[data-custom-card-open]'));
   }
 
-  function init(){
+  async function init(){
     try{
-      const current=storeApi.snapshot();
+      const v2Library=window.RPSGTV2FlashcardLibrary;
+      if(!v2Library||typeof v2Library.seed!=='function') throw new Error('The preserved RPSGT v2 flashcard library is unavailable.');
+      const current=await v2Library.seed(storeApi);
       state.saved=current.saved;
       state.store=current.store;
       filterChoices();
