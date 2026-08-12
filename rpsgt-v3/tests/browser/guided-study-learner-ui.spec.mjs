@@ -17,7 +17,10 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
 
   const resources=cards.first().locator('details[data-resource-ready="true"]');
   await expect(resources).toBeVisible();
-  await expect(resources.locator('summary')).toHaveText('Recommended study resources');
+  const resourceSummary=resources.locator('summary');
+  await expect(resourceSummary).toHaveText('Recommended study resources');
+  await resourceSummary.click();
+  await expect(resources).toHaveAttribute('open','');
   await expect(resources.locator('.resource-title-chip').first()).toBeVisible();
   await expect(resources).not.toContainText('fundamentals-sleep-technology-3e');
   await expect(resources).not.toContainText('studyRecommendationKeys');
