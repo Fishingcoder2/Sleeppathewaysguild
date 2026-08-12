@@ -70,6 +70,8 @@
     cardButton.classList.toggle('is-flipped',state.flipped);
     cardButton.setAttribute('aria-pressed',state.flipped?'true':'false');
     cardButton.setAttribute('aria-label',state.flipped?'Show flashcard front':'Show flashcard answer');
+    const flip=document.querySelector('[data-card-flip]');
+    if(flip) flip.textContent=state.flipped?'Show question':'Flip card';
   }
 
   function text(selector,value){const node=document.querySelector(selector);if(node) node.textContent=value||'';}
@@ -96,6 +98,8 @@
     const total=state.cards.length;
     text('[data-card-total]',total+' card'+(total===1?'':'s'));
     if(!card){
+      text('[data-card-position]','Card 0 of 0');
+      text('[data-card-context]','RPSGT review');
       stage.hidden=true;
       empty.hidden=false;
       return;
@@ -103,7 +107,7 @@
     stage.hidden=false;
     empty.hidden=true;
     setFlipped(false);
-    text('[data-card-position]','Card '+(state.index+1)+' of '+total);
+    text('[data-card-position]','Card '+(state.index+1)+' / '+total);
     text('[data-card-context]',cardContext(card));
     text('[data-card-front-topic]',card.topic||card.task||'RPSGT concept');
     text('[data-card-front]',card.front);
@@ -114,13 +118,21 @@
     renderResources(card);
 
     const flag=document.querySelector('[data-card-flag]');
+    const flagBadge=document.querySelector('[data-card-flag-state]');
     const mastered=document.querySelector('[data-card-mastered]');
     const reviewAgain=document.querySelector('[data-card-review-again]');
-    if(flag){flag.textContent=card.flagged?'Remove flag':'Flag';flag.classList.toggle('active',card.flagged);}
+    if(flag){
+      flag.textContent=card.flagged?'Unflag':'Flag for review';
+      flag.classList.toggle('active',card.flagged);
+      flag.setAttribute('aria-pressed',card.flagged?'true':'false');
+    }
+    if(flagBadge) flagBadge.hidden=!card.flagged;
     if(mastered){mastered.textContent=card.masteryStatus==='mastered'?'Mastered ✓':'Mastered';mastered.classList.toggle('active',card.masteryStatus==='mastered');}
     if(reviewAgain){reviewAgain.textContent=card.masteryStatus==='review-again'?'Review again ✓':'Review again';reviewAgain.classList.toggle('active',card.masteryStatus==='review-again');}
-    document.querySelector('[data-card-prev]').disabled=total<2;
-    document.querySelector('[data-card-next]').disabled=total<2;
+    const prev=document.querySelector('[data-card-prev]');
+    const next=document.querySelector('[data-card-next]');
+    if(prev) prev.disabled=total<2;
+    if(next) next.disabled=total<2;
   }
 
   function applyFilters(focusId){
@@ -137,6 +149,21 @@
     cardButton.focus({preventScroll:true});
   }
 
+  function shuffleDeck(){
+    if(state.cards.length<2) return;
+    const current=state.cards[state.index];
+    const copy=state.cards.slice();
+    for(let i=copy.length-1;i>0;i-=1){
+      const j=Math.floor(Math.random()*(i+1));
+      [copy[i],copy[j]]=[copy[j],copy[i]];
+    }
+    if(copy[0]&&current&&copy[0].id===current.id&&copy.length>1) [copy[0],copy[1]]=[copy[1],copy[0]];
+    state.cards=copy;
+    state.index=0;
+    renderCard();
+    cardButton.focus({preventScroll:true});
+  }
+
   function updateCurrent(changes){
     const card=state.cards[state.index];
     if(!card) return;
@@ -146,6 +173,14 @@
     state.store=result.store;
     filterChoices();
     applyFilters(card.id);
+  }
+
+  function showFlagged(){
+    if(!select.status) return;
+    select.status.value='flagged';
+    state.index=0;
+    saveFilters();
+    applyFilters();
   }
 
   function openDialog(trigger){
@@ -205,15 +240,22 @@
   document.querySelector('[data-card-flip]').addEventListener('click',()=>setFlipped(!state.flipped));
   document.querySelector('[data-card-prev]').addEventListener('click',()=>navigate(-1));
   document.querySelector('[data-card-next]').addEventListener('click',()=>navigate(1));
+  document.querySelector('[data-card-shuffle]').addEventListener('click',shuffleDeck);
   document.querySelector('[data-card-flag]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({flagged:!card.flagged});});
   document.querySelector('[data-card-mastered]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({masteryStatus:card.masteryStatus==='mastered'?'learning':'mastered'});});
   document.querySelector('[data-card-review-again]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({masteryStatus:card.masteryStatus==='review-again'?'learning':'review-again'});});
+  document.querySelectorAll('[data-card-show-flagged]').forEach(button=>button.addEventListener('click',showFlagged));
   Object.values(select).forEach(node=>node&&node.addEventListener('change',()=>{state.index=0;saveFilters();applyFilters();}));
   document.querySelectorAll('[data-custom-card-open]').forEach(button=>button.addEventListener('click',()=>openDialog(button)));
   document.querySelectorAll('[data-custom-card-close]').forEach(button=>button.addEventListener('click',closeDialog));
   document.querySelector('[data-custom-card-form]').addEventListener('submit',event=>{event.preventDefault();saveCustom(event.currentTarget);});
   dialog&&dialog.addEventListener('click',event=>{if(event.target===dialog) closeDialog();});
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&dialog&&!dialog.hidden) closeDialog();});
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&dialog&&!dialog.hidden){closeDialog();return;}
+    if(dialog&&!dialog.hidden) return;
+    if(event.key==='ArrowLeft'){event.preventDefault();navigate(-1);}
+    if(event.key==='ArrowRight'){event.preventDefault();navigate(1);}
+  });
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
