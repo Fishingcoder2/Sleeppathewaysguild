@@ -22,7 +22,7 @@ for(const required of [
   'data-card-domain','data-card-task','data-card-topic','data-card-status','data-card-library','data-card-tile',
   'data-card-stage','data-card-close','data-card-flip','data-card-prev','data-card-next','data-card-shuffle','data-card-flag','data-card-flag-state',
   'data-card-mastered','data-card-review-again','data-custom-card-form','data-card-show-flagged',
-  'Make your own card','FRONT OF CARD','BACK OF CARD','Where to review:','Study anchors:','Coach Bob'
+  'Make your own card','FRONT OF CARD','BACK OF CARD','Study area:','References:','Coach Bob'
 ]) assert.ok(html.includes(required)||ui.includes(required),'Missing Flashcard Center contract: '+required);
 
 const scriptOrder=[
