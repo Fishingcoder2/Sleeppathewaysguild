@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 
-test('custom RPSGT flashcards persist without duplicate cards or legacy writes',async({page})=>{
+test('custom RPSGT flashcards persist in the library without duplicate cards or legacy writes',async({page})=>{
   await page.goto('flashcards.html');
   await page.evaluate(()=>localStorage.clear());
   await page.reload();
@@ -25,7 +25,8 @@ test('custom RPSGT flashcards persist without duplicate cards or legacy writes',
   await expect(page.locator('[data-card-empty]')).toBeHidden();
   await expect(page.locator('[data-card-total]')).toHaveText('1 card');
   await expect(page.locator('[data-card-front]')).toHaveText('What is the AHI formula?');
-  await expect(page.locator('[data-card-context]')).toContainText('Report calculations');
+  await expect(page.locator('[data-card-front-topic]')).toHaveText('Study Analysis and Reporting');
+  await expect(page.locator('[data-card-review-chips]')).toContainText('Study Analysis and Reporting');
 
   await page.locator('[data-card-flip]').click();
   await expect(page.locator('[data-flashcard]')).toHaveAttribute('aria-pressed','true');
@@ -42,8 +43,14 @@ test('custom RPSGT flashcards persist without duplicate cards or legacy writes',
 
   await page.reload();
   await expect(page.locator('[data-card-total]')).toHaveText('1 card');
+  await expect(stage).toBeHidden();
+  const tile=page.locator('[data-card-tile]').filter({hasText:'What is the AHI formula?'});
+  await expect(tile).toContainText('Flagged for review');
+  await expect(tile).toContainText('Mastered');
+  await tile.click();
   await expect(page.locator('[data-card-flag]')).toHaveText('Unflag');
   await expect(page.locator('[data-card-mastered]')).toHaveText('Mastered ✓');
+  await page.locator('[data-card-close]').click();
 
   await page.locator('[data-custom-card-open]').first().click();
   await dialog.locator('[name="front"]').fill('  What is the AHI formula?  ');
