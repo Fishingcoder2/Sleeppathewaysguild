@@ -15,11 +15,11 @@ const [html,css,v2css,engine,store,ui]=await Promise.all([
 ]);
 
 for(const required of [
-  'data-card-domain','data-card-task','data-card-topic','data-card-status',
-  'data-card-flip','data-card-prev','data-card-next','data-card-shuffle','data-card-flag','data-card-flag-state',
+  'data-card-domain','data-card-task','data-card-topic','data-card-status','data-card-library','data-card-tile',
+  'data-card-stage','data-card-close','data-card-flip','data-card-prev','data-card-next','data-card-shuffle','data-card-flag','data-card-flag-state',
   'data-card-mastered','data-card-review-again','data-custom-card-form','data-card-show-flagged',
-  'Make your own card','Recommended study resources','Coach Bob'
-]) assert.ok(html.includes(required),'Missing Flashcard Center contract: '+required);
+  'Make your own card','FRONT OF CARD','BACK OF CARD','Where to review:','Study anchors:','Coach Bob'
+]) assert.ok(html.includes(required)||ui.includes(required),'Missing Flashcard Center contract: '+required);
 
 const scriptOrder=[
   'core/storage.js','core/app-shell.js','core/flashcard-engine.js','core/flashcard-store.js','core/flashcards.js'
@@ -29,9 +29,12 @@ assert.deepEqual(scriptOrder.slice().sort((a,b)=>a-b),scriptOrder,'Flashcard scr
 assert.ok(html.includes('assets/flashcards-v2-layout.css'),'The v2-style Flashcard layout stylesheet is missing.');
 
 assert.match(css,/prefers-reduced-motion/);
-assert.match(css,/\.flashcard-stage\[hidden\]/);
 assert.match(css,/backface-visibility:hidden/);
 assert.match(css,/overflow-wrap:anywhere/);
+assert.match(v2css,/\.flashcard-library/);
+assert.match(v2css,/\.flashcard-category/);
+assert.match(v2css,/\.flashcard-tile::before/);
+assert.match(v2css,/\.flashcard-review-overlay/);
 assert.match(v2css,/\.flashcard-v2-controls/);
 assert.match(v2css,/\.flashcard-flag-badge/);
 assert.match(v2css,/position:sticky/);
@@ -42,6 +45,9 @@ assert.doesNotMatch(store,/localStorage/);
 assert.doesNotMatch(ui,/localStorage/);
 assert.doesNotMatch(store,/spg_rpsgtv2_/);
 assert.doesNotMatch(store,/IMPORT_ENABLED\s*=\s*true/);
+assert.match(ui,/function renderLibrary/);
+assert.match(ui,/function openReview/);
+assert.match(ui,/function closeReview/);
 assert.match(ui,/data-card-mastered/);
 assert.match(ui,/data-card-review-again/);
 assert.match(ui,/data-card-flag/);
@@ -49,4 +55,4 @@ assert.match(ui,/data-card-shuffle/);
 assert.match(ui,/card\.flagged\?'Unflag':'Flag for review'/);
 assert.match(ui,/updateCurrent\(\{flagged:!card\.flagged\}\)/);
 
-console.log('RPSGT Flashcard Center v2-style deck flow, custom-card option, persistent flag/unflag, shuffle, storage boundary, responsive flip, and learner-control contracts passed.');
+console.log('RPSGT Flashcard Center v2-style category library, taped-note tiles, focused review modal, custom-card option, persistent flag/unflag, storage boundary, and responsive learner-control contracts passed.');
