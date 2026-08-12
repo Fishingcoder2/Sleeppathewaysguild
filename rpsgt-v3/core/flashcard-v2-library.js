@@ -137,6 +137,29 @@
     }));
   }
 
+  function sanitizeRenderedReferences(){
+    if(!root.document) return 0;
+    const host=root.document.querySelector('[data-card-resources]');
+    if(!host) return 0;
+    [...host.children].forEach(node=>{if(!looksApa(node.textContent)) node.remove();});
+    const wrapper=root.document.querySelector('[data-card-resources-wrap]');
+    if(wrapper) wrapper.hidden=!host.children.length;
+    return host.children.length;
+  }
+
+  function installApaReferenceGuard(){
+    if(!root.document) return;
+    const start=()=>{
+      const host=root.document.querySelector('[data-card-resources]');
+      if(!host) return;
+      sanitizeRenderedReferences();
+      if(typeof root.MutationObserver!=='function') return;
+      const observer=new root.MutationObserver(sanitizeRenderedReferences);
+      observer.observe(host,{childList:true,subtree:true});
+    };
+    if(root.document.readyState==='loading') root.document.addEventListener('DOMContentLoaded',start,{once:true}); else start();
+  }
+
   async function seed(storeApi){
     if(!storeApi||typeof storeApi.seedLibrary!=='function') throw new Error('The RPSGT v3 flashcard library seeding service is unavailable.');
     const payload=await load();
@@ -144,5 +167,6 @@
     return Object.assign({inventory:payload},result);
   }
 
-  root.RPSGTV2FlashcardLibrary={APA,referencesForCategory,looksApa,apaOnly,applyOverlay,validatePayload,load,asV3Cards,seed};
+  root.RPSGTV2FlashcardLibrary={APA,referencesForCategory,looksApa,apaOnly,applyOverlay,validatePayload,load,asV3Cards,sanitizeRenderedReferences,installApaReferenceGuard,seed};
+  installApaReferenceGuard();
 })(typeof window!=='undefined'?window:globalThis);
