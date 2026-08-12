@@ -96,7 +96,15 @@
   }
 
   function themeIndex(value){
-    return [...String(value||'')].reduce((sum,char)=>sum+char.charCodeAt(0),0)%5;
+    const name=String(value||'').trim().toLowerCase();
+    const rpsgtV2Themes={
+      'cardiac & ecg recognition':0,
+      'ekg & cardiac terms':0,
+      'circadian rhythm sleep-wake disorders':1,
+      'core sleep terms':2
+    };
+    if(Object.prototype.hasOwnProperty.call(rpsgtV2Themes,name)) return rpsgtV2Themes[name];
+    return [...name].reduce((sum,char)=>sum+char.charCodeAt(0),0)%5;
   }
 
   function cardBadges(card){
