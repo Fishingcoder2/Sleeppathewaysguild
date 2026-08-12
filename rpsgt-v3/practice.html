@@ -7,6 +7,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/rpsgt-v3.css">
 <link rel="stylesheet" href="assets/practice.css">
+<link rel="stylesheet" href="assets/practice-navigation.css">
 <link rel="stylesheet" href="assets/practice-coach.css">
 <link rel="stylesheet" href="assets/module-polish.css">
 </head>
@@ -59,10 +60,16 @@
     <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span><span class="status gold hidden" data-question-review></span></div><span class="status gold" data-question-difficulty>Difficulty</span><button class="practice-close" type="button" data-change-filters aria-label="Close practice session">×</button></div>
     <div class="question-prompt" data-question-prompt></div>
     <div class="practice-choices" data-question-choices></div>
-    <div class="practice-question-tools" data-practice-question-actions></div>
-    <div class="practice-coach" data-practice-coach aria-live="polite"></div>
     <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
-    <div class="question-actions" aria-label="Primary practice action"><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
+    <div class="practice-coach" data-practice-coach aria-live="polite"></div>
+    <div class="practice-modal-footer" aria-label="Practice question controls">
+      <div class="practice-question-tools" data-practice-question-actions></div>
+      <p class="question-action-hint" data-question-action-hint>Select an answer, then choose Next to check it. Your reasoning and the correct answer will appear before you move on.</p>
+      <div class="question-actions" aria-label="Question navigation">
+        <button class="btn secondary" type="button" data-previous-question disabled>Previous question</button>
+        <button class="btn primary" type="button" data-next-question disabled>Next</button>
+      </div>
+    </div>
   </div>
   <aside class="session-rail">
     <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span data-progress-policy>Recorded in your learner progress</span></p></div>
