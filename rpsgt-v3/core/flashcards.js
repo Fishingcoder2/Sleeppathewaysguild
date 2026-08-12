@@ -9,7 +9,7 @@
   const customDialog=document.querySelector('[data-custom-card-dialog]');
   if(!engine||!storeApi||!stage||!library||!empty) return;
 
-  const state={saved:null,store:null,cards:[],index:0,flipped:false,reviewOpen:false,returnFocus:null,customReturnFocus:null};
+  const state={saved:null,store:null,cards:[],index:0,flipped:false,reviewOpen:false,reviewCategory:null,returnFocus:null,customReturnFocus:null};
   const select={
     domain:document.querySelector('[data-card-domain]'),
     task:document.querySelector('[data-card-task]'),
@@ -94,6 +94,13 @@
   function cardContext(card){
     return [...new Set([card.domain,card.task,card.topic].filter(Boolean))].join(' · ')||card.sourceContext||'RPSGT review';
   }
+
+  function reviewCards(){
+    if(!state.reviewOpen||!state.reviewCategory) return state.cards;
+    return state.cards.filter(card=>categoryFor(card)===state.reviewCategory);
+  }
+
+  function currentReviewCard(){return reviewCards()[state.index]||null;}
 
   function themeIndex(value){
     const name=String(value||'').trim().toLowerCase();
@@ -208,8 +215,9 @@
   }
 
   function renderCard(){
-    const card=state.cards[state.index];
-    const total=state.cards.length;
+    const cards=reviewCards();
+    const card=cards[state.index];
+    const total=cards.length;
     if(!card){
       text('[data-card-position]','Card 0 / 0');
       if(state.reviewOpen) closeReview(false);
@@ -246,8 +254,18 @@
   }
 
   function applyFilters(focusId){
+    const previousIndex=state.index;
     state.cards=engine.filterCards(state.store,currentFilters(),state.saved.review||{});
-    if(focusId){
+    if(state.reviewOpen&&state.reviewCategory){
+      const cards=reviewCards();
+      if(!cards.length){
+        renderLibrary();
+        closeReview(false);
+        return;
+      }
+      const found=focusId?cards.findIndex(card=>card.id===focusId):-1;
+      state.index=found>=0?found:Math.max(0,Math.min(previousIndex,cards.length-1));
+    }else if(focusId){
       const found=state.cards.findIndex(card=>card.id===focusId);
       state.index=found>=0?found:Math.max(0,Math.min(state.index,state.cards.length-1));
     }else state.index=Math.max(0,Math.min(state.index,state.cards.length-1));
@@ -256,11 +274,19 @@
   }
 
   function openReview(cardId,trigger){
-    const found=state.cards.findIndex(card=>card.id===cardId);
-    if(found<0) return;
+    const card=state.cards.find(item=>item.id===cardId);
+    if(!card) return;
+    state.reviewCategory=categoryFor(card);
+    state.reviewOpen=true;
+    const cards=reviewCards();
+    const found=cards.findIndex(item=>item.id===cardId);
+    if(found<0){
+      state.reviewOpen=false;
+      state.reviewCategory=null;
+      return;
+    }
     state.index=found;
     state.returnFocus=trigger||document.activeElement;
-    state.reviewOpen=true;
     stage.hidden=false;
     document.body.classList.add('flashcard-review-open');
     renderCard();
@@ -270,6 +296,7 @@
   function closeReview(restoreFocus=true){
     if(!state.reviewOpen&&stage.hidden) return;
     state.reviewOpen=false;
+    state.reviewCategory=null;
     stage.hidden=true;
     setFlipped(false);
     document.body.classList.remove('flashcard-review-open');
@@ -278,14 +305,15 @@
   }
 
   function navigate(direction){
-    if(state.cards.length<2) return;
-    state.index=(state.index+direction+state.cards.length)%state.cards.length;
+    const cards=reviewCards();
+    if(cards.length<2) return;
+    state.index=(state.index+direction+cards.length)%cards.length;
     renderCard();
   }
 
   function shuffleDeck(){
     if(state.cards.length<2) return;
-    const current=state.reviewOpen?state.cards[state.index]:null;
+    const current=state.reviewOpen?currentReviewCard():state.cards[state.index];
     const copy=state.cards.slice();
     for(let i=copy.length-1;i>0;i-=1){
       const j=Math.floor(Math.random()*(i+1));
@@ -293,13 +321,17 @@
     }
     if(copy[0]&&current&&copy[0].id===current.id&&copy.length>1) [copy[0],copy[1]]=[copy[1],copy[0]];
     state.cards=copy;
-    state.index=0;
+    if(state.reviewOpen){
+      const cards=reviewCards();
+      const found=current?cards.findIndex(card=>card.id===current.id):-1;
+      state.index=found>=0?found:0;
+    }else state.index=0;
     renderLibrary();
     if(state.reviewOpen) renderCard();
   }
 
   function updateCurrent(changes){
-    const card=state.cards[state.index];
+    const card=currentReviewCard();
     if(!card) return;
     const result=storeApi.update(card.id,changes,new Date().toISOString());
     if(!result.updated) return;
@@ -379,9 +411,9 @@
   document.querySelector('[data-card-prev]').addEventListener('click',()=>navigate(-1));
   document.querySelector('[data-card-next]').addEventListener('click',()=>navigate(1));
   document.querySelector('[data-card-shuffle]').addEventListener('click',shuffleDeck);
-  document.querySelector('[data-card-flag]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({flagged:!card.flagged});});
-  document.querySelector('[data-card-mastered]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({masteryStatus:card.masteryStatus==='mastered'?'learning':'mastered'});});
-  document.querySelector('[data-card-review-again]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({masteryStatus:card.masteryStatus==='review-again'?'learning':'review-again'});});
+  document.querySelector('[data-card-flag]').addEventListener('click',()=>{const card=currentReviewCard();if(card) updateCurrent({flagged:!card.flagged});});
+  document.querySelector('[data-card-mastered]').addEventListener('click',()=>{const card=currentReviewCard();if(card) updateCurrent({masteryStatus:card.masteryStatus==='mastered'?'learning':'mastered'});});
+  document.querySelector('[data-card-review-again]').addEventListener('click',()=>{const card=currentReviewCard();if(card) updateCurrent({masteryStatus:card.masteryStatus==='review-again'?'learning':'review-again'});});
   document.querySelector('[data-card-close]').addEventListener('click',()=>closeReview());
   document.querySelectorAll('[data-card-show-flagged]').forEach(button=>button.addEventListener('click',showFlagged));
   Object.values(select).forEach(node=>node&&node.addEventListener('change',()=>{closeReview(false);state.index=0;saveFilters();applyFilters();}));
