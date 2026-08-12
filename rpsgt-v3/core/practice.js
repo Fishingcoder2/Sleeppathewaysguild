@@ -11,6 +11,8 @@
     answered:false,
     correct:0,
     answeredCount:0,
+    selections:new Map(),
+    responses:new Map(),
     mode:"learner",
     activePoolSize:0,
     loading:false
@@ -164,6 +166,8 @@
       state.answered=false;
       state.correct=0;
       state.answeredCount=0;
+      state.selections=new Map();
+      state.responses=new Map();
       setText("[data-session-pool]",pool.length.toLocaleString());
       $("[data-practice-load]").classList.add("hidden");
       $("[data-practice-setup]").classList.add("hidden");
@@ -194,11 +198,70 @@
     return button;
   }
 
+  function questionKey(question){return String(question&&question.id||state.index);}
+
+  function renderFeedback(question,response){
+    const feedback=$("[data-answer-feedback]");
+    if(!response){
+      feedback.className="answer-feedback hidden";
+      feedback.innerHTML="";
+      return;
+    }
+    feedback.className="answer-feedback reasoning-panel "+(response.isCorrect?"correct":"incorrect");
+    const status=document.createElement("span");
+    status.className="reasoning-status";
+    status.textContent=response.isCorrect?"Correct":"Review this one";
+    const heading=document.createElement("h3");
+    heading.textContent="Answer & reasoning";
+    const answers=document.createElement("dl");
+    answers.className="practice-answer-review";
+    const selectedWrap=document.createElement("div");
+    const selectedTerm=document.createElement("dt");
+    selectedTerm.textContent="Your answer";
+    const selectedValue=document.createElement("dd");
+    selectedValue.textContent=response.selectedAnswer;
+    selectedWrap.append(selectedTerm,selectedValue);
+    const correctWrap=document.createElement("div");
+    const correctTerm=document.createElement("dt");
+    correctTerm.textContent="Correct answer";
+    const correctValue=document.createElement("dd");
+    correctValue.textContent=question.answer;
+    correctWrap.append(correctTerm,correctValue);
+    answers.append(selectedWrap,correctWrap);
+    const rationale=document.createElement("p");
+    rationale.className="practice-reasoning-copy";
+    const rationaleLabel=document.createElement("strong");
+    rationaleLabel.textContent="Reasoning: ";
+    rationale.append(rationaleLabel,document.createTextNode(question.rationale||"Review the question stem and compare each option with the concept being tested."));
+    feedback.replaceChildren(status,heading,answers,rationale);
+    appendQualityDetails(feedback,question);
+  }
+
+  function updateQuestionActions(question,response){
+    const previous=$("[data-previous-question]");
+    const next=$("[data-next-question]");
+    const compatibility=$("[data-submit-answer]");
+    if(previous) previous.disabled=state.index===0;
+    if(compatibility){
+      compatibility.disabled=state.selected===null||Boolean(response);
+      compatibility.classList.add("hidden");
+    }
+    if(next){
+      next.classList.remove("hidden");
+      next.disabled=!response&&state.selected===null;
+      next.textContent=response
+        ?(state.index===state.session.length-1?"Finish practice":"Next question")
+        :"Next";
+    }
+  }
+
   function renderQuestion(){
     const question=state.session[state.index];
     if(!question){renderComplete();return;}
-    state.selected=null;
-    state.answered=false;
+    const key=questionKey(question);
+    const response=state.responses.get(key)||null;
+    state.selected=state.selections.has(key)?state.selections.get(key):null;
+    state.answered=Boolean(response);
     $("[data-question-number]").textContent="Question "+(state.index+1)+" of "+state.session.length;
     $("[data-question-task]").textContent=question.taskCode+" · "+question.topic;
     $("[data-question-difficulty]").textContent=question.difficulty+" · "+question.questionType;
@@ -208,24 +271,37 @@
     reviewBadge.textContent=state.mode==="quality"?"Manual review record":"";
     const choices=$("[data-question-choices]");
     choices.innerHTML="";
-    question.options.forEach(function(option,index){choices.appendChild(createChoice(option,index));});
-    $("[data-submit-answer]").disabled=true;
-    $("[data-submit-answer]").classList.remove("hidden");
-    $("[data-next-question]").classList.add("hidden");
-    $("[data-answer-feedback]").className="answer-feedback hidden";
-    $("[data-answer-feedback]").innerHTML="";
+    question.options.forEach(function(option,index){
+      const button=createChoice(option,index);
+      const selected=state.selected===index;
+      button.classList.toggle("selected",selected);
+      button.setAttribute("aria-pressed",selected?"true":"false");
+      if(response){
+        button.disabled=true;
+        button.classList.toggle("correct",option===question.answer);
+        button.classList.toggle("incorrect",selected&&!response.isCorrect);
+      }
+      choices.appendChild(button);
+    });
+    renderFeedback(question,response);
+    updateQuestionActions(question,response);
     updateSessionStats();
   }
 
   function selectChoice(index){
     if(state.answered) return;
+    const question=state.session[state.index];
     state.selected=index;
+    state.selections.set(questionKey(question),index);
     $all("[data-choice-index]").forEach(function(button){
       const selected=Number(button.dataset.choiceIndex)===index;
       button.classList.toggle("selected",selected);
       button.setAttribute("aria-pressed",selected?"true":"false");
     });
-    $("[data-submit-answer]").disabled=false;
+    const compatibility=$("[data-submit-answer]");
+    if(compatibility) compatibility.disabled=false;
+    const next=$("[data-next-question]");
+    if(next) next.disabled=false;
   }
 
   function ensureBucket(parent,key){
@@ -294,8 +370,12 @@
   function submitAnswer(){
     if(state.selected===null||state.answered) return;
     const question=state.session[state.index];
+    const key=questionKey(question);
+    if(state.responses.has(key)) return;
     const selectedAnswer=question.options[state.selected];
     const isCorrect=selectedAnswer===question.answer;
+    const response={selectedIndex:state.selected,selectedAnswer,isCorrect};
+    state.responses.set(key,response);
     state.answered=true;
     state.answeredCount+=1;
     if(isCorrect) state.correct+=1;
@@ -305,28 +385,27 @@
       button.classList.toggle("correct",option===question.answer);
       button.classList.toggle("incorrect",option===selectedAnswer&&!isCorrect);
     });
-    const feedback=$("[data-answer-feedback]");
-    feedback.className="answer-feedback "+(isCorrect?"correct":"incorrect");
-    const heading=document.createElement("strong");
-    heading.textContent=isCorrect?"Correct":"Review this one";
-    const answer=document.createElement("p");
-    answer.textContent="Correct answer: "+question.answer;
-    const rationale=document.createElement("p");
-    rationale.textContent=question.rationale;
-    const refs=document.createElement("p");
-    refs.className="feedback-references";
-    refs.textContent="Mapped source keys: "+(question.referenceKeys||[]).join(", ");
-    feedback.replaceChildren(heading,answer,rationale,refs);
-    appendQualityDetails(feedback,question);
-    $("[data-submit-answer]").classList.add("hidden");
-    $("[data-next-question]").classList.remove("hidden");
-    $("[data-next-question]").textContent=state.index===state.session.length-1?"Submit Practice":"Next question";
+    renderFeedback(question,response);
+    updateQuestionActions(question,response);
     recordAnswer(question,isCorrect,selectedAnswer);
     if(window.RPSGTApp&&typeof window.RPSGTApp.playFeedbackSound==="function") window.RPSGTApp.playFeedbackSound(isCorrect?"correct":"incorrect");
     updateSessionStats();
   }
 
+  function previousQuestion(){
+    if(state.index<=0) return;
+    state.index-=1;
+    renderQuestion();
+    requestAnimationFrame(function(){$("[data-question-prompt]")?.scrollIntoView({block:"nearest"});});
+  }
+
   function nextQuestion(){
+    if(!state.answered){
+      const compatibility=$("[data-submit-answer]");
+      if(compatibility&&!compatibility.disabled) compatibility.click();
+      else submitAnswer();
+      return;
+    }
     state.index+=1;
     if(state.index>=state.session.length) renderComplete(); else renderQuestion();
   }
@@ -392,6 +471,7 @@
       $("[data-practice-domain]").addEventListener("change",refreshTasks);
       $("[data-start-practice]").addEventListener("click",startSession);
       $("[data-submit-answer]").addEventListener("click",submitAnswer);
+      $("[data-previous-question]").addEventListener("click",previousQuestion);
       $("[data-next-question]").addEventListener("click",nextQuestion);
       $all("[data-change-filters]").forEach(function(button){button.addEventListener("click",changeFilters);});
       $all("[data-restart-session]").forEach(function(button){button.addEventListener("click",startSession);});
