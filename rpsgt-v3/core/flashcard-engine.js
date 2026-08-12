@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.0';
+  const VERSION='1.1.0';
   const MASTERY_STATUSES=new Set(['learning','mastered','review-again']);
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
@@ -48,7 +48,7 @@
     ));
     if(questionId) return 'question:'+questionId;
     const supplied=text(input&&input.id);
-    if(supplied&&/^custom:/i.test(supplied)) return supplied;
+    if(supplied&&/^(?:custom|v2):/i.test(supplied)) return supplied;
     return 'custom:'+hash(normalizeText(input&&input.front)+'\n'+normalizeText(input&&input.back));
   }
 
