@@ -157,7 +157,7 @@ test('migration export remains read-only and does not create v3 storage', async 
   expect(state.v3).toBeNull();
 });
 
-test('Practice starts a five-question learner session and records feedback', async ({ page }) => {
+test('Practice uses Next to check an answer and supports Previous review', async ({ page }) => {
   await page.goto('practice.html');
   await expect(page.locator('[data-practice-setup]')).toBeVisible();
   await page.locator('[data-practice-size]').selectOption('5');
@@ -165,13 +165,22 @@ test('Practice starts a five-question learner session and records feedback', asy
 
   await expect(page.locator('[data-practice-shell]')).toBeVisible();
   await expect(page.locator('[data-question-prompt]')).not.toBeEmpty();
+  await expect(page.locator('[data-previous-question]')).toBeDisabled();
   const options = page.locator('[data-question-choices] .practice-choice');
   await expect(options).toHaveCount(4);
   await options.first().click();
-  await expect(page.locator('[data-submit-answer]')).toBeEnabled();
-  await page.locator('[data-submit-answer]').click();
+  const next=page.locator('[data-next-question]');
+  await expect(next).toBeEnabled();
+  await next.click();
   await expect(page.locator('[data-answer-feedback]')).toBeVisible();
-  await expect(page.locator('[data-next-question]')).toBeVisible();
+  await expect(page.locator('[data-answer-feedback]')).toContainText('Answer & reasoning');
+  await expect(next).toHaveText('Next question');
+  await next.click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 2 of 5');
+  await expect(page.locator('[data-previous-question]')).toBeEnabled();
+  await page.locator('[data-previous-question]').click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 1 of 5');
+  await expect(page.locator('[data-answer-feedback]')).toBeVisible();
 });
 
 test('Readiness starts at the requested size and can end without entering Practice history', async ({ page }) => {
