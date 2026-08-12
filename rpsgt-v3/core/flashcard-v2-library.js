@@ -3,9 +3,10 @@
 
   const APA={
     fundamentals:'Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.',
-    scoring:'American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3).',
-    icsd:'American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.).',
-    pap:'American Association of Sleep Technologists. (2021). AAST manual PAP titration guideline.'
+    scoring:'American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.',
+    icsd:'American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine.',
+    pap:'American Association of Sleep Technologists. (2021). AAST manual PAP titration guideline. American Association of Sleep Technologists.',
+    brpt:'Board of Registered Polysomnographic Technologists. (n.d.). RPSGT candidate handbook.'
   };
 
   const SCORING_CATEGORIES=new Set([
@@ -18,11 +19,15 @@
     'Sleep Staging & EEG Clues'
   ]);
   const DISORDER_CATEGORIES=new Set([
+    'Central Disorders of Hypersomnolence',
     'Circadian Rhythm Sleep-Wake Disorders',
+    'Parasomnias',
     'Sleep Disorders & Clinical Terms',
-    'Sleep-Related Breathing Disorders'
+    'Sleep-Related Breathing Disorders',
+    'Sleep-Related Movement Disorders'
   ]);
   const PAP_CATEGORIES=new Set(['Oxygen, CO2 & Units','PAP & Oxygen Therapy']);
+  const EXAM_CATEGORIES=new Set(['Exam Strategy & Question Traps']);
 
   const ALIASES=new Map([
     ['fundamentals of sleep technology',APA.fundamentals],
@@ -34,35 +39,75 @@
     ['icsd-3-tr',APA.icsd],
     ['international classification of sleep disorders',APA.icsd],
     ['aast manual pap titration guideline',APA.pap],
-    ['aast-pap-titration-2021',APA.pap]
+    ['aast-pap-titration-2021',APA.pap],
+    ['brpt rpsgt candidate handbook',APA.brpt],
+    ['brpt-handbook',APA.brpt]
   ]);
 
   function unique(values){return [...new Set((Array.isArray(values)?values:[]).map(value=>String(value||'').trim()).filter(Boolean))];}
 
-  function referencesForCategory(category){
-    const refs=[APA.fundamentals];
-    if(SCORING_CATEGORIES.has(category)) refs.unshift(APA.scoring);
-    if(DISORDER_CATEGORIES.has(category)) refs.unshift(APA.icsd);
-    if(PAP_CATEGORIES.has(category)) refs.unshift(APA.pap);
-    return unique(refs);
-  }
-
   function looksApa(value){
     const text=String(value||'').trim();
-    return /\(\d{4}[a-z]?\)\./.test(text)&&/[.!?]$/.test(text);
+    return /\((?:\d{4}[a-z]?|n\.d\.)\)\./i.test(text)&&/[.!?]$/.test(text);
   }
 
   function apaOnly(values){
     return unique(values).map(value=>ALIASES.get(value.toLowerCase())||value).filter(looksApa);
   }
 
-  function validatePayload(payload){
+  function referencesForCategory(category){
+    const refs=[APA.fundamentals];
+    if(SCORING_CATEGORIES.has(category)) refs.unshift(APA.scoring);
+    if(DISORDER_CATEGORIES.has(category)) refs.unshift(APA.icsd);
+    if(PAP_CATEGORIES.has(category)) refs.unshift(APA.pap);
+    if(EXAM_CATEGORIES.has(category)) refs.unshift(APA.brpt);
+    return apaOnly(refs);
+  }
+
+  function validateCard(card,label){
+    if(!card||!card.id||!card.category||!card.front||!card.back) throw new Error((label||'A preserved RPSGT v2 flashcard')+' is incomplete.');
+  }
+
+  function applyOverlay(base,overlay){
+    if(!base||!Array.isArray(base.cards)) throw new Error('The archived RPSGT v2 flashcard inventory is unavailable.');
+    if(!overlay||!Array.isArray(overlay.excludeArchivedIds)||!Array.isArray(overlay.addCards)) throw new Error('The current RPSGT v2 flashcard overlay is unavailable.');
+    if(Number(overlay.baseArchivedCardCount)!==base.cards.length) throw new Error('The archived RPSGT v2 flashcard count does not match the reviewed overlay base.');
+
+    const excluded=new Set(overlay.excludeArchivedIds.map(value=>String(value||'').trim()).filter(Boolean));
+    const cards=base.cards.filter(card=>!excluded.has(String(card.id||''))).map(card=>Object.assign({},card));
+    const ids=new Set();
+    cards.forEach((card,index)=>{
+      validateCard(card,'Archived RPSGT v2 flashcard '+(index+1));
+      if(ids.has(card.id)) throw new Error('Duplicate archived RPSGT v2 flashcard id: '+card.id);
+      ids.add(card.id);
+    });
+    overlay.addCards.forEach((card,index)=>{
+      validateCard(card,'Current-copy RPSGT v2 flashcard '+(index+1));
+      if(ids.has(card.id)) throw new Error('Duplicate current-copy RPSGT v2 flashcard id: '+card.id);
+      ids.add(card.id);
+      cards.push(Object.assign({},card));
+    });
+    const categories=[...new Set(cards.map(card=>String(card.category||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    return {
+      schemaVersion:2,
+      source:{archived:base.source||null,currentCopy:overlay.source||null,overlayApplied:true},
+      cardCount:cards.length,
+      categoryCount:categories.length,
+      categories,
+      cards
+    };
+  }
+
+  function validatePayload(payload,overlay){
     if(!payload||!Array.isArray(payload.cards)) throw new Error('The preserved RPSGT v2 flashcard inventory is unavailable.');
     if(payload.cardCount!==payload.cards.length) throw new Error('The preserved RPSGT v2 flashcard count does not match its inventory.');
-    if(payload.cardCount!==326||payload.categoryCount!==19) throw new Error('The preserved RPSGT v2 flashcard inventory does not match the reviewed 326-card / 19-category release source.');
+    const expectedCards=Number(overlay&&overlay.expectedFinalCardCount)||332;
+    const expectedCategories=Number(overlay&&overlay.expectedFinalCategoryCount)||19;
+    if(payload.cardCount!==expectedCards||payload.categoryCount!==expectedCategories) throw new Error('The current RPSGT v2 flashcard inventory does not match the reviewed 332-card / 19-category source copy.');
+    if(!Array.isArray(payload.categories)||payload.categories.length!==payload.categoryCount) throw new Error('The current RPSGT v2 flashcard category count does not match its inventory.');
     const ids=new Set();
-    payload.cards.forEach(card=>{
-      if(!card.id||!card.category||!card.front||!card.back) throw new Error('A preserved RPSGT v2 flashcard is incomplete.');
+    payload.cards.forEach((card,index)=>{
+      validateCard(card,'Current RPSGT v2 flashcard '+(index+1));
       if(ids.has(card.id)) throw new Error('Duplicate preserved RPSGT v2 flashcard id: '+card.id);
       ids.add(card.id);
     });
@@ -70,9 +115,14 @@
   }
 
   async function load(){
-    const response=await fetch('data/flashcards-v2-extracted.json',{cache:'no-store'});
-    if(!response.ok) throw new Error('The preserved RPSGT v2 flashcard library could not be loaded.');
-    return validatePayload(await response.json());
+    const [baseResponse,overlayResponse]=await Promise.all([
+      fetch('data/flashcards-v2-extracted.json',{cache:'no-store'}),
+      fetch('data/flashcards-v2-current-overlay.json',{cache:'no-store'})
+    ]);
+    if(!baseResponse.ok) throw new Error('The archived RPSGT v2 flashcard library could not be loaded.');
+    if(!overlayResponse.ok) throw new Error('The current RPSGT v2 flashcard overlay could not be loaded.');
+    const [base,overlay]=await Promise.all([baseResponse.json(),overlayResponse.json()]);
+    return validatePayload(applyOverlay(base,overlay),overlay);
   }
 
   function asV3Cards(payload){
@@ -90,9 +140,9 @@
   async function seed(storeApi){
     if(!storeApi||typeof storeApi.seedLibrary!=='function') throw new Error('The RPSGT v3 flashcard library seeding service is unavailable.');
     const payload=await load();
-    const result=storeApi.seedLibrary(asV3Cards(payload),'2026-08-12T13:44:12.000Z');
+    const result=storeApi.seedLibrary(asV3Cards(payload),'2026-08-12T14:58:00.000Z');
     return Object.assign({inventory:payload},result);
   }
 
-  root.RPSGTV2FlashcardLibrary={APA,referencesForCategory,apaOnly,load,asV3Cards,seed};
+  root.RPSGTV2FlashcardLibrary={APA,referencesForCategory,looksApa,apaOnly,applyOverlay,validatePayload,load,asV3Cards,seed};
 })(typeof window!=='undefined'?window:globalThis);
