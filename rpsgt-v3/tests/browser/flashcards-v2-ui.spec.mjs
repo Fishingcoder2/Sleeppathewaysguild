@@ -1,6 +1,6 @@
 import {expect,test} from '@playwright/test';
 
-test('Flashcard Center uses the v2-style library modal with custom cards and flag/unflag review',async({page})=>{
+test('Flashcard Center uses the v2-style library modal with seeded V2 cards, custom cards, and flag/unflag review',async({page})=>{
   await page.goto('flashcards.html');
   await page.evaluate(()=>localStorage.clear());
   await page.reload();
@@ -8,6 +8,7 @@ test('Flashcard Center uses the v2-style library modal with custom cards and fla
   await expect(page.locator('[data-card-status]')).toBeVisible();
   await expect(page.locator('[data-card-shuffle]')).toBeVisible();
   await expect(page.locator('[data-card-stage]')).toBeHidden();
+  await expect(page.locator('[data-card-total]')).toHaveText('332 cards');
 
   await page.locator('[data-custom-card-open]').first().click();
   const dialog=page.locator('[data-custom-card-dialog]');
@@ -24,6 +25,7 @@ test('Flashcard Center uses the v2-style library modal with custom cards and fla
   await expect(page.locator('[data-card-front-topic]')).toHaveText('Core Sleep Terms');
   await expect(page.locator('[data-card-front]')).toHaveText('What does AHI represent?');
   await expect(page.locator('[data-card-modal-title]')).toHaveText('What does AHI represent?');
+  await expect(page.locator('[data-card-total]')).toHaveText('333 cards');
 
   await page.locator('[data-card-flip]').click();
   await expect(review.locator('.flashcard-back .flashcard-face-label')).toHaveText('BACK OF CARD');
@@ -41,7 +43,9 @@ test('Flashcard Center uses the v2-style library modal with custom cards and fla
   await expect(review).toBeHidden();
   const coreCategory=page.locator('.flashcard-category').filter({has:page.locator('summary').filter({hasText:'Core Sleep Terms'})});
   await expect(coreCategory).toHaveClass(/flashcard-category--2/);
-  await expect(page.locator('.flashcard-category summary').getByText('Core Sleep Terms',{exact:true})).toBeVisible();
+  const coreSummary=coreCategory.locator('summary');
+  await expect(coreSummary).toBeVisible();
+  await coreSummary.click();
   const tile=page.locator('[data-card-tile]').filter({hasText:'What does AHI represent?'});
   await expect(tile).toBeVisible();
   await expect(tile).toContainText('Flagged for review');
@@ -60,6 +64,7 @@ test('Previous and Next stay within the category opened from the flashcard libra
   await page.goto('flashcards.html');
   await page.evaluate(()=>localStorage.clear());
   await page.reload();
+  await expect(page.locator('[data-card-total]')).toHaveText('332 cards');
 
   const dialog=page.locator('[data-custom-card-dialog]');
   const review=page.locator('[data-card-stage]');
@@ -74,17 +79,20 @@ test('Previous and Next stay within the category opened from the flashcard libra
     await expect(review).toBeHidden();
   }
 
-  await addCard('Core card one','Core answer one','Core Sleep Terms');
-  await addCard('Core card two','Core answer two','Core Sleep Terms');
-  await addCard('Cardiac card one','Cardiac answer one','Cardiac & ECG Recognition');
+  await addCard('Core card one','Core answer one','Browser Test Core');
+  await addCard('Core card two','Core answer two','Browser Test Core');
+  await addCard('Cardiac card one','Cardiac answer one','Browser Test Other');
+  await expect(page.locator('[data-card-total]')).toHaveText('335 cards');
 
+  const testCategory=page.locator('.flashcard-category').filter({has:page.locator('summary').filter({hasText:'Browser Test Core'})});
+  await testCategory.locator('summary').click();
   await page.locator('[data-card-tile]').filter({hasText:'Core card one'}).click();
-  await expect(page.locator('[data-card-front-topic]')).toHaveText('Core Sleep Terms');
+  await expect(page.locator('[data-card-front-topic]')).toHaveText('Browser Test Core');
   await expect(page.locator('[data-card-position]')).toHaveText('Card 1 / 2');
   await expect(page.locator('[data-card-front]')).toHaveText('Core card one');
 
   await page.locator('[data-card-next]').click();
-  await expect(page.locator('[data-card-front-topic]')).toHaveText('Core Sleep Terms');
+  await expect(page.locator('[data-card-front-topic]')).toHaveText('Browser Test Core');
   await expect(page.locator('[data-card-position]')).toHaveText('Card 2 / 2');
   await expect(page.locator('[data-card-front]')).toHaveText('Core card two');
 
