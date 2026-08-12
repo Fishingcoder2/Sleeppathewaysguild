@@ -14,6 +14,8 @@ test('Learner Practice hides internal metadata and persists learner actions', as
   await expect(page.locator('[data-practice-flag]')).toBeVisible();
   await expect(page.locator('[data-practice-review-later]')).toBeVisible();
   await expect(page.locator('[data-practice-flashcard]')).toBeVisible();
+  await expect(page.locator('[data-previous-question]')).toBeDisabled();
+  await expect(page.locator('[data-submit-answer]')).toHaveCount(0);
 
   await page.locator('[data-practice-flag]').click();
   await page.locator('[data-practice-review-later]').click();
@@ -27,6 +29,20 @@ test('Learner Practice hides internal metadata and persists learner actions', as
   expect(state.migration.importEnabled).toBe(false);
 
   await page.locator('[data-choice-index]').first().click();
-  await page.locator('[data-submit-answer]').click();
+  await expect(page.locator('[data-next-question]')).toBeEnabled();
+  await page.locator('[data-next-question]').click();
+  await expect(page.locator('[data-answer-feedback]')).toBeVisible();
+  await expect(page.locator('[data-answer-feedback]')).toContainText('Reasoning');
+  await expect(page.locator('[data-answer-feedback]')).toContainText('Correct answer:');
   await expect(page.locator('[data-answer-feedback]')).not.toContainText('Mapped source keys');
+  await expect(page.locator('[data-next-question]')).toHaveText('Next question');
+
+  const firstPrompt=await page.locator('[data-question-prompt]').textContent();
+  await page.locator('[data-next-question]').click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 2 of 5');
+  await expect(page.locator('[data-previous-question]')).toBeEnabled();
+  await page.locator('[data-previous-question]').click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 1 of 5');
+  await expect(page.locator('[data-question-prompt]')).toHaveText(firstPrompt||'');
+  await expect(page.locator('[data-answer-feedback]')).toBeVisible();
 });
