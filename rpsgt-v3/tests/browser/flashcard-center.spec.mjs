@@ -38,6 +38,8 @@ test('custom RPSGT flashcards persist in the library without duplicate cards or 
 
   await page.locator('[data-card-flag]').click();
   await expect(page.locator('[data-card-flag]')).toHaveText('Unflag');
+  await page.locator('.flashcard-learning-details summary').click();
+  await expect(page.locator('[data-card-mastered]')).toBeVisible();
   await page.locator('[data-card-mastered]').click();
   await expect(page.locator('[data-card-mastered]')).toHaveText('Mastered ✓');
 
@@ -49,6 +51,7 @@ test('custom RPSGT flashcards persist in the library without duplicate cards or 
   await expect(tile).toContainText('Mastered');
   await tile.click();
   await expect(page.locator('[data-card-flag]')).toHaveText('Unflag');
+  await page.locator('.flashcard-learning-details summary').click();
   await expect(page.locator('[data-card-mastered]')).toHaveText('Mastered ✓');
   await page.locator('[data-card-close]').click();
 
