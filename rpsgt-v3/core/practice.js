@@ -6,6 +6,7 @@
     blueprint:null,
     moduleCache:new Map(),
     session:[],
+    responses:[],
     index:0,
     selected:null,
     answered:false,
@@ -47,6 +48,11 @@
   function matchesDifficulty(question,difficulty){
     if(!difficulty||difficulty==="all") return true;
     return String(question&&question.difficulty||"").trim().toLowerCase()===String(difficulty).trim().toLowerCase();
+  }
+  function emptyResponse(){return {selected:null,answered:false,isCorrect:null,selectedAnswer:null};}
+  function currentResponse(){
+    if(!state.responses[state.index]) state.responses[state.index]=emptyResponse();
+    return state.responses[state.index];
   }
 
   function buildBlueprintMaps(){
@@ -159,6 +165,7 @@
       const requested=$("[data-practice-size]").value;
       const size=requested==="all"?pool.length:Math.min(Number(requested)||10,pool.length);
       state.session=shuffle(pool).slice(0,size);
+      state.responses=state.session.map(emptyResponse);
       state.index=0;
       state.selected=null;
       state.answered=false;
@@ -178,12 +185,19 @@
     }
   }
 
-  function createChoice(option,index){
+  function createChoice(option,index,response,question){
     const button=document.createElement("button");
     button.type="button";
     button.className="practice-choice";
     button.dataset.choiceIndex=String(index);
-    button.setAttribute("aria-pressed","false");
+    const selected=response.selected!==null&&Number(response.selected)===index;
+    button.classList.toggle("selected",selected);
+    button.setAttribute("aria-pressed",selected?"true":"false");
+    if(response.answered){
+      button.disabled=true;
+      button.classList.toggle("correct",option===question.answer);
+      button.classList.toggle("incorrect",option===response.selectedAnswer&&!response.isCorrect);
+    }
     const marker=document.createElement("span");
     marker.className="choice-marker";
     marker.textContent=String.fromCharCode(65+index);
@@ -194,11 +208,67 @@
     return button;
   }
 
+  function renderFeedback(question,response,{focus=false}={}){
+    const feedback=$("[data-answer-feedback]");
+    if(!response.answered){
+      feedback.className="answer-feedback hidden";
+      feedback.innerHTML="";
+      feedback.removeAttribute("tabindex");
+      return;
+    }
+    feedback.className="answer-feedback "+(response.isCorrect?"correct":"incorrect");
+    feedback.setAttribute("tabindex","-1");
+    const heading=document.createElement("strong");
+    heading.className="feedback-result";
+    heading.textContent=response.isCorrect?"Correct":"Review this one";
+    const reasoning=document.createElement("section");
+    reasoning.className="feedback-reasoning";
+    const reasoningHeading=document.createElement("h3");
+    reasoningHeading.textContent="Reasoning";
+    const answer=document.createElement("p");
+    const answerLabel=document.createElement("strong");
+    answerLabel.textContent="Correct answer: ";
+    answer.append(answerLabel,document.createTextNode(question.answer));
+    const rationale=document.createElement("p");
+    rationale.textContent=question.rationale;
+    reasoning.append(reasoningHeading,answer,rationale);
+    const refs=document.createElement("p");
+    refs.className="feedback-references";
+    refs.textContent="Mapped source keys: "+(question.referenceKeys||[]).join(", ");
+    feedback.replaceChildren(heading,reasoning,refs);
+    appendQualityDetails(feedback,question);
+    if(focus&&typeof feedback.focus==="function"){
+      const schedule=typeof window.requestAnimationFrame==="function"?window.requestAnimationFrame.bind(window):function(callback){window.setTimeout(callback,0);};
+      schedule(function(){if(feedback.isConnected) feedback.focus({preventScroll:false});});
+    }
+  }
+
+  function updateQuestionNavigation(){
+    const response=currentResponse();
+    const previous=$("[data-previous-question]");
+    const next=$("[data-next-question]");
+    const hint=$("[data-question-action-hint]");
+    previous.disabled=state.index===0;
+    next.classList.remove("hidden");
+    if(response.answered){
+      next.disabled=false;
+      next.textContent=state.index===state.session.length-1?"Submit Practice":"Next question";
+      hint.textContent=state.index===state.session.length-1
+        ?"Review the reasoning, then choose Submit Practice."
+        :"Review the reasoning, then choose Next question to continue.";
+    }else{
+      next.disabled=response.selected===null;
+      next.textContent="Next";
+      hint.textContent="Select an answer, then choose Next to check it. Your reasoning and the correct answer will appear before you move on.";
+    }
+  }
+
   function renderQuestion(){
     const question=state.session[state.index];
     if(!question){renderComplete();return;}
-    state.selected=null;
-    state.answered=false;
+    const response=currentResponse();
+    state.selected=response.selected;
+    state.answered=response.answered;
     $("[data-question-number]").textContent="Question "+(state.index+1)+" of "+state.session.length;
     $("[data-question-task]").textContent=question.taskCode+" · "+question.topic;
     $("[data-question-difficulty]").textContent=question.difficulty+" · "+question.questionType;
@@ -208,24 +278,23 @@
     reviewBadge.textContent=state.mode==="quality"?"Manual review record":"";
     const choices=$("[data-question-choices]");
     choices.innerHTML="";
-    question.options.forEach(function(option,index){choices.appendChild(createChoice(option,index));});
-    $("[data-submit-answer]").disabled=true;
-    $("[data-submit-answer]").classList.remove("hidden");
-    $("[data-next-question]").classList.add("hidden");
-    $("[data-answer-feedback]").className="answer-feedback hidden";
-    $("[data-answer-feedback]").innerHTML="";
+    question.options.forEach(function(option,index){choices.appendChild(createChoice(option,index,response,question));});
+    renderFeedback(question,response);
+    updateQuestionNavigation();
     updateSessionStats();
   }
 
   function selectChoice(index){
     if(state.answered) return;
     state.selected=index;
+    const response=currentResponse();
+    response.selected=index;
     $all("[data-choice-index]").forEach(function(button){
       const selected=Number(button.dataset.choiceIndex)===index;
       button.classList.toggle("selected",selected);
       button.setAttribute("aria-pressed",selected?"true":"false");
     });
-    $("[data-submit-answer]").disabled=false;
+    updateQuestionNavigation();
   }
 
   function ensureBucket(parent,key){
@@ -263,7 +332,7 @@
     saved.review.missedIds=Array.isArray(saved.review.missedIds)?saved.review.missedIds:[];
     saved.review.masteredIds=Array.isArray(saved.review.masteredIds)?saved.review.masteredIds:[];
     if(isCorrect){
-      if(saved.review.missedIds.some(function(id){return String(id)===String(question.id);})){
+      if(saved.review.missedIds.some(function(id){return String(id)===String(question.id);})){ 
         saved.review.missedIds=removeValue(saved.review.missedIds,question.id);
         saved.review.masteredIds=addUnique(saved.review.masteredIds,question.id);
       }
@@ -292,10 +361,15 @@
   }
 
   function submitAnswer(){
-    if(state.selected===null||state.answered) return;
+    const response=currentResponse();
+    if(response.selected===null||response.answered) return false;
     const question=state.session[state.index];
-    const selectedAnswer=question.options[state.selected];
+    const selectedAnswer=question.options[response.selected];
     const isCorrect=selectedAnswer===question.answer;
+    response.answered=true;
+    response.isCorrect=isCorrect;
+    response.selectedAnswer=selectedAnswer;
+    state.selected=response.selected;
     state.answered=true;
     state.answeredCount+=1;
     if(isCorrect) state.correct+=1;
@@ -305,30 +379,27 @@
       button.classList.toggle("correct",option===question.answer);
       button.classList.toggle("incorrect",option===selectedAnswer&&!isCorrect);
     });
-    const feedback=$("[data-answer-feedback]");
-    feedback.className="answer-feedback "+(isCorrect?"correct":"incorrect");
-    const heading=document.createElement("strong");
-    heading.textContent=isCorrect?"Correct":"Review this one";
-    const answer=document.createElement("p");
-    answer.textContent="Correct answer: "+question.answer;
-    const rationale=document.createElement("p");
-    rationale.textContent=question.rationale;
-    const refs=document.createElement("p");
-    refs.className="feedback-references";
-    refs.textContent="Mapped source keys: "+(question.referenceKeys||[]).join(", ");
-    feedback.replaceChildren(heading,answer,rationale,refs);
-    appendQualityDetails(feedback,question);
-    $("[data-submit-answer]").classList.add("hidden");
-    $("[data-next-question]").classList.remove("hidden");
-    $("[data-next-question]").textContent=state.index===state.session.length-1?"Submit Practice":"Next question";
+    renderFeedback(question,response,{focus:true});
     recordAnswer(question,isCorrect,selectedAnswer);
     if(window.RPSGTApp&&typeof window.RPSGTApp.playFeedbackSound==="function") window.RPSGTApp.playFeedbackSound(isCorrect?"correct":"incorrect");
+    updateQuestionNavigation();
     updateSessionStats();
+    return true;
   }
 
   function nextQuestion(){
+    if(!state.answered){
+      submitAnswer();
+      return;
+    }
     state.index+=1;
     if(state.index>=state.session.length) renderComplete(); else renderQuestion();
+  }
+
+  function previousQuestion(){
+    if(state.index<=0) return;
+    state.index-=1;
+    renderQuestion();
   }
 
   function updateSessionStats(){
@@ -391,7 +462,7 @@
       $("[data-practice-mode]").addEventListener("change",updateModeUi);
       $("[data-practice-domain]").addEventListener("change",refreshTasks);
       $("[data-start-practice]").addEventListener("click",startSession);
-      $("[data-submit-answer]").addEventListener("click",submitAnswer);
+      $("[data-previous-question]").addEventListener("click",previousQuestion);
       $("[data-next-question]").addEventListener("click",nextQuestion);
       $all("[data-change-filters]").forEach(function(button){button.addEventListener("click",changeFilters);});
       $all("[data-restart-session]").forEach(function(button){button.addEventListener("click",startSession);});
