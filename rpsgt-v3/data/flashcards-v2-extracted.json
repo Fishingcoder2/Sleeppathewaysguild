@@ -1,0 +1,2316 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "branch": "rpsgt-pre-repair-20260725",
+    "path": "RPSGTv2.2026-core.html",
+    "blobSha": "4423bb6220af7fa354ce4f33acedc6f7b6a8cc53",
+    "deckMarker": "spg-v12-62a-reference-flashcard-button-hotfix-script"
+  },
+  "cardCount": 326,
+  "categoryCount": 19,
+  "categories": [
+    "Cardiac & ECG Recognition",
+    "Circadian Rhythm Sleep-Wake Disorders",
+    "Core Sleep Terms",
+    "Exam Strategy & Question Traps",
+    "Italian-English Word Bridge",
+    "Medication Acronyms",
+    "Medication Effects",
+    "Medications & Substances",
+    "Montage & Electrode Placement",
+    "Oxygen, CO2 & Units",
+    "PAP & Oxygen Therapy",
+    "Report Math & Indexes",
+    "Respiratory Events & Patterns",
+    "Safety, Infection Control & Professional Practice",
+    "Sensors, Equipment & Standards",
+    "Signals, Filters & Instrumentation",
+    "Sleep Disorders & Clinical Terms",
+    "Sleep Staging & EEG Clues",
+    "Sleep-Related Breathing Disorders"
+  ],
+  "cards": [
+    {
+      "id": "fc-fio2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "FiO2",
+      "back": "Fraction of inspired oxygen. It is the oxygen concentration being inhaled, written as a decimal or percent, such as 0.21 or 21%.",
+      "memoryClue": "FiO2 is what goes in; SpO2 is what the pulse ox estimates in the patient."
+    },
+    {
+      "id": "fc-spo2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "SpO2",
+      "back": "Peripheral oxygen saturation estimated by pulse oximetry. Unit: percent (%).",
+      "memoryClue": "SpO2 does not prove CO2 removal is adequate."
+    },
+    {
+      "id": "fc-sao2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "SaO2",
+      "back": "Arterial oxygen saturation, commonly from arterial blood/co-oximetry context. Unit: percent (%).",
+      "memoryClue": "SaO2 is saturation, not PaO2 pressure."
+    },
+    {
+      "id": "fc-pao2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "PaO2",
+      "back": "Arterial partial pressure of oxygen. Unit: mmHg.",
+      "memoryClue": "Lowercase a means arterial; PaO2 is not a percent."
+    },
+    {
+      "id": "fc-paao2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "PAO2",
+      "back": "Alveolar partial pressure of oxygen. Unit: mmHg.",
+      "memoryClue": "Capital A means alveolar; lowercase a means arterial."
+    },
+    {
+      "id": "fc-paco2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "PaCO2",
+      "back": "Arterial partial pressure of carbon dioxide. Unit: mmHg. It is a key blood-gas clue for ventilation.",
+      "memoryClue": "CO2 tells ventilation; normal SpO2 may not reveal CO2 retention."
+    },
+    {
+      "id": "fc-etco2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "EtCO2 / PETCO2",
+      "back": "End-tidal carbon dioxide at the end of exhalation, measured by capnography. Unit: commonly mmHg.",
+      "memoryClue": "Mouth breathing, leaks, oxygen flow, and cannula problems can distort EtCO2."
+    },
+    {
+      "id": "fc-tcco2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "TcCO2 / PtcCO2",
+      "back": "Transcutaneous carbon dioxide estimated through a heated skin sensor. Unit: mmHg. Best understood as a trend.",
+      "memoryClue": "TcCO2 responds slower than breath-by-breath EtCO2."
+    },
+    {
+      "id": "fc-tco2",
+      "category": "Oxygen, CO2 & Units",
+      "front": "TcO2 / PtcO2",
+      "back": "Transcutaneous oxygen estimated through the skin. Unit: mmHg.",
+      "memoryClue": "TcO2 is a pressure estimate, not SpO2 percent."
+    },
+    {
+      "id": "fc-hypercapnia",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Hypercapnia",
+      "back": "Elevated carbon dioxide, usually reflected by increased PaCO2/TcCO2/EtCO2 in mmHg context.",
+      "memoryClue": "Hypercapnia is a ventilation problem, not simply low oxygen saturation."
+    },
+    {
+      "id": "fc-hypocapnia",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Hypocapnia",
+      "back": "Low carbon dioxide, often from excessive ventilation relative to metabolic need.",
+      "memoryClue": "Do not confuse low CO2 with hypoxemia."
+    },
+    {
+      "id": "fc-hypoxemia",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Hypoxemia",
+      "back": "Low oxygen in the blood; may be reflected by low PaO2 or low oxygen saturation depending on the measure.",
+      "memoryClue": "Hypoxemia is not the same as hypoventilation, although they can occur together."
+    },
+    {
+      "id": "fc-hypoxia",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Hypoxia",
+      "back": "Inadequate oxygen at tissue level.",
+      "memoryClue": "Hypoxia and hypoxemia are related but not identical terms."
+    },
+    {
+      "id": "fc-hypoventilation",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Hypoventilation",
+      "back": "Inadequate alveolar ventilation causing CO2 retention; CO2 values rise.",
+      "memoryClue": "SpO2 can look acceptable while CO2 is high, especially with supplemental oxygen."
+    },
+    {
+      "id": "fc-hyperventilation",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Hyperventilation",
+      "back": "Ventilation greater than metabolic need, commonly lowering CO2.",
+      "memoryClue": "Do not equate fast breathing alone with effective ventilation."
+    },
+    {
+      "id": "fc-mmHg",
+      "category": "Oxygen, CO2 & Units",
+      "front": "mmHg",
+      "back": "Millimeters of mercury. Used for blood pressure, ABG partial pressures, PaO2, PaCO2, EtCO2, and TcCO2.",
+      "memoryClue": "Do not use mmHg for PAP pressures."
+    },
+    {
+      "id": "fc-cmh2o",
+      "category": "Oxygen, CO2 & Units",
+      "front": "cm H2O",
+      "back": "Centimeters of water. Used for CPAP, EPAP, IPAP, BPAP, and pressure support.",
+      "memoryClue": "PAP pressure is not measured in mmHg."
+    },
+    {
+      "id": "fc-lpm",
+      "category": "Oxygen, CO2 & Units",
+      "front": "L/min or lpm",
+      "back": "Liters per minute. Used for oxygen flow from wall oxygen, tank/cylinder, liquid oxygen source, or concentrator.",
+      "memoryClue": "O2 flow is not cm H2O and not percent."
+    },
+    {
+      "id": "fc-percent",
+      "category": "Oxygen, CO2 & Units",
+      "front": "%",
+      "back": "Percent. Used for oxygen saturation values such as SpO2/SaO2 and for FiO2 when written as a percent.",
+      "memoryClue": "Percent is not mmHg or L/min."
+    },
+    {
+      "id": "fc-o2-source",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Oxygen source",
+      "back": "Where oxygen comes from: wall oxygen, cylinder/tank, liquid oxygen, or oxygen concentrator.",
+      "memoryClue": "The source is not the flow dose and not the patient's SpO2."
+    },
+    {
+      "id": "fc-o2-device",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Oxygen delivery device",
+      "back": "The interface or pathway: nasal cannula, mask, oxygen tubing, or PAP bleed-in connector.",
+      "memoryClue": "Do not document the device as the oxygen dose."
+    },
+    {
+      "id": "fc-o2-dose",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Oxygen dose/flow",
+      "back": "The ordered or delivered oxygen amount, commonly charted in L/min or FiO2 depending on setup.",
+      "memoryClue": "Dose/flow is not SpO2, which is the patient response."
+    },
+    {
+      "id": "fc-o2-measure",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Patient oxygen measurement",
+      "back": "Values such as SpO2, SaO2, or PaO2 that describe patient oxygenation.",
+      "memoryClue": "A patient measurement is not the same as the source or device."
+    },
+    {
+      "id": "fc-concentrator",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Oxygen concentrator",
+      "back": "A device that concentrates oxygen from room air for low-flow oxygen delivery.",
+      "memoryClue": "Concentrator is correct; condenser is a distractor."
+    },
+    {
+      "id": "fc-cylinder",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Oxygen cylinder / tank",
+      "back": "A compressed oxygen source.",
+      "memoryClue": "A tank/cylinder is a source; flow is still documented in L/min."
+    },
+    {
+      "id": "fc-bleedin",
+      "category": "PAP & Oxygen Therapy",
+      "front": "O2 bleed-in connector",
+      "back": "A connector/adapter that adds supplemental oxygen into the PAP circuit.",
+      "memoryClue": "Oxygen bleed-in does not change the CPAP pressure unit."
+    },
+    {
+      "id": "fc-cpap",
+      "category": "PAP & Oxygen Therapy",
+      "front": "CPAP",
+      "back": "Continuous positive airway pressure. One continuous pressure used to help splint the airway. Unit: cm H2O.",
+      "memoryClue": "CPAP is not oxygen flow and not mmHg."
+    },
+    {
+      "id": "fc-bpap",
+      "category": "PAP & Oxygen Therapy",
+      "front": "BPAP / bilevel PAP",
+      "back": "Bilevel positive airway pressure with separate inspiratory and expiratory pressure settings.",
+      "memoryClue": "BPAP is not just 'higher CPAP'; it has IPAP and EPAP."
+    },
+    {
+      "id": "fc-ipap",
+      "category": "PAP & Oxygen Therapy",
+      "front": "IPAP",
+      "back": "Inspiratory positive airway pressure. Unit: cm H2O.",
+      "memoryClue": "IPAP is not oxygen flow."
+    },
+    {
+      "id": "fc-epap",
+      "category": "PAP & Oxygen Therapy",
+      "front": "EPAP",
+      "back": "Expiratory positive airway pressure. Unit: cm H2O.",
+      "memoryClue": "EPAP supports airway patency during exhalation; it is not EtCO2."
+    },
+    {
+      "id": "fc-ps",
+      "category": "Report Math & Indexes",
+      "front": "Pressure support",
+      "back": "Pressure support = IPAP - EPAP. Unit: cm H2O.",
+      "memoryClue": "Pressure support is not L/min oxygen flow."
+    },
+    {
+      "id": "fc-asv",
+      "category": "PAP & Oxygen Therapy",
+      "front": "ASV",
+      "back": "Adaptive servo-ventilation, a PAP mode that varies inspiratory support in response to breathing pattern.",
+      "memoryClue": "Know the concept; avoid assuming it is appropriate for every central breathing case."
+    },
+    {
+      "id": "fc-avaps",
+      "category": "PAP & Oxygen Therapy",
+      "front": "AVAPS / VAPS",
+      "back": "Average volume-assured pressure support / volume-assured pressure support; adjusts pressure support to target ventilation parameters.",
+      "memoryClue": "Do not confuse pressure support with oxygen flow."
+    },
+    {
+      "id": "fc-st",
+      "category": "PAP & Oxygen Therapy",
+      "front": "BPAP S/T",
+      "back": "Bilevel PAP with spontaneous/timed backup support.",
+      "memoryClue": "The timed backup relates to breaths, not oxygen saturation percent."
+    },
+    {
+      "id": "fc-ramp",
+      "category": "PAP & Oxygen Therapy",
+      "front": "Ramp",
+      "back": "A PAP comfort feature that starts at a lower pressure and gradually increases.",
+      "memoryClue": "Ramp is comfort support; it is not treatment pressure once therapeutic pressure is reached."
+    },
+    {
+      "id": "fc-leak",
+      "category": "PAP & Oxygen Therapy",
+      "front": "Leak",
+      "back": "Unintended air escaping from mask or mouth that can distort PAP signals and reduce therapy effectiveness.",
+      "memoryClue": "Fix leak before assuming pressure is inadequate."
+    },
+    {
+      "id": "fc-rainout",
+      "category": "PAP & Oxygen Therapy",
+      "front": "Rainout",
+      "back": "Condensation/water collecting in PAP tubing or mask.",
+      "memoryClue": "Rainout is humidity/temperature management, not oxygen desaturation by itself."
+    },
+    {
+      "id": "fc-humidification",
+      "category": "PAP & Oxygen Therapy",
+      "front": "Humidification",
+      "back": "Moisture added to PAP airflow to reduce dryness and improve comfort.",
+      "memoryClue": "Too much humidity/temperature mismatch can contribute to rainout."
+    },
+    {
+      "id": "fc-flowlim",
+      "category": "Respiratory Events & Patterns",
+      "front": "Flow limitation",
+      "back": "Flattening or plateau of the nasal pressure/PAP flow contour suggesting partial upper-airway obstruction.",
+      "memoryClue": "Flattening alone is a clue; scoring depends on context and consequences."
+    },
+    {
+      "id": "fc-rera",
+      "category": "Respiratory Events & Patterns",
+      "front": "RERA",
+      "back": "Respiratory effort-related arousal: increasing effort/flow limitation leading to arousal without meeting apnea/hypopnea criteria.",
+      "memoryClue": "Do not count RERAs in AHI unless the question asks for RDI or includes them."
+    },
+    {
+      "id": "fc-epoch",
+      "category": "Report Math & Indexes",
+      "front": "Epoch",
+      "back": "A standard sleep-scoring epoch is 30 seconds. Two epochs equal one minute.",
+      "memoryClue": "Do not treat one epoch as one minute."
+    },
+    {
+      "id": "fc-trt",
+      "category": "Report Math & Indexes",
+      "front": "TRT",
+      "back": "Total recording time: time from lights out to lights on.",
+      "memoryClue": "TRT is not necessarily total sleep time."
+    },
+    {
+      "id": "fc-tib",
+      "category": "Report Math & Indexes",
+      "front": "TIB",
+      "back": "Time in bed. Often used in sleep efficiency context depending on report convention.",
+      "memoryClue": "Do not confuse TIB with TST."
+    },
+    {
+      "id": "fc-tst",
+      "category": "Report Math & Indexes",
+      "front": "TST",
+      "back": "Total sleep time: the total time actually spent asleep.",
+      "memoryClue": "PSG AHI uses TST in hours."
+    },
+    {
+      "id": "fc-waso",
+      "category": "Report Math & Indexes",
+      "front": "WASO",
+      "back": "Wake after sleep onset: wake time after sleep has begun.",
+      "memoryClue": "Wake before first sleep is sleep latency, not WASO."
+    },
+    {
+      "id": "fc-sol",
+      "category": "Report Math & Indexes",
+      "front": "Sleep onset latency",
+      "back": "Time from lights out to the first epoch of sleep.",
+      "memoryClue": "Do not use first REM epoch for sleep onset latency."
+    },
+    {
+      "id": "fc-rem-lat",
+      "category": "Report Math & Indexes",
+      "front": "REM latency",
+      "back": "Time from sleep onset to the first epoch of REM sleep.",
+      "memoryClue": "Do not start from lights out unless you subtract sleep onset latency."
+    },
+    {
+      "id": "fc-se",
+      "category": "Report Math & Indexes",
+      "front": "Sleep efficiency",
+      "back": "TST divided by time in bed/recording time times 100. Unit: percent.",
+      "memoryClue": "Sleep efficiency is not events/hour."
+    },
+    {
+      "id": "fc-stagepct",
+      "category": "Report Math & Indexes",
+      "front": "Stage percentage",
+      "back": "Minutes in a stage divided by TST times 100. Unit: percent of TST.",
+      "memoryClue": "Use TST, not total recording time."
+    },
+    {
+      "id": "fc-ahi",
+      "category": "Report Math & Indexes",
+      "front": "AHI",
+      "back": "Apneas plus hypopneas divided by TST in hours. Unit: events/hour.",
+      "memoryClue": "PSG AHI uses total sleep time, not total recording time."
+    },
+    {
+      "id": "fc-rdi",
+      "category": "Report Math & Indexes",
+      "front": "RDI",
+      "back": "Apneas plus hypopneas plus RERAs divided by TST in hours, when RERAs are included by definition. Unit: events/hour.",
+      "memoryClue": "Do not forget RERAs when the question specifically asks for RDI with RERAs."
+    },
+    {
+      "id": "fc-rei",
+      "category": "Report Math & Indexes",
+      "front": "REI",
+      "back": "Respiratory events divided by recording/monitoring time in hours, commonly in HSAT context. Unit: events/hour.",
+      "memoryClue": "REI may use monitoring time instead of sleep time."
+    },
+    {
+      "id": "fc-plmi",
+      "category": "Report Math & Indexes",
+      "front": "PLMI",
+      "back": "Periodic limb movements divided by TST in hours. Unit: movements/hour.",
+      "memoryClue": "Do not count non-qualifying or secondary movements as PLMS."
+    },
+    {
+      "id": "fc-plmai",
+      "category": "Report Math & Indexes",
+      "front": "PLM arousal index",
+      "back": "PLMs associated with arousals divided by TST in hours.",
+      "memoryClue": "Not every PLM has an arousal."
+    },
+    {
+      "id": "fc-arousal-index",
+      "category": "Report Math & Indexes",
+      "front": "Arousal index",
+      "back": "Arousals divided by TST in hours. Unit: arousals/hour.",
+      "memoryClue": "Spell it out; AI may also mean apnea index in some contexts."
+    },
+    {
+      "id": "fc-odi",
+      "category": "Report Math & Indexes",
+      "front": "ODI",
+      "back": "Oxygen desaturation index: qualifying desaturations divided by hours of sleep or monitoring time depending on context.",
+      "memoryClue": "ODI is events/hour; SpO2 is percent."
+    },
+    {
+      "id": "fc-apnea-index",
+      "category": "Report Math & Indexes",
+      "front": "Apnea Index",
+      "back": "Apneas divided by TST in hours.",
+      "memoryClue": "Do not include hypopneas unless asked for AHI."
+    },
+    {
+      "id": "fc-cai",
+      "category": "Report Math & Indexes",
+      "front": "CAI",
+      "back": "Central apnea index: central apneas divided by TST in hours.",
+      "memoryClue": "CAI is events/hour, not percent."
+    },
+    {
+      "id": "fc-oai",
+      "category": "Report Math & Indexes",
+      "front": "OAI",
+      "back": "Obstructive apnea index: obstructive apneas divided by TST in hours.",
+      "memoryClue": "OAI is not oxygenation; read the acronym."
+    },
+    {
+      "id": "fc-hi",
+      "category": "Report Math & Indexes",
+      "front": "Hypopnea Index",
+      "back": "Hypopneas divided by TST in hours.",
+      "memoryClue": "Do not include apneas unless asked for AHI."
+    },
+    {
+      "id": "fc-uv",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "uV",
+      "back": "Microvolts. Unit for bioelectric signal amplitude/voltage.",
+      "memoryClue": "uV is not Hz."
+    },
+    {
+      "id": "fc-mm",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "mm",
+      "back": "Millimeters. Used for waveform height/pen deflection and small distance measurements.",
+      "memoryClue": "mm is not mmHg."
+    },
+    {
+      "id": "fc-uvmm",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "uV/mm",
+      "back": "Microvolts per millimeter, a sensitivity unit connecting voltage to displayed height.",
+      "memoryClue": "Do not confuse uV/mm with Hz."
+    },
+    {
+      "id": "fc-pd",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Pen deflection",
+      "back": "Displayed waveform height, usually measured in mm.",
+      "memoryClue": "Pen deflection is distance, not voltage."
+    },
+    {
+      "id": "fc-voltage",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Voltage from deflection",
+      "back": "Voltage = pen deflection x sensitivity.",
+      "memoryClue": "Check whether the question asks for voltage, sensitivity, or deflection."
+    },
+    {
+      "id": "fc-sensitivity",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Sensitivity",
+      "back": "Sensitivity = voltage / deflection. Unit: uV/mm.",
+      "memoryClue": "Higher sensitivity settings can make waveforms appear larger depending on system display conventions; read wording carefully."
+    },
+    {
+      "id": "fc-gain",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Gain",
+      "back": "Amplifier multiplication of a signal.",
+      "memoryClue": "Gain and sensitivity are related but not always worded the same in every system."
+    },
+    {
+      "id": "fc-hz",
+      "category": "Oxygen, CO2 & Units",
+      "front": "Hz",
+      "back": "Hertz, cycles per second. Used for frequency, filters, and sampling rate concepts.",
+      "memoryClue": "Hz is not amplitude, pressure, or oxygen flow."
+    },
+    {
+      "id": "fc-frequency",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Frequency",
+      "back": "Cycles per second. Unit: Hz.",
+      "memoryClue": "Frequency is width/timing, not height."
+    },
+    {
+      "id": "fc-amplitude",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Amplitude",
+      "back": "Vertical height/voltage of a waveform.",
+      "memoryClue": "Amplitude is not cycles per second."
+    },
+    {
+      "id": "fc-duration",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Duration",
+      "back": "How long a waveform or event lasts. Unit: seconds or minutes.",
+      "memoryClue": "Duration is not frequency."
+    },
+    {
+      "id": "fc-lff",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "LFF / low-frequency filter",
+      "back": "Filter setting affecting slow frequencies; also called high-pass in some contexts.",
+      "memoryClue": "Changing filters can distort waveform appearance."
+    },
+    {
+      "id": "fc-hff",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "HFF / high-frequency filter",
+      "back": "Filter setting affecting fast frequencies; also called low-pass in some contexts.",
+      "memoryClue": "Do not use filters to hide a fixable electrode problem."
+    },
+    {
+      "id": "fc-60hz",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "60-Hz filter / notch filter",
+      "back": "Filter used to reduce line-frequency artifact in U.S. settings.",
+      "memoryClue": "The better first action may be to fix impedance/electrode issues rather than simply filtering."
+    },
+    {
+      "id": "fc-sampling",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Sampling rate",
+      "back": "How often a signal is sampled per second. Unit: Hz or samples/second.",
+      "memoryClue": "Sampling rate is not sensitivity."
+    },
+    {
+      "id": "fc-aliasing",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Aliasing",
+      "back": "Distortion that can occur when sampling is insufficient for the signal frequency.",
+      "memoryClue": "Aliasing is a digital signal problem, not a PAP leak."
+    },
+    {
+      "id": "fc-ohm",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Ohm's law",
+      "back": "V = I x R. In PSG, impedance is the practical related concept.",
+      "memoryClue": "Do not confuse Ohm's law units with head-measurement units."
+    },
+    {
+      "id": "fc-kohms",
+      "category": "Oxygen, CO2 & Units",
+      "front": "kOhm / kohms",
+      "back": "Kilo-ohms. Used for electrode impedance.",
+      "memoryClue": "kOhm is not a head-measurement distance."
+    },
+    {
+      "id": "fc-impedance",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Impedance",
+      "back": "Opposition to current flow at the electrode-skin interface, commonly checked in kOhm.",
+      "memoryClue": "High impedance may increase artifact/noise."
+    },
+    {
+      "id": "fc-ground",
+      "category": "Montage & Electrode Placement",
+      "front": "Ground electrode",
+      "back": "Electrode used as a common ground/reference point for electrical stability/safety; often placed at Fpz or another appropriate neutral site depending on system/protocol.",
+      "memoryClue": "Do not place ground where it creates avoidable artifact or conflicts with references."
+    },
+    {
+      "id": "fc-m1",
+      "category": "Montage & Electrode Placement",
+      "front": "M1",
+      "back": "Left mastoid or left earlobe reference electrode.",
+      "memoryClue": "M1 is not a measurement in millimeters."
+    },
+    {
+      "id": "fc-m2",
+      "category": "Montage & Electrode Placement",
+      "front": "M2",
+      "back": "Right mastoid or right earlobe reference electrode.",
+      "memoryClue": "M2 is not a second minute or oxygen setting."
+    },
+    {
+      "id": "fc-fpz",
+      "category": "Montage & Electrode Placement",
+      "front": "Fpz",
+      "back": "Midline frontal polar location often used for ground in PSG setups.",
+      "memoryClue": "Fpz is a site, not an impedance value."
+    },
+    {
+      "id": "fc-cz",
+      "category": "Montage & Electrode Placement",
+      "front": "Cz",
+      "back": "Central midline scalp electrode position, found from 10-20 measurements.",
+      "memoryClue": "Cz is not C3 or C4."
+    },
+    {
+      "id": "fc-c3",
+      "category": "Montage & Electrode Placement",
+      "front": "C3",
+      "back": "Left central EEG electrode position.",
+      "memoryClue": "C3 is not a cervical vertebra in PSG electrode placement context."
+    },
+    {
+      "id": "fc-c4",
+      "category": "Montage & Electrode Placement",
+      "front": "C4",
+      "back": "Right central EEG electrode position.",
+      "memoryClue": "C4 is not oxygen flow."
+    },
+    {
+      "id": "fc-o1",
+      "category": "Montage & Electrode Placement",
+      "front": "O1",
+      "back": "Left occipital EEG electrode position.",
+      "memoryClue": "Occipital leads help see alpha rhythm."
+    },
+    {
+      "id": "fc-o2",
+      "category": "Montage & Electrode Placement",
+      "front": "O2",
+      "back": "Right occipital EEG electrode position. Also beware O2 with subscript means oxygen in other contexts.",
+      "memoryClue": "O2 electrode and O2 oxygen look similar; context matters."
+    },
+    {
+      "id": "fc-eog",
+      "category": "Montage & Electrode Placement",
+      "front": "EOG",
+      "back": "Electrooculogram, records eye movements using electrodes near the eyes.",
+      "memoryClue": "EOG is not ECG."
+    },
+    {
+      "id": "fc-emg",
+      "category": "Montage & Electrode Placement",
+      "front": "EMG",
+      "back": "Electromyogram, records muscle activity such as chin or leg EMG.",
+      "memoryClue": "EMG is not EEG."
+    },
+    {
+      "id": "fc-eeg",
+      "category": "Montage & Electrode Placement",
+      "front": "EEG",
+      "back": "Electroencephalogram, records brain electrical activity from scalp electrodes.",
+      "memoryClue": "EEG is not EKG/ECG."
+    },
+    {
+      "id": "fc-ecg",
+      "category": "Montage & Electrode Placement",
+      "front": "ECG / EKG",
+      "back": "Electrocardiogram, records cardiac electrical activity.",
+      "memoryClue": "ECG artifact can appear in other channels."
+    },
+    {
+      "id": "fc-alpha",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Alpha rhythm",
+      "back": "EEG rhythm 8-13 Hz, classically posterior/occipital and associated with relaxed wakefulness with eyes closed.",
+      "memoryClue": "Alpha is frequency in Hz, not amplitude."
+    },
+    {
+      "id": "fc-theta",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Theta activity",
+      "back": "EEG activity commonly in the 4-7 Hz range, often seen in drowsiness/N1 context.",
+      "memoryClue": "Theta is not delta."
+    },
+    {
+      "id": "fc-delta",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Delta / slow-wave activity",
+      "back": "Slow EEG activity used in N3 context; know the current AASM definitions/cutoffs from official sources.",
+      "memoryClue": "Verify exact scoring cutoffs against current AASM rules."
+    },
+    {
+      "id": "fc-beta",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Beta rhythm",
+      "back": "Faster EEG activity, generally above alpha range.",
+      "memoryClue": "Medication effects can alter fast activity."
+    },
+    {
+      "id": "fc-spindle",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Sleep spindle",
+      "back": "Train of rhythmic activity in the spindle frequency range; an N2 marker.",
+      "memoryClue": "Do not confuse spindles with 60-Hz artifact."
+    },
+    {
+      "id": "fc-kcomplex",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "K-complex",
+      "back": "A well-delineated EEG waveform used as an N2 marker when criteria are met.",
+      "memoryClue": "Do not score random artifact as a K-complex."
+    },
+    {
+      "id": "fc-vwave",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Vertex sharp wave",
+      "back": "Sharp transient often seen in drowsiness/N1 transition context.",
+      "memoryClue": "Not every sharp transient is epileptiform activity."
+    },
+    {
+      "id": "fc-sawtooth",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Sawtooth waves",
+      "back": "Serrated EEG waves that may appear in REM sleep context.",
+      "memoryClue": "Sawtooth waves alone do not override chin/EOG context."
+    },
+    {
+      "id": "fc-rem-atonia",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "REM atonia",
+      "back": "Low chin EMG tone during REM sleep.",
+      "memoryClue": "REM arousal scoring has special chin EMG requirement."
+    },
+    {
+      "id": "fc-srem",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Slow rolling eye movements",
+      "back": "Slow eye movements commonly seen during drowsiness/N1 transition.",
+      "memoryClue": "Slow rolling eyes are not rapid eye movements."
+    },
+    {
+      "id": "fc-rem-eyes",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Rapid eye movements",
+      "back": "Bursts of eye movements associated with REM sleep.",
+      "memoryClue": "Use EEG/EOG/EMG together; do not stage from eyes alone."
+    },
+    {
+      "id": "fc-arousal",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Arousal",
+      "back": "Abrupt EEG frequency shift meeting duration and preceding stable sleep requirements; REM arousal also requires chin EMG increase.",
+      "memoryClue": "Check duration and REM chin requirement."
+    },
+    {
+      "id": "fc-apnea",
+      "category": "Respiratory Events & Patterns",
+      "front": "Apnea",
+      "back": "Cessation or near cessation of airflow meeting duration and event criteria.",
+      "memoryClue": "Know adult vs pediatric scoring contexts."
+    },
+    {
+      "id": "fc-hypopnea",
+      "category": "Respiratory Events & Patterns",
+      "front": "Hypopnea",
+      "back": "Reduction in airflow with required associated consequence according to scoring rule/context.",
+      "memoryClue": "Do not score airflow reduction alone without required consequence."
+    },
+    {
+      "id": "fc-obstructive",
+      "category": "Respiratory Events & Patterns",
+      "front": "Obstructive apnea",
+      "back": "Airflow absent/reduced with continued respiratory effort.",
+      "memoryClue": "Effort tells you obstruction is present."
+    },
+    {
+      "id": "fc-central",
+      "category": "Respiratory Events & Patterns",
+      "front": "Central apnea",
+      "back": "Airflow absent/reduced with absent respiratory effort.",
+      "memoryClue": "No airflow plus no effort points central."
+    },
+    {
+      "id": "fc-mixed",
+      "category": "Respiratory Events & Patterns",
+      "front": "Mixed apnea",
+      "back": "Event begins with absent effort and ends with obstructive effort before airflow resumes.",
+      "memoryClue": "Mixed means both components are present."
+    },
+    {
+      "id": "fc-csr",
+      "category": "Respiratory Events & Patterns",
+      "front": "Cheyne-Stokes respiration",
+      "back": "Crescendo-decrescendo breathing pattern with central events meeting specific criteria.",
+      "memoryClue": "Do not call every waxing-waning pattern CSR without criteria."
+    },
+    {
+      "id": "fc-periodic",
+      "category": "Respiratory Events & Patterns",
+      "front": "Periodic breathing",
+      "back": "Waxing and waning breathing pattern; broader than Cheyne-Stokes in some contexts.",
+      "memoryClue": "Read the stem for central apneas and required pattern details."
+    },
+    {
+      "id": "fc-standard-precautions",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Standard precautions",
+      "back": "Baseline infection-control practices used for all patients.",
+      "memoryClue": "Do not wait until you know a diagnosis to protect yourself and the patient."
+    },
+    {
+      "id": "fc-ppe",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "PPE",
+      "back": "Personal protective equipment such as gloves, mask/eye protection, gown depending on exposure risk.",
+      "memoryClue": "PPE choice depends on task and exposure risk."
+    },
+    {
+      "id": "fc-hand-hygiene",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Hand hygiene",
+      "back": "Cleaning hands before/after patient care and after glove removal as indicated.",
+      "memoryClue": "Gloves do not replace hand hygiene."
+    },
+    {
+      "id": "fc-disinfection",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Disinfection",
+      "back": "Process that eliminates many pathogens on equipment/surfaces depending on level/product.",
+      "memoryClue": "Cleaning and disinfection are not the same step."
+    },
+    {
+      "id": "fc-sterilization",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Sterilization",
+      "back": "Process that destroys all microbial life, used for critical items when applicable.",
+      "memoryClue": "Most PSG surface items are cleaned/disinfected per policy, not sterilized by the tech at bedside."
+    },
+    {
+      "id": "fc-sharps",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Sharps safety",
+      "back": "Safe handling/disposal of needles or sharp objects to prevent injury/exposure.",
+      "memoryClue": "Do not recap or improvise outside policy."
+    },
+    {
+      "id": "fc-bloodborne",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Blood/body fluid exposure",
+      "back": "Exposure risk requiring immediate washing/first aid and facility reporting protocol.",
+      "memoryClue": "Do not just finish the hookup and ignore exposure."
+    },
+    {
+      "id": "fc-electrical-safety",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Electrical safety",
+      "back": "Use safe equipment, intact cords, grounding/isolation, and remove unsafe equipment from use.",
+      "memoryClue": "Do not use damaged cords because the study is behind schedule."
+    },
+    {
+      "id": "fc-leakage-current",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Leakage current",
+      "back": "Unintended current that can create patient safety risk if not controlled.",
+      "memoryClue": "Patient safety outranks recording convenience."
+    },
+    {
+      "id": "fc-fire-oxygen",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Oxygen fire safety",
+      "back": "Oxygen supports combustion; avoid flames/smoking/sparks and turn oxygen off properly per protocol/device guidance.",
+      "memoryClue": "Oxygen itself is not flammable, but it supports combustion."
+    },
+    {
+      "id": "fc-first-action",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Best first action",
+      "back": "When safety is involved, first protect/check the patient and verify the signal before routine scoring or convenience actions.",
+      "memoryClue": "The test often asks first/best action, not every action."
+    },
+    {
+      "id": "fc-check-patient",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Check the patient",
+      "back": "If a signal suggests distress or the signal may be false, verify patient/signal/video/context as appropriate.",
+      "memoryClue": "Do not treat the screen without context."
+    },
+    {
+      "id": "fc-documentation",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Documentation",
+      "back": "Record what happened, what you observed, what you changed, and patient response according to protocol.",
+      "memoryClue": "Undocumented action may as well not have happened in a clinical record."
+    },
+    {
+      "id": "fc-scope",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Scope of practice",
+      "back": "The legal/professional boundaries of what the sleep technologist may do under policy and supervision.",
+      "memoryClue": "Do not diagnose or prescribe beyond scope."
+    },
+    {
+      "id": "fc-hipaa",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Confidentiality / HIPAA",
+      "back": "Protect patient information and discuss only as appropriate for care/workflow.",
+      "memoryClue": "Do not share identifiable patient info casually."
+    },
+    {
+      "id": "fc-brpt-best",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Best answer",
+      "back": "The answer that is safest, most protocol-aligned, most complete, and most appropriate to the stem.",
+      "memoryClue": "More than one option may sound true; choose the priority."
+    },
+    {
+      "id": "fc-initial",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Initial / first",
+      "back": "The first action in priority order, often check safety/patient/signal before later steps.",
+      "memoryClue": "Do not choose a final documentation step when asked initial."
+    },
+    {
+      "id": "fc-definitive",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Definitive",
+      "back": "The most certain/final answer or method, often a gold-standard or rule-based choice.",
+      "memoryClue": "Do not choose a screening clue when definitive is asked."
+    },
+    {
+      "id": "fc-except",
+      "category": "Exam Strategy & Question Traps",
+      "front": "EXCEPT",
+      "back": "The question is asking for the one false/not included item.",
+      "memoryClue": "Slow down; EXCEPT flips the logic."
+    },
+    {
+      "id": "fc-indicated",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Indicated",
+      "back": "The condition or scenario where a procedure/therapy/action is appropriate by protocol/rule.",
+      "memoryClue": "Do not answer from lab habit alone."
+    },
+    {
+      "id": "fc-lab-habit",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Lab habit distractor",
+      "back": "A tempting answer based on how someone's lab does it, not the standard/protocol asked by the exam.",
+      "memoryClue": "BRPT wants standard knowledge, not local habit."
+    },
+    {
+      "id": "fc-incomplete",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Incomplete distractor",
+      "back": "An answer that is true but does not solve the whole problem or priority.",
+      "memoryClue": "Correct-sounding is not always best."
+    },
+    {
+      "id": "fc-opposite",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Opposite action distractor",
+      "back": "A wrong option that does the reverse of the needed physiologic or safety response.",
+      "memoryClue": "Know the mechanism before choosing increase vs decrease."
+    },
+    {
+      "id": "fc-unit-watch point",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Unit decision point",
+      "back": "A wrong answer using the right number with the wrong unit, such as CPAP in mmHg or impedance in cm.",
+      "memoryClue": "Numbers are not enough; units matter."
+    },
+    {
+      "id": "fc-pretest",
+      "category": "Exam Strategy & Question Traps",
+      "front": "Pretest questions",
+      "back": "Unscored experimental questions may feel unusual; answer your best and move on.",
+      "memoryClue": "Do not let one odd item shake confidence."
+    },
+    {
+      "id": "fc-actigraphy-aast",
+      "category": "Core Sleep Terms",
+      "front": "Actigraphy",
+      "back": "Motion-based monitoring used to estimate rest-activity patterns across days or nights.",
+      "memoryClue": "Actigraphy is not a full PSG and does not stage sleep with EEG."
+    },
+    {
+      "id": "fc-biocalibrations-aast",
+      "category": "Core Sleep Terms",
+      "front": "Biocalibrations",
+      "back": "Patient-performed actions used before recording to confirm that physiologic channels respond as expected.",
+      "memoryClue": "Biocalibrations check patient signals; machine calibration checks the recording system."
+    },
+    {
+      "id": "fc-capnography-aast",
+      "category": "Core Sleep Terms",
+      "front": "Capnography",
+      "back": "Monitoring carbon dioxide in exhaled gas, commonly reported as end-tidal CO2.",
+      "memoryClue": "Capnography trends ventilation; pulse oximetry trends oxygen saturation."
+    },
+    {
+      "id": "fc-bilevel-aast",
+      "category": "PAP & Oxygen Therapy",
+      "front": "Bilevel PAP",
+      "back": "Positive airway pressure with a higher inspiratory pressure and lower expiratory pressure.",
+      "memoryClue": "Do not document bilevel as one pressure; IPAP and EPAP both matter."
+    },
+    {
+      "id": "fc-asv-aast",
+      "category": "PAP & Oxygen Therapy",
+      "front": "Adaptive servoventilation",
+      "back": "A PAP mode that adjusts pressure support breath by breath to stabilize ventilation in selected patients.",
+      "memoryClue": "ASV is not simply higher CPAP; patient selection and contraindications matter."
+    },
+    {
+      "id": "fc-bruxism-aast",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Bruxism",
+      "back": "Repetitive jaw-muscle activity during sleep, often described as grinding or clenching.",
+      "memoryClue": "Jaw EMG activity can appear in PSG, but clinical context still matters."
+    },
+    {
+      "id": "fc-cataplexy-aast",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Cataplexy",
+      "back": "Sudden loss of muscle tone triggered by emotion, classically associated with narcolepsy type 1.",
+      "memoryClue": "Cataplexy is not the same as ordinary sleepiness or sleep paralysis."
+    },
+    {
+      "id": "fc-periodic-limb-movement-aast",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Periodic limb movements",
+      "back": "Repeated limb movements during sleep that occur in a patterned series and may be scored when criteria are met.",
+      "memoryClue": "A single leg twitch is not automatically PLMS."
+    },
+    {
+      "id": "fc-asystole-aast",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Asystole",
+      "back": "Absence of ventricular electrical activity on ECG for a clinically significant pause.",
+      "memoryClue": "Always consider lead loss or artifact before assuming true asystole."
+    },
+    {
+      "id": "fc-delta-wave-aast",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Delta wave",
+      "back": "A slow, high-amplitude EEG wave important for recognizing N3 sleep.",
+      "memoryClue": "Use current AASM scoring rules for stage decisions, not the word delta alone."
+    },
+    {
+      "id": "fc-alpha-wave-stage",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Alpha wave",
+      "back": "Posterior dominant wake rhythm in the alpha frequency range, commonly seen with relaxed eyes-closed wakefulness.",
+      "memoryClue": "Alpha activity supports wake context, but staging uses the whole epoch and all channels."
+    },
+    {
+      "id": "fc-theta-wave-stage",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Theta wave",
+      "back": "Slower EEG activity often seen with drowsiness and N1 sleep transition.",
+      "memoryClue": "Theta alone does not automatically make the epoch N1; use the scoring context."
+    },
+    {
+      "id": "fc-beta-wave-stage",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Beta wave",
+      "back": "Fast, low-amplitude EEG activity, often seen in alert wakefulness or medication/activation contexts.",
+      "memoryClue": "Fast activity can be medication-related and is not a sleep stage by itself."
+    },
+    {
+      "id": "fc-stage-wake",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Wake / Stage W",
+      "back": "Wake is scored when the epoch shows wake features such as alpha rhythm with eyes closed, eye blinks, reading eye movements, or other wake-compatible activity.",
+      "memoryClue": "Do not score sleep just because the patient is lying still."
+    },
+    {
+      "id": "fc-stage-n1",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "N1 sleep",
+      "back": "Light NREM sleep, often a transition stage with low-amplitude mixed-frequency EEG and slow eye movements.",
+      "memoryClue": "N1 is easy to overcall; look for loss of clear wake features and use current AASM rules."
+    },
+    {
+      "id": "fc-stage-n2",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "N2 sleep",
+      "back": "NREM sleep identified by N2 features such as sleep spindles or K-complexes when scoring criteria are met.",
+      "memoryClue": "A spindle or K-complex must meet criteria; do not count artifact as an N2 marker."
+    },
+    {
+      "id": "fc-stage-n3",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "N3 sleep",
+      "back": "Deep NREM sleep dominated by qualifying slow-wave activity according to current scoring rules.",
+      "memoryClue": "Use the current AASM amplitude/frequency/epoch criteria instead of guessing from a dark-looking trace."
+    },
+    {
+      "id": "fc-stage-rem",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "REM sleep",
+      "back": "Sleep stage with low-amplitude mixed-frequency EEG, rapid eye movements, and low chin EMG tone in the proper context.",
+      "memoryClue": "Rapid eyes alone are not enough; chin tone and EEG context matter."
+    },
+    {
+      "id": "fc-stage-sequence",
+      "category": "Sleep Staging & EEG Clues",
+      "front": "Stage the epoch, not one waveform",
+      "back": "Sleep staging uses the full epoch, nearby context, EEG/EOG/EMG signals, and current AASM rules.",
+      "memoryClue": "Do not let one isolated waveform override the whole epoch."
+    },
+    {
+      "id": "fc-cardiac-heart-rate",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Heart rate on PSG ECG",
+      "back": "Cardiac rate is estimated from the ECG channel and should be interpreted with signal quality, patient context, and lab protocol.",
+      "memoryClue": "Do not report a rhythm problem from a noisy or disconnected ECG lead without checking the signal."
+    },
+    {
+      "id": "fc-cardiac-bradycardia",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Bradycardia",
+      "back": "A slower-than-expected heart rate for the patient context.",
+      "memoryClue": "Age, sleep stage, medications, and signal quality matter before deciding what is abnormal."
+    },
+    {
+      "id": "fc-cardiac-tachycardia",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Tachycardia",
+      "back": "A faster-than-expected heart rate for the patient context.",
+      "memoryClue": "Movement or ECG artifact can imitate a fast rhythm."
+    },
+    {
+      "id": "fc-cardiac-afib",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Atrial fibrillation",
+      "back": "An irregularly irregular rhythm pattern often recognized by variable R-R intervals and absent consistent P waves on ECG.",
+      "memoryClue": "Do not confuse artifact or poor electrode contact with true irregular rhythm."
+    },
+    {
+      "id": "fc-cardiac-pac",
+      "category": "Cardiac & ECG Recognition",
+      "front": "PAC",
+      "back": "Premature atrial contraction: an early beat that originates above the ventricles.",
+      "memoryClue": "PACs are premature beats, not sustained tachycardia by themselves."
+    },
+    {
+      "id": "fc-cardiac-pvc",
+      "category": "Cardiac & ECG Recognition",
+      "front": "PVC",
+      "back": "Premature ventricular contraction: an early ventricular beat, often wider or different-looking than surrounding beats.",
+      "memoryClue": "One PVC is not the same as ventricular tachycardia."
+    },
+    {
+      "id": "fc-cardiac-couplet",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Ventricular couplet",
+      "back": "Two PVCs occurring together in sequence.",
+      "memoryClue": "A couplet is more than an isolated PVC but not the same as a sustained run."
+    },
+    {
+      "id": "fc-cardiac-bigeminy",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Bigeminy",
+      "back": "A repeating pattern where every other beat is premature, commonly described with PVC bigeminy when ventricular.",
+      "memoryClue": "Bigeminy is a pattern, not a heart-rate number."
+    },
+    {
+      "id": "fc-cardiac-trigeminy",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Trigeminy",
+      "back": "A repeating pattern where every third beat is premature.",
+      "memoryClue": "Do not call every repeated ectopic beat bigeminy; count the pattern."
+    },
+    {
+      "id": "fc-cardiac-vtach",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Ventricular tachycardia",
+      "back": "A run of rapid ventricular beats, often wide-complex, that requires prompt recognition and escalation per protocol.",
+      "memoryClue": "Check patient and signal, but do not ignore a convincing dangerous rhythm."
+    },
+    {
+      "id": "fc-cardiac-vfib",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Ventricular fibrillation",
+      "back": "Chaotic ventricular electrical activity without organized effective rhythm; a medical emergency if real.",
+      "memoryClue": "Lead artifact can look chaotic, so verify quickly while following emergency protocol."
+    },
+    {
+      "id": "fc-cardiac-wide-complex",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Wide-complex tachycardia",
+      "back": "A fast rhythm with wide QRS complexes; may represent a dangerous ventricular rhythm until evaluated.",
+      "memoryClue": "Do not dismiss wide-complex tachycardia as artifact without checking patient/signal immediately."
+    },
+    {
+      "id": "fc-cardiac-narrow-complex",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Narrow-complex tachycardia",
+      "back": "A fast rhythm with narrow QRS complexes, usually originating above the ventricles.",
+      "memoryClue": "Narrow does not mean harmless; clinical context and protocol still matter."
+    },
+    {
+      "id": "fc-cardiac-pause",
+      "category": "Cardiac & ECG Recognition",
+      "front": "Cardiac pause",
+      "back": "A temporary absence or delay of expected cardiac beats on the ECG channel.",
+      "memoryClue": "Check for lead loss or artifact before assuming a true pause."
+    },
+    {
+      "id": "fc-cardiac-ecg-artifact",
+      "category": "Cardiac & ECG Recognition",
+      "front": "ECG artifact",
+      "back": "Non-cardiac signal distortion in the ECG channel from movement, electrode problems, or electrical noise.",
+      "memoryClue": "Artifact can mimic arrhythmia; compare video, other channels, and electrode quality."
+    },
+    {
+      "id": "fc-cardiac-lead-loss",
+      "category": "Cardiac & ECG Recognition",
+      "front": "ECG lead loss",
+      "back": "Loss or failure of the ECG signal from a disconnected or poorly attached electrode/lead.",
+      "memoryClue": "A flat or chaotic ECG trace may be equipment trouble, not the patient?s rhythm."
+    },
+    {
+      "id": "fc-cardiac-escalation",
+      "category": "Cardiac & ECG Recognition",
+      "front": "ECG safety response",
+      "back": "When the rhythm looks dangerous or the patient may be unstable, check the patient and follow lab emergency/escalation protocol.",
+      "memoryClue": "Do not quietly score through a possible emergency."
+    },
+    {
+      "id": "fc-montage-montage",
+      "category": "Montage & Electrode Placement",
+      "front": "Montage",
+      "back": "The selected set of channels/derivations used to display and score PSG signals.",
+      "memoryClue": "Montage is not just electrode placement; it is how signals are displayed and compared."
+    },
+    {
+      "id": "fc-montage-derivation",
+      "category": "Montage & Electrode Placement",
+      "front": "Derivation",
+      "back": "A channel created by comparing an exploring/input electrode with a reference electrode.",
+      "memoryClue": "A derivation is a signal relationship, not a single electrode sticker."
+    },
+    {
+      "id": "fc-montage-referential",
+      "category": "Montage & Electrode Placement",
+      "front": "Referential montage",
+      "back": "A montage using active electrodes referenced to a common or designated reference such as mastoid/ear electrodes.",
+      "memoryClue": "Know which electrode is active and which is reference when reading channel labels."
+    },
+    {
+      "id": "fc-montage-bipolar",
+      "category": "Montage & Electrode Placement",
+      "front": "Bipolar derivation",
+      "back": "A channel comparing two active sites to each other, often useful for localizing phase reversals or signal source.",
+      "memoryClue": "Bipolar does not mean two separate channels; it means one channel from two active inputs."
+    },
+    {
+      "id": "fc-montage-eeg-channel",
+      "category": "Montage & Electrode Placement",
+      "front": "EEG channel purpose",
+      "back": "EEG channels support sleep staging, arousal scoring, and recognition of cerebral signal patterns.",
+      "memoryClue": "Do not stage sleep from airflow, oximetry, or ECG alone."
+    },
+    {
+      "id": "fc-montage-eog-channel",
+      "category": "Montage & Electrode Placement",
+      "front": "EOG channel purpose",
+      "back": "EOG channels help identify eye movements such as slow rolling eye movements and rapid eye movements.",
+      "memoryClue": "Eye movement clues must be interpreted with EEG and chin EMG."
+    },
+    {
+      "id": "fc-montage-chin-emg",
+      "category": "Montage & Electrode Placement",
+      "front": "Chin EMG purpose",
+      "back": "Chin EMG helps identify muscle tone changes, especially REM atonia and REM arousal requirements.",
+      "memoryClue": "Chin EMG is not leg EMG and is not EEG."
+    },
+    {
+      "id": "fc-montage-leg-emg",
+      "category": "Montage & Electrode Placement",
+      "front": "Leg EMG purpose",
+      "back": "Leg EMG channels help identify limb movements and periodic limb movement patterns.",
+      "memoryClue": "Do not count movement artifact or respiratory-related movement as PLMS without criteria."
+    },
+    {
+      "id": "fc-montage-airflow-effort",
+      "category": "Montage & Electrode Placement",
+      "front": "Airflow plus effort channels",
+      "back": "Airflow shows breathing flow while effort channels help separate obstructive, central, and mixed events.",
+      "memoryClue": "Airflow alone usually cannot classify apnea type."
+    },
+    {
+      "id": "fc-montage-thermal-sensor",
+      "category": "Montage & Electrode Placement",
+      "front": "Thermal airflow sensor",
+      "back": "A sensor used to detect airflow temperature changes between inspiration and expiration, especially useful for apnea detection.",
+      "memoryClue": "Thermal signal and nasal pressure signal do not show identical information."
+    },
+    {
+      "id": "fc-montage-nasal-pressure",
+      "category": "Montage & Electrode Placement",
+      "front": "Nasal pressure transducer",
+      "back": "A pressure-based airflow signal useful for identifying flow limitation and hypopnea patterns.",
+      "memoryClue": "Mouth breathing, cannula displacement, or leak can distort the signal."
+    },
+    {
+      "id": "fc-montage-rip-belts",
+      "category": "Montage & Electrode Placement",
+      "front": "RIP belts / effort belts",
+      "back": "Chest and abdominal effort signals help show respiratory effort and paradoxical movement.",
+      "memoryClue": "Loose belts can imitate absent or poor effort."
+    },
+    {
+      "id": "fc-montage-snore-channel",
+      "category": "Montage & Electrode Placement",
+      "front": "Snore signal",
+      "back": "A channel or sensor used to detect snoring/vibration as a clue for upper-airway obstruction.",
+      "memoryClue": "Snore supports interpretation but does not replace airflow and effort criteria."
+    },
+    {
+      "id": "fc-montage-body-position",
+      "category": "Montage & Electrode Placement",
+      "front": "Body position sensor",
+      "back": "Tracks patient position so events can be interpreted by supine, lateral, prone, or position-related patterns.",
+      "memoryClue": "Position sensor errors can mislead positional OSA interpretation."
+    },
+    {
+      "id": "fc-signal-calibration",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Calibration",
+      "back": "A process used to verify that the recording system and signals respond accurately before scoring depends on them.",
+      "memoryClue": "Do not confuse machine calibration with patient biocalibrations."
+    },
+    {
+      "id": "fc-signal-machine-calibration",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Machine calibration",
+      "back": "System check confirming the recording equipment displays known signals correctly.",
+      "memoryClue": "A normal machine calibration does not prove patient electrodes are attached well."
+    },
+    {
+      "id": "fc-signal-patient-biocalibration",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Patient biocalibration",
+      "back": "Patient actions such as eye movements, jaw clench, leg movement, breathing maneuvers, or breath holds used to verify physiologic channels.",
+      "memoryClue": "Skipping poor biocalibrations makes later troubleshooting harder."
+    },
+    {
+      "id": "fc-signal-filter-setting",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Filter setting",
+      "back": "A setting that controls which signal frequencies are displayed or reduced.",
+      "memoryClue": "Filters can change waveform appearance; do not use them to hide fixable signal problems."
+    },
+    {
+      "id": "fc-signal-lff-effect",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Low-frequency filter effect",
+      "back": "Changing the low-frequency filter affects slower waveform components and baseline drift.",
+      "memoryClue": "Too aggressive filtering can distort slow waves or respiratory/signal baselines."
+    },
+    {
+      "id": "fc-signal-hff-effect",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "High-frequency filter effect",
+      "back": "Changing the high-frequency filter affects faster waveform components and muscle/electrical noise appearance.",
+      "memoryClue": "Too much filtering can remove useful fast activity or distort signals."
+    },
+    {
+      "id": "fc-signal-sensitivity-setting",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Sensitivity setting",
+      "back": "Controls how much voltage is represented by display height, commonly in microvolts per millimeter for bioelectric channels.",
+      "memoryClue": "Sensitivity changes display size; it does not change the patient?s actual signal."
+    },
+    {
+      "id": "fc-signal-timebase",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Timebase / epoch display speed",
+      "back": "The horizontal display scale that determines how much time appears across the screen or page.",
+      "memoryClue": "Changing timebase changes how wide events look, not how long they truly are."
+    },
+    {
+      "id": "fc-signal-sampling-vs-filter",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Sampling rate vs filter setting",
+      "back": "Sampling rate is how often data are digitized; filters shape which frequencies are displayed or reduced.",
+      "memoryClue": "Do not answer a filter question with sampling rate unless the stem asks digital acquisition."
+    },
+    {
+      "id": "fc-signal-artifact",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Artifact",
+      "back": "Signal activity that does not represent the intended physiologic source, such as movement, electrode, ECG, sweat, or electrical artifact.",
+      "memoryClue": "Always ask whether the signal is real physiology or recording artifact."
+    },
+    {
+      "id": "fc-signal-electrode-pop",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Electrode pop",
+      "back": "Abrupt transient artifact often caused by electrode contact or impedance problems.",
+      "memoryClue": "Do not mistake electrode pop for a true EEG event without context."
+    },
+    {
+      "id": "fc-signal-sweat-artifact",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Sweat artifact",
+      "back": "Slow baseline wandering artifact often related to perspiration and electrode-skin interface changes.",
+      "memoryClue": "Sweat artifact can mimic slow waves if you ignore distribution and context."
+    },
+    {
+      "id": "fc-signal-movement-artifact",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Movement artifact",
+      "back": "Large irregular signal changes caused by patient movement or electrode/cable movement.",
+      "memoryClue": "Movement artifact can contaminate many channels at once."
+    },
+    {
+      "id": "fc-signal-ecg-artifact",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "ECG artifact in EEG/EMG channels",
+      "back": "Cardiac electrical activity appearing in non-ECG channels, especially when electrode placement or impedance allows contamination.",
+      "memoryClue": "Do not score cardiac artifact as EEG spikes or arousals."
+    },
+    {
+      "id": "fc-signal-impedance-check",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Impedance/impedance check before recording",
+      "back": "Checking electrode-skin impedance helps reduce noise and improves signal reliability.",
+      "memoryClue": "High impedance is a common reason to fix the electrode before changing filters."
+    },
+    {
+      "id": "fc-med-review",
+      "category": "Medications & Substances",
+      "front": "Medication review before PSG",
+      "back": "Medication history helps interpret sleep architecture, REM, respiratory drive, movements, alertness tests, and safety risks.",
+      "memoryClue": "The technologist documents/reviews; do not tell patients to stop medications unless directed by ordering/provider protocol."
+    },
+    {
+      "id": "fc-med-rem-suppressants",
+      "category": "Medications & Substances",
+      "front": "REM-suppressing medications",
+      "back": "Several antidepressants and other agents can reduce REM sleep or change REM timing.",
+      "memoryClue": "A short REM latency or SOREMP question may depend on whether REM-suppressing medication was stopped."
+    },
+    {
+      "id": "fc-med-rem-rebound",
+      "category": "Medications & Substances",
+      "front": "REM rebound",
+      "back": "Increased REM pressure or earlier REM can occur after recent provider-directed discontinuation of REM-suppressing medication or after sleep deprivation in some contexts.",
+      "memoryClue": "Do not interpret REM findings without medication timing and sleep history."
+    },
+    {
+      "id": "fc-med-ssri",
+      "category": "Medications & Substances",
+      "front": "SSRI/SNRI antidepressants",
+      "back": "Often considered REM-suppressing and may affect REM expression, sleep continuity, and movement-related complaints.",
+      "memoryClue": "Medication effects can complicate MSLT/REM interpretation."
+    },
+    {
+      "id": "fc-med-tca",
+      "category": "Medications & Substances",
+      "front": "Tricyclic antidepressants",
+      "back": "Older antidepressants that commonly suppress REM and can alter sleep architecture.",
+      "memoryClue": "A medication can change the PSG pattern without being the primary sleep disorder."
+    },
+    {
+      "id": "fc-med-benzodiazepines",
+      "category": "Medications & Substances",
+      "front": "Benzodiazepines",
+      "back": "Sedative medications that may increase spindle activity and alter sleep architecture, arousal response, and breathing risk in susceptible patients.",
+      "memoryClue": "Do not confuse medication-related spindle prominence with a new disorder."
+    },
+    {
+      "id": "fc-med-zdrugs",
+      "category": "Medications & Substances",
+      "front": "Nonbenzodiazepine hypnotics / Z-drugs",
+      "back": "Sleep-promoting sedative-hypnotics that can affect sleep latency, arousals, and safety observations.",
+      "memoryClue": "A sleep aid taken before arrival should be documented and handled per protocol."
+    },
+    {
+      "id": "fc-med-opioids",
+      "category": "Medications & Substances",
+      "front": "Opioids",
+      "back": "Can depress respiratory drive and are associated with central apnea, hypoventilation, and oxygenation concerns in some patients.",
+      "memoryClue": "Opioid history matters when central events or CO2 retention appear."
+    },
+    {
+      "id": "fc-med-cns-depressants",
+      "category": "Medications & Substances",
+      "front": "CNS depressants",
+      "back": "Sedating substances or medications can reduce alertness and may worsen respiratory or safety risk depending on the patient.",
+      "memoryClue": "Do not treat sedation as ordinary sleepiness without context."
+    },
+    {
+      "id": "fc-med-stimulants",
+      "category": "Medications & Substances",
+      "front": "Stimulants",
+      "back": "Wake-promoting medications/substances can affect sleep latency, MSLT/MWT interpretation, and insomnia complaints.",
+      "memoryClue": "Daytime sleepiness tests require careful documentation/control of stimulants per protocol."
+    },
+    {
+      "id": "fc-med-caffeine",
+      "category": "Medications & Substances",
+      "front": "Caffeine",
+      "back": "A stimulant that can delay sleep onset, reduce sleep depth, and invalidate or complicate daytime sleepiness testing if not controlled.",
+      "memoryClue": "Coffee, energy drinks, tea, and some medications may all contain caffeine."
+    },
+    {
+      "id": "fc-med-alcohol",
+      "category": "Medications & Substances",
+      "front": "Alcohol",
+      "back": "Can initially sedate but may fragment sleep later and worsen snoring/OSA risk in susceptible patients.",
+      "memoryClue": "Alcohol use near the study is a documentation and interpretation issue."
+    },
+    {
+      "id": "fc-med-antihistamines",
+      "category": "Medications & Substances",
+      "front": "Sedating antihistamines",
+      "back": "Some antihistamines cause sleepiness and can affect alertness, sleep continuity, or patient safety.",
+      "memoryClue": "Over-the-counter does not mean irrelevant to the sleep study."
+    },
+    {
+      "id": "fc-med-melatonin",
+      "category": "Medications & Substances",
+      "front": "Melatonin",
+      "back": "A circadian timing signal/supplement often discussed in circadian rhythm and sleep-onset timing contexts.",
+      "memoryClue": "Timing matters; melatonin is not simply a stronger sleeping pill."
+    },
+    {
+      "id": "fc-med-dopamine-agonists",
+      "category": "Medications & Substances",
+      "front": "Dopamine agonists",
+      "back": "Medication class associated with RLS/PLMD treatment discussions and movement-disorder history.",
+      "memoryClue": "Know the movement-disorder context; do not infer dosing or prescribe."
+    },
+    {
+      "id": "fc-med-iron-rls",
+      "category": "Medications & Substances",
+      "front": "Iron / ferritin context in RLS",
+      "back": "Iron status is commonly relevant in RLS evaluation and treatment discussions.",
+      "memoryClue": "The technologist recognizes relevance and documents history; treatment decisions belong to providers."
+    },
+    {
+      "id": "fc-med-beta-blockers",
+      "category": "Medications & Substances",
+      "front": "Beta blockers",
+      "back": "A cardiovascular medication class that can be relevant to sleep complaints, heart rate interpretation, and some dream/sleep symptom histories.",
+      "memoryClue": "Medication context helps interpretation; it is not a PSG scoring rule by itself."
+    },
+    {
+      "id": "fc-med-diuretics",
+      "category": "Medications & Substances",
+      "front": "Diuretics",
+      "back": "May contribute to nocturia or sleep disruption depending on timing and patient context.",
+      "memoryClue": "Nocturia history can be medication-related as well as disorder-related."
+    },
+    {
+      "id": "fc-med-steroids",
+      "category": "Medications & Substances",
+      "front": "Corticosteroids",
+      "back": "Can be associated with insomnia or sleep disruption in some patients.",
+      "memoryClue": "Medication timing can matter for sleep-history interpretation."
+    },
+    {
+      "id": "fc-med-mslt-washout",
+      "category": "Medications & Substances",
+      "front": "MSLT medication/substance control",
+      "back": "For MSLT/MWT, medications and substances that affect alertness or REM must be documented and managed according to protocol/provider direction.",
+      "memoryClue": "Never independently tell a patient to stop a medication; follow lab/order protocol."
+    },
+    {
+      "id": "fc-med-prozac-eyes",
+      "category": "Medications & Substances",
+      "front": "Prozac eyes",
+      "back": "Colloquial PSG term for prominent eye movements during NREM sleep associated with fluoxetine/SSRIs and some other psychoactive medications.",
+      "memoryClue": "Do not stage REM from eye movements alone; check EEG, chin EMG tone, breathing pattern, and medication history."
+    },
+    {
+      "id": "fc-med-drug-spindles",
+      "category": "Medications & Substances",
+      "front": "Drug spindles",
+      "back": "Prominent or faster sleep spindle activity associated with some sedative-hypnotic medications, especially benzodiazepine receptor agonists.",
+      "memoryClue": "Do not mistake medication-related spindle prominence for a separate disorder."
+    },
+    {
+      "id": "fc-med-hypnotic",
+      "category": "Medications & Substances",
+      "front": "Hypnotic medication",
+      "back": "A medication used to promote sleep; hypnotics can change sleep latency, arousals, sleep stages, and safety observations.",
+      "memoryClue": "The tech documents use and follows protocol; do not independently advise stopping or starting."
+    },
+    {
+      "id": "fc-med-sedative",
+      "category": "Medications & Substances",
+      "front": "Sedative",
+      "back": "A medication/substance that calms or reduces alertness and can affect sleep architecture, respiratory risk, and fall/safety risk.",
+      "memoryClue": "Sedation is not the same as normal physiologic sleep."
+    },
+    {
+      "id": "fc-med-gaba",
+      "category": "Medications & Substances",
+      "front": "GABA medication effect",
+      "back": "GABA-related sedative-hypnotics can enhance inhibitory signaling and may change spindles, sleep continuity, and arousal patterns.",
+      "memoryClue": "Know the broad PSG effect, not dosing details."
+    },
+    {
+      "id": "fc-med-maoi",
+      "category": "Medications & Substances",
+      "front": "MAOI antidepressants",
+      "back": "Older antidepressant class that can strongly affect REM sleep and sleep architecture.",
+      "memoryClue": "Medication class matters when interpreting REM latency and SOREMP questions."
+    },
+    {
+      "id": "fc-med-snri",
+      "category": "Medications & Substances",
+      "front": "SNRI antidepressants",
+      "back": "Antidepressants such as venlafaxine or duloxetine may affect REM sleep, sleep continuity, and movement/REM-tone interpretation.",
+      "memoryClue": "Do not assume all antidepressants have identical PSG effects, but REM suppression is a common exam theme."
+    },
+    {
+      "id": "fc-med-ramelteon",
+      "category": "Medications & Substances",
+      "front": "Ramelteon / melatonin receptor agonist",
+      "back": "A sleep-onset medication class tied to melatonin receptor/circadian sleep timing concepts.",
+      "memoryClue": "Melatonin-related does not mean it acts like a benzodiazepine."
+    },
+    {
+      "id": "fc-med-xanthines",
+      "category": "Medications & Substances",
+      "front": "Xanthines",
+      "back": "Stimulant substances such as caffeine and theophylline that can increase alertness and contribute to insomnia or delayed sleep.",
+      "memoryClue": "Theophylline can matter even when the patient does not report coffee use."
+    },
+    {
+      "id": "fc-med-theophylline",
+      "category": "Medications & Substances",
+      "front": "Theophylline",
+      "back": "A respiratory medication related to caffeine-like xanthines that can be stimulating and sleep-disrupting in some patients.",
+      "memoryClue": "Medication review includes respiratory drugs, not only sleep aids."
+    },
+    {
+      "id": "fc-med-modafinil",
+      "category": "Medications & Substances",
+      "front": "Modafinil / armodafinil",
+      "back": "Wake-promoting agents used in sleepiness disorders and shift-work contexts; relevant to MSLT/MWT preparation and interpretation.",
+      "memoryClue": "Wake-promoting medications can change sleep latency results."
+    },
+    {
+      "id": "fc-med-first-gen-antihistamine",
+      "category": "Medications & Substances",
+      "front": "First-generation antihistamines",
+      "back": "Often sedating and may affect sleepiness, sleep latency, and patient safety observations.",
+      "memoryClue": "Over-the-counter medications can still affect the study."
+    },
+    {
+      "id": "fc-med-nicotine",
+      "category": "Medications & Substances",
+      "front": "Nicotine",
+      "back": "A stimulant substance that can affect sleep onset, awakenings, and sleep continuity.",
+      "memoryClue": "Ask/document tobacco or nicotine use as part of substance history."
+    },
+    {
+      "id": "fc-med-gabapentin",
+      "category": "Medications & Substances",
+      "front": "Gabapentin/pregabalin context",
+      "back": "Medications used for neuropathic pain, seizures, and sometimes RLS-related complaints; can affect sleepiness and sleep architecture.",
+      "memoryClue": "Recognize relevance to history; do not infer a diagnosis from the medication alone."
+    },
+    {
+      "id": "fc-med-lithium",
+      "category": "Medications & Substances",
+      "front": "Lithium",
+      "back": "Mood-stabilizing medication that can affect sleep architecture and REM patterns in some patients.",
+      "memoryClue": "Psychiatric medication history can matter for PSG interpretation."
+    },
+    {
+      "id": "fc-med-ace-inhibitor",
+      "category": "Medications & Substances",
+      "front": "ACE inhibitor sleep relevance",
+      "back": "Cardiovascular medication class; cough or other effects may contribute to awakenings or sleep complaints in some patients.",
+      "memoryClue": "Medication side effects can masquerade as sleep-maintenance complaints."
+    },
+    {
+      "id": "fc-tx-insomnia-meds-overview",
+      "category": "Medications & Substances",
+      "front": "Insomnia medication classes",
+      "back": "Common insomnia treatment medication categories include hypnotics, Z-drugs, melatonin receptor agonists, orexin receptor antagonists, and some sedating antidepressants.",
+      "memoryClue": "Medication treatment is provider-directed; CBT-I is often a key non-drug treatment concept."
+    },
+    {
+      "id": "fc-tx-zolpidem",
+      "category": "Medications & Substances",
+      "front": "Zolpidem / zaleplon / eszopiclone",
+      "back": "Nonbenzodiazepine hypnotics, often called Z-drugs, used for insomnia treatment contexts.",
+      "memoryClue": "They can affect sleep architecture and safety; document use before PSG/MSLT."
+    },
+    {
+      "id": "fc-tx-orexin-antagonists",
+      "category": "Medications & Substances",
+      "front": "Orexin receptor antagonists",
+      "back": "Insomnia medication class that reduces wake-promoting orexin signaling; examples include suvorexant, lemborexant, and daridorexant.",
+      "memoryClue": "Orexin antagonists are insomnia treatments, not wake-promoting narcolepsy drugs."
+    },
+    {
+      "id": "fc-tx-low-dose-doxepin",
+      "category": "Medications & Substances",
+      "front": "Low-dose doxepin",
+      "back": "Sedating antidepressant used in insomnia treatment context, especially sleep-maintenance discussions.",
+      "memoryClue": "Doxepin as an insomnia medication is not the same exam clue as broad antidepressant REM effects."
+    },
+    {
+      "id": "fc-tx-narcolepsy-meds-overview",
+      "category": "Medications & Substances",
+      "front": "Narcolepsy medication categories",
+      "back": "Treatment histories may include wake-promoting agents/stimulants for sleepiness and REM-symptom agents such as sodium oxybate or certain antidepressants.",
+      "memoryClue": "The RPSGT focus is recognition and test interpretation, not prescribing."
+    },
+    {
+      "id": "fc-tx-sodium-oxybate",
+      "category": "Medications & Substances",
+      "front": "Sodium oxybate / oxybate therapy",
+      "back": "Medication used in narcolepsy treatment contexts, especially excessive daytime sleepiness and cataplexy discussions.",
+      "memoryClue": "Document carefully; do not confuse with ordinary OTC sleep aids."
+    },
+    {
+      "id": "fc-tx-solriamfetol",
+      "category": "Medications & Substances",
+      "front": "Solriamfetol",
+      "back": "Wake-promoting medication used for excessive daytime sleepiness in narcolepsy or OSA treatment contexts.",
+      "memoryClue": "Wake-promoting medication can affect MSLT/MWT interpretation."
+    },
+    {
+      "id": "fc-tx-pitolisant",
+      "category": "Medications & Substances",
+      "front": "Pitolisant",
+      "back": "Wake-promoting medication for narcolepsy that acts through histamine H3 receptor pathways.",
+      "memoryClue": "Do not confuse histamine wake-promotion with sedating antihistamines."
+    },
+    {
+      "id": "fc-tx-methylphenidate-amphetamines",
+      "category": "Medications & Substances",
+      "front": "Methylphenidate / amphetamines",
+      "back": "Traditional stimulant medications used in excessive sleepiness treatment histories.",
+      "memoryClue": "Stimulants must be considered before daytime sleepiness testing."
+    },
+    {
+      "id": "fc-tx-cataplexy-meds",
+      "category": "Medications & Substances",
+      "front": "Cataplexy medication context",
+      "back": "Cataplexy treatment histories may include sodium oxybate and some antidepressants that suppress REM-related symptoms.",
+      "memoryClue": "Cataplexy history and medication history both matter for narcolepsy interpretation."
+    },
+    {
+      "id": "fc-tx-rls-plmd-meds",
+      "category": "Medications & Substances",
+      "front": "RLS/PLMD medication categories",
+      "back": "Treatment histories may include iron replacement when indicated, dopamine agonists, and alpha-2-delta ligands such as gabapentin/pregabalin.",
+      "memoryClue": "Do not diagnose RLS from a medication alone; use symptoms and provider history."
+    },
+    {
+      "id": "fc-tx-alpha2delta",
+      "category": "Medications & Substances",
+      "front": "Alpha-2-delta ligands",
+      "back": "Medication category including gabapentin and pregabalin, often relevant to RLS treatment histories and sleepiness/sedation context.",
+      "memoryClue": "Can be relevant to both movement-disorder history and daytime sleepiness."
+    },
+    {
+      "id": "fc-tx-circadian-meds",
+      "category": "Medications & Substances",
+      "front": "Circadian rhythm medication context",
+      "back": "Melatonin or melatonin receptor agonists may appear in circadian rhythm disorder or sleep-onset timing histories.",
+      "memoryClue": "Timing is the teaching point; not all sleep aids are interchangeable."
+    },
+    {
+      "id": "fc-tx-pap-not-med",
+      "category": "Medications & Substances",
+      "front": "PAP is therapy, not a medication",
+      "back": "OSA treatment is commonly PAP, oral appliance, surgery, positional/weight strategies, and sometimes oxygen in selected contexts, rather than a sleep medication cure.",
+      "memoryClue": "Do not answer an OSA treatment question with a hypnotic unless the stem asks insomnia comorbidity."
+    },
+    {
+      "id": "fc-tx-medication-safety-role",
+      "category": "Medications & Substances",
+      "front": "Technologist role with treatment meds",
+      "back": "Recognize, document, and follow protocol for sleep-disorder medications; medication changes come from the ordering clinician/provider protocol.",
+      "memoryClue": "Never independently tell a patient to start, stop, or change prescribed medication."
+    },
+    {
+      "id": "fc-equip-best-vs-acceptable",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Best sensor vs acceptable backup",
+      "back": "Exam questions may ask for the best/preferred signal, while real studies may use acceptable alternatives when the best signal fails or the context changes.",
+      "memoryClue": "Read whether the stem asks best, recommended, acceptable, backup, or what to do when a signal fails."
+    },
+    {
+      "id": "fc-equip-apnea-thermal",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Best airflow signal for apnea absence",
+      "back": "Oronasal thermal airflow is the classic best signal for detecting absent airflow during diagnostic PSG apnea scoring.",
+      "memoryClue": "Nasal pressure is excellent for flow limitation but can underestimate mouth breathing or complete absence if displaced."
+    },
+    {
+      "id": "fc-equip-hypopnea-nasal-pressure",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Best signal for hypopnea/flow limitation",
+      "back": "Nasal pressure is the key diagnostic signal for reduced airflow and inspiratory flattening/flow limitation.",
+      "memoryClue": "Do not choose snore microphone or oximetry as the airflow reduction signal."
+    },
+    {
+      "id": "fc-equip-pap-flow",
+      "category": "Sensors, Equipment & Standards",
+      "front": "PAP device flow",
+      "back": "During PAP titration, device flow becomes the key flow signal for identifying respiratory events and response to pressure.",
+      "memoryClue": "Diagnostic airflow sensors and PAP titration signals are not always the same."
+    },
+    {
+      "id": "fc-equip-effort-gold-standard",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Gold standard respiratory effort",
+      "back": "Esophageal pressure is the physiologic gold standard for respiratory effort, but it is not routine in most PSG hookups.",
+      "memoryClue": "Gold standard does not always mean ordinary lab equipment."
+    },
+    {
+      "id": "fc-equip-rip-belts",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Routine respiratory effort belts",
+      "back": "Thoracic and abdominal RIP/effort belts are routine PSG tools for effort pattern and apnea classification.",
+      "memoryClue": "Loose belts can mimic poor or absent effort."
+    },
+    {
+      "id": "fc-equip-oximetry-pleth",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Pulse oximetry plus pleth",
+      "back": "SpO2 gives oxygen saturation trend; pleth/signal quality helps judge whether a desaturation is believable.",
+      "memoryClue": "Do not trust a desaturation blindly when the pleth or signal quality is poor."
+    },
+    {
+      "id": "fc-equip-etco2-tcco2",
+      "category": "Sensors, Equipment & Standards",
+      "front": "EtCO2 vs TcCO2",
+      "back": "EtCO2 samples exhaled gas breath by breath; TcCO2 estimates CO2 through the skin and is better viewed as a trend.",
+      "memoryClue": "Both can be useful, but each has limitations and setup requirements."
+    },
+    {
+      "id": "fc-equip-leg-emg",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Leg EMG for PLMS",
+      "back": "Anterior tibialis/leg EMG channels are the primary signals used for limb movement scoring.",
+      "memoryClue": "Video helps context but does not replace EMG criteria."
+    },
+    {
+      "id": "fc-equip-signal-failure",
+      "category": "Sensors, Equipment & Standards",
+      "front": "When the best sensor fails",
+      "back": "Use backup signals only with careful context, document signal failure, and fix the sensor when possible.",
+      "memoryClue": "An acceptable backup does not mean you ignore a broken recommended sensor."
+    },
+    {
+      "id": "fc-equip-hsat-sensor-thinking",
+      "category": "Sensors, Equipment & Standards",
+      "front": "HSAT sensor thinking",
+      "back": "HSAT lacks EEG-defined sleep and often relies on flow/effort/oximetry signals, so indexes and limitations differ from attended PSG.",
+      "memoryClue": "Do not treat REI from HSAT as identical to PSG AHI from total sleep time."
+    },
+    {
+      "id": "fc-equip-snore-position",
+      "category": "Sensors, Equipment & Standards",
+      "front": "Snore and body position sensors",
+      "back": "Snore and position sensors add context for obstruction and positional patterns but do not define events alone.",
+      "memoryClue": "Supportive sensors are not scoring criteria by themselves."
+    },
+    {
+      "id": "fc-core-total-recording-time",
+      "category": "Core Sleep Terms",
+      "front": "Total recording time (TRT)",
+      "back": "Time from lights out to lights on. It includes sleep and wake during the recording period.",
+      "memoryClue": "TRT is not the same as total sleep time."
+    },
+    {
+      "id": "fc-core-total-sleep-time",
+      "category": "Core Sleep Terms",
+      "front": "Total sleep time (TST)",
+      "back": "Total minutes of scored sleep: N1 + N2 + N3 + R.",
+      "memoryClue": "TST excludes wake. Many indexes use TST in hours as the denominator."
+    },
+    {
+      "id": "fc-core-sleep-period-time",
+      "category": "Core Sleep Terms",
+      "front": "Sleep period time (SPT)",
+      "back": "Time from sleep onset to final awakening or lights on, depending on the lab/report definition used.",
+      "memoryClue": "Do not confuse SPT with TRT or TST."
+    },
+    {
+      "id": "fc-core-sleep-latency",
+      "category": "Core Sleep Terms",
+      "front": "Sleep latency",
+      "back": "Time from lights out to the first epoch of any sleep.",
+      "memoryClue": "Sleep latency is not the time to first REM epoch."
+    },
+    {
+      "id": "fc-core-rem-latency",
+      "category": "Core Sleep Terms",
+      "front": "REM latency / Stage R latency",
+      "back": "Time from sleep onset to the first epoch of stage R.",
+      "memoryClue": "REM latency starts at sleep onset, not lights out."
+    },
+    {
+      "id": "fc-core-waso",
+      "category": "Core Sleep Terms",
+      "front": "Wake after sleep onset (WASO)",
+      "back": "Wake time after sleep begins. AASM reporting formula: TRT - sleep latency - TST.",
+      "memoryClue": "WASO is after sleep onset, not all wake during the entire recording."
+    },
+    {
+      "id": "fc-core-sleep-efficiency",
+      "category": "Core Sleep Terms",
+      "front": "Sleep efficiency",
+      "back": "Percent of recording/time in bed spent asleep: TST / TRT x 100.",
+      "memoryClue": "Do not use REM time or sleep period time unless the question specifically defines it that way."
+    },
+    {
+      "id": "fc-core-arousal-index",
+      "category": "Core Sleep Terms",
+      "front": "Arousal index",
+      "back": "Number of arousals per hour of sleep: arousals x 60 / TST in minutes.",
+      "memoryClue": "Indexes usually need sleep time in hours or the x60/TST minutes conversion."
+    },
+    {
+      "id": "fc-core-sleep-architecture",
+      "category": "Core Sleep Terms",
+      "front": "Sleep architecture",
+      "back": "The organization of sleep stages across the night, including W, N1, N2, N3, and R.",
+      "memoryClue": "Architecture is the pattern of stages, not one isolated epoch."
+    },
+    {
+      "id": "fc-core-ultradian-rhythm",
+      "category": "Core Sleep Terms",
+      "front": "Ultradian rhythm",
+      "back": "Recurring sleep cycles within the night, commonly NREM/REM cycling.",
+      "memoryClue": "Ultradian is within-night cycling; circadian is roughly 24-hour timing."
+    },
+    {
+      "id": "fc-core-circadian-rhythm",
+      "category": "Core Sleep Terms",
+      "front": "Circadian rhythm",
+      "back": "A roughly 24-hour biological timing rhythm influencing sleep-wake timing, alertness, temperature, and hormones.",
+      "memoryClue": "Circadian timing can cause sleepiness without abnormal PSG scoring."
+    },
+    {
+      "id": "fc-core-homeostatic-drive",
+      "category": "Core Sleep Terms",
+      "front": "Homeostatic sleep drive",
+      "back": "Sleep pressure that builds with time awake and is reduced by sleep.",
+      "memoryClue": "Homeostatic drive is different from circadian clock timing."
+    },
+    {
+      "id": "fc-core-sleep-inertia",
+      "category": "Core Sleep Terms",
+      "front": "Sleep inertia",
+      "back": "Temporary grogginess, confusion, or slowed performance after waking, especially from deep sleep or after insufficient sleep.",
+      "memoryClue": "Sleep inertia is not the same as excessive daytime sleepiness disorder."
+    },
+    {
+      "id": "fc-core-zeitgeber",
+      "category": "Core Sleep Terms",
+      "front": "Zeitgeber",
+      "back": "An external time cue, especially light, that helps set or entrain the circadian clock.",
+      "memoryClue": "Morning light is a powerful cue; caffeine is not the clock itself."
+    },
+    {
+      "id": "fc-core-sleep-debt",
+      "category": "Core Sleep Terms",
+      "front": "Sleep debt",
+      "back": "Accumulated insufficient sleep when someone repeatedly gets less sleep than needed.",
+      "memoryClue": "For RPSGT prep, this is usually more useful as sleep hygiene/MSLT context than a standalone scoring term."
+    },
+    {
+      "id": "fc-core-microsleep",
+      "category": "Core Sleep Terms",
+      "front": "Microsleep",
+      "back": "Very brief unintended episodes of sleep or lapses in alertness, often from significant sleepiness or sleep loss.",
+      "memoryClue": "Microsleeps can occur before the patient realizes they are falling asleep."
+    },
+    {
+      "id": "fc-core-sleep-hygiene",
+      "category": "Core Sleep Terms",
+      "front": "Sleep hygiene",
+      "back": "Healthy behaviors that support sleep, such as regular schedule, adequate sleep opportunity, caffeine timing, and reducing electronics at bedtime.",
+      "memoryClue": "Sleep hygiene is education/support, not a PSG scoring rule."
+    },
+    {
+      "id": "fc-core-soremp",
+      "category": "Core Sleep Terms",
+      "front": "SOREMP",
+      "back": "Sleep-onset REM period. Important in PSG/MSLT context when interpreted with adequate prior sleep and medication review.",
+      "memoryClue": "SOREMPs are not meaningful without protocol context."
+    },
+    {
+      "id": "fc-core-sleep-diary",
+      "category": "Core Sleep Terms",
+      "front": "Sleep diary",
+      "back": "A patient-reported record of sleep timing, wake timing, naps, and sleep-related habits over days to weeks.",
+      "memoryClue": "Sleep diary supports context; it does not score PSG stages."
+    },
+    {
+      "id": "fc-core-actigraphy-vs-psg",
+      "category": "Core Sleep Terms",
+      "front": "Actigraphy vs PSG",
+      "back": "Actigraphy estimates rest-activity patterns over time; PSG records physiologic signals to stage sleep and score events.",
+      "memoryClue": "Actigraphy does not replace EEG-defined sleep staging."
+    },
+    {
+      "id": "fc-disorder-chronic-insomnia",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Chronic insomnia disorder",
+      "back": "Insomnia symptoms with daytime impairment that persist for the chronic-duration threshold and occur despite adequate sleep opportunity.",
+      "memoryClue": "Do not diagnose chronic insomnia from one bad night."
+    },
+    {
+      "id": "fc-disorder-short-term-insomnia",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Short-term insomnia disorder",
+      "back": "Insomnia symptoms lasting less than 3 months with clinically significant distress, concern, or daytime impairment.",
+      "memoryClue": "The timeline separates short-term from chronic insomnia."
+    },
+    {
+      "id": "fc-disorder-behavioral-insomnia-childhood",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Behavioral insomnia of childhood",
+      "back": "Pediatric insomnia pattern often related to sleep-onset associations, limit-setting problems, or both.",
+      "memoryClue": "Pediatric insomnia often lives in history and caregiver report, not PSG scoring."
+    },
+    {
+      "id": "fc-disorder-rbd",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "REM sleep behavior disorder (RBD)",
+      "back": "Dream enactment behavior associated with REM sleep without normal atonia, evaluated with clinical history and PSG evidence when appropriate.",
+      "memoryClue": "Do not confuse RBD with NREM sleepwalking or nightmares."
+    },
+    {
+      "id": "fc-disorder-confusional-arousals",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Confusional arousals",
+      "back": "NREM parasomnia involving incomplete awakening with confusion, often from slow-wave sleep.",
+      "memoryClue": "NREM parasomnias commonly occur early in the night; nightmares are usually REM-related later in sleep."
+    },
+    {
+      "id": "fc-disorder-sleep-terrors",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Sleep terrors",
+      "back": "NREM parasomnia with abrupt arousal, fear/autonomic activation, and limited recall afterward.",
+      "memoryClue": "Sleep terror is not the same as nightmare with clear recall."
+    },
+    {
+      "id": "fc-disorder-sleepwalking",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Sleepwalking",
+      "back": "NREM parasomnia involving ambulation or complex behavior during incomplete arousal from sleep.",
+      "memoryClue": "Safety risk and timing help distinguish from REM dream enactment."
+    },
+    {
+      "id": "fc-disorder-nightmare-disorder",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Nightmare disorder",
+      "back": "Repeated disturbing dreams with awakening and recall, usually associated with REM sleep timing.",
+      "memoryClue": "Nightmares are remembered; sleep terrors often are not."
+    },
+    {
+      "id": "fc-disorder-rls",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Restless legs syndrome (RLS)",
+      "back": "Clinical urge to move the legs, worse at rest/evening and relieved by movement.",
+      "memoryClue": "RLS is a history diagnosis; PLMS is a PSG finding."
+    },
+    {
+      "id": "fc-disorder-plmd",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Periodic limb movement disorder (PLMD)",
+      "back": "Sleep disorder involving periodic limb movements plus clinical sleep disturbance or impairment not better explained by another condition.",
+      "memoryClue": "PLMS on PSG alone does not automatically equal PLMD."
+    },
+    {
+      "id": "fc-disorder-bruxism",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Sleep bruxism",
+      "back": "Sleep-related grinding or clenching of teeth, often recognized from history, audio/video, or EMG context.",
+      "memoryClue": "Jaw EMG bursts can have causes other than bruxism."
+    },
+    {
+      "id": "fc-disorder-enuresis",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Sleep enuresis",
+      "back": "Involuntary urination during sleep beyond the expected developmental age/context.",
+      "memoryClue": "Consider age, development, medications, and comorbid conditions."
+    },
+    {
+      "id": "fc-disorder-cataplexy",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Cataplexy",
+      "back": "Sudden loss of muscle tone triggered by emotion, classically associated with narcolepsy type 1.",
+      "memoryClue": "Cataplexy is not fainting and not ordinary sleepiness."
+    },
+    {
+      "id": "fc-disorder-idiopathic-hypersomnia-contrast",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Idiopathic hypersomnia clue",
+      "back": "Excessive sleepiness not better explained by insufficient sleep, narcolepsy, circadian disorder, medications, or another sleep disorder.",
+      "memoryClue": "Rule out insufficient sleep and protocol problems before labeling hypersomnia."
+    },
+    {
+      "id": "fc-disorder-treatment-emergent-csa",
+      "category": "Sleep-Related Breathing Disorders",
+      "front": "Treatment-emergent central sleep apnea",
+      "back": "Central apneas that emerge or persist during PAP treatment after obstructive events improve, in the right clinical context.",
+      "memoryClue": "Do not call every central-looking event treatment-emergent without looking at timing and baseline context."
+    },
+    {
+      "id": "fc-disorder-obesity-hypoventilation",
+      "category": "Sleep-Related Breathing Disorders",
+      "front": "Obesity hypoventilation syndrome clue",
+      "back": "Obesity with awake hypercapnia and sleep-disordered breathing context, requiring provider diagnosis and appropriate evaluation.",
+      "memoryClue": "Low SpO2 alone does not define hypoventilation; CO2 matters."
+    },
+    {
+      "id": "fc-disorder-cheyne-stokes",
+      "category": "Sleep-Related Breathing Disorders",
+      "front": "Cheyne-Stokes breathing",
+      "back": "Cyclic crescendo-decrescendo breathing pattern associated with central events in adults, especially certain cardiac/neurologic contexts.",
+      "memoryClue": "Do not confuse ordinary periodic breathing or artifact with Cheyne-Stokes pattern."
+    },
+    {
+      "id": "fc-disorder-pediatric-osa",
+      "category": "Sleep-Related Breathing Disorders",
+      "front": "Pediatric OSA clue",
+      "back": "Children may present with snoring, witnessed breathing difficulty, restless sleep, behavioral concerns, learning issues, or growth/cardiometabolic concerns.",
+      "memoryClue": "Children are not just small adults; symptoms and criteria can differ."
+    },
+    {
+      "id": "fc-disorder-delayed-sleep-phase-adolescent",
+      "category": "Circadian Rhythm Sleep-Wake Disorders",
+      "front": "Delayed sleep-wake phase in adolescents",
+      "back": "Difficulty falling asleep and waking at required times, while sleep may be normal when allowed a delayed schedule.",
+      "memoryClue": "Do not mistake a delayed circadian pattern for simple refusal to sleep."
+    },
+    {
+      "id": "fc-disorder-advanced-sleep-phase",
+      "category": "Circadian Rhythm Sleep-Wake Disorders",
+      "front": "Advanced sleep-wake phase pattern",
+      "back": "Sleep and wake timing occur earlier than desired, leading to evening sleepiness and early morning awakening.",
+      "memoryClue": "Advanced phase is early timing; delayed phase is late timing."
+    },
+    {
+      "id": "fc-tech-ground-loop-error",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Ground loop error",
+      "back": "Electrical artifact/noise caused by unintended multiple grounding paths or electrical potential differences between connected equipment.",
+      "memoryClue": "Do not bypass safety grounding. Follow lab policy, check equipment/cables/outlets, and escalate electrical safety concerns."
+    },
+    {
+      "id": "fc-tech-salt-bridge",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Salt bridge",
+      "back": "Conductive paste, gel, sweat, or moisture connects two nearby electrodes, reducing the true differential signal between them.",
+      "memoryClue": "Clean and separate the electrodes; do not solve a salt bridge by just changing the display scale."
+    },
+    {
+      "id": "fc-tech-electrode-pop",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Electrode popping artifact",
+      "back": "Abrupt electrode/skin interface changes can create sudden sharp or popping waveform artifacts.",
+      "memoryClue": "Electrode pops can look dramatic; check impedance and electrode contact before calling pathology."
+    },
+    {
+      "id": "fc-tech-60hz-artifact",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "60-Hz artifact",
+      "back": "Electrical interference that appears as regular high-frequency noise, often related to power/electrical sources or poor electrode integrity.",
+      "memoryClue": "A notch filter may hide the problem; first look for the source and signal integrity issue."
+    },
+    {
+      "id": "fc-tech-reference-electrode-problem",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Reference electrode problem",
+      "back": "A poor M1/M2 or reference can contaminate multiple channels that share that reference.",
+      "memoryClue": "When many channels sharing a reference look bad, think reference before blaming every active electrode."
+    },
+    {
+      "id": "fc-tech-differential-amplifier",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Differential amplifier",
+      "back": "Amplifies the voltage difference between two inputs while rejecting common signals shared by both inputs.",
+      "memoryClue": "If both inputs are bridged together, there may be little true difference to amplify."
+    },
+    {
+      "id": "fc-tech-common-mode-rejection",
+      "category": "Signals, Filters & Instrumentation",
+      "front": "Common mode rejection",
+      "back": "The amplifier's ability to reject signals common to both inputs, helping reduce shared electrical noise.",
+      "memoryClue": "Good CMRR cannot fix every setup or grounding problem."
+    },
+    {
+      "id": "fc-tech-leakage-current",
+      "category": "Safety, Infection Control & Professional Practice",
+      "front": "Leakage current",
+      "back": "Unintended small electrical current that may flow through equipment pathways; controlled by equipment safety standards and maintenance.",
+      "memoryClue": "Electrical safety is not a DIY troubleshooting area. Follow policy and biomedical/equipment checks."
+    },
+    {
+      "id": "fc-med-architecture-master",
+      "category": "Medication Effects",
+      "front": "Medication effect buckets",
+      "back": "Sort medication questions into buckets: sedating, alerting, REM-suppressing, respiratory-depressing, movement-related, or circadian-timing.",
+      "memoryClue": "Do not memorize one drug at a time first. Identify the bucket, then choose the effect."
+    },
+    {
+      "id": "fc-med-rem-rebound-mslt",
+      "category": "Medication Effects",
+      "front": "REM rebound before MSLT",
+      "back": "Stopping a REM-suppressing medication can increase REM pressure and create SOREMPs.",
+      "memoryClue": "Withdrawal can make MSLT look more narcolepsy-like than baseline."
+    },
+    {
+      "id": "fc-med-stimulants-wake-promoting",
+      "category": "Medication Effects",
+      "front": "Stimulants and MSLT",
+      "back": "Stimulants and wake-promoting agents can increase sleep latency and make the patient appear less sleepy.",
+      "memoryClue": "A longer sleep latency may reflect medication effect, not true alertness."
+    },
+    {
+      "id": "fc-med-sedatives-mslt",
+      "category": "Medication Effects",
+      "front": "Sedatives and MSLT",
+      "back": "Sedatives can shorten sleep latency and make the patient appear sleepier.",
+      "memoryClue": "A short sleep latency can be medication-related."
+    },
+    {
+      "id": "fc-med-opioid-csa-hypoventilation",
+      "category": "Medication Effects",
+      "front": "Opioids",
+      "back": "Opioids can depress ventilatory drive and may be associated with central apnea or hypoventilation patterns.",
+      "memoryClue": "Do not change medication. Document, monitor, and follow escalation protocol."
+    },
+    {
+      "id": "fc-med-alcohol-osa",
+      "category": "Medication Effects",
+      "front": "Alcohol and OSA",
+      "back": "Alcohol may shorten sleep latency early but can suppress REM, fragment sleep later, and worsen obstructive sleep apnea.",
+      "memoryClue": "Alcohol is not a sleep treatment; it can worsen airway stability."
+    },
+    {
+      "id": "fc-med-ssri-plms",
+      "category": "Medication Effects",
+      "front": "SSRIs and PLMS",
+      "back": "SSRIs can suppress REM and may increase periodic limb movements of sleep.",
+      "memoryClue": "Medication context matters when interpreting PLMS and REM patterns."
+    },
+    {
+      "id": "fc-med-rls-augmentation",
+      "category": "Medication Effects",
+      "front": "RLS augmentation",
+      "back": "Augmentation means RLS symptoms start earlier, get stronger, spread, or require higher dose, often with long-term dopaminergic therapy.",
+      "memoryClue": "Augmentation is not the same as normal disease improvement."
+    },
+    {
+      "id": "fc-med-caffeine-citrate-aop",
+      "category": "Medication Effects",
+      "front": "Caffeine citrate",
+      "back": "Caffeine citrate is a methylxanthine respiratory stimulant used for apnea of prematurity.",
+      "memoryClue": "Neonatal caffeine therapy is not the same as caffeine use before an MSLT."
+    },
+    {
+      "id": "fc-med-acronym-otc",
+      "category": "Medication Acronyms",
+      "front": "OTC",
+      "back": "Over-the-counter. OTC sleep aids, antihistamines, supplements, caffeine, and other substances can still affect sleep testing.",
+      "memoryClue": "Do not ignore OTC because it is not a prescription."
+    },
+    {
+      "id": "fc-med-acronym-soremp",
+      "category": "Medication Acronyms",
+      "front": "SOREMP",
+      "back": "Sleep-onset REM period. REM-suppressing medications can hide SOREMPs; medication withdrawal can increase them.",
+      "memoryClue": "Always link SOREMP questions to medication history and protocol quality."
+    },
+    {
+      "id": "fc-med-word-suppress",
+      "category": "Italian-English Word Bridge",
+      "front": "Suppress = sopprimere / ridurre",
+      "back": "In exam wording, suppress means reduce. REM-suppressing medication reduces REM and may hide SOREMPs.",
+      "memoryClue": "Read suppress as reduce, not improve."
+    },
+    {
+      "id": "fc-med-word-rebound",
+      "category": "Italian-English Word Bridge",
+      "front": "Rebound = rimbalzo",
+      "back": "Rebound means something returns stronger after being held down. REM rebound can occur after recent provider-directed discontinuation of REM-suppressing medication.",
+      "memoryClue": "Rebound is a withdrawal/timing clue."
+    },
+    {
+      "id": "fc-med-word-latency",
+      "category": "Italian-English Word Bridge",
+      "front": "Latency = latenza / delay",
+      "back": "Sleep latency is time to fall asleep. Stimulants may increase it; sedatives may decrease it.",
+      "memoryClue": "Latency is time, not stage or oxygen value."
+    }
+  ]
+}
