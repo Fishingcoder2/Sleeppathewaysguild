@@ -6,6 +6,7 @@ const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,'..');
 const html=await readFile(join(root,'practice.html'),'utf8');
 const css=await readFile(join(root,'assets','practice.css'),'utf8');
+const navigationCss=await readFile(join(root,'assets','practice-navigation.css'),'utf8');
 const coachCss=await readFile(join(root,'assets','practice-coach.css'),'utf8');
 const js=await readFile(join(root,'core','practice.js'),'utf8');
 const shell=await readFile(join(root,'core','app-shell.js'),'utf8');
@@ -18,12 +19,13 @@ const requiredAttributes=[
   'data-practice-task','data-practice-difficulty','data-practice-size','data-mode-notice','data-start-practice',
   'data-practice-shell','data-question-panel','data-question-number','data-question-task',
   'data-question-difficulty','data-question-review','data-question-prompt','data-question-choices','data-practice-question-actions',
-  'data-practice-coach','data-answer-feedback','data-submit-answer','data-next-question','data-session-answered',
+  'data-practice-coach','data-answer-feedback','data-previous-question','data-next-question','data-question-action-hint','data-session-answered',
   'data-session-correct','data-session-accuracy','data-session-pool','data-active-mode',
   'data-progress-policy','data-session-complete','data-complete-score','data-complete-percent',
   'data-complete-policy','data-bank-total','data-module-total'
 ];
 for(const attribute of requiredAttributes){if(!html.includes(attribute)) throw new Error(`practice.html is missing ${attribute}`);}
+if(html.includes('data-submit-answer')||html.includes('>Check answer<')) throw new Error('Focused Practice still exposes the separate Check answer control.');
 if(html.includes('value="quality"')) throw new Error('Learner Practice still exposes an internal review mode.');
 for(const term of ['Quality-review pool','Manual review record','QA status','Review target','Source mapping']){
   if(html.includes(term)) throw new Error(`Learner Practice exposes internal terminology: ${term}`);
@@ -42,6 +44,8 @@ if(!html.includes('role="dialog"')||!html.includes('aria-modal="true"')) throw n
 if(!html.includes('class="practice-close"')||!html.includes('aria-label="Close practice session"')) throw new Error('Practice modal close control is missing.');
 if(!css.includes('.practice-session:not(.hidden){position:fixed')||!css.includes('min-height:100dvh')) throw new Error('Practice mobile full-screen modal styling is missing.');
 if(!css.includes('touch-action:manipulation')) throw new Error('Practice touch-target optimization is missing.');
+if(!html.includes('assets/practice-navigation.css')||!navigationCss.includes('.practice-modal-footer')) throw new Error('Practice bottom-control navigation styling is missing.');
+if(!navigationCss.includes('position:sticky')||!navigationCss.includes('.feedback-reasoning')) throw new Error('Practice mobile footer or reasoning styling is missing.');
 if(!html.includes('core/guided-trail-engine.js')||!html.includes('core/practice-learner-repair.js')) throw new Error('Shared eligibility repair scripts are missing.');
 if(!html.includes('core/practice-question-actions.js')||!html.includes('core/study-resource-catalog.js')) throw new Error('Practice learner action/resource scripts are missing.');
 if(!html.includes('core/coach-bob-engine.js')||!html.includes('core/practice-coach.js')||!html.includes('assets/practice-coach.css')) throw new Error('Practice Coach Bob dependencies are missing.');
@@ -53,7 +57,7 @@ for(const hook of ['flaggedIds','reviewLaterIds','addQuestion','aria-live']){if(
 
 // Coach Bob Practice regression contract.
 if(practiceCoach.includes('MutationObserver')) throw new Error('Practice Coach Bob regressed to MutationObserver rendering.');
-for(const token of ["rpsgt:practice-question","[data-submit-answer]","RPSGTCoachBobEngine","RPSGTStudyResourceCatalog","priorPracticeMisses","Verified study resources","Reasoning Compass"]){
+for(const token of ["rpsgt:practice-question","[data-next-question]","RPSGTCoachBobEngine","RPSGTStudyResourceCatalog","priorPracticeMisses","Verified study resources","Reasoning Compass"]){
   if(!practiceCoach.includes(token)) throw new Error(`Practice Coach Bob is missing ${token}.`);
 }
 if(!coachCss.includes('.practice-coach-panel')||!coachCss.includes('@media(max-width:800px)')) throw new Error('Practice Coach Bob responsive styling is missing.');
@@ -62,7 +66,10 @@ if(!coachCss.includes('.practice-coach-panel')||!coachCss.includes('@media(max-w
 if(!shell.includes('soundEffects:false')||!shell.includes('playFeedbackSound')) throw new Error('Shared optional sound controls are missing.');
 if(!js.includes('RPSGTApp.playFeedbackSound')) throw new Error('Practice does not honor the shared optional feedback sound setting.');
 
-// Practice completion regression contract.
+// Practice question-navigation regression contract.
+if(!js.includes('function previousQuestion()')||!js.includes('state.index-=1')) throw new Error('Practice Previous question navigation is missing.');
+if(!/function nextQuestion\(\)[\s\S]*?if\(!state\.answered\)[\s\S]*?submitAnswer\(\);[\s\S]*?return;[\s\S]*?state\.index\+=1;/.test(js)) throw new Error('Practice Next no longer checks an unanswered item before advancing.');
+if(!js.includes('reasoningHeading.textContent="Reasoning"')||!js.includes('answerLabel.textContent="Correct answer: "')) throw new Error('Practice feedback does not expose the requested Reasoning and Correct answer section.');
 if(!js.includes('?"Submit Practice":"Next question"')) throw new Error('The final answered Practice question does not expose a clear Submit Practice action.');
 if(js.includes('View session result')) throw new Error('The ambiguous final Practice label "View session result" returned.');
 if(!/function nextQuestion\(\)[\s\S]*?state\.index\+=1;[\s\S]*?renderComplete\(\)/.test(js)) throw new Error('Practice final navigation no longer reaches the completion state.');
@@ -71,7 +78,6 @@ for(const destination of ['review.html?list=missed','study.html','index.html']){
   if(!html.includes(`href="${destination}"`)) throw new Error(`Practice completion is missing next-action destination ${destination}.`);
 }
 if(!html.includes('not an official BRPT score')) throw new Error('Practice completion score disclaimer is missing.');
-if(!css.includes('.question-actions .btn.primary')||!css.includes('.practice-question-action-row .btn.secondary')) throw new Error('Practice primary/secondary action hierarchy styling is missing.');
-if(!css.includes('.practice-session:not(.hidden) .question-actions{grid-template-columns:1fr}')) throw new Error('Practice mobile primary action no longer occupies a clear single-column control area.');
+if(!css.includes('.practice-question-action-row .btn.secondary')||!navigationCss.includes('.practice-modal-footer .question-actions .btn')) throw new Error('Practice primary/secondary action hierarchy styling is missing.');
 
-console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,submitPractice:true,focusedCompletion:true,nextActions:true},null,2));
+console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,nextChecksAnswer:true,previousQuestion:true,reasoningSection:true,bottomControls:true,submitPractice:true,focusedCompletion:true,nextActions:true},null,2));
