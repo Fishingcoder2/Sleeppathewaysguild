@@ -1,11 +1,12 @@
 import {test,expect} from '@playwright/test';
 
-test('custom RPSGT flashcards persist in the library without duplicate cards or legacy writes',async({page})=>{
+test('custom RPSGT flashcards persist alongside the seeded V2 library without duplicate cards or legacy writes',async({page})=>{
   await page.goto('flashcards.html');
   await page.evaluate(()=>localStorage.clear());
   await page.reload();
-  await expect(page.locator('[data-card-empty]')).toBeVisible();
+  await expect(page.locator('[data-card-empty]')).toBeHidden();
   await expect(page.locator('[data-card-stage]')).toBeHidden();
+  await expect(page.locator('[data-card-total]')).toHaveText('332 cards');
 
   await page.locator('[data-custom-card-open]').first().click();
   const dialog=page.locator('[data-custom-card-dialog]');
@@ -23,7 +24,7 @@ test('custom RPSGT flashcards persist in the library without duplicate cards or 
   const stage=page.locator('[data-card-stage]');
   await expect(stage).toBeVisible();
   await expect(page.locator('[data-card-empty]')).toBeHidden();
-  await expect(page.locator('[data-card-total]')).toHaveText('1 card');
+  await expect(page.locator('[data-card-total]')).toHaveText('333 cards');
   await expect(page.locator('[data-card-front]')).toHaveText('What is the AHI formula?');
   await expect(page.locator('[data-card-front-topic]')).toHaveText('Study Analysis and Reporting');
   await expect(page.locator('[data-card-review-chips]')).toContainText('Study Analysis and Reporting');
@@ -44,9 +45,12 @@ test('custom RPSGT flashcards persist in the library without duplicate cards or 
   await expect(page.locator('[data-card-mastered]')).toHaveText('Mastered ✓');
 
   await page.reload();
-  await expect(page.locator('[data-card-total]')).toHaveText('1 card');
+  await expect(page.locator('[data-card-total]')).toHaveText('333 cards');
   await expect(stage).toBeHidden();
+  const category=page.locator('.flashcard-category').filter({has:page.locator('summary').filter({hasText:'Study Analysis and Reporting'})});
+  await category.locator('summary').click();
   const tile=page.locator('[data-card-tile]').filter({hasText:'What is the AHI formula?'});
+  await expect(tile).toBeVisible();
   await expect(tile).toContainText('Flagged for review');
   await expect(tile).toContainText('Mastered');
   await tile.click();
@@ -59,13 +63,14 @@ test('custom RPSGT flashcards persist in the library without duplicate cards or 
   await dialog.locator('[name="front"]').fill('  What is the AHI formula?  ');
   await dialog.locator('[name="back"]').fill('Apneas plus hypopneas divided by total sleep time in hours.');
   await dialog.locator('button[type="submit"]').click();
-  await expect(page.locator('[data-card-total]')).toHaveText('1 card');
+  await expect(page.locator('[data-card-total]')).toHaveText('333 cards');
 
   const storage=await page.evaluate(()=>Object.fromEntries(Object.keys(localStorage).map(key=>[key,localStorage.getItem(key)])));
   expect(Object.keys(storage)).toEqual(['spg_rpsgt_v3']);
   const record=JSON.parse(storage.spg_rpsgt_v3);
-  expect(Object.keys(record.flashcards.cards)).toHaveLength(1);
-  expect(record.flashcards.order).toHaveLength(1);
+  expect(Object.keys(record.flashcards.cards)).toHaveLength(333);
+  expect(record.flashcards.order).toHaveLength(333);
+  expect(Object.values(record.flashcards.cards).filter(card=>card.custom)).toHaveLength(1);
   expect(JSON.stringify(record.flashcards)).not.toContain('referenceKeys');
   expect(JSON.stringify(record.flashcards)).not.toContain('studyRecommendationKeys');
 });
