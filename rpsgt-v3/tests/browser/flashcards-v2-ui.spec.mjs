@@ -39,6 +39,8 @@ test('Flashcard Center uses the v2-style library modal with custom cards and fla
 
   await page.locator('[data-card-close]').click();
   await expect(review).toBeHidden();
+  const coreCategory=page.locator('.flashcard-category').filter({has:page.locator('summary').filter({hasText:'Core Sleep Terms'})});
+  await expect(coreCategory).toHaveClass(/flashcard-category--2/);
   await expect(page.locator('.flashcard-category summary').getByText('Core Sleep Terms',{exact:true})).toBeVisible();
   const tile=page.locator('[data-card-tile]').filter({hasText:'What does AHI represent?'});
   await expect(tile).toBeVisible();
