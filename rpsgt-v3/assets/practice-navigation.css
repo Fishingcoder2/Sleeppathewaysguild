@@ -1,0 +1,28 @@
+/* Focused Practice question flow: one Next control checks first, then advances. */
+.practice-modal-footer{display:grid;gap:12px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.practice-modal-footer .practice-question-tools{margin-top:0}
+.practice-modal-footer .practice-question-action-row{margin:0;padding-top:0;border-top:0}
+.practice-modal-footer .question-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:0;align-items:stretch}
+.practice-modal-footer .question-actions .btn{width:100%;min-height:48px;margin:0;justify-content:center}
+.practice-modal-footer .question-actions .btn.primary{min-width:0;margin-left:0}
+[data-submit-answer]{display:none!important}
+.reasoning-panel{position:relative;margin-top:16px;padding:16px 16px 15px;border-width:1px;border-style:solid;border-radius:16px}
+.reasoning-panel h3{margin:.45rem 0 .75rem;color:inherit;font-size:1.05rem}
+.reasoning-status{display:inline-flex;align-items:center;min-height:28px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.68);font-size:.78rem;font-weight:900;letter-spacing:.02em;text-transform:uppercase}
+.practice-answer-review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:.25rem 0 .85rem}
+.practice-answer-review>div{padding:10px 11px;border:1px solid rgba(20,55,75,.14);border-radius:12px;background:rgba(255,255,255,.7)}
+.practice-answer-review dt{margin-bottom:4px;font-size:.75rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em;opacity:.76}
+.practice-answer-review dd{margin:0;font-weight:850;line-height:1.4}
+.practice-reasoning-copy{margin:.4rem 0 0;line-height:1.58}
+.practice-session:not(.hidden) .practice-coach{margin-top:14px}
+@media(max-width:800px){
+  .practice-modal-footer{margin:18px -14px calc(-92px - env(safe-area-inset-bottom));padding:12px 14px calc(92px + env(safe-area-inset-bottom));background:#fff}
+  .practice-modal-footer .practice-question-action-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .practice-modal-footer .question-actions{position:sticky;bottom:0;z-index:7;margin:0 -14px calc(-92px - env(safe-area-inset-bottom));padding:10px 14px calc(10px + env(safe-area-inset-bottom));grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:rgba(247,251,253,.98);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(7,25,45,.08)}
+  .practice-modal-footer .question-actions .btn{min-height:52px}
+}
+@media(max-width:560px){
+  .practice-answer-review{grid-template-columns:1fr}
+  .practice-modal-footer .practice-question-action-row{grid-template-columns:1fr 1fr}
+  .practice-modal-footer .question-actions{grid-template-columns:1fr 1fr}
+}
