@@ -20,13 +20,13 @@ test('Flashcard Center uses the v2-style library modal with custom cards and fla
 
   const review=page.locator('[data-card-stage]');
   await expect(review).toBeVisible();
-  await expect(review.getByText('FRONT OF CARD')).toBeVisible();
+  await expect(review.locator('.flashcard-front .flashcard-face-label')).toHaveText('FRONT OF CARD');
   await expect(page.locator('[data-card-front-topic]')).toHaveText('Core Sleep Terms');
   await expect(page.locator('[data-card-front]')).toHaveText('What does AHI represent?');
   await expect(page.locator('[data-card-modal-title]')).toHaveText('What does AHI represent?');
 
   await page.locator('[data-card-flip]').click();
-  await expect(review.getByText('BACK OF CARD')).toBeVisible();
+  await expect(review.locator('.flashcard-back .flashcard-face-label')).toHaveText('BACK OF CARD');
   await expect(page.locator('[data-card-back]')).toHaveText('Apnea-hypopnea index');
   await expect(page.locator('[data-card-flip]')).toHaveText('Show front');
 
