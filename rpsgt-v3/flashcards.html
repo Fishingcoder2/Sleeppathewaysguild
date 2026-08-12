@@ -49,7 +49,7 @@
 <section class="section flashcard-library" data-card-library aria-live="polite" aria-label="RPSGT flashcard library"></section>
 
 <section class="section flashcard-empty card" data-card-empty hidden>
-  <span class="status">No cards in this deck</span><h2>Create your first RPSGT flashcard</h2><p>Make your own card now, or save a flashcard while working through Guided Study or Practice.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Make your own card</button><a class="btn secondary" href="study.html">Open Guided Study</a></div>
+  <span class="status">No cards in this deck</span><h2>No cards match this deck</h2><p>Change the deck or filters, or make your own flashcard.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Make your own card</button><a class="btn secondary" href="study.html">Open Guided Study</a></div>
 </section>
 
 <div class="flashcard-review-overlay flashcard-stage" data-card-stage hidden>
@@ -72,8 +72,8 @@
         <span class="flashcard-back-section flashcard-memory-callout" data-card-memory-wrap><strong>Memory clue</strong><span data-card-memory></span></span>
         <span class="flashcard-back-section coach-back" data-card-coach-wrap><strong>Coach Bob</strong><span data-card-coach></span></span>
         <span class="flashcard-review-map" data-card-review-map>
-          <span><strong>Where to review:</strong> <span class="flashcard-review-chips" data-card-review-chips></span></span>
-          <span data-card-resources-wrap><strong>Study anchors:</strong> <span class="flashcard-resource-list" data-card-resources></span></span>
+          <span data-card-review-area><strong>Study area:</strong> <span class="flashcard-review-chips" data-card-review-chips></span></span>
+          <span data-card-resources-wrap><strong>References:</strong> <span class="flashcard-resource-list" data-card-resources></span></span>
         </span>
       </span>
     </button>
@@ -100,12 +100,12 @@
     <form data-custom-card-form>
       <label><span>Front</span><textarea name="front" rows="3" required></textarea></label><label><span>Back</span><textarea name="back" rows="3" required></textarea></label><label><span>Explanation</span><textarea name="explanation" rows="3"></textarea></label><label><span>Memory clue</span><textarea name="memoryClue" rows="2"></textarea></label><label><span>Coach Bob note</span><textarea name="coachBobNote" rows="2"></textarea></label>
       <div class="custom-card-grid"><label><span>Domain</span><input name="domain" placeholder="Example: Study Analysis and Reporting"></label><label><span>Task</span><input name="task" placeholder="Example: Generate and verify report"></label><label><span>Topic</span><input name="topic" placeholder="Example: Report calculations"></label></div>
-      <p class="notice">Custom cards do not receive an automatic resource recommendation. Add recommendations only through a verified RPSGT source mapping.</p>
+      <p class="notice">Custom cards do not receive automatic references. Add a reference only after its APA citation is verified against a current RPSGT source.</p>
       <div class="actions"><button class="btn secondary" type="button" data-custom-card-close>Cancel</button><button class="btn primary" type="submit">Save flashcard</button></div>
     </form>
   </section>
 </div>
-<section class="section notice"><strong>Content boundary:</strong> The Flashcard Center preserves source-supported and learner-created RPSGT cards without exposing internal source keys. Curated legacy cards are migrated only when their original front, back, and study context are verified.</section>
+<section class="section notice"><strong>Content boundary:</strong> The Flashcard Center preserves source-supported and learner-created RPSGT cards without exposing internal source keys. Legacy study cards use the verified V2 front/back teaching content while current V3 authority controls scoring, technical, diagnostic, and treatment references.</section>
 <footer class="footer">Sleep Pathways Guild · RPSGT Flashcard Center</footer>
 </main>
 </div>
@@ -115,6 +115,7 @@
 <script src="core/app-shell.js"></script>
 <script src="core/flashcard-engine.js"></script>
 <script src="core/flashcard-store.js"></script>
+<script src="core/flashcard-v2-library.js"></script>
 <script src="core/flashcards.js"></script>
 </body>
 </html>
