@@ -36,13 +36,13 @@ test('custom RPSGT flashcards persist without duplicate cards or legacy writes',
   await expect(page.locator('[data-card-resources-wrap]')).toBeHidden();
 
   await page.locator('[data-card-flag]').click();
-  await expect(page.locator('[data-card-flag]')).toHaveText('Remove flag');
+  await expect(page.locator('[data-card-flag]')).toHaveText('Unflag');
   await page.locator('[data-card-mastered]').click();
   await expect(page.locator('[data-card-mastered]')).toHaveText('Mastered ✓');
 
   await page.reload();
   await expect(page.locator('[data-card-total]')).toHaveText('1 card');
-  await expect(page.locator('[data-card-flag]')).toHaveText('Remove flag');
+  await expect(page.locator('[data-card-flag]')).toHaveText('Unflag');
   await expect(page.locator('[data-card-mastered]')).toHaveText('Mastered ✓');
 
   await page.locator('[data-custom-card-open]').first().click();
