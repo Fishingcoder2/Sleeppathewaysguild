@@ -110,22 +110,26 @@
       render(question,'pre').catch(error=>console.warn('Coach Bob Practice hint was not rendered.',error));
     }
 
-    function renderScored(){
+    function renderScored({focus=true}={}){
       const question=state.question;
       if(!question) return;
       const feedback=document.querySelector('[data-answer-feedback]');
       if(!feedback||feedback.classList.contains('hidden')) return;
       const correct=feedback.classList.contains('correct');
-      render(question,correct?'correct':'incorrect',{correct,selected:selectedAnswer(),focus:true})
+      render(question,correct?'correct':'incorrect',{correct,selected:selectedAnswer(),focus})
         .catch(error=>console.warn('Coach Bob Practice review was not rendered.',error));
     }
 
     document.addEventListener('rpsgt:practice-question',event=>{
       const question=event&&event.detail&&event.detail.question;
-      if(question) renderPre(question);
+      if(!question) return;
+      state.question=question;
+      const feedback=document.querySelector('[data-answer-feedback]');
+      if(feedback&&!feedback.classList.contains('hidden')) renderScored({focus:false});
+      else renderPre(question);
     });
     document.addEventListener('click',event=>{
-      if(event.target.closest('[data-submit-answer]')) queueMicrotask(renderScored);
+      if(event.target.closest('[data-submit-answer]')) queueMicrotask(()=>renderScored({focus:true}));
     });
     if(resources) resources.load().catch(()=>null);
     return true;
