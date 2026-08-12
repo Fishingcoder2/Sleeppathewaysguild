@@ -99,6 +99,8 @@ for(const card of seeded){
 }
 assert.match(v2library,/flashcards-v2-current-overlay\.json/);
 assert.match(v2library,/function apaOnly/);
+assert.match(v2library,/function sanitizeRenderedReferences/);
+assert.match(v2library,/function installApaReferenceGuard/);
 assert.doesNotMatch([html,ui,v2library].join('\n'),/mapped reference/i,'Learner-facing Flashcard Center must not display "mapped reference" wording.');
 assert.match(html,/References:/,'Flashcard backs must label learner citations as References.');
 
