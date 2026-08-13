@@ -15,6 +15,15 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   await expect(page.locator('[data-blueprint-summary]')).toContainText('15 questions per checkpoint');
   await expect(page.locator('[data-blueprint-summary]')).toContainText('80% task-award goal');
 
+  const explorer=page.locator('[data-explorer-journey]');
+  await expect(explorer).toContainText('Sleep Pathways Explorer Journey');
+  await expect(explorer).toContainText('Trail Starter');
+  await expect(explorer).toContainText('Your virtual Explorer vest');
+  await expect(explorer.locator('.explorer-patch')).toHaveCount(12);
+  await expect(explorer).toContainText('Trailhead Ribbon');
+  await expect(explorer).toContainText('Full Expedition Ribbon');
+  await expect(explorer).toContainText('Fresh-question rotation');
+
   const resources=cards.first().locator('details[data-resource-ready="true"]');
   await expect(resources).toBeVisible();
   const resourceSummary=resources.locator('summary');
@@ -60,4 +69,41 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   const coachHeading=checkpoint.locator('.coach-question-panel h3');
   await expect(coachHeading).toBeVisible();
   await expect(coachHeading).not.toHaveText('Slow down and match the task.');
+});
+
+test('Guided Trail fresh rotation removes duplicate wording and holds back recent questions',async({page})=>{
+  await page.goto('study.html');
+  const result=await page.evaluate(()=>{
+    const saved=window.RPSGTStorage.load();
+    const records=Array.from({length:30},(_,index)=>({
+      id:`q${index+1}`,
+      taskCode:'D1A',
+      prompt:`Unique Guided Trail question ${index+1}?`,
+      options:['A','B'],
+      answer:'A',
+      qa:{manualReviewRecommended:false}
+    }));
+    records.push({
+      id:'duplicate-q1',
+      taskCode:'D1A',
+      prompt:'Unique Guided Trail question 1?',
+      options:['A','B'],
+      answer:'A',
+      qa:{manualReviewRecommended:false}
+    });
+    saved.guidedStudy.checkpointHistory=[{
+      id:'prior-d1a',
+      task:'D1A',
+      total:15,
+      questionIds:Array.from({length:15},(_,index)=>`q${index+1}`)
+    }];
+    window.RPSGTStorage.save(saved);
+    const selected=window.RPSGTGuidedTrailExplorer.selectFreshQuestions(records,'D1A',15,'browser-test');
+    return {ids:selected.map(question=>question.id),prompts:selected.map(question=>question.prompt)};
+  });
+
+  expect(result.ids).toHaveLength(15);
+  expect(result.ids.some(id=>/^q(?:[1-9]|1[0-5])$/.test(id))).toBe(false);
+  expect(result.ids).not.toContain('duplicate-q1');
+  expect(new Set(result.prompts).size).toBe(15);
 });
