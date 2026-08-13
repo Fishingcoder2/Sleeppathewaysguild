@@ -45,9 +45,10 @@
   }
   function selectFreshQuestions(records,taskCode,count,seed){
     const desired=Math.max(0,Number(count)||15);
+    const eligible=(records||[]).filter(question=>engine.eligibleQuestion(question,taskCode));
     const unique=uniqueEligible(records,taskCode);
     const recentIds=new Set(recentQuestionIds(taskCode));
-    const byId=new Map(unique.map(question=>[String(question.id),fingerprint(question)]));
+    const byId=new Map(eligible.map(question=>[String(question.id),fingerprint(question)]));
     const recentFingerprints=new Set([...recentIds].map(id=>byId.get(id)).filter(Boolean));
     const fresh=unique.filter(question=>!recentIds.has(String(question.id))&&!recentFingerprints.has(fingerprint(question)));
     const older=unique.filter(question=>!fresh.includes(question));
@@ -138,7 +139,9 @@
   }
   function enhanceAchievement(){
     const content=document.querySelector('[data-achievement-content]');
-    if(!content||!content.children.length||content.dataset.explorerEnhanced==='true') return;
+    if(!content) return;
+    if(!content.children.length){delete content.dataset.explorerEnhanced;return;}
+    if(content.dataset.explorerEnhanced==='true') return;
     const unlocks=latestExplorerUnlocks();
     if(!unlocks.length) return;
     const panel=document.createElement('div');
