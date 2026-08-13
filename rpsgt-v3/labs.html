@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RPSGT Skills Labs v3 | Sleep Pathways Guild</title>
+<title>RPSGT Skills Labs | Sleep Pathways Guild</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/rpsgt-v3.css">
 <link rel="stylesheet" href="assets/labs.css">
@@ -12,31 +12,53 @@
 <body data-module="labs">
 <div class="app-shell">
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Skills Laboratory</strong><span>Applied RPSGT learning pathways</span></span></a>
-  <div class="top-actions"><a href="reports.html">Reports</a><a href="index.html">Dashboard</a></div>
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Skills Labs</strong><span>Applied sleep-technologist learning</span></span></a>
+  <div class="top-actions"><a href="study.html">Study</a><a href="practice.html">Practice</a><a href="reports.html">Progress</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
   <div class="nav-label">Learning Center</div>
-  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="home" href="index.html"><span>🏠</span>Home</a>
   <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
-  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
-  <a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a>
-  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>📝</span>Practice</a>
+  <a class="nav-link" data-nav="labs" href="labs.html"><span>🧪</span>Skills Labs</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>📊</span>Progress</a>
 </aside>
 <main class="main">
-<section class="hero">
-  <div><div class="eyebrow">Applied Learning · Skills Labs</div><h1>Practice one technical skill pathway at a time</h1><p class="lead">Build applied RPSGT skills across hookup, EKG, scoring, respiratory monitoring, instrumentation, PAP, troubleshooting, pediatric and infant sleep, MSLT/MWT protocols, and sleep-technology calculations.</p><div class="lab-summary" data-lab-summary><div><span>Lab families</span><strong>—</strong></div></div></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Learn the workflow, then check the skill.</h2><p>Choose one lab, work through its stations, complete the checkpoint, review the feedback, and use Reports to decide what to practice next.</p></aside>
+<section class="hero labs-hero">
+  <div>
+    <div class="eyebrow">Applied Learning · Skills Labs</div>
+    <h1>Show what you would do with the signal or scenario.</h1>
+    <p class="lead">Choose one technical pathway at a time. Strong labs ask you to identify, measure, calculate, troubleshoot, interpret, correct, document, or choose the safest next technologist action.</p>
+    <div class="lab-summary" data-lab-summary><div><span>Learning labs</span><strong>—</strong></div></div>
+  </div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>A checklist is not a skill.</h2><p>Use the lab to make a decision, then check the feedback. The goal is applied reasoning you can reuse during real sleep-study work and exam preparation.</p></aside>
 </section>
-<section class="section notice"><strong>Lab learning boundary:</strong> Each Skills Lab keeps its own progress and attempt history. Lab activity does not change ordinary Practice, Readiness, or Mock results.</section>
-<section class="section card"><div class="section-head"><div><div class="eyebrow">Your Skills Lab progress</div><h2>Continue applied learning</h2></div><span class="status green">Skills Lab record</span></div><p data-lab-last>No prior laboratory position is mapped.</p></section>
-<section class="section lab-catalog" data-lab-catalog><div class="card"><p>Loading the Skills Lab catalog…</p></div></section>
-<section class="section notice"><strong>Learning scope:</strong> <span data-lab-boundary>Lab descriptions, workflow stations, and RPSGT task mappings are original Sleep Pathways Guild educational material unless a source is specifically identified.</span></section>
+
+<section class="section lab-next-grid" aria-label="Skills Lab next actions">
+  <article class="card lab-next-card" data-lab-continue-card>
+    <div class="eyebrow">Continue last lab</div>
+    <h2 data-lab-continue-title>No lab in progress yet</h2>
+    <p data-lab-continue-copy>Choose one lab below and your latest lab activity will appear here.</p>
+    <div class="actions"><a class="btn secondary" data-lab-continue-action href="#lab-path-build">Choose a lab</a></div>
+  </article>
+  <article class="card lab-next-card recommended" data-lab-recommended-card>
+    <div class="eyebrow">Coach Bob recommends</div>
+    <h2 data-lab-recommended-title>Hookup and Electrode Placement</h2>
+    <p data-lab-recommended-copy>Start with patient setup, measurement, placement, impedance, and correction decisions that support many other technical skills.</p>
+    <div class="actions"><a class="btn primary" data-lab-recommended-action href="lab-hookup.html">Open recommended lab</a></div>
+  </article>
+</section>
+
+<section class="section notice"><strong>Lab learning boundary:</strong> Skills Lab activity has its own learner record and does not change ordinary Practice, Readiness, or Mock results. Guild lab achievements are educational milestones, not BRPT credentials.</section>
+
+<section class="section lab-catalog" data-lab-catalog><div class="card"><p>Loading Skills Lab pathways…</p></div></section>
+
+<section class="section notice"><strong>Learning scope:</strong> <span data-lab-boundary>Lab scenarios, teaching visuals, and learning activities are original Sleep Pathways Guild educational material.</span></section>
 <footer class="footer">Sleep Pathways Guild · Skills Labs are educational practice and do not represent an official BRPT credential, score, or passing prediction.</footer>
 </main>
 </div>
-<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>🏠</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>📝</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>🧪</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>📊</span><small>Progress</small></a></nav>
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
