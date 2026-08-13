@@ -16,41 +16,34 @@
 
   function sourceTitle(source){return text(source.fullTitle||source.shortTitle||source.title||source.name||source.label||'Reference');}
 
-  function authorityGroup(source){
+  // INTERNAL ONLY: the authority registry remains part of source ordering and routing.
+  // Do not expose registry levels, precedence rules, provenance notes, source keys, or audit wording to learners.
+  function authorityRank(source){
     const id=normalize(source.id);
     const rule=state.authorityRulesBySource.get(text(source.id));
     const haystack=normalize([source.publisher,source.sourceType,source.shortTitle,source.fullTitle].filter(Boolean).join(' | '));
-    if(id==='brpt-blueprint'||id==='brpt-handbook'||id==='brpt-refs') return {rank:0,filter:'brpt',label:'BRPT exam framework',eyebrow:'Exam framework',precedence:''};
-    if(rule){
-      const labels={1:'AASM scoring / technical',2:'AASM accreditation / protocol',3:'AASM clinical / protocol',4:'AAST technical / competency'};
-      const level=Number(rule.level)||4;
-      return {rank:level,filter:String(level),label:labels[level]||('Authority level '+level),eyebrow:'Authority level '+level,precedence:text(rule.precedence)};
-    }
-    if(id.startsWith('aasm-')||id.startsWith('icsd-')||haystack.includes('american academy of sleep medicine')) return {rank:3,filter:'3',label:'AASM / classification',eyebrow:'Authority level 3',precedence:''};
-    if(id.startsWith('aast-')||haystack.includes('american association of sleep technologists')) return {rank:4,filter:'4',label:'AAST guidance',eyebrow:'Authority level 4',precedence:''};
-    if(haystack.includes('textbook')||source.brptReferenceStatus||/fundamentals|polysomnography|pediatric-sleep|principles-practice|clinical-guide|sleep-medicine-pearls|atlas-electroencephalography|sleep-medicine-essentials/.test(id)) return {rank:5,filter:'5',label:'Core reference',eyebrow:'Reference level 5',precedence:''};
-    return {rank:6,filter:'6',label:'Supplemental',eyebrow:'Reference level 6',precedence:''};
+    if(id==='brpt-blueprint'||id==='brpt-handbook'||id==='brpt-refs') return 0;
+    if(rule) return Number(rule.level)||4;
+    if(id.startsWith('aasm-')||id.startsWith('icsd-')||haystack.includes('american academy of sleep medicine')) return 3;
+    if(id.startsWith('aast-')||haystack.includes('american association of sleep technologists')) return 4;
+    if(haystack.includes('textbook')||source.brptReferenceStatus||/fundamentals|polysomnography|pediatric-sleep|principles-practice|clinical-guide|sleep-medicine-pearls|atlas-electroencephalography|sleep-medicine-essentials/.test(id)) return 5;
+    return 6;
   }
 
-  function citationRecord(source){
-    if(text(source.apaCitation)) return {label:'APA citation',value:text(source.apaCitation)};
-    if(text(source.citation)) return {label:'Recorded source citation',value:text(source.citation)};
+  function cleanCitation(source){
+    if(text(source.apaCitation)) return text(source.apaCitation);
+    if(text(source.citation)) return text(source.citation);
     const title=sourceTitle(source);
-    const edition=text(source.edition||source.editionStatus);
     const year=text(source.year||source.publicationYear);
-    const publisher=text(source.publisher);
-    const details=[];
-    if(title) details.push(title+(edition&&!title.includes(edition)?' ('+edition+').':'.'));
-    if(publisher) details.push(publisher+'.');
-    if(year) details.push('Published '+year+'.');
-    return {label:'Bibliographic record',value:details.join(' ')||title};
-  }
-
-  function sourceStatus(source){
-    if(source.currentAuthority===true||source.sourceRole==='currentAuthority') return 'Current authority';
-    if(source.sourceRole==='legacyGuidance') return 'Legacy / applicable';
-    if(source.brptReferenceStatus) return 'BRPT-listed reference';
-    return 'Study support';
+    const organization=text(source.publisher||source.organization||source.author);
+    const edition=text(source.edition);
+    const parts=[];
+    if(organization) parts.push(organization.replace(/[.]$/,'')+'.');
+    if(year) parts.push('('+year+').');
+    let titlePart=title;
+    if(edition&&!normalize(title).includes(normalize(edition))) titlePart+=' ('+edition+')';
+    if(titlePart) parts.push(titlePart.replace(/[.]$/,'')+'.');
+    return parts.join(' ')||title;
   }
 
   function externalUrl(source){
@@ -95,11 +88,9 @@
   }
 
   function searchableText(source){
-    const citation=citationRecord(source).value;
     const sections=allSections(source).map(item=>item.label).join(' | ');
-    const authority=authorityGroup(source);
     return normalize([
-      sourceTitle(source),source.shortTitle,source.publisher,source.sourceType,source.bestFor,citation,sections,authority.label,authority.precedence,
+      sourceTitle(source),source.shortTitle,source.publisher,source.sourceType,source.bestFor,cleanCitation(source),sections,
       ...taskCodesFor(source)
     ].filter(Boolean).join(' | '));
   }
@@ -136,17 +127,14 @@
     return {
       domain:$('[data-reference-domain]').value,
       task:$('[data-reference-task]').value,
-      topic:normalize($('[data-reference-topic]').value),
-      authority:$('[data-reference-authority]').value
+      topic:normalize($('[data-reference-topic]').value)
     };
   }
 
   function matches(source,filters){
     const tasks=taskCodesFor(source);
-    const authority=authorityGroup(source);
     if(filters.domain!=='all'&&!tasks.some(code=>code.startsWith(filters.domain))) return false;
     if(filters.task!=='all'&&!tasks.includes(filters.task)) return false;
-    if(filters.authority!=='all'&&authority.filter!==filters.authority) return false;
     if(filters.topic&&!searchableText(source).includes(filters.topic)) return false;
     return true;
   }
@@ -154,8 +142,8 @@
   function relevantSections(source,taskCode,topic){
     let sections=allSections(source);
     if(taskCode&&taskCode!=='all'){
-      const mapped=state.sourceSectionsByTask.get(text(source.id))?.get(taskCode);
-      if(mapped&&mapped.size) sections=sections.filter(section=>mapped.has(text(section.id)));
+      const selected=state.sourceSectionsByTask.get(text(source.id))?.get(taskCode);
+      if(selected&&selected.size) sections=sections.filter(section=>selected.has(text(section.id)));
       else sections=sections.filter(section=>!Array.isArray(section.taskCodes)||!section.taskCodes.length||section.taskCodes.includes(taskCode));
     }
     if(topic){
@@ -167,43 +155,34 @@
   }
 
   function cardHtml(source,filters){
-    const authority=authorityGroup(source);
-    const citation=citationRecord(source);
     const title=sourceTitle(source);
+    const citation=cleanCitation(source);
     const tasks=taskCodesFor(source);
     const sections=relevantSections(source,filters.task,filters.topic);
     const url=externalUrl(source);
-    const publisher=text(source.publisher);
-    const status=sourceStatus(source);
-    const year=text(source.year||source.publicationYear||source.effectiveDate);
-    const editionYear=text(source.editionStatus||source.effectiveFramework||source.currentIdentity||source.edition||year);
     const bestFor=text(source.bestFor);
-    const authorityNote=text(source.authorityBoundary||source.currencyNote||source.versionStatus);
-    return '<article class="card reference-card" data-authority="'+escapeHtml(authority.filter)+'">'+
-      '<div class="reference-card-head"><div><div class="eyebrow">'+escapeHtml(authority.eyebrow)+'</div><h2>'+escapeHtml(title)+'</h2></div><div class="reference-badges"><span class="status">'+escapeHtml(authority.label)+'</span><span class="status '+(status==='Current authority'?'green':'')+'">'+escapeHtml(status)+'</span></div></div>'+
-      '<div class="reference-citation"><span class="reference-citation-label">'+escapeHtml(citation.label)+'</span><em>'+escapeHtml(citation.value)+'</em></div>'+
-      '<div class="reference-meta"><div><span>Source type</span><strong>'+escapeHtml(text(source.sourceType)||'Reference')+'</strong></div><div><span>Publisher / organization</span><strong>'+escapeHtml(publisher||'See citation')+'</strong></div><div><span>Edition / year</span><strong>'+escapeHtml(editionYear||'See citation')+'</strong></div></div>'+
-      (authority.precedence?'<p class="reference-authority-note"><strong>Precedence:</strong> '+escapeHtml(authority.precedence)+'</p>':'')+
-      (bestFor?'<p class="reference-best-for"><strong>Best for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
-      (authorityNote?'<p class="reference-authority-note"><strong>Authority / currency note:</strong> '+escapeHtml(authorityNote)+'</p>':'')+
-      (tasks.length?'<div class="reference-task-list" aria-label="Mapped RPSGT tasks">'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
+    return '<article class="card reference-card">'+
+      '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
+      '<div class="reference-citation"><span class="reference-citation-label">APA-style reference</span><em>'+escapeHtml(citation)+'</em></div>'+
+      (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
+      (tasks.length?'<div class="reference-task-list" aria-label="RPSGT tasks"><span class="sr-only">RPSGT tasks: </span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
       (sections.length?'<details class="reference-sections"><summary>Relevant sections / chapters</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(section.label)+'</li>').join('')+'</ul></details>':'')+
-      (url?'<div class="reference-actions"><a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open source ↗</a></div>':'')+
+      (url?'<div class="reference-actions"><a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a></div>':'')+
       '</article>';
   }
 
   function render(){
     const filters=currentFilters();
     const results=state.sources.filter(source=>matches(source,filters)).sort((a,b)=>{
-      const authorityDiff=authorityGroup(a).rank-authorityGroup(b).rank;
-      return authorityDiff||sourceTitle(a).localeCompare(sourceTitle(b));
+      const rankDiff=authorityRank(a)-authorityRank(b);
+      return rankDiff||sourceTitle(a).localeCompare(sourceTitle(b));
     });
     const host=$('[data-reference-results]');
     const count=$('[data-reference-count]');
     count.textContent=results.length.toLocaleString();
     $('[data-reference-status]').textContent=results.length===1?'1 reference shown':results.length.toLocaleString()+' references shown';
     if(!results.length){
-      host.innerHTML='<div class="card reference-empty"><h2>No references match those filters.</h2><p>Try a broader domain, task, or subject term. The center does not infer a source relationship that is not present in the vetted RPSGT source mappings.</p></div>';
+      host.innerHTML='<div class="card reference-empty"><h2>No references match those filters.</h2><p>Try a broader domain, task, or subject term.</p></div>';
       return;
     }
     host.innerHTML=results.map(source=>cardHtml(source,filters)).join('');
@@ -223,7 +202,6 @@
   function wireControls(){
     $('[data-reference-domain]').addEventListener('change',()=>{populateTasks();render();});
     $('[data-reference-task]').addEventListener('change',render);
-    $('[data-reference-authority]').addEventListener('change',render);
     let timer=null;
     $('[data-reference-topic]').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(render,120);});
     $('[data-reference-clear]').addEventListener('click',()=>{
@@ -231,7 +209,6 @@
       populateTasks();
       $('[data-reference-task]').value='all';
       $('[data-reference-topic]').value='';
-      $('[data-reference-authority]').value='all';
       render();
       $('[data-reference-topic]').focus();
     });
@@ -266,7 +243,7 @@
       wireControls();
       render();
       status.className='section notice';
-      status.innerHTML='<strong>Reference index loaded.</strong> '+state.sources.length.toLocaleString()+' vetted source records and '+state.authorityRulesBySource.size.toLocaleString()+' audited authority rules are available for learner lookup.'+(failed?' '+failed+' source record'+(failed===1?'':'s')+' could not be loaded and are not shown.':'');
+      status.innerHTML='<strong>References ready.</strong> '+state.sources.length.toLocaleString()+' study references are available.'+(failed?' '+failed+' reference'+(failed===1?'':'s')+' could not be loaded.':'');
     }catch(error){
       status.className='section notice';
       status.innerHTML='<strong>Reference Center could not load.</strong> '+escapeHtml(error.message||String(error))+' Please return to the dashboard and try again.';
