@@ -20,6 +20,8 @@ assert.equal(new Set(catalog.labs.map(lab=>lab.id)).size,13);
 assert.equal(catalog.meta.individualLabParityComplete,false,'Interactive laboratory completion pass must remain open while checklist-style labs are being rebuilt.');
 assert.equal(catalog.meta.interactiveCompletionPass,'in-progress');
 assert.equal(catalog.meta.version,13);
+assert.equal(engine.VERSION,'1.2.0');
+assert.deepEqual(engine.REVIEW_STAGE_IDS.slice().sort(),['daytime-testing','ekg','instrumentation','pap','pediatric','respiratory','scoring','troubleshooting']);
 
 const linked=catalog.labs.filter(lab=>lab.status==='legacy-linked');
 assert.equal(linked.length,0,'No v3 catalog route should depend on a legacy laboratory page.');
@@ -40,10 +42,12 @@ assert.equal(JSON.stringify(legacyHookupProgress),before);
 assert.equal(legacyReport.counts.total,13);
 assert.equal(legacyReport.counts.completed,0,'A legacy Hookup completion flag must not satisfy the new demonstrated-skill standard.');
 assert.equal(legacyReport.counts.started,1);
+assert.equal(legacyReport.counts.reviewStage,8);
 assert.equal(legacyReport.counts.v3Ready,13);
 assert.equal(legacyReport.last.id,'ekg');
 assert.equal(legacyReport.rows.find(row=>row.id==='hookup').completed,false);
 assert.equal(legacyReport.rows.find(row=>row.id==='pap').started,true);
+assert.equal(legacyReport.rows.find(row=>row.id==='pap').reviewStage,true);
 
 const demonstratedHookupProgress={
   completed:['hookup'],
@@ -66,16 +70,23 @@ const objectProgress=engine.normalizeProgress({
   'daytime-testing':{completed:true},
   troubleshooting:{completed:true}
 });
-assert.ok(objectProgress.completed.includes('ekg'));
+assert.ok(!objectProgress.completed.includes('ekg'));
 assert.ok(!objectProgress.completed.includes('visual'));
 assert.ok(objectProgress.completed.includes('artifact'));
-assert.ok(objectProgress.completed.includes('scoring'));
-assert.ok(objectProgress.completed.includes('respiratory'));
-assert.ok(objectProgress.completed.includes('instrumentation'));
-assert.ok(objectProgress.completed.includes('pap'));
-assert.ok(objectProgress.completed.includes('pediatric'));
-assert.ok(objectProgress.completed.includes('daytime-testing'));
-assert.ok(objectProgress.completed.includes('troubleshooting'));
+assert.ok(!objectProgress.completed.includes('scoring'));
+assert.ok(!objectProgress.completed.includes('respiratory'));
+assert.ok(!objectProgress.completed.includes('instrumentation'));
+assert.ok(!objectProgress.completed.includes('pap'));
+assert.ok(!objectProgress.completed.includes('pediatric'));
+assert.ok(!objectProgress.completed.includes('daytime-testing'));
+assert.ok(!objectProgress.completed.includes('troubleshooting'));
 assert.ok(!objectProgress.completed.includes('hookup'));
 
-console.log('Laboratory catalog passed with 13 internal routes, learner pathway progress, Artifact Recognition Pack 1, and demonstrated Hookup completion rules.');
+const reviewStageReport=engine.summarize(catalog,{
+  completed:['ekg','scoring','respiratory','pap','instrumentation','pediatric','daytime-testing','troubleshooting'],
+  ekg:{completed:true},scoring:{completed:true},respiratory:{completed:true},pap:{completed:true},instrumentation:{completed:true},pediatric:{completed:true},'daytime-testing':{completed:true},troubleshooting:{completed:true}
+});
+assert.equal(reviewStageReport.counts.completed,0,'Checklist-stage lab records must not inflate demonstrated completion.');
+assert.ok(reviewStageReport.rows.filter(row=>row.reviewStage).every(row=>row.completed===false));
+
+console.log('Laboratory catalog passed with 13 internal routes, eight explicit review-stage labs, Artifact/Visual interaction packs, and demonstrated Hookup completion rules.');
