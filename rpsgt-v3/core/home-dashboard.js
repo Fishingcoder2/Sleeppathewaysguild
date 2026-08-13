@@ -3,7 +3,6 @@
 
   const RESOURCE_URL='data/brpt-official-resources.json';
   const MANIFEST_URL='data/question-bank/manifest.json';
-
   const $=selector=>document.querySelector(selector);
   const setText=(selector,value)=>document.querySelectorAll(selector).forEach(node=>{node.textContent=value;});
 
@@ -88,59 +87,84 @@
     }
   }
 
-  function promotePrimaryDestinations(){
-    const hero=$('.hero.brpt-hero');
-    const firstModule=$('.module-card.study');
-    const destinationSection=firstModule&&firstModule.closest('.section');
-    if(!hero||!destinationSection) return;
-    destinationSection.classList.add('front-door-destinations');
-    hero.insertAdjacentElement('afterend',destinationSection);
+  function counts(saved){
+    const guided=saved&&saved.guidedStudy||{};
+    const awards=guided.trailAwards||{};
+    const taskBadges=Object.keys(awards.tasks||{}).length;
+    const domainMedals=Object.keys(awards.domains||{}).length;
+    const missed=Array.isArray(saved&&saved.review&&saved.review.missedIds)?saved.review.missedIds.length:0;
+    const answered=Number(saved&&saved.progress&&saved.progress.answered||0);
+    const correct=Number(saved&&saved.progress&&saved.progress.correct||0);
+    const readiness=Array.isArray(saved&&saved.readiness&&saved.readiness.history)?saved.readiness.history:[];
+    return {taskBadges,domainMedals,missed,answered,correct,readiness};
   }
 
-  function insertFeaturedRespiratoryTrail(){
-    const destinations=$('.front-door-destinations');
-    if(!destinations||$('[data-featured-respiratory-trail]')) return;
-    const section=document.createElement('section');
-    section.className='section card front-door-primary featured-study-trail';
-    section.dataset.featuredRespiratoryTrail='true';
-    section.innerHTML='<div class="section-head"><div><div class="eyebrow">Featured Study Trail · Respiratory / PAP</div><h2>Follow the respiratory pathway from scoring to escalation</h2></div><a class="btn primary" href="study.html#respiratory-pap-trail">Start Respiratory/PAP Study Trail</a></div><p class="brpt-intro">Work through OSA scoring, PAP treatment and titration, CSA distinctions, advanced PAP, hypoventilation/NIV, oxygen/CO₂, and escalation with current-authority warnings at each step.</p>';
-    destinations.insertAdjacentElement('afterend',section);
-  }
-
-  function normalizeAchievementCopy(){
-    const host=$('#guild-achievements');
-    if(!host) return;
-    const heading=host.querySelector('.section-head h2');
-    if(heading&&heading.textContent.trim()==='Merit badges and domain medals') heading.textContent='Task badges and domain medals';
-    host.querySelectorAll('.guild-achievement-card p').forEach(node=>{
-      if(node.textContent.trim()==='Task merit badges earned in this domain.') node.textContent='Task badges earned in this domain.';
-    });
-    host.querySelectorAll('.guild-achievement-line span').forEach(node=>{
-      if(node.textContent.trim()==='Merit badges') node.textContent='Task badges';
-    });
-    const note=host.querySelector('.book-affiliate-note');
-    if(note) note.innerHTML='<strong>Achievement note:</strong> These are Sleep Pathways Guild educational achievements. They are not BRPT-issued credentials, official exam results, or passing predictions.';
-  }
-
-  function suppressOptionalBookShelf(){
-    const removeLearnerShelf=()=>{
-      document.getElementById('rpsgt-book-shelf')?.remove();
-      document.querySelectorAll('[data-rpsgt-settings-body] .rpsgt-settings-row').forEach(row=>{
-        const text=(row.textContent||'').trim();
-        if(/optional book suggestions|book preferences/i.test(text)) row.remove();
-      });
+  function recommendation(saved){
+    const c=counts(saved);
+    if(c.answered===0&&c.taskBadges===0){
+      return {
+        eyebrow:'Coach Bob recommends',
+        title:'Start with one Guided Study task',
+        copy:'Learn one RPSGT task first, then use its full 15-question checkpoint to test whether the reasoning is sticking.',
+        href:'study.html',
+        action:'Start Guided Study'
+      };
+    }
+    if(c.missed>=5){
+      return {
+        eyebrow:'Coach Bob recommends',
+        title:'Repair the pattern in your missed questions',
+        copy:'You already have useful evidence. Review the misses, explain the deciding clue, and turn repeat trouble spots into flashcards when helpful.',
+        href:'review.html?list=missed',
+        action:'Review missed questions'
+      };
+    }
+    if(c.taskBadges<12){
+      return {
+        eyebrow:'Coach Bob recommends',
+        title:'Keep building your Guided Study trail',
+        copy:'Your next full checkpoint can strengthen a task area and move your Explorer journey forward without scattering your attention.',
+        href:'study.html',
+        action:'Continue Guided Study'
+      };
+    }
+    if(!c.readiness.length){
+      return {
+        eyebrow:'Coach Bob recommends',
+        title:'Check your readiness across the blueprint',
+        copy:'You have built substantial Guided Study evidence. A Readiness Check can show which task areas deserve the next focused review.',
+        href:'readiness.html',
+        action:'Start a Readiness Check'
+      };
+    }
+    return {
+      eyebrow:'Coach Bob recommends',
+      title:'Use Progress to choose the next weak area',
+      copy:'Your learner record now has enough evidence to compare task performance and choose a focused next move.',
+      href:'reports.html',
+      action:'Open Progress'
     };
-    removeLearnerShelf();
-    if(typeof MutationObserver!=='function') return;
-    const observer=new MutationObserver(removeLearnerShelf);
-    observer.observe(document.body,{childList:true,subtree:true});
+  }
+
+  function renderLearnerLaunchpad(){
+    if(!window.RPSGTStorage) return;
+    const saved=window.RPSGTStorage.load();
+    const c=counts(saved);
+    setText('[data-home-task-badges]',c.taskBadges+' / 12');
+    setText('[data-home-domain-medals]',c.domainMedals+' / 4');
+    setText('[data-home-missed]',c.missed.toLocaleString());
+    setText('[data-home-accuracy]',(c.answered?Math.round(c.correct/c.answered*100):0)+'%');
+
+    const plan=recommendation(saved);
+    setText('[data-coach-recommendation-eyebrow]',plan.eyebrow);
+    setText('[data-coach-recommendation-title]',plan.title);
+    setText('[data-coach-recommendation-copy]',plan.copy);
+    const action=$('[data-coach-recommendation-action]');
+    if(action){action.href=plan.href;action.textContent=plan.action;}
   }
 
   function init(){
-    promotePrimaryDestinations();
-    insertFeaturedRespiratoryTrail();
-    normalizeAchievementCopy();
-    suppressOptionalBookShelf();
+    renderLearnerLaunchpad();
     loadResources();
     loadManifestCount();
   }
