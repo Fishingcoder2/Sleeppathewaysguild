@@ -72,6 +72,8 @@ jobs:
             test-ekg-lab-system.mjs
             test-ekg-lab-shell.mjs
             test-visual-lab.mjs
+            test-artifact-lab-system.mjs
+            test-artifact-lab-shell.mjs
             test-math-coach-system.mjs
             test-math-coach-shell.mjs
             test-practice-pools.mjs
