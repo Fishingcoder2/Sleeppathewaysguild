@@ -37,7 +37,11 @@
 
   function feedbackMarkup(feedback){
     if(!feedback) return '';
-    return `<div class="hookup-skill-feedback ${feedback.correct?'correct':'retry'}" role="status"><strong>${feedback.correct?'Skill demonstrated':'Not yet — try the decision again'}</strong><p>${esc(feedback.rationale)}</p>${feedback.correct?'':`<p><strong>Best answer:</strong> ${esc(feedback.answer)}</p>`}</div>`;
+    if(feedback.needsChoice){
+      return `<div class="hookup-skill-feedback retry" role="status"><strong>Choose a response first</strong><p>${esc(feedback.rationale)}</p></div>`;
+    }
+    const answer=feedback.correct||!feedback.answer?'':`<p><strong>Best answer:</strong> ${esc(feedback.answer)}</p>`;
+    return `<div class="hookup-skill-feedback ${feedback.correct?'correct':'retry'}" role="status"><strong>${feedback.correct?'Skill demonstrated':'Not yet — try the decision again'}</strong><p>${esc(feedback.rationale)}</p>${answer}</div>`;
   }
 
   function stationMarkup(station,index,report){
@@ -119,8 +123,7 @@
     const stationId=form.dataset.hookupSkill;
     const selected=form.querySelector('input[type="radio"]:checked');
     if(!selected){
-      const previous=state.skillFeedback.get(stationId);
-      state.skillFeedback.set(stationId,{correct:false,answer:previous&&previous.answer||'',rationale:'Choose one response before checking this skill decision.'});
+      state.skillFeedback.set(stationId,{needsChoice:true,correct:false,rationale:'Choose one response before checking this skill decision.'});
       renderStations();
       return;
     }
@@ -129,7 +132,8 @@
     state.skillFeedback.set(stationId,attempt);
     renderSummary();
     renderStations();
-    const next=engine.STATIONS.find(station=>!engine.summary(state.saved.labs).skills[station.id].mastered);
+    const report=engine.summary(state.saved.labs);
+    const next=engine.STATIONS.find(station=>!report.skills[station.id].mastered);
     if(attempt.correct&&next){
       requestAnimationFrame(()=>document.getElementById('hookup-skill-'+next.id)?.scrollIntoView({behavior:'smooth',block:'center'}));
     }
