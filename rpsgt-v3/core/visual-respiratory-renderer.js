@@ -4,7 +4,7 @@
   root.RPSGTVisualPSGRenderer=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='0.1.0';
+  const VERSION='0.2.0';
   const LABEL_WIDTH=118;
   const TOP_PAD=34;
   const BOTTOM_PAD=26;
@@ -20,6 +20,7 @@
     return Math.min(1,(t-start)/width,(end-t)/width);
   }
   function eventAt(channel,type,t){return featureList(channel).find(feature=>feature&&feature.type===type&&t>=Number(feature.start||0)&&t<=Number(feature.end||feature.start||0))||null;}
+  function featureOf(channel,type){return featureList(channel).find(feature=>feature&&feature.type===type)||null;}
   function heartCyclesAt(t,heartRate,phase){
     const baseHz=Math.max(.35,Number(heartRate||66)/60),p=Number(phase||0);
     return baseHz*t+.02*Math.sin(TAU*.10*t+p)+.007*Math.sin(TAU*.22*t+.6+p*.7);
@@ -38,9 +39,26 @@
     const freq=Number(channel.frequency||.24),phase=Number.isFinite(Number(phaseOverride))?Number(phaseOverride):Number(channel.phase||0),p=TAU*freq*t+phase;
     return Math.sin(p)+.08*Math.sin(2*p+.8);
   }
+  function periodicEnvelope(channel,t){
+    const feature=featureOf(channel,'periodic-breathing');
+    if(!feature)return 1;
+    const start=Number(feature.start||0),end=Number(feature.end||Infinity);
+    if(t<start||t>end)return 1;
+    const cycle=Math.max(20,Number(feature.cycleSeconds||60));
+    const pause=Math.max(0,Math.min(cycle*.45,Number(feature.pauseSeconds||0)));
+    const minFactor=clamp(Number(feature.minFactor==null?.03:feature.minFactor),0,.95);
+    const power=Math.max(.5,Number(feature.power||1.35));
+    const phaseOffset=Number(feature.phaseOffsetSeconds||0);
+    const position=(((t-start+phaseOffset)%cycle)+cycle)%cycle;
+    if(position<pause)return minFactor;
+    const active=(position-pause)/Math.max(.001,cycle-pause);
+    const wax=Math.pow(Math.max(0,Math.sin(Math.PI*active)),power);
+    return minFactor+(1-minFactor)*wax;
+  }
   function airflowValue(channel,t){
     const phase=Number(channel.phase||0),profile=channel.profile||'nasal',freq=Number(channel.frequency||.24),p=TAU*freq*t+phase;
     let value=profile==='thermal'?Math.sin(p):Math.sin(p)+.22*Math.sin(2*p+1.05)+.06*Math.sin(3*p+.3);
+    value*=periodicEnvelope(channel,t);
     const suppress=eventAt(channel,'airflow-suppress',t);
     if(suppress){const gate=smoothGate(t,Number(suppress.start),Number(suppress.end),.45),depth=clamp(Number(suppress.depth||.96),0,1);value*=1-gate*depth;}
     const limitation=eventAt(channel,'flow-limitation',t);
@@ -54,7 +72,7 @@
     let phaseNow=phase;
     const paradox=eventAt(channel,'paradox',t);
     if(paradox&&profile==='abdomen')phaseNow+=Math.PI*smoothGate(t,Number(paradox.start),Number(paradox.end),.35);
-    let value=baseBreath(channel,t,phaseNow);
+    let value=baseBreath(channel,t,phaseNow)*periodicEnvelope(channel,t);
     const suppress=eventAt(channel,'effort-suppress',t);
     if(suppress){const gate=smoothGate(t,Number(suppress.start),Number(suppress.end),.4),depth=clamp(Number(suppress.depth||.98),0,1);value*=1-gate*depth;}
     const returning=eventAt(channel,'effort-return',t);
@@ -73,12 +91,21 @@
     });
     return value;
   }
+  function periodicLowVentilation(feature,t){
+    const cycle=Math.max(20,Number(feature.cycleSeconds||60)),delay=Number(feature.delaySeconds||0),pause=Math.max(0,Math.min(cycle*.45,Number(feature.pauseSeconds||0))),start=Number(feature.start||0),shifted=t-delay;
+    if(shifted<start||shifted>Number(feature.end||Infinity))return 0;
+    const pos=(((shifted-start)%cycle)+cycle)%cycle;
+    if(pos<pause)return 1;
+    const active=(pos-pause)/Math.max(.001,cycle-pause);
+    return 1-Math.pow(Math.max(0,Math.sin(Math.PI*active)),1.25);
+  }
   function spo2Value(channel,t){
     const phase=Number(channel.phase||0);let value=.018*Math.sin(TAU*.035*t+phase)+.008*Math.sin(TAU*.12*t+.6);
     featureList(channel).filter(feature=>feature.type==='desaturation').forEach(feature=>{
       const start=Number(feature.start),nadir=Number(feature.nadir||((Number(feature.start)+Number(feature.end))/2)),end=Number(feature.end),strength=Number(feature.strength||1);
       if(t>=start&&t<=end){const down=clamp((t-start)/Math.max(.2,nadir-start),0,1),up=clamp((end-t)/Math.max(.2,end-nadir),0,1),shape=Math.min(down,up);value-=shape*.72*strength;}
     });
+    featureList(channel).filter(feature=>feature.type==='periodic-desaturation').forEach(feature=>{value-=periodicLowVentilation(feature,t)*Number(feature.strength||.28);});
     return value;
   }
   function capnogramCycle(position){
@@ -92,6 +119,7 @@
     const freq=Number(channel.frequency||.24),phase=Number(channel.phase||0),cycle=((freq*t+phase/TAU)%1+1)%1;let value=capnogramCycle(cycle);
     const loss=eventAt(channel,'co2-loss',t);
     if(loss){const gate=smoothGate(t,Number(loss.start),Number(loss.end),.35);value=(1-gate)*value+gate*(-.34+.01*deterministicNoise(t,phase));}
+    featureList(channel).filter(feature=>feature.type==='periodic-co2').forEach(feature=>{value+=periodicLowVentilation(feature,t)*Number(feature.strength||.10);});
     return value;
   }
   function sample(channel,t){
@@ -118,17 +146,23 @@
     if(channel.type==='eeg')return 20;
     return 18;
   }
+  function gridPlan(duration){
+    if(duration>180)return {minor:30,major:60,label:60};
+    if(duration>45)return {minor:10,major:30,label:30};
+    return {minor:1,major:5,label:5};
+  }
   function drawGrid(ctx,width,height,duration,channels){
-    const plotLeft=LABEL_WIDTH,plotRight=width-12,plotWidth=plotRight-plotLeft;
+    const plotLeft=LABEL_WIDTH,plotRight=width-12,plotWidth=plotRight-plotLeft,plan=gridPlan(duration);
     ctx.fillStyle='#ffffff';ctx.fillRect(0,0,width,height);ctx.font='12px system-ui,-apple-system,Segoe UI,sans-serif';ctx.textBaseline='middle';
-    for(let second=0;second<=duration;second+=1){
-      const x=plotLeft+(second/duration)*plotWidth;ctx.beginPath();ctx.strokeStyle=second%5===0?'#c7d9e3':'#edf3f6';ctx.lineWidth=second%5===0?1.1:.7;ctx.moveTo(x,TOP_PAD-12);ctx.lineTo(x,height-BOTTOM_PAD);ctx.stroke();
-      if(second%5===0&&second<duration){ctx.fillStyle='#5d707b';ctx.textAlign='center';ctx.fillText(second+' s',x+2,14);}
+    for(let second=0;second<=duration;second+=plan.minor){
+      const x=plotLeft+(second/duration)*plotWidth,isMinute=second>0&&second%60===0,isMajor=second%plan.major===0;
+      ctx.beginPath();ctx.strokeStyle=isMinute?'#9fbac8':isMajor?'#c7d9e3':'#edf3f6';ctx.lineWidth=isMinute?1.6:isMajor?1.15:.7;ctx.moveTo(x,TOP_PAD-12);ctx.lineTo(x,height-BOTTOM_PAD);ctx.stroke();
+      if(second%plan.label===0&&second<duration){ctx.fillStyle='#5d707b';ctx.textAlign='center';ctx.fillText(duration>180&&second%60===0?(second/60)+' min':second+' s',x+2,14);}
     }
     channels.forEach((channel,index)=>{
       const y=TOP_PAD+index*ROW_HEIGHT+ROW_HEIGHT/2;ctx.beginPath();ctx.strokeStyle='#e3edf2';ctx.lineWidth=1;ctx.moveTo(0,y+ROW_HEIGHT/2);ctx.lineTo(width,y+ROW_HEIGHT/2);ctx.stroke();ctx.fillStyle='#17344a';ctx.textAlign='left';ctx.font='700 12px system-ui,-apple-system,Segoe UI,sans-serif';ctx.fillText(channel.label,10,y);ctx.beginPath();ctx.strokeStyle='#dbe7ed';ctx.setLineDash([3,5]);ctx.moveTo(plotLeft,y);ctx.lineTo(plotRight,y);ctx.stroke();ctx.setLineDash([]);
     });
-    ctx.fillStyle='#5d707b';ctx.textAlign='right';ctx.font='11px system-ui,-apple-system,Segoe UI,sans-serif';ctx.fillText(duration+' s',plotRight,height-10);
+    ctx.fillStyle='#5d707b';ctx.textAlign='right';ctx.font='11px system-ui,-apple-system,Segoe UI,sans-serif';ctx.fillText(duration>=60?Math.round(duration/60*10)/10+' min':duration+' s',plotRight,height-10);
   }
   function drawSignal(ctx,channel,index,width,duration,sampleRate){
     const plotLeft=LABEL_WIDTH,plotRight=width-12,plotWidth=plotRight-plotLeft,y0=TOP_PAD+index*ROW_HEIGHT+ROW_HEIGHT/2,scale=rowScale(channel),points=Math.max(2,Math.round(duration*sampleRate));
@@ -137,9 +171,9 @@
   }
   function render(canvas,study,options){
     if(!canvas||!study)return null;
-    const channels=Array.isArray(study.channels)?study.channels:[],duration=Number(study.durationSeconds||30),sampleRate=Math.min(120,Math.max(25,Number(study.sampleRate||50))),cssWidth=Math.max(860,Math.floor((options&&options.width)||canvas.parentElement&&canvas.parentElement.clientWidth||960)),cssHeight=TOP_PAD+BOTTOM_PAD+channels.length*ROW_HEIGHT,ratio=Math.min(1.5,Math.max(1,window.devicePixelRatio||1));
+    const channels=Array.isArray(study.channels)?study.channels:[],duration=Number(study.durationSeconds||30),requested=Number(study.sampleRate||50),sampleRate=duration>=240?Math.min(8,Math.max(4,requested)):Math.min(120,Math.max(25,requested)),cssWidth=Math.max(860,Math.floor((options&&options.width)||canvas.parentElement&&canvas.parentElement.clientWidth||960)),cssHeight=TOP_PAD+BOTTOM_PAD+channels.length*ROW_HEIGHT,ratio=Math.min(duration>=240?1.2:1.5,Math.max(1,window.devicePixelRatio||1));
     canvas.style.width=cssWidth+'px';canvas.style.height=cssHeight+'px';canvas.width=Math.round(cssWidth*ratio);canvas.height=Math.round(cssHeight*ratio);const ctx=canvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);drawGrid(ctx,cssWidth,cssHeight,duration,channels);channels.forEach((channel,index)=>drawSignal(ctx,channel,index,cssWidth,duration,sampleRate));
-    return {width:cssWidth,height:cssHeight,labelWidth:LABEL_WIDTH,plotRight:cssWidth-12,duration,rowHeight:ROW_HEIGHT,topPad:TOP_PAD,bottomPad:BOTTOM_PAD,channels:channels.map(channel=>channel.label)};
+    return {width:cssWidth,height:cssHeight,labelWidth:LABEL_WIDTH,plotRight:cssWidth-12,duration,rowHeight:ROW_HEIGHT,topPad:TOP_PAD,bottomPad:BOTTOM_PAD,channels:channels.map(channel=>channel.label),sampleRate};
   }
   function channelBox(metrics,channelLabel){const index=metrics.channels.indexOf(String(channelLabel));if(index<0)return null;return {index,top:metrics.topPad+index*metrics.rowHeight,height:metrics.rowHeight};}
   function regionStyle(metrics,region,channelLabel){const plotWidth=metrics.plotRight-metrics.labelWidth,box=channelLabel?channelBox(metrics,channelLabel):null,result={left:metrics.labelWidth+(Number(region.start)/metrics.duration)*plotWidth,width:((Number(region.end)-Number(region.start))/metrics.duration)*plotWidth};if(box){result.top=box.top;result.height=box.height;}return result;}
