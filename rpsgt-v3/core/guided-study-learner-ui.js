@@ -3,6 +3,7 @@
 
   const mapHost=document.querySelector('[data-blueprint-map]');
   const summaryHost=document.querySelector('[data-blueprint-summary]');
+  const trailHost=document.querySelector('[data-guided-trail-dashboard]');
   const checkpointHost=document.querySelector('[data-checkpoint-workspace]');
   if(!mapHost) return;
 
@@ -48,7 +49,7 @@
         if(id&&title) state.sourceTitles.set(id,title);
       });
     }catch(error){
-      console.warn('Verified Guided Study resource titles could not be loaded.',error);
+      console.warn('Guided Study reference titles could not be loaded.',error);
       state.taskPlans={};
       state.sourceTitles.clear();
     }finally{
@@ -90,6 +91,15 @@
     mapHost.querySelectorAll('.task-map-card').forEach(card=>{
       card.querySelectorAll('.mapping-warning').forEach(node=>node.remove());
       replaceResourceList(card);
+      card.querySelectorAll('.trail-status-row .status').forEach(node=>{
+        node.textContent=node.textContent.replace(/Task award earned/gi,'Task badge earned');
+      });
+    });
+    mapHost.querySelectorAll('.domain-map-head .status').forEach(node=>{
+      node.textContent=node.textContent.replace(/domain award/gi,'domain medal');
+    });
+    mapHost.querySelectorAll('.domain-weight span').forEach(node=>{
+      if(/app blueprint weight/i.test(node.textContent||'')) node.textContent='RPSGT blueprint weight';
     });
   }
 
@@ -101,10 +111,22 @@
       items[2].innerHTML='<strong>15</strong> questions per checkpoint';
       items[2].dataset.learnerMetric='checkpoint-size';
     }
-    if(items[3].dataset.learnerMetric!=='award-goal'){
-      items[3].innerHTML='<strong>80%</strong> task-award goal';
-      items[3].dataset.learnerMetric='award-goal';
+    if(items[3].dataset.learnerMetric!=='badge-goal'){
+      items[3].innerHTML='<strong>80%</strong> task-badge goal';
+      items[3].dataset.learnerMetric='badge-goal';
     }
+  }
+
+  function sanitizeTrailSummary(){
+    if(!trailHost) return;
+    const status=trailHost.querySelector('.section-head .status');
+    if(status&&/stored only in v3/i.test(status.textContent||'')) status.textContent='Your Guided Study progress';
+    trailHost.querySelectorAll('.trail-summary-grid span').forEach(node=>{
+      if((node.textContent||'').trim()==='Task awards') node.textContent='Task badges';
+      if((node.textContent||'').trim()==='Domain awards') node.textContent='Domain medals';
+    });
+    const heading=trailHost.querySelector('.section-head h2');
+    if(heading&&/earn awards/i.test(heading.textContent||'')) heading.textContent='Study, check, and move down the trail';
   }
 
   function topicFromCheckpoint(){
@@ -153,6 +175,7 @@
 
   function sanitizeAll(){
     sanitizeSummary();
+    sanitizeTrailSummary();
     sanitizeTaskCards();
     sanitizeCheckpoint();
   }
@@ -165,6 +188,7 @@
   const observer=new MutationObserver(sanitizeAll);
   observer.observe(mapHost,{childList:true,subtree:true});
   if(summaryHost) observer.observe(summaryHost,{childList:true,subtree:true});
+  if(trailHost) observer.observe(trailHost,{childList:true,subtree:true});
   if(checkpointHost) observer.observe(checkpointHost,{childList:true,subtree:true});
 
   sanitizeAll();
