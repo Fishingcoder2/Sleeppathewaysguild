@@ -4,8 +4,9 @@
   root.RPSGTGuidedTrailEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.1.0';
+  const VERSION='1.2.0';
   const PASS_PERCENT=80;
+  const BADGE_QUESTION_COUNT=15;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const taskList=blueprint=>(blueprint&&blueprint.domains||[]).flatMap(domain=>(domain.tasks||[]).map(task=>({...task,domain:domain.id,domainName:domain.fullName})));
@@ -54,7 +55,7 @@
     const eligible=(records||[]).filter(record=>eligibleQuestion(record,taskCode));
     const copy=eligible.slice();const random=seededRandom(seed||taskCode);
     for(let i=copy.length-1;i>0;i-=1){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
-    return copy.slice(0,Math.max(0,Number(count)||5)).map(clone);
+    return copy.slice(0,Math.max(0,Number(count)||BADGE_QUESTION_COUNT)).map(clone);
   }
   function gradeCheckpoint(input){
     const questions=Array.isArray(input&&input.questions)?input.questions:[];
@@ -66,10 +67,11 @@
     const domain=taskCode?String(taskCode).slice(0,2):null;
     const completedAt=input&&input.completedAt||new Date().toISOString();
     const passPercent=Number.isFinite(Number(input&&input.passPercent))?Number(input.passPercent):PASS_PERCENT;
+    const badgeEligible=total>=BADGE_QUESTION_COUNT;
     return {
       id:'trail-'+String(taskCode||'unknown').toLowerCase()+'-'+completedAt,
       source:'v3-guided-trail-checkpoint',scope:'task',domain,task:taskCode,
-      score:percent,percent,total,correct,passed:total>0&&percent>=passPercent,passPercent,completedAt,
+      score:percent,percent,total,correct,badgeEligible,minQuestions:BADGE_QUESTION_COUNT,passed:badgeEligible&&total>0&&percent>=passPercent,passPercent,completedAt,
       questionIds:questions.map(question=>question.id),
       responses:questions.map(question=>({id:question.id,selected:answers[String(question.id)]??null,correct:answers[String(question.id)]===question.answer}))
     };
@@ -86,7 +88,7 @@
     next.checkpointHistory=[safe,...next.checkpointHistory.filter(item=>item&&item.id!==safe.id)];
     next.trailDomain=safe.domain||next.trailDomain;next.trailFocus={domain:safe.domain,task:safe.task};
     next.lastTrailPost={domain:safe.domain,task:safe.task,kind:'checkpoint',score:safe.score,passed:safe.passed,completedAt:safe.completedAt};
-    if(safe.passed&&safe.task){next.trailAwards.tasks[safe.task]={earnedAt:safe.completedAt,score:safe.score,checkpointId:safe.id};}
+    if(safe.passed&&Number(safe.total)>=BADGE_QUESTION_COUNT&&safe.task){next.trailAwards.tasks[safe.task]={earnedAt:safe.completedAt,score:safe.score,checkpointId:safe.id,questionCount:safe.total,passPercent:safe.passPercent};}
     const tasks=taskList(blueprint).filter(task=>task.domain===safe.domain);
     if(tasks.length&&tasks.every(task=>next.trailAwards.tasks[task.code])){
       next.trailAwards.domains[safe.domain]={earnedAt:safe.completedAt,taskCount:tasks.length,source:'v3-guided-trail'};
@@ -105,5 +107,5 @@
     });
     return {state,rows,domains,counts:{studyMarks:rows.filter(row=>row.studyMarked).length,taskAwards:rows.filter(row=>row.award).length,domainAwards:domains.filter(domain=>domain.award).length,checkpoints:state.checkpointHistory.length},latestCheckpoint:state.checkpointHistory[0]||null,currentFocus:state.trailFocus||state.lastTrailPost||null};
   }
-  return {VERSION,PASS_PERCENT,normalizeState,taskList,taskMap,completePrompt,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
+  return {VERSION,PASS_PERCENT,BADGE_QUESTION_COUNT,normalizeState,taskList,taskMap,completePrompt,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
 });
