@@ -46,7 +46,8 @@ for(const boundary of ['Do not generalize CPAP/APAP/BPAP','Do not respond to cen
 if(!String(trail.learnerBoundary||'').includes('physician orders')||!trail.learnerBoundary.includes('manufacturer instructions')) throw new Error('Respiratory learner boundary no longer preserves local/device execution rules.');
 
 for(const token of ['meta name="robots" content="noindex,nofollow"','id="respiratory-pap-trail"','data-respiratory-study-trail','assets/respiratory-study-trail.css','core/respiratory-study-trail.js']) if(!studyHtml.includes(token)) throw new Error(`Guided Study shell is missing ${token}.`);
-for(const token of ['data-respiratory-step','Practice this concept','Open mapped references','data-checkpoint-start','Ask Coach Bob','sources-disclosures.html?','practice.html?task=','verifiedChapterLocators','data-respiratory-task-entry','Open Respiratory/PAP Study Trail']) if(!trailJs.includes(token)) throw new Error(`Respiratory trail controller is missing ${token}.`);
+for(const token of ['data-respiratory-step','Practice this concept','Related reference materials','data-checkpoint-start','Ask Coach Bob','15-question badge checkpoint','sources-disclosures.html?','practice.html?task=','verifiedChapterLocators','data-respiratory-task-entry','Open Respiratory/PAP Study Trail']) if(!trailJs.includes(token)) throw new Error(`Respiratory trail controller is missing ${token}.`);
+if(/open mapped references|five-question task checkpoint/i.test(trailJs)) throw new Error('Respiratory learner trail still exposes stale mapped-reference or five-question wording.');
 new Function(trailJs);
 if(!trailCss.includes('@media(max-width:760px)')||!trailCss.includes('overflow-x:auto')||!trailCss.includes('grid-template-columns:1fr')) throw new Error('Respiratory trail CSS is missing mobile/compact behavior.');
 if(/var\(--(?:card|soft)\)/.test(trailCss)) throw new Error('Respiratory trail CSS references undefined legacy surface variables.');
@@ -56,4 +57,4 @@ for(const token of ['data-featured-respiratory-trail','study.html#respiratory-pa
 for(const token of ["new Set(['respiratory','pap','troubleshooting'])",'study.html#respiratory-pap-trail','Study respiratory/PAP trail first']) if(!labsJs.includes(token)) throw new Error(`Skills Lab respiratory trail entry point is missing ${token}.`);
 new Function(homeJs);new Function(labsJs);
 
-console.log('Respiratory/PAP Study Trail authority, locator, front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
+console.log('Respiratory/PAP Study Trail authority, locator, learner-facing reference wording, 15-question checkpoint, front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
