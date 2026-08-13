@@ -14,7 +14,7 @@ vm.createContext(context);
 vm.runInContext(source,context,{filename:'hookup-lab-engine.js'});
 const engine=context.globalThis.RPSGTHookupLabEngine;
 assert.ok(engine);
-assert.equal(engine.VERSION,'2.0.0');
+assert.equal(engine.VERSION,'2.0.1');
 assert.equal(engine.STATIONS.length,6);
 assert.ok(engine.STATIONS.every(station=>Array.isArray(station.options)&&station.options.length===4&&station.options.includes(station.answer)&&station.rationale));
 
@@ -54,8 +54,11 @@ for(const station of engine.STATIONS){
   const wrong=engine.gradeSkill(station.id,wrongOption,'2026-08-02T20:08:00.000Z');
   assert.equal(wrong.correct,false);
   labs=engine.applySkillAttempt(labs,wrong);
-  summary=engine.summary(labs);
-  assert.equal(summary.skills[station.id].mastered,false,'A wrong skill decision must not earn station completion.');
+  const afterWrong=engine.summary(labs);
+  assert.equal(afterWrong.skills[station.id].mastered,false,'A wrong skill decision must not earn station completion.');
+  const wrongAttempts=afterWrong.skills[station.id].attempts;
+  labs=engine.applySkillAttempt(labs,wrong);
+  assert.equal(engine.summary(labs).skills[station.id].attempts,wrongAttempts,'Reapplying the same skill attempt ID must not double count.');
 
   const correct=engine.gradeSkill(station.id,station.answer,'2026-08-02T20:10:00.000Z');
   assert.equal(correct.correct,true);
@@ -115,4 +118,4 @@ assert.equal(withNew.hookup.history[0].id,newAttempt.id);
 const reapplied=engine.applySession(withNew,newAttempt);
 assert.equal(reapplied.hookup.attempts,26,'Reapplying the same checkpoint session ID must not double count.');
 
-console.log(`Hookup lab engine passed with ${eligible.length} unique learner-eligible D2A/D2B questions, six graded skill checks, and bounded checkpoint history.`);
+console.log(`Hookup lab engine passed with ${eligible.length} unique learner-eligible D2A/D2B questions, six graded skill checks, idempotent attempts, and bounded checkpoint history.`);
