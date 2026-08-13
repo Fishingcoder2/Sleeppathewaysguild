@@ -51,6 +51,17 @@
     document.head.appendChild(style);
   }
 
+  function loadLearnerSurfaceGuard(){
+    if(window.__RPSGTLearnerSurfaceGuardLoaded||window.__RPSGTLearnerSurfaceGuardRequested) return;
+    window.__RPSGTLearnerSurfaceGuardRequested=true;
+    const script=document.createElement('script');
+    script.src='core/learner-surface-guard.js';
+    script.async=false;
+    script.dataset.rpsgtLearnerSurfaceGuard='true';
+    script.addEventListener('error',function(){window.__RPSGTLearnerSurfaceGuardRequested=false;});
+    document.head.appendChild(script);
+  }
+
   function upgradeBranding(){
     const mark=document.querySelector(".brand-mark");
     if(mark){mark.textContent="🧭";mark.setAttribute("aria-hidden","true");}
@@ -210,6 +221,7 @@
 
   function init(){
     injectExperienceStyles();
+    loadLearnerSurfaceGuard();
     upgradeBranding();
     upgradeNavigation();
     setActiveNav();
