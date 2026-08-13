@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "name": "RPSGT Respiratory Visual Pack 1",
+    "version": 1,
+    "labId": "visual-respiratory",
+    "developmentOnly": true,
+    "appAuthored": true,
+    "sourceType": "app-authored-schematic",
+    "sourceBasis": "Respiratory signal relationships are paraphrased from project sleep-technology references. No source figure, patient tracing, proprietary scoring-manual figure, or rule table is reproduced.",
+    "clinicalBoundary": "Pattern-recognition practice only. Event morphology does not establish that current clinical scoring criteria are met. Use current official scoring guidance, facility policy, equipment instructions, and supervised competency for clinical decisions."
+  },
+  "studies": [
+    {
+      "id": "resp-normal-001",
+      "title": "Schematic normal breathing segment",
+      "pattern": "Normal breathing",
+      "durationSeconds": 30,
+      "sampleRate": 50,
+      "channels": [
+        {"label":"C3-M2","type":"eeg","amplitude":0.48,"phase":0.2},
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.88,"frequency":0.24,"phase":0.1},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.72,"frequency":0.24,"phase":0.08},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.78,"frequency":0.24,"phase":0.18},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.80,"frequency":0.24,"phase":0.24},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.82,"frequency":0.24,"phase":0.21},
+        {"label":"Snore","type":"snore","amplitude":0.10,"phase":0.4},
+        {"label":"SpO2","type":"spo2","amplitude":0.80,"phase":0.3},
+        {"label":"ETCO2","type":"co2","amplitude":0.78,"frequency":0.24,"phase":0.1},
+        {"label":"ECG","type":"ecg","amplitude":0.82,"heartRate":68,"phase":0.2}
+      ]
+    },
+    {
+      "id": "resp-obstructive-001",
+      "title": "Schematic obstructive-pattern segment",
+      "pattern": "Obstructive apnea pattern",
+      "durationSeconds": 30,
+      "sampleRate": 50,
+      "channels": [
+        {"label":"C3-M2","type":"eeg","amplitude":0.48,"phase":0.2,"features":[{"type":"arousal","start":17.4,"end":19.1}]},
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.90,"frequency":0.24,"phase":0.1,"features":[{"type":"airflow-suppress","start":7.5,"end":17.5,"depth":0.99}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.76,"frequency":0.24,"phase":0.08,"features":[{"type":"airflow-suppress","start":7.5,"end":17.5,"depth":0.98}]},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.82,"frequency":0.24,"phase":0.18,"features":[{"type":"effort-ramp","start":7.5,"end":17.5,"gain":0.70}]},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.84,"frequency":0.24,"phase":0.24,"features":[{"type":"effort-ramp","start":7.5,"end":17.5,"gain":0.75},{"type":"paradox","start":8.0,"end":17.0}]},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.80,"frequency":0.24,"phase":0.21,"features":[{"type":"sum-diminish","start":8.0,"end":17.0,"depth":0.82}]},
+        {"label":"Snore","type":"snore","amplitude":0.62,"phase":0.4,"features":[{"type":"snore-burst","start":5.7,"end":7.3,"strength":0.72},{"type":"snore-burst","start":17.4,"end":19.2,"strength":0.92}]},
+        {"label":"SpO2","type":"spo2","amplitude":0.86,"phase":0.3,"features":[{"type":"desaturation","start":15.5,"nadir":21.0,"end":26.0,"strength":0.95}]},
+        {"label":"ETCO2","type":"co2","amplitude":0.80,"frequency":0.24,"phase":0.1,"features":[{"type":"co2-loss","start":7.5,"end":17.5}]},
+        {"label":"ECG","type":"ecg","amplitude":0.82,"heartRate":70,"phase":0.2}
+      ]
+    },
+    {
+      "id": "resp-central-001",
+      "title": "Schematic central-pattern segment",
+      "pattern": "Central apnea pattern",
+      "durationSeconds": 30,
+      "sampleRate": 50,
+      "channels": [
+        {"label":"C3-M2","type":"eeg","amplitude":0.46,"phase":0.2,"features":[{"type":"arousal","start":17.2,"end":18.8}]},
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.88,"frequency":0.23,"phase":0.1,"features":[{"type":"airflow-suppress","start":8.0,"end":17.5,"depth":0.99}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.74,"frequency":0.23,"phase":0.08,"features":[{"type":"airflow-suppress","start":8.0,"end":17.5,"depth":0.99}]},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.80,"frequency":0.23,"phase":0.18,"features":[{"type":"effort-suppress","start":8.0,"end":17.5,"depth":0.99}]},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.82,"frequency":0.23,"phase":0.24,"features":[{"type":"effort-suppress","start":8.0,"end":17.5,"depth":0.99}]},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.82,"frequency":0.23,"phase":0.21,"features":[{"type":"effort-suppress","start":8.0,"end":17.5,"depth":0.99}]},
+        {"label":"Snore","type":"snore","amplitude":0.08,"phase":0.4},
+        {"label":"SpO2","type":"spo2","amplitude":0.84,"phase":0.3,"features":[{"type":"desaturation","start":16.0,"nadir":21.0,"end":25.5,"strength":0.78}]},
+        {"label":"ETCO2","type":"co2","amplitude":0.78,"frequency":0.23,"phase":0.1,"features":[{"type":"co2-loss","start":8.0,"end":17.5}]},
+        {"label":"ECG","type":"ecg","amplitude":0.82,"heartRate":64,"phase":0.2}
+      ]
+    },
+    {
+      "id": "resp-mixed-001",
+      "title": "Schematic mixed-pattern segment",
+      "pattern": "Mixed apnea pattern",
+      "durationSeconds": 30,
+      "sampleRate": 50,
+      "channels": [
+        {"label":"C3-M2","type":"eeg","amplitude":0.47,"phase":0.2,"features":[{"type":"arousal","start":18.4,"end":20.0}]},
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.90,"frequency":0.24,"phase":0.1,"features":[{"type":"airflow-suppress","start":7.5,"end":18.5,"depth":0.99}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.76,"frequency":0.24,"phase":0.08,"features":[{"type":"airflow-suppress","start":7.5,"end":18.5,"depth":0.98}]},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.82,"frequency":0.24,"phase":0.18,"features":[{"type":"effort-return","start":7.5,"returnAt":12.0,"end":18.5}]},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.84,"frequency":0.24,"phase":0.24,"features":[{"type":"effort-return","start":7.5,"returnAt":12.0,"end":18.5},{"type":"paradox","start":12.0,"end":18.3}]},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.82,"frequency":0.24,"phase":0.21,"features":[{"type":"effort-return","start":7.5,"returnAt":12.0,"end":18.5},{"type":"sum-diminish","start":12.0,"end":18.3,"depth":0.75}]},
+        {"label":"Snore","type":"snore","amplitude":0.52,"phase":0.4,"features":[{"type":"snore-burst","start":16.7,"end":19.1,"strength":0.85}]},
+        {"label":"SpO2","type":"spo2","amplitude":0.86,"phase":0.3,"features":[{"type":"desaturation","start":16.5,"nadir":22.0,"end":26.5,"strength":0.88}]},
+        {"label":"ETCO2","type":"co2","amplitude":0.80,"frequency":0.24,"phase":0.1,"features":[{"type":"co2-loss","start":7.5,"end":18.5}]},
+        {"label":"ECG","type":"ecg","amplitude":0.82,"heartRate":68,"phase":0.2}
+      ]
+    },
+    {
+      "id": "resp-flow-limited-001",
+      "title": "Schematic reduced-airflow / flow-limited segment",
+      "pattern": "Hypopnea / flow-limited pattern",
+      "durationSeconds": 30,
+      "sampleRate": 50,
+      "channels": [
+        {"label":"C3-M2","type":"eeg","amplitude":0.48,"phase":0.2,"features":[{"type":"arousal","start":20.0,"end":21.5}]},
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.90,"frequency":0.25,"phase":0.1,"features":[{"type":"flow-limitation","start":8.0,"end":20.0,"depth":0.62}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.74,"frequency":0.25,"phase":0.08,"features":[{"type":"flow-limitation","start":8.0,"end":20.0,"depth":0.32}]},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.82,"frequency":0.25,"phase":0.18,"features":[{"type":"effort-ramp","start":8.0,"end":20.0,"gain":0.28}]},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.84,"frequency":0.25,"phase":0.24,"features":[{"type":"effort-ramp","start":8.0,"end":20.0,"gain":0.32}]},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.84,"frequency":0.25,"phase":0.21,"features":[{"type":"effort-ramp","start":8.0,"end":20.0,"gain":0.25}]},
+        {"label":"Snore","type":"snore","amplitude":0.54,"phase":0.4,"features":[{"type":"snore-burst","start":8.5,"end":20.0,"strength":0.62}]},
+        {"label":"SpO2","type":"spo2","amplitude":0.82,"phase":0.3,"features":[{"type":"desaturation","start":18.0,"nadir":23.0,"end":27.0,"strength":0.52}]},
+        {"label":"ETCO2","type":"co2","amplitude":0.78,"frequency":0.25,"phase":0.1},
+        {"label":"ECG","type":"ecg","amplitude":0.82,"heartRate":69,"phase":0.2}
+      ]
+    },
+    {
+      "id": "resp-paradox-001",
+      "title": "Schematic paradoxical effort segment",
+      "pattern": "Paradoxical breathing",
+      "durationSeconds": 30,
+      "sampleRate": 50,
+      "channels": [
+        {"label":"C3-M2","type":"eeg","amplitude":0.47,"phase":0.2},
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.84,"frequency":0.24,"phase":0.1,"features":[{"type":"flow-limitation","start":8.0,"end":18.0,"depth":0.28}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.72,"frequency":0.24,"phase":0.08},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.82,"frequency":0.24,"phase":0.18},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.84,"frequency":0.24,"phase":0.24,"features":[{"type":"paradox","start":8.0,"end":18.0}]},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.82,"frequency":0.24,"phase":0.21,"features":[{"type":"sum-diminish","start":8.0,"end":18.0,"depth":0.88}]},
+        {"label":"Snore","type":"snore","amplitude":0.34,"phase":0.4,"features":[{"type":"snore-burst","start":9.0,"end":17.5,"strength":0.42}]},
+        {"label":"SpO2","type":"spo2","amplitude":0.80,"phase":0.3},
+        {"label":"ETCO2","type":"co2","amplitude":0.78,"frequency":0.24,"phase":0.1},
+        {"label":"ECG","type":"ecg","amplitude":0.82,"heartRate":66,"phase":0.2}
+      ]
+    },
+    {
+      "id": "resp-artifact-001",
+      "title": "Schematic nasal-pressure signal-loss segment",
+      "pattern": "Nasal pressure signal artifact",
+      "durationSeconds": 30,
+      "sampleRate": 50,
+      "channels": [
+        {"label":"C3-M2","type":"eeg","amplitude":0.47,"phase":0.2},
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.88,"frequency":0.24,"phase":0.1,"features":[{"type":"signal-loss","start":9.0,"end":18.0}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.74,"frequency":0.24,"phase":0.08},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.80,"frequency":0.24,"phase":0.18},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.82,"frequency":0.24,"phase":0.24},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.82,"frequency":0.24,"phase":0.21},
+        {"label":"Snore","type":"snore","amplitude":0.08,"phase":0.4},
+        {"label":"SpO2","type":"spo2","amplitude":0.80,"phase":0.3},
+        {"label":"ETCO2","type":"co2","amplitude":0.78,"frequency":0.24,"phase":0.1},
+        {"label":"ECG","type":"ecg","amplitude":0.82,"heartRate":67,"phase":0.2}
+      ]
+    }
+  ],
+  "questions": [
+    {"id":"resp-normal-choice","studyId":"resp-normal-001","type":"choice","taskCode":"D3B","prompt":"Which overall respiratory pattern is this original schematic designed to represent?","options":["Normal breathing","Obstructive apnea pattern","Central apnea pattern","Mixed apnea pattern","Hypopnea / flow-limited pattern","Paradoxical breathing","Nasal pressure signal artifact"],"answer":"Normal breathing","rationale":"Airflow, thoracic effort, abdominal effort, RIP sum, gas-exchange trends, and neighboring signals remain coordinated without a deliberately inserted respiratory event."},
+    {"id":"resp-obstructive-choice","studyId":"resp-obstructive-001","type":"choice","taskCode":"D3B","prompt":"Which overall respiratory pattern is this original schematic designed to represent?","options":["Normal breathing","Obstructive apnea pattern","Central apnea pattern","Mixed apnea pattern","Hypopnea / flow-limited pattern","Paradoxical breathing","Nasal pressure signal artifact"],"answer":"Obstructive apnea pattern","rationale":"The teaching pattern shows marked airflow loss while respiratory effort persists and increases; thoracoabdominal desynchrony is added as supporting obstructive context. Clinical scoring still requires current official criteria."},
+    {"id":"resp-obstructive-point","studyId":"resp-obstructive-001","type":"point-click","taskCode":"D3B","prompt":"Click within the marked-airflow-loss teaching interval in Nasal Pressure.","target":{"channel":"Nasal Pressure","start":8.0,"end":17.0},"toleranceSeconds":0.2,"fallbackPoints":[{"label":"Nasal Pressure near 4 s","channel":"Nasal Pressure","time":4.0},{"label":"Nasal Pressure near 12 s","channel":"Nasal Pressure","time":12.0},{"label":"Nasal Pressure near 21 s","channel":"Nasal Pressure","time":21.0}],"rationale":"The app-authored airflow-loss interval occupies the middle of the segment while effort channels continue."},
+    {"id":"resp-obstructive-delay","studyId":"resp-obstructive-001","type":"choice","taskCode":"D3B","prompt":"Which displayed signal is intentionally delayed after the airflow/effort event in this teaching case?","options":["SpO2","Thorax RIP","Abdomen RIP","Thermal Airflow"],"answer":"SpO2","rationale":"The schematic oxygen-saturation decline begins after the respiratory event rather than at the exact instant airflow falls."},
+    {"id":"resp-central-choice","studyId":"resp-central-001","type":"choice","taskCode":"D3B","prompt":"Which overall respiratory pattern is this original schematic designed to represent?","options":["Normal breathing","Obstructive apnea pattern","Central apnea pattern","Mixed apnea pattern","Hypopnea / flow-limited pattern","Paradoxical breathing","Nasal pressure signal artifact"],"answer":"Central apnea pattern","rationale":"Airflow and inspiratory effort are both deliberately suppressed during the same interval in this schematic central-pattern example."},
+    {"id":"resp-central-point","studyId":"resp-central-001","type":"point-click","taskCode":"D3B","prompt":"Click within the absent-effort teaching interval in Thorax RIP.","target":{"channel":"Thorax RIP","start":8.5,"end":17.0},"toleranceSeconds":0.2,"fallbackPoints":[{"label":"Thorax RIP near 4 s","channel":"Thorax RIP","time":4.0},{"label":"Thorax RIP near 12 s","channel":"Thorax RIP","time":12.0},{"label":"Thorax RIP near 22 s","channel":"Thorax RIP","time":22.0}],"rationale":"Thoracic and abdominal effort are intentionally absent with airflow during the central-pattern interval."},
+    {"id":"resp-mixed-choice","studyId":"resp-mixed-001","type":"choice","taskCode":"D3B","prompt":"Which overall respiratory pattern is this original schematic designed to represent?","options":["Normal breathing","Obstructive apnea pattern","Central apnea pattern","Mixed apnea pattern","Hypopnea / flow-limited pattern","Paradoxical breathing","Nasal pressure signal artifact"],"answer":"Mixed apnea pattern","rationale":"The event begins with absent airflow and absent effort, then effort resumes while airflow remains markedly suppressed before recovery."},
+    {"id":"resp-mixed-point","studyId":"resp-mixed-001","type":"point-click","taskCode":"D3B","prompt":"Click after inspiratory effort has resumed in Thorax RIP while airflow is still suppressed.","target":{"channel":"Thorax RIP","start":13.0,"end":18.0},"toleranceSeconds":0.2,"fallbackPoints":[{"label":"Thorax RIP near 9 s","channel":"Thorax RIP","time":9.0},{"label":"Thorax RIP near 15 s","channel":"Thorax RIP","time":15.0},{"label":"Thorax RIP near 23 s","channel":"Thorax RIP","time":23.0}],"rationale":"The app-authored mixed pattern resumes effort in the latter portion of the event while airflow remains suppressed."},
+    {"id":"resp-flow-choice","studyId":"resp-flow-limited-001","type":"choice","taskCode":"D3B","prompt":"Which overall respiratory pattern is this original schematic designed to represent?","options":["Normal breathing","Obstructive apnea pattern","Central apnea pattern","Mixed apnea pattern","Hypopnea / flow-limited pattern","Paradoxical breathing","Nasal pressure signal artifact"],"answer":"Hypopnea / flow-limited pattern","rationale":"The schematic emphasizes reduced and flattened nasal-pressure excursions with continuing effort and supporting snore/oxygen context. It is morphology practice, not a claim that current scoring thresholds are met."},
+    {"id":"resp-flow-interval","studyId":"resp-flow-limited-001","type":"interval-mark","taskCode":"D3B","prompt":"Drag across the reduced / flattened Nasal Pressure teaching interval.","target":{"channel":"Nasal Pressure","start":8.0,"end":20.0},"toleranceSeconds":0.8,"fallbackIntervals":[{"label":"Nasal Pressure 2–6 s","channel":"Nasal Pressure","start":2.0,"end":6.0},{"label":"Nasal Pressure 8–20 s","channel":"Nasal Pressure","start":8.0,"end":20.0},{"label":"Nasal Pressure 22–28 s","channel":"Nasal Pressure","start":22.0,"end":28.0}],"rationale":"The app-authored reduced-airflow morphology spans approximately 8–20 seconds."},
+    {"id":"resp-paradox-choice","studyId":"resp-paradox-001","type":"choice","taskCode":"D2A","prompt":"Which overall respiratory pattern is this original schematic designed to represent?","options":["Normal breathing","Obstructive apnea pattern","Central apnea pattern","Mixed apnea pattern","Hypopnea / flow-limited pattern","Paradoxical breathing","Nasal pressure signal artifact"],"answer":"Paradoxical breathing","rationale":"Thoracic and abdominal effort become intentionally out of phase while the RIP sum becomes markedly diminished."},
+    {"id":"resp-paradox-point","studyId":"resp-paradox-001","type":"point-click","taskCode":"D2A","prompt":"Click within the period where Abdomen RIP is intentionally out of phase with Thorax RIP.","target":{"channel":"Abdomen RIP","start":9.0,"end":17.0},"toleranceSeconds":0.2,"fallbackPoints":[{"label":"Abdomen RIP near 4 s","channel":"Abdomen RIP","time":4.0},{"label":"Abdomen RIP near 13 s","channel":"Abdomen RIP","time":13.0},{"label":"Abdomen RIP near 23 s","channel":"Abdomen RIP","time":23.0}],"rationale":"The app-authored paradox interval occupies the middle of the segment and is accompanied by a diminished RIP sum."},
+    {"id":"resp-artifact-choice","studyId":"resp-artifact-001","type":"choice","taskCode":"D2B","prompt":"Which overall respiratory pattern is this original schematic designed to represent?","options":["Normal breathing","Obstructive apnea pattern","Central apnea pattern","Mixed apnea pattern","Hypopnea / flow-limited pattern","Paradoxical breathing","Nasal pressure signal artifact"],"answer":"Nasal pressure signal artifact","rationale":"Only the nasal-pressure channel is deliberately lost while thermal airflow, respiratory effort, gas-exchange trends, and neighboring signals remain intact."},
+    {"id":"resp-artifact-point","studyId":"resp-artifact-001","type":"point-click","taskCode":"D2B","prompt":"Click within the isolated Nasal Pressure signal-loss interval.","target":{"channel":"Nasal Pressure","start":9.5,"end":17.5},"toleranceSeconds":0.2,"fallbackPoints":[{"label":"Nasal Pressure near 4 s","channel":"Nasal Pressure","time":4.0},{"label":"Nasal Pressure near 13 s","channel":"Nasal Pressure","time":13.0},{"label":"Thermal Airflow near 13 s","channel":"Thermal Airflow","time":13.0}],"rationale":"The teaching artifact is isolated to nasal pressure; corroborating channels continue normal respiratory activity."}
+  ]
+}
