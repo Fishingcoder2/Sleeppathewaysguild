@@ -4,16 +4,37 @@
   root.RPSGTVisualPSGRenderer=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='0.2.0';
+  const VERSION='0.3.0';
   const LABEL_WIDTH=112;
   const TOP_PAD=34;
   const BOTTOM_PAD=26;
   const ROW_HEIGHT=58;
   const TAU=Math.PI*2;
+  const FREQUENCY_BANDS=Object.freeze({
+    slowWave:[0.5,2],
+    thetaLamf:[4,7],
+    alpha:[8,13],
+    spindle:[11,16],
+    spindleCommon:[12,14],
+    sawtooth:[2,6],
+    betaMin:14
+  });
+  const TEACHING_FREQUENCIES=Object.freeze({
+    alpha:10,
+    beta:18,
+    thetaLow:4.8,
+    thetaMid:5.5,
+    thetaHigh:6.5,
+    slowLow:0.9,
+    slowHigh:1.4,
+    spindle:13,
+    sawtooth:3.2
+  });
   const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
   const gauss=(x,center,width)=>Math.exp(-Math.pow((x-center)/Math.max(.001,width),2));
   const deterministicNoise=(t,phase)=>Math.sin(TAU*17.3*t+phase)*.35+Math.sin(TAU*23.7*t+phase*1.7)*.22+Math.sin(TAU*31.1*t+.4+phase)*.12;
   const polarity=channel=>Number(channel.polarity||1)>=0?1:-1;
+  const waxWane=(t,rate=.18,phase=0)=>.72+.28*(.5+.5*Math.sin(TAU*rate*t+phase));
   function envelope(t,start,end,edge){
     if(t<start||t>end)return 0;
     const width=Math.max(.05,Number(edge||.35));
@@ -24,19 +45,20 @@
     (Array.isArray(channel.features)?channel.features:[]).forEach(feature=>{
       const strength=Number(feature.strength||1);
       if(feature.type==='spindle'){
-        const start=Number(feature.start||0),end=Number(feature.end||start),mid=(start+end)/2,width=Math.max(.2,(end-start)/2.25),frequency=Number(feature.frequency||13);
-        value+=gauss(t,mid,width)*Math.sin(TAU*frequency*t)*1.25*strength;
+        const start=Number(feature.start||0),end=Number(feature.end||start),mid=(start+end)/2,width=Math.max(.2,(end-start)/2.35),frequency=Number(feature.frequency||TEACHING_FREQUENCIES.spindle);
+        const spindleEnvelope=gauss(t,mid,width)*waxWane(t,.42,Number(channel.phase||0));
+        value+=spindleEnvelope*Math.sin(TAU*frequency*t)*1.28*strength;
       }else if(feature.type==='k-complex'){
         const center=Number(feature.center||0);
-        value+=(-1.5*gauss(t,center-.18,.13)+2.15*gauss(t,center+.12,.22)-.75*gauss(t,center+.58,.28))*strength;
+        value+=(-1.45*gauss(t,center-.18,.14)+2.05*gauss(t,center+.16,.24)-.70*gauss(t,center+.62,.31))*strength;
       }else if(feature.type==='vertex'){
         const center=Number(feature.center||0);
-        value+=(-1.8*gauss(t,center,.075)+.55*gauss(t,center+.14,.11))*strength;
+        value+=(-1.72*gauss(t,center,.075)+.50*gauss(t,center+.14,.11))*strength;
       }else if(feature.type==='slow-wave'){
-        const start=Number(feature.start||0),end=Number(feature.end||start),frequency=Number(feature.frequency||1.15),gate=envelope(t,start,end,.6);
-        value+=gate*Math.sin(TAU*frequency*t+Number(channel.phase||0))*1.25*strength;
+        const start=Number(feature.start||0),end=Number(feature.end||start),frequency=Number(feature.frequency||1.1),gate=envelope(t,start,end,.7);
+        value+=gate*Math.sin(TAU*frequency*t+Number(channel.phase||0))*1.22*strength;
       }else if(feature.type==='sawtooth'){
-        const start=Number(feature.start||0),end=Number(feature.end||start),frequency=Number(feature.frequency||3),gate=envelope(t,start,end,.25),cycle=((t*frequency)%1+1)%1;
+        const start=Number(feature.start||0),end=Number(feature.end||start),frequency=Number(feature.frequency||TEACHING_FREQUENCIES.sawtooth),gate=envelope(t,start,end,.25),cycle=((t*frequency)%1+1)%1;
         value+=gate*(2*cycle-1)*.72*strength;
       }else if(feature.type==='eye-blink'){
         const center=Number(feature.center||0),sign=polarity(channel);
@@ -49,13 +71,17 @@
     return value;
   }
   function eegBackground(channel,t){
-    const profile=channel.profile||'n2-lamf',phase=Number(channel.phase||0);
-    if(profile==='wake-alpha') return .68*Math.sin(TAU*10*t+phase)+.12*Math.sin(TAU*18*t+phase*.6)+.05*deterministicNoise(t,phase);
-    if(profile==='wake-mixed') return .26*Math.sin(TAU*10*t+phase)+.19*Math.sin(TAU*16*t+phase*.6)+.10*deterministicNoise(t,phase);
-    if(profile==='n1-lamf') return .37*Math.sin(TAU*5.2*t+phase)+.20*Math.sin(TAU*6.8*t+phase*.7)+.09*deterministicNoise(t,phase);
-    if(profile==='n3-delta') return .52*Math.sin(TAU*1.05*t+phase)+.25*Math.sin(TAU*1.65*t+phase*.7)+.035*deterministicNoise(t,phase);
-    if(profile==='rem-lamf') return .30*Math.sin(TAU*5.8*t+phase)+.16*Math.sin(TAU*9.2*t+phase*.7)+.09*deterministicNoise(t,phase);
-    return .34*Math.sin(TAU*5.4*t+phase)+.22*Math.sin(TAU*7.2*t+phase*.7)+.08*deterministicNoise(t,phase);
+    const profile=channel.profile||'n2-lamf',phase=Number(channel.phase||0),noise=.07*deterministicNoise(t,phase);
+    const f=TEACHING_FREQUENCIES;
+    if(profile==='wake-alpha'){
+      const alphaEnvelope=waxWane(t,.12,phase);
+      return alphaEnvelope*(.72*Math.sin(TAU*f.alpha*t+phase)+.12*Math.sin(TAU*11.2*t+phase*.7))+.08*Math.sin(TAU*f.beta*t+phase*.4)+noise*.45;
+    }
+    if(profile==='wake-mixed') return .20*Math.sin(TAU*f.alpha*t+phase)+.19*Math.sin(TAU*f.beta*t+phase*.6)+.17*Math.sin(TAU*f.thetaHigh*t+phase*.8)+noise;
+    if(profile==='n1-lamf') return .40*Math.sin(TAU*f.thetaMid*t+phase)+.21*Math.sin(TAU*f.thetaHigh*t+phase*.7)+.08*Math.sin(TAU*9.2*t+phase*.4)+noise;
+    if(profile==='n3-delta') return .54*Math.sin(TAU*f.slowLow*t+phase)+.29*Math.sin(TAU*f.slowHigh*t+phase*.7)+.07*Math.sin(TAU*f.thetaMid*t+phase*.5)+noise*.35;
+    if(profile==='rem-lamf') return .30*Math.sin(TAU*f.thetaMid*t+phase)+.18*Math.sin(TAU*f.thetaHigh*t+phase*.7)+.08*Math.sin(TAU*9.4*t+phase*.5)+noise;
+    return .36*Math.sin(TAU*5.3*t+phase)+.22*Math.sin(TAU*6.4*t+phase*.7)+.07*Math.sin(TAU*9.6*t+phase*.45)+noise;
   }
   function sample(channel,t){
     const amp=Number(channel.amplitude||.6),phase=Number(channel.phase||0),features=featureValue(channel,t);
@@ -102,7 +128,7 @@
   }
   function render(canvas,study,options){
     if(!canvas||!study)return null;
-    const channels=Array.isArray(study.channels)?study.channels:[],duration=Number(study.durationSeconds||30),sampleRate=Math.min(250,Math.max(25,Number(study.sampleRate||100))),cssWidth=Math.max(860,Math.floor((options&&options.width)||canvas.parentElement&&canvas.parentElement.clientWidth||960)),cssHeight=TOP_PAD+BOTTOM_PAD+channels.length*ROW_HEIGHT,ratio=Math.min(2,Math.max(1,window.devicePixelRatio||1));
+    const channels=Array.isArray(study.channels)?study.channels:[],duration=Number(study.durationSeconds||30),sampleRate=Math.min(250,Math.max(50,Number(study.sampleRate||100))),cssWidth=Math.max(980,Math.floor((options&&options.width)||canvas.parentElement&&canvas.parentElement.clientWidth||1040)),cssHeight=TOP_PAD+BOTTOM_PAD+channels.length*ROW_HEIGHT,ratio=Math.min(2,Math.max(1,window.devicePixelRatio||1));
     canvas.style.width=cssWidth+'px';canvas.style.height=cssHeight+'px';canvas.width=Math.round(cssWidth*ratio);canvas.height=Math.round(cssHeight*ratio);const ctx=canvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);drawGrid(ctx,cssWidth,cssHeight,duration,channels);channels.forEach((channel,index)=>drawSignal(ctx,channel,index,cssWidth,duration,sampleRate));
     return {width:cssWidth,height:cssHeight,labelWidth:LABEL_WIDTH,plotRight:cssWidth-12,duration,rowHeight:ROW_HEIGHT,topPad:TOP_PAD,bottomPad:BOTTOM_PAD,channels:channels.map(channel=>channel.label)};
   }
@@ -120,5 +146,5 @@
   function hitTest(metrics,x,y){
     if(!metrics||x<metrics.labelWidth||x>metrics.plotRight||y<metrics.topPad)return null;const index=Math.floor((y-metrics.topPad)/metrics.rowHeight);if(index<0||index>=metrics.channels.length)return null;const plotWidth=metrics.plotRight-metrics.labelWidth,time=((x-metrics.labelWidth)/plotWidth)*metrics.duration;return {channel:metrics.channels[index],channelIndex:index,time:clamp(time,0,metrics.duration)};
   }
-  return {VERSION,LABEL_WIDTH,TOP_PAD,BOTTOM_PAD,ROW_HEIGHT,sample,render,channelBox,regionStyle,targetStyle,pointPosition,hitTest};
+  return {VERSION,LABEL_WIDTH,TOP_PAD,BOTTOM_PAD,ROW_HEIGHT,FREQUENCY_BANDS,TEACHING_FREQUENCIES,sample,render,channelBox,regionStyle,targetStyle,pointPosition,hitTest};
 });
