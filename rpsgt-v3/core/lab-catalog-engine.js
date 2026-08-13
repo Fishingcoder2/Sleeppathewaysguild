@@ -1,6 +1,8 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;root.RPSGTLabCatalogEngine=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.1.0';
+  const VERSION='1.2.0';
+  const REVIEW_STAGE_IDS=['ekg','scoring','respiratory','pap','instrumentation','pediatric','daytime-testing','troubleshooting'];
+  const REVIEW_STAGE_SET=new Set(REVIEW_STAGE_IDS);
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
 
@@ -15,6 +17,7 @@
     const started=isObject(source.started)?clone(source.started):{};
     Object.keys(source).forEach(key=>{if(isObject(source[key])&&source[key].completed===true) completed.add(key);});
 
+    REVIEW_STAGE_IDS.forEach(id=>completed.delete(id));
     if(hookupCompleted(source)) completed.add('hookup');
     else completed.delete('hookup');
 
@@ -46,9 +49,26 @@
     const labs=Array.isArray(catalog&&catalog.labs)?catalog.labs.map(clone):[];
     const progress=normalizeProgress(progressValue);
     const completed=new Set(progress.completed);
-    const rows=labs.map((lab,index)=>({...lab,index,completed:completed.has(lab.progressKey||lab.id),started:Boolean(progress.started[lab.progressKey||lab.id]),isLast:progress.lastLab===(lab.progressKey||lab.id)||progress.catalogIndex===index}));
-    return {rows,progress,counts:{total:rows.length,completed:rows.filter(row=>row.completed).length,started:rows.filter(row=>row.started&&!row.completed).length,legacyLinked:rows.filter(row=>row.status==='legacy-linked').length,v3Ready:rows.filter(row=>row.status==='v3-ready').length,catalogOnly:rows.filter(row=>row.status==='catalog-only').length},last:rows.find(row=>row.isLast)||null};
+    const rows=labs.map((lab,index)=>{
+      const key=lab.progressKey||lab.id;
+      const reviewStage=REVIEW_STAGE_SET.has(lab.id);
+      return {...lab,index,reviewStage,completed:!reviewStage&&completed.has(key),started:Boolean(progress.started[key]),isLast:progress.lastLab===key||progress.catalogIndex===index};
+    });
+    return {
+      rows,
+      progress,
+      counts:{
+        total:rows.length,
+        completed:rows.filter(row=>row.completed).length,
+        started:rows.filter(row=>row.started&&!row.completed).length,
+        reviewStage:rows.filter(row=>row.reviewStage).length,
+        legacyLinked:rows.filter(row=>row.status==='legacy-linked').length,
+        v3Ready:rows.filter(row=>row.status==='v3-ready').length,
+        catalogOnly:rows.filter(row=>row.status==='catalog-only').length
+      },
+      last:rows.find(row=>row.isLast)||null
+    };
   }
 
-  return {VERSION,normalizeProgress,validateCatalog,summarize};
+  return {VERSION,REVIEW_STAGE_IDS,normalizeProgress,validateCatalog,summarize};
 });
