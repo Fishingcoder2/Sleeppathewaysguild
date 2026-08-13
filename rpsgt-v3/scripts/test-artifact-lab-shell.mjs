@@ -1,0 +1,13 @@
+import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js,renderer,pack,catalog]=await Promise.all([readFile(join(root,'lab-artifact.html'),'utf8'),readFile(join(root,'core','lab-artifact.js'),'utf8'),readFile(join(root,'core','artifact-psg-renderer.js'),'utf8'),readFile(join(root,'data','visual','artifact-pack-1.json'),'utf8').then(JSON.parse),readFile(join(root,'data','labs','catalog.json'),'utf8').then(JSON.parse)]);
+for(const token of ['data-artifact-start','data-artifact-summary','data-artifact-workspace','Five cases · fifteen visual decisions','No checklist credit'])if(!html.includes(token))throw new Error(`Artifact Lab page is missing ${token}.`);
+for(const script of ['core/storage.js','core/artifact-lab-engine.js','core/artifact-psg-renderer.js','core/lab-artifact.js'])if(!html.includes(script))throw new Error(`Artifact Lab does not load ${script}.`);
+if(html.indexOf('core/artifact-lab-engine.js')>html.indexOf('core/lab-artifact.js')||html.indexOf('core/artifact-psg-renderer.js')>html.indexOf('core/lab-artifact.js'))throw new Error('Artifact engine and renderer must load before the controller.');
+if(/type=["']checkbox["']/.test(html)||/data-artifact-station/.test(html)||/setStation/.test(js))throw new Error('Artifact Recognition must not use self-certifying review checkboxes.');
+for(const token of ['data/visual/artifact-pack-1.json','buildSession','gradeSession','RPSGTStorage.save','data-artifact-answer','data-artifact-check'])if(!js.includes(token))throw new Error(`Artifact controller is missing ${token}.`);
+for(const token of ['electrode-pop','ecg-contamination','sweat-drift','line-noise','movement'])if(!renderer.includes(token))throw new Error(`Artifact renderer is missing ${token}.`);
+if(pack.studies.length!==5||pack.questions.length!==15)throw new Error('Artifact Pack 1 must contain five cases and fifteen decisions.');
+if(pack.questions.some(q=>!q.taskCode||!Array.isArray(q.options)||!q.options.includes(q.answer)))throw new Error('Every Artifact Pack question must have a task code and valid answer.');
+const lab=catalog.labs.find(item=>item.id==='artifact');if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-artifact.html')throw new Error('Catalog does not route Artifact Recognition Lab.');
+if(/localStorage\.(?:setItem|removeItem|clear)/.test(js))throw new Error('Artifact controller must write only through versioned RPSGT storage.');
+console.log('Artifact Recognition Lab shell passed: original visual cases, no checklist completion, isolated storage, and catalog route.');
