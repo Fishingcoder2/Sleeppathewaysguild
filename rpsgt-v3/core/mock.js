@@ -42,10 +42,10 @@
   function renderHistory(){
     const root=mockStore();const history=root.mock.history.slice().reverse();setText("[data-mock-history-count]",history.length+" saved");
     const host=$("[data-mock-history]");
-    if(!history.length){host.innerHTML='<div class="empty">No completed mock attempts are saved yet.</div>';return;}
+    if(!history.length){host.innerHTML='<div class="empty">No completed Mock attempts are saved yet.</div>';return;}
     host.innerHTML='<div class="mock-history-list">'+history.slice(0,10).map(row=>{
       const date=row.completedAt?new Date(row.completedAt).toLocaleString():"Saved attempt";
-      return '<div class="mock-history-row"><div><strong>'+date+'</strong><small>'+row.answeredTotal+'/175 answered · '+row.scoredCorrect+'/150 scored correct</small></div><strong>'+row.scoredPercent+'%</strong><span>'+row.weightedPercent+'% weighted</span><span>'+(row.timed?formatElapsed(row.elapsedMs):"Untimed")+'</span><a class="btn secondary compact" href="'+detailHref(row)+'">View details</a></div>';
+      return '<div class="mock-history-row"><div><strong>'+date+'</strong><small>'+row.answeredTotal+'/175 answered · '+row.scoredCorrect+'/150 scored correct</small></div><strong>'+row.scoredPercent+'%</strong><span>'+row.weightedPercent+'% blueprint-weighted</span><span>'+(row.timed?formatElapsed(row.elapsedMs):"Untimed")+'</span><a class="btn secondary compact" href="'+detailHref(row)+'">View details</a></div>';
     }).join("")+'</div>';
   }
 
@@ -70,7 +70,7 @@
   }
 
   function resume(){const root=mockStore();state.session=root.mock.activeSession;if(!state.session){renderHome();return;}openSession();}
-  function discard(){if(!window.confirm("Discard the saved mock attempt?")) return;clearActive();renderHome();}
+  function discard(){if(!window.confirm("Discard the saved Mock attempt?")) return;clearActive();renderHome();}
 
   function openSession(){
     hide("[data-mock-home]");hide("[data-mock-results]");show("[data-mock-shell]");renderQuestion();startTimer();
@@ -123,7 +123,7 @@
 
   function submitMock(forced){
     const unanswered=175-Object.keys(state.session.answers||{}).length;
-    if(!forced){const message=unanswered?"Submit with "+unanswered+" unanswered question"+(unanswered===1?"":"s")+"?":"Submit this mock attempt?";if(!window.confirm(message)) return;}
+    if(!forced){const message=unanswered?"Submit with "+unanswered+" unanswered question"+(unanswered===1?"":"s")+"?":"Submit this Mock attempt?";if(!window.confirm(message)) return;}
     state.session.completedAt=Date.now();
     const questionsById=Object.fromEntries(state.session.items.map(item=>[String(item.id),state.questionMap.get(String(item.id))]));
     const summary=window.RPSGTMockEngine.summarize(state.session.items,questionsById,state.session.answers);
@@ -141,14 +141,19 @@
     const reportLink=$("[data-result-report-link]");if(reportLink) reportLink.href=detailHref(result);
     const domainHost=$("[data-mock-domain-results]");domainHost.innerHTML=["D1","D2","D3","D4"].map(code=>{const row=result.byDomain[code]||{correct:0,total:0,percent:0};return '<div class="readiness-domain-card"><strong>'+code+'</strong><div class="progress"><span style="width:'+row.percent+'%"></span></div><span>'+row.correct+' / '+row.total+' scored correct · '+row.percent+'%</span></div>';}).join("");
     const weakHost=$("[data-mock-weak-results]");
-    weakHost.innerHTML=(result.weakestTasks||[]).map((task,index)=>{const blueprintTask=state.taskMap.get(task.taskCode);const next=blueprintTask&&blueprintTask.nextAction?blueprintTask.nextAction:"Review this task, then run focused practice.";const keys=(task.recommendationKeys||[]).slice(0,4).join(", ");return '<article class="readiness-target"><div class="readiness-target-rank">'+(index+1)+'</div><div><h3>'+task.taskCode+' · '+(blueprintTask?blueprintTask.title:task.title)+'</h3><p>'+task.correct+' / '+task.total+' correct · '+task.percent+'% · '+task.missed+' missed</p><p>'+next+'</p>'+(keys?'<small>Study keys: '+keys+'</small>':'')+'</div></article>';}).join("")||'<div class="empty">No weak-task pattern was available from the scored answers.</div>';
+    weakHost.innerHTML=(result.weakestTasks||[]).map((task,index)=>{
+      const blueprintTask=state.taskMap.get(task.taskCode);
+      const next=blueprintTask&&blueprintTask.nextAction?blueprintTask.nextAction:"Review this task, then run Focused Practice.";
+      const referenceHref='sources-disclosures.html?task='+encodeURIComponent(task.taskCode||'');
+      return '<article class="readiness-target"><div class="readiness-target-rank">'+(index+1)+'</div><div><h3>'+task.taskCode+' · '+(blueprintTask?blueprintTask.title:task.title)+'</h3><p>'+task.correct+' / '+task.total+' correct · '+task.percent+'% · '+task.missed+' missed</p><p>'+next+'</p><a class="text-link" href="'+referenceHref+'">Related reference materials</a></div></article>';
+    }).join("")||'<div class="empty">No weak-task pattern was available from the scored answers.</div>';
   }
 
   function bind(){
     $("[data-start-mock]").addEventListener("click",startNew);$("[data-resume-mock]").addEventListener("click",resume);$("[data-discard-mock]").addEventListener("click",discard);$("[data-prev-question]").addEventListener("click",()=>move(-1));$("[data-next-question]").addEventListener("click",()=>state.session.index===174?submitMock(false):move(1));$("[data-flag-question]").addEventListener("click",toggleFlag);$("[data-pause-mock]").addEventListener("click",pause);$("[data-submit-mock]").addEventListener("click",()=>submitMock(false));$("[data-new-mock]").addEventListener("click",renderHome);
   }
 
-  function showError(error){const host=$("[data-mock-load]");host.className="section notice error";host.textContent="The mock system could not be loaded. "+error.message;}
-  async function init(){try{if(!drilldown) throw new Error("The mock drill-down module is unavailable.");await loadBank();hide("[data-mock-load]");bind();renderHome();}catch(error){showError(error);}}
+  function showError(error){const host=$("[data-mock-load]");host.className="section notice error";host.textContent="The Mock Exam could not be loaded. "+error.message;}
+  async function init(){try{if(!drilldown) throw new Error("The Mock review module is unavailable.");await loadBank();hide("[data-mock-load]");bind();renderHome();}catch(error){showError(error);}}
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init);else init();
 })();
