@@ -30,7 +30,7 @@
     if(!map) return;
 
     document.querySelectorAll('[data-blueprint-summary] span').forEach(node=>{
-      if(node.textContent.includes('directly assigned questions')) node.innerHTML=node.innerHTML.replace('directly assigned questions','mapped learner questions');
+      if(node.textContent.includes('directly assigned questions')) node.innerHTML=node.innerHTML.replace('directly assigned questions','learner questions');
       if(node.textContent.includes('review-only cross-task records')) node.remove();
     });
 
@@ -62,6 +62,7 @@
       replaceExact(node,'This task award is now part of the Guided Trail report.','This task badge is now part of your Guided Study achievements.');
       replaceExact(node,'An 80% score is required for the task award. Your attempt remains in checkpoint history.','An 80% score is required for the task badge. Your attempt remains in checkpoint history.');
     });
+    checkpoint.querySelectorAll('.checkpoint-question-meta span').forEach(node=>replaceMatchingText(node,/^Exact task mapping:\s*/i,'RPSGT task: '));
   }
 
   function normalize(){
