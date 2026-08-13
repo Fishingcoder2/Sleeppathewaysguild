@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "name": "RPSGT Respiratory Visual Long-Window Pack",
+    "version": 1,
+    "developmentOnly": true,
+    "appAuthored": true,
+    "sourceType": "app-authored-schematic",
+    "sourceBasis": "Long-window respiratory patterns are original teaching schematics based on project sleep-technology references. No patient tracing or proprietary scoring-manual figure is reproduced.",
+    "clinicalBoundary": "Pattern-recognition practice only. The long-window display does not establish that current clinical scoring criteria are met."
+  },
+  "studies": [
+    {
+      "id": "resp-cheyne-stokes-001",
+      "title": "Five-minute crescendo-decrescendo central breathing overview",
+      "pattern": "Cheyne-Stokes / crescendo-decrescendo central breathing pattern",
+      "durationSeconds": 300,
+      "sampleRate": 8,
+      "overviewOnly": true,
+      "channels": [
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.92,"frequency":0.23,"phase":0.10,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":60,"pauseSeconds":11,"minFactor":0.02,"power":1.35}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.78,"frequency":0.23,"phase":0.08,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":60,"pauseSeconds":11,"minFactor":0.02,"power":1.35}]},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.86,"frequency":0.23,"phase":0.18,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":60,"pauseSeconds":11,"minFactor":0.02,"power":1.35}]},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.88,"frequency":0.23,"phase":0.24,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":60,"pauseSeconds":11,"minFactor":0.02,"power":1.35}]},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.90,"frequency":0.23,"phase":0.21,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":60,"pauseSeconds":11,"minFactor":0.02,"power":1.35}]},
+        {"label":"SpO2","type":"spo2","amplitude":0.88,"phase":0.3,"features":[{"type":"periodic-desaturation","start":0,"end":300,"cycleSeconds":60,"pauseSeconds":11,"delaySeconds":12,"strength":0.34}]},
+        {"label":"ETCO2","type":"co2","amplitude":0.82,"frequency":0.23,"phase":0.10,"features":[{"type":"periodic-co2","start":0,"end":300,"cycleSeconds":60,"pauseSeconds":11,"delaySeconds":5,"strength":0.12}]}
+      ]
+    },
+    {
+      "id": "resp-periodic-001",
+      "title": "Five-minute periodic breathing overview",
+      "pattern": "Periodic breathing pattern",
+      "durationSeconds": 300,
+      "sampleRate": 8,
+      "overviewOnly": true,
+      "channels": [
+        {"label":"Nasal Pressure","type":"airflow","profile":"nasal","amplitude":0.88,"frequency":0.24,"phase":0.10,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":46,"pauseSeconds":4,"minFactor":0.16,"power":1.18}]},
+        {"label":"Thermal Airflow","type":"airflow","profile":"thermal","amplitude":0.74,"frequency":0.24,"phase":0.08,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":46,"pauseSeconds":4,"minFactor":0.16,"power":1.18}]},
+        {"label":"Thorax RIP","type":"effort","profile":"thorax","amplitude":0.82,"frequency":0.24,"phase":0.18,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":46,"pauseSeconds":4,"minFactor":0.16,"power":1.18}]},
+        {"label":"Abdomen RIP","type":"effort","profile":"abdomen","amplitude":0.84,"frequency":0.24,"phase":0.24,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":46,"pauseSeconds":4,"minFactor":0.16,"power":1.18}]},
+        {"label":"RIP Sum","type":"effort","profile":"sum","amplitude":0.86,"frequency":0.24,"phase":0.21,"features":[{"type":"periodic-breathing","start":0,"end":300,"cycleSeconds":46,"pauseSeconds":4,"minFactor":0.16,"power":1.18}]},
+        {"label":"SpO2","type":"spo2","amplitude":0.84,"phase":0.3,"features":[{"type":"periodic-desaturation","start":0,"end":300,"cycleSeconds":46,"pauseSeconds":4,"delaySeconds":10,"strength":0.22}]},
+        {"label":"ETCO2","type":"co2","amplitude":0.80,"frequency":0.24,"phase":0.10,"features":[{"type":"periodic-co2","start":0,"end":300,"cycleSeconds":46,"pauseSeconds":4,"delaySeconds":4,"strength":0.08}]}
+      ]
+    }
+  ]
+}
