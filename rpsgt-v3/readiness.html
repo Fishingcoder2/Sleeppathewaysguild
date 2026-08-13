@@ -26,10 +26,10 @@
 </aside>
 <main class="main">
 <section class="hero readiness-hero">
-  <div><div class="eyebrow">Module 2 · readiness milestone</div><h1>Readiness Check</h1><p class="lead">Run a weighted, task-balanced diagnostic using only the <strong>2,327 learner-practice records</strong>. Readiness history stays separate from ordinary practice and the future 175-question mock exam.</p></div>
+  <div><div class="eyebrow">Module 2 · readiness milestone</div><h1>Readiness Check</h1><p class="lead">Run a weighted, task-balanced diagnostic using the learner-ready RPSGT question bank. Readiness history stays separate from ordinary practice and the 175-question mock exam.</p></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Use readiness to find your next study move.</h2><p>The study-weighted percentage is an internal learning gauge, not an official BRPT score prediction.</p></aside>
 </section>
-<section class="section notice"><strong>Preserved design:</strong> choose 25, 50, or 100 questions. Each run follows the four-domain weight pattern, balances tasks within each domain, removes repeated question families, and excludes every manual-review record.</section>
+<section class="section notice"><strong>How readiness works:</strong> choose 25, 50, or 100 questions. Each run follows the four-domain weight pattern, balances tasks within each domain, removes repeated question families, and excludes manual-review records.</section>
 <section class="section notice" data-readiness-load>Loading the readiness blueprint and question-bank manifest…</section>
 <section class="section hidden" data-readiness-home>
   <div class="readiness-size-grid">
@@ -45,8 +45,21 @@
     <div class="readiness-progress"><span data-readiness-progress></span></div>
     <div class="question-prompt" data-question-prompt></div>
     <div class="practice-choices" data-question-choices></div>
-    <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
-    <div class="question-actions"><button class="btn secondary" type="button" data-quit-readiness>End check</button><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
+    <details class="answer-feedback hidden" data-answer-feedback>
+      <summary data-answer-feedback-summary>Review answer &amp; reasoning</summary>
+      <div class="readiness-feedback-body" data-answer-feedback-body></div>
+    </details>
+    <div class="readiness-question-tools">
+      <button class="btn secondary" type="button" data-quit-readiness>End check</button>
+      <button class="btn secondary" type="button" data-flag-question aria-pressed="false">Flag question</button>
+      <button class="btn secondary" type="button" data-make-flashcard aria-pressed="false">Make flashcard</button>
+      <span class="readiness-action-status" data-readiness-action-status aria-live="polite" role="status"></span>
+    </div>
+    <div class="readiness-question-nav">
+      <button class="btn secondary" type="button" data-previous-question disabled>Previous</button>
+      <span class="readiness-nav-note">Next checks your selected answer first. Open the answer &amp; reasoning panel only when you want to review it.</span>
+      <button class="btn primary" type="button" data-next-question disabled>Next question</button>
+    </div>
   </div>
   <aside class="session-rail"><div class="card"><h3>This readiness check</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Raw accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Questions</span><strong data-session-size>0</strong></div></div><p class="rail-note">Results are saved only in the readiness record.</p></div></aside>
 </section>
@@ -55,13 +68,16 @@
   <section class="card"><h2>Domain breakdown</h2><div class="grid grid-2" data-domain-results></div></section>
   <section class="card"><h2>Weak-task study targets</h2><div class="readiness-target-list" data-weak-task-results></div><div class="actions"><a class="btn primary" href="practice.html">Open focused practice</a><a class="btn secondary" href="review.html?list=missed">Review learner missed list</a><button class="btn secondary" type="button" data-new-readiness>Choose another readiness check</button></div></section>
 </section>
-<footer class="footer">Development branch only · The 175-question mock exam remains a separate migration milestone</footer>
+<footer class="footer">Sleep Pathways Guild · Readiness is an educational diagnostic and remains separate from Practice and Mock results.</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
+<script src="core/flashcard-engine.js"></script>
+<script src="core/flashcard-store.js"></script>
+<script src="core/practice-question-actions.js"></script>
 <script src="core/readiness-engine.js"></script>
 <script src="core/readiness.js"></script>
 </body>
