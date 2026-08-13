@@ -12,13 +12,13 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   await expect(page.getByText('Show mapped resource keys',{exact:true})).toHaveCount(0);
   await expect(page.locator('.mapping-warning')).toHaveCount(0);
   await expect(page.locator('[data-blueprint-summary]')).not.toContainText('review-only cross-task records');
-  await expect(page.locator('[data-blueprint-summary]')).toContainText('5 questions per checkpoint');
+  await expect(page.locator('[data-blueprint-summary]')).toContainText('15 questions per checkpoint');
   await expect(page.locator('[data-blueprint-summary]')).toContainText('80% task-award goal');
 
   const resources=cards.first().locator('details[data-resource-ready="true"]');
   await expect(resources).toBeVisible();
   const resourceSummary=resources.locator('summary');
-  await expect(resourceSummary).toHaveText('Recommended study resources');
+  await expect(resourceSummary).toHaveText('Related reference materials');
   await resourceSummary.click();
   await expect(resources).toHaveAttribute('open','');
   await expect(resources.locator('.resource-title-chip').first()).toBeVisible();
@@ -29,7 +29,7 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   await cards.first().locator('[data-checkpoint-start]').click();
   const checkpoint=page.locator('[data-checkpoint-workspace]');
   await expect(checkpoint).toBeVisible();
-  await expect(checkpoint).toContainText('Question 1 of 5');
+  await expect(checkpoint).toContainText('Question 1 of 15');
   await expect(checkpoint).not.toContainText('Exact task mapping');
   await expect(checkpoint.locator('.checkpoint-modal-head .eyebrow')).toHaveText('Guided Study checkpoint');
   await expect(checkpoint.locator('.checkpoint-task-label')).not.toHaveText(/^D[1-4][A-C]\b/);
