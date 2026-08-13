@@ -151,6 +151,14 @@
     return parent[key];
   }
 
+  function referenceHref(question){
+    const params=new URLSearchParams();
+    if(question&&question.taskCode) params.set("task",question.taskCode);
+    if(question&&question.topic) params.set("topic",question.topic);
+    const query=params.toString();
+    return "sources-disclosures.html"+(query?"?"+query:"");
+  }
+
   function recordAnswer(question,isCorrect,selectedAnswer){
     const saved=window.RPSGTStorage.load();
     saved.progress.answered=Number(saved.progress.answered||0)+1;
@@ -198,10 +206,11 @@
     answer.textContent="Correct answer: "+question.answer;
     const rationale=document.createElement("p");
     rationale.textContent=question.rationale;
-    const refs=document.createElement("p");
-    refs.className="feedback-references";
-    refs.textContent="Mapped source keys: "+(question.referenceKeys||[]).join(", ");
-    feedback.replaceChildren(heading,answer,rationale,refs);
+    const related=document.createElement("a");
+    related.className="feedback-references";
+    related.href=referenceHref(question);
+    related.textContent="Related reference materials";
+    feedback.replaceChildren(heading,answer,rationale,related);
     $("[data-submit-answer]").classList.add("hidden");
     $("[data-next-question]").classList.remove("hidden");
     $("[data-next-question]").textContent=state.index===state.questions.length-1?"View review result":"Next question";
@@ -236,7 +245,7 @@
     try{
       state.listType=new URLSearchParams(location.search).get("list")==="mastered"?"mastered":"missed";
       state.ids=readIds();
-      $("[data-review-load]").textContent="Resolving "+state.ids.length.toLocaleString()+" stored question IDs against the complete modular bank…";
+      $("[data-review-load]").textContent="Loading your saved review questions…";
       state.manifest=await loadJson("data/question-bank/manifest.json");
       await resolveQuestions();
       $("[data-review-load]").classList.add("hidden");
