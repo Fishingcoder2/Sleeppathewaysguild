@@ -44,10 +44,10 @@
       '<aside class="respiratory-rule-warning"><strong>Current-rule warning</strong><p>'+esc(step.warning)+'</p></aside>'+
       '<div class="respiratory-trail-actions">'+
         '<a class="btn primary" href="practice.html?task='+encodeURIComponent(text(step.taskCode))+'">Practice this concept</a>'+
-        '<a class="respiratory-trail-link" href="'+esc(referenceHref(step))+'">Open mapped references</a>'+lab+
+        '<a class="respiratory-trail-link" href="'+esc(referenceHref(step))+'">Related reference materials</a>'+lab+
         '<button class="respiratory-trail-link respiratory-coach-link" type="button" data-checkpoint-start="'+esc(step.taskCode)+'">Ask Coach Bob</button>'+
       '</div>'+
-      '<p class="respiratory-coach-note">Coach Bob opens the existing five-question task checkpoint. Use “Ask Coach Bob” inside a question for reasoning help without revealing the answer.</p>'+
+      '<p class="respiratory-coach-note">Coach Bob opens the existing 15-question badge checkpoint. Use “Ask Coach Bob” inside a question for reasoning help without revealing the answer.</p>'+
     '</article>';
   }
 
