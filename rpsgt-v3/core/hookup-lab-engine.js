@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2.0.0';
+  const VERSION='2.0.1';
   const LAB_ID='hookup';
   const SESSION_SIZE=10;
   const PASS_PERCENT=80;
@@ -147,15 +147,16 @@
   function gradeSkill(stationId,selected,completedAt){
     const station=STATION_MAP.get(String(stationId));
     if(!station) throw new Error('Unknown Hookup lab station: '+stationId);
+    const time=completedAt||new Date().toISOString();
     const choice=selected==null?null:String(selected);
     return {
-      id:'hookup-skill-'+station.id+'-'+(completedAt||new Date().toISOString()),
+      id:'hookup-skill-'+station.id+'-'+time,
       stationId:station.id,
       selected:choice,
       correct:choice===station.answer,
       answer:station.answer,
       rationale:station.rationale,
-      completedAt:completedAt||new Date().toISOString()
+      completedAt:time
     };
   }
 
@@ -248,17 +249,19 @@
     if(!attempt||!STATION_MAP.has(String(attempt.stationId))) throw new Error('Unknown Hookup lab station: '+(attempt&&attempt.stationId));
     const normalized=normalizeLabs(value);
     const record=normalized.record;
-    const time=attempt.completedAt||new Date().toISOString();
+    const safe=clone(attempt);
+    const time=safe.completedAt||new Date().toISOString();
+    const alreadyRecorded=record.skillHistory.some(item=>item&&item.id===safe.id);
     if(!record.startedAt) record.startedAt=time;
-    const skill=record.skills[String(attempt.stationId)];
-    skill.attempts=Math.max(0,safeNumber(skill.attempts,0))+1;
-    skill.lastSelected=attempt.selected==null?null:String(attempt.selected);
+    const skill=record.skills[String(safe.stationId)];
+    if(!alreadyRecorded) skill.attempts=Math.max(0,safeNumber(skill.attempts,0))+1;
+    skill.lastSelected=safe.selected==null?null:String(safe.selected);
     skill.lastAttemptAt=time;
-    if(attempt.correct===true){
+    if(safe.correct===true){
       skill.mastered=true;
       skill.masteredAt=skill.masteredAt||time;
     }
-    record.skillHistory=[clone(attempt),...record.skillHistory.filter(item=>item&&item.id!==attempt.id)].slice(0,SKILL_HISTORY_LIMIT);
+    record.skillHistory=[safe,...record.skillHistory.filter(item=>item&&item.id!==safe.id)].slice(0,SKILL_HISTORY_LIMIT);
     return persist(normalized,time);
   }
 
