@@ -17,17 +17,30 @@
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
   function openHref(lab){return lab.status==='legacy-linked'?lab.legacyHref:lab.plannedRoute;}
-  function statusLabel(lab){return lab.completed?'Completed':lab.started?'In progress':'Ready to practice';}
-  function statusClass(lab){return lab.completed?'green':lab.started?'gold':'';}
+  function statusLabel(lab){
+    if(lab.reviewStage) return lab.started?'Review in progress':'Review stage';
+    return lab.completed?'Completed':lab.started?'In progress':'Ready to practice';
+  }
+  function statusClass(lab){return lab.reviewStage?'gold':lab.completed?'green':lab.started?'gold':'';}
+  function progressCopy(lab){
+    if(lab.reviewStage) return lab.started?['Continue study review','Review']:['Study review available','Review'];
+    if(lab.completed) return ['Demonstrated completion','✓'];
+    if(lab.started) return ['Continue your work','In progress'];
+    return ['Not started yet','Open'];
+  }
 
   function labCard(lab){
     const href=openHref(lab);
-    const button=href?`<a class="btn primary" href="${esc(href)}">Open ${esc(lab.shortTitle)} lab</a>`:'<span class="btn secondary disabled" aria-disabled="true">Coming later</span>';
+    const actionLabel=lab.reviewStage?`Open ${esc(lab.shortTitle)} review`:`Open ${esc(lab.shortTitle)} lab`;
+    const button=href?`<a class="btn primary" href="${esc(href)}">${actionLabel}</a>`:'<span class="btn secondary disabled" aria-disabled="true">Coming later</span>';
+    const progress=progressCopy(lab);
+    const note=lab.reviewStage?'<div class="lab-evidence-note"><strong>Review stage:</strong> this version supports study and checkpoint review, but checklist activity does not count as demonstrated Skills Lab completion.</div>':'';
     return `<article class="card lab-card" id="lab-${esc(lab.id)}">
       <div class="lab-card-head"><div class="lab-icon" aria-hidden="true">${esc(lab.icon)}</div><div><span class="status ${statusClass(lab)}">${statusLabel(lab)}</span><h3>${esc(lab.title)}</h3></div></div>
       <p>${esc(lab.description)}</p>
+      ${note}
       <div class="lab-task-map"><strong>RPSGT tasks</strong><div>${lab.taskCodes.map(code=>`<span>${esc(code)}</span>`).join('')}</div></div>
-      <div class="lab-progress-row"><span>${lab.completed?'Completed':lab.started?'Continue your work':'Not started yet'}</span><strong>${lab.completed?'✓':lab.started?'In progress':'Open'}</strong></div>
+      <div class="lab-progress-row"><span>${progress[0]}</span><strong>${progress[1]}</strong></div>
       <div class="actions">${button}</div>
     </article>`;
   }
@@ -38,8 +51,8 @@
     return rows.find(lab=>lab.started&&!lab.completed)||null;
   }
   function findRecommended(rows,last){
-    if(last&&!last.completed) return last;
-    return rows.find(lab=>lab.id==='hookup'&&!lab.completed)||rows.find(lab=>!lab.completed)||rows[0]||null;
+    if(last&&!last.reviewStage&&!last.completed) return last;
+    return rows.find(lab=>lab.id==='hookup'&&!lab.completed)||rows.find(lab=>!lab.reviewStage&&!lab.completed)||last||rows[0]||null;
   }
 
   function renderLaunchCards(rows,report){
@@ -52,10 +65,10 @@
       if(last){
         continueCard.classList.remove('empty');
         continueCard.querySelector('[data-lab-continue-title]').textContent=last.title;
-        continueCard.querySelector('[data-lab-continue-copy]').textContent=last.completed?'Review this lab again or choose another pathway.':'Return to the lab where you most recently worked.';
+        continueCard.querySelector('[data-lab-continue-copy]').textContent=last.reviewStage?'Return to the study review where you most recently worked. Checklist review is not demonstrated skill completion.':last.completed?'Review this lab again or choose another pathway.':'Return to the lab where you most recently worked.';
         const link=continueCard.querySelector('[data-lab-continue-action]');
         link.href=openHref(last)||'labs.html';
-        link.textContent=last.completed?'Review lab':'Continue lab';
+        link.textContent=last.reviewStage?'Continue review':last.completed?'Review lab':'Continue lab';
       }else{
         continueCard.classList.add('empty');
         continueCard.querySelector('[data-lab-continue-title]').textContent='No lab in progress yet';
@@ -68,28 +81,32 @@
 
     if(recommendedCard&&recommended){
       recommendedCard.querySelector('[data-lab-recommended-title]').textContent=recommended.title;
-      recommendedCard.querySelector('[data-lab-recommended-copy]').textContent=recommended.id==='hookup'?'Start with patient setup, measurement, placement, impedance, and correction decisions that support many other technical skills.':'This is the next open lab in your applied-learning pathway.';
+      recommendedCard.querySelector('[data-lab-recommended-copy]').textContent=recommended.id==='hookup'?'Start with patient setup, measurement, placement, impedance, and correction decisions that support many other technical skills.':recommended.reviewStage?'Use this area for study review while its interaction-based skill pack is being developed.':'This is the next open lab with demonstrated skill evidence.';
       const link=recommendedCard.querySelector('[data-lab-recommended-action]');
       link.href=openHref(recommended)||'labs.html';
-      link.textContent='Open recommended lab';
+      link.textContent=recommended.reviewStage?'Open study review':'Open recommended lab';
     }
   }
 
   function render(catalog,report){
     const rows=learnerRows(report);
-    const completed=rows.filter(lab=>lab.completed).length;
-    const started=rows.filter(lab=>lab.started&&!lab.completed).length;
-    summaryHost.innerHTML=`<div><span>Learning labs</span><strong>${rows.length}</strong></div><div><span>Completed</span><strong>${completed}</strong></div><div><span>In progress</span><strong>${started}</strong></div>`;
+    const evidenceRows=rows.filter(lab=>!lab.reviewStage);
+    const completed=evidenceRows.filter(lab=>lab.completed).length;
+    const reviewStage=rows.filter(lab=>lab.reviewStage).length;
+    summaryHost.innerHTML=`<div><span>Learning areas</span><strong>${rows.length}</strong></div><div><span>Demonstrated labs</span><strong>${completed} / ${evidenceRows.length}</strong></div><div><span>Review-stage labs</span><strong>${reviewStage}</strong></div>`;
 
     host.innerHTML=PATHWAYS.map(path=>{
       const labs=path.labs.map(id=>rows.find(lab=>lab.id===id)).filter(Boolean);
       if(!labs.length) return '';
-      return `<section class="lab-pathway" id="lab-path-${esc(path.id)}"><div class="lab-pathway-head"><div><div class="eyebrow">${esc(path.eyebrow)}</div><h2>${esc(path.title)}</h2><p>${esc(path.description)}</p></div><span class="status">${labs.filter(lab=>lab.completed).length} / ${labs.length} completed</span></div><div class="lab-pathway-grid">${labs.map(labCard).join('')}</div></section>`;
+      const evidence=labs.filter(lab=>!lab.reviewStage);
+      const review=labs.filter(lab=>lab.reviewStage).length;
+      const pathwayStatus=evidence.length?`${evidence.filter(lab=>lab.completed).length} / ${evidence.length} demonstrated${review?` · ${review} review-stage`:''}`:`${review} review-stage`;
+      return `<section class="lab-pathway" id="lab-path-${esc(path.id)}"><div class="lab-pathway-head"><div><div class="eyebrow">${esc(path.eyebrow)}</div><h2>${esc(path.title)}</h2><p>${esc(path.description)}</p></div><span class="status">${pathwayStatus}</span></div><div class="lab-pathway-grid">${labs.map(labCard).join('')}</div></section>`;
     }).join('');
 
     renderLaunchCards(rows,report);
     const boundary=document.querySelector('[data-lab-boundary]');
-    if(boundary) boundary.textContent='Lab scenarios, teaching visuals, and learning activities are original Sleep Pathways Guild educational material. Use current professional references when a rule, protocol, or requirement matters.';
+    if(boundary) boundary.textContent='Lab scenarios, teaching visuals, and learning activities are original Sleep Pathways Guild educational material. A lab counts as demonstrated completion only when its current version requires learner performance rather than checklist review.';
   }
 
   async function init(){
