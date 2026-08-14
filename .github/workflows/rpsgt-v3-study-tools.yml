@@ -5,14 +5,18 @@ on:
     paths:
       - 'rpsgt-v3/core/memory-games.js'
       - 'rpsgt-v3/core/memory-arcade.js'
+      - 'rpsgt-v3/core/glossary-games.js'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
+      - 'rpsgt-v3/assets/glossary-games.css'
+      - 'rpsgt-v3/data/memory/**'
       - 'rpsgt-v3/math-coach.html'
       - 'rpsgt-v3/core/math-coach*.js'
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
+      - 'rpsgt-v3/scripts/test-glossary-games.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
   push:
     branches:
@@ -20,14 +24,18 @@ on:
     paths:
       - 'rpsgt-v3/core/memory-games.js'
       - 'rpsgt-v3/core/memory-arcade.js'
+      - 'rpsgt-v3/core/glossary-games.js'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
+      - 'rpsgt-v3/assets/glossary-games.css'
+      - 'rpsgt-v3/data/memory/**'
       - 'rpsgt-v3/math-coach.html'
       - 'rpsgt-v3/core/math-coach*.js'
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
+      - 'rpsgt-v3/scripts/test-glossary-games.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
 
 permissions:
@@ -51,3 +59,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-memory-games-weak.mjs
       - name: Validate Memory Arcade
         run: node rpsgt-v3/scripts/test-memory-arcade.mjs
+      - name: Validate terminology Glossary Games
+        run: node rpsgt-v3/scripts/test-glossary-games.mjs

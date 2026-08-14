@@ -1,0 +1,30 @@
+.glossary-lab{border-top:6px solid #2b8a65;display:grid;gap:14px}
+.glossary-mode-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.glossary-mode-button{min-height:104px;padding:13px;border:2px solid #c8d8e1;border-radius:15px;background:#fff;color:var(--ink);text-align:left}
+.glossary-mode-button strong{display:block;margin-bottom:5px;color:var(--navy);font-size:.96rem}
+.glossary-mode-button span{display:block;color:var(--muted);font-size:.78rem;line-height:1.35}
+.glossary-mode-button.active{border-color:#2b8a65;background:#edf8f2;box-shadow:0 0 0 3px rgba(43,138,101,.10)}
+.glossary-toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:end;padding:12px;border:1px solid #cfe0d8;border-radius:14px;background:#f8fcfa}
+.glossary-toolbar label{display:grid;gap:5px;min-width:min(320px,100%)}
+.glossary-toolbar .btn.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.glossary-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.glossary-stat{padding:10px;border:1px solid #cfe0d8;border-radius:13px;background:#fff;text-align:center}
+.glossary-stat strong{display:block;color:var(--navy);font-size:1.25rem}.glossary-stat span{font-size:.75rem;color:var(--muted)}
+.glossary-panel{display:grid;gap:12px;min-height:240px;padding:15px;border:1px solid #cfe0d8;border-radius:16px;background:linear-gradient(180deg,#fbfefd,#f3faf6)}
+.glossary-panel-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.82rem}
+.glossary-match-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.glossary-tile{min-height:112px;padding:11px;border:2px solid #bfd5c8;border-radius:14px;background:linear-gradient(150deg,#eaf7ef,#cdebd9);color:#215326;font-weight:850;line-height:1.28;text-align:center}
+.glossary-tile:not(.revealed){background:linear-gradient(150deg,#0b386c,#0e899a);border-color:#1a6986;color:#fff;font-size:1.2rem}
+.glossary-tile.matched{background:linear-gradient(150deg,#fff4c6,#f2dc81);border-color:#d3b646;color:#5a4914}
+.glossary-tile-type{display:block;margin-bottom:5px;font-size:.64rem;letter-spacing:.08em;color:inherit;opacity:.72}
+.glossary-tile-hidden{font-weight:950;letter-spacing:.08em}
+.glossary-recall{display:grid;gap:12px}.glossary-recall-prompt{padding:18px;border:1px solid #c8ddd1;border-radius:15px;background:#fff;text-align:center}
+.glossary-recall-prompt strong{display:block;color:var(--navy);font-size:clamp(1.12rem,2.5vw,1.6rem);line-height:1.38}
+.glossary-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.glossary-feedback{padding:11px 12px;border-radius:13px;font-weight:820;line-height:1.42}
+.glossary-feedback.correct{background:#e8f7ee;border:1px solid #7cbb93;color:#17613a}.glossary-feedback.incorrect{background:#fff0f1;border:1px solid #d98791;color:#932f40}
+.glossary-welcome{display:grid;place-items:center;align-content:center;gap:8px;min-height:210px;text-align:center}.glossary-welcome h3,.glossary-welcome p{margin:0}.glossary-welcome p{max-width:70ch;color:var(--muted)}
+.glossary-source-note{margin:0;padding:10px 12px;border-radius:12px;background:#eef7fb;border:1px solid #c2dce7;color:#315b6b;font-size:.78rem;line-height:1.45}
+@media(max-width:960px){.glossary-mode-grid{grid-template-columns:1fr 1fr}.glossary-match-board{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.glossary-mode-grid,.glossary-stats,.glossary-choice-grid{grid-template-columns:1fr}.glossary-match-board{grid-template-columns:1fr 1fr}.glossary-toolbar{display:grid;grid-template-columns:1fr}.glossary-toolbar>*{width:100%}.glossary-tile{min-height:104px;font-size:.8rem}}
+@media(max-width:370px){.glossary-match-board{grid-template-columns:1fr}.glossary-tile{min-height:90px}}
