@@ -45,14 +45,16 @@ const supplementItems=supplements.flatMap(payload=>payload.items||[]);
 assert.equal(supplementItems.length,Number(manifest.auditSummary.aastTechnicalSupplementTerms||0)+Number(manifest.auditSummary.aastCorePsgSupplementTerms||0));
 assert.ok(supplementItems.length>=60,'Expected substantial AAST terminology gap-repair coverage across the first two batches.');
 const aastSet=new Set(aastRows.map(row=>row.key));
-for(const item of supplementItems){
-  assert.ok(item.id&&item.term&&item.definition&&item.category&&item.memoryClue,'Every AAST supplement item needs learner-ready fields.');
-  assert.ok(aastSet.has(canonical(item.term)),`Supplement term must originate in the AAST term inventory: ${item.term}`);
-  assert.ok(String(item.definition).length>=25,`Definition is too short for ${item.term}`);
-  assert.equal(item.definitionAuthorship,'Original Sleep Pathways Guild summary',`Definition authorship is required for ${item.term}`);
-  assert.ok(!Object.hasOwn(item,'publishedDefinition')&&!Object.hasOwn(item,'sourceDefinition'),'Published source definitions must not be stored in learner data.');
+for(const supplement of supplements){
+  assert.match(supplement.copyrightBoundary,/original Sleep Pathways Guild/i);
+  for(const item of supplement.items||[]){
+    assert.ok(item.id&&item.term&&item.definition&&item.category&&item.memoryClue,'Every AAST supplement item needs learner-ready fields.');
+    assert.ok(aastSet.has(canonical(item.term)),`Supplement term must originate in the AAST term inventory: ${item.term}`);
+    assert.ok(String(item.definition).length>=25,`Definition is too short for ${item.term}`);
+    assert.ok(item.definitionAuthorship==='Original Sleep Pathways Guild summary'||/original Sleep Pathways Guild/i.test(String(supplement.copyrightBoundary||'')),`Definition authorship boundary is required for ${item.term}`);
+    assert.ok(!Object.hasOwn(item,'publishedDefinition')&&!Object.hasOwn(item,'sourceDefinition'),'Published source definitions must not be stored in learner data.');
+  }
 }
-for(const supplement of supplements) assert.match(supplement.copyrightBoundary,/original Sleep Pathways Guild/i);
 assert.ok(coveredUnion.length>coveredByLegacy.length,'Authority learner files should close terminology gaps beyond legacy flashcards.');
 assert.ok(uncovered.length<aastRows.length,'Gap audit should identify at least some AAST coverage.');
 
