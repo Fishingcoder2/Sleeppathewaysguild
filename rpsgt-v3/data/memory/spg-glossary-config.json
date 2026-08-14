@@ -1,8 +1,11 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "title": "Sleep Pathways Guild RPSGT terminology glossary",
-  "source": "Reviewed Sleep Pathways Guild RPSGT flashcard term-definition inventory",
-  "sourcePolicy": "Glossary definitions are reused from existing Sleep Pathways Guild flashcards. AAST Terms and Definitions is terminology cross-check support only and is not reproduced in this dataset.",
+  "source": "Reviewed Sleep Pathways Guild flashcards plus the RPSGT V3 Master Terminology Bank",
+  "sourcePolicy": "Legacy glossary terms are seeded from reviewed Sleep Pathways Guild flashcards, then merged with original Sleep Pathways Guild definitions authored from the RPSGT V3 master terminology authority files. Current AASM Scoring Manual Version 3 terminology controls scoring concepts; ICSD-3-TR is the revision check for ICSD-3 clinical nomenclature; AAST Terms and Definitions provides broad terminology cross-check support.",
+  "copyrightBoundary": "Published AAST, AASM, and ICSD glossary definitions are not reproduced. Learner-facing authority additions use original Sleep Pathways Guild summaries and APA-style references.",
+  "masterTerminologyManifest": "data/terminology/manifest.json",
+  "masterTerminologyRole": "authority-aware scoring and clinical terminology additions",
   "includeCategories": [
     "Cardiac & ECG Recognition",
     "Circadian Rhythm Sleep-Wake Disorders",
@@ -24,6 +27,10 @@
   "excludeQuestionFronts": true,
   "maxFrontLength": 90,
   "minimumDefinitionLength": 12,
-  "verificationSource": "AAST Terms and Definitions",
-  "verificationSourceRole": "terminology cross-check only"
+  "verificationSources": [
+    "The AASM Manual for the Scoring of Sleep and Associated Events, Version 3",
+    "International Classification of Sleep Disorders, Third Edition",
+    "International Classification of Sleep Disorders, Third Edition, Text Revision",
+    "AAST Sleep Technology Terms and Definitions, Second Edition"
+  ]
 }
