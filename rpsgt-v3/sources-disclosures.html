@@ -40,7 +40,7 @@
 <section class="section notice" data-reference-load><strong>Loading the RPSGT reference index…</strong> Building the learner-facing view from vetted source metadata and the current authority registry.</section>
 
 <section class="section card reference-controls" id="reference-filters" data-reference-controls>
-  <div class="section-head"><div><div class="eyebrow">Reference lookup</div><h2>Search by blueprint location or subject</h2><p>Filters use the existing RPSGT V3 source-to-task mappings and the audited authority registry. Private Drive locations, source keys, QA notes, and internal library records are not displayed.</p></div><span class="status green"><span data-reference-count>0</span>&nbsp;matches</span></div>
+  <div class="section-head"><div><div class="eyebrow">Reference lookup</div><h2>Search by blueprint location or subject</h2><p>Filters use the existing RPSGT V3 reference relationships and the audited authority registry. Private Drive locations, QA notes, and internal library records are not displayed.</p></div><span class="status green"><span data-reference-count>0</span>&nbsp;matches</span></div>
   <div class="reference-filter-grid">
     <label>Domain
       <select data-reference-domain><option value="all">All domains</option></select>
@@ -88,7 +88,7 @@
     <div><strong>Pediatric boundary</strong><span>AAST Standard PSG is not presented as pediatric PSG authority because its stated scope excludes pediatric PSG. Current AASM infant/pediatric rules, applicable pediatric protocols, age-specific competency, facility policy, and supporting pediatric references are layered separately.</span></div>
     <div><strong>Citation integrity</strong><span>Explicit APA citations are displayed as stored. When a vetted source record contains another verified citation style, it is labeled “Recorded source citation” rather than silently rewritten.</span></div>
     <div><strong>Copyright boundary</strong><span>The center shows bibliographic information, original study directions, and section or chapter titles. It does not reproduce protected textbook prose, scoring rules, figures, tables, or proprietary question banks.</span></div>
-    <div><strong>Private library boundary</strong><span>Internal Drive URLs, holdings records, source keys, audit notes, QA states, and library-management data remain hidden from learners.</span></div>
+    <div><strong>Private library boundary</strong><span>Internal Drive URLs, holdings records, audit notes, QA states, and library-management data remain hidden from learners.</span></div>
     <div><strong>Current-source warning</strong><span>Certification requirements, scoring rules, protocols, and professional guidance can change. Version-sensitive material should be verified against the current controlling source.</span></div>
     <div><strong>Independent educational use</strong><span>Sleep Pathways Guild is independent. References to BRPT, AASM, AAST, publishers, or professional literature do not imply endorsement.</span></div>
     <div><strong>Educational achievements</strong><span>Guild badges, medals, practice scores, readiness results, and mock results are educational measures only—not BRPT credentials, official scores, or passing predictions.</span></div>
@@ -102,7 +102,7 @@
       <div><strong>Educational use</strong><span>This learning center is for education and exam preparation, not a substitute for institutional policy, provider orders, current professional standards, clinical judgment, supervision, licensure requirements, or patient-specific decisions.</span></div>
       <div><strong>Scores &amp; readiness</strong><span>Practice, Readiness, Mock, Guided Study, reports, badges, and progress indicators are educational measures only and are not official BRPT scores, credential decisions, or passing predictions.</span></div>
       <div><strong>Question origin</strong><span>Sleep Pathways Guild practice questions are original educational items, not actual BRPT examination questions or copied proprietary question-bank material.</span></div>
-      <div><strong>Copyright</strong><span>Study recommendations, outlines, citations, objectives, and mappings point learners toward references without reproducing substantial protected passages, proprietary scoring rules, figures, tables, or question banks.</span></div>
+      <div><strong>Copyright</strong><span>Study recommendations, outlines, citations, and objectives point learners toward references without reproducing substantial protected passages, proprietary scoring rules, figures, tables, or question banks.</span></div>
       <div><strong>Affiliate disclosure</strong><span>Some optional commercial destinations elsewhere in the Guild may use affiliate links. Official professional and public resources should remain visually distinguishable from commercial destinations.</span></div>
       <div><strong>Privacy &amp; local learner data</strong><span>RPSGT V3 progress is designed to remain in the learner's browser unless a feature explicitly states otherwise. Private notes, raw browser state, question text, and private links are excluded from learner-facing reference results.</span></div>
       <div><strong>External links</strong><span>External sites control their own content, availability, privacy practices, and current versions. Learners should verify current requirements and guidance at the authoritative destination.</span></div>
@@ -121,6 +121,7 @@
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
+<script src="core/learner-surface-guard.js"></script>
 <script src="core/reference-center.js"></script>
 </body>
 </html>
