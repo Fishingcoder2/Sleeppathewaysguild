@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Memory Lab v3 | Sleep Pathways Guild</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/learning-tools.css">
+</head>
+<body data-module="study">
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Memory Lab</strong><span>Matching and bidirectional recall</span></span></a>
+  <div class="top-actions"><a href="flashcards.html">Flashcards</a><a href="glossary.html">Glossary</a><a href="math-coach.html">Math Coach</a><a href="study.html">Guided Study</a><a href="index.html">Dashboard</a></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" href="flashcards.html"><span>🗂️</span>Flashcards</a>
+  <a class="nav-link" href="glossary.html"><span>📖</span>Glossary</a>
+  <a class="nav-link active" href="memory.html"><span>🧠</span>Memory Lab</a>
+  <a class="nav-link" href="math-coach.html"><span>∑</span>Math Coach</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+</aside>
+<main class="main">
+<section class="hero learning-tool-hero">
+  <div><div class="eyebrow">Retrieval practice</div><h1>Match it, reverse it, remember it.</h1><p class="lead">Use the same RPSGT learning library in two ways: match a term to its meaning, then reverse the relationship in a four-choice recall round. Formula mode pulls directly from Math Coach.</p><div class="actions"><button class="btn primary" type="button" data-start-matching>Start matching round</button><button class="btn secondary" type="button" data-start-memory-recall>Start 10-question recall</button><a class="btn secondary" href="glossary.html">Review Glossary</a></div></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Recognition is easier than recall.</h2><p>If you can match a pair, test it again in reverse. The goal is to retrieve the answer without depending on how the question was first presented.</p><div class="learning-tool-metrics"><div class="learning-tool-metric"><span>Term pool</span><strong data-memory-term-total>—</strong></div><div class="learning-tool-metric"><span>Formula pool</span><strong data-memory-formula-total>—</strong></div></div></aside>
+</section>
+
+<section class="section card memory-control-card">
+  <div class="section-head"><div><div class="eyebrow">Build a round</div><h2>Choose your memory pool</h2></div></div>
+  <div class="memory-control-grid">
+    <label><span>Content</span><select data-memory-pool><option value="terms">Glossary terms</option><option value="formulas">Math formulas</option><option value="mixed">Mixed terms + formulas</option></select></label>
+    <label><span>Term category</span><select data-memory-category><option value="all">All term categories</option></select></label>
+    <label><span>Matching size</span><select data-memory-size><option value="8" selected>8 pairs</option><option value="12">12 pairs</option></select></label>
+  </div>
+  <div class="actions"><button class="btn primary" type="button" data-start-matching>Start matching</button><button class="btn secondary" type="button" data-start-memory-recall>Start 10-question recall</button></div>
+  <p class="notice" data-memory-load-error hidden></p>
+</section>
+
+<section class="section" data-memory-matching hidden>
+  <div class="memory-stats" aria-label="Matching round statistics"><div><span>Moves</span><strong data-memory-moves>0</strong></div><div><span>Matched</span><strong data-memory-matched>0 / 0</strong></div><div><span>Pairs left</span><strong data-memory-remaining>0</strong></div></div>
+  <div class="section card" data-memory-complete hidden></div>
+  <div class="section memory-board" data-memory-board aria-live="polite"></div>
+</section>
+
+<section class="section card" data-memory-recall hidden aria-live="polite">
+  <div class="section-head"><div><div class="eyebrow" data-recall-question-number>Question 1 of 10</div><h2 data-recall-question-label>Choose the best match</h2></div><span class="status green" data-recall-score>0 correct</span></div>
+  <div class="recall-card">
+    <div class="recall-term" data-recall-question-prompt></div>
+    <div class="recall-choice-grid" data-recall-choices></div>
+    <div class="memory-feedback" data-recall-feedback hidden></div>
+    <div class="actions"><button class="btn primary" type="button" data-recall-next-question disabled>Next question</button><button class="btn secondary" type="button" data-start-memory-recall>New recall round</button></div>
+  </div>
+</section>
+
+<section class="section notice"><strong>How to use this lab:</strong> Matching helps build associations. The recall round is harder on purpose because it asks you to retrieve the relationship in either direction. When a pair stays difficult, move to the Glossary, Flashcards, or Math Coach for deeper review.</section>
+<footer class="footer">Sleep Pathways Guild · RPSGT V3 Memory Lab</footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a href="flashcards.html"><span>🗂️</span><small>Cards</small></a><a class="active" href="memory.html"><span>🧠</span><small>Memory</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+<script src="core/learner-surface-guard.js"></script>
+<script src="data/learning-library/library-part-01.js"></script>
+<script src="data/learning-library/library-part-02.js"></script>
+<script src="data/learning-library/library-part-03.js"></script>
+<script src="data/learning-library/library-part-04.js"></script>
+<script src="data/learning-library/library-part-05.js"></script>
+<script src="core/learning-library.js"></script>
+<script src="core/memory.js"></script>
+</body>
+</html>
