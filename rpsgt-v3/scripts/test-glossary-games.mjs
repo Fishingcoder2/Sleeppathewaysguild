@@ -60,11 +60,13 @@ assert.equal(manifest.auditSummary.icsd3GlossaryTerms,54);
 assert.equal(manifest.auditSummary.uniqueTermsAcrossThreeInventories,310);
 assert.equal(manifest.auditSummary.aastTechnicalSupplementTerms,29);
 assert.equal(manifest.auditSummary.aastCorePsgSupplementTerms,33);
-assert.equal(manifest.auditSummary.studyReadyAuthorityAdditions,183);
-assert.equal(manifest.files.length,8);
-assert.equal(manifest.learnerFiles.length,7);
+assert.equal(manifest.auditSummary.aastHypersomnolenceEegSupplementTerms,23);
+assert.equal(manifest.auditSummary.studyReadyAuthorityAdditions,206);
+assert.equal(manifest.files.length,9);
+assert.equal(manifest.learnerFiles.length,8);
 assert.ok(manifest.learnerFiles.includes('aast-technical-supplement-1.json'));
 assert.ok(manifest.learnerFiles.includes('aast-core-psg-supplement-2.json'));
+assert.ok(manifest.learnerFiles.includes('aast-hypersomnolence-eeg-supplement-3.json'));
 assert.match(manifest.copyrightBoundary,/do not reproduce/i);
 
 const aast=sourcePayloads.find(payload=>payload.id==='aast-terms-2016');
@@ -78,18 +80,20 @@ const aasm=learnerPayloads.filter(payload=>payload.id==='aasm-scoring-v3');
 const icsd=learnerPayloads.filter(payload=>payload.id==='icsd-3');
 const supplement1=learnerPayloads.find(payload=>payload.id==='aast-technical-supplement-1');
 const supplement2=learnerPayloads.find(payload=>payload.id==='aast-core-psg-supplement-2');
+const supplement3=learnerPayloads.find(payload=>payload.id==='aast-hypersomnolence-eeg-supplement-3');
 assert.equal(aasm.reduce((sum,payload)=>sum+payload.items.length,0),67);
 assert.equal(icsd.reduce((sum,payload)=>sum+payload.items.length,0),54);
 assert.ok(supplement1,'AAST technical supplement is required.');
 assert.ok(supplement2,'AAST core PSG supplement is required.');
+assert.ok(supplement3,'AAST hypersomnolence/EEG supplement is required.');
 assert.equal(supplement1.items.length,29);
 assert.equal(supplement2.items.length,33);
-assert.match(supplement1.copyrightBoundary,/original Sleep Pathways Guild/i);
-assert.match(supplement2.copyrightBoundary,/original Sleep Pathways Guild/i);
+assert.equal(supplement3.items.length,23);
+for(const supplement of [supplement1,supplement2,supplement3]) assert.match(supplement.copyrightBoundary,/original Sleep Pathways Guild/i);
 
 const learnerRows=learnerPayloads.flatMap(payload=>(payload.items||[]).map(item=>({payload,item})));
 const learnerItems=learnerRows.map(row=>row.item);
-assert.equal(learnerItems.length,183);
+assert.equal(learnerItems.length,206);
 assert.ok(learnerItems.every(item=>item.id&&item.term&&item.definition&&item.category));
 assert.ok(learnerRows.every(({payload,item})=>item.definitionAuthorship==='Original Sleep Pathways Guild summary'||/original Sleep Pathways Guild/i.test(String(payload.copyrightBoundary||''))));
 assert.ok(learnerItems.every(item=>!Object.hasOwn(item,'publishedDefinition')&&!Object.hasOwn(item,'sourceDefinition')));
@@ -104,7 +108,7 @@ const sourceTerms=[...aast.items.map(item=>item.term),...learnerItems.map(item=>
 const uniqueSourceTerms=new Set(sourceTerms.map(canonical).filter(Boolean));
 assert.equal(uniqueSourceTerms.size,manifest.auditSummary.uniqueTermsAcrossThreeInventories);
 const aastTermSet=new Set(aast.items.map(item=>canonical(item.term)));
-for(const supplement of [supplement1,supplement2]){
+for(const supplement of [supplement1,supplement2,supplement3]){
   assert.ok(supplement.items.every(item=>aastTermSet.has(canonical(item.term))),'Every AAST supplement term must be present in the AAST source inventory.');
 }
 
@@ -112,9 +116,9 @@ const currentAasmCrossChecks=new Set([
   'High Frequency Filter','Low Frequency Filter','Notch Filter','Nyquist Theory','Impedance','Polarity',
   'Referential Derivation','Reference Electrode','Thermistor','Thermocouple','Piezo-Electric Sensor','PVDF Sensor',
   'Outer Canthus','Tidal Volume','Chin EMG','Dominant Posterior Rhythm','Electrocardiogram','Electroencephalogram',
-  'Electrooculogram','End-Tidal CO2','Epoch','Polysomnogram'
+  'Electrooculogram','End-Tidal CO2','Epoch','Polysomnogram','International 10-20 System of Electrode Placement'
 ].map(canonical));
-for(const item of [...supplement1.items,...supplement2.items].filter(item=>currentAasmCrossChecks.has(canonical(item.term)))){
+for(const item of [...supplement1.items,...supplement2.items,...supplement3.items].filter(item=>currentAasmCrossChecks.has(canonical(item.term)))){
   assert.ok(Array.isArray(item.references)&&item.references.some(ref=>/Troester.+\(2023\)/i.test(ref)),`Current AASM technical cross-check is required for ${item.term}`);
 }
 
@@ -126,10 +130,25 @@ const coreBatchTerms=new Set([
 ].map(canonical));
 assert.ok([...coreBatchTerms].every(key=>supplement2.items.some(item=>canonical(item.term)===key)),'Core PSG batch must include respiratory, PAP, testing, gas-exchange, and PSG signal terms.');
 
+const hypersomnolenceEegTerms=new Set([
+  'Hypocretin','Hypothalamus','Idiopathic Hypersomnia','Insomnia','Narcolepsy','International 10-20 System of Electrode Placement',
+  'Junctional Arrhythmias','Landau-Kleffner Syndrome','Lennox-Gastaut Syndrome','Masseter','Mu Rhythm','Myoclonus',
+  'Inspiratory Positive Airway Pressure Minimum','Inspiratory Positive Airway Pressure Maximum','International Classification of Sleep Disorders'
+].map(canonical));
+assert.ok([...hypersomnolenceEegTerms].every(key=>supplement3.items.some(item=>canonical(item.term)===key)),'Batch 3 must cover hypersomnolence, neurologic/EEG, electrode-placement, and PAP range terminology.');
+for(const term of ['Hypocretin','Idiopathic Hypersomnia','Insomnia','Narcolepsy','International Classification of Sleep Disorders']){
+  const item=supplement3.items.find(row=>canonical(row.term)===canonical(term));
+  assert.ok(item.references.some(ref=>/American Academy of Sleep Medicine\. \(2023\).*International classification of sleep disorders/i.test(ref)),`ICSD-3-TR cross-check is required for ${term}`);
+}
+for(const term of ['Mu Rhythm','Landau-Kleffner Syndrome','Lennox-Gastaut Syndrome','Myoclonus']){
+  const item=supplement3.items.find(row=>canonical(row.term)===canonical(term));
+  assert.ok(item.references.some(ref=>/Attarian.+\(2012\).*Atlas of electroencephalography/i.test(ref)),`EEG atlas cross-check is required for ${term}`);
+}
+
 const included=new Set(config.includeCategories);
 const looksLikeQuestion=front=>/\?$/.test(front)||/^(what|which|how|when|why|who|calculate|select|identify|choose)\b/i.test(front);
 const candidates=flashcards.cards.filter(card=>included.has(card.category)).filter(card=>String(card.front||'').trim().length<=config.maxFrontLength).filter(card=>String(card.back||'').trim().length>=config.minimumDefinitionLength).filter(card=>!config.excludeQuestionFronts||!looksLikeQuestion(String(card.front||'').trim()));
 assert.ok(candidates.length>=100,'Expected at least 100 terminology candidates from the preserved SPG flashcards.');
 for(const card of candidates.slice(0,20)){assert.ok(card.id&&card.front&&card.back);}
 
-console.log('Glossary Games passed syntax, master terminology authority merge, source-boundary, APA reference, AAST instrumentation and core PSG supplements, bidirectional recall, and Weak Memory contracts with '+aast.items.length+' AAST terms inventoried, '+learnerItems.length+' authority learner definitions, and '+candidates.length+' archived SPG terminology candidates.');
+console.log('Glossary Games passed syntax, master terminology authority merge, source-boundary, APA reference, three AAST gap-repair supplements, bidirectional recall, and Weak Memory contracts with '+aast.items.length+' AAST terms inventoried, '+learnerItems.length+' authority learner definitions, and '+candidates.length+' archived SPG terminology candidates.');
