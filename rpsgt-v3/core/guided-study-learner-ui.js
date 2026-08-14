@@ -23,16 +23,7 @@
   }
 
   function unique(values){return [...new Set(values.filter(Boolean))];}
-
-  function titleForSource(source){
-    return String(source&&(
-      source.shortTitle||
-      source.title||
-      source.name||
-      source.label||
-      source.id
-    )||'').trim();
-  }
+  function titleForSource(source){return String(source&&(source.shortTitle||source.title||source.name||source.label||source.id)||'').trim();}
 
   async function loadResourceCatalog(){
     try{
@@ -48,7 +39,7 @@
         if(id&&title) state.sourceTitles.set(id,title);
       });
     }catch(error){
-      console.warn('Verified Guided Study resource titles could not be loaded.',error);
+      console.warn('Guided Study reference titles could not be loaded.',error);
       state.taskPlans={};
       state.sourceTitles.clear();
     }finally{
@@ -76,12 +67,7 @@
     if(!titles.length){details.remove();return;}
     const list=details.querySelector('.data-chip-list');
     if(!list){details.remove();return;}
-    list.replaceChildren(...titles.map(title=>{
-      const item=document.createElement('span');
-      item.className='resource-title-chip';
-      item.textContent=title;
-      return item;
-    }));
+    list.replaceChildren(...titles.map(title=>{const item=document.createElement('span');item.className='resource-title-chip';item.textContent=title;return item;}));
     if(details.hidden) details.hidden=false;
     details.dataset.resourceReady='true';
   }
@@ -98,11 +84,11 @@
     const items=[...summaryHost.children];
     if(items.length<4) return;
     if(items[2].dataset.learnerMetric!=='checkpoint-size'){
-      items[2].innerHTML='<strong>5</strong> questions per checkpoint';
+      items[2].innerHTML='<strong>10</strong> questions per badge checkpoint';
       items[2].dataset.learnerMetric='checkpoint-size';
     }
     if(items[3].dataset.learnerMetric!=='award-goal'){
-      items[3].innerHTML='<strong>80%</strong> task-award goal';
+      items[3].innerHTML='<strong>8 / 10</strong> task-badge goal';
       items[3].dataset.learnerMetric='award-goal';
     }
   }
@@ -138,9 +124,8 @@
     const meta=checkpointHost.querySelector('.checkpoint-question-meta');
     if(meta){
       [...meta.children].forEach(node=>{
-        const text=String(node.textContent||'').trim();
-        if(/^Exact task mapping:/i.test(text)) node.remove();
-        else if(node.classList.contains('status')&&taskCodePattern.test(text)&&text!=='RPSGT review') node.textContent='RPSGT review';
+        const value=String(node.textContent||'').trim();
+        if(node.classList.contains('status')&&taskCodePattern.test(value)&&value!=='RPSGT review') node.textContent='RPSGT review';
       });
     }
 
@@ -151,22 +136,13 @@
     }
   }
 
-  function sanitizeAll(){
-    sanitizeSummary();
-    sanitizeTaskCards();
-    sanitizeCheckpoint();
-  }
+  function sanitizeAll(){sanitizeSummary();sanitizeTaskCards();sanitizeCheckpoint();}
 
-  window.RPSGTGuidedStudyResources={
-    titlesForTask(taskCode){return resourceTitlesForTask(String(taskCode||'')).slice();},
-    isReady(){return state.resourcesReady;}
-  };
-
+  window.RPSGTGuidedStudyResources={titlesForTask(taskCode){return resourceTitlesForTask(String(taskCode||'')).slice();},isReady(){return state.resourcesReady;}};
   const observer=new MutationObserver(sanitizeAll);
   observer.observe(mapHost,{childList:true,subtree:true});
   if(summaryHost) observer.observe(summaryHost,{childList:true,subtree:true});
   if(checkpointHost) observer.observe(checkpointHost,{childList:true,subtree:true});
-
   sanitizeAll();
   loadResourceCatalog();
 })();
