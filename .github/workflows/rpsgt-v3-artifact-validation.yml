@@ -1,0 +1,43 @@
+name: Validate RPSGT v3 Artifact Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-artifact.html'
+      - 'rpsgt-v3/assets/artifact.css'
+      - 'rpsgt-v3/core/artifact-lab-engine.js'
+      - 'rpsgt-v3/core/artifact-psg-renderer.js'
+      - 'rpsgt-v3/core/lab-artifact.js'
+      - 'rpsgt-v3/data/visual/artifact-pack-1.json'
+      - 'rpsgt-v3/scripts/test-artifact-lab-system.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-lab-shell.mjs'
+      - '.github/workflows/rpsgt-v3-artifact-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  artifact-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check Artifact Lab JavaScript syntax
+        run: |
+          node --check rpsgt-v3/core/artifact-lab-engine.js
+          node --check rpsgt-v3/core/artifact-psg-renderer.js
+          node --check rpsgt-v3/core/lab-artifact.js
+          node --check rpsgt-v3/scripts/test-artifact-lab-system.mjs
+          node --check rpsgt-v3/scripts/test-artifact-lab-shell.mjs
+      - name: Validate artifact answer order, physiology, and progress engine
+        run: node rpsgt-v3/scripts/test-artifact-lab-system.mjs
+      - name: Validate artifact learner shell
+        run: node rpsgt-v3/scripts/test-artifact-lab-shell.mjs
