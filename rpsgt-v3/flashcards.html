@@ -12,20 +12,21 @@
 <div class="app-shell">
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Flashcard Center</strong><span>Focused RPSGT concept review</span></span></a>
-  <div class="top-actions"><a href="study.html">Guided Study</a><a href="practice.html">Practice</a><a href="index.html">Dashboard</a></div>
+  <div class="top-actions"><a href="notes.html">Notes</a><a href="study.html">Guided Study</a><a href="practice.html">Practice</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
   <div class="nav-label">Learning Center</div>
   <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
   <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" href="notes.html"><span>📝</span>Study Notes</a>
   <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
   <a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a>
   <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
 </aside>
 <main class="main">
 <section class="hero flashcard-hero">
-  <div><div class="eyebrow">RPSGT learning tool</div><h1>Flashcard Center</h1><p class="lead">Review RPSGT cards you create in this development app. Cards from Guided Study and Practice retain their RPSGT topic context without displaying internal question or source keys.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Create a custom card</button><a class="btn secondary" href="study.html">Return to Guided Study</a></div></div>
+  <div><div class="eyebrow">RPSGT learning tool</div><h1>Flashcard Center</h1><p class="lead">Review RPSGT cards you create in this development app. Cards from Guided Study and Practice retain their RPSGT topic context without displaying internal question or source keys.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Create a custom card</button><a class="btn secondary" href="notes.html">Open Study Notes</a><a class="btn secondary" href="study.html">Return to Guided Study</a></div></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Recall first. Then flip.</h2><p>Say the answer before you turn the card. Mark it mastered only when you can explain why it is correct.</p></aside>
 </section>
 <section class="section card flashcard-filter-card" aria-labelledby="flashcard-filter-title">
@@ -44,7 +45,7 @@
   <div class="flashcard-toolbar card"><button class="btn secondary" type="button" data-card-prev>Previous</button><div class="flashcard-position"><strong data-card-position>Card 0 of 0</strong><span data-card-context>RPSGT review</span></div><button class="btn secondary" type="button" data-card-next>Next</button></div>
   <button class="flashcard" type="button" data-flashcard aria-pressed="false" aria-label="Flip flashcard">
     <span class="flashcard-sheet flashcard-front"><span class="flashcard-face-label">Front</span><span class="flashcard-topic" data-card-front-topic>RPSGT concept</span><span class="flashcard-front-text" data-card-front></span><span class="flashcard-flip-hint">Tap or press Enter to flip</span></span>
-    <span class="flashcard-sheet flashcard-back"><span class="flashcard-face-label">Back</span><span class="flashcard-answer" data-card-back></span><span class="flashcard-back-section" data-card-explanation-wrap><strong>Explanation</strong><span data-card-explanation></span></span><span class="flashcard-back-section" data-card-memory-wrap><strong>Memory clue</strong><span data-card-memory></span></span><span class="flashcard-back-section coach-back" data-card-coach-wrap><strong>Coach Bob</strong><span data-card-coach></span></span><span class="flashcard-back-section" data-card-resources-wrap><strong>Recommended study resources</strong><span class="flashcard-resource-list" data-card-resources></span></span></span>
+    <span class="flashcard-sheet flashcard-back"><span class="flashcard-face-label">Back</span><span class="flashcard-answer" data-card-back></span><span class="flashcard-back-section" data-card-explanation-wrap><strong>Explanation</strong><span data-card-explanation></span></span><span class="flashcard-back-section" data-card-memory-wrap><strong>Memory clue</strong><span data-card-memory></span></span><span class="flashcard-back-section coach-back" data-card-coach-wrap><strong>Coach Bob</strong><span data-card-coach></span></span><span class="flashcard-back-section" data-card-resources-wrap><strong>Related references</strong><span class="flashcard-resource-list" data-card-resources></span></span></span>
   </button>
   <div class="flashcard-actions card"><button class="btn secondary" type="button" data-card-flip>Flip</button><button class="btn secondary" type="button" data-card-flag>Flag</button><button class="btn secondary" type="button" data-card-mastered>Mastered</button><button class="btn secondary" type="button" data-card-review-again>Review again</button><a class="btn secondary" href="study.html">Exit</a></div>
 </section>
@@ -54,7 +55,7 @@
     <form data-custom-card-form>
       <label><span>Front</span><textarea name="front" rows="3" required></textarea></label><label><span>Back</span><textarea name="back" rows="3" required></textarea></label><label><span>Explanation</span><textarea name="explanation" rows="3"></textarea></label><label><span>Memory clue</span><textarea name="memoryClue" rows="2"></textarea></label><label><span>Coach Bob note</span><textarea name="coachBobNote" rows="2"></textarea></label>
       <div class="custom-card-grid"><label><span>Domain</span><input name="domain" placeholder="Example: Study Analysis and Reporting"></label><label><span>Task</span><input name="task" placeholder="Example: Generate and verify report"></label><label><span>Topic</span><input name="topic" placeholder="Example: Report calculations"></label></div>
-      <p class="notice">Custom cards do not receive an automatic resource recommendation. Add recommendations only through a verified RPSGT source mapping.</p>
+      <p class="notice">Custom cards do not receive an automatic reference recommendation. Related references appear only when a verified source relationship is available.</p>
       <div class="actions"><button class="btn secondary" type="button" data-custom-card-close>Cancel</button><button class="btn primary" type="submit">Save flashcard</button></div>
     </form>
   </section>
@@ -67,6 +68,7 @@
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
+<script src="core/learner-surface-guard.js"></script>
 <script src="core/flashcard-engine.js"></script>
 <script src="core/flashcard-store.js"></script>
 <script src="core/flashcards.js"></script>
