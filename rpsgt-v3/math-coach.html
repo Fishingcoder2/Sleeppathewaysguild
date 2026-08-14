@@ -7,19 +7,22 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/rpsgt-v3.css">
 <link rel="stylesheet" href="assets/math-coach.css">
+<link rel="stylesheet" href="assets/learning-tools.css">
 </head>
 <body data-module="math-coach">
 <div class="app-shell">
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Math Coach</strong><span>Learn the formula → demonstrate mastery</span></span></a>
-  <div class="top-actions"><a href="study.html">Guided Study</a><a href="flashcards.html">Flashcards</a><a href="notes.html">Notes</a><a href="reports.html">Reports</a><a href="index.html">Dashboard</a></div>
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Math Coach</strong><span>Learn the setup → practice the calculation → demonstrate mastery</span></span></a>
+  <div class="top-actions"><a href="glossary.html">Glossary</a><a href="memory.html">Memory Lab</a><a href="flashcards.html">Flashcards</a><a href="study.html">Guided Study</a><a href="reports.html">Reports</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
   <div class="nav-label">Learning Center</div>
   <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
   <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
-  <a class="nav-link" href="flashcards.html"><span>▱</span>Flashcards</a>
+  <a class="nav-link" href="flashcards.html"><span>🗂️</span>Flashcards</a>
+  <a class="nav-link" href="glossary.html"><span>📖</span>Glossary</a>
+  <a class="nav-link" href="memory.html"><span>🧠</span>Memory Lab</a>
   <a class="nav-link" href="notes.html"><span>📝</span>Study Notes</a>
   <a class="nav-link active" aria-current="page" href="math-coach.html"><span>∑</span>Math Coach</a>
   <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
@@ -28,23 +31,39 @@
 </aside>
 <main class="main">
 <section class="hero math-hero">
-  <div><div class="eyebrow">RPSGT Math Coach</div><h1>Build the calculation before answering the question</h1><p class="lead">Each curated skill moves through a plain-language lesson, formula and units, worked example, guided retry, independent practice, and mastery check. Math Coach is a learning tool—not a Skills Lab simulation or a random question-bank sampler.</p><div class="math-flow" aria-label="Math Coach sequence"><span>Learn</span><b>→</b><span>Worked example</span><b>→</b><span>Guided try</span><b>→</b><span>Independent practice</span><b>→</b><span>Mastery</span></div></div>
+  <div><div class="eyebrow">RPSGT Math Coach</div><h1>Build the calculation before answering the question</h1><p class="lead">Start with the restored 20-lesson RPSGT teaching library: concept, formula, unit, common trap, worked example, solve steps, and five practice questions. Then use the focused V3 mastery drills to demonstrate the calculations independently.</p><div class="math-flow" aria-label="Math Coach sequence"><span>Learn</span><b>→</b><span>Worked example</span><b>→</b><span>Guided recall</span><b>→</b><span>Independent practice</span><b>→</b><span>Mastery</span></div></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Write the units into the setup.</h2><p>A good calculation is a pathway: identify the numerator, identify the denominator, convert the time, calculate once, and ask whether the result makes sense.</p></aside>
 </section>
-<section class="section notice"><strong>Curated evidence boundary:</strong> This first release uses original Sleep Pathways Guild instruction supported by verified RPSGT study references. It does not assume that every calculation question in the larger bank is clinically reviewed or lesson-ready.</section>
-<section class="section"><div class="section-head"><div><div class="eyebrow">Your progress</div><h2>Math Coach skills</h2></div><span class="status green">Saved in this browser</span></div><div class="math-summary" data-math-summary><div><span>Curated skills</span><strong>Loading…</strong></div></div></section>
+
+<section class="section card">
+  <div class="section-head"><div><div class="eyebrow">Full teaching library</div><h2>20 RPSGT math lessons</h2><p>Use these lessons when the formula, denominator, unit, or setup itself needs review.</p></div><span class="status green" data-math-library-count>Loading lesson library…</span></div>
+  <div class="math-library-layout">
+    <nav class="math-lesson-list" data-math-library-list aria-label="Math Coach lessons"><p>Loading lessons…</p></nav>
+    <article class="card math-lesson" data-math-library-detail><p>Loading the RPSGT Math Coach lesson library…</p></article>
+  </div>
+</section>
+
+<section class="section notice"><strong>Two ways to practice:</strong> The lesson library teaches the full setup and includes 100 guided multiple-choice questions. The mastery section below keeps the existing V3 numeric drills for calculations you should be able to perform without answer choices.</section>
+<section class="section"><div class="section-head"><div><div class="eyebrow">Independent calculation practice</div><h2>V3 mastery skills</h2></div><span class="status green">Saved in this browser</span></div><div class="math-summary" data-math-summary><div><span>Curated skills</span><strong>Loading…</strong></div></div></section>
 <section class="section math-skill-catalog" data-math-catalog><div class="card"><p>Loading curated Math Coach skills…</p></div></section>
 <section class="section card math-workspace" data-math-workspace hidden></section>
-<section class="section notice"><strong>Educational boundary:</strong> Practice calculations support exam preparation and report-review skills. They are not an official BRPT score prediction, diagnostic interpretation, or clinical calculator.</section>
-<footer class="footer">Development branch only · Existing RPSGT and legacy browser data remain unchanged</footer>
+<section class="section notice"><strong>Educational boundary:</strong> Practice calculations support exam preparation and report-review skills. They are not an official BRPT score prediction, diagnostic interpretation, or clinical calculator. Use current standards and lab policy for formal clinical requirements.</section>
+<footer class="footer">Sleep Pathways Guild · RPSGT V3 Math Coach</footer>
 </main>
 </div>
-<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a href="math-coach.html" aria-current="page"><span>∑</span><small>Math</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a href="math-coach.html" aria-current="page"><span>∑</span><small>Math</small></a><a href="memory.html"><span>🧠</span><small>Memory</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
 <div class="math-award-overlay" data-math-award-overlay hidden><section class="math-award" data-math-award role="dialog" aria-modal="true" aria-labelledby="math-award-title" tabindex="-1"></section></div>
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
 <script src="core/learner-surface-guard.js"></script>
+<script src="data/learning-library/library-part-01.js"></script>
+<script src="data/learning-library/library-part-02.js"></script>
+<script src="data/learning-library/library-part-03.js"></script>
+<script src="data/learning-library/library-part-04.js"></script>
+<script src="data/learning-library/library-part-05.js"></script>
+<script src="core/learning-library.js"></script>
+<script src="core/math-coach-library.js"></script>
 <script src="core/math-coach-engine.js"></script>
 <script src="core/math-coach-view-base.js"></script>
 <script src="core/math-coach-view-practice.js"></script>
