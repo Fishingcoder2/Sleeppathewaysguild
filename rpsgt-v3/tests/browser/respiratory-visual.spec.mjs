@@ -7,7 +7,7 @@ test('respiratory visual pack supports 120-second routine and five-minute period
 
   await page.goto('lab-respiratory-visual.html');
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('[data-respiratory-visual-host] canvas')).toBeVisible();
+  await expect(page.locator('[data-respiratory-visual-host] canvas[aria-label="Schematic respiratory polysomnography tracing"]')).toBeVisible();
   await expect(page.locator('[data-respiratory-visual-host]')).toContainText('120-second view');
   await expect(page.locator('[data-resp-view="30"]')).toBeVisible();
   await expect(page.locator('[data-resp-view="120"]')).toBeVisible();
