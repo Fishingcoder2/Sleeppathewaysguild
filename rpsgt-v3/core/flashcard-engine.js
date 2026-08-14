@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.1.0';
+  const VERSION='1.2.0';
   const MASTERY_STATUSES=new Set(['learning','mastered','review-again']);
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
@@ -31,6 +31,8 @@
       cards,
       order,
       filters:{
+        search:text(filters.search),
+        category:text(filters.category)||'all',
         domain:text(filters.domain)||'all',
         task:text(filters.task)||'all',
         topic:text(filters.topic)||'all',
@@ -42,11 +44,7 @@
   }
 
   function cardId(input){
-    const questionId=text(input&&(
-      input.questionId||
-      input.sourceQuestionId||
-      input.stableQuestionId
-    ));
+    const questionId=text(input&&(input.questionId||input.sourceQuestionId||input.stableQuestionId));
     if(questionId) return 'question:'+questionId;
     const supplied=text(input&&input.id);
     if(supplied&&/^(custom|builtin):/i.test(supplied)) return supplied;
@@ -70,16 +68,18 @@
     const status=masteryStatus(source.masteryStatus||prior.masteryStatus);
     return {
       id,
+      legacyId:text(source.legacyId||prior.legacyId)||null,
       questionId:questionId||null,
       front,
       back,
       explanation:text(source.explanation||source.rationale||prior.explanation),
       memoryClue:text(source.memoryClue||source.whyTricky||prior.memoryClue),
       coachBobNote:text(source.coachBobNote||prior.coachBobNote),
+      category:text(source.category||prior.category||source.topic||prior.topic),
       domain:text(source.domain||prior.domain),
       task:text(source.task||source.taskTitle||prior.task),
       taskCode:text(source.taskCode||prior.taskCode),
-      topic:text(source.topic||prior.topic),
+      topic:text(source.topic||prior.topic||source.category||prior.category),
       recommendedResources:uniqueText(source.recommendedResources||prior.recommendedResources),
       sourceContext:text(source.sourceContext||prior.sourceContext||'RPSGT v3'),
       custom:questionId?false:source.custom!==undefined?Boolean(source.custom):prior.custom!==undefined?Boolean(prior.custom):!/^builtin:/i.test(id),
@@ -133,6 +133,7 @@
       explanation:source.rationale,
       memoryClue:source.whyTricky,
       coachBobNote:source.coachBobNote,
+      category:settings.category||source.category||source.topic,
       domain:settings.domainTitle||source.domain,
       task:settings.taskTitle||source.task,
       taskCode:source.taskCode||settings.taskCode,
@@ -144,20 +145,26 @@
   }
 
   function addQuestionCard(value,question,options,now){return upsertCard(value,questionCard(question,options),now);}
-
   function includesId(values,id){return asArray(values).some(value=>String(value)===String(id));}
 
   function filterCards(value,filters,review){
     const store=normalizeStore(value);
-    const selected=Object.assign({domain:'all',task:'all',topic:'all',status:'all'},filters||{});
+    const selected=Object.assign({search:'',category:'all',domain:'all',task:'all',topic:'all',status:'all'},filters||{});
     const reviewState=isObject(review)?review:{};
+    const query=normalizeText(selected.search);
     return store.order.map(id=>store.cards[id]).filter(Boolean).filter(card=>{
+      if(query){
+        const haystack=normalizeText([card.front,card.back,card.memoryClue,card.category,card.domain,card.task,card.topic].join(' '));
+        if(!haystack.includes(query)) return false;
+      }
+      if(selected.category&&selected.category!=='all'&&card.category!==selected.category) return false;
       if(selected.domain&&selected.domain!=='all'&&card.domain!==selected.domain) return false;
       if(selected.task&&selected.task!=='all'&&card.taskCode!==selected.task&&card.task!==selected.task) return false;
       if(selected.topic&&selected.topic!=='all'&&card.topic!==selected.topic) return false;
       if(selected.status==='missed'&&!includesId(reviewState.missedIds,card.questionId)) return false;
       if(selected.status==='flagged'&&!card.flagged&&!includesId(reviewState.flaggedIds,card.questionId)) return false;
       if(selected.status==='custom'&&!card.custom) return false;
+      if(selected.status==='built-in'&&card.custom) return false;
       if(selected.status==='mastered'&&card.masteryStatus!=='mastered') return false;
       if(selected.status==='review-again'&&card.masteryStatus!=='review-again') return false;
       return true;
@@ -167,26 +174,12 @@
   function filterOptions(value){
     const cards=filterCards(value,{},{ });
     return {
+      categories:uniqueText(cards.map(card=>card.category)).sort(),
       domains:uniqueText(cards.map(card=>card.domain)).sort(),
       tasks:uniqueText(cards.map(card=>card.taskCode||card.task)).sort(),
       topics:uniqueText(cards.map(card=>card.topic)).sort()
     };
   }
 
-  return {
-    VERSION,
-    MASTERY_STATUSES:[...MASTERY_STATUSES],
-    normalizeStore,
-    cardId,
-    normalizeCard,
-    upsertCard,
-    removeCard,
-    updateCard,
-    setFlag,
-    setMastery,
-    questionCard,
-    addQuestionCard,
-    filterCards,
-    filterOptions
-  };
+  return {VERSION,MASTERY_STATUSES:[...MASTERY_STATUSES],normalizeStore,cardId,normalizeCard,upsertCard,removeCard,updateCard,setFlag,setMastery,questionCard,addQuestionCard,filterCards,filterOptions};
 });
