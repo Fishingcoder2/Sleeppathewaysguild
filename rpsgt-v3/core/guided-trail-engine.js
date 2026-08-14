@@ -4,8 +4,9 @@
   root.RPSGTGuidedTrailEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.1.0';
+  const VERSION='1.2.0';
   const PASS_PERCENT=80;
+  const BADGE_QUESTION_COUNT=10;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const taskList=blueprint=>(blueprint&&blueprint.domains||[]).flatMap(domain=>(domain.tasks||[]).map(task=>({...task,domain:domain.id,domainName:domain.fullName})));
@@ -54,7 +55,7 @@
     const eligible=(records||[]).filter(record=>eligibleQuestion(record,taskCode));
     const copy=eligible.slice();const random=seededRandom(seed||taskCode);
     for(let i=copy.length-1;i>0;i-=1){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
-    return copy.slice(0,Math.max(0,Number(count)||5)).map(clone);
+    return copy.slice(0,Math.max(0,Number(count)||BADGE_QUESTION_COUNT)).map(clone);
   }
   function gradeCheckpoint(input){
     const questions=Array.isArray(input&&input.questions)?input.questions:[];
@@ -86,7 +87,8 @@
     next.checkpointHistory=[safe,...next.checkpointHistory.filter(item=>item&&item.id!==safe.id)];
     next.trailDomain=safe.domain||next.trailDomain;next.trailFocus={domain:safe.domain,task:safe.task};
     next.lastTrailPost={domain:safe.domain,task:safe.task,kind:'checkpoint',score:safe.score,passed:safe.passed,completedAt:safe.completedAt};
-    if(safe.passed&&safe.task){next.trailAwards.tasks[safe.task]={earnedAt:safe.completedAt,score:safe.score,checkpointId:safe.id};}
+    const qualifiesForBadge=Number(safe.total)>=BADGE_QUESTION_COUNT&&safe.passed&&safe.task;
+    if(qualifiesForBadge){next.trailAwards.tasks[safe.task]={earnedAt:safe.completedAt,score:safe.score,correct:safe.correct,total:safe.total,checkpointId:safe.id};}
     const tasks=taskList(blueprint).filter(task=>task.domain===safe.domain);
     if(tasks.length&&tasks.every(task=>next.trailAwards.tasks[task.code])){
       next.trailAwards.domains[safe.domain]={earnedAt:safe.completedAt,taskCount:tasks.length,source:'v3-guided-trail'};
@@ -105,5 +107,5 @@
     });
     return {state,rows,domains,counts:{studyMarks:rows.filter(row=>row.studyMarked).length,taskAwards:rows.filter(row=>row.award).length,domainAwards:domains.filter(domain=>domain.award).length,checkpoints:state.checkpointHistory.length},latestCheckpoint:state.checkpointHistory[0]||null,currentFocus:state.trailFocus||state.lastTrailPost||null};
   }
-  return {VERSION,PASS_PERCENT,normalizeState,taskList,taskMap,completePrompt,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
+  return {VERSION,PASS_PERCENT,BADGE_QUESTION_COUNT,normalizeState,taskList,taskMap,completePrompt,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
 });
