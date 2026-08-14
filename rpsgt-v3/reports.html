@@ -12,7 +12,7 @@
 <body data-module="reports">
 <div class="app-shell">
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Reports Center</strong><span>Separate evidence · one study plan</span></span></a>
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Reports Center</strong><span>Progress evidence · personalized review</span></span></a>
   <div class="top-actions"><a href="study-summary.html">Print/export summary</a><a href="practice.html">Practice Center</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
@@ -26,14 +26,14 @@
 </aside>
 <main class="main">
 <section class="hero report-hero">
-  <div><div class="eyebrow">Reports Center · Learning evidence</div><h1>Progress, diagnostics, Guided Study, and study directions</h1><p class="lead">Practice, remediation, Readiness, Mock, and Guided Study evidence remain separate. This page reads those records and turns weak areas into current-authority and core-reference study directions.</p></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Study the cause, not only the score.</h2><p>Start with the current official rule when one applies, use a core reference to understand the concept, then return to focused practice.</p></aside>
+  <div><div class="eyebrow">Reports Center · Personalized study guidance</div><h1>Your progress and recommended self-guided review</h1><p class="lead">This report keeps Practice, Readiness, Mock, and Guided Study results separate, then uses patterns across them to suggest what to review next.</p></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Study the cause, not only the score.</h2><p>Start with the highest-priority topic, review the recommended reference sections, then return to focused practice and recheck your understanding.</p></aside>
 </section>
-<section class="section notice"><strong>Reporting boundary:</strong> This page is read only. It does not change answers, missed or mastered lists, Readiness history, Mock history, Guided Study progress, or existing browser progress. Completed Mock review reconnects saved response evidence to the current validated question bank without copying full question content into the progress record.</section>
-<section class="section notice" data-reports-load>Loading learner progress and related reference directions…</section>
+<section class="section notice"><strong>About this report:</strong> This page is read only. It summarizes your saved learning activity and recommends areas for self-guided review without changing your answers, scores, or progress.</section>
+<section class="section notice" data-reports-load>Building your progress summary and recommended review plan…</section>
 <div class="hidden" data-reports-content>
 <section class="section" aria-labelledby="snapshot-title">
-  <div class="section-head"><div><div class="eyebrow">Current learner record</div><h2 id="snapshot-title">Progress snapshot</h2></div><span class="status green">Separate histories preserved</span></div>
+  <div class="section-head"><div><div class="eyebrow">Current learner record</div><h2 id="snapshot-title">Progress snapshot</h2></div><span class="status green">Your learning histories stay separate</span></div>
   <div class="report-stat-grid">
     <article class="report-stat"><span>Practice answered</span><strong data-report-practice-answered>0</strong><small data-report-practice-accuracy>0% accuracy</small></article>
     <article class="report-stat"><span>Missed queue</span><strong data-report-missed>0</strong><small><a href="review.html?list=missed">Open remediation</a></small></article>
@@ -42,32 +42,32 @@
   </div>
 </section>
 <section class="section grid report-grid" aria-label="Report families">
-  <article class="card report-family"><span class="status">Skill building</span><h2>Practice and remediation</h2><p>Ordinary practice attempts, task accuracy, missed questions, mastered questions, and review activity.</p><div class="report-family-metrics" data-practice-family></div><a class="btn secondary" href="#practice-report">View practice report</a></article>
+  <article class="card report-family"><span class="status">Skill building</span><h2>Practice and remediation</h2><p>Ordinary practice attempts, accuracy, missed questions, mastered questions, and review activity.</p><div class="report-family-metrics" data-practice-family></div><a class="btn secondary" href="#practice-report">View practice report</a></article>
   <article class="card report-family"><span class="status gold">Diagnostic</span><h2>Readiness Checks</h2><p>Weighted 25-, 50-, and 100-question checks remain separate from ordinary practice.</p><div class="report-family-metrics" data-readiness-family></div><a class="btn secondary" href="#readiness-report">View readiness report</a></article>
-  <article class="card report-family"><span class="status green">Full length</span><h2>175-question Mock</h2><p>Scored-style percentage, timing, domain results, weak tasks, and completed-attempt drill-down remain in Mock history only.</p><div class="report-family-metrics" data-mock-family></div><a class="btn secondary" href="#mock-detail">View mock drill-down</a></article>
+  <article class="card report-family"><span class="status green">Full length</span><h2>175-question Mock</h2><p>Scored-style percentage, timing, domain results, weak areas, and completed-attempt review remain in Mock history only.</p><div class="report-family-metrics" data-mock-family></div><a class="btn secondary" href="#mock-detail">View mock review</a></article>
   <article class="card report-family"><span class="status quality">Guided Study</span><h2>Trail achievements</h2><p>Study marks, task badges, named domain medals, current position, and checkpoint attempts remain in the Guided Study record.</p><div class="report-family-metrics" data-trail-family></div><a class="btn secondary" href="#guided-trail-report">View Guided Study report</a></article>
 </section>
 <section class="section card coach-plan" id="study-plan">
-  <div class="section-head"><div><div class="eyebrow">Reference-backed feedback</div><h2>Coach Bob’s next study plan</h2></div><span class="status gold">Official rule → core reference → practice</span></div>
-  <p class="report-intro">Recommendations use task performance, the active missed queue, and the most recent Readiness and Mock weak-task findings. Relevant chapter and section titles are used as study directions; copyrighted prose, figures, tables, and proprietary questions are not reproduced.</p>
+  <div class="section-head"><div><div class="eyebrow">Recommended self-guided review</div><h2>What to review next</h2></div><span class="status gold">Review → practice → recheck</span></div>
+  <p class="report-intro">Your priorities are based on patterns in Practice, missed-question review, Readiness Checks, and Mock results. Start with the first recommendation, review the listed topics and reference sections, then return to focused practice.</p>
   <div data-coach-plan></div>
 </section>
 <section class="section card" id="practice-report">
-  <div class="section-head"><div><div class="eyebrow">Ordinary learner record</div><h2>Practice and remediation report</h2></div><div class="actions compact"><a class="btn secondary" href="practice.html">Focused practice</a><a class="btn secondary" href="review.html?list=missed">Review missed</a></div></div>
+  <div class="section-head"><div><div class="eyebrow">Practice history</div><h2>Practice and remediation report</h2></div><div class="actions compact"><a class="btn secondary" href="practice.html">Focused practice</a><a class="btn secondary" href="review.html?list=missed">Review missed</a></div></div>
   <div class="report-callout" data-practice-summary></div><div class="task-report-list" data-task-report></div>
 </section>
 <section class="section card" id="guided-trail-report">
-  <div class="section-head"><div><div class="eyebrow">Separate Guided Study record</div><h2>Trail checkpoints and Guild achievements</h2></div><a class="btn secondary" href="study.html">Open Guided Study</a></div>
-  <p class="report-intro">This report reads Guided Study position, study marks, task badges, named domain medals, and checkpoint history. It does not add checkpoint answers to ordinary Practice totals.</p>
+  <div class="section-head"><div><div class="eyebrow">Guided Study progress</div><h2>Trail checkpoints and Guild achievements</h2></div><a class="btn secondary" href="study.html">Open Guided Study</a></div>
+  <p class="report-intro">This section shows Guided Study progress, study marks, task badges, named domain medals, and checkpoint history without mixing those results into ordinary Practice totals.</p>
   <div data-guided-trail-report><div class="empty-report">Loading Guided Study report…</div></div>
 </section>
 <section class="section grid grid-2 diagnostic-reports">
-  <article class="card" id="readiness-report"><div class="section-head"><div><div class="eyebrow">Separate diagnostic history</div><h2>Readiness Check report</h2></div><a class="btn secondary" href="readiness.html">Open Readiness</a></div><div data-readiness-report></div></article>
-  <article class="card" id="mock-report"><div class="section-head"><div><div class="eyebrow">Separate full-length history</div><h2>175-question Mock report</h2></div><a class="btn secondary" href="mock.html">Open Mock</a></div><div data-mock-report></div></article>
+  <article class="card" id="readiness-report"><div class="section-head"><div><div class="eyebrow">Readiness history</div><h2>Readiness Check report</h2></div><a class="btn secondary" href="readiness.html">Open Readiness</a></div><div data-readiness-report></div></article>
+  <article class="card" id="mock-report"><div class="section-head"><div><div class="eyebrow">Mock history</div><h2>175-question Mock report</h2></div><a class="btn secondary" href="mock.html">Open Mock</a></div><div data-mock-report></div></article>
 </section>
 <section class="section card mock-drilldown" id="mock-detail">
-  <div class="section-head"><div><div class="eyebrow">Completed-attempt evidence</div><h2>Mock result drill-down</h2></div><span class="status green">Read only</span></div>
-  <p class="report-intro">Choose a completed attempt to review scored domains, all task families, unanswered and flagged items, and—when question-level evidence is available—the saved response for each item. Earlier attempts that contain only summary data remain visible as summary-only history.</p>
+  <div class="section-head"><div><div class="eyebrow">Completed Mock review</div><h2>Mock result details</h2></div><span class="status green">Read only</span></div>
+  <p class="report-intro">Choose a completed attempt to review scored domains, areas of strength and weakness, unanswered and flagged items, and—when available—your saved response for each item. Earlier summary-only attempts remain visible as summary history.</p>
   <div data-mock-drilldown><div class="empty-report">Loading completed Mock history…</div></div>
 </section>
 <section class="section card export-summary-card" id="export-summary">
@@ -76,10 +76,10 @@
   <div class="actions"><a class="btn primary" href="study-summary.html">Open print and export summary</a></div>
 </section>
 <section class="section card source-shelf" id="source-outlines">
-  <div class="section-head"><div><div class="eyebrow">Related references</div><h2>Related study directions</h2></div><div class="actions compact"><span class="status green" data-outline-count>0 related sections</span><a class="btn secondary" href="sources-disclosures.html">Open Reference Center</a></div></div>
-  <p class="report-intro">These related chapter and section titles are navigation aids drawn from the same source catalog used by the RPSGT Reference Center. They do not expose private Drive files, storefronts, source-library internals, or copied protected content.</p><div data-source-outlines></div>
+  <div class="section-head"><div><div class="eyebrow">Reference Center</div><h2>Additional study references</h2></div><div class="actions compact"><span class="status green" data-outline-count>0 related sections</span><a class="btn secondary" href="sources-disclosures.html">Open Reference Center</a></div></div>
+  <p class="report-intro">The personalized review plan above lists the reference sections most relevant to your current priorities. Use the Reference Center if you want to browse additional study resources.</p><div data-source-outlines></div>
 </section>
-<section class="section card"><div class="section-head"><div><div class="eyebrow">Migration preview</div><h2>Existing browser progress</h2></div><span class="status green">Read only</span></div><div data-migration-preview></div></section>
+<section class="section card"><div class="section-head"><div><div class="eyebrow">Existing progress</div><h2>Previous browser progress</h2></div><span class="status green">Read only</span></div><div data-migration-preview></div></section>
 </div>
 <footer class="footer">Sleep Pathways Guild · Reports and Guild achievements are educational feedback, not official BRPT scores, credentials, or passing predictions</footer>
 </main>
@@ -94,6 +94,7 @@
 <script src="core/guided-trail-engine.js"></script>
 <script src="core/mock-drilldown-engine.js"></script>
 <script src="core/reports.js"></script>
+<script src="core/reports-self-guided-review.js"></script>
 <script src="core/guided-trail-report.js"></script>
 <script src="core/mock-result-report.js"></script>
 </body>
