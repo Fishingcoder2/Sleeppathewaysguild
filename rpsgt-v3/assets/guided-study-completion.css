@@ -8,15 +8,20 @@
 .checkpoint-route-panel h3{margin:0 0 6px;color:var(--navy,#12324d)}
 .checkpoint-route-panel p{margin:0;color:var(--muted,#62727e)}
 .checkpoint-route-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.checkpoint-actions{position:sticky!important;bottom:0!important;z-index:30!important;box-shadow:0 -10px 24px rgba(7,28,48,.08)}
+.checkpoint-answer-review{margin-top:14px;padding:14px;border-radius:14px;background:#f8fbfd;border:1px solid #bdd4df}
+.checkpoint-answer-review.correct{border-color:#8bc6a6;background:#effaf4}
+.checkpoint-answer-review.incorrect{border-color:#dfa78f;background:#fff5f0}
+.checkpoint-answer-review p{margin:10px 0 0;line-height:1.5}
 .guided-award-overlay{
   position:fixed;
   inset:0;
-  z-index:90;
+  z-index:10000;
   display:grid;
   place-items:center;
   padding:20px;
-  background:rgba(7,28,48,.74);
-  backdrop-filter:blur(5px);
+  background:rgba(7,28,48,.82);
+  backdrop-filter:blur(6px);
 }
 .guided-award-overlay[hidden]{display:none}
 .guided-award-dialog{
@@ -31,7 +36,7 @@
   border-top:7px solid #0d8298;
   border-radius:24px;
   background:linear-gradient(160deg,#ffffff 0%,#fffaf0 58%,#edf8fb 100%);
-  box-shadow:0 28px 78px rgba(0,0,0,.31);
+  box-shadow:0 34px 100px rgba(0,0,0,.42);
   animation:guided-award-arrive .32s ease-out both;
 }
 .guided-award-dialog:before{
