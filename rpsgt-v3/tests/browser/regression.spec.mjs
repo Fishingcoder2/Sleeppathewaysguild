@@ -16,6 +16,7 @@ const PRIMARY_ROUTES = [
 const LAB_ROUTES = [
   'lab-hookup.html',
   'lab-ekg.html',
+  'lab-visual.html',
   'lab-scoring.html',
   'lab-respiratory.html',
   'lab-pap.html',
@@ -23,6 +24,7 @@ const LAB_ROUTES = [
   'lab-pediatric.html',
   'lab-daytime-testing.html',
   'lab-troubleshooting.html',
+  'mentoring-diagnostic.html',
   'lab-math-coach.html'
 ];
 
@@ -200,8 +202,7 @@ test('Mock builds 175 questions, saves, reloads, and resumes', async ({ page }) 
   await expect(page.locator('[data-mock-shell]')).toBeVisible({ timeout: 30_000 });
   await expect(page.locator('[data-mock-palette] button')).toHaveCount(175);
 
-  const firstOption = page.locator('[data-question-choices] input[type="radio"]').first();
-  await firstOption.check();
+  await page.locator('[data-question-choices] [data-choice-index]').first().click();
   await page.locator('[data-next-question]').click();
   await page.locator('[data-pause-mock]').click();
   await expect(page.locator('[data-resume-card]')).toBeVisible();
@@ -213,12 +214,13 @@ test('Mock builds 175 questions, saves, reloads, and resumes', async ({ page }) 
   await expect(page.locator('[data-question-number]')).toContainText('2');
 });
 
-test('Skills Lab catalog exposes exactly the ten native v3 routes', async ({ page }) => {
+test('Skills Lab catalog exposes exactly the twelve native v3 routes', async ({ page }) => {
   await page.goto('labs.html');
   await expect(page.locator('[data-lab-catalog]')).toBeVisible();
-  await expect(page.locator('[data-lab-catalog] a[href^="lab-"]')).toHaveCount(10);
+  const primaryRoutes = page.locator('[data-lab-catalog] .lab-card .actions > a.btn.primary');
+  await expect(primaryRoutes).toHaveCount(12);
 
-  const hrefs = await page.locator('[data-lab-catalog] a[href^="lab-"]').evaluateAll((links) =>
+  const hrefs = await primaryRoutes.evaluateAll((links) =>
     links.map((link) => link.getAttribute('href')).sort()
   );
   expect(hrefs).toEqual([...LAB_ROUTES].sort());
