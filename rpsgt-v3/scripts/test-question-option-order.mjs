@@ -58,7 +58,7 @@ const threePositions=[0,0,0];
 threeTransformed.forEach(question=>{threePositions[question.options.indexOf(question.answer)]+=1;});
 assert.deepEqual(threePositions,[4,4,4],'Three-choice questions must also distribute correct positions evenly.');
 
-assert.ok(/manifest\.json/.test(js)&&/!\/manifest/.test(js),'Manifest fetches must remain untouched.');
+assert.ok(js.includes('/\\/manifest\\.json$/i.test(url.pathname)')&&js.includes('/manifest\\.json/i.test(raw)'),'Manifest fetches must remain explicitly excluded from question-module transformations.');
 assert.ok(/question\.answer/.test(js)&&/Object\.assign\(\{\},question,\{options\}\)/.test(js),'Option ordering must preserve the answer key while replacing only presented options.');
 
 console.log(`Question option ordering passed: canonical data unchanged; four-choice distribution A/B/C/D = ${positions.join('/')}; three-choice distribution = ${threePositions.join('/')}; Practice, Review, Readiness, and Mock are wired.`);
