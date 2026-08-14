@@ -13,6 +13,7 @@
   let recallState=null;
   let weakTurn=0;
   let learner=storage.load();
+  let retroAudioContext=null;
 
   const categorySelect=root.querySelector('[data-memory-category]');
   const board=root.querySelector('[data-memory-board]');
@@ -29,6 +30,7 @@
     learner.labs.memoryGames=learner.labs.memoryGames&&typeof learner.labs.memoryGames==='object'?learner.labs.memoryGames:{games:0,matchWins:0,recallAnswered:0,recallCorrect:0,bestMoves:null};
     const s=learner.labs.memoryGames;
     s.games=Number(s.games||0);s.matchWins=Number(s.matchWins||0);s.recallAnswered=Number(s.recallAnswered||0);s.recallCorrect=Number(s.recallCorrect||0);
+    s.arcadeAnswered=Number(s.arcadeAnswered||0);s.arcadeCorrect=Number(s.arcadeCorrect||0);s.arcadeStreak=Number(s.arcadeStreak||0);s.bestArcadeStreak=Number(s.bestArcadeStreak||0);s.bestAbbreviationSprint=Number(s.bestAbbreviationSprint||0);
     s.cardMemory=s.cardMemory&&typeof s.cardMemory==='object'?s.cardMemory:{};
     return s;
   }
@@ -44,7 +46,36 @@
   function sample(count){return sampleFrom(filtered(),count);}
   function short(value,max){const text=String(value||'');return text.length>max?text.slice(0,max-1).trim()+'…':text;}
   function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
-  function play(kind){if(window.RPSGTApp&&typeof window.RPSGTApp.playFeedbackSound==='function')window.RPSGTApp.playFeedbackSound(kind);}
+
+  function soundEnabled(){
+    try{return Boolean(storage.load()?.learner?.settings?.soundEffects);}catch(error){return false;}
+  }
+  function tone(frequency,start,duration,type,volume){
+    const oscillator=retroAudioContext.createOscillator();
+    const gain=retroAudioContext.createGain();
+    oscillator.type=type||'square';
+    oscillator.frequency.setValueAtTime(frequency,start);
+    gain.gain.setValueAtTime(.0001,start);
+    gain.gain.exponentialRampToValueAtTime(volume||.028,start+.008);
+    gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    oscillator.connect(gain);gain.connect(retroAudioContext.destination);oscillator.start(start);oscillator.stop(start+duration+.02);
+  }
+  function play(kind){
+    if(!soundEnabled()) return;
+    try{
+      const Context=window.AudioContext||window.webkitAudioContext;if(!Context)return;
+      retroAudioContext=retroAudioContext||new Context();if(retroAudioContext.state==='suspended')retroAudioContext.resume();
+      const now=retroAudioContext.currentTime+.005;
+      const patterns={
+        click:[[330,0,.045,'square',.02]],
+        correct:[[523,0,.055,'square',.026],[659,.05,.055,'square',.026],[784,.10,.075,'square',.03]],
+        incorrect:[[220,0,.09,'sawtooth',.025],[165,.08,.12,'sawtooth',.022]],
+        badge:[[523,0,.065,'square',.026],[659,.06,.065,'square',.026],[784,.12,.065,'square',.028],[1047,.18,.13,'square',.032]],
+        streak:[[659,0,.05,'square',.024],[784,.045,.05,'square',.026],[988,.09,.09,'square',.03]]
+      };
+      (patterns[kind]||patterns.click).forEach(step=>tone(step[0],now+step[1],step[2],step[3],step[4]));
+    }catch(error){}
+  }
 
   function memoryRecord(cardId){
     const s=stats();const id=String(cardId);const prior=s.cardMemory[id]&&typeof s.cardMemory[id]==='object'?s.cardMemory[id]:{};
@@ -54,6 +85,23 @@
     const s=stats();const record=memoryRecord(cardId);record.attempts+=1;record.lastSeen=new Date().toISOString();record.lastResult=correct?'correct':'incorrect';
     if(correct){record.correct+=1;record.streak+=1;}else{record.misses+=1;record.streak=0;}
     s.cardMemory[String(cardId)]=record;
+  }
+  function recordArcadeMemory(cardId,correct){
+    learner=storage.load();
+    const s=stats();
+    recordMemory(cardId,correct);
+    s.arcadeAnswered+=1;if(correct)s.arcadeCorrect+=1;
+    s.arcadeStreak=correct?s.arcadeStreak+1:0;
+    s.bestArcadeStreak=Math.max(s.bestArcadeStreak,s.arcadeStreak);
+    saveStats();renderStats();
+    return memoryRecord(cardId);
+  }
+  function saveAbbreviationSprint(score){
+    learner=storage.load();const s=stats();s.bestAbbreviationSprint=Math.max(s.bestAbbreviationSprint,Number(score||0));saveStats();renderStats();return s.bestAbbreviationSprint;
+  }
+  function arcadeStats(){
+    learner=storage.load();const s=stats();
+    return {answered:s.arcadeAnswered,correct:s.arcadeCorrect,streak:s.arcadeStreak,bestStreak:s.bestArcadeStreak,bestSprint:s.bestAbbreviationSprint};
   }
   function weaknessScore(card){
     const record=memoryRecord(card.id);if(!record.attempts||!record.misses)return -1;
@@ -115,7 +163,7 @@
   function chooseMatch(key){
     if(!matchState||matchState.locked||matchState.selected.includes(key))return;
     const item=matchState.deck.find(row=>row.key===key);if(!item||matchState.matched.has(item.pairId))return;
-    matchState.selected.push(key);renderBoard();if(matchState.selected.length<2)return;
+    matchState.selected.push(key);play('click');renderBoard();if(matchState.selected.length<2)return;
     matchState.moves+=1;renderStats();
     const first=matchState.deck.find(row=>row.key===matchState.selected[0]);const second=matchState.deck.find(row=>row.key===matchState.selected[1]);
     if(first&&second&&first.pairId===second.pairId&&first.side!==second.side){
@@ -187,6 +235,8 @@
   root.querySelectorAll('[data-memory-mode]').forEach(button=>button.addEventListener('click',()=>{mode=button.dataset.memoryMode;modeButtons();startCurrent();}));
   root.querySelectorAll('[data-memory-size]').forEach(button=>button.addEventListener('click',()=>{pairCount=Number(button.dataset.memorySize)||6;root.querySelectorAll('[data-memory-size]').forEach(item=>item.classList.toggle('active',item===button));if(mode==='match')startMatch();}));
   root.querySelector('[data-memory-start]')?.addEventListener('click',startCurrent);nextButton?.addEventListener('click',startRecall);categorySelect?.addEventListener('change',()=>{category=categorySelect.value;startCurrent();});
+
+  window.RPSGTMemoryGames={recordMemoryResult:recordArcadeMemory,arcadeStats,saveAbbreviationSprint,play};
 
   async function init(){
     try{

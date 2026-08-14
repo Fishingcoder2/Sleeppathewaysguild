@@ -4,24 +4,30 @@ on:
   pull_request:
     paths:
       - 'rpsgt-v3/core/memory-games.js'
+      - 'rpsgt-v3/core/memory-arcade.js'
       - 'rpsgt-v3/memory-games.html'
+      - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/math-coach.html'
       - 'rpsgt-v3/core/math-coach*.js'
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
+      - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
   push:
     branches:
       - main
     paths:
       - 'rpsgt-v3/core/memory-games.js'
+      - 'rpsgt-v3/core/memory-arcade.js'
       - 'rpsgt-v3/memory-games.html'
+      - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/math-coach.html'
       - 'rpsgt-v3/core/math-coach*.js'
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
+      - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
 
 permissions:
@@ -43,3 +49,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-math-coach-shell.mjs
       - name: Validate Weak Memory and Math recall integration
         run: node rpsgt-v3/scripts/test-memory-games-weak.mjs
+      - name: Validate Memory Arcade
+        run: node rpsgt-v3/scripts/test-memory-arcade.mjs
