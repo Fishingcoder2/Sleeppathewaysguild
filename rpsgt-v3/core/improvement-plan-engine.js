@@ -89,7 +89,7 @@
     if(!trend||!trend.current||!trend.current.answered) return 'You are still building enough recent Practice evidence to show a trend.';
     if(!trend.comparable) return 'Your recent Practice block is '+number(trend.current.percent)+'%, but there is not yet an earlier block large enough for a fair comparison.';
     if(trend.direction==='improving') return 'Your recent Practice trend is moving in the right direction, up '+Math.abs(number(trend.delta))+' percentage points from the prior block.';
-    if(trend.direction==='declining') return 'Your recent Practice trend is down '+Math.abs(number(trend.delta))+' percentage points from the prior block, so keep the next study cycle narrow and targeted.';
+    if(trend.direction==='declining') return 'Your recent Practice trend is down '+Math.abs(number(trend.delta))+' percentage points from the prior block, so keep your next review focused on a small number of weak tasks.';
     return 'Your recent Practice trend is holding about steady, so the next gain is most likely to come from targeted work on the repeated weak tasks.';
   }
   function coachLetter(summary,insights,priorities,domains){
@@ -97,7 +97,7 @@
     if(!priorities.length){
       return {greeting,paragraphs:[
         'You are still building enough learning evidence for me to give you a reliable task-by-task study prescription.',
-        'For now, complete some Focused Practice or a Readiness Check. Once the app sees repeated performance patterns, this report will point you toward the domains, tasks, study materials, and practice tools that deserve your time first.',
+        'Complete some Focused Practice or a Readiness Check at your own pace. Once the app sees repeated performance patterns, this report will point you toward the domains, tasks, study materials, and practice tools that deserve your attention first.',
         trendSentence(insights)
       ],signature:'Coach Bob'};
     }
@@ -105,14 +105,14 @@
     const second=priorities[1];const strength=strongestTask(summary);
     const paragraphs=[];
     paragraphs.push('Here is what your report is telling me in plain language: your first study priority is '+first.domain+' · '+firstDomain.title+', especially '+first.taskCode+' · '+first.title+'. The reason is '+evidence.text+'.');
-    if(strength&&strength.code!==first.taskCode) paragraphs.push('One area that is currently looking stronger in ordinary Practice is '+strength.code+' · '+strength.title+' at '+number(strength.accuracy)+'% across '+number(strength.answered)+' answers. Keep touching that area, but do not spend most of your study time there right now.');
-    if(second){const secondDomain=domains.get(second.domain)||{title:second.domain};paragraphs.push('After the first priority, move to '+second.domain+' · '+secondDomain.title+', '+second.taskCode+' · '+second.title+'. Keep the order narrow so you can tell whether your remediation is actually working.');}
-    let action='Start with the Guided Study lesson for '+first.taskCode;
+    if(strength&&strength.code!==first.taskCode) paragraphs.push('One area that is currently looking stronger in ordinary Practice is '+strength.code+' · '+strength.title+' at '+number(strength.accuracy)+'% across '+number(strength.answered)+' answers. Keep touching that area, but put most of your review attention on the weaker areas.');
+    if(second){const secondDomain=domains.get(second.domain)||{title:second.domain};paragraphs.push('When you are ready to move on from the first priority, continue to '+second.domain+' · '+secondDomain.title+', '+second.taskCode+' · '+second.title+'. Keeping the review focused makes it easier to tell whether your remediation is working.');}
+    let action='A useful sequence is to start with the Guided Study lesson for '+first.taskCode;
     if(source){action+=', then read '+source.sourceTitle+(source.sectionLabel?' — '+source.sectionLabel:'');}
     if(labs.length) action+=', and use '+labs[0].title+' for applied practice';
-    action+='. Finish with task-filtered Focused Practice and work the missed queue before you recheck yourself with Readiness.';
+    action+='. Then use task-filtered Focused Practice, work the missed queue, and recheck yourself with Readiness when you feel prepared.';
     paragraphs.push(action);
-    paragraphs.push(trendSentence(insights)+' I am not looking for one perfect score. I want to see fewer repeated misses, stronger task accuracy, and better performance when you return to the same material after studying.');
+    paragraphs.push(trendSentence(insights)+' I am not looking for one perfect score. I want to see fewer repeated misses, stronger task accuracy, and better performance when you return to the same material after studying. Work through the plan steadily and efficiently, but at your own pace so the material has time to stick.');
     return {greeting,paragraphs,signature:'Coach Bob'};
   }
   function build(input){
