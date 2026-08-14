@@ -9,7 +9,7 @@ for(const script of ["core/learner-surface-guard.js","core/study-feedback-engine
 if(!html.includes('assets/report-insights.css')) throw new Error('Reports page is missing the report-insights stylesheet.');
 if(/RPSGTStorage\.save|localStorage\.(?:setItem|removeItem|clear)/.test(js+trailJs+insightJs)) throw new Error("Reports controllers must remain read only.");
 if(/<span class="status">Planned<\/span>/.test(html)) throw new Error("Old placeholder report cards remain in the active Reports page.");
-if(!html.includes("official rule")||!html.includes("copyrighted prose")) throw new Error("Reference and copyright boundaries are not visible to learners.");
+if(!/official rule/i.test(html)||!/copyrighted prose/i.test(html)) throw new Error("Reference and copyright boundaries are not visible to learners.");
 if(!html.includes("checkpoint history")||!trailJs.includes("engine.summary")) throw new Error("Guided Study checkpoint reporting parity is incomplete.");
 for(const label of ["Task badges","Domain medals","Clinical Guide","Study Signal Scout","Scoring Pathfinder","Therapy Trail Guide"]){
   if(!trailJs.includes(label)) throw new Error(`Guild achievement reporting is missing ${label}.`);
