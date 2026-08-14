@@ -26,7 +26,7 @@
 </aside>
 <main class="main">
 <section class="hero flashcard-hero">
-  <div><div class="eyebrow">RPSGT learning tool</div><h1>Flashcard Center</h1><p class="lead">Review RPSGT cards you create in this development app. Cards from Guided Study and Practice retain their RPSGT topic context without displaying internal question or source keys.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Create a custom card</button><a class="btn secondary" href="notes.html">Open Study Notes</a><a class="btn secondary" href="study.html">Return to Guided Study</a></div></div>
+  <div><div class="eyebrow">RPSGT learning tool</div><h1>Flashcard Center</h1><p class="lead">Review the restored RPSGT V2 flashcard deck plus cards you create from Guided Study, Practice, or your own notes. Cards keep useful RPSGT topic context without showing internal question or reference keys.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Create a custom card</button><a class="btn secondary" href="notes.html">Open Study Notes</a><a class="btn secondary" href="study.html">Return to Guided Study</a></div></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Recall first. Then flip.</h2><p>Say the answer before you turn the card. Mark it mastered only when you can explain why it is correct.</p></aside>
 </section>
 <section class="section card flashcard-filter-card" aria-labelledby="flashcard-filter-title">
@@ -39,7 +39,7 @@
   </div>
 </section>
 <section class="section flashcard-empty card" data-card-empty hidden>
-  <span class="status">No cards in this deck</span><h2>Create your first RPSGT flashcard</h2><p>Use the custom-card form now, or create a card from a supported Guided Study or Practice question after those controls are enabled.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Create a custom card</button><a class="btn secondary" href="study.html">Open Guided Study</a></div>
+  <span class="status">No cards match this view</span><h2>Choose another review filter</h2><p>The built-in RPSGT review deck is available automatically. Clear or change the filters, or create a custom card for something you want to remember.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Create a custom card</button><a class="btn secondary" href="study.html">Open Guided Study</a></div>
 </section>
 <section class="section flashcard-stage" data-card-stage hidden aria-live="polite">
   <div class="flashcard-toolbar card"><button class="btn secondary" type="button" data-card-prev>Previous</button><div class="flashcard-position"><strong data-card-position>Card 0 of 0</strong><span data-card-context>RPSGT review</span></div><button class="btn secondary" type="button" data-card-next>Next</button></div>
@@ -60,8 +60,8 @@
     </form>
   </section>
 </div>
-<section class="section notice"><strong>Content boundary:</strong> This center does not copy CPSGT clinical content and does not automatically turn every question-bank record into a card. Only learner-created or later curated, source-supported RPSGT cards belong here.</section>
-<footer class="footer">Development branch only · Flashcards stay inside the RPSGT v3 record</footer>
+<section class="section notice"><strong>Study note:</strong> The built-in rhythm cards emphasize recognition features and recall. Use current official standards and approved teaching strips when confirming formal cardiac scoring and interpretation rules.</section>
+<footer class="footer">RPSGT V3 · Flashcard progress stays with your RPSGT V3 study record</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
@@ -70,6 +70,7 @@
 <script src="core/app-shell.js"></script>
 <script src="core/learner-surface-guard.js"></script>
 <script src="core/flashcard-engine.js"></script>
+<script src="core/flashcard-catalog.js"></script>
 <script src="core/flashcard-store.js"></script>
 <script src="core/flashcards.js"></script>
 </body>
