@@ -19,7 +19,7 @@ test('Math Coach restores all 20 V2 lessons and 100 guided questions without rem
   await expect(page.locator('[data-math-library-detail] .status').first()).toHaveText('Practice 2 of 5');
 
   await page.locator('[data-math-library-list] .math-lesson-button').last().click();
-  await expect(page.locator('[data-math-library-detail] h2')).toHaveText('10-20 Measurement Math');
+  await expect(page.locator('[data-math-library-detail] h2')).toHaveText('10-20 Measurement');
   await expect(page.locator('[data-math-library-detail] .math-question-choice')).toHaveCount(4);
 
   await expect(page.locator('[data-math-catalog]')).toBeAttached();
