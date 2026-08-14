@@ -30,7 +30,7 @@ for(const marker of [
   if(!html.includes(marker)) throw new Error(`RPSGT V3 home is missing ${marker}`);
 }
 
-if(!html.includes('coach-bob-avatar.jpg')) throw new Error('The RPSGT V3 front door does not use the Coach Bob character asset.');
+if(!html.includes('assets/coach-bob-rpsgt.webp')) throw new Error('The RPSGT V3 front door does not use the local Coach Bob character asset.');
 if(!html.includes('meta name="robots" content="noindex,nofollow"')) throw new Error('Development noindex protection is missing from the RPSGT V3 front door.');
 if(html.includes('migration-export.html')||html.includes('Data & migration tools')||html.includes('Open private browser export utility')) throw new Error('Developer migration utility is exposed on the learner-facing front door.');
 if(!js.includes("data/brpt-official-resources.json")) throw new Error('Home dashboard does not load the verified BRPT resource catalog.');
