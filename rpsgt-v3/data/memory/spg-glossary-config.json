@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "title": "Sleep Pathways Guild RPSGT terminology glossary",
+  "source": "Reviewed Sleep Pathways Guild RPSGT flashcard term-definition inventory",
+  "sourcePolicy": "Glossary definitions are reused from existing Sleep Pathways Guild flashcards. AAST Terms and Definitions is terminology cross-check support only and is not reproduced in this dataset.",
+  "includeCategories": [
+    "Cardiac & ECG Recognition",
+    "Circadian Rhythm Sleep-Wake Disorders",
+    "Core Sleep Terms",
+    "Medication Acronyms",
+    "Medication Effects",
+    "Medications & Substances",
+    "Montage & Electrode Placement",
+    "Oxygen, CO2 & Units",
+    "PAP & Oxygen Therapy",
+    "Respiratory Events & Patterns",
+    "Safety, Infection Control & Professional Practice",
+    "Sensors, Equipment & Standards",
+    "Signals, Filters & Instrumentation",
+    "Sleep Disorders & Clinical Terms",
+    "Sleep Staging & EEG Clues",
+    "Sleep-Related Breathing Disorders"
+  ],
+  "excludeQuestionFronts": true,
+  "maxFrontLength": 90,
+  "minimumDefinitionLength": 12,
+  "verificationSource": "AAST Terms and Definitions",
+  "verificationSourceRole": "terminology cross-check only"
+}
