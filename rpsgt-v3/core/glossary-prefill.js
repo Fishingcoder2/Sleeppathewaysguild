@@ -1,0 +1,1 @@
+(function(){'use strict';const search=document.querySelector('[data-glossary-search]');if(!search)return;const value=String(new URLSearchParams(window.location.search).get('search')||'').trim();if(value)search.value=value;})();
