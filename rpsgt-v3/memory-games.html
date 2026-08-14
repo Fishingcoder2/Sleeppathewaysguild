@@ -7,6 +7,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/rpsgt-v3.css">
 <link rel="stylesheet" href="assets/study-tools.css">
+<link rel="stylesheet" href="assets/memory-arcade.css">
 </head>
 <body data-module="study">
 <div class="app-shell">
@@ -50,6 +51,25 @@
     <div class="notice" data-memory-error hidden></div>
   </section>
 
+  <section class="card memory-arcade" data-memory-arcade aria-labelledby="memory-arcade-title">
+    <div class="section-head"><div><div class="eyebrow">RPSGT Memory Arcade</div><h2 id="memory-arcade-title">Build the connection, not just the answer</h2><p>Use the same curated Math Coach skills and BRPT handbook abbreviation deck in fast retrieval games. Misses feed the same Weak Memory record so troublesome formulas, units, and abbreviations come back again.</p></div><span class="status gold">4 new games</span></div>
+    <div class="arcade-mode-grid" aria-label="Memory Arcade game choices">
+      <button class="arcade-mode-button active" type="button" data-arcade-mode="formula-builder"><strong>Formula Builder</strong><span>Put formula pieces into the correct order.</span></button>
+      <button class="arcade-mode-button" type="button" data-arcade-mode="missing-piece"><strong>Missing Formula Piece</strong><span>Retrieve the missing operator or formula component.</span></button>
+      <button class="arcade-mode-button" type="button" data-arcade-mode="units"><strong>Units Challenge</strong><span>Match each Math Coach skill with its reporting unit.</span></button>
+      <button class="arcade-mode-button" type="button" data-arcade-mode="abbreviation-sprint"><strong>Abbreviation Sprint</strong><span>Recall BRPT Candidate Handbook abbreviations for 60 seconds.</span></button>
+    </div>
+    <div class="arcade-toolbar"><p data-arcade-description>Put the pieces of an RPSGT calculation formula into the correct order.</p><button class="btn primary" type="button" data-arcade-start>New challenge</button></div>
+    <div class="arcade-stats" aria-label="Memory Arcade progress">
+      <article class="arcade-stat"><strong data-arcade-accuracy>0%</strong><span>arcade accuracy</span></article>
+      <article class="arcade-stat"><strong data-arcade-streak>0</strong><span>current streak</span></article>
+      <article class="arcade-stat"><strong data-arcade-best-streak>0</strong><span>best streak</span></article>
+      <article class="arcade-stat"><strong data-arcade-best-sprint>0</strong><span>best 60-sec sprint</span></article>
+    </div>
+    <div class="arcade-panel" data-arcade-panel aria-live="polite"><div class="arcade-welcome"><strong>Loading Memory Arcade…</strong></div></div>
+    <p class="arcade-sound-note"><strong>Retro sound:</strong> Memory Games use short original 8-bit-style synthesized tones when Sound effects are enabled in Settings. Sounds remain off by default.</p>
+  </section>
+
   <section class="card memory-game-panel" data-memory-match-panel>
     <div class="section-head"><div><div class="eyebrow">Memory Match</div><h2>Find the pairs</h2></div><span class="status">Front ↔ Back</span></div>
     <div class="memory-board" data-memory-board></div>
@@ -75,5 +95,6 @@
 <script src="core/app-shell.js"></script>
 <script src="core/flashcard-v2-library.js"></script>
 <script src="core/memory-games.js"></script>
+<script src="core/memory-arcade.js"></script>
 </body>
 </html>
