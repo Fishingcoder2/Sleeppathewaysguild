@@ -6,6 +6,11 @@ on:
       - 'rpsgt-v3/core/memory-games.js'
       - 'rpsgt-v3/core/memory-arcade.js'
       - 'rpsgt-v3/core/glossary-games.js'
+      - 'rpsgt-v3/core/question-option-order.js'
+      - 'rpsgt-v3/practice.html'
+      - 'rpsgt-v3/review.html'
+      - 'rpsgt-v3/readiness.html'
+      - 'rpsgt-v3/mock.html'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
@@ -18,6 +23,7 @@ on:
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - 'rpsgt-v3/scripts/test-glossary-games.mjs'
+      - 'rpsgt-v3/scripts/test-question-option-order.mjs'
       - 'rpsgt-v3/scripts/audit-aast-terminology-gaps.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
   push:
@@ -27,6 +33,11 @@ on:
       - 'rpsgt-v3/core/memory-games.js'
       - 'rpsgt-v3/core/memory-arcade.js'
       - 'rpsgt-v3/core/glossary-games.js'
+      - 'rpsgt-v3/core/question-option-order.js'
+      - 'rpsgt-v3/practice.html'
+      - 'rpsgt-v3/review.html'
+      - 'rpsgt-v3/readiness.html'
+      - 'rpsgt-v3/mock.html'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
@@ -39,6 +50,7 @@ on:
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - 'rpsgt-v3/scripts/test-glossary-games.mjs'
+      - 'rpsgt-v3/scripts/test-question-option-order.mjs'
       - 'rpsgt-v3/scripts/audit-aast-terminology-gaps.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
 
@@ -67,3 +79,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-glossary-games.mjs
       - name: Audit AAST terminology gaps
         run: node rpsgt-v3/scripts/audit-aast-terminology-gaps.mjs
+      - name: Validate assessment answer option ordering
+        run: node rpsgt-v3/scripts/test-question-option-order.mjs
