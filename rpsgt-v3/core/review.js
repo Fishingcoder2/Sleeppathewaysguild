@@ -176,6 +176,19 @@
     if(window.RPSGTApp) window.RPSGTApp.refresh();
   }
 
+  function suggestedReadingLink(question){
+    const wrapper=document.createElement("p");
+    wrapper.className="feedback-references";
+    const link=document.createElement("a");
+    const params=new URLSearchParams();
+    if(question&&question.taskCode) params.set("task",question.taskCode);
+    if(question&&question.topic) params.set("topic",question.topic);
+    link.href="sources-disclosures.html"+(params.toString()?"?"+params.toString():"");
+    link.textContent="Suggested reading: open APA-style references for this topic";
+    wrapper.appendChild(link);
+    return wrapper;
+  }
+
   function submitAnswer(){
     if(state.selected===null||state.answered) return;
     const question=state.questions[state.index];
@@ -198,10 +211,7 @@
     answer.textContent="Correct answer: "+question.answer;
     const rationale=document.createElement("p");
     rationale.textContent=question.rationale;
-    const refs=document.createElement("p");
-    refs.className="feedback-references";
-    refs.textContent="Mapped source keys: "+(question.referenceKeys||[]).join(", ");
-    feedback.replaceChildren(heading,answer,rationale,refs);
+    feedback.replaceChildren(heading,answer,rationale,suggestedReadingLink(question));
     $("[data-submit-answer]").classList.add("hidden");
     $("[data-next-question]").classList.remove("hidden");
     $("[data-next-question]").textContent=state.index===state.questions.length-1?"View review result":"Next question";
