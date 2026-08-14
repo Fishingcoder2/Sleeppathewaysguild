@@ -2,6 +2,11 @@
   'use strict';
 
   const DOMAIN_MEDALS={D1:'Clinical Guide',D2:'Study Signal Scout',D3:'Scoring Pathfinder',D4:'Therapy Trail Guide'};
+  const MAX_SETTLE_PASSES=20;
+  const SETTLE_DELAY_MS=150;
+  let settlePasses=0;
+  let settleTimer=null;
+  let actionTimer=null;
 
   function replaceExact(node,from,to){
     if(node&&node.textContent.trim()===from) node.textContent=to;
@@ -63,19 +68,37 @@
     normalizeCheckpoint();
   }
 
-  function observe(selector){
-    const node=document.querySelector(selector);
-    if(!node||typeof MutationObserver!=='function') return;
-    const observer=new MutationObserver(normalize);
-    observer.observe(node,{childList:true,subtree:true});
+  function pageReady(){
+    const map=document.querySelector('[data-blueprint-map]');
+    const dashboard=document.querySelector('[data-guided-trail-dashboard]');
+    if(!map||!dashboard) return false;
+    return map.querySelectorAll('.task-map-card').length>=12&&
+      !/Loading the RPSGT learning map/i.test(map.textContent||'')&&
+      !/Loading Guided Study progress/i.test(dashboard.textContent||'');
+  }
+
+  function settle(){
+    normalize();
+    if(pageReady()||settlePasses>=MAX_SETTLE_PASSES){
+      settleTimer=null;
+      return;
+    }
+    settlePasses+=1;
+    settleTimer=setTimeout(settle,SETTLE_DELAY_MS);
+  }
+
+  function scheduleAfterAction(){
+    clearTimeout(actionTimer);
+    actionTimer=setTimeout(normalize,0);
   }
 
   function init(){
-    normalize();
-    observe('[data-guided-trail-dashboard]');
-    observe('[data-blueprint-map]');
-    observe('[data-checkpoint-workspace]');
+    settle();
+    document.addEventListener('click',event=>{
+      if(event.target.closest('[data-checkpoint-start],[data-checkpoint-workspace] button')) scheduleAfterAction();
+    });
+    window.addEventListener('pageshow',scheduleAfterAction);
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 })();
