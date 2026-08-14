@@ -1,0 +1,1 @@
+(function(){'use strict';const search=document.querySelector('[data-card-search]');if(!search)return;const params=new URLSearchParams(window.location.search);const value=String(params.get('search')||'').trim();if(value) search.value=value;})();
