@@ -1,0 +1,433 @@
+{
+  "schemaVersion": 1,
+  "id": "aast-core-psg-supplement-2",
+  "title": "AAST terminology gap supplement — core PSG, respiratory, PAP, and testing",
+  "sourceRole": "Learner-ready Sleep Pathways Guild definitions for high-value RPSGT concepts identified from the AAST terminology inventory and cross-checked against current AASM/ICSD usage and the project technical textbook where applicable.",
+  "apaReference": "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+  "aasmReference": "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+  "icsdReference": "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
+  "icsdTrReference": "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine.",
+  "textbookReference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+  "copyrightBoundary": "Term names and abbreviations are factual inventory data. Definitions and memory clues in this file are original Sleep Pathways Guild summaries and do not reproduce published AAST, AASM, ICSD, or textbook definitions.",
+  "reviewFocus": "Core PSG signals, respiratory and gas-exchange language, positive airway pressure terminology, daytime testing, and high-value clinical vocabulary.",
+  "items": [
+    {
+      "id": "aast-core:advanced-sleep-wake-phase-disorder",
+      "term": "Advanced Sleep-Wake Phase Disorder",
+      "abbreviation": "ASWPD",
+      "category": "Circadian Rhythm Sleep-Wake Disorders",
+      "definition": "A circadian rhythm sleep-wake disorder in which the main sleep period is shifted earlier than desired, producing unusually early evening sleepiness and early morning awakening when social schedules conflict with the internal clock.",
+      "memoryClue": "Advanced = sleep and wake happen too early.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-core:antidepressant",
+      "term": "Antidepressant",
+      "category": "Medications & Substances",
+      "definition": "A medication used to treat depressive and related disorders that may also change sleep continuity, REM expression, alertness, or movement-related findings depending on the specific drug and patient.",
+      "memoryClue": "Antidepressants can change what the sleep study looks like.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:apnea-index",
+      "term": "Apnea Index",
+      "abbreviation": "AI",
+      "category": "Respiratory Events & Patterns",
+      "definition": "The average number of apneas occurring per hour of sleep; unlike AHI, the numerator includes apneas without adding hypopneas.",
+      "memoryClue": "AI counts apneas only; AHI adds hypopneas.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:bilevel-positive-airway-pressure",
+      "term": "Bilevel Positive Airway Pressure",
+      "abbreviation": "BPAP",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "Positive airway pressure therapy that delivers one pressure during inspiration and a lower pressure during expiration. The difference between IPAP and EPAP is pressure support.",
+      "memoryClue": "Bilevel = two pressure levels: IPAP and EPAP.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:catathrenia",
+      "term": "Catathrenia",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "Sleep-related groaning characterized by recurring vocal sounds associated with breathing during sleep, often most noticeable during prolonged expiration.",
+      "memoryClue": "Catathrenia = sleep-related groaning.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:chin-emg",
+      "term": "Chin EMG",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "Submental electromyographic recording used in polysomnography to assess chin muscle tone and activity, helping with sleep staging and recognition of muscle-related events.",
+      "memoryClue": "Chin EMG tracks muscle tone beneath the chin.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:copd",
+      "term": "Chronic Obstructive Pulmonary Disease",
+      "abbreviation": "COPD",
+      "category": "Sleep-Related Breathing Disorders",
+      "definition": "A chronic lung disease with persistent airflow limitation that can worsen nocturnal oxygenation or ventilation and may complicate sleep-disordered breathing and PAP management.",
+      "memoryClue": "COPD can make nighttime gas exchange more fragile.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:complex-sleep-apnea",
+      "term": "Complex Sleep Apnea",
+      "category": "Sleep-Related Breathing Disorders",
+      "definition": "An older sleep-medicine label for a pattern in which central apneas emerge or persist after obstructive events are treated with positive airway pressure; current classification should be checked against the latest ICSD terminology.",
+      "memoryClue": "Obstruction improves, but central events appear or remain.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:continuous-positive-airway-pressure",
+      "term": "Continuous Positive Airway Pressure",
+      "abbreviation": "CPAP",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "Positive airway pressure therapy that maintains one continuous pressure level through inspiration and expiration to help keep the upper airway open.",
+      "memoryClue": "CPAP = one continuous pressure.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:cycles-per-second",
+      "term": "Cycles Per Second",
+      "abbreviation": "CPS",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "A way of expressing frequency by stating how many complete waveform cycles occur in one second; the modern unit name is hertz (Hz).",
+      "memoryClue": "Cycles per second = hertz.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:dominant-posterior-rhythm",
+      "term": "Dominant Posterior Rhythm",
+      "abbreviation": "DPR",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "Older sleep-technology wording for the waking posterior dominant rhythm: rhythmic posterior EEG activity that is best seen with relaxed wakefulness and typically attenuates with eye opening or alerting.",
+      "memoryClue": "Posterior waking rhythm is strongest with relaxed eyes-closed wakefulness.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:electrocardiogram",
+      "term": "Electrocardiogram",
+      "abbreviation": "ECG, EKG",
+      "category": "Cardiac & ECG Recognition",
+      "definition": "A recording of the heart's electrical activity. In polysomnography it provides a continuous channel for heart rate and rhythm observation during sleep testing.",
+      "memoryClue": "ECG records electrical activity of the heart.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:electroencephalogram",
+      "term": "Electroencephalogram",
+      "abbreviation": "EEG",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "A recording of electrical potential differences from scalp electrodes that reflects brain activity and provides the primary signal used to identify wakefulness and sleep stages.",
+      "memoryClue": "EEG is the main staging signal from the brain.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:electrooculogram",
+      "term": "Electrooculogram",
+      "abbreviation": "EOG",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "A recording of eye-movement-related voltage changes produced by the eye's electrical dipole, used to recognize slow eye movements, rapid eye movements, and other ocular activity during sleep staging.",
+      "memoryClue": "EOG follows eye movements for staging.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:end-tidal-co2",
+      "term": "End-Tidal CO2",
+      "abbreviation": "PetCO2",
+      "category": "Oxygen, CO2 & Units",
+      "definition": "The carbon dioxide value measured near the end of exhalation, used as a noninvasive estimate of exhaled alveolar CO2 and as one method for following ventilation during sleep testing.",
+      "memoryClue": "End-tidal = CO2 at the end of expiration.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:entrain",
+      "term": "Entrain",
+      "category": "Circadian Rhythm Sleep-Wake Disorders",
+      "definition": "To synchronize an internal circadian rhythm to a repeating external time cue, such as the light-dark cycle.",
+      "memoryClue": "Entrain = internal clock locks onto an external cue.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:enuresis",
+      "term": "Enuresis",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "Involuntary urination during sleep. In sleep medicine the term is used in the context of sleep enuresis and must be interpreted according to the patient's developmental age and clinical history.",
+      "memoryClue": "Enuresis = involuntary urination during sleep.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:epoch",
+      "term": "Epoch",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "A fixed segment of recorded data used for sleep scoring. Standard sleep staging is performed in 30-second epochs unless a specific protocol states otherwise.",
+      "memoryClue": "One standard sleep-staging epoch = 30 seconds.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:epworth-sleepiness-scale",
+      "term": "Epworth Sleepiness Scale",
+      "abbreviation": "ESS",
+      "category": "Core Sleep Terms",
+      "definition": "A self-report questionnaire that estimates habitual daytime sleepiness by asking how likely a person is to doze in common everyday situations.",
+      "memoryClue": "ESS asks: how likely are you to doze?",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:excessive-daytime-sleepiness",
+      "term": "Excessive Daytime Sleepiness",
+      "abbreviation": "EDS",
+      "category": "Core Sleep Terms",
+      "definition": "A greater-than-expected tendency to become sleepy or fall asleep during the usual waking period, especially when wakefulness is desired or expected.",
+      "memoryClue": "EDS = too sleepy during expected wake time.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:expiratory-positive-airway-pressure",
+      "term": "Expiratory Positive Airway Pressure",
+      "abbreviation": "EPAP",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "The positive airway pressure maintained during expiration in bilevel therapy. EPAP is the lower bilevel pressure and contributes to splinting the upper airway open.",
+      "memoryClue": "EPAP = expiratory pressure, usually the lower bilevel level.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:fosq",
+      "term": "Functional Outcomes of Sleep Questionnaire",
+      "abbreviation": "FOSQ",
+      "category": "Core Sleep Terms",
+      "definition": "A patient-reported questionnaire used to estimate how sleepiness affects everyday functioning and quality-of-life activities.",
+      "memoryClue": "FOSQ focuses on function affected by sleepiness.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:home-sleep-apnea-testing",
+      "term": "Home Sleep Apnea Testing",
+      "abbreviation": "HSAT",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "Sleep-disordered-breathing testing performed outside the attended sleep laboratory with a limited physiologic signal set selected for evaluating sleep apnea in appropriately chosen patients.",
+      "memoryClue": "HSAT is limited-channel apnea testing outside the attended lab.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:hypercapnia",
+      "term": "Hypercapnia",
+      "category": "Oxygen, CO2 & Units",
+      "definition": "An abnormally elevated carbon dioxide level in the blood, commonly associated with inadequate alveolar ventilation or impaired elimination of CO2.",
+      "memoryClue": "Hypercapnia = CO2 too high.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:hypersomnia",
+      "term": "Hypersomnia",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "A broad clinical term for excessive sleepiness or excessive sleep need; the specific diagnosis depends on the underlying disorder and its formal diagnostic criteria.",
+      "memoryClue": "Hypersomnia is a broad excessive-sleepiness term, not one single diagnosis.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-core:hypoxemia",
+      "term": "Hypoxemia",
+      "category": "Oxygen, CO2 & Units",
+      "definition": "An abnormally low oxygen level in arterial blood. In sleep testing it may be reflected by reduced oxygen saturation, although saturation and arterial oxygen tension are not identical measurements.",
+      "memoryClue": "Hypoxemia = low oxygen in the blood.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:hypoxia",
+      "term": "Hypoxia",
+      "category": "Oxygen, CO2 & Units",
+      "definition": "Insufficient oxygen availability at the tissue level. Hypoxia and hypoxemia are related but not interchangeable because one describes tissue oxygenation and the other describes oxygen in arterial blood.",
+      "memoryClue": "Hypoxia = tissue oxygen problem; hypoxemia = blood oxygen problem.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:inspiratory-positive-airway-pressure",
+      "term": "Inspiratory Positive Airway Pressure",
+      "abbreviation": "IPAP",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "The positive airway pressure delivered during inspiration in bilevel therapy. IPAP is the higher bilevel pressure, and IPAP minus EPAP equals pressure support.",
+      "memoryClue": "IPAP = inspiratory pressure; IPAP − EPAP = pressure support.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:maintenance-of-wakefulness-test",
+      "term": "Maintenance of Wakefulness Test",
+      "abbreviation": "MWT",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "A standardized daytime test that measures a person's ability to remain awake in quiet, low-stimulation conditions across repeated trials.",
+      "memoryClue": "MWT asks: can you stay awake?",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:multiple-sleep-latency-test",
+      "term": "Multiple Sleep Latency Test",
+      "abbreviation": "MSLT",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "A standardized series of daytime nap opportunities used to measure physiologic sleep tendency by sleep latency and to identify sleep-onset REM periods when present.",
+      "memoryClue": "MSLT asks: how quickly do you fall asleep during scheduled naps?",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:obesity-hypoventilation-syndrome",
+      "term": "Obesity Hypoventilation Syndrome",
+      "abbreviation": "OHS",
+      "category": "Sleep-Related Breathing Disorders",
+      "definition": "A disorder in which obesity is associated with chronic inadequate ventilation and elevated carbon dioxide while awake after other major causes of hypoventilation are excluded; sleep-disordered breathing commonly coexists.",
+      "memoryClue": "OHS links obesity with chronic hypoventilation and high CO2.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-core:positive-airway-pressure",
+      "term": "Positive Airway Pressure",
+      "abbreviation": "PAP",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "A family of therapies that apply pressure through the airway interface to support airway patency or ventilation; CPAP, bilevel PAP, and other advanced modes are members of this group.",
+      "memoryClue": "PAP is the umbrella term; CPAP and BPAP are modes beneath it.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists."
+      ]
+    },
+    {
+      "id": "aast-core:polysomnogram",
+      "term": "Polysomnogram",
+      "abbreviation": "PSG",
+      "category": "Core Sleep Terms",
+      "definition": "The multichannel physiologic record produced during a sleep study, combining sleep-stage signals with respiratory, cardiac, movement, oxygenation, and other monitored parameters according to the study protocol.",
+      "memoryClue": "Polysomnogram = the recorded multichannel sleep study.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    }
+  ]
+}
