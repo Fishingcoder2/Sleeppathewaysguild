@@ -1,0 +1,42 @@
+{
+  "id": "aasm-nppv-hypoventilation-2010",
+  "shortTitle": "AASM NPPV Adjustment Best Practices",
+  "fullTitle": "Best Clinical Practices for Sleep Center Adjustment of NPPV in Stable Chronic Alveolar Hypoventilation Syndromes",
+  "publisher": "American Academy of Sleep Medicine",
+  "sourceType": "AASM position paper / best-practice guidance",
+  "sourceRole": "currentAuthorityCurrentnessWatch",
+  "currentAuthority": true,
+  "publicationYear": 2010,
+  "verifiedAt": "2026-08-11",
+  "officialUrl": "https://doi.org/10.5664/jcsm.27941",
+  "statusUrl": "https://aasm.org/clinical-resources/practice-standards/practice-guidelines/",
+  "currentnessNote": "Active-listed AASM position paper verified 2026-08-11; older 2010 consensus/currentness-watch. Use for NPPV physiology/workflow, not as a universal 2026 numeric titration algorithm.",
+  "bestFor": "Sleep-center NPPV physiology, EPAP/IPAP/pressure-support concepts, backup support, synchrony, monitoring, follow-up, and oxygen-versus-ventilation context.",
+  "mappedTaskCodes": [
+    "D1C",
+    "D2C",
+    "D4A",
+    "D4C"
+  ],
+  "authorityBoundary": "AASM currently lists this older position paper, but it remains 2010 consensus-era guidance. Use it for the NPPV framework and currentness-aware support; exact numeric settings, alarms, oxygen steps, backup rates, and device-specific operation require current orders, facility protocols, manufacturer instructions, and newer diagnosis-specific guidance.",
+  "copyrightUse": "Use title, bibliographic metadata, section concepts, original summaries, and links. Do not reproduce protected algorithms, figures, or substantial guideline text.",
+  "citation": "Berry, R. B., Chediak, A., Brown, L. K., Finder, J., Gozal, D., Iber, C., Kushida, C. A., Morgenthaler, T., Rowley, J. A., & Davidson-Ward, S. L. (2010). Best clinical practices for the sleep center adjustment of noninvasive positive pressure ventilation (NPPV) in stable chronic alveolar hypoventilation syndromes. Journal of Clinical Sleep Medicine, 6(5), 491-509. https://doi.org/10.5664/jcsm.27941",
+  "sections": [
+    {
+      "id": "aasm-nppv-scope-support",
+      "label": "Stable chronic alveolar hypoventilation — NPPV scope and follow-up support"
+    },
+    {
+      "id": "aasm-nppv-ventilation-framework",
+      "label": "EPAP/IPAP, pressure support, backup support, and ventilation framework"
+    },
+    {
+      "id": "aasm-nppv-monitoring-response",
+      "label": "NPPV monitoring, synchrony, ventilation/CO2, leak, and response"
+    },
+    {
+      "id": "aasm-nppv-oxygen-boundary",
+      "label": "Ventilation-first context and adjunct supplemental-oxygen boundary"
+    }
+  ]
+}

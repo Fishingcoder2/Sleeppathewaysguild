@@ -1,0 +1,37 @@
+{
+  "id": "ats-obesity-hypoventilation-2019",
+  "shortTitle": "ATS Obesity Hypoventilation Syndrome Guideline",
+  "fullTitle": "Evaluation and Management of Obesity Hypoventilation Syndrome: An Official ATS Clinical Practice Guideline",
+  "publisher": "American Thoracic Society",
+  "sourceType": "external clinical practice guideline",
+  "sourceRole": "currentSpecialtySupport",
+  "currentAuthority": false,
+  "publicationYear": 2019,
+  "verifiedAt": "2026-08-11",
+  "officialUrl": "https://www.thoracic.org/statements/guideline-implementation-tools/eval-and-mgmt-of-ohs.php",
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31368798/",
+  "currentnessNote": "2019 ATS clinical practice guideline; current external specialty support verified 2026-08-11. Subordinate to project AASM/AAST authority hierarchy but useful for OHS-specific PAP/NIV branching.",
+  "bestFor": "OHS-specific PAP-versus-NIV treatment context, gas-exchange response, and clinician-directed transition between CPAP and NIV.",
+  "mappedTaskCodes": [
+    "D1A",
+    "D1C",
+    "D4A"
+  ],
+  "authorityBoundary": "This ATS guideline is current external specialty support under the Guild hierarchy. It applies to obesity hypoventilation syndrome and must not be turned into a universal NIV algorithm for all hypoventilation etiologies.",
+  "copyrightUse": "Use bibliographic facts, recommendation categories, original summaries, and links. Do not reproduce substantial guideline text or tables.",
+  "citation": "Mokhlesi, B., Masa, J. F., Brozek, J. L., Gurubhagavatula, I., Murphy, P. B., Piper, A. J., et al. (2019). Evaluation and management of obesity hypoventilation syndrome: An official American Thoracic Society clinical practice guideline. American Journal of Respiratory and Critical Care Medicine, 200(3), e6-e24. https://doi.org/10.1164/rccm.201905-1071ST",
+  "sections": [
+    {
+      "id": "ats-ohs-assessment-scope",
+      "label": "OHS clinical assessment and PAP-treatment scope"
+    },
+    {
+      "id": "ats-ohs-pap-support",
+      "label": "OHS PAP adherence, response, and clinician-directed follow-up context"
+    },
+    {
+      "id": "ats-ohs-cpap-vs-niv",
+      "label": "OHS CPAP-first severe-OSA branch and NIV branch"
+    }
+  ]
+}

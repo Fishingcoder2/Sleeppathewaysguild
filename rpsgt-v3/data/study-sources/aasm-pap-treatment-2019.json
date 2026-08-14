@@ -1,0 +1,25 @@
+{
+  "id":"aasm-pap-treatment-2019",
+  "shortTitle":"AASM Adult PAP Treatment Guideline",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"clinical practice guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2019,
+  "verifiedAt":"2026-08-07",
+  "citation":"Patil SP, Ayappa IA, Caples SM, Kimoff RJ, Patel SR, Harrod CG. Treatment of adult obstructive sleep apnea with positive airway pressure: an American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med. 2019;15(2):335-343.",
+  "doi":"10.5664/jcsm.7640",
+  "officialContextUrl":"https://aasm.org/clinical-guideline-pap-therapy/",
+  "currencyNote":"Still listed in the AASM active practice-guideline index when verified 2026-08-07.",
+  "bestFor":"Adult OSA PAP treatment, PAP initiation, CPAP/APAP use, BPAP considerations, educational/behavioral/troubleshooting interventions, telemonitoring, and adherence-support concepts.",
+  "mappedTaskCodes":["D1C","D4A"],
+  "mappingRationale":{"D1C":"Supports ongoing PAP therapy support, adherence interventions, troubleshooting, and follow-up concepts.","D4A":"Directly addresses adult OSA treatment with PAP and PAP initiation/ongoing modality concepts."},
+  "copyrightUse":"Use citation, guideline topic headings, original summaries, and learning objectives. Do not reproduce substantial recommendation text or evidence tables.",
+  "sections":[
+    {"id":"aasm-pap-treatment-scope","label":"Scope of adult OSA PAP treatment guidance"},
+    {"id":"aasm-pap-treatment-initiation","label":"PAP initiation at home or by in-laboratory titration"},
+    {"id":"aasm-pap-treatment-modalities","label":"CPAP, APAP, and BPAP treatment concepts"},
+    {"id":"aasm-pap-treatment-education","label":"Educational, behavioral, and troubleshooting interventions"},
+    {"id":"aasm-pap-treatment-monitoring","label":"Telemonitoring and adherence-support concepts"}
+  ]
+}

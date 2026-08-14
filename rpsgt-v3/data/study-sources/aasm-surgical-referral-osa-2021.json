@@ -1,0 +1,25 @@
+{
+  "id":"aasm-surgical-referral-osa-2021",
+  "shortTitle":"AASM OSA Surgical Referral Guideline",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"clinical practice guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2021,
+  "verifiedAt":"2026-08-07",
+  "citation":"Kent D, Stanley J, Aurora RN, et al. Referral of adults with obstructive sleep apnea for surgical consultation: an American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med. 2021;17(12):2499-2505.",
+  "doi":"10.5664/jcsm.9592",
+  "officialContextUrl":"https://aasm.org/new-guideline-provides-clinical-recommendations-for-surgical-referral-of-obstructive-sleep-apnea-patients/",
+  "currencyNote":"This guideline states that it replaces the previously published 2010 AASM surgical guideline and remains listed in the active AASM guideline index when verified on 2026-08-07.",
+  "bestFor":"When adults with OSA may warrant discussion of sleep-surgery or bariatric-surgery referral, PAP intolerance/nonacceptance or inadequate adherence, and major upper-airway anatomic abnormalities.",
+  "mappedTaskCodes":["D4B"],
+  "mappingRationale":{"D4B":"Directly addresses surgical consultation as an alternative or adjunctive OSA treatment pathway."},
+  "copyrightUse":"Use citation, guideline scope, original summaries, and learning objectives. Do not reproduce substantial recommendation text, evidence tables, or copyrighted figures.",
+  "sections":[
+    {"id":"aasm-surgery-scope","label":"Scope of surgical referral guidance for adult OSA"},
+    {"id":"aasm-surgery-pap-intolerance","label":"Surgical referral discussion when PAP is intolerable or unacceptable"},
+    {"id":"aasm-surgery-adherence","label":"Persistent inadequate PAP adherence and pressure-related side effects"},
+    {"id":"aasm-surgery-bariatric","label":"Bariatric surgical consultation considerations"},
+    {"id":"aasm-surgery-anatomy","label":"Major upper-airway anatomic abnormality and treatment sequencing"}
+  ]
+}

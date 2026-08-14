@@ -1,0 +1,65 @@
+name: RPSGT v3 browser release regression
+
+on:
+  push:
+    branches:
+      - build/rpsgt-v3-modular
+      - 'release/rpsgt-v3-*'
+    paths:
+      - 'rpsgt-v3/**'
+      - '.github/workflows/rpsgt-v3-browser-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-regression:
+    name: Browser regression (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - desktop-chromium
+          - tablet-chromium
+          - mobile-chromium
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install browser test dependencies
+        run: npm install
+
+      - name: Install Chromium and system dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Run ${{ matrix.project }} regression
+        run: npx playwright test --config=playwright.config.mjs --project=${{ matrix.project }}
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-playwright-report-${{ matrix.project }}
+          path: rpsgt-v3/playwright-report
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-playwright-failures-${{ matrix.project }}
+          path: rpsgt-v3/test-results
+          if-no-files-found: ignore
+          retention-days: 14

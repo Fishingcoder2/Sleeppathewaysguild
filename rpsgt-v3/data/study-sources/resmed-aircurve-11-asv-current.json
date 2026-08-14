@@ -1,0 +1,39 @@
+{
+  "id": "resmed-aircurve-11-asv-current",
+  "shortTitle": "ResMed AirCurve 11 ASV — Current Safety Label",
+  "fullTitle": "AirCurve 11 ASV: Adaptive-Servo Ventilation Therapy",
+  "publisher": "ResMed",
+  "sourceType": "manufacturer device labeling",
+  "sourceRole": "manufacturerSafetyOverlay",
+  "currentAuthority": false,
+  "verifiedAt": "2026-08-11",
+  "officialUrl": "https://www.resmed.com/en-us/health-professionals/products/cpap/machines/aircurve-11-asv/",
+  "currentnessNote": "Current manufacturer/device safety overlay verified 2026-08-11; mandatory for this device, but not a universal clinical guideline or cross-manufacturer ASV rule.",
+  "bestFor": "Device-specific ASV indication/contraindication awareness, technologist safety verification, and the ASV guideline-plus-device-label dual gate.",
+  "mappedTaskCodes": [
+    "D1C",
+    "D2C",
+    "D4A"
+  ],
+  "mappingRationale": {
+    "D1C": "Supports accurate patient education and therapy support without treating one manufacturer's label as a universal ASV guideline.",
+    "D2C": "Supports device-specific safety verification and escalation when contraindication or configuration concerns arise.",
+    "D4A": "Provides the current manufacturer contraindication gate for this ASV device before administration."
+  },
+  "authorityBoundary": "Manufacturer labeling is mandatory for the actual device used but is not an AASM clinical practice guideline. Current AASM CSA guidance and current device labeling must both be satisfied. Do not generalize ResMed's contraindication or algorithm to other manufacturers.",
+  "copyrightUse": "Use public indication/contraindication facts, original summaries, and links. Do not reproduce proprietary manuals, figures, or substantial product text.",
+  "sections": [
+    {
+      "id": "resmed-asv-scope",
+      "label": "AirCurve 11 ASV therapy scope and device-specific use"
+    },
+    {
+      "id": "resmed-asv-hf-contraindication",
+      "label": "ASV heart-failure contraindication — device-specific safety gate"
+    },
+    {
+      "id": "resmed-asv-device-boundary",
+      "label": "Device-specific contraindication and escalation boundary"
+    }
+  ]
+}

@@ -2,58 +2,29 @@
   const api=factory();
   if(typeof module==='object'&&module.exports) module.exports=api;
   root.RPSGTGuidedStudyCoachSafety=api;
-  if(root.document) api.mount(root);
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.0';
-  const headings=[
-    'Start with the clinical clue.',
-    'Picture the technologist’s next decision.',
-    'Name the finding before choosing.',
-    'Use the stem to narrow the pathway.',
-    'Separate the key clue from the distractors.'
-  ];
+  const VERSION='2.0.0';
   const text=value=>String(value==null?'':value).trim();
+  const normalize=value=>text(value).toLowerCase().replace(/[“”]/g,'"').replace(/[’]/g,"'").replace(/\s+/g,' ');
+  const escapeRx=value=>String(value).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 
-  function headingForTopic(topic){
-    const value=text(topic)||'RPSGT review';
-    let hash=0;
-    for(let index=0;index<value.length;index+=1) hash=(hash*31+value.charCodeAt(index))>>>0;
-    return headings[hash%headings.length];
-  }
-
-  function clueForTopic(topic){
-    const value=text(topic);
-    const label=/^D[1-4][A-C]$/i.test(value)||!value?'this RPSGT concept':value;
-    return 'Focus on '+label+'. Name the finding, action, or rule the stem is asking for, then remove choices that do not fit that pathway.';
-  }
-
-  function mount(win){
-    const doc=win.document;
-    const host=doc.querySelector('[data-checkpoint-workspace]');
-    if(!host) return null;
-    const sanitizedPanels=new WeakSet();
-
-    function sanitize(){
-      if(host.querySelector('.answer-status')) return;
-      const panel=host.querySelector('.coach-question-panel');
-      if(!panel||sanitizedPanels.has(panel)) return;
-      sanitizedPanels.add(panel);
-      const topic=text(host.querySelector('.checkpoint-question-meta .status')?.textContent);
-      const heading=panel.querySelector('h3');
-      const paragraph=[...panel.querySelectorAll('p')].find(node=>!node.classList.contains('coach-boundary'));
-      const safeHeading=headingForTopic(topic);
-      const safeClue=clueForTopic(topic);
-      if(heading&&heading.textContent!==safeHeading) heading.textContent=safeHeading;
-      if(paragraph&&paragraph.textContent!==safeClue) paragraph.textContent=safeClue;
+  function containsAnswer(message,answer){
+    const value=normalize(message);
+    const expected=normalize(answer);
+    if(!value||!expected) return false;
+    if(/^[a-z0-9]+$/i.test(expected)&&expected.length<=4){
+      return new RegExp(`(^|[^a-z0-9])${escapeRx(expected)}([^a-z0-9]|$)`,'i').test(value);
     }
-
-    const observer=new win.MutationObserver(sanitize);
-    observer.observe(host,{childList:true,subtree:true});
-    sanitize();
-    return {observer,sanitize};
+    return value.includes(expected);
   }
 
-  return {VERSION,headingForTopic,clueForTopic,mount};
+  function safePreAnswer(message,answer,fallback){
+    const value=text(message);
+    if(value&&!containsAnswer(value,answer)) return value;
+    return text(fallback)||'Identify the task being tested and the evidence you would use to defend a decision before choosing an answer.';
+  }
+
+  return {VERSION,containsAnswer,safePreAnswer};
 });

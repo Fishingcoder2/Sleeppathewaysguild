@@ -1,9 +1,12 @@
 import {readFile} from 'node:fs/promises';import {dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
-const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js]=await Promise.all([readFile(join(root,'labs.html'),'utf8'),readFile(join(root,'core','labs.js'),'utf8')]);
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');const [html,js,catalogText]=await Promise.all([readFile(join(root,'labs.html'),'utf8'),readFile(join(root,'core','labs.js'),'utf8'),readFile(join(root,'data','labs','catalog.json'),'utf8')]);
 for(const selector of ['data-lab-summary','data-lab-last','data-lab-catalog','data-lab-boundary'])if(!html.includes(selector))throw new Error(`Laboratory page is missing ${selector}.`);
-for(const script of ['core/lab-catalog-engine.js','core/labs.js'])if(!html.includes(script))throw new Error(`Laboratory page does not load ${script}.`);
+for(const script of ['core/learner-surface-guard.js','core/lab-catalog-engine.js','core/labs.js'])if(!html.includes(script))throw new Error(`Laboratory page does not load ${script}.`);
 if(html.indexOf('core/lab-catalog-engine.js')>html.indexOf('core/labs.js'))throw new Error('Laboratory catalog engine must load before the controller.');
 if(/RPSGTStorage\.save|localStorage\.(?:setItem|removeItem|clear)/.test(js))throw new Error('Laboratory catalog controller must remain read only.');
 if(!js.includes("data/labs/catalog.json")||!js.includes('validateCatalog')||!js.includes('engine.summarize'))throw new Error('Laboratory controller is not driven by the canonical catalog engine.');
-if(!html.includes('All ten laboratory families now use stable identifiers')||!html.includes('Hookup, EKG, Scoring, Respiratory, Instrumentation, PAP, Integrated Troubleshooting, Pediatric and Infant Sleep, MSLT/MWT Protocols, and Math Coach are v3-ready')||!html.includes('older public EKG page remains unchanged'))throw new Error('Complete native laboratory parity and legacy EKG preservation are not visible to learners.');
-console.log('Laboratory catalog page selector, script-order, ten-native-lab parity, legacy-preservation boundary, and read-only contracts passed.');
+const catalog=JSON.parse(catalogText);if(!Array.isArray(catalog.labs)||catalog.labs.length!==13)throw new Error('Skills Lab catalog must retain all thirteen current lab families.');
+for(const label of ['Hookup','EKG','Visual','Artifact','Scoring','Respiratory','Instrumentation','PAP','Troubleshooting','Pediatric','MSLT','Mentoring','Math'])if(!catalogText.toLowerCase().includes(label.toLowerCase()))throw new Error(`Skills Lab catalog is missing ${label}.`);
+for(const learnerMarker of ['Applied Learning · Skills Labs','Lab learning boundary','Skills Lab record','educational practice'])if(!html.includes(learnerMarker))throw new Error(`Skills Labs learner presentation is missing ${learnerMarker}.`);
+for(const internalTerm of ['stable identifiers','versioned progress keys','native laboratory parity','validated completion contracts','browser regression'])if(html.toLowerCase().includes(internalTerm.toLowerCase()))throw new Error(`Skills Labs exposes engineering terminology: ${internalTerm}.`);
+console.log('Skills Lab catalog, thirteen-lab coverage including Artifact Recognition, learner surface, script-order, and read-only contracts passed.');

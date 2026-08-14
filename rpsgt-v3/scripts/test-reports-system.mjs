@@ -12,8 +12,8 @@ const taskPackage=JSON.parse(await readFile(join(sourceRoot,sourceManifest.taskP
 const topicPackages=await Promise.all(sourceManifest.topicFamilyFiles.map(async file=>JSON.parse(await readFile(join(sourceRoot,file),"utf8"))));
 const outlines={sources,taskPlans:taskPackage.taskPlans,topicFamilies:topicPackages.flatMap(pkg=>pkg.topicFamilies||[])};
 const index=JSON.parse(await readFile(join(root,"data","question-bank","feedback-index.json"),"utf8"));
-if(index.meta.questionCount!==2887) throw new Error("Feedback index must contain 2,887 records.");
-if(index.meta.learnerEligibleCount!==2327||index.meta.qualityReviewCount!==560) throw new Error("Feedback index learner/quality split is incorrect.");
+if(index.meta.questionCount!==2920) throw new Error("Feedback index must contain 2,920 records.");
+if(index.meta.learnerEligibleCount!==2360||index.meta.qualityReviewCount!==560) throw new Error("Feedback index learner/quality split is incorrect.");
 if(index.meta.recordsContainQuestionText!==false) throw new Error("Feedback index must not contain question text.");
 const map=reports.byId(index.records);const learner=index.records.find(record=>!record.manualReviewRecommended&&record.taskCode==="D3A");
 if(!learner) throw new Error("No D3A learner record found for report test.");

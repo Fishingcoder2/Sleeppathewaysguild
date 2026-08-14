@@ -1,0 +1,27 @@
+{
+  "id":"aasm-pediatric-respiratory-psg-2011",
+  "shortTitle":"AASM Pediatric Respiratory PSG Indications (2011)",
+  "publisher":"American Academy of Sleep Medicine / SLEEP",
+  "sourceType":"AASM practice parameters",
+  "sourceRole":"legacyGuidance",
+  "currentAuthority":false,
+  "publicationYear":2011,
+  "verifiedAt":"2026-08-07",
+  "citation":"Aurora RN et al. Practice Parameters for the Respiratory Indications for Polysomnography in Children. SLEEP. 2011;34(3):379-388.",
+  "doi":"10.1093/sleep/34.3.379",
+  "driveFileId":"1d-GgZnt3oOcz4UpmywQru78NBvyksDsm",
+  "driveFileName":"aasm.34.3.379.pdf",
+  "libraryStatus":"Exact Guild Drive copy verified from internal title, journal citation, and document content on 2026-08-07; a duplicate copy also exists.",
+  "bestFor":"Historical/applicable pediatric respiratory PSG indication context, especially learning when PSG may be relevant in pediatric respiratory evaluation and follow-up.",
+  "mappedTaskCodes":["D1A","D2B"],
+  "mappingRationale":{"D1A":"Supports recognition of clinical contexts that may lead to pediatric respiratory PSG evaluation.","D2B":"Supports indication-level understanding of when pediatric respiratory PSG is used; it does not replace current scoring or technical rules."},
+  "authorityBoundary":"Use this BRPT-listed 2011 practice parameter for pediatric respiratory PSG indication context only. Current AASM Scoring Manual Version 3 controls scoring and technical definitions. Current AASM/ICSD guidance controls newer diagnostic terminology, and newer pediatric respiratory or treatment guidance controls where it supersedes this document.",
+  "copyrightUse":"Use citation, public section-topic identity, original summaries, and learning objectives. Do not reproduce recommendation wording, evidence tables, figures, or substantial passages.",
+  "sections":[
+    {"id":"peds-resp-psg-scope","label":"Scope and evidence context for pediatric respiratory PSG indications"},
+    {"id":"peds-resp-psg-indication-context","label":"Clinical-context recognition for pediatric respiratory PSG"},
+    {"id":"peds-resp-psg-complexity","label":"Complex and higher-risk pediatric respiratory evaluation context"},
+    {"id":"peds-resp-psg-followup","label":"Treatment and follow-up PSG indication context"},
+    {"id":"peds-resp-psg-current-rule-boundary","label":"Current AASM scoring and terminology cross-check"}
+  ]
+}

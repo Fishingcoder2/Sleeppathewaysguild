@@ -1,0 +1,49 @@
+name: RPSGT v3 release extraction evidence
+
+on:
+  push:
+    branches:
+      - 'release/rpsgt-v3-*'
+    paths:
+      - RPSGTv2.2026.html
+      - '.github/workflows/rpsgt-v3-release-extraction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract-release-bank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact release candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Preserve committed bank for comparison
+        run: cp -R rpsgt-v3/data/question-bank /tmp/question-bank-before
+      - name: Extract current-main source bank
+        env:
+          RPSGT_EXTRACTION_DATE: 2026-08-11
+        run: |
+          node rpsgt-v3/scripts/extract-question-bank.mjs
+          node rpsgt-v3/scripts/generate-feedback-index.mjs
+          node rpsgt-v3/scripts/validate-question-bank.mjs
+      - name: Summarize changed generated modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '=== generated question-bank diff ==='
+          diff -qr /tmp/question-bank-before rpsgt-v3/data/question-bank || true
+          echo '=== generated files ==='
+          find rpsgt-v3/data/question-bank -maxdepth 1 -type f -printf '%f\n' | sort
+      - name: Upload regenerated 2920-question bank
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-question-bank-2920
+          path: rpsgt-v3/data/question-bank
+          if-no-files-found: error
+          retention-days: 14

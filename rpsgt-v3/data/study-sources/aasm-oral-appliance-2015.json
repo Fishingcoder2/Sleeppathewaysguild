@@ -1,0 +1,25 @@
+{
+  "id":"aasm-oral-appliance-2015",
+  "shortTitle":"AASM/AADSM Oral Appliance Therapy Guideline",
+  "publisher":"American Academy of Sleep Medicine / American Academy of Dental Sleep Medicine",
+  "sourceType":"clinical practice guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "publicationYear":2015,
+  "verifiedAt":"2026-08-07",
+  "citation":"Ramar K, Dort LC, Katz SG, et al. Clinical practice guideline for the treatment of obstructive sleep apnea and snoring with oral appliance therapy: an update for 2015. J Clin Sleep Med. 2015;11(7):773-827.",
+  "doi":"10.5664/jcsm.4858",
+  "officialContextUrl":"https://aasm.org/oral-appliance-therapy-clinical-guideline-published-jointly-by-aasm-and-aadsm/",
+  "currencyNote":"Still listed in the AASM active practice-guideline index when verified on 2026-08-07.",
+  "bestFor":"Adult oral appliance therapy as an alternative OSA/snoring treatment, qualified dental involvement, custom titratable appliances, follow-up testing, and longitudinal follow-up concepts.",
+  "mappedTaskCodes":["D4B"],
+  "mappingRationale":{"D4B":"Directly addresses an alternative therapy for adult OSA and snoring and when it is considered relative to PAP."},
+  "copyrightUse":"Use citation, guideline topic headings, original summaries, and learning objectives. Do not reproduce substantial recommendation text or protected tables.",
+  "sections":[
+    {"id":"aasm-oa-scope","label":"Scope and role of oral appliance therapy"},
+    {"id":"aasm-oa-selection","label":"Patient selection and relationship to PAP therapy"},
+    {"id":"aasm-oa-appliance","label":"Custom titratable appliance and qualified dental oversight"},
+    {"id":"aasm-oa-followup-testing","label":"Follow-up sleep testing for efficacy"},
+    {"id":"aasm-oa-followup-care","label":"Periodic sleep-physician and dental follow-up"}
+  ]
+}

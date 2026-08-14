@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "kind": "user-supplied-v2-html",
+    "uploadedName": "RPSGTv2.2026_1.html",
+    "sha256": "100a845b31f95676d46f9a4b9af7a099ccd1bdd5ec26e57c598c4449f41f99b4",
+    "sizeBytes": 11645121,
+    "coreDeckMarker": "FLASHCARDS_V1259",
+    "runtimeAppendMarker": "SLEEP_DISORDER_FLASHCARDS_V1268",
+    "reviewedAt": "2026-08-12"
+  },
+  "baseArchivedCardCount": 326,
+  "excludeArchivedIds": [
+    "fc-med-architecture-master",
+    "fc-med-rem-rebound-mslt",
+    "fc-med-stimulants-wake-promoting",
+    "fc-med-sedatives-mslt",
+    "fc-med-opioid-csa-hypoventilation",
+    "fc-med-alcohol-osa",
+    "fc-med-ssri-plms",
+    "fc-med-rls-augmentation",
+    "fc-med-caffeine-citrate-aop",
+    "fc-med-acronym-otc",
+    "fc-med-acronym-soremp",
+    "fc-med-word-suppress",
+    "fc-med-word-rebound",
+    "fc-med-word-latency"
+  ],
+  "addCards": [
+    {
+      "id": "fc-disorder-buckets",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "ICSD-style major buckets",
+      "back": "Useful study buckets include insomnia disorders, sleep-related breathing disorders, central disorders of hypersomnolence, circadian rhythm sleep-wake disorders, parasomnias, sleep-related movement disorders, and other sleep disorders.",
+      "memoryClue": "Do not study disorders as isolated names. Learn the bucket, the hallmark complaint, and the PSG or history clue."
+    },
+    {
+      "id": "fc-insomnia-disorder",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Insomnia disorder",
+      "back": "Persistent difficulty initiating sleep, maintaining sleep, or waking too early despite adequate opportunity, with daytime impairment.",
+      "memoryClue": "Insomnia is a clinical history diagnosis. A normal PSG does not automatically rule out the complaint."
+    },
+    {
+      "id": "fc-osa-clinical",
+      "category": "Sleep-Related Breathing Disorders",
+      "front": "Obstructive sleep apnea (OSA)",
+      "back": "Repeated upper-airway obstruction during sleep with airflow reduction despite continued or increased respiratory effort.",
+      "memoryClue": "Do not diagnose from snoring alone. PSG/HSAT evidence and clinical context matter."
+    },
+    {
+      "id": "fc-csa-clinical",
+      "category": "Sleep-Related Breathing Disorders",
+      "front": "Central sleep apnea (CSA)",
+      "back": "Sleep-related breathing pauses with absent or reduced respiratory effort during central events.",
+      "memoryClue": "Effort channels are key. Airflow loss alone does not separate central from obstructive events."
+    },
+    {
+      "id": "fc-sleep-hypoventilation",
+      "category": "Sleep-Related Breathing Disorders",
+      "front": "Sleep-related hypoventilation",
+      "back": "Inadequate ventilation during sleep, commonly tracked with CO2 monitoring and clinical context.",
+      "memoryClue": "SpO2 may not fully reveal CO2 retention, especially when supplemental oxygen is used."
+    },
+    {
+      "id": "fc-narcolepsy-type1",
+      "category": "Central Disorders of Hypersomnolence",
+      "front": "Narcolepsy type 1",
+      "back": "Excessive daytime sleepiness with cataplexy and/or hypocretin deficiency features; MSLT findings may support diagnosis in the right context.",
+      "memoryClue": "Cataplexy is the classic differentiator. Medication and sleep schedule can affect testing."
+    },
+    {
+      "id": "fc-narcolepsy-type2",
+      "category": "Central Disorders of Hypersomnolence",
+      "front": "Narcolepsy type 2",
+      "back": "Narcolepsy features without cataplexy, evaluated with clinical history and objective sleepiness testing when appropriate.",
+      "memoryClue": "Do not treat SOREMPs as meaningful without adequate prior sleep and medication/protocol review."
+    },
+    {
+      "id": "fc-idiopathic-hypersomnia",
+      "category": "Central Disorders of Hypersomnolence",
+      "front": "Idiopathic hypersomnia",
+      "back": "Central hypersomnolence disorder marked by excessive sleepiness that is not better explained by narcolepsy, insufficient sleep, circadian disorder, medications, or another condition.",
+      "memoryClue": "Differentiate from insufficient sleep and sedating medication effects before jumping to the label."
+    },
+    {
+      "id": "fc-insufficient-sleep",
+      "category": "Sleep Disorders & Clinical Terms",
+      "front": "Insufficient sleep syndrome",
+      "back": "Chronic sleep restriction causing sleepiness because the person regularly does not obtain enough sleep.",
+      "memoryClue": "Sleepiness from not sleeping enough is not the same as narcolepsy."
+    },
+    {
+      "id": "fc-delayed-phase",
+      "category": "Circadian Rhythm Sleep-Wake Disorders",
+      "front": "Delayed sleep-wake phase disorder",
+      "back": "A circadian pattern where preferred sleep and wake times are delayed relative to required schedule, causing difficulty falling asleep and waking at conventional times.",
+      "memoryClue": "The patient may sleep well when allowed their preferred delayed schedule."
+    },
+    {
+      "id": "fc-shift-work",
+      "category": "Circadian Rhythm Sleep-Wake Disorders",
+      "front": "Shift work disorder",
+      "back": "Insomnia and/or sleepiness related to a work schedule that overlaps the usual sleep period.",
+      "memoryClue": "Ask about work timing. Treating it like simple insomnia misses the circadian driver."
+    },
+    {
+      "id": "fc-nrem-parasomnias",
+      "category": "Parasomnias",
+      "front": "NREM disorders of arousal",
+      "back": "Parasomnias arising from NREM sleep, often in the first third of the night, with incomplete awakening and limited recall.",
+      "memoryClue": "These differ from nightmares, which are usually REM-related and more often remembered."
+    },
+    {
+      "id": "fc-confusional-arousals",
+      "category": "Parasomnias",
+      "front": "Confusional arousals",
+      "back": "Partial arousals from NREM sleep with confusion, disorientation, and limited responsiveness.",
+      "memoryClue": "The patient may look awake but not be fully awake."
+    },
+    {
+      "id": "fc-sleepwalking",
+      "category": "Parasomnias",
+      "front": "Sleepwalking",
+      "back": "Complex behaviors arising from sleep, usually NREM sleep, with reduced awareness and limited recall.",
+      "memoryClue": "Safety history matters: injury risk, leaving bed/room, stairs, and dangerous behaviors."
+    },
+    {
+      "id": "fc-sleep-terrors",
+      "category": "Parasomnias",
+      "front": "Sleep terrors",
+      "back": "Abrupt arousals from NREM sleep with intense fear/autonomic activation, often little dream recall.",
+      "memoryClue": "Do not confuse with nightmares, which are usually remembered and often occur later in the night."
+    },
+    {
+      "id": "fc-nightmare-disorder",
+      "category": "Parasomnias",
+      "front": "Nightmare disorder",
+      "back": "Repeated disturbing dreams that are remembered and usually occur from REM sleep, often later in the night.",
+      "memoryClue": "Detailed dream recall points away from classic sleep terrors."
+    },
+    {
+      "id": "fc-rbd",
+      "category": "Parasomnias",
+      "front": "REM sleep behavior disorder (RBD)",
+      "back": "Dream enactment behavior associated with loss of normal REM atonia on PSG when confirmed.",
+      "memoryClue": "Medication effects, untreated OSA, and other mimics must be considered. PSG chin/limb EMG matters."
+    },
+    {
+      "id": "fc-rls",
+      "category": "Sleep-Related Movement Disorders",
+      "front": "Restless legs syndrome (RLS)",
+      "back": "Urge to move the legs, worse at rest, relieved by movement, and worse in the evening or night.",
+      "memoryClue": "RLS is a clinical symptom disorder, not the same thing as PLMS scored on PSG."
+    },
+    {
+      "id": "fc-plmd",
+      "category": "Sleep-Related Movement Disorders",
+      "front": "Periodic limb movement disorder (PLMD)",
+      "back": "Sleep-related periodic limb movements with clinical sleep disturbance or impairment not better explained by another disorder.",
+      "memoryClue": "PLMS can occur with OSA, medications, or other conditions. PLMS alone does not always mean PLMD."
+    },
+    {
+      "id": "fc-sleep-bruxism-disorder",
+      "category": "Sleep-Related Movement Disorders",
+      "front": "Sleep bruxism",
+      "back": "Repetitive jaw-muscle activity during sleep, often grinding or clenching.",
+      "memoryClue": "Jaw EMG activity is not scored the same way as limb movements."
+    }
+  ],
+  "expectedFinalCardCount": 332,
+  "expectedFinalCategoryCount": 19
+}

@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "name": "RPSGT Artifact Recognition Pack 1",
+    "version": 1,
+    "developmentOnly": true,
+    "appAuthored": true,
+    "sourceType": "app-authored-schematic",
+    "copyrightBoundary": "Original deterministic teaching tracings only. No BRPT examination item, patient recording, scoring-manual figure, textbook figure, or third-party waveform is reproduced.",
+    "clinicalBoundary": "Artifact recognition practice only. Real-study actions remain subject to current facility procedures, equipment instructions, and supervised technologist competency.",
+    "questionCount": 15,
+    "caseCount": 5
+  },
+  "studies": [
+    {
+      "id": "artifact-electrode-pop-001",
+      "title": "Abrupt single-channel transient",
+      "durationSeconds": 30,
+      "sampleRate": 120,
+      "artifact": {"type":"electrode-pop","channels":["F3-M2"],"start":11.6,"end":13.4},
+      "channels": [
+        {"label":"F3-M2","type":"eeg"},{"label":"F4-M1","type":"eeg"},{"label":"C3-M2","type":"eeg"},{"label":"C4-M1","type":"eeg"},{"label":"E1-M2","type":"eog"},{"label":"E2-M2","type":"eog"},{"label":"Chin EMG","type":"emg"},{"label":"ECG","type":"ecg","heartRate":66}
+      ]
+    },
+    {
+      "id": "artifact-ecg-contamination-001",
+      "title": "Cardiac activity appearing in another channel",
+      "durationSeconds": 30,
+      "sampleRate": 120,
+      "artifact": {"type":"ecg-contamination","channels":["F3-M2"],"heartRate":72,"strength":0.75},
+      "channels": [
+        {"label":"F3-M2","type":"eeg"},{"label":"F4-M1","type":"eeg"},{"label":"C3-M2","type":"eeg"},{"label":"C4-M1","type":"eeg"},{"label":"E1-M2","type":"eog"},{"label":"E2-M2","type":"eog"},{"label":"Chin EMG","type":"emg"},{"label":"ECG","type":"ecg","heartRate":72}
+      ]
+    },
+    {
+      "id": "artifact-sweat-drift-001",
+      "title": "Slow baseline drift in frontal channels",
+      "durationSeconds": 30,
+      "sampleRate": 120,
+      "artifact": {"type":"sweat-drift","channels":["F3-M2","F4-M1"],"start":2,"end":28,"strength":1.0},
+      "channels": [
+        {"label":"F3-M2","type":"eeg"},{"label":"F4-M1","type":"eeg"},{"label":"C3-M2","type":"eeg"},{"label":"C4-M1","type":"eeg"},{"label":"E1-M2","type":"eog"},{"label":"E2-M2","type":"eog"},{"label":"Chin EMG","type":"emg"},{"label":"ECG","type":"ecg","heartRate":64}
+      ]
+    },
+    {
+      "id": "artifact-line-noise-001",
+      "title": "Regular high-frequency interference",
+      "durationSeconds": 30,
+      "sampleRate": 180,
+      "artifact": {"type":"line-noise","channels":["C3-M2"],"frequency":60,"strength":0.7},
+      "channels": [
+        {"label":"F3-M2","type":"eeg"},{"label":"F4-M1","type":"eeg"},{"label":"C3-M2","type":"eeg"},{"label":"C4-M1","type":"eeg"},{"label":"E1-M2","type":"eog"},{"label":"E2-M2","type":"eog"},{"label":"Chin EMG","type":"emg"},{"label":"ECG","type":"ecg","heartRate":68}
+      ]
+    },
+    {
+      "id": "artifact-movement-001",
+      "title": "Broad movement contamination across channels",
+      "durationSeconds": 30,
+      "sampleRate": 120,
+      "artifact": {"type":"movement","channels":["F3-M2","F4-M1","C3-M2","C4-M1","E1-M2","E2-M2","Chin EMG"],"start":14.0,"end":18.0,"strength":1.0},
+      "channels": [
+        {"label":"F3-M2","type":"eeg"},{"label":"F4-M1","type":"eeg"},{"label":"C3-M2","type":"eeg"},{"label":"C4-M1","type":"eeg"},{"label":"E1-M2","type":"eog"},{"label":"E2-M2","type":"eog"},{"label":"Chin EMG","type":"emg"},{"label":"ECG","type":"ecg","heartRate":70}
+      ]
+    }
+  ],
+  "questions": [
+    {"id":"artifact-pop-identify","studyId":"artifact-electrode-pop-001","taskCode":"D2B","prompt":"Which explanation best fits the abrupt large transient that is isolated mainly to F3-M2?","options":["Electrode pop or unstable electrode contact","Normal sleep spindle","Central apnea","Normal ECG complex"],"answer":"Electrode pop or unstable electrode contact","rationale":"An abrupt nonphysiologic transient that is largely confined to one derivation should prompt a signal-pathway and electrode-contact check before it is interpreted as cerebral activity."},
+    {"id":"artifact-pop-channel","studyId":"artifact-electrode-pop-001","taskCode":"D2B","prompt":"Which displayed channel contains the strongest abnormal transient?","options":["F3-M2","F4-M1","E1-M2","ECG"],"answer":"F3-M2","rationale":"The original schematic transient is intentionally concentrated in F3-M2 while neighboring channels remain comparatively stable."},
+    {"id":"artifact-pop-action","studyId":"artifact-electrode-pop-001","taskCode":"D2C","prompt":"What is the best next technologist action?","options":["Inspect the affected electrode, lead connection, and signal quality before changing interpretation","Immediately score the transient as an arousal","Increase all filter settings until the transient disappears","Ignore it because only one channel is affected"],"answer":"Inspect the affected electrode, lead connection, and signal quality before changing interpretation","rationale":"Troubleshooting should follow the signal pathway and correct the source when possible rather than using scoring or filter changes to hide an unstable electrode."},
+
+    {"id":"artifact-ecg-identify","studyId":"artifact-ecg-contamination-001","taskCode":"D2B","prompt":"The repetitive deflections in F3-M2 occur at the same timing as the ECG complexes. What is the most likely explanation?","options":["ECG contamination in the EEG derivation","Sleep spindles","Rapid eye movements","Leg movement artifact"],"answer":"ECG contamination in the EEG derivation","rationale":"Time-locking a suspicious waveform to the ECG channel is a strong clue that cardiac activity is contaminating another derivation."},
+    {"id":"artifact-ecg-evidence","studyId":"artifact-ecg-contamination-001","taskCode":"D3C","prompt":"Which comparison provides the strongest evidence for the artifact source?","options":["Compare the suspicious F3-M2 deflections with the ECG channel timing","Compare F3-M2 only with SpO2","Count eye movements in E1-M2","Change the sleep stage and see whether it disappears"],"answer":"Compare the suspicious F3-M2 deflections with the ECG channel timing","rationale":"Cross-channel correlation is central to artifact recognition. Repeated morphology at the same cardiac timing supports ECG contamination."},
+    {"id":"artifact-ecg-action","studyId":"artifact-ecg-contamination-001","taskCode":"D2C","prompt":"What is the best next step after recognizing ECG contamination?","options":["Verify the affected electrode pathway and document persistent limitation if it cannot be corrected","Score every contaminating deflection as an EEG event","Disconnect the ECG channel","Apply maximum filtering without checking the electrode pathway"],"answer":"Verify the affected electrode pathway and document persistent limitation if it cannot be corrected","rationale":"Correct the technical source when possible and preserve the true ECG channel for clinical monitoring rather than hiding the problem with indiscriminate filtering."},
+
+    {"id":"artifact-sweat-identify","studyId":"artifact-sweat-drift-001","taskCode":"D2B","prompt":"The very slow, broad baseline shifts are strongest in the frontal derivations and do not behave like organized physiologic slow waves. What is the best artifact label?","options":["Sweat or slow electrode-potential drift","Normal sleep spindle","ECG contamination","Snore artifact"],"answer":"Sweat or slow electrode-potential drift","rationale":"Very slow drifting potentials affecting selected electrodes can mimic slow activity. Distribution and physiologic context help separate artifact from sleep-stage evidence."},
+    {"id":"artifact-sweat-evidence","studyId":"artifact-sweat-drift-001","taskCode":"D3A","prompt":"Which observation should make you cautious about calling this normal N3 slow-wave activity?","options":["The drift is strongest in selected frontal electrodes without a convincing matching physiologic pattern across the epoch","The patient has an ECG channel","The tracing is 30 seconds long","The EOG channels are present"],"answer":"The drift is strongest in selected frontal electrodes without a convincing matching physiologic pattern across the epoch","rationale":"Stage decisions should use the complete epoch and channel context. Electrode-related drift should not be allowed to masquerade as physiologic slow-wave activity."},
+    {"id":"artifact-sweat-action","studyId":"artifact-sweat-drift-001","taskCode":"D2C","prompt":"What is the most appropriate technical response?","options":["Assess the patient and electrode environment, inspect affected electrodes, and correct the source when feasible","Score N3 immediately because the waveform is slow","Remove all frontal channels from the montage","Increase sensitivity until the drift looks smaller"],"answer":"Assess the patient and electrode environment, inspect affected electrodes, and correct the source when feasible","rationale":"The technologist should identify and correct the source rather than adapting scoring to an artifact-contaminated signal."},
+
+    {"id":"artifact-line-identify","studyId":"artifact-line-noise-001","taskCode":"D2B","prompt":"C3-M2 contains a dense, regular high-frequency pattern that is not present in neighboring EEG channels. What is the most likely artifact family?","options":["Line-frequency electrical interference","K-complex","Rapid eye movement","Respiratory effort"],"answer":"Line-frequency electrical interference","rationale":"A regular high-frequency pattern isolated to a signal pathway should prompt an electrical/electrode troubleshooting sequence rather than physiologic interpretation."},
+    {"id":"artifact-line-channel","studyId":"artifact-line-noise-001","taskCode":"D2B","prompt":"Which channel is most affected by the regular interference?","options":["C3-M2","C4-M1","E2-M2","ECG"],"answer":"C3-M2","rationale":"The schematic interference is intentionally concentrated in C3-M2."},
+    {"id":"artifact-line-action","studyId":"artifact-line-noise-001","taskCode":"D2C","prompt":"What should be checked before relying on filter changes?","options":["Electrode impedance/contact, reference/ground pathway, cables, and nearby electrical sources","Only the patient's sleep stage","Only the SpO2 value","The scoring report header"],"answer":"Electrode impedance/contact, reference/ground pathway, cables, and nearby electrical sources","rationale":"Troubleshoot the acquisition pathway first. Filters can alter clinically useful signal content and should not substitute for correcting an avoidable technical source."},
+
+    {"id":"artifact-move-identify","studyId":"artifact-movement-001","taskCode":"D2B","prompt":"A large irregular burst appears across many EEG/EOG channels with increased chin activity over the same interval. What is the best overall interpretation?","options":["Movement artifact affecting multiple channels","Isolated electrode pop","Normal spindle activity","ECG contamination"],"answer":"Movement artifact affecting multiple channels","rationale":"Broad simultaneous contamination across several channels, especially with EMG change, should prompt correlation with movement and video rather than single-channel interpretation."},
+    {"id":"artifact-move-evidence","studyId":"artifact-movement-001","taskCode":"D3C","prompt":"Which additional information is most useful for confirming the source?","options":["Video and neighboring-channel timing during the same interval","Only the prior night's diagnosis","Only the pulse oximeter brand","The patient's insurance information"],"answer":"Video and neighboring-channel timing during the same interval","rationale":"Artifact recognition improves when the technologist correlates the suspicious waveform with video and simultaneous signal changes."},
+    {"id":"artifact-move-action","studyId":"artifact-movement-001","taskCode":"D2C","prompt":"What is the best next response when movement artifact obscures important channels?","options":["Assess the patient and sensors, restore usable signals when possible, and document persistent limitations","Score the entire interval as wake regardless of context","Delete the affected epoch","Turn off every affected channel"],"answer":"Assess the patient and sensors, restore usable signals when possible, and document persistent limitations","rationale":"Real-world troubleshooting balances patient assessment, signal restoration, context, and documentation rather than forcing an interpretation through unusable data."}
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion":1,
+  "verifiedAt":"2026-08-08",
+  "purpose":"Separate current-authority registry for RPSGT V3. Defines precedence/currentness and links authority rules to study-source records without merging accreditation, scope, competency, scoring, diagnostic, treatment, and textbook roles.",
+  "precedenceModel":[
+    "AASM governing scoring/technical specification",
+    "AASM accreditation/protocol requirement",
+    "AASM active diagnostic/treatment/protocol guidance",
+    "AAST current technical/competency/scope/role layer",
+    "Textbooks and legacy/supporting references",
+    "Facility SOP, physician order, state law, and manufacturer instructions where local/device-specific execution is required"
+  ],
+  "rules":[
+    {"ruleId":"AUTH-001","level":1,"org":"AASM","sourceId":"aasm-scoring-manual-v3","tasks":["D2A","D2C","D3A","D3B","D3C"],"topic":"Scoring, montages, electrode placement, technical/digital specifications, PSG/HSAT reporting","precedence":"Use first for scoring and scoring-linked technical specifications.","note":"Online Version 3 incorporates the February 2024 erratum."},
+    {"ruleId":"AUTH-002","level":4,"org":"AAST","sourceId":"aast-technical-guidelines-index-current","tasks":["D2A","D2B","D2C","D3C","D4A","D4B","D4C"],"topic":"Current AAST technical-guideline families","precedence":"Below AASM scoring/diagnostic/treatment authority and above textbooks/workflow guides."},
+    {"ruleId":"AUTH-003","level":4,"org":"AAST","sourceId":"aast-standard-psg-2021","tasks":["D2A","D2B","D2C","D3C"],"topic":"Standard attended adult PSG workflow","precedence":"Primary technologist workflow source for adult standard PSG, subordinate to AASM scoring rules.","note":"Does not address pediatric PSG, HSAT, or therapeutic PAP/oxygen titration."},
+    {"ruleId":"AUTH-004","level":4,"org":"AAST","sourceId":"aast-end-tidal-co2-2018","tasks":["D2A","D2B","D2C","D3A","D3B","D4C"],"topic":"End-tidal CO2 procedure details","precedence":"Use with current AASM respiratory/hypoventilation scoring rules.","note":"Keep ETCO2 distinct from TcCO2."},
+    {"ruleId":"AUTH-005","level":4,"org":"AAST","sourceId":"aast-transcutaneous-co2-2018","tasks":["D2A","D2B","D2C","D3A","D3B","D4C"],"topic":"Transcutaneous CO2 procedure details","precedence":"Use with current AASM hypoventilation rules.","note":"Keep TcCO2 distinct from ETCO2."},
+    {"ruleId":"AUTH-006","level":4,"org":"AAST","sourceId":"aast-pap-titration-2021","tasks":["D1B","D1C","D2A","D2B","D2C","D4A","D4C"],"topic":"PAP recording and CPAP/BPAP titration workflow","precedence":"Technologist workflow overlay; current AASM treatment guidance and scoring rules override conflicting older material.","note":"Not authority for CSA/ASV treatment; use AUTH-008."},
+    {"ruleId":"AUTH-007","level":3,"org":"AASM","sourceId":"aasm-pap-treatment-2019","tasks":["D1C","D4A"],"topic":"Adult OSA PAP treatment","precedence":"Clinical treatment authority above textbook/vendor content.","note":"Use with orders, facility protocol, and manufacturer instructions."},
+    {"ruleId":"AUTH-008","level":3,"org":"AASM","sourceId":"aasm-csa-treatment-2025","tasks":["D1A","D1C","D2C","D4A","D4B","D4C"],"topic":"Adult CSA treatment including PAP, low-flow oxygen, acetazolamide, and transvenous phrenic nerve stimulation","precedence":"Current CSA treatment authority above older CSA reviews and older PAP content.","note":"Transvenous PNS is distinct from diaphragm pacing."},
+    {"ruleId":"AUTH-009","level":3,"org":"AASM","sourceId":"aasm-adult-osa-diagnostic-testing-2017","tasks":["D1A","D2A","D2B"],"topic":"Adult OSA diagnostic test selection","precedence":"PSG-vs-HSAT diagnostic authority above textbook algorithms."},
+    {"ruleId":"AUTH-010","level":3,"org":"AASM","sourceId":"aasm-adult-mslt-mwt-2021","tasks":["D1A","D2A","D2B","D3C"],"topic":"Adult MSLT/MWT preparation, administration, and reporting","precedence":"Use instead of older adult daytime-test procedure parameters.","note":"Use with the published 2022 erratum."},
+    {"ruleId":"AUTH-011","level":3,"org":"AASM","sourceId":"aasm-pediatric-mslt-mwt-2024","tasks":["D1A","D1B","D2A","D2B","D3B","D3C"],"topic":"Pediatric PSG-MSLT preparation and administration","precedence":"Use instead of older pediatric MSLT procedure parameters where they differ."},
+    {"ruleId":"AUTH-012","level":4,"org":"AAST","sourceId":"aast-core-competencies-current","tasks":["D1A","D1B","D1C","D2A","D2B","D2C","D3A","D3B","D3C","D4A","D4B","D4C"],"topic":"Current sleep-technologist competency framework","precedence":"Defines competency expectations; detailed rules come from current technical/clinical sources and local policy."},
+    {"ruleId":"AUTH-013","level":4,"org":"AAST","sourceId":"aast-scope-practice-current","tasks":["D2A","D2B","D2C","D3A","D3B","D4A","D4C"],"topic":"Professional scope boundaries","precedence":"Subject to state law, facility policy, and physician orders; not a scoring/treatment algorithm."},
+    {"ruleId":"AUTH-014","level":4,"org":"AAST","sourceId":"aast-sleep-technician-role-current","tasks":["D1B","D2A","D2B","D2C","D4A","D4C"],"topic":"Sleep-technician role and skills","precedence":"Role confirmation; detailed procedures come from current technical guidance and facility SOPs."},
+    {"ruleId":"AUTH-015","level":2,"org":"AASM","sourceId":"aasm-accreditation-standards-2025","tasks":["D2A","D2B","D2C","D3C","D4A","D4C"],"topic":"Written facility protocols, infection control, and equipment cleaning","precedence":"Facility protocol requirement; does not replace scoring, diagnostic, or treatment rules."}
+  ]
+}

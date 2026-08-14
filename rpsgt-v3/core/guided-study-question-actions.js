@@ -17,41 +17,11 @@
     .replace(/\uFFFD/g,'');
   const normalize=value=>clean(value).trim().toLowerCase().replace(/\s+/g,' ');
   const sameId=(left,right)=>String(left)===String(right);
-  const coachHeadings=['Start with the clinical clue.','Picture the technologist’s next decision.','Name the finding before choosing.','Use the stem to narrow the pathway.','Separate the key clue from the distractors.'];
 
   async function loadJson(path){
     const response=await fetch(path,{cache:'no-store'});
     if(!response.ok) throw new Error(path+' HTTP '+response.status);
     return response.json();
-  }
-
-  function safeCoachClue(question){
-    const answer=normalize(question&&question.answer);
-    const candidates=[question&&question.coachBobNote,question&&question.whyTricky,question&&question.rationale]
-      .map(value=>clean(value).trim())
-      .filter(Boolean)
-      .filter(value=>!answer||!normalize(value).includes(answer));
-    if(candidates.length) return candidates[0];
-    const topic=clean(question&&question.topic||'this RPSGT concept').trim();
-    return 'Focus on '+topic+'. Identify the finding or action the stem is testing, then remove choices that do not fit that clinical pathway.';
-  }
-
-  function coachHeading(question){
-    const topic=clean(question&&question.topic||'RPSGT review');
-    let hash=0;
-    for(let index=0;index<topic.length;index+=1) hash=(hash*31+topic.charCodeAt(index))>>>0;
-    return coachHeadings[hash%coachHeadings.length];
-  }
-
-  function enhanceCoach(question){
-    const panel=checkpointHost.querySelector('.coach-question-panel');
-    if(!panel||checkpointHost.querySelector('.answer-status')) return;
-    const heading=panel.querySelector('h3');
-    const paragraphs=[...panel.querySelectorAll('p')].filter(node=>!node.classList.contains('coach-boundary'));
-    const nextHeading=coachHeading(question);
-    const nextClue=safeCoachClue(question);
-    if(heading&&heading.textContent!==nextHeading) heading.textContent=nextHeading;
-    if(paragraphs[0]&&paragraphs[0].textContent!==nextClue) paragraphs[0].textContent=nextClue;
   }
 
   async function ensureBlueprint(){
@@ -75,9 +45,10 @@
   function selectedOptions(){return [...checkpointHost.querySelectorAll('.checkpoint-option span')].map(node=>normalize(node.textContent));}
 
   async function resolveCurrentQuestion(){
-    const taskCode=state.activeTaskCode;
+    const taskCode=state.activeTaskCode||clean(checkpointHost.querySelector('.checkpoint-task-label strong')?.textContent);
     const stem=checkpointHost.querySelector('#checkpoint-title');
     if(!taskCode||!stem) return null;
+    state.activeTaskCode=taskCode;
     const prompt=normalize(stem.textContent);
     const options=selectedOptions();
     const topic=normalize(checkpointHost.querySelector('.checkpoint-question-meta .status')?.textContent);
@@ -177,14 +148,12 @@
   async function enhance(){
     enhanceExplanationControl();
     const pane=checkpointHost.querySelector('.checkpoint-question-pane');
-    if(!pane||pending.has(pane)) return;
+    if(!pane||pane.querySelector('[data-guided-question-actions]')||pending.has(pane)) return;
     pending.add(pane);
     try{
       await ensureBlueprint();
       const question=await resolveCurrentQuestion();
-      if(!question||!pane.isConnected) return;
-      if(pane.querySelector('[data-guided-question-actions]')) return;
-      enhanceCoach(question);
+      if(!question||!pane.isConnected||pane.querySelector('[data-guided-question-actions]')) return;
       const options=pane.querySelector('.checkpoint-options');
       if(options) options.insertAdjacentElement('afterend',makeActions(question));
     }catch(error){console.warn('Guided Study question actions were not added.',error);}finally{pending.delete(pane);}
@@ -196,6 +165,6 @@
   },true);
 
   const observer=new MutationObserver(enhance);
-  observer.observe(checkpointHost,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-expanded']});
+  observer.observe(checkpointHost,{childList:true,subtree:true});
   enhance();
 })();

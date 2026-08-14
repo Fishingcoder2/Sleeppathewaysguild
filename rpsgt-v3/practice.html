@@ -7,6 +7,9 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/rpsgt-v3.css">
 <link rel="stylesheet" href="assets/practice.css">
+<link rel="stylesheet" href="assets/practice-coach.css">
+<link rel="stylesheet" href="assets/module-polish.css">
+<link rel="stylesheet" href="assets/practice-navigation.css">
 </head>
 <body data-module="practice">
 <div class="app-shell">
@@ -25,30 +28,31 @@
 </aside>
 <main class="main">
 <section class="hero">
-  <div><div class="eyebrow">Module 2 · learner practice pathway</div><h1>Practice and Exam Center</h1><p class="lead">Build focused sessions from the preserved RPSGT question bank, remediate missed items, run weighted readiness checks, or start the separate 175-question mock-style practice.</p></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Choose the tool that matches the job.</h2><p>Focused practice builds skills, review manages missed and mastered items, readiness identifies the next study target, and the full mock builds stamina and exam-style navigation.</p></aside>
+  <div><div class="eyebrow">Practice Center · Focused sessions</div><h1>Choose the practice mode that matches your goal</h1><p class="lead">Build a focused session from learner-ready RPSGT questions, remediate missed items, run a weighted Readiness Check, or start the separate 175-question mock-style practice.</p></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Choose the tool that matches the job.</h2><p>Focused practice builds skills, review revisits missed and mastered items, Readiness identifies the next study target, and the full mock builds stamina and exam-style navigation.</p></aside>
 </section>
-<section class="section notice"><strong>Development boundary:</strong> Learner Practice, Remediation, Readiness, and Mock each use separate rules and records. The 175-question mock remains study practice—not an official BRPT examination or score prediction.</section>
+<section class="section notice"><strong>Practice boundary:</strong> Focused Practice, Remediation, Readiness, and Mock keep separate histories so each result answers a different learning question. The 175-question mock is educational practice—not an official BRPT examination or score prediction.</section>
 <section class="section card"><div class="section-head"><div><div class="eyebrow">Full-length study run</div><h2>175-Question Mock-Style Practice</h2></div><span class="status gold">150 scored-style + 25 unscored-style</span></div><p>The scored set follows D1 30, D2 41, D3 38, and D4 41. Use the question navigator, flags, save-and-resume behavior, and optional elapsed-time stopwatch.</p><div class="actions"><a class="btn primary" href="mock.html">Open the 175-question mock</a></div></section>
 <section class="section grid grid-3" aria-label="Practice and diagnostic options">
   <article class="card"><span class="status">Remediation</span><h2>Missed Question Review</h2><p>Retry questions currently stored in the missed list. A correct answer moves the question to mastered.</p><div class="actions"><a class="btn secondary" href="review.html?list=missed">Review missed questions</a></div></article>
   <article class="card"><span class="status green">Maintenance</span><h2>Mastered Question Review</h2><p>Recheck mastered questions. An incorrect answer returns the question to the missed list for renewed study.</p><div class="actions"><a class="btn secondary" href="review.html?list=mastered">Review mastered questions</a></div></article>
   <article class="card"><span class="status gold">Diagnostic</span><h2>Readiness Check</h2><p>Take a weighted 25-, 50-, or 100-question mixed check with separate results and weak-task study targets.</p><div class="actions"><a class="btn primary" href="readiness.html">Open readiness checks</a></div></article>
 </section>
-<section class="section notice" data-practice-load>Loading the complete question-bank manifest…</section>
+<section class="section notice" data-practice-load>Loading learner-ready practice options…</section>
 <section class="section card practice-setup hidden" data-practice-setup>
   <div class="section-head"><div><div class="eyebrow">Choose a session</div><h2>Start focused practice</h2></div><span class="status green"><span data-module-total>13</span> task modules</span></div>
   <div class="bank-summary" aria-label="Question bank summary">
-    <div><span>Total preserved records</span><strong data-bank-total>2,887</strong></div>
+    <div><span>Available bank records</span><strong data-bank-total>2,887</strong></div>
     <div><span>Session pool</span><strong>Learner-ready only</strong></div>
   </div>
   <select data-practice-mode hidden aria-hidden="true"><option value="learner" selected>Learner practice</option></select>
   <div class="practice-controls">
     <label>Domain<select data-practice-domain><option value="all">All domains</option></select></label>
     <label>Task<select data-practice-task><option value="all">All tasks</option></select></label>
+    <label>Difficulty<select data-practice-difficulty><option value="all" selected>All difficulty levels</option><option value="Easy">Easy</option><option value="Intermediate">Intermediate</option><option value="Hard">Hard</option></select></label>
     <label>Session size<select data-practice-size><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="25">25 questions</option><option value="50">50 questions</option><option value="100">100 questions</option><option value="all">All filtered questions</option></select></label>
   </div>
-  <div class="mode-notice learner" data-mode-notice><strong>Learner-ready questions only:</strong> Incomplete prompts, invalid answer sets, and questions that are not learner-ready are excluded without changing the preserved source bank.</div>
+  <div class="mode-notice learner" data-mode-notice><strong>Learner-ready questions only:</strong> Questions with incomplete prompts, invalid answer sets, or unresolved learner-readiness issues are excluded from sessions while the underlying bank remains unchanged.</div>
   <div class="actions"><button class="btn primary" type="button" data-start-practice>Start practice</button></div>
 </section>
 <section class="section practice-session hidden" data-practice-shell role="dialog" aria-modal="true" aria-label="Practice session" tabindex="-1">
@@ -56,32 +60,57 @@
     <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span><span class="status gold hidden" data-question-review></span></div><span class="status gold" data-question-difficulty>Difficulty</span><button class="practice-close" type="button" data-change-filters aria-label="Close practice session">×</button></div>
     <div class="question-prompt" data-question-prompt></div>
     <div class="practice-choices" data-question-choices></div>
-    <div class="practice-question-tools" data-practice-question-actions></div>
     <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
-    <div class="question-actions"><button class="btn secondary" type="button" data-change-filters>Change filters</button><button class="btn primary" type="button" data-submit-answer disabled>Check answer</button><button class="btn primary hidden" type="button" data-next-question>Next question</button></div>
+    <div class="practice-coach" data-practice-coach aria-live="polite"></div>
+    <footer class="practice-modal-footer" aria-label="Practice question controls">
+      <div class="practice-question-tools" data-practice-question-actions></div>
+      <div class="question-actions" aria-label="Question navigation">
+        <button class="btn secondary" type="button" data-previous-question disabled>Previous</button>
+        <button class="btn primary" type="button" data-next-question disabled>Next</button>
+        <button type="button" data-submit-answer hidden tabindex="-1" aria-hidden="true">Check answer</button>
+      </div>
+    </footer>
   </div>
   <aside class="session-rail">
-    <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span data-progress-policy>Recorded in the v3 learner record</span></p></div>
-    <div class="card"><h3>Overall v3 learner record</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-stat="answered">0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="session-stat"><span>Missed</span><strong data-stat="missed">0</strong></div></div></div>
+    <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span data-progress-policy>Recorded in your learner progress</span></p></div>
+    <div class="card"><h3>Overall learner record</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-stat="answered">0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="session-stat"><span>Missed</span><strong data-stat="missed">0</strong></div></div></div>
   </aside>
-  <div class="card session-complete hidden" data-session-complete>
-    <span class="status green">Session complete</span><h2>Practice result</h2><div class="complete-score" data-complete-score>0 / 0</div><div class="complete-percent" data-complete-percent>0%</div><p data-complete-policy></p><div class="actions"><button class="btn primary" type="button" data-restart-session>Practice this selection again</button><button class="btn secondary" type="button" data-change-filters>Choose different filters</button></div>
+  <div class="card session-complete hidden" data-session-complete tabindex="-1" aria-label="Practice complete">
+    <span class="status green">Practice complete</span>
+    <h2>Practice Complete</h2>
+    <p class="completion-lead">Your focused practice session is finished.</p>
+    <div class="completion-score-grid" aria-label="Practice session result">
+      <div><span>Score</span><strong class="complete-score" data-complete-score>0 / 0</strong></div>
+      <div><span>Accuracy</span><strong class="complete-percent" data-complete-percent>0%</strong></div>
+    </div>
+    <p data-complete-policy></p>
+    <p class="completion-note">Use this result to choose your next learning action. Practice results are educational feedback, not an official BRPT score, credential decision, or passing prediction.</p>
+    <div class="completion-next-actions">
+      <button class="btn primary" type="button" data-restart-session>Practice this selection again</button>
+      <a class="btn secondary" href="review.html?list=missed">Review missed questions</a>
+      <a class="btn secondary" href="study.html">Continue Guided Study</a>
+      <a class="btn secondary" href="index.html">Return to dashboard</a>
+      <button class="btn secondary" type="button" data-change-filters>Choose different filters</button>
+    </div>
   </div>
 </section>
-<footer class="footer">Development branch only · Practice, Review, Readiness, and Mock histories remain separate</footer>
+<footer class="footer">Sleep Pathways Guild · Practice, Review, Readiness, and Mock histories remain separate so progress stays interpretable.</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
 </div>
 <script src="core/storage.js"></script>
 <script src="core/app-shell.js"></script>
+<script src="core/learner-surface-guard.js"></script>
 <script src="core/guided-trail-engine.js"></script>
 <script src="core/flashcard-engine.js"></script>
 <script src="core/flashcard-store.js"></script>
 <script src="core/study-resource-catalog.js"></script>
+<script src="core/coach-bob-engine.js"></script>
 <script src="core/practice-question-actions.js"></script>
 <script src="core/practice-learner-repair.js"></script>
 <script src="core/practice.js"></script>
+<script src="core/practice-coach.js"></script>
 <script src="core/practice-prefill.js"></script>
 </body>
 </html>

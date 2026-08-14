@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "developmentOnly": true,
+  "publicEntryTarget": "RPSGTv2.2026.html",
+  "v3EntryTarget": "rpsgt-v3/index.html",
+  "releasePolicy": "Do not switch the public RPSGT entry point from V2 to V3 while any manual release gate is incomplete. V3 development pages remain noindex,nofollow until release approval.",
+  "lastReviewed": "2026-08-08",
+  "manualGates": {
+    "representativeRealBrowserMigrationExports": {
+      "complete": false,
+      "evidenceRequired": "Capture representative same-origin legacy browser-storage exports with migration-export.html, validate them with validate-private-exports.mjs, review sanitized summaries, and resolve all blocking malformed or ambiguous fields.",
+      "currentStatus": "Tooling and deterministic fixtures pass, but no representative real learner browser export is claimed as validated."
+    },
+    "interactiveDesktopMobileRegression": {
+      "complete": false,
+      "evidenceRequired": "Complete interactive desktop and mobile browser regression across Dashboard, Guided Study, Practice, Mock, Readiness, Skills Labs, Reports, Reference Center, print/PDF output, and local JSON/CSV downloads.",
+      "currentStatus": "Chromium is available in the development runtime, but the runtime cannot reach the deployed Worker preview, so deployed-site pixel and interaction verification is not claimed."
+    },
+    "isolatedWorkerExactHeadDeployment": {
+      "complete": true,
+      "evidenceRequired": "Confirm a successful rpsgt-v3-learning-center Cloudflare Worker check whose head SHA exactly matches the release candidate commit.",
+      "currentStatus": "Passed on validated candidate f2fe0f0782744c0b92c102326ed1109cf7f16312. Cloudflare Workers Builds: rpsgt-v3-learning-center completed successfully with version ecae03af-54de-43f5-b7e2-1ce1ce326025 on 2026-08-08.",
+      "evidence": {
+        "candidateSha": "f2fe0f0782744c0b92c102326ed1109cf7f16312",
+        "worker": "rpsgt-v3-learning-center",
+        "buildId": "381d20bf-c567-449e-8660-e25bcddafed5",
+        "versionId": "ecae03af-54de-43f5-b7e2-1ce1ce326025",
+        "result": "success",
+        "verifiedAt": "2026-08-08"
+      }
+    }
+  }
+}

@@ -6,7 +6,13 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.0';
+  const VERSION='1.0.1';
+  const DOMAIN_AWARD_NAMES={
+    D1:'Clinical Guide',
+    D2:'Study Signal Scout',
+    D3:'Scoring Pathfinder',
+    D4:'Therapy Trail Guide'
+  };
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const text=value=>String(value==null?'':value).trim();
   const asArray=value=>Array.isArray(value)?value:[];
@@ -159,7 +165,7 @@
       overlay.className='guided-award-overlay';
       overlay.dataset.guidedAwardCeremony='true';
       overlay.hidden=true;
-      overlay.innerHTML='<section class="guided-award-dialog" role="dialog" aria-modal="true" aria-labelledby="guided-award-title" tabindex="-1"><button class="guided-award-close" type="button" data-guided-award-close aria-label="Close award celebration">×</button><div class="guided-award-medal" aria-hidden="true">🏅</div><div class="eyebrow">New Guided Study award</div><h2 id="guided-award-title" data-guided-award-title>Award earned</h2><p class="guided-award-skill" data-guided-award-skill></p><aside class="guided-award-coach"><strong>Coach Bob</strong><p data-guided-award-coach></p></aside><div class="guided-award-actions"><button class="btn primary" type="button" data-guided-award-continue>Continue</button><a class="btn secondary" href="reports.html#guided-trail-report">View awards</a></div></section>';
+      overlay.innerHTML='<section class="guided-award-dialog" role="dialog" aria-modal="true" aria-labelledby="guided-award-title" tabindex="-1"><button class="guided-award-close" type="button" data-guided-award-close aria-label="Close achievement celebration">×</button><div class="guided-award-medal" data-guided-award-symbol aria-hidden="true">★</div><div class="eyebrow">Sleep Pathways Guild educational achievement</div><h2 id="guided-award-title" data-guided-award-title>Achievement earned</h2><p class="guided-award-skill" data-guided-award-skill></p><aside class="guided-award-coach"><strong>Coach Bob</strong><p data-guided-award-coach></p></aside><div class="guided-award-actions"><button class="btn primary" type="button" data-guided-award-continue>Continue</button><a class="btn secondary" href="reports.html#guided-trail-report">View achievements</a></div></section>';
       doc.body.appendChild(overlay);
       overlay.addEventListener('click',event=>{if(event.target===overlay||event.target.closest('[data-guided-award-close],[data-guided-award-continue]')) closeCeremony();});
       return overlay;
@@ -177,15 +183,19 @@
       const title=overlay.querySelector('[data-guided-award-title]');
       const skill=overlay.querySelector('[data-guided-award-skill]');
       const coach=overlay.querySelector('[data-guided-award-coach]');
+      const symbol=overlay.querySelector('[data-guided-award-symbol]');
+      overlay.dataset.guidedAwardKind=item.kind;
       if(item.kind==='domain'){
-        const domain=(state.blueprint&&state.blueprint.domains||[]).find(entry=>entry.id===item.domain);
-        title.textContent=(domain&&domain.fullName||item.domain+' domain')+' award';
-        skill.textContent='All Guided Study task awards in this domain are complete.';
+        const awardName=DOMAIN_AWARD_NAMES[item.domain]||item.domain+' Trail Award';
+        if(symbol) symbol.textContent='★';
+        title.textContent=awardName+' domain medal';
+        skill.textContent='All three Guided Study task badges in this domain are complete.';
         coach.textContent='That is a full domain of work behind you. Take the win, then keep the same steady method for the next section.';
       }else{
-        title.textContent=(task.title||'RPSGT task')+' medal';
-        skill.textContent='You completed the five-question checkpoint at the award goal.';
-        coach.textContent='You earned this one by showing your reasoning holds up under questions. Keep the medal, and keep the habit that produced it.';
+        if(symbol) symbol.textContent='✓';
+        title.textContent=(task.title||'RPSGT task')+' task badge';
+        skill.textContent='You met the 80% Guided Study checkpoint goal for this task.';
+        coach.textContent='You earned this badge by showing your reasoning holds up under questions. Keep the badge, and keep the habit that produced it.';
       }
       state.returnFocus=doc.activeElement;
       state.ceremonyOpen=true;
@@ -335,6 +345,7 @@
 
   return {
     VERSION,
+    DOMAIN_AWARD_NAMES,
     uniqueIds,
     updateMissedReview,
     awardCeremonies,

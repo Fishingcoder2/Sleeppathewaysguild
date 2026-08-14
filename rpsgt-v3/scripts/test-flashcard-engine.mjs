@@ -61,8 +61,10 @@ assert.equal(flagged.card.flagged,true);
 const mastered=engine.setMastery(flagged.store,duplicate.card.id,'mastered','2026-08-05T12:07:00.000Z');
 assert.equal(mastered.card.masteryStatus,'mastered');
 assert.equal(mastered.card.reviewAgain,false);
+assert.equal(mastered.card.flagged,true);
 const reviewAgain=engine.setMastery(mastered.store,duplicate.card.id,'review-again','2026-08-05T12:08:00.000Z');
 assert.equal(reviewAgain.card.reviewAgain,true);
+assert.equal(reviewAgain.card.flagged,true);
 
 const custom=engine.upsertCard(reviewAgain.store,{
   front:'What is the AHI formula?',

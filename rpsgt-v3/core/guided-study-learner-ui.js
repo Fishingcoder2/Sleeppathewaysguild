@@ -69,7 +69,7 @@
     if(!details) return;
     if(details.dataset.resourcePanel!=='true') details.dataset.resourcePanel='true';
     const summary=details.querySelector('summary');
-    if(summary&&summary.textContent!=='Recommended study resources') summary.textContent='Recommended study resources';
+    if(summary&&summary.textContent!=='Related reference materials') summary.textContent='Related reference materials';
     if(!state.resourcesReady){if(!details.hidden) details.hidden=true;return;}
     if(details.dataset.resourceReady==='true') return;
     const titles=resourceTitlesForTask(card.id);
@@ -98,7 +98,7 @@
     const items=[...summaryHost.children];
     if(items.length<4) return;
     if(items[2].dataset.learnerMetric!=='checkpoint-size'){
-      items[2].innerHTML='<strong>5</strong> questions per checkpoint';
+      items[2].innerHTML='<strong>15</strong> questions per checkpoint';
       items[2].dataset.learnerMetric='checkpoint-size';
     }
     if(items[3].dataset.learnerMetric!=='award-goal'){

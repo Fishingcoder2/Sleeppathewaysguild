@@ -49,16 +49,20 @@ jobs:
       - name: Validate question bank
         run: node rpsgt-v3/scripts/validate-question-bank.mjs
 
-      - name: Validate study, practice, review, readiness, mock, laboratories, reports, and migration systems
+      - name: Validate study, practice, review, readiness, mock, laboratories, reports, migration, and front-door systems
         run: |
           node --check rpsgt-v3/core/storage.js
           node --check rpsgt-v3/core/migration-export.js
           node --check rpsgt-v3/core/migration-engine.js
           node --check rpsgt-v3/core/legacy-migration.js
           node --check rpsgt-v3/core/app-shell.js
+          node --check rpsgt-v3/core/home-dashboard.js
           node --check rpsgt-v3/core/guided-trail-engine.js
           node --check rpsgt-v3/core/guided-trail-report.js
           node --check rpsgt-v3/core/study-resource-catalog.js
+          node --check rpsgt-v3/core/coach-bob-engine.js
+          node --check rpsgt-v3/core/guided-study-coach.js
+          node --check rpsgt-v3/core/guided-study-coach-safety.js
           node --check rpsgt-v3/core/guided-study-learner-ui.js
           node --check rpsgt-v3/core/guided-study-question-actions.js
           node --check rpsgt-v3/core/guided-study-completion.js
@@ -89,6 +93,9 @@ jobs:
           node --check rpsgt-v3/core/lab-daytime-testing.js
           node --check rpsgt-v3/core/ekg-lab-engine.js
           node --check rpsgt-v3/core/lab-ekg.js
+          node --check rpsgt-v3/core/visual-lab-engine.js
+          node --check rpsgt-v3/core/visual-psg-renderer.js
+          node --check rpsgt-v3/core/lab-visual.js
           node --check rpsgt-v3/core/math-coach-engine.js
           node --check rpsgt-v3/core/lab-math-coach.js
           node --check rpsgt-v3/core/study.js
@@ -108,6 +115,13 @@ jobs:
           node --check rpsgt-v3/scripts/generate-feedback-index.mjs
           node --check rpsgt-v3/scripts/validate-storage-export.mjs
           node --check rpsgt-v3/scripts/validate-private-exports.mjs
+          node --check rpsgt-v3/scripts/test-current-authority-registry.mjs
+          node --check rpsgt-v3/scripts/test-release-readiness.mjs
+          node rpsgt-v3/scripts/test-home-shell.mjs
+          node rpsgt-v3/scripts/test-brpt-official-resources.mjs
+          node rpsgt-v3/scripts/test-study-resource-exact-resolution.mjs
+          node rpsgt-v3/scripts/test-current-authority-registry.mjs
+          node rpsgt-v3/scripts/test-coach-bob-engine.mjs
           node rpsgt-v3/scripts/test-guided-trail-system.mjs
           node rpsgt-v3/scripts/test-guided-trail-shell.mjs
           node rpsgt-v3/scripts/test-guided-study-completion-system.mjs
@@ -134,6 +148,7 @@ jobs:
           node rpsgt-v3/scripts/test-daytime-testing-lab-shell.mjs
           node rpsgt-v3/scripts/test-ekg-lab-system.mjs
           node rpsgt-v3/scripts/test-ekg-lab-shell.mjs
+          node rpsgt-v3/scripts/test-visual-lab.mjs
           node rpsgt-v3/scripts/test-math-coach-system.mjs
           node rpsgt-v3/scripts/test-math-coach-shell.mjs
           node rpsgt-v3/scripts/test-practice-pools.mjs
@@ -154,6 +169,7 @@ jobs:
           node rpsgt-v3/scripts/test-storage-export-fixtures.mjs
           node rpsgt-v3/scripts/test-migration-export-capture.mjs
           node rpsgt-v3/scripts/test-legacy-migration.mjs
+          node rpsgt-v3/scripts/test-release-readiness.mjs
 
       - name: Commit generated modules
         run: |

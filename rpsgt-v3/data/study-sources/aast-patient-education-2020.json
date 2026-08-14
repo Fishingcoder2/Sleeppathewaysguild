@@ -1,0 +1,23 @@
+{
+  "id":"aast-patient-education-2020",
+  "shortTitle":"AAST Patient Education Curriculum",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"Updated 2020",
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/Patient-Education-Curriculum-2.pdf",
+  "bestFor":"Standardized patient and family sleep-health education, communication needs, sleep hygiene, sleep-disordered breathing education, treatment options, self-management support, safety education, follow-up support, and documentation of education.",
+  "mappedTaskCodes":["D1B"],
+  "mappingRationale":{"D1B":"Directly addresses patient/caregiver education and standardized delivery of sleep-health and sleep-apnea self-management education."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial curriculum text, lists, or protected passages.",
+  "sections":[
+    {"id":"aast-education-foundation","label":"Introduction, standardized education, and self-management support"},
+    {"id":"aast-education-communication","label":"Communication needs, language, understanding, and individualized education"},
+    {"id":"aast-education-sleep-health","label":"Sleep habits, sleep hygiene, health behaviors, and safety"},
+    {"id":"aast-education-sdb","label":"Sleep-disordered breathing, consequences, comorbidities, and treatment options"},
+    {"id":"aast-education-treatment","label":"Therapy education, adherence support, and longitudinal self-management"},
+    {"id":"aast-education-documentation","label":"Documentation and communication of patient education"}
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id":"brpt-refs",
+  "shortTitle":"BRPT RPSGT Primary References",
+  "publisher":"Board of Registered Polysomnographic Technologists",
+  "sourceType":"official exam preparation reference list",
+  "sourceRole":"blueprintAlignment",
+  "currentAuthority":true,
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://brpt.org/rpsgt/exam-prep/references/",
+  "bestFor":"Verifying which scoring manuals, classification resources, AASM guidance, and textbooks BRPT currently suggests for RPSGT preparation. Inclusion on the list does not make every listed source applicable to every question.",
+  "copyrightUse":"Store bibliographic/navigation metadata and original mapping notes only. Do not reproduce protected source content.",
+  "sections":[
+    {"id":"brpt-refs-scoring","label":"AASM Scoring Manual reference"},
+    {"id":"brpt-refs-icsd","label":"International Classification of Sleep Disorders reference"},
+    {"id":"brpt-refs-aasm-guidance","label":"AASM practice parameters and clinical guidance list"},
+    {"id":"brpt-refs-textbooks","label":"Suggested sleep technology and medicine textbooks"}
+  ]
+}

@@ -16,13 +16,18 @@ const PRIMARY_ROUTES = [
 const LAB_ROUTES = [
   'lab-hookup.html',
   'lab-ekg.html',
+  'lab-visual.html',
   'lab-scoring.html',
   'lab-respiratory.html',
   'lab-pap.html',
   'lab-instrumentation.html',
   'lab-pediatric.html',
   'lab-daytime-testing.html',
-  'lab-troubleshooting.html',
+  'lab-troubleshooting.html'
+];
+
+const TOOL_ROUTES = [
+  'math-coach.html',
   'lab-math-coach.html'
 ];
 
@@ -81,7 +86,7 @@ async function waitForApplication(page) {
   await expect(page.locator('h1').first()).toBeVisible();
 }
 
-for (const route of [...PRIMARY_ROUTES, ...LAB_ROUTES]) {
+for (const route of [...PRIMARY_ROUTES, ...LAB_ROUTES, ...TOOL_ROUTES]) {
   test(`${route} loads without runtime errors or body overflow`, async ({ page }) => {
     const guards = attachRuntimeGuards(page);
     await page.goto(route);
@@ -152,7 +157,7 @@ test('migration export remains read-only and does not create v3 storage', async 
   expect(state.v3).toBeNull();
 });
 
-test('Practice starts a five-question learner session and records feedback', async ({ page }) => {
+test('Practice uses Next to check an answer and supports Previous review', async ({ page }) => {
   await page.goto('practice.html');
   await expect(page.locator('[data-practice-setup]')).toBeVisible();
   await page.locator('[data-practice-size]').selectOption('5');
@@ -160,13 +165,22 @@ test('Practice starts a five-question learner session and records feedback', asy
 
   await expect(page.locator('[data-practice-shell]')).toBeVisible();
   await expect(page.locator('[data-question-prompt]')).not.toBeEmpty();
-  const options = page.locator('[data-question-choices] input[type="radio"]');
+  await expect(page.locator('[data-previous-question]')).toBeDisabled();
+  const options = page.locator('[data-question-choices] .practice-choice');
   await expect(options).toHaveCount(4);
-  await options.first().check();
-  await expect(page.locator('[data-submit-answer]')).toBeEnabled();
-  await page.locator('[data-submit-answer]').click();
+  await options.first().click();
+  const next=page.locator('[data-next-question]');
+  await expect(next).toBeEnabled();
+  await next.click();
   await expect(page.locator('[data-answer-feedback]')).toBeVisible();
-  await expect(page.locator('[data-next-question]')).toBeVisible();
+  await expect(page.locator('[data-answer-feedback]')).toContainText('Answer & reasoning');
+  await expect(next).toHaveText('Next question');
+  await next.click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 2 of 5');
+  await expect(page.locator('[data-previous-question]')).toBeEnabled();
+  await page.locator('[data-previous-question]').click();
+  await expect(page.locator('[data-question-number]')).toContainText('Question 1 of 5');
+  await expect(page.locator('[data-answer-feedback]')).toBeVisible();
 });
 
 test('Readiness starts at the requested size and can end without entering Practice history', async ({ page }) => {
@@ -189,8 +203,8 @@ test('Mock builds 175 questions, saves, reloads, and resumes', async ({ page }) 
   await expect(page.locator('[data-mock-shell]')).toBeVisible({ timeout: 30_000 });
   await expect(page.locator('[data-mock-palette] button')).toHaveCount(175);
 
-  const firstOption = page.locator('[data-question-choices] input[type="radio"]').first();
-  await firstOption.check();
+  const firstOption = page.locator('[data-question-choices] .practice-choice').first();
+  await firstOption.click();
   await page.locator('[data-next-question]').click();
   await page.locator('[data-pause-mock]').click();
   await expect(page.locator('[data-resume-card]')).toBeVisible();

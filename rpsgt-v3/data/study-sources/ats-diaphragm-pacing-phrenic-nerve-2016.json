@@ -1,0 +1,30 @@
+{
+  "id":"ats-diaphragm-pacing-phrenic-nerve-2016",
+  "shortTitle":"Diaphragm Pacing by Phrenic Nerve Stimulation",
+  "fullTitle":"Diaphragm Pacing by Phrenic Nerve Stimulation",
+  "publicationYear":2016,
+  "authors":["I. A. Perez","S. Kun","T. G. Keens"],
+  "publisher":"American Thoracic Society",
+  "sourceType":"supplemental patient-education source",
+  "sourceRole":"studySupport",
+  "currentAuthority":false,
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://www.thoracic.org/patients/patient-resources/resources/diaphragm-pacing-by-phrenic-nerve-stimulation.pdf",
+  "apaCitation":"Perez, I. A., Kun, S., & Keens, T. G. (2016). Diaphragm pacing by phrenic nerve stimulation [Patient education handout]. American Thoracic Society.",
+  "referenceKeys":["ats-diaphragm-pacing-2016"],
+  "mappedTaskCodes":["D1A","D1B","D1C","D2C","D4A","D4B","D4C"],
+  "bestFor":"Recognition and patient-education context for diaphragm pacing in congenital central hypoventilation syndrome/high cervical spinal cord injury, device components, candidacy concepts, alternate ventilatory support, oximetry/CO2 monitoring, risks, equipment failure, body-position effects, and upper-airway obstruction during pacing.",
+  "authorityBoundary":"Patient-education and therapy-recognition support only. Specialty physician evaluation determines candidacy; current manufacturer/specialty-center instructions, physician orders, facility policy, and current monitoring guidance govern device use and response. Current AASM scoring rules govern any PSG respiratory-event scoring. This therapy must not be conflated with transvenous phrenic-nerve stimulation used for selected adults with central sleep apnea.",
+  "therapyIdentityBoundary":"Diaphragm pacing for ventilatory support in conditions such as CCHS or high cervical spinal cord injury is a distinct therapy from transvenous phrenic-nerve stimulation for adult central sleep apnea.",
+  "copyrightUse":"Use bibliographic metadata, section labels, page locators, and original Sleep Pathways Guild teaching directions only. Do not reproduce the handout's protected graphics or substantial prose.",
+  "sections":[
+    {"id":"DP-01","label":"What diaphragm pacing is; CCHS and high cervical spinal cord injury context","taskCodes":["D1A","D1B","D4B"]},
+    {"id":"DP-02","label":"How diaphragm pacing works: electrodes, receivers, antennae, and external transmitter","taskCodes":["D1B","D4B"]},
+    {"id":"DP-03","label":"Potential advantages and candidacy considerations","taskCodes":["D1A","D1B","D4B"]},
+    {"id":"DP-04","label":"Surgery, healing period, and gradual conditioning after implantation","taskCodes":["D1B","D1C","D4B"]},
+    {"id":"DP-05","label":"Need for alternate ventilatory support when not pacing","taskCodes":["D1B","D1C","D4A","D4B"]},
+    {"id":"DP-06","label":"Pulse oximetry and CO2 monitoring during diaphragm pacing","taskCodes":["D1B","D2C","D4C"]},
+    {"id":"DP-07","label":"Risks, equipment failure, body-position effects, respiratory infection, and troubleshooting","taskCodes":["D1B","D2C","D4B"]},
+    {"id":"DP-08","label":"Upper-airway obstruction/OSA can occur during diaphragm pacing without tracheostomy","taskCodes":["D1A","D2C","D4B"]}
+  ]
+}

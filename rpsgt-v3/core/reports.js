@@ -68,8 +68,9 @@
     }).join("")+'</div>';
   }
   function renderSources(){
+    const host=$("[data-source-outlines]");if(!host) return;
     const sources=state.outlines.sources||[];const sectionCount=sources.reduce((sum,source)=>sum+(source.sections||[]).length,0);setText("[data-outline-count]",sectionCount+" outlined sections");
-    $("[data-source-outlines]").innerHTML='<div class="source-outline-list">'+sources.map(source=>`<details class="source-outline"><summary><span>${esc(source.shortTitle||source.title)}<small>${esc(source.sourceType)} · ${esc(source.year)}</small></span><span>${(source.sections||[]).length} sections</span></summary><div class="source-outline-body"><p><strong>Best for:</strong> ${esc(source.bestFor)}</p><p><strong>Copyright boundary:</strong> ${esc(source.copyrightUse)}</p><div class="outline-sections">${(source.sections||[]).map(section=>`<div class="outline-section">${esc(section.label||section.title)}</div>`).join("")}</div></div></details>`).join("")+'</div>';
+    host.innerHTML='<div class="source-outline-list">'+sources.map(source=>`<details class="source-outline"><summary><span>${esc(source.shortTitle||source.title)}<small>${esc(source.sourceType)} · ${esc(source.year)}</small></span><span>${(source.sections||[]).length} sections</span></summary><div class="source-outline-body"><p><strong>Best for:</strong> ${esc(source.bestFor)}</p><p><strong>Copyright boundary:</strong> ${esc(source.copyrightUse)}</p><div class="outline-sections">${(source.sections||[]).map(section=>`<div class="outline-section">${esc(section.label||section.title)}</div>`).join("")}</div></div></details>`).join("")+'</div>';
   }
   function showError(error){const host=$("[data-reports-load]");host.className="section notice error";host.textContent="The Reports Center could not be loaded. "+error.message;}
   async function init(){

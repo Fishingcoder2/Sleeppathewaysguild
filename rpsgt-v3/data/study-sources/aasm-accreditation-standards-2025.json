@@ -1,0 +1,23 @@
+{
+  "id":"aasm-accreditation-standards-2025",
+  "shortTitle":"AASM Standards for Accreditation (2025)",
+  "fullTitle":"AASM Standards for Accreditation — Service-Based Model Effective 2025",
+  "publisher":"American Academy of Sleep Medicine",
+  "sourceType":"accreditation and protocol requirement",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "effectiveDate":"2025-01-01",
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://aasm.org/wp-content/uploads/2024/05/Standards-for-Accreditation-1.1.2025-New-Model_Final.pdf",
+  "bestFor":"Facility requirements for written PSG, MSLT, MWT, PAP and other procedure protocols, infection control, and equipment-cleaning processes.",
+  "mappedTaskCodes":["D2A","D2B","D2C","D3C","D4A","D4C"],
+  "mappingRationale":{"D2A":"Supports the requirement that technical preparation occurs within written facility procedures.","D2B":"Supports written protocol requirements for test performance.","D2C":"Supports facility procedure and infection-control requirements for response/documentation workflows.","D3C":"Supports facility-level reporting/protocol requirements without replacing scoring rules.","D4A":"Supports written PAP procedure requirements.","D4C":"Supports written oxygen/other procedure and infection-control requirements where applicable."},
+  "authorityBoundary":"Use for facility accreditation and written-protocol requirements. It does not replace AASM scoring rules, diagnostic criteria, treatment guidelines, physician orders, state law, facility clinical policy, or manufacturer instructions.",
+  "copyrightUse":"Use source identity, effective date, public section concepts, original summaries, and learning objectives. Do not reproduce substantial standards text or protected tables.",
+  "sections":[
+    {"id":"aasm-accred-2025-core-protocols","label":"Written protocols for core sleep testing and treatment services"},
+    {"id":"aasm-accred-2025-other-procedures","label":"Protocols for additional procedures consistent with applicable standards of care"},
+    {"id":"aasm-accred-2025-infection-control","label":"Infection-control and equipment-cleaning requirements"},
+    {"id":"aasm-accred-2025-documentation","label":"Facility documentation and protocol-governance context"}
+  ]
+}

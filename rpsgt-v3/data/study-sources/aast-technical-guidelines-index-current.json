@@ -1,0 +1,21 @@
+{
+  "id":"aast-technical-guidelines-index-current",
+  "shortTitle":"AAST Technical Guidelines Index",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"current professional technical-guideline index",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "verifiedAt":"2026-08-08",
+  "officialUrl":"https://aastweb.org/clinical-resources/technical-guidelines/",
+  "bestFor":"Confirming the currently listed AAST technical-guideline families for PSG, HSAT, PAP, carbon dioxide monitoring, split-night testing, oral appliance titration, and patient workflow.",
+  "mappedTaskCodes":["D2A","D2B","D2C","D3C","D4A","D4B","D4C"],
+  "authorityBoundary":"This index confirms which AAST technical-guideline families are current. Use the specific guideline for procedural detail. AASM scoring, diagnostic, and treatment authority outranks conflicting AAST technical content; facility policy, physician orders, and manufacturer instructions govern local and device-specific execution.",
+  "copyrightUse":"Use the public index identity, guideline titles, links, and original summaries. Do not reproduce substantial guideline text from linked documents.",
+  "sections":[
+    {"id":"aast-index-standard-psg","label":"Standard polysomnography technical guidance family"},
+    {"id":"aast-index-co2","label":"End-tidal and transcutaneous CO2 technical guidance families"},
+    {"id":"aast-index-hsat","label":"Home sleep apnea testing technical guidance family"},
+    {"id":"aast-index-pap","label":"PAP acclimation, split-night, and titration technical guidance families"},
+    {"id":"aast-index-alternative","label":"Oral appliance titration and other technologist workflow guidance families"}
+  ]
+}

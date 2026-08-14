@@ -1,0 +1,51 @@
+name: Sync RPSGT v3 approved release bank
+
+on:
+  push:
+    branches:
+      - 'release/rpsgt-v3-*'
+    paths:
+      - RPSGTv2.2026.html
+      - '.github/workflows/rpsgt-v3-release-bank-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-bank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Regenerate approved question bank from current stable source
+        env:
+          RPSGT_EXTRACTION_DATE: 2026-08-11
+        run: |
+          node rpsgt-v3/scripts/extract-question-bank.mjs
+          node rpsgt-v3/scripts/generate-feedback-index.mjs
+          node rpsgt-v3/scripts/validate-question-bank.mjs
+      - name: Show stale count contracts before update
+        shell: bash
+        run: |
+          grep -RInE '2887|2327|questionCount.?[^0-9]{0,5}(506|112|362|360|55|117)|((506|112|362|360|55|117)-question)' rpsgt-v3/scripts rpsgt-v3/data/release-readiness.json rpsgt-v3/README.md rpsgt-v3/browser-regression-matrix.md || true
+      - name: Commit regenerated bank only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain -- rpsgt-v3/data/question-bank)" ]; then
+            echo 'Question bank already matches the approved 2,920-question source.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add rpsgt-v3/data/question-bank
+          git commit -m 'Regenerate RPSGT v3 for 2920 approved questions [skip ci]'
+          git push origin HEAD:${GITHUB_REF_NAME}

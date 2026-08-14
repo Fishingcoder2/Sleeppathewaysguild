@@ -1,0 +1,24 @@
+{
+  "id":"aast-pap-acclimation-2022",
+  "shortTitle":"AAST PAP Acclimation & Desensitization Guideline",
+  "publisher":"American Association of Sleep Technologists",
+  "sourceType":"AAST technical guideline",
+  "sourceRole":"currentAuthority",
+  "currentAuthority":true,
+  "editionStatus":"Updated May 2022",
+  "verifiedAt":"2026-08-07",
+  "officialUrl":"https://aastweb.org/wp-content/uploads/2025/03/Positive-Airway-Pressure-Acclimation-and-Desensitization-Guideline-2022.pdf",
+  "bestFor":"PAP education, interface selection and fitting, acclimation before titration, comfort and leak troubleshooting, equipment-use education, adherence support, and desensitization procedures performed by sleep technologists.",
+  "mappedTaskCodes":["D1B","D1C","D4A"],
+  "mappingRationale":{"D1B":"Directly supports patient/caregiver education about PAP, equipment, rationale, side effects, and use.","D1C":"Directly supports therapy acclimation, troubleshooting, adherence support, and follow-up education.","D4A":"Directly supports PAP interface fitting, acclimation, comfort troubleshooting, and preparation for PAP titration."},
+  "copyrightUse":"Use document title, section headings, original summaries, and learning objectives. Do not reproduce substantial guideline procedures or protected text.",
+  "sections":[
+    {"id":"aast-pap-acclimation-scope","label":"Scope of PAP acclimation and desensitization"},
+    {"id":"aast-pap-education","label":"Preparing and educating the patient for PAP"},
+    {"id":"aast-pap-interface","label":"Interface selection, fitting, leak, and comfort"},
+    {"id":"aast-pap-pressure-acclimation","label":"Acclimating the patient to PAP pressure"},
+    {"id":"aast-pap-equipment-care","label":"PAP equipment use, care, and maintenance education"},
+    {"id":"aast-pap-adherence","label":"Compliance/adherence assessment and troubleshooting"},
+    {"id":"aast-pap-desensitization","label":"PAP desensitization procedures and documentation"}
+  ]
+}

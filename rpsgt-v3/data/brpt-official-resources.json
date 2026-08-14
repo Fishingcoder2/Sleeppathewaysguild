@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "name": "RPSGT V3 Official BRPT Resource Board",
+    "version": 1,
+    "verifiedAt": "2026-08-07",
+    "purpose": "Verified official BRPT and BRPT testing-partner navigation for the RPSGT V3 front door.",
+    "boundary": "These links are official external resources. Their presence does not imply BRPT endorsement of Sleep Pathways Guild."
+  },
+  "resources": [
+    {
+      "id": "brpt-rpsgt-home",
+      "group": "Start here",
+      "title": "RPSGT Credential Home",
+      "description": "BRPT overview of the RPSGT credential, application pathway, and exam framework.",
+      "url": "https://brpt.org/rpsgt/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 1
+    },
+    {
+      "id": "brpt-rpsgt-handbook",
+      "group": "Start here",
+      "title": "RPSGT Candidate Handbook",
+      "description": "Certification process, eligibility policies, exam administration, scoring, policies, and primary preparation guidance.",
+      "url": "https://brpt.org/rpsgt/rpsgt-handbook/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 2
+    },
+    {
+      "id": "brpt-rpsgt-blueprint",
+      "group": "Start here",
+      "title": "Current RPSGT Exam Blueprint",
+      "description": "The current four-domain RPSGT examination content outline and task structure.",
+      "url": "https://brpt.org/rpsgt/exam-blueprint/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 3
+    },
+    {
+      "id": "brpt-rpsgt-eligibility",
+      "group": "Apply & test",
+      "title": "RPSGT Eligibility",
+      "description": "Current BRPT eligibility pathways and application requirements.",
+      "url": "https://brpt.org/rpsgt/eligibility/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 4
+    },
+    {
+      "id": "brpt-rpsgt-new-candidates",
+      "group": "Apply & test",
+      "title": "New RPSGT Candidates",
+      "description": "BRPT's step-by-step starting point for first-time RPSGT applicants.",
+      "url": "https://brpt.org/registered-polysomnographic-technologist-rpsgt/apply-for-the-rpsgt/new-candidates/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 5
+    },
+    {
+      "id": "brpt-rpsgt-apply",
+      "group": "Apply & test",
+      "title": "Apply / Re-apply for the RPSGT",
+      "description": "BRPT application navigation for new and re-applying candidates.",
+      "url": "https://www.brpt.org/registered-polysomnographic-technologist-rpsgt/apply-for-the-rpsgt/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 6
+    },
+    {
+      "id": "brpt-rpsgt-day-of-exam",
+      "group": "Apply & test",
+      "title": "Day of the Exam",
+      "description": "Official BRPT exam-day reminders, identification, NDA, arrival, and testing-center guidance.",
+      "url": "https://brpt.org/rpsgt/day-of-the-exam/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 7
+    },
+    {
+      "id": "pearson-brpt",
+      "group": "Apply & test",
+      "title": "Pearson Professional Assessments — BRPT",
+      "description": "BRPT testing-partner page for scheduling, test centers, accommodations, and exam delivery information.",
+      "url": "https://www.pearsonvue.com/us/en/brpt.html",
+      "publisher": "Pearson Professional Assessments",
+      "official": true,
+      "priority": 8
+    },
+    {
+      "id": "brpt-rpsgt-exam-prep",
+      "group": "Prepare",
+      "title": "RPSGT Exam Prep",
+      "description": "BRPT's hub for study tips, references, practice exams, study guide information, and exam tips.",
+      "url": "https://brpt.org/rpsgt/exam-prep/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 9
+    },
+    {
+      "id": "brpt-rpsgt-study-tips",
+      "group": "Prepare",
+      "title": "RPSGT Study Tips",
+      "description": "Official BRPT preparation guidance, including continued use of the exam content outline and current scoring resources.",
+      "url": "https://brpt.org/rpsgt/exam-prep/study-tips/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 10
+    },
+    {
+      "id": "brpt-rpsgt-references",
+      "group": "Prepare",
+      "title": "RPSGT Primary References",
+      "description": "BRPT's current suggested primary reference list for RPSGT exam preparation.",
+      "url": "https://brpt.org/rpsgt/exam-prep/references/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 11
+    },
+    {
+      "id": "brpt-rpsgt-practice-exams",
+      "group": "Prepare",
+      "title": "Official RPSGT Practice Exams",
+      "description": "BRPT practice-exam information and access guidance. BRPT states performance is not predictive of the actual exam.",
+      "url": "https://brpt.org/rpsgt/exam-prep/practice-exams/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 12
+    },
+    {
+      "id": "brpt-rpsgt-exam-tips",
+      "group": "Prepare",
+      "title": "Exam Tips for the RPSGT Examination",
+      "description": "Official BRPT exam-taking guidance for RPSGT candidates.",
+      "url": "https://brpt.org/exam-tips-for-the-rpsgt-examination/",
+      "publisher": "BRPT",
+      "official": true,
+      "priority": 13
+    }
+  ],
+  "notPrimaryAuthority": [
+    {
+      "id": "brpt-rpsgt-study-guide-7e",
+      "title": "RPSGT Study Guide — 7th edition",
+      "url": "https://brpt.org/rpsgt/exam-prep/study-guide/",
+      "note": "BRPT's current page states this edition was built against the 2018 RPSGT Exam Blueprint. V3 should not present it as the controlling source for the current 2023 blueprint."
+    }
+  ]
+}

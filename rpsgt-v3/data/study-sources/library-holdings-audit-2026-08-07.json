@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "verifiedAt": "2026-08-07",
+    "folderUrl": "https://drive.google.com/drive/folders/1G_sojPm1R4cO1vB0AO0IogRtOysNuBGI",
+    "purpose": "Record exact Guild Drive holdings that resolve or clarify BRPT RPSGT master-reference inventory availability. Source identity is verified from file content where noted; filename alone is never sufficient authority.",
+    "copyrightBoundary": "This audit stores file identity, bibliographic metadata, source role, and mapping status only. Do not copy protected recommendations, tables, figures, scoring rules, diagnostic criteria, cases, questions, or substantial passages into V3."
+  },
+  "verifiedHoldings": [
+    {
+      "sourceId": "aasm-rls-plmd-2025",
+      "title": "Treatment of Restless Legs Syndrome and Periodic Limb Movement Disorder: an AASM Clinical Practice Guideline",
+      "driveFileId": "18K7K5CeKo54jYAVqdXaYNNoJer1YVrNN",
+      "driveFileName": "2025 - AASM Guideline for RLS and PLMD Treatment - Winkelman et al.pdf",
+      "identityVerifiedFromContent": true,
+      "statusChange": "local exact copy verified; V3 source record added",
+      "note": "The paper states that it updates the 2012 AASM practice parameter."
+    },
+    {
+      "sourceId": "aasm-central-hypersomnolence-2021",
+      "title": "Treatment of Central Disorders of Hypersomnolence: an AASM Clinical Practice Guideline",
+      "driveFileId": "15RVWofuPwjFpxj48Q9n_UCPhQ0RuXO-w",
+      "driveFileName": "jcsm.9328.pdf",
+      "identityVerifiedFromContent": true,
+      "statusChange": "local exact copy verified; V3 source record added",
+      "note": "The guideline updates earlier AASM treatment practice parameters for narcolepsy and other hypersomnias of central origin."
+    },
+    {
+      "sourceId": "aasm-osa-longitudinal-testing-2021",
+      "title": "Use of Polysomnography and Home Sleep Apnea Tests for the Longitudinal Management of Obstructive Sleep Apnea in Adults",
+      "driveFileId": "1gzLwt6DzgbwJTPOTVhPTVhtdA_dvisNj",
+      "driveFileName": "jcsm.9240.pdf",
+      "identityVerifiedFromContent": true,
+      "statusChange": "local exact copy verified; V3 source record added",
+      "note": "Clinical guidance applies to follow-up testing after OSA diagnosis/treatment, not initial diagnosis or PAP initiation."
+    },
+    {
+      "sourceId": "aasm-pediatric-respiratory-psg-2011",
+      "title": "Practice Parameters for the Respiratory Indications for Polysomnography in Children",
+      "driveFileId": "1d-GgZnt3oOcz4UpmywQru78NBvyksDsm",
+      "driveFileName": "aasm.34.3.379.pdf",
+      "identityVerifiedFromContent": true,
+      "statusChange": "local exact copy verified; V3 legacy/applicable source record added and task-mapped",
+      "note": "Use as pediatric PSG indication guidance with current AASM Scoring Manual Version 3 controlling scoring and technical definitions."
+    },
+    {
+      "sourceId": "aasm-pediatric-nonresp-psg-mslt-2012",
+      "title": "Practice Parameters for the Non-Respiratory Indications for Polysomnography and Multiple Sleep Latency Testing for Children",
+      "driveFileId": "1QEUgjoPRbYuwiT1xXnHyftL661qA-bF_",
+      "driveFileName": "aasm.35.11.1467.pdf",
+      "identityVerifiedFromContent": true,
+      "statusChange": "local exact copy verified from internal SLEEP 2012 citation; V3 legacy/applicable source record added and task-mapped",
+      "note": "Use for indication-level context; the current 2024 AASM pediatric MSLT protocol controls modern MSLT preparation, administration, and reporting details."
+    },
+    {
+      "sourceId": "aasm-pediatric-bedtime-behavior-2006",
+      "title": "Practice Parameters for Behavioral Treatment of Bedtime Problems and Night Wakings in Infants and Young Children",
+      "driveFileId": "1EaQSIDyV6WmXxdBD8ri3eF24lcp6EHDf",
+      "driveFileName": "PP_NightWakingsChildren.pdf",
+      "identityVerifiedFromContent": true,
+      "statusChange": "local exact copy verified; V3 legacy/applicable source record added and task-mapped",
+      "note": "Historical pediatric behavioral-treatment guidance; current ICSD-3-TR terminology and newer applicable guidance control where different."
+    },
+    {
+      "sourceId": "pediatric-sleep-pearls-1e",
+      "title": "Pediatric Sleep Pearls",
+      "driveFileId": "1AqRh1joLFq_pzYQHIYZMjaKNhkDJqk-d",
+      "driveFileName": "Pediatric Sleep Pearls (2017) Lourdes M. DelRosso, MD, FAASM.pdf",
+      "identityVerifiedFromContent": true,
+      "statusChange": "BRPT-listed textbook access gap closed; copyright-safe V3 source package added and task-mapped",
+      "note": "Use as pediatric case-based study support. Current AASM Scoring Manual Version 3, ICSD-3-TR, and current pediatric guidance control version-sensitive content."
+    },
+    {
+      "sourceId": "aasm-manual-pap-titration-2008",
+      "title": "Clinical Guidelines for the Manual Titration of Positive Airway Pressure in Patients with Obstructive Sleep Apnea",
+      "driveFileId": "1g7JxWbfynfdf3jbkf47Hrk69oqr2tGfW",
+      "driveFileName": "040210.pdf",
+      "identityVerifiedFromContent": false,
+      "statusChange": "local copy located; V3 source already structured",
+      "note": "Current AASM Scoring Manual and newer applicable PAP guidance control when requirements differ."
+    }
+  ],
+  "additionalHighValueHoldings": [
+    {"title":"Principles and Practice of Sleep Medicine - 2 Volume Set (2021)","driveFileId":"1U_vo1DLKt_jPceP7Jpn6xIq4lTQoHh1-","use":"high-value comprehensive supplemental sleep-medicine reference; selectively outline RPSGT-relevant chapters after the BRPT core set"},
+    {"title":"Principles and Practice of Pediatric Sleep Medicine, Second Edition (2014)","driveFileId":"1GplexPKkb-rsVxbNXCnl0_4h9iCDl8uW","use":"high-value pediatric depth source; current AASM/ICSD guidance remains authoritative"},
+    {"title":"Allergy and Sleep: Basic Principles and Clinical Practice (2019)","driveFileId":"1bEciJtrZY2eFzy_gQZBoL2e44hNSVepz","use":"selective added-value support for airway, allergy, and sleep-disordered-breathing concepts"},
+    {"title":"2023 Central Sleep Apnea Pathophysiologic Classification - Javaheri & Badr","driveFileId":"1-GRTDAebTYiPJY6vCxt_g29v7I4FH6Da","use":"supplemental CSA pathophysiology/classification support after ICSD/AASM authority"},
+    {"title":"2025 AASM Central Sleep Apnea Guideline","driveFileId":"1vl-pk9zYjY-M6VUq5xi899JxOYFgsaAy","use":"high-value current professional guidance candidate; verify exact bibliographic identity and BRPT relevance before mapping"},
+    {"title":"AAST Titration Technical Guideline 2021","driveFileId":"1u9CkwcMk7hANh031Gq72JZ31mPkzBhKk","use":"technologist PAP guidance; already represented in V3 source catalog"},
+    {"title":"AAST Positive Airway Pressure Acclimation and Desensitization Guideline 2022","driveFileId":"1_p24ytRXmdZ8BBLlgF0dNrD1wJyFlFjD","use":"patient/PAP support; already represented in V3 source catalog"},
+    {"title":"AAST End-Tidal CO2","driveFileId":"1VAXb222zEOkZtNyoONHhNaN8bRHG9eJg","use":"technical CO2 monitoring support; scoring rules remain AASM-controlled"},
+    {"title":"AAST Transcutaneous CO2 Monitoring","driveFileId":"1oIES07WQv_wUzxgPfFPhjLchY9IcwyEC","use":"technical CO2 monitoring support; scoring rules remain AASM-controlled"}
+  ],
+  "duplicateCandidates": [
+    {"title":"AASM RLS/PLMD 2025 guideline","driveFileIds":["18K7K5CeKo54jYAVqdXaYNNoJer1YVrNN","1RlefgWhURJ_CktrBuvvF9288R4VeuleP"]},
+    {"title":"AASM pediatric respiratory PSG 2011","driveFileIds":["1d-GgZnt3oOcz4UpmywQru78NBvyksDsm","1DfKyjU46A2BICLQBbbLTf0ixuj8hsHEq"]},
+    {"title":"AASM pediatric non-respiratory PSG/MSLT 2012","driveFileIds":["1QEUgjoPRbYuwiT1xXnHyftL661qA-bF_","1NPK6ztRa8fAkU1uKE-r9iLEw87r5mCQr"]},
+    {"title":"AASM pediatric bedtime/night-waking behavioral parameters 2006","driveFileIds":["1EaQSIDyV6WmXxdBD8ri3eF24lcp6EHDf","1L8hwVMYAvn_PDpmLX6ixIZoqxwo3PaB_"]},
+    {"title":"AASM manual PAP titration 2008","driveFileIds":["1g7JxWbfynfdf3jbkf47Hrk69oqr2tGfW","1AOADN4FCJaf8yeEnaxbOtGl7Cra53otx"]}
+  ]
+}

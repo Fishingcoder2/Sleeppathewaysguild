@@ -1,0 +1,28 @@
+{
+  "id": "brpt-blueprint",
+  "shortTitle": "BRPT RPSGT Exam Blueprint",
+  "publisher": "Board of Registered Polysomnographic Technologists",
+  "sourceType": "official exam blueprint",
+  "sourceRole": "blueprintAlignment",
+  "currentAuthority": true,
+  "verifiedAt": "2026-08-07",
+  "officialUrl": "https://brpt.org/rpsgt/exam-blueprint/",
+  "effectiveFramework": "Current RPSGT exam form in effect since September 1, 2023",
+  "bestFor": "RPSGT domain/task scope, exam content orientation, task boundaries, and study-plan alignment. It is not a clinical scoring-rule source.",
+  "copyrightUse": "Use public domain/task headings, task scope, percentages, and concise original study directions. Do not imply BRPT endorsement.",
+  "sections": [
+    {"id":"brpt-blueprint-overview","label":"Examination overview: 175 items, 150 scored and 25 pretest"},
+    {"id":"brpt-D1A","label":"D1A - Patient information and clinical assessment"},
+    {"id":"brpt-D1B","label":"D1B - Patient and caregiver education"},
+    {"id":"brpt-D1C","label":"D1C - Provide therapy support"},
+    {"id":"brpt-D2A","label":"D2A - Determine technical preparation"},
+    {"id":"brpt-D2B","label":"D2B - Perform procedures and follow practice guidelines"},
+    {"id":"brpt-D2C","label":"D2C - Identify, respond, and document"},
+    {"id":"brpt-D3A","label":"D3A - Score adult studies"},
+    {"id":"brpt-D3B","label":"D3B - Score pediatric and infant studies"},
+    {"id":"brpt-D3C","label":"D3C - Generate and verify report"},
+    {"id":"brpt-D4A","label":"D4A - Administer PAP therapy"},
+    {"id":"brpt-D4B","label":"D4B - Identify alternative therapies"},
+    {"id":"brpt-D4C","label":"D4C - Administer oxygen therapy"}
+  ]
+}

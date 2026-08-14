@@ -7,6 +7,7 @@ const here=dirname(fileURLToPath(import.meta.url));
 const bankDir=resolve(process.argv[2]||join(here,"..","data","question-bank"));
 const manifest=JSON.parse(await readFile(join(bankDir,"manifest.json"),"utf8"));
 const sha256=value=>createHash("sha256").update(value).digest("hex");
+const uniqueKeys=value=>[...new Set((Array.isArray(value)?value:[]).map(item=>String(item||"").trim()).filter(Boolean))];
 const records=[];
 for(const meta of manifest.modules||[]){
   const module=JSON.parse(await readFile(join(bankDir,meta.path),"utf8"));
@@ -16,6 +17,8 @@ for(const meta of manifest.modules||[]){
       domain:question.domain,
       taskCode:question.taskCode,
       topic:question.topic||"",
+      referenceKeys:uniqueKeys(question.referenceKeys),
+      studyRecommendationKeys:uniqueKeys(question.studyRecommendationKeys),
       manualReviewRecommended:Boolean(question.qa&&question.qa.manualReviewRecommended)
     });
   }
@@ -31,13 +34,14 @@ for(const record of records){taskCounts[record.taskCode]=(taskCounts[record.task
 const payload={
   meta:{
     name:"RPSGT v3 compact learner-feedback index",
-    version:2,
+    version:3,
     sourceManifestSha256:sha256(JSON.stringify(manifest)),
     questionCount:records.length,
     learnerEligibleCount:learnerCount,
     qualityReviewCount:qualityCount,
     recordsContainQuestionText:false,
-    recordFields:["id","domain","taskCode","topic","manualReviewRecommended"],
+    recordsContainAnswerText:false,
+    recordFields:["id","domain","taskCode","topic","referenceKeys","studyRecommendationKeys","manualReviewRecommended"],
     developmentOnly:true
   },
   taskCounts,
@@ -45,4 +49,4 @@ const payload={
   records
 };
 await writeFile(join(bankDir,"feedback-index.json"),JSON.stringify(payload),"utf8");
-console.log(`Generated compact feedback index with ${records.length} records (${learnerCount} learner eligible, ${qualityCount} quality review).`);
+console.log(`Generated compact feedback index with ${records.length} records (${learnerCount} learner eligible, ${qualityCount} quality review) and source-key mappings.`);
