@@ -1,0 +1,18 @@
+{
+  "sourceFile": "RPSGTv2.2026_1.html",
+  "generatedFor": "RPSGT V3 shared learning library",
+  "counts": {
+    "flashcards": 312,
+    "glossaryTerms": 258,
+    "mathLessons": 20,
+    "mathQuestions": 100
+  },
+  "payload": {
+    "format": "gzip-compressed JSON split across five browser-loaded base64 chunks",
+    "rawPayloadSha256": "0debb09d5face8bc683d5b114c49e72c8cf7d8825f095f61405c776781de523c",
+    "gzipSha256": "0c28aabfe2c7a13e0f6ddb3cdbefab2dd4adc94eadc9f42035b7aa831b9ecc25",
+    "base64Length": 67644,
+    "partLengths": [14000, 14000, 14000, 14000, 11644]
+  },
+  "validationPolicy": "core/learning-library.js refuses to expose the library unless the decompressed payload contains exactly 312 flashcards, 258 glossary terms, 20 Math Coach lessons, and 100 Math Coach questions."
+}
