@@ -1,7 +1,6 @@
 (function(){
   'use strict';
 
-  const INTERNAL_LANGUAGE=/\b(?:mapped|mapping)\b/i;
   const INTERNAL_KEYS=/\b(?:source keys?|resource keys?|referenceKeys|studyRecommendationKeys)\b/i;
 
   function suppressLegacyOptionalShelf(){
@@ -80,6 +79,7 @@
         .replace(/mapped learner questions/gi,'learner questions')
         .replace(/mapped records/gi,'learner records')
         .replace(/directly assigned questions/gi,'learner questions')
+        .replace(/\bmappings\b/gi,'references')
         .replace(/\bmapping\b/gi,'reference')
         .replace(/\bmapped\b/gi,'related');
       if(text!==node.textContent) node.textContent=text;
