@@ -8,5 +8,5 @@ for(const script of ['core/storage.js','core/math-coach-engine.js','core/math-co
 assert.ok(html.indexOf('math-coach-engine.js')<html.indexOf('math-coach-view-base.js')&&html.indexOf('math-coach-view-base.js')<html.indexOf('math-coach-view-practice.js')&&html.indexOf('math-coach-view-practice.js')<html.indexOf('core/math-coach.js'));
 for(const phrase of ['Learn the formula → demonstrate mastery','not a Skills Lab simulation','curated skill'])assert.match(html,new RegExp(phrase,'i'));
 for(const token of ['data/math-coach/manifest.json','skillFiles','RPSGTStorage.save','recordMastery','seenCeremonyIds'])assert.match(controller,new RegExp(token.replaceAll('/','\\/')));
-assert.doesNotMatch(controller,/localStorage\.(?:setItem|removeItem|clear)/);assert.match(redirect,/url=math-coach\.html/);assert.equal(manifest.skillFiles.length,4);assert.match(css,/prefers-reduced-motion/);assert.match(html,/aria-labelledby="math-award-title"/);
-console.log('Standalone Math Coach shell, v3-only storage, modular staged flow, source boundary, and award accessibility contracts passed.');
+assert.doesNotMatch(controller,/localStorage\.(?:setItem|removeItem|clear)/);assert.match(redirect,/url=math-coach\.html/);assert.equal(manifest.skillFiles.length,12);assert.match(css,/prefers-reduced-motion/);assert.match(html,/aria-labelledby="math-award-title"/);
+console.log('Standalone expanded Math Coach shell, v3-only storage, modular staged flow, source boundary, and award accessibility contracts passed.');
