@@ -4,7 +4,7 @@
   root.RPSGTRespiratoryLabEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.0.0';
+  const VERSION='1.1.0';
   const LAB_ID='respiratory';
   const SESSION_SIZE=10;
   const PASS_PERCENT=80;
@@ -19,7 +19,17 @@
     {id:'event-classification',title:'Respiratory-event recognition and classification',focus:'Integrate airflow, effort, oxygen, arousal, duration, and surrounding sleep context before classifying an event.'},
     {id:'artifact-correction',title:'Artifact correction and documentation',focus:'Trace questionable signals through the sensor pathway, correct what is safely correctable, and document meaningful changes.'}
   ];
+  const PATTERNS=[
+    {id:'normal',title:'Normal breathing',airflow:'normal',thorax:'normal',abdomen:'normal',oxygen:'steady',cue:'Airflow and respiratory effort rise and fall together.',teaching:'Use this as the baseline. Compare the size and timing of airflow, thoracic effort, abdominal effort, and oxygen with the event patterns.'},
+    {id:'obstructive-apnea',title:'Obstructive apnea',airflow:'absent',thorax:'increased',abdomen:'paradox-increased',oxygen:'drop',cue:'Airflow stops while respiratory effort continues or increases.',teaching:'The airway is obstructed, so airflow becomes nearly flat while the effort belts continue. The effort pattern is intentionally prominent in this teaching trace.'},
+    {id:'central-apnea',title:'Central apnea',airflow:'absent',thorax:'absent',abdomen:'absent',oxygen:'drop',cue:'Airflow and respiratory effort are absent together.',teaching:'The important contrast with obstructive apnea is the absence of meaningful thoracic and abdominal effort during the event.'},
+    {id:'mixed-apnea',title:'Mixed apnea',airflow:'absent',thorax:'mixed',abdomen:'mixed-paradox',oxygen:'drop',cue:'The event begins without effort, then effort resumes before airflow returns.',teaching:'Look for the change within the same event: central physiology first, then obstructive effort while airflow remains absent.'},
+    {id:'obstructive-hypopnea',title:'Obstructive hypopnea',airflow:'reduced-flattened',thorax:'increased',abdomen:'paradox-increased',oxygen:'drop',cue:'Airflow is clearly reduced and flattened while respiratory effort is preserved or increases.',teaching:'The airflow reduction is intentionally large enough to see. Thoracic effort becomes stronger, and abdominal effort continues with a visible paradoxical component so the obstructive pattern does not look like a central reduction.'},
+    {id:'central-hypopnea',title:'Central hypopnea',airflow:'reduced',thorax:'reduced',abdomen:'reduced',oxygen:'drop',cue:'Airflow and respiratory effort decrease together.',teaching:'Compare this directly with obstructive hypopnea. Here the belts shrink along with airflow instead of staying strong or increasing.'},
+    {id:'flow-limitation',title:'Flow limitation / RERA pattern',airflow:'flattened',thorax:'increased',abdomen:'increased',oxygen:'steady',cue:'Inspiratory airflow flattens while effort builds.',teaching:'This pattern emphasizes progressive inspiratory flow limitation and increasing effort. An arousal or other required context must be considered before assigning an event label.'}
+  ];
   const STATION_IDS=new Set(STATIONS.map(item=>item.id));
+  const PATTERN_IDS=new Set(PATTERNS.map(item=>item.id));
   const FAMILY_ORDER=['airflow','effort','oxygen','carbon-dioxide','snore-position','event-classification','artifact','other'];
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
@@ -49,6 +59,7 @@
       seenPrompts.add(prompt);seenIds.add(id);return true;
     }).map(clone);
   }
+  function patternById(id){return clone(PATTERNS.find(item=>item.id===String(id))||PATTERNS[0]);}
   function hash(text){let value=2166136261;for(let index=0;index<String(text).length;index+=1){value^=String(text).charCodeAt(index);value=Math.imul(value,16777619);}return value>>>0;}
   function seededRandom(seed){let state=hash(seed)||1;return function(){state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;};}
   function shuffle(records,random){const copy=records.slice();for(let index=copy.length-1;index>0;index-=1){const swap=Math.floor(random()*(index+1));[copy[index],copy[swap]]=[copy[swap],copy[index]];}return copy;}
@@ -100,5 +111,5 @@
     record.startedAt=record.startedAt||time;record.latestSession=safe;record.history=[safe,...record.history.filter(item=>item&&item.id!==safe.id)].slice(0,HISTORY_LIMIT);if(!alreadyRecorded) record.attempts=Math.max(0,safeNumber(record.attempts,0))+1;record.bestPercent=Math.max(record.bestPercent,safeNumber(safe.percent,0));record.checkpointPassed=record.checkpointPassed||safe.passed===true;return persist(normalized,time);
   }
   function summary(value){const record=normalizeLabs(value).record;record.stationCount=STATIONS.length;record.stationsComplete=STATIONS.filter(station=>record.checklist[station.id]).length;return clone(record);}
-  return {VERSION,LAB_ID,SESSION_SIZE,PASS_PERCENT,HISTORY_LIMIT,TASK_CODES,STATIONS,FAMILY_ORDER,classifyFamily,eligibleQuestions,selectQuestions,gradeSession,normalizeLabs,start,setStation,applySession,summary};
+  return {VERSION,LAB_ID,SESSION_SIZE,PASS_PERCENT,HISTORY_LIMIT,TASK_CODES,STATIONS,PATTERNS,FAMILY_ORDER,classifyFamily,eligibleQuestions,patternById,selectQuestions,gradeSession,normalizeLabs,start,setStation,applySession,summary};
 });
