@@ -2,7 +2,9 @@
   'use strict';
 
   const EXPECTED={flashcards:312,glossary:258,mathLessons:20,mathQuestions:100,parts:5};
-  const VERSION='2026-08-14-v2-learning-library-2';
+  const EXPECTED_BASE64_LENGTH=67644;
+  const EXPECTED_PART_LENGTHS=[14000,14000,14000,14000,11644];
+  const VERSION='2026-08-14-v2-learning-library-3';
   let payload=null;
   let loading=null;
 
@@ -16,14 +18,59 @@
     return bytes;
   }
 
-  async function inflate(){
+  async function readTextStream(stream){
+    const reader=stream.getReader();
+    const decoder=new TextDecoder('utf-8');
+    let output='';
+    try{
+      while(true){
+        const result=await reader.read();
+        if(result.done) break;
+        output+=decoder.decode(result.value,{stream:true});
+      }
+      output+=decoder.decode();
+      return output;
+    }finally{
+      try{reader.releaseLock();}catch(error){}
+    }
+  }
+
+  function libraryParts(){
     const parts=Array.isArray(root.RPSGTLearningLibraryParts)?root.RPSGTLearningLibraryParts:[];
-    if(parts.length!==EXPECTED.parts) throw new Error('The RPSGT learning library is incomplete. Expected '+EXPECTED.parts+' data parts and found '+parts.length+'.');
-    if(typeof root.DecompressionStream!=='function') throw new Error('This browser cannot open the compressed RPSGT learning library. Please use a current version of Chrome, Edge, Firefox, or Safari.');
-    const bytes=decodeBase64(parts.join(''));
-    const stream=new Blob([bytes]).stream().pipeThrough(new root.DecompressionStream('gzip'));
-    const json=await new Response(stream).text();
-    return JSON.parse(json);
+    if(parts.length!==EXPECTED.parts){
+      throw new Error('The RPSGT learning library is incomplete. Expected '+EXPECTED.parts+' data parts and found '+parts.length+'.');
+    }
+    parts.forEach((part,index)=>{
+      const length=String(part||'').length;
+      if(length!==EXPECTED_PART_LENGTHS[index]){
+        throw new Error('RPSGT learning library data part '+(index+1)+' is incomplete. Expected '+EXPECTED_PART_LENGTHS[index]+' characters and found '+length+'.');
+      }
+    });
+    const joined=parts.join('');
+    if(joined.length!==EXPECTED_BASE64_LENGTH){
+      throw new Error('The RPSGT learning library payload is incomplete. Expected '+EXPECTED_BASE64_LENGTH+' characters and found '+joined.length+'.');
+    }
+    return joined;
+  }
+
+  async function inflate(){
+    const encoded=libraryParts();
+    if(typeof root.DecompressionStream!=='function'){
+      throw new Error('This browser cannot open the compressed RPSGT learning library. Please use a current version of Chrome, Edge, Firefox, or Safari.');
+    }
+    const bytes=decodeBase64(encoded);
+    if(bytes.length<3||bytes[0]!==0x1f||bytes[1]!==0x8b||bytes[2]!==0x08){
+      throw new Error('The RPSGT learning library payload is not a valid gzip file.');
+    }
+    try{
+      const stream=new Blob([bytes]).stream().pipeThrough(new root.DecompressionStream('gzip'));
+      const json=await readTextStream(stream);
+      if(!json.trim()) throw new Error('The decompressed learning library was empty.');
+      return JSON.parse(json);
+    }catch(error){
+      const detail=error&&error.message?String(error.message):'Unknown decompression error';
+      throw new Error('The RPSGT learning library could not be decompressed in this browser. '+detail);
+    }
   }
 
   function validate(data){
