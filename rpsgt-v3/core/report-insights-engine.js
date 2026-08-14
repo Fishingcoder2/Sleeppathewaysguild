@@ -140,3 +140,20 @@
 
   return {percent,latestReadiness,latestMock,domainEvidence,recentPracticeTrend,activityRange,readinessTrend,mockTrend,build};
 });
+
+(function(){
+  'use strict';
+  if(typeof document==='undefined') return;
+  function loadCompanion(){
+    if(document.querySelector('script[data-report-companion]')) return;
+    let src='';
+    if(document.body&&document.body.dataset&&document.body.dataset.module==='reports') src='core/report-action-plan.js';
+    else if(document.querySelector('[data-summary-content]')) src='core/study-summary-action-plan.js';
+    if(!src) return;
+    const script=document.createElement('script');
+    script.src=src;
+    script.dataset.reportCompanion='true';
+    document.body.appendChild(script);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',loadCompanion); else loadCompanion();
+})();
