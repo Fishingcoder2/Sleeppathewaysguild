@@ -11,8 +11,8 @@
 <body data-module="study">
 <div class="app-shell">
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Memory Games</strong><span>Active recall from the vetted flashcard library</span></span></a>
-  <div class="top-actions"><a href="flashcards.html">Flashcards</a><a href="notes.html">My Notes</a><a href="index.html">Dashboard</a></div>
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Memory Games</strong><span>Active recall from flashcards, Math Coach, and handbook terms</span></span></a>
+  <div class="top-actions"><a href="flashcards.html">Flashcards</a><a href="math-coach.html">Math Coach</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
@@ -25,26 +25,28 @@
   <div class="nav-label">Study tools</div>
   <a class="nav-link" href="flashcards.html"><span>▱</span>Flashcards</a>
   <a class="nav-link active" href="memory-games.html"><span>▦</span>Memory Games</a>
+  <a class="nav-link" href="math-coach.html"><span>∑</span>Math Coach</a>
   <a class="nav-link" href="notes.html"><span>✎</span>My Notes</a>
 </aside>
 <main class="main">
 <section class="hero study-tool-hero">
-  <div><div class="eyebrow">RPSGT active recall</div><h1>Memory Games</h1><p class="lead">Use the same vetted RPSGT V2 flashcard library in short recall games. Match fronts to answers, practice normal front-to-answer recall, or reverse the direction and retrieve the term from the answer.</p><div class="study-tool-links"><a class="btn primary" href="flashcards.html">Open Flashcards</a><a class="btn secondary" href="notes.html">My Notes</a><a class="btn secondary" href="study.html">Guided Study</a></div></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Change the direction of recall.</h2><p>If you only recognize an answer when you see it, you may not own it yet. Practice both directions until the connection feels automatic.</p></aside>
+  <div><div class="eyebrow">RPSGT active recall</div><h1>Memory Games</h1><p class="lead">Practice the RPSGT flashcard library, Math Coach formulas and units, and the common abbreviations listed in the current BRPT RPSGT Candidate Handbook. Match both sides, retrieve in either direction, then let Weak Memory automatically bring back the cards you miss.</p><div class="study-tool-links"><a class="btn primary" href="flashcards.html">Open Flashcards</a><a class="btn secondary" href="math-coach.html">Math Coach</a><a class="btn secondary" href="study.html">Guided Study</a></div></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Missed does not mean lost.</h2><p>Every miss is useful data. Weak Memory keeps the troublesome connection in your rotation until recall becomes stronger.</p></aside>
 </section>
 
 <div class="section study-tool-shell" data-memory-app>
   <section class="memory-mode-cards">
     <article class="card memory-mode-card"><span class="status">Game 1</span><h2>Memory Match</h2><p>Find the front and back that belong to the same RPSGT card.</p></article>
-    <article class="card memory-mode-card"><span class="status">Game 2</span><h2>Front → Answer</h2><p>Read the card front and choose the correct answer from four choices.</p></article>
-    <article class="card memory-mode-card"><span class="status">Game 3</span><h2>Answer → Term</h2><p>Reverse the retrieval direction and identify the matching term or prompt.</p></article>
+    <article class="card memory-mode-card"><span class="status">Game 2</span><h2>Front → Answer</h2><p>Read the prompt and retrieve the correct answer from four choices.</p></article>
+    <article class="card memory-mode-card"><span class="status">Game 3</span><h2>Answer → Term</h2><p>Reverse retrieval and identify the matching term, formula name, or abbreviation.</p></article>
+    <article class="card memory-mode-card"><span class="status gold">Game 4</span><h2>Weak Memory</h2><p>Automatically revisit cards you have missed, prioritizing the weakest connections.</p></article>
   </section>
 
   <section class="card memory-controls">
-    <div class="section-head"><div><div class="eyebrow">Choose a game</div><h2>Build a short recall round</h2><p data-memory-mode-description>Match each front with its answer.</p></div><span class="status green">332-card V2 library</span></div>
-    <div class="memory-control-row"><button class="btn secondary active" type="button" data-memory-mode="match">Memory Match</button><button class="btn secondary" type="button" data-memory-mode="recall">Front → Answer</button><button class="btn secondary" type="button" data-memory-mode="reverse">Answer → Term</button></div>
+    <div class="section-head"><div><div class="eyebrow">Choose a game</div><h2>Build a short recall round</h2><p data-memory-mode-description>Match each front with its answer.</p></div><span class="status green" data-memory-library-count>Loading recall cards…</span></div>
+    <div class="memory-control-row"><button class="btn secondary active" type="button" data-memory-mode="match">Memory Match</button><button class="btn secondary" type="button" data-memory-mode="recall">Front → Answer</button><button class="btn secondary" type="button" data-memory-mode="reverse">Answer → Term</button><button class="btn secondary" type="button" data-memory-mode="weak">Weak Memory</button></div>
     <div class="memory-control-row"><label><strong>Category</strong><select class="memory-select" data-memory-category><option>Loading categories…</option></select></label><span><strong>Match size</strong></span><button class="btn secondary" type="button" data-memory-size="4">4 pairs</button><button class="btn secondary active" type="button" data-memory-size="6">6 pairs</button><button class="btn secondary" type="button" data-memory-size="8">8 pairs</button><button class="btn primary" type="button" data-memory-start>Start / restart</button></div>
-    <div class="memory-stats"><article class="memory-stat"><strong data-stat-moves>0</strong><span>moves this round</span></article><article class="memory-stat"><strong data-stat-matches>0 / 0</strong><span>pairs matched</span></article><article class="memory-stat"><strong data-stat-games>0</strong><span>games started</span></article><article class="memory-stat"><strong data-stat-accuracy>0%</strong><span>recall accuracy</span></article></div>
+    <div class="memory-stats"><article class="memory-stat"><strong data-stat-moves>0</strong><span>moves this round</span></article><article class="memory-stat"><strong data-stat-matches>0 / 0</strong><span>pairs matched</span></article><article class="memory-stat"><strong data-stat-games>0</strong><span>games started</span></article><article class="memory-stat"><strong data-stat-accuracy>0%</strong><span>recall accuracy</span></article><article class="memory-stat"><strong data-stat-weak>0</strong><span>weak cards</span></article></div>
     <div class="notice" data-memory-error hidden></div>
   </section>
 
@@ -55,14 +57,14 @@
   </section>
 
   <section class="card recall-card memory-game-panel" data-memory-recall-panel hidden>
-    <div class="section-head"><div><div class="eyebrow">Four-choice recall</div><h2>Choose the best match</h2></div><span class="status">Original study content</span></div>
+    <div class="section-head"><div><div class="eyebrow">Four-choice recall</div><h2>Choose the best match</h2></div><span class="status">Flashcards + Math + BRPT abbreviations</span></div>
     <div class="recall-prompt" data-recall-prompt><strong>Start a recall round.</strong></div>
     <div class="recall-choices" data-recall-choices></div>
     <div class="recall-feedback" data-recall-feedback hidden></div>
     <div class="actions"><button class="btn primary" type="button" data-recall-next hidden>Next card</button></div>
   </section>
 
-  <section class="notice"><strong>Study boundary:</strong> These games reuse Sleep Pathways Guild flashcard content for recall practice. They are not BRPT exam questions and do not produce an official readiness or passing score.</section>
+  <section class="notice"><strong>Study boundary:</strong> These games reuse Sleep Pathways Guild study content and curated Math Coach concepts for recall practice. The BRPT abbreviation category is based on the current public RPSGT Candidate Handbook abbreviation list. Weak Memory is a study aid based on the learner's own misses. These are not BRPT exam questions and do not produce an official readiness or passing score.</section>
 </div>
 <footer class="footer">Sleep Pathways Guild · RPSGT Memory Games</footer>
 </main>
