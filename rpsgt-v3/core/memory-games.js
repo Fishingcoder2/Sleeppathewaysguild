@@ -168,6 +168,20 @@
   async function loadMathCards(){
     try{const manifest=await loadJson('data/math-coach/manifest.json');const skills=await Promise.all((manifest.skillFiles||[]).map(file=>loadJson('data/math-coach/'+file)));return skills.flatMap(mathCardsFromSkill);}catch(error){return[];}
   }
+  function handbookCardsFromPayload(payload){
+    return (payload&&Array.isArray(payload.items)?payload.items:[]).map((item,index)=>({
+      id:'brpt-abbreviation:'+String(item.abbreviation||index).toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+      front:'What does '+item.abbreviation+' stand for?',
+      back:item.meaning,
+      category:'BRPT handbook abbreviations',
+      memoryClue:'Retrieve the full meaning before choosing. These abbreviations are listed in the current BRPT RPSGT Candidate Handbook.',
+      sourceLabel:payload.source||'BRPT RPSGT Candidate Handbook',
+      sourceVerifiedDate:payload.verifiedDate||null
+    }));
+  }
+  async function loadHandbookCards(){
+    try{return handbookCardsFromPayload(await loadJson('data/memory/brpt-rpsgt-abbreviations.json'));}catch(error){return[];}
+  }
 
   function startCurrent(){if(mode==='match')startMatch();else startRecall();}
   root.querySelectorAll('[data-memory-mode]').forEach(button=>button.addEventListener('click',()=>{mode=button.dataset.memoryMode;modeButtons();startCurrent();}));
@@ -176,7 +190,7 @@
 
   async function init(){
     try{
-      const [payload,mathCards]=await Promise.all([libraryApi.load(),loadMathCards()]);cards=payload.cards.slice().concat(mathCards);
+      const [payload,mathCards,handbookCards]=await Promise.all([libraryApi.load(),loadMathCards(),loadHandbookCards()]);cards=payload.cards.slice().concat(mathCards,handbookCards);
       const categories=['all',...Array.from(new Set(cards.map(card=>card.category).filter(Boolean))).sort((a,b)=>a.localeCompare(b))];
       categorySelect.replaceChildren(...categories.map(value=>{const option=document.createElement('option');option.value=value;option.textContent=value==='all'?'All categories':value;return option;}));
       stats();modeButtons();startMatch();renderStats();
