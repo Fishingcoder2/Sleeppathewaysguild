@@ -68,9 +68,10 @@
       let text=node.textContent||'';
       if(!text) return;
       if(INTERNAL_KEYS.test(text)){
-        if(node.matches('a,button')) node.textContent='Open related references';
-        else node.remove();
-        return;
+        if(node.matches('a,button')) text='Open related references';
+        else text=text
+          .replace(/\b(?:source keys?|resource keys?)\b/gi,'internal identifiers')
+          .replace(/\b(?:referenceKeys|studyRecommendationKeys)\b/g,'internal identifiers');
       }
       text=text
         .replace(/open mapped references/gi,'Open related references')
@@ -96,11 +97,11 @@
   function init(){
     sanitizeAll();
     if(typeof MutationObserver!=='function') return;
-    let queued=false;
+    let sanitizing=false;
     const observer=new MutationObserver(()=>{
-      if(queued) return;
-      queued=true;
-      requestAnimationFrame(()=>{queued=false;sanitizeAll();});
+      if(sanitizing) return;
+      sanitizing=true;
+      try{sanitizeAll();}finally{sanitizing=false;}
     });
     observer.observe(document.body,{childList:true,subtree:true,characterData:true});
   }
