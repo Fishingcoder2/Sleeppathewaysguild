@@ -14,8 +14,8 @@ if(!html.includes("checkpoint history")||!trailJs.includes("engine.summary")) th
 for(const label of ["Task badges","Domain medals","Clinical Guide","Study Signal Scout","Scoring Pathfinder","Therapy Trail Guide"]){
   if(!trailJs.includes(label)) throw new Error(`Guild achievement reporting is missing ${label}.`);
 }
-if(html.includes("Mapped study directions")||html.includes("Reference Center mapping")||html.includes("data-source-outlines")) throw new Error("Internal source-outline mapping must not be rendered on the learner Reports page.");
-if(!html.includes("internal source maps are not displayed")) throw new Error("Reports must explain that internal source maps remain off the learner surface.");
+if(/\b(?:mapped|mapping)\b|\bsource[- ]maps?\b/i.test(html)) throw new Error("Internal mapping terminology must not be rendered on the learner Reports page.");
+if(!html.includes("Suggested reading")||!html.includes("APA-style bibliographic references")) throw new Error("Reports must describe learner study resources with suggested-reading and APA-style reference language.");
 if(!html.includes("sources-disclosures.html")) throw new Error("Reports must retain the professional sources and disclosures link.");
 if(!js.includes("async function loadOutlines")||!js.includes("feedbackEngine.taskRoute")||!js.includes("state.outlines")) throw new Error("Internal source mapping intelligence must remain available for report recommendations.");
 if(/Study source shelf|represented in the Sleep Pathways Guild library/i.test(html)) throw new Error("Learner-facing source shelf language has returned to Reports.");
@@ -24,4 +24,4 @@ if(!js.includes('renderDomainEvidence')||!js.includes('renderPracticeTrend')||!j
 if(!insightJs.includes('domainEvidence')||!insightJs.includes('recentPracticeTrend')||!insightJs.includes('activityRange')) throw new Error('Shared report insights engine is incomplete.');
 for(const profile of ['full','practice','readiness','mock','guided']) if(!html.includes(`study-summary.html?report=${profile}`)) throw new Error(`Reports Center is missing the ${profile} print route.`);
 if(!insightCss.includes('.domain-evidence-row')||!insightCss.includes('.practice-trend-summary')) throw new Error('Report insight responsive styling is incomplete.');
-console.log("Reports selector, domain evidence, Practice trend, focused print routes, Guild achievement, internal source-map boundary, learner surface, Guided Study parity, and read-only contracts passed.");
+console.log("Reports selector, domain evidence, Practice trend, focused print routes, Guild achievement, internal source boundary, learner surface, Guided Study parity, and read-only contracts passed.");
