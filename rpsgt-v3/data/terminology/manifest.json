@@ -3,17 +3,18 @@
   "title": "Sleep Pathways Guild RPSGT V3 Master Terminology Bank",
   "generatedDate": "2026-08-14",
   "purpose": "Authority-aware terminology inventory and learner-ready glossary sources for RPSGT V3.",
-  "sourcePolicy": "Use current AASM Scoring Manual terminology for scoring concepts, ICSD-3-TR as the revision check for ICSD-3 clinical nomenclature, AAST Terms and Definitions as broad sleep-technology terminology support, and original Sleep Pathways Guild learner definitions in the public app.",
+  "sourcePolicy": "Use current AASM Scoring Manual terminology for scoring concepts and technical usage, ICSD-3-TR as the revision check for ICSD-3 clinical nomenclature, AAST Terms and Definitions as broad sleep-technology terminology support and gap detection, and original Sleep Pathways Guild learner definitions in the public app.",
   "copyrightBoundary": "The source files inventory factual term names, abbreviations, and alternate terms. They do not reproduce AAST, AASM, or ICSD published glossary definitions. Learner definitions and memory clues are original Sleep Pathways Guild summaries.",
   "authorityPriority": [
     "AASM Scoring Manual Version 3 for scoring, staging, respiratory, cardiac, movement, and technical terms",
     "ICSD-3-TR for revised classification wording or criteria",
     "ICSD-3 for classification concepts not superseded by the text revision",
-    "AAST Terms and Definitions for broad professional terminology support",
+    "AAST Terms and Definitions for broad professional terminology support and terminology-gap detection",
     "Existing reviewed Sleep Pathways Guild flashcards for learner-facing reinforcement"
   ],
   "files": [
     "aast-terms-2016.json",
+    "aast-technical-supplement-1.json",
     "aasm-scoring-v3-1.json",
     "aasm-scoring-v3-2.json",
     "aasm-scoring-v3-3.json",
@@ -25,7 +26,8 @@
     "aasm-scoring-v3-2.json",
     "aasm-scoring-v3-3.json",
     "icsd-3-1.json",
-    "icsd-3-2.json"
+    "icsd-3-2.json",
+    "aast-technical-supplement-1.json"
   ],
   "auditSummary": {
     "aastTerms": 225,
@@ -33,7 +35,8 @@
     "icsd3GlossaryTerms": 54,
     "uniqueTermsAcrossThreeInventories": 310,
     "overlappingCanonicalTerms": 35,
-    "studyReadyAuthorityAdditions": 121
+    "aastTechnicalSupplementTerms": 29,
+    "studyReadyAuthorityAdditions": 150
   },
   "references": [
     "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
