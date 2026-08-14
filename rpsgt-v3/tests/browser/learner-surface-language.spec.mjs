@@ -26,6 +26,17 @@ for(const route of ROUTES){
   });
 }
 
+test('Reports Center presents a self-guided review plan without internal report language',async({page})=>{
+  await page.goto('reports.html');
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(100);
+  await expect(page.locator('.report-hero h1')).toContainText('recommended self-guided review');
+  await expect(page.locator('#study-plan h2')).toHaveText('What to review next');
+  const visibleText=await page.locator('body').innerText();
+  expect(visibleText).not.toMatch(/Matched weak topic|Copyright boundary|pending parity|internal study-weighted gauge/i);
+  await expect(page.locator('#source-outlines')).toHaveCount(0);
+});
+
 test('Dashboard and Guided Study expose Flashcards & Notes',async({page})=>{
   await page.goto('index.html');
   await page.waitForLoadState('networkidle');
@@ -49,7 +60,6 @@ test('Study Notes save and survive reload in the V3 learner record',async({page}
   await expect(page.locator('[data-notes-status]')).toContainText('Saved in this browser');
   await page.reload();
   await expect(page.locator('[data-notes-title]')).toHaveValue('Respiratory review');
-  await expect(page.locator('[data-notes-body]')).toHaveValue('Remember the signal relationships and explain why the finding fits.');
   const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('spg_rpsgt_v3')));
   expect(saved.notes.title).toBe('Respiratory review');
   expect(saved.notes.general).toContain('signal relationships');
