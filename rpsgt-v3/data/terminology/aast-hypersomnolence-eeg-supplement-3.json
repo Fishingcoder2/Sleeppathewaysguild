@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "id": "aast-hypersomnolence-eeg-supplement-3",
+  "title": "AAST terminology gap supplement — hypersomnolence, EEG, electrode placement, and professional context",
+  "sourceRole": "Learner-ready Sleep Pathways Guild definitions for high-value AAST inventory gaps spanning hypersomnolence, EEG/neurologic recognition, electrode placement, respiratory/PAP context, and professional terminology.",
+  "apaReference": "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+  "copyrightBoundary": "Term names and abbreviations are factual inventory data. Definitions and memory clues in this file are original Sleep Pathways Guild summaries and do not reproduce published AAST, AASM, ICSD, textbook, or atlas definitions.",
+  "reviewFocus": "Central disorders of hypersomnolence, sleep-wake neurobiology, EEG/neurologic recognition, electrode placement, bilevel pressure ranges, and selected professional-practice terms.",
+  "items": [
+    {
+      "id": "aast-gap3:american-academy-sleep-medicine",
+      "term": "American Academy of Sleep Medicine",
+      "abbreviation": "AASM",
+      "category": "Safety, Infection Control & Professional Practice",
+      "definition": "A professional medical society in sleep medicine whose publications include sleep-scoring standards, clinical practice guidance, accreditation standards, and the International Classification of Sleep Disorders.",
+      "memoryClue": "AASM = scoring standards, clinical guidance, accreditation, and ICSD.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary"
+    },
+    {
+      "id": "aast-gap3:american-association-sleep-technologists",
+      "term": "American Association of Sleep Technologists",
+      "abbreviation": "AAST",
+      "category": "Safety, Infection Control & Professional Practice",
+      "definition": "A professional association focused on education, practice resources, and professional development for sleep technologists and other sleep-technology professionals.",
+      "memoryClue": "AAST = professional association for sleep technologists.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary"
+    },
+    {
+      "id": "aast-gap3:brpt",
+      "term": "Board of Registered Polysomnographic Technologists",
+      "abbreviation": "BRPT",
+      "category": "Safety, Infection Control & Professional Practice",
+      "definition": "A credentialing organization for sleep technologists that administers credentials including the Registered Polysomnographic Technologist and Certified Polysomnographic Technician credentials.",
+      "memoryClue": "BRPT = the credentialing body behind RPSGT and CPSGT.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary"
+    },
+    {
+      "id": "aast-gap3:continuing-education-credit",
+      "term": "Continuing Education Credit",
+      "abbreviation": "CEC",
+      "category": "Safety, Infection Control & Professional Practice",
+      "definition": "A credit used to document participation in approved continuing-education activity; credentialing or licensing programs may require specified continuing-education credits for renewal.",
+      "memoryClue": "CEC = documented continuing professional education.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary"
+    },
+    {
+      "id": "aast-gap3:hipaa",
+      "term": "Health Insurance Portability and Accountability Act",
+      "abbreviation": "HIPAA",
+      "category": "Safety, Infection Control & Professional Practice",
+      "definition": "A United States federal law and related rules that establish national requirements for privacy, security, and appropriate handling of identifiable health information in healthcare settings.",
+      "memoryClue": "HIPAA = protect identifiable health information.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary"
+    },
+    {
+      "id": "aast-gap3:gerd",
+      "term": "Gastroesophageal Reflux Disease",
+      "abbreviation": "GERD",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "A condition in which gastric contents repeatedly reflux into the esophagus and cause troublesome symptoms or complications; symptoms may occur or worsen during the night.",
+      "memoryClue": "GERD = stomach contents reflux into the esophagus.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:hertz",
+      "term": "Hertz",
+      "abbreviation": "Hz",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The unit of frequency equal to one cycle per second. PSG waveform frequencies and many filter settings are expressed in hertz.",
+      "memoryClue": "1 Hz = 1 cycle each second.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:hypocretin",
+      "term": "Hypocretin",
+      "alternateTerm": "Orexin",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "A hypothalamic neuropeptide system, also called orexin, that helps stabilize wakefulness. Markedly reduced hypocretin signaling is strongly associated with narcolepsy type 1.",
+      "memoryClue": "Hypocretin/orexin helps hold wakefulness steady.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-gap3:hypothalamus",
+      "term": "Hypothalamus",
+      "category": "Core Sleep Terms",
+      "definition": "A brain region that integrates sleep-wake regulation with circadian, autonomic, endocrine, temperature, and behavioral control; it includes the suprachiasmatic nucleus and wake-promoting orexin neurons.",
+      "memoryClue": "Hypothalamus = circadian control plus sleep-wake regulation.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:idiopathic-hypersomnia",
+      "term": "Idiopathic Hypersomnia",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "A central disorder of hypersomnolence characterized by persistent excessive sleepiness that is not adequately explained by another sleep, medical, neurologic, psychiatric, medication, or substance cause and does not meet the defining pattern for narcolepsy.",
+      "memoryClue": "Idiopathic hypersomnia = persistent central sleepiness without the defining narcolepsy pattern.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-gap3:insomnia",
+      "term": "Insomnia",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "A sleep complaint involving difficulty initiating sleep, maintaining sleep, or waking earlier than desired with associated daytime consequences despite adequate opportunity and circumstances for sleep.",
+      "memoryClue": "Insomnia = difficulty sleeping plus daytime impact despite opportunity for sleep.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-gap3:inspiratory-phase",
+      "term": "Inspiratory Phase",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "The portion of the respiratory cycle during which airflow moves into the lungs. In bilevel PAP, the inspiratory phase is the phase associated with the inspiratory positive airway pressure setting.",
+      "memoryClue": "Inspiratory phase = air moving in; bilevel uses IPAP here.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:ipap-min",
+      "term": "Inspiratory Positive Airway Pressure Minimum",
+      "abbreviation": "IPAP min",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "The lowest inspiratory positive airway pressure that a variable bilevel or servo-ventilation mode is permitted to deliver within its configured inspiratory-pressure range; the exact behavior depends on the device and mode.",
+      "memoryClue": "IPAP min = lower boundary of allowed inspiratory pressure.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:ipap-max",
+      "term": "Inspiratory Positive Airway Pressure Maximum",
+      "abbreviation": "IPAP max",
+      "category": "PAP & Oxygen Therapy",
+      "definition": "The highest inspiratory positive airway pressure that a variable bilevel or servo-ventilation mode is permitted to deliver within its configured inspiratory-pressure range; the exact behavior depends on the device and mode.",
+      "memoryClue": "IPAP max = upper boundary of allowed inspiratory pressure.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:international-10-20",
+      "term": "International 10-20 System of Electrode Placement",
+      "category": "Montage & Electrode Placement",
+      "definition": "A standardized method for locating scalp EEG electrodes by measuring proportional distances between defined head landmarks, creating reproducible electrode positions across patients.",
+      "memoryClue": "10-20 = proportional head measurements for reproducible EEG locations.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:icsd",
+      "term": "International Classification of Sleep Disorders",
+      "abbreviation": "ICSD",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "The American Academy of Sleep Medicine diagnostic classification system that organizes sleep disorders into recognized categories and provides diagnostic criteria and terminology; the current text revision is ICSD-3-TR.",
+      "memoryClue": "ICSD = AASM diagnostic classification; current text revision is ICSD-3-TR.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-gap3:junctional-arrhythmias",
+      "term": "Junctional Arrhythmias",
+      "category": "Cardiac & ECG Recognition",
+      "definition": "Rhythms arising from the atrioventricular junction rather than the sinoatrial node. P waves may be absent, inverted, or retrograde, while the QRS is often narrow unless conduction is abnormal.",
+      "memoryClue": "Junctional rhythm = AV junction takes over the pacemaker role.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:landau-kleffner",
+      "term": "Landau-Kleffner Syndrome",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "A rare childhood epileptic encephalopathy associated with acquired loss or regression of language skills and epileptiform EEG abnormalities that are often more prominent during sleep.",
+      "memoryClue": "Landau-Kleffner = acquired language regression plus sleep-activated epileptiform EEG.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Attarian, H. P., & Morgan, M. Y. (Eds.). (2012). Atlas of electroencephalography in sleep medicine. Springer."
+      ]
+    },
+    {
+      "id": "aast-gap3:lennox-gastaut",
+      "term": "Lennox-Gastaut Syndrome",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "A severe childhood epileptic encephalopathy characterized by multiple seizure types, cognitive impairment, and characteristic EEG abnormalities; sleep can increase or reveal epileptiform activity.",
+      "memoryClue": "Lennox-Gastaut = multiple seizure types with characteristic abnormal EEG.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Attarian, H. P., & Morgan, M. Y. (Eds.). (2012). Atlas of electroencephalography in sleep medicine. Springer."
+      ]
+    },
+    {
+      "id": "aast-gap3:masseter",
+      "term": "Masseter",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "A major jaw-closing muscle. Surface EMG from the masseter can be used in selected sleep recordings to help characterize jaw-muscle activity such as sleep-related bruxism.",
+      "memoryClue": "Masseter closes the jaw; its EMG can track jaw-muscle activity.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+      ]
+    },
+    {
+      "id": "aast-gap3:mu-rhythm",
+      "term": "Mu Rhythm",
+      "category": "Sleep Staging & EEG Clues",
+      "definition": "A normal wake EEG rhythm over the central sensorimotor regions, commonly in the alpha-frequency range, that is reduced by movement or movement intention and can be distinguished from posterior alpha by location and reactivity.",
+      "memoryClue": "Mu = central sensorimotor rhythm that blocks with movement.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Attarian, H. P., & Morgan, M. Y. (Eds.). (2012). Atlas of electroencephalography in sleep medicine. Springer."
+      ]
+    },
+    {
+      "id": "aast-gap3:myoclonus",
+      "term": "Myoclonus",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "A sudden, brief, involuntary muscle jerk caused by a short burst of muscle activity or a brief interruption of ongoing muscle activity. Myoclonus is a broad movement phenomenon and is not synonymous with periodic limb movements of sleep.",
+      "memoryClue": "Myoclonus = sudden brief jerk; PLMS is a specific periodic sleep pattern.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Attarian, H. P., & Morgan, M. Y. (Eds.). (2012). Atlas of electroencephalography in sleep medicine. Springer."
+      ]
+    },
+    {
+      "id": "aast-gap3:narcolepsy",
+      "term": "Narcolepsy",
+      "category": "Sleep Disorders & Clinical Terms",
+      "definition": "A central disorder of hypersomnolence marked by persistent excessive sleepiness and dysregulation of REM sleep. Current classification distinguishes narcolepsy type 1 from type 2 using clinical and biologic criteria defined by ICSD-3-TR.",
+      "memoryClue": "Narcolepsy = chronic sleepiness plus REM dysregulation; ICSD separates type 1 and type 2.",
+      "definitionAuthorship": "Original Sleep Pathways Guild summary",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+      ]
+    }
+  ]
+}

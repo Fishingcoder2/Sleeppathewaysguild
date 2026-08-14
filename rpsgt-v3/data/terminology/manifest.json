@@ -3,20 +3,22 @@
   "title": "Sleep Pathways Guild RPSGT V3 Master Terminology Bank",
   "generatedDate": "2026-08-14",
   "purpose": "Authority-aware terminology inventory and learner-ready glossary sources for RPSGT V3.",
-  "sourcePolicy": "Use current AASM Scoring Manual terminology for scoring concepts and technical usage, ICSD-3-TR as the revision check for ICSD-3 clinical nomenclature, AAST Terms and Definitions as broad sleep-technology terminology support and gap detection, the project technical textbook for instrumentation/PAP/gas-exchange cross-checking, and original Sleep Pathways Guild learner definitions in the public app.",
-  "copyrightBoundary": "The source files inventory factual term names, abbreviations, and alternate terms. They do not reproduce AAST, AASM, ICSD, or textbook glossary definitions. Learner definitions and memory clues are original Sleep Pathways Guild summaries.",
+  "sourcePolicy": "Use current AASM Scoring Manual terminology for scoring concepts and technical usage, ICSD-3-TR as the revision check for ICSD-3 clinical nomenclature, AAST Terms and Definitions as broad sleep-technology terminology support and gap detection, the project technical textbook for instrumentation/PAP/gas-exchange cross-checking, the verified EEG atlas for supplemental pattern-recognition context, and original Sleep Pathways Guild learner definitions in the public app.",
+  "copyrightBoundary": "The source files inventory factual term names, abbreviations, and alternate terms. They do not reproduce AAST, AASM, ICSD, textbook, or atlas glossary definitions. Learner definitions and memory clues are original Sleep Pathways Guild summaries.",
   "authorityPriority": [
     "AASM Scoring Manual Version 3 for scoring, staging, respiratory, cardiac, movement, and technical terms",
     "ICSD-3-TR for revised classification wording or criteria",
     "ICSD-3 for classification concepts not superseded by the text revision",
     "AAST Terms and Definitions for broad professional terminology support and terminology-gap detection",
     "Polysomnography for the Sleep Technologist for instrumentation, PAP, gas-exchange, and testing cross-checks",
+    "Atlas of Electroencephalography in Sleep Medicine for supplemental EEG and nocturnal neurologic pattern-recognition context only",
     "Existing reviewed Sleep Pathways Guild flashcards for learner-facing reinforcement"
   ],
   "files": [
     "aast-terms-2016.json",
     "aast-technical-supplement-1.json",
     "aast-core-psg-supplement-2.json",
+    "aast-hypersomnolence-eeg-supplement-3.json",
     "aasm-scoring-v3-1.json",
     "aasm-scoring-v3-2.json",
     "aasm-scoring-v3-3.json",
@@ -30,7 +32,8 @@
     "icsd-3-1.json",
     "icsd-3-2.json",
     "aast-technical-supplement-1.json",
-    "aast-core-psg-supplement-2.json"
+    "aast-core-psg-supplement-2.json",
+    "aast-hypersomnolence-eeg-supplement-3.json"
   ],
   "auditSummary": {
     "aastTerms": 225,
@@ -40,13 +43,15 @@
     "overlappingCanonicalTerms": 35,
     "aastTechnicalSupplementTerms": 29,
     "aastCorePsgSupplementTerms": 33,
-    "studyReadyAuthorityAdditions": 183
+    "aastHypersomnolenceEegSupplementTerms": 23,
+    "studyReadyAuthorityAdditions": 206
   },
   "references": [
     "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
     "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
     "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
     "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine.",
-    "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby."
+    "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+    "Attarian, H. P., & Morgan, M. Y. (Eds.). (2012). Atlas of electroencephalography in sleep medicine. Springer."
   ]
 }
