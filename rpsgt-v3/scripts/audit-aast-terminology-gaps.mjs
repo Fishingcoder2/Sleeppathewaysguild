@@ -40,10 +40,13 @@ const coveredUnion=aastRows.filter(row=>legacySet.has(row.key)||learnerSet.has(r
 const uncovered=aastRows.filter(row=>!legacySet.has(row.key)&&!learnerSet.has(row.key));
 
 assert.equal(aastRows.length,manifest.auditSummary.aastTerms);
-assert.ok(supplements.length>=2,'Expected both AAST terminology gap-repair supplements.');
+assert.ok(supplements.length>=3,'Expected at least three AAST terminology gap-repair supplements.');
 const supplementItems=supplements.flatMap(payload=>payload.items||[]);
-assert.equal(supplementItems.length,Number(manifest.auditSummary.aastTechnicalSupplementTerms||0)+Number(manifest.auditSummary.aastCorePsgSupplementTerms||0));
-assert.ok(supplementItems.length>=60,'Expected substantial AAST terminology gap-repair coverage across the first two batches.');
+const expectedSupplementItems=Object.entries(manifest.auditSummary||{})
+  .filter(([key])=>/^aast.+SupplementTerms$/.test(key))
+  .reduce((sum,[,value])=>sum+Number(value||0),0);
+assert.equal(supplementItems.length,expectedSupplementItems,'Manifest supplement counts must equal the learner supplement inventory.');
+assert.ok(supplementItems.length>=80,'Expected substantial AAST terminology gap-repair coverage across three batches.');
 const aastSet=new Set(aastRows.map(row=>row.key));
 for(const supplement of supplements){
   assert.match(supplement.copyrightBoundary,/original Sleep Pathways Guild/i);
