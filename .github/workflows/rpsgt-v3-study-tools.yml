@@ -18,6 +18,7 @@ on:
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - 'rpsgt-v3/scripts/test-glossary-games.mjs'
+      - 'rpsgt-v3/scripts/audit-aast-terminology-gaps.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
   push:
     branches:
@@ -38,6 +39,7 @@ on:
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - 'rpsgt-v3/scripts/test-glossary-games.mjs'
+      - 'rpsgt-v3/scripts/audit-aast-terminology-gaps.mjs'
       - '.github/workflows/rpsgt-v3-study-tools.yml'
 
 permissions:
@@ -63,3 +65,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-memory-arcade.mjs
       - name: Validate terminology Glossary Games
         run: node rpsgt-v3/scripts/test-glossary-games.mjs
+      - name: Audit AAST terminology gaps
+        run: node rpsgt-v3/scripts/audit-aast-terminology-gaps.mjs
