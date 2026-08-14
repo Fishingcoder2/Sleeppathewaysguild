@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {dirname,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const here=dirname(fileURLToPath(import.meta.url));const root=join(here,'..');
+const js=await readFile(join(root,'core','memory-games.js'),'utf8');
+const html=await readFile(join(root,'memory-games.html'),'utf8');
+const manifest=JSON.parse(await readFile(join(root,'data','math-coach','manifest.json'),'utf8'));
+new Function(js);
+assert.match(html,/data-memory-mode="weak"/);assert.match(html,/data-stat-weak/);assert.match(html,/data-memory-library-count/);assert.match(html,/Weak Memory/);
+assert.match(js,/cardMemory/);assert.match(js,/function weaknessScore/);assert.match(js,/function weakCards/);assert.match(js,/recordMemory\(recallState\.question\.id,correct\)/);assert.match(js,/data\/math-coach\/manifest\.json/);assert.match(js,/Math formulas/);assert.match(js,/Math abbreviations/);assert.match(js,/play\(correct\?'correct':'incorrect'\)/);
+assert.equal(manifest.skillFiles.length,12);assert.ok(manifest.skillFiles.includes('pressure-support.json'));assert.ok(manifest.skillFiles.includes('waso.json'));assert.ok(manifest.skillFiles.includes('epoch-time.json'));
+console.log('Memory Games passed syntax and Weak Memory + Math Coach recall integration contracts.');
