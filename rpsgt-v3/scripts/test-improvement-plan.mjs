@@ -30,6 +30,7 @@ if(!plan.priorities[0].activities.some(item=>item.href==='math-coach.html'))thro
 if(!plan.priorities[0].activities.some(item=>item.kind==='lab'))throw new Error('A relevant in-app Skills Lab was not recommended.');
 if(!plan.strongestTask||plan.strongestTask.code!=='D1A')throw new Error('Strongest ordinary-Practice task was not identified.');
 const letter=plan.letter.paragraphs.join(' ');
-for(const phrase of ['first study priority','D3','D3C','Guided Study','Focused Practice','12 percentage points'])if(!letter.includes(phrase))throw new Error('Coach Bob letter is missing expected plain-language content: '+phrase);
+for(const phrase of ['first study priority','D3','D3C','Guided Study','Focused Practice','12 percentage points','at your own pace'])if(!letter.includes(phrase))throw new Error('Coach Bob letter is missing expected plain-language content: '+phrase);
+for(const phrase of ['this week','by Friday','deadline','within seven days','right now'])if(letter.toLowerCase().includes(phrase.toLowerCase()))throw new Error('Coach Bob remediation language must remain self paced; found: '+phrase);
 if(JSON.stringify({summary,insights,catalog})!==before)throw new Error('Improvement plan engine mutated its inputs.');
-console.log('Improvement plan passed domain/task prioritization, diagnostic evidence, APA-ready source handoff, in-app practice routing, strongest-area, Coach Bob letter, trend, and immutability contracts.');
+console.log('Improvement plan passed domain/task prioritization, diagnostic evidence, APA-ready source handoff, in-app practice routing, strongest-area, self-paced Coach Bob letter, trend, and immutability contracts.');
