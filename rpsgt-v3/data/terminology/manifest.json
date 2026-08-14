@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "title": "Sleep Pathways Guild RPSGT V3 Master Terminology Bank",
+  "generatedDate": "2026-08-14",
+  "purpose": "Authority-aware terminology inventory and learner-ready glossary sources for RPSGT V3.",
+  "sourcePolicy": "Use current AASM Scoring Manual terminology for scoring concepts, ICSD-3-TR as the revision check for ICSD-3 clinical nomenclature, AAST Terms and Definitions as broad sleep-technology terminology support, and original Sleep Pathways Guild learner definitions in the public app.",
+  "copyrightBoundary": "The source files inventory factual term names, abbreviations, and alternate terms. They do not reproduce AAST, AASM, or ICSD published glossary definitions. Learner definitions and memory clues are original Sleep Pathways Guild summaries.",
+  "authorityPriority": [
+    "AASM Scoring Manual Version 3 for scoring, staging, respiratory, cardiac, movement, and technical terms",
+    "ICSD-3-TR for revised classification wording or criteria",
+    "ICSD-3 for classification concepts not superseded by the text revision",
+    "AAST Terms and Definitions for broad professional terminology support",
+    "Existing reviewed Sleep Pathways Guild flashcards for learner-facing reinforcement"
+  ],
+  "files": [
+    "aast-terms-2016.json",
+    "aasm-scoring-v3-1.json",
+    "aasm-scoring-v3-2.json",
+    "aasm-scoring-v3-3.json",
+    "icsd-3-1.json",
+    "icsd-3-2.json"
+  ],
+  "learnerFiles": [
+    "aasm-scoring-v3-1.json",
+    "aasm-scoring-v3-2.json",
+    "aasm-scoring-v3-3.json",
+    "icsd-3-1.json",
+    "icsd-3-2.json"
+  ],
+  "auditSummary": {
+    "aastTerms": 225,
+    "aasmScoringGlossaryTerms": 67,
+    "icsd3GlossaryTerms": 54,
+    "uniqueTermsAcrossThreeInventories": 310,
+    "overlappingCanonicalTerms": 35,
+    "studyReadyAuthorityAdditions": 121
+  },
+  "references": [
+    "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+    "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+    "American Academy of Sleep Medicine. (2014). International classification of sleep disorders (3rd ed.). American Academy of Sleep Medicine.",
+    "American Academy of Sleep Medicine. (2023). International classification of sleep disorders (3rd ed., text rev.). American Academy of Sleep Medicine."
+  ]
+}
