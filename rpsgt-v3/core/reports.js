@@ -2,11 +2,13 @@
   "use strict";
   const reportEngine=window.RPSGTReportsEngine;
   const feedbackEngine=window.RPSGTStudyFeedback;
-  const state={saved:null,blueprint:null,outlines:null,index:null,indexMap:null,taskMap:new Map(),sourceMap:new Map(),sectionMap:new Map()};
+  const insightsEngine=window.RPSGTReportInsights;
+  const state={saved:null,blueprint:null,outlines:null,index:null,indexMap:null,taskMap:new Map(),sourceMap:new Map(),sectionMap:new Map(),insights:null};
   const $=selector=>document.querySelector(selector);
   const $all=selector=>Array.from(document.querySelectorAll(selector));
   const esc=value=>String(value==null?"":value).replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
   const formatDate=value=>value?new Date(value).toLocaleString():"Date not recorded";
+  const formatShortDate=value=>value?new Date(value).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}):"Not recorded";
   async function loadJson(path){const response=await fetch(path,{cache:"no-store"});if(!response.ok) throw new Error(path+" HTTP "+response.status);return response.json();}
   async function loadOutlines(){
     const base="data/study-sources/";const manifest=await loadJson(base+"manifest.json");
@@ -23,6 +25,15 @@
     (state.outlines.sources||[]).forEach(source=>{state.sourceMap.set(source.id,source);(source.sections||[]).forEach(section=>state.sectionMap.set(section.id,{...section,sourceId:source.id}));});
     state.indexMap=reportEngine.byId(state.index.records||[]);
   }
+  function renderActivityRange(){
+    const host=$("[data-report-activity-range]");if(!host) return;
+    const activity=state.insights&&state.insights.activity;
+    if(!activity||!activity.firstAt||!activity.lastAt){host.textContent="No dated learning activity is stored yet.";return;}
+    const sameDay=formatShortDate(activity.firstAt)===formatShortDate(activity.lastAt);
+    host.textContent=sameDay
+      ?"Stored learning activity on "+formatShortDate(activity.firstAt)+"."
+      :"Stored learning activity from "+formatShortDate(activity.firstAt)+" through "+formatShortDate(activity.lastAt)+".";
+  }
   function renderSnapshot(){
     const progress=state.saved.progress||{};const review=state.saved.review||{};const readiness=(state.saved.readiness&&state.saved.readiness.history)||[];const mock=(state.saved.mock&&state.saved.mock.history)||[];
     const answered=Number(progress.answered||0),correct=Number(progress.correct||0);
@@ -34,7 +45,33 @@
     $("[data-readiness-family]").innerHTML=readiness.length?`<strong>${readiness.length} completed</strong><span>Latest raw score: ${esc(readiness[0].percent)}% · study-weighted: ${esc(readiness[0].weightedPercent)}%</span>`:'<strong>No completed check</strong><span>Start with the recommended 50-question diagnostic.</span>';
     $("[data-mock-family]").innerHTML=mock.length?`<strong>${mock.length} completed</strong><span>Latest scored result: ${esc(mock.at(-1).scoredPercent)}% · ${esc(mock.at(-1).answeredTotal)} / 175 answered</span>`:'<strong>No completed mock</strong><span>The full-length attempt remains separate from Practice and Readiness.</span>';
     const taskAwards=Object.keys(awards.tasks||{}).length,domainAwards=Object.keys(awards.domains||{}).length;
-    $("[data-trail-family]").innerHTML=`<strong>${taskAwards+domainAwards} awards</strong><span>${taskAwards} task · ${domainAwards} domain · checkpoint report pending parity</span>`;
+    $("[data-trail-family]").innerHTML=`<strong>${taskAwards+domainAwards} awards</strong><span>${taskAwards} task · ${domainAwards} domain · Guided Study and labs stay separate</span>`;
+  }
+  function evidenceCell(label,stat){
+    if(!stat||stat.percent===null||!stat.answered) return `<div class="domain-evidence-metric empty"><span>${esc(label)}</span><strong>—</strong><small>No result yet</small></div>`;
+    return `<div class="domain-evidence-metric"><span>${esc(label)}</span><strong>${esc(stat.percent)}%</strong><small>${esc(stat.correct)} / ${esc(stat.answered)} correct</small></div>`;
+  }
+  function renderDomainEvidence(){
+    const host=$("[data-domain-evidence]");if(!host) return;
+    const rows=state.insights&&state.insights.domainEvidence||[];
+    if(!rows.length){host.innerHTML='<div class="empty-report">No domain evidence is available yet.</div>';return;}
+    host.innerHTML='<div class="domain-evidence-list">'+rows.map(row=>`<article class="domain-evidence-row"><div class="domain-evidence-title"><strong>${esc(row.id)}</strong><span>${esc(row.title)}</span></div>${evidenceCell("Practice",row.practice)}${evidenceCell("Latest Readiness",row.readiness)}${evidenceCell("Latest Mock",row.mock)}</article>`).join('')+'</div><p class="domain-evidence-note">Each percentage belongs to its own learning tool. The Reports Center does not average these values into a combined exam score.</p>';
+  }
+  function trendLabel(trend){
+    if(!trend||!trend.comparable) return "Building evidence";
+    if(trend.direction==="improving") return "Improving";
+    if(trend.direction==="declining") return "Needs attention";
+    return "Holding steady";
+  }
+  function renderPracticeTrend(){
+    const host=$("[data-practice-trend]");const status=$("[data-practice-trend-status]");if(!host) return;
+    const trend=state.insights&&state.insights.practiceTrend;
+    if(status) status.textContent=trendLabel(trend);
+    if(!trend||!trend.current.answered){host.innerHTML='<div class="empty-report">Complete Focused Practice or remediation answers to create a recent-answer trend.</div>';return;}
+    const current=trend.current,previous=trend.previous;
+    const delta=trend.comparable?(trend.delta>0?"+":"")+trend.delta+" percentage points":"Not enough earlier answers for comparison";
+    const deltaClass=trend.direction==="improving"?"up":trend.direction==="declining"?"down":"steady";
+    host.innerHTML=`<div class="practice-trend-summary"><div><span>Most recent block</span><strong>${esc(current.percent)}%</strong><small>${esc(current.correct)} / ${esc(current.answered)} correct</small></div><div><span>Previous block</span><strong>${previous.answered?esc(previous.percent)+"%":"—"}</strong><small>${previous.answered?esc(previous.correct)+" / "+esc(previous.answered)+" correct":"No comparable block yet"}</small></div></div><div class="practice-trend-change ${deltaClass}"><span>Change</span><strong>${esc(delta)}</strong></div><p class="domain-evidence-note">Uses only ordinary Focused Practice and remediation history. Readiness and Mock answers are not included.</p>`;
   }
   function renderTaskReport(){
     const rows=reportEngine.taskRows(state.saved,state.blueprint,state.indexMap);const weak=reportEngine.rankWeakTasks(rows,12);const progress=state.saved.progress||{};
@@ -75,9 +112,9 @@
   function showError(error){const host=$("[data-reports-load]");host.className="section notice error";host.textContent="The Reports Center could not be loaded. "+error.message;}
   async function init(){
     try{
-      if(!window.RPSGTStorage||!reportEngine||!feedbackEngine) throw new Error("A required report module is unavailable.");
+      if(!window.RPSGTStorage||!reportEngine||!feedbackEngine||!insightsEngine) throw new Error("A required report module is unavailable.");
       [state.blueprint,state.outlines,state.index]=await Promise.all([loadJson("data/blueprint.json"),loadOutlines(),loadJson("data/question-bank/feedback-index.json")]);
-      state.saved=window.RPSGTStorage.load();buildMaps();renderSnapshot();renderTaskReport();renderDiagnostics();renderCoachPlan();renderSources();
+      state.saved=window.RPSGTStorage.load();state.insights=insightsEngine.build(state.saved,state.blueprint);buildMaps();renderActivityRange();renderSnapshot();renderDomainEvidence();renderPracticeTrend();renderTaskReport();renderDiagnostics();renderCoachPlan();renderSources();
       $("[data-reports-load]").classList.add("hidden");$("[data-reports-content]").classList.remove("hidden");
     }catch(error){showError(error);}
   }

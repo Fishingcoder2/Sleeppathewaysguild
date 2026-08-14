@@ -1,0 +1,64 @@
+name: Validate RPSGT v3 reports
+
+on:
+  pull_request:
+    paths:
+      - 'rpsgt-v3/reports.html'
+      - 'rpsgt-v3/study-summary.html'
+      - 'rpsgt-v3/core/reports*.js'
+      - 'rpsgt-v3/core/report-insights-engine.js'
+      - 'rpsgt-v3/core/study-summary*.js'
+      - 'rpsgt-v3/core/guided-trail-report.js'
+      - 'rpsgt-v3/core/mock-result-report.js'
+      - 'rpsgt-v3/assets/reports.css'
+      - 'rpsgt-v3/assets/report-insights.css'
+      - 'rpsgt-v3/assets/study-summary*.css'
+      - 'rpsgt-v3/scripts/test-report*.mjs'
+      - 'rpsgt-v3/scripts/test-study-summary*.mjs'
+      - '.github/workflows/rpsgt-v3-reports.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/reports.html'
+      - 'rpsgt-v3/study-summary.html'
+      - 'rpsgt-v3/core/reports*.js'
+      - 'rpsgt-v3/core/report-insights-engine.js'
+      - 'rpsgt-v3/core/study-summary*.js'
+      - 'rpsgt-v3/core/guided-trail-report.js'
+      - 'rpsgt-v3/core/mock-result-report.js'
+      - 'rpsgt-v3/assets/reports.css'
+      - 'rpsgt-v3/assets/report-insights.css'
+      - 'rpsgt-v3/assets/study-summary*.css'
+      - 'rpsgt-v3/scripts/test-report*.mjs'
+      - 'rpsgt-v3/scripts/test-study-summary*.mjs'
+      - '.github/workflows/rpsgt-v3-reports.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  reports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Check report module syntax
+        run: |
+          node --check rpsgt-v3/core/report-insights-engine.js
+          node --check rpsgt-v3/core/reports.js
+          node --check rpsgt-v3/core/study-summary.js
+      - name: Validate shared report insights
+        run: node rpsgt-v3/scripts/test-report-insights.mjs
+      - name: Validate Reports Center system
+        run: node rpsgt-v3/scripts/test-reports-system.mjs
+      - name: Validate Reports Center shell
+        run: node rpsgt-v3/scripts/test-reports-shell.mjs
+      - name: Validate printable summary engine
+        run: node rpsgt-v3/scripts/test-study-summary-system.mjs
+      - name: Validate printable report shell
+        run: node rpsgt-v3/scripts/test-study-summary-shell.mjs

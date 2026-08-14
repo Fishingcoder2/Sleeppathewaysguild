@@ -7,13 +7,14 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/rpsgt-v3.css">
 <link rel="stylesheet" href="assets/reports.css">
+<link rel="stylesheet" href="assets/report-insights.css">
 <link rel="stylesheet" href="assets/module-polish.css">
 </head>
 <body data-module="reports">
 <div class="app-shell">
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Reports Center</strong><span>Separate evidence · one study plan</span></span></a>
-  <div class="top-actions"><a href="study-summary.html">Print/export summary</a><a href="practice.html">Practice Center</a><a href="index.html">Dashboard</a></div>
+  <div class="top-actions"><a href="study-summary.html">Print reports</a><a href="practice.html">Practice Center</a><a href="index.html">Dashboard</a></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
@@ -26,12 +27,16 @@
 </aside>
 <main class="main">
 <section class="hero report-hero">
-  <div><div class="eyebrow">Reports Center · Learning evidence</div><h1>Progress, diagnostics, Guided Study, and next steps</h1><p class="lead">Practice, remediation, Readiness, Mock, and Guided Study evidence remain separate. This page reads those records and turns weak areas into focused, source-grounded study recommendations.</p></div>
-  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Study the cause, not only the score.</h2><p>Start with the current official rule when one applies, use a core reference to understand the concept, then return to focused practice.</p></aside>
+  <div><div class="eyebrow">Reports Center · Learning evidence</div><h1>See what is improving, what still needs work, and what to study next</h1><p class="lead">Practice, remediation, Readiness, Mock, Guided Study, and laboratory evidence stay separate so each score keeps its meaning. The Reports Center brings those records together without blending them into a false overall exam score.</p></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Study the cause, not only the score.</h2><p>Look for a repeated weak domain or task, review the current rule or core concept, then return to focused practice and confirm improvement.</p></aside>
 </section>
-<section class="section notice"><strong>Reporting boundary:</strong> This page is read only. It does not change answers, missed or mastered lists, Readiness history, Mock history, Guided Study progress, or existing browser progress. Completed Mock review reconnects saved response evidence to the current validated question bank without copying full question content into the progress record.</section>
+<section class="section notice"><strong>Reporting boundary:</strong> This page is read only. It does not change answers, missed or mastered lists, Readiness history, Mock history, Guided Study progress, or existing browser progress. Scores from different learning tools are shown side by side but are never averaged into an official-score prediction.</section>
 <section class="section notice" data-reports-load>Loading learner progress and personalized study recommendations…</section>
 <div class="hidden" data-reports-content>
+<section class="section report-command-bar" aria-label="Report actions">
+  <div><div class="eyebrow">Report actions</div><h2>Choose what you want to review or print</h2><p data-report-activity-range>No dated learning activity is stored yet.</p></div>
+  <div class="actions report-command-actions"><a class="btn primary" href="study-summary.html?report=full">Print full progress report</a><a class="btn secondary" href="#domain-evidence">Compare domains</a><a class="btn secondary" href="#study-plan">Open study plan</a></div>
+</section>
 <section class="section" aria-labelledby="snapshot-title">
   <div class="section-head"><div><div class="eyebrow">Current learner record</div><h2 id="snapshot-title">Progress snapshot</h2></div><span class="status green">Separate histories preserved</span></div>
   <div class="report-stat-grid">
@@ -41,11 +46,23 @@
     <article class="report-stat"><span>Completed diagnostics</span><strong data-report-diagnostics>0</strong><small data-report-diagnostic-detail>0 readiness · 0 mock</small></article>
   </div>
 </section>
+<section class="section grid report-insight-grid" id="domain-evidence">
+  <article class="card report-evidence-card">
+    <div class="section-head"><div><div class="eyebrow">Keep the evidence separate</div><h2>Domain performance board</h2></div><a class="btn secondary compact" href="study-summary.html?report=full#domain-evidence">Print</a></div>
+    <p class="report-intro">Practice accuracy, the latest Readiness domain result, and the latest Mock domain result are displayed independently. A blank result means that learning tool has not produced domain evidence yet.</p>
+    <div data-domain-evidence><div class="empty-report">Loading domain evidence…</div></div>
+  </article>
+  <article class="card report-trend-card">
+    <div class="section-head"><div><div class="eyebrow">Recent ordinary answers</div><h2>Practice trend</h2></div><span class="status" data-practice-trend-status>Building evidence</span></div>
+    <p class="report-intro">Compares up to the most recent 25 Focused Practice and remediation answers with the preceding block. This is a learning trend, not a passing prediction.</p>
+    <div data-practice-trend><div class="empty-report">Loading recent-answer trend…</div></div>
+  </article>
+</section>
 <section class="section grid report-grid" aria-label="Report families">
-  <article class="card report-family"><span class="status">Skill building</span><h2>Practice and remediation</h2><p>Ordinary practice attempts, task accuracy, missed questions, mastered questions, and review activity.</p><div class="report-family-metrics" data-practice-family></div><a class="btn secondary" href="#practice-report">View practice report</a></article>
-  <article class="card report-family"><span class="status gold">Diagnostic</span><h2>Readiness Checks</h2><p>Weighted 25-, 50-, and 100-question checks remain separate from ordinary practice.</p><div class="report-family-metrics" data-readiness-family></div><a class="btn secondary" href="#readiness-report">View readiness report</a></article>
-  <article class="card report-family"><span class="status green">Full length</span><h2>175-question Mock</h2><p>Scored-style percentage, timing, domain results, weak tasks, and completed-attempt drill-down remain in Mock history only.</p><div class="report-family-metrics" data-mock-family></div><a class="btn secondary" href="#mock-detail">View mock drill-down</a></article>
-  <article class="card report-family"><span class="status quality">Guided Study</span><h2>Trail achievements</h2><p>Study marks, task badges, named domain medals, current position, and checkpoint attempts remain in the Guided Study record.</p><div class="report-family-metrics" data-trail-family></div><a class="btn secondary" href="#guided-trail-report">View Guided Study report</a></article>
+  <article class="card report-family"><span class="status">Skill building</span><h2>Practice and remediation</h2><p>Ordinary practice attempts, task accuracy, missed questions, mastered questions, and review activity.</p><div class="report-family-metrics" data-practice-family></div><div class="report-family-actions"><a class="btn secondary" href="#practice-report">View report</a><a class="btn secondary" href="study-summary.html?report=practice">Print</a></div></article>
+  <article class="card report-family"><span class="status gold">Diagnostic</span><h2>Readiness Checks</h2><p>Weighted 25-, 50-, and 100-question checks remain separate from ordinary practice.</p><div class="report-family-metrics" data-readiness-family></div><div class="report-family-actions"><a class="btn secondary" href="#readiness-report">View report</a><a class="btn secondary" href="study-summary.html?report=readiness">Print</a></div></article>
+  <article class="card report-family"><span class="status green">Full length</span><h2>175-question Mock</h2><p>Scored-style percentage, timing, domain results, weak tasks, and completed-attempt drill-down remain in Mock history only.</p><div class="report-family-metrics" data-mock-family></div><div class="report-family-actions"><a class="btn secondary" href="#mock-detail">View report</a><a class="btn secondary" href="study-summary.html?report=mock">Print</a></div></article>
+  <article class="card report-family"><span class="status quality">Guided Study</span><h2>Trail and laboratory progress</h2><p>Study marks, task badges, domain medals, checkpoints, and laboratory completion remain separate learning records.</p><div class="report-family-metrics" data-trail-family></div><div class="report-family-actions"><a class="btn secondary" href="#guided-trail-report">View report</a><a class="btn secondary" href="study-summary.html?report=guided">Print</a></div></article>
 </section>
 <section class="section card coach-plan" id="study-plan">
   <div class="section-head"><div><div class="eyebrow">Reference-backed feedback</div><h2>Coach Bob’s next study plan</h2></div><span class="status gold">Official rule → core reference → practice</span></div>
@@ -53,17 +70,17 @@
   <div data-coach-plan></div>
 </section>
 <section class="section card" id="practice-report">
-  <div class="section-head"><div><div class="eyebrow">Ordinary learner record</div><h2>Practice and remediation report</h2></div><div class="actions compact"><a class="btn secondary" href="practice.html">Focused practice</a><a class="btn secondary" href="review.html?list=missed">Review missed</a></div></div>
+  <div class="section-head"><div><div class="eyebrow">Ordinary learner record</div><h2>Practice and remediation report</h2></div><div class="actions compact"><a class="btn secondary" href="practice.html">Focused practice</a><a class="btn secondary" href="review.html?list=missed">Review missed</a><a class="btn secondary" href="study-summary.html?report=practice">Print practice report</a></div></div>
   <div class="report-callout" data-practice-summary></div><div class="task-report-list" data-task-report></div>
 </section>
 <section class="section card" id="guided-trail-report">
-  <div class="section-head"><div><div class="eyebrow">Separate Guided Study record</div><h2>Trail checkpoints and Guild achievements</h2></div><a class="btn secondary" href="study.html">Open Guided Study</a></div>
+  <div class="section-head"><div><div class="eyebrow">Separate Guided Study record</div><h2>Trail checkpoints and Guild achievements</h2></div><div class="actions compact"><a class="btn secondary" href="study.html">Open Guided Study</a><a class="btn secondary" href="study-summary.html?report=guided">Print Guided Study report</a></div></div>
   <p class="report-intro">This report reads Guided Study position, study marks, task badges, named domain medals, and checkpoint history. It does not add checkpoint answers to ordinary Practice totals.</p>
   <div data-guided-trail-report><div class="empty-report">Loading Guided Study report…</div></div>
 </section>
 <section class="section grid grid-2 diagnostic-reports">
-  <article class="card" id="readiness-report"><div class="section-head"><div><div class="eyebrow">Separate diagnostic history</div><h2>Readiness Check report</h2></div><a class="btn secondary" href="readiness.html">Open Readiness</a></div><div data-readiness-report></div></article>
-  <article class="card" id="mock-report"><div class="section-head"><div><div class="eyebrow">Separate full-length history</div><h2>175-question Mock report</h2></div><a class="btn secondary" href="mock.html">Open Mock</a></div><div data-mock-report></div></article>
+  <article class="card" id="readiness-report"><div class="section-head"><div><div class="eyebrow">Separate diagnostic history</div><h2>Readiness Check report</h2></div><div class="actions compact"><a class="btn secondary" href="readiness.html">Open Readiness</a><a class="btn secondary" href="study-summary.html?report=readiness">Print</a></div></div><div data-readiness-report></div></article>
+  <article class="card" id="mock-report"><div class="section-head"><div><div class="eyebrow">Separate full-length history</div><h2>175-question Mock report</h2></div><div class="actions compact"><a class="btn secondary" href="mock.html">Open Mock</a><a class="btn secondary" href="study-summary.html?report=mock">Print</a></div></div><div data-mock-report></div></article>
 </section>
 <section class="section card mock-drilldown" id="mock-detail">
   <div class="section-head"><div><div class="eyebrow">Completed-attempt evidence</div><h2>Mock result drill-down</h2></div><span class="status green">Read only</span></div>
@@ -71,9 +88,9 @@
   <div data-mock-drilldown><div class="empty-report">Loading completed Mock history…</div></div>
 </section>
 <section class="section card export-summary-card" id="export-summary">
-  <div class="section-head"><div><div class="eyebrow">Portable progress record</div><h2>Printable and exportable study summary</h2></div><span class="status green">Privacy-conscious</span></div>
-  <p class="report-intro">Create a print-ready summary or download JSON and CSV metrics. Learner name inclusion is optional and off by default. Notes, searches, question text, answer text, rationales, private links, and raw browser storage are excluded.</p>
-  <div class="actions"><a class="btn primary" href="study-summary.html">Open print and export summary</a></div>
+  <div class="section-head"><div><div class="eyebrow">Portable progress record</div><h2>Professional print and export reports</h2></div><span class="status green">Privacy-conscious</span></div>
+  <p class="report-intro">Choose a full report or a focused Practice, Readiness, Mock, or Guided Study report. Learner name inclusion remains optional and off by default. Notes, searches, question text, answer text, rationales, private links, and raw browser storage are excluded.</p>
+  <div class="report-print-grid"><a class="btn primary" href="study-summary.html?report=full">Full progress report</a><a class="btn secondary" href="study-summary.html?report=practice">Practice report</a><a class="btn secondary" href="study-summary.html?report=readiness">Readiness report</a><a class="btn secondary" href="study-summary.html?report=mock">Mock report</a><a class="btn secondary" href="study-summary.html?report=guided">Guided Study report</a></div>
 </section>
 <section class="section card"><div class="section-head"><div><div class="eyebrow">Migration preview</div><h2>Existing browser progress</h2></div><span class="status green">Read only</span></div><div data-migration-preview></div></section>
 </div>
@@ -87,6 +104,7 @@
 <script src="core/learner-surface-guard.js"></script>
 <script src="core/study-feedback-engine.js"></script>
 <script src="core/reports-engine.js"></script>
+<script src="core/report-insights-engine.js"></script>
 <script src="core/guided-trail-engine.js"></script>
 <script src="core/mock-drilldown-engine.js"></script>
 <script src="core/reports.js"></script>
