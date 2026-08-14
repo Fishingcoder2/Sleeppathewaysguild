@@ -3,13 +3,16 @@
 
   const engine=window.RPSGTFlashcardEngine;
   const storeApi=window.RPSGTFlashcardStore;
+  const library=window.RPSGTLearningLibrary;
   const stage=document.querySelector('[data-card-stage]');
   const empty=document.querySelector('[data-card-empty]');
   const dialog=document.querySelector('[data-custom-card-dialog]');
-  if(!engine||!storeApi||!stage||!empty) return;
+  if(!engine||!storeApi||!library||!stage||!empty) return;
 
   const state={saved:null,store:null,cards:[],index:0,flipped:false,returnFocus:null};
-  const select={
+  const control={
+    search:document.querySelector('[data-card-search]'),
+    category:document.querySelector('[data-card-category]'),
     domain:document.querySelector('[data-card-domain]'),
     task:document.querySelector('[data-card-task]'),
     topic:document.querySelector('[data-card-topic]'),
@@ -19,50 +22,44 @@
 
   function currentFilters(){
     return {
-      domain:select.domain&&select.domain.value||'all',
-      task:select.task&&select.task.value||'all',
-      topic:select.topic&&select.topic.value||'all',
-      status:select.status&&select.status.value||'all'
+      search:control.search&&control.search.value||'',
+      category:control.category&&control.category.value||'all',
+      domain:control.domain&&control.domain.value||'all',
+      task:control.task&&control.task.value||'all',
+      topic:control.topic&&control.topic.value||'all',
+      status:control.status&&control.status.value||'all'
     };
   }
 
-  function option(value,label){
-    const node=document.createElement('option');
-    node.value=value;
-    node.textContent=label;
-    return node;
-  }
-
+  function option(value,label){const node=document.createElement('option');node.value=value;node.textContent=label;return node;}
   function setOptions(node,placeholder,items,selected){
     if(!node) return;
     node.replaceChildren(option('all',placeholder),...items.map(item=>option(item.value,item.label)));
     node.value=[...node.options].some(item=>item.value===selected)?selected:'all';
   }
-
   function allCards(){return engine.filterCards(state.store,{},state.saved.review||{});}
 
   function filterChoices(){
     const cards=allCards();
+    const categories=[...new Set(cards.map(card=>card.category).filter(Boolean))].sort().map(value=>({value,label:value}));
     const domains=[...new Set(cards.map(card=>card.domain).filter(Boolean))].sort().map(value=>({value,label:value}));
     const taskMap=new Map();
-    cards.forEach(card=>{
-      const value=card.taskCode||card.task;
-      if(value&&!taskMap.has(value)) taskMap.set(value,card.task||card.taskCode);
-    });
+    cards.forEach(card=>{const value=card.taskCode||card.task;if(value&&!taskMap.has(value)) taskMap.set(value,card.task||card.taskCode);});
     const tasks=[...taskMap].sort((a,b)=>String(a[1]).localeCompare(String(b[1]))).map(([value,label])=>({value,label}));
     const topics=[...new Set(cards.map(card=>card.topic).filter(Boolean))].sort().map(value=>({value,label:value}));
-    const selected=Object.assign({domain:'all',task:'all',topic:'all',status:'all'},state.store.filters||{},currentFilters());
-    setOptions(select.domain,'All domains',domains,selected.domain);
-    setOptions(select.task,'All tasks',tasks,selected.task);
-    setOptions(select.topic,'All topics',topics,selected.topic);
-    if(select.status) select.status.value=[...select.status.options].some(item=>item.value===selected.status)?selected.status:'all';
+    const selected=Object.assign({search:'',category:'all',domain:'all',task:'all',topic:'all',status:'all'},state.store.filters||{},currentFilters());
+    if(control.search&&document.activeElement!==control.search) control.search.value=selected.search||'';
+    setOptions(control.category,'All categories',categories,selected.category);
+    setOptions(control.domain,'All domains',domains,selected.domain);
+    setOptions(control.task,'All tasks',tasks,selected.task);
+    setOptions(control.topic,'All topics',topics,selected.topic);
+    if(control.status) control.status.value=[...control.status.options].some(item=>item.value===selected.status)?selected.status:'all';
   }
 
   function saveFilters(){
     state.store.filters=currentFilters();
     const persisted=storeApi.persist(state.saved,state.store);
-    state.saved=persisted.saved;
-    state.store=persisted.store;
+    state.saved=persisted.saved;state.store=persisted.store;
   }
 
   function setFlipped(value){
@@ -71,18 +68,9 @@
     cardButton.setAttribute('aria-pressed',state.flipped?'true':'false');
     cardButton.setAttribute('aria-label',state.flipped?'Show flashcard front':'Show flashcard answer');
   }
-
   function text(selector,value){const node=document.querySelector(selector);if(node) node.textContent=value||'';}
-  function showSection(wrapperSelector,textSelector,value){
-    const wrapper=document.querySelector(wrapperSelector);
-    if(wrapper) wrapper.hidden=!String(value||'').trim();
-    text(textSelector,value);
-  }
-
-  function cardContext(card){
-    return [...new Set([card.domain,card.task,card.topic].filter(Boolean))].join(' · ')||'RPSGT review';
-  }
-
+  function showSection(wrapperSelector,textSelector,value){const wrapper=document.querySelector(wrapperSelector);if(wrapper) wrapper.hidden=!String(value||'').trim();text(textSelector,value);}
+  function cardContext(card){return [...new Set([card.category,card.domain,card.task,card.topic].filter(Boolean))].join(' · ')||'RPSGT review';}
   function renderResources(card){
     const wrapper=document.querySelector('[data-card-resources-wrap]');
     const host=document.querySelector('[data-card-resources]');
@@ -92,35 +80,23 @@
   }
 
   function renderCard(){
-    const card=state.cards[state.index];
-    const total=state.cards.length;
+    const card=state.cards[state.index];const total=state.cards.length;
     text('[data-card-total]',total+' card'+(total===1?'':'s'));
-    if(!card){
-      stage.hidden=true;
-      empty.hidden=false;
-      return;
-    }
-    stage.hidden=false;
-    empty.hidden=true;
-    setFlipped(false);
+    if(!card){stage.hidden=true;empty.hidden=false;return;}
+    stage.hidden=false;empty.hidden=true;setFlipped(false);
     text('[data-card-position]','Card '+(state.index+1)+' of '+total);
     text('[data-card-context]',cardContext(card));
-    text('[data-card-front-topic]',card.topic||card.task||'RPSGT concept');
-    text('[data-card-front]',card.front);
-    text('[data-card-back]',card.back);
+    text('[data-card-front-topic]',card.category||card.topic||card.task||'RPSGT concept');
+    text('[data-card-front]',card.front);text('[data-card-back]',card.back);
     showSection('[data-card-explanation-wrap]','[data-card-explanation]',card.explanation);
     showSection('[data-card-memory-wrap]','[data-card-memory]',card.memoryClue);
     showSection('[data-card-coach-wrap]','[data-card-coach]',card.coachBobNote);
     renderResources(card);
-
-    const flag=document.querySelector('[data-card-flag]');
-    const mastered=document.querySelector('[data-card-mastered]');
-    const reviewAgain=document.querySelector('[data-card-review-again]');
+    const flag=document.querySelector('[data-card-flag]');const mastered=document.querySelector('[data-card-mastered]');const reviewAgain=document.querySelector('[data-card-review-again]');
     if(flag){flag.textContent=card.flagged?'Remove flag':'Flag';flag.classList.toggle('active',card.flagged);}
     if(mastered){mastered.textContent=card.masteryStatus==='mastered'?'Mastered ✓':'Mastered';mastered.classList.toggle('active',card.masteryStatus==='mastered');}
     if(reviewAgain){reviewAgain.textContent=card.masteryStatus==='review-again'?'Review again ✓':'Review again';reviewAgain.classList.toggle('active',card.masteryStatus==='review-again');}
-    document.querySelector('[data-card-prev]').disabled=total<2;
-    document.querySelector('[data-card-next]').disabled=total<2;
+    document.querySelector('[data-card-prev]').disabled=total<2;document.querySelector('[data-card-next]').disabled=total<2;
   }
 
   function applyFilters(focusId){
@@ -129,73 +105,33 @@
     else state.index=Math.max(0,Math.min(state.index,state.cards.length-1));
     renderCard();
   }
-
-  function navigate(direction){
-    if(state.cards.length<2) return;
-    state.index=(state.index+direction+state.cards.length)%state.cards.length;
-    renderCard();
-    cardButton.focus({preventScroll:true});
-  }
-
+  function changeFilters(){state.index=0;saveFilters();applyFilters();}
+  function navigate(direction){if(state.cards.length<2) return;state.index=(state.index+direction+state.cards.length)%state.cards.length;renderCard();cardButton.focus({preventScroll:true});}
   function updateCurrent(changes){
-    const card=state.cards[state.index];
-    if(!card) return;
-    const result=storeApi.update(card.id,changes,new Date().toISOString());
-    if(!result.updated) return;
-    state.saved=result.saved;
-    state.store=result.store;
-    filterChoices();
-    applyFilters(card.id);
+    const card=state.cards[state.index];if(!card) return;
+    const result=storeApi.update(card.id,changes,new Date().toISOString());if(!result.updated) return;
+    state.saved=result.saved;state.store=result.store;filterChoices();applyFilters(card.id);
   }
 
-  function openDialog(trigger){
-    if(!dialog) return;
-    state.returnFocus=trigger||document.activeElement;
-    dialog.hidden=false;
-    document.body.classList.add('flashcard-dialog-open');
-    requestAnimationFrame(()=>dialog.querySelector('textarea[name="front"]')?.focus());
-  }
-
-  function closeDialog(){
-    if(!dialog) return;
-    dialog.hidden=true;
-    document.body.classList.remove('flashcard-dialog-open');
-    if(state.returnFocus&&typeof state.returnFocus.focus==='function') state.returnFocus.focus({preventScroll:true});
-    state.returnFocus=null;
-  }
-
+  function openDialog(trigger){if(!dialog) return;state.returnFocus=trigger||document.activeElement;dialog.hidden=false;document.body.classList.add('flashcard-dialog-open');requestAnimationFrame(()=>dialog.querySelector('textarea[name="front"]')?.focus());}
+  function closeDialog(){if(!dialog) return;dialog.hidden=true;document.body.classList.remove('flashcard-dialog-open');if(state.returnFocus&&typeof state.returnFocus.focus==='function') state.returnFocus.focus({preventScroll:true});state.returnFocus=null;}
   function saveCustom(form){
     const data=new FormData(form);
-    const result=storeApi.addCustom({
-      front:data.get('front'),
-      back:data.get('back'),
-      explanation:data.get('explanation'),
-      memoryClue:data.get('memoryClue'),
-      coachBobNote:data.get('coachBobNote'),
-      domain:data.get('domain'),
-      task:data.get('task'),
-      topic:data.get('topic'),
-      sourceContext:'Custom RPSGT v3 card'
-    },new Date().toISOString());
-    state.saved=result.saved;
-    state.store=result.store;
-    form.reset();
-    closeDialog();
-    filterChoices();
-    [select.domain,select.task,select.topic,select.status].forEach(node=>{if(node) node.value='all';});
-    saveFilters();
-    applyFilters(result.card.id);
+    const result=storeApi.addCustom({front:data.get('front'),back:data.get('back'),explanation:data.get('explanation'),memoryClue:data.get('memoryClue'),coachBobNote:data.get('coachBobNote'),category:data.get('category'),domain:data.get('domain'),task:data.get('task'),topic:data.get('topic'),sourceContext:'Custom RPSGT v3 card'},new Date().toISOString());
+    state.saved=result.saved;state.store=result.store;form.reset();closeDialog();filterChoices();
+    if(control.search) control.search.value='';[control.category,control.domain,control.task,control.topic,control.status].forEach(node=>{if(node) node.value='all';});
+    saveFilters();applyFilters(result.card.id);
   }
 
-  function init(){
+  async function init(){
     try{
-      const current=storeApi.snapshot();
-      state.saved=current.saved;
-      state.store=current.store;
-      filterChoices();
-      applyFilters();
+      await library.load();
+      const cards=library.flashcardRecords();
+      const seeded=storeApi.seedCatalog({VERSION:library.VERSION,cards});
+      state.saved=seeded.saved;state.store=seeded.store;
+      filterChoices();applyFilters();
     }catch(error){
-      empty.hidden=false;
+      empty.hidden=false;stage.hidden=true;
       empty.querySelector('h2').textContent='Flashcard Center could not load';
       empty.querySelector('p').textContent=error.message+' No learner data was changed.';
     }
@@ -208,12 +144,12 @@
   document.querySelector('[data-card-flag]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({flagged:!card.flagged});});
   document.querySelector('[data-card-mastered]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({masteryStatus:card.masteryStatus==='mastered'?'learning':'mastered'});});
   document.querySelector('[data-card-review-again]').addEventListener('click',()=>{const card=state.cards[state.index];if(card) updateCurrent({masteryStatus:card.masteryStatus==='review-again'?'learning':'review-again'});});
-  Object.values(select).forEach(node=>node&&node.addEventListener('change',()=>{state.index=0;saveFilters();applyFilters();}));
+  [control.category,control.domain,control.task,control.topic,control.status].forEach(node=>node&&node.addEventListener('change',changeFilters));
+  let searchTimer=null;control.search&&control.search.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(changeFilters,120);});
   document.querySelectorAll('[data-custom-card-open]').forEach(button=>button.addEventListener('click',()=>openDialog(button)));
   document.querySelectorAll('[data-custom-card-close]').forEach(button=>button.addEventListener('click',closeDialog));
   document.querySelector('[data-custom-card-form]').addEventListener('submit',event=>{event.preventDefault();saveCustom(event.currentTarget);});
   dialog&&dialog.addEventListener('click',event=>{if(event.target===dialog) closeDialog();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&dialog&&!dialog.hidden) closeDialog();});
-
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
