@@ -18,7 +18,7 @@
       const answered=Number(accuracy[2]);
       const percent=Number(accuracy[3]);
       if(answered>0&&percent<80) reasons.push(`Your recent practice accuracy in this area is ${percent}%.`);
-      else if(answered>0) reasons.push(`Your recent practice record still shows review value in this area.`);
+      else if(answered>0) reasons.push('Your recent practice record still shows review value in this area.');
     }
     if(missed&&Number(missed[1])>0){
       const count=Number(missed[1]);
@@ -52,7 +52,7 @@
         chip.dataset.learnerTopic='true';
       });
       const practice=item.querySelector('a.btn.primary[href="practice.html"]');
-      if(practice) practice.textContent='Practice this area';
+      if(practice&&practice.textContent!=='Practice this area') practice.textContent='Practice this area';
       item.querySelectorAll('.study-route-group small').forEach(note=>{
         const raw=note.textContent.trim();
         const weak=raw.match(/^Matched weak topic:\s*(.+)$/i);
@@ -74,9 +74,10 @@
 
   function personalizeDiagnostics(){
     content.querySelectorAll('.latest-result p').forEach(node=>{
-      node.textContent=node.textContent
+      const next=node.textContent
         .replace(/internal study-weighted gauge/gi,'study-weighted review gauge')
         .replace(/internal weighted gauge/gi,'study-weighted review gauge');
+      if(next!==node.textContent) node.textContent=next;
     });
     const trailFamily=document.querySelector('[data-trail-family] span');
     if(trailFamily&&/pending parity/i.test(trailFamily.textContent)){
@@ -91,16 +92,15 @@
       node.dataset.learnerTitle='true';
     });
     content.querySelectorAll('.history-row strong').forEach(node=>{
-      node.textContent=node.textContent.replace(/^D[1-4][A-C]\s+task checkpoint$/i,'Guided Study checkpoint');
+      const next=node.textContent.replace(/^D[1-4][A-C]\s+task checkpoint$/i,'Guided Study checkpoint');
+      if(next!==node.textContent) node.textContent=next;
     });
   }
 
   function removeGenericSourceShelf(){
     const shelf=document.querySelector('#source-outlines');
     const sourceHost=shelf&&shelf.querySelector('[data-source-outlines]');
-    if(shelf&&sourceHost&&sourceHost.children.length){
-      shelf.remove();
-    }
+    if(shelf&&sourceHost&&sourceHost.children.length) shelf.remove();
   }
 
   function removeInternalLanguage(){
