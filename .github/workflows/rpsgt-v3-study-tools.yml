@@ -1,0 +1,45 @@
+name: Validate RPSGT v3 study tools
+
+on:
+  pull_request:
+    paths:
+      - 'rpsgt-v3/core/memory-games.js'
+      - 'rpsgt-v3/memory-games.html'
+      - 'rpsgt-v3/math-coach.html'
+      - 'rpsgt-v3/core/math-coach*.js'
+      - 'rpsgt-v3/data/math-coach/**'
+      - 'rpsgt-v3/scripts/test-math-coach*.mjs'
+      - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
+      - '.github/workflows/rpsgt-v3-study-tools.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/core/memory-games.js'
+      - 'rpsgt-v3/memory-games.html'
+      - 'rpsgt-v3/math-coach.html'
+      - 'rpsgt-v3/core/math-coach*.js'
+      - 'rpsgt-v3/data/math-coach/**'
+      - 'rpsgt-v3/scripts/test-math-coach*.mjs'
+      - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
+      - '.github/workflows/rpsgt-v3-study-tools.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  study-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Validate Math Coach engine and catalog
+        run: node rpsgt-v3/scripts/test-math-coach-system.mjs
+      - name: Validate Math Coach shell
+        run: node rpsgt-v3/scripts/test-math-coach-shell.mjs
+      - name: Validate Weak Memory and Math recall integration
+        run: node rpsgt-v3/scripts/test-memory-games-weak.mjs
