@@ -1,7 +1,8 @@
 import {test,expect} from '@playwright/test';
 
 test.beforeEach(async({page})=>{
-  await page.addInitScript(()=>localStorage.clear());
+  await page.goto('flashcards.html');
+  await page.evaluate(()=>localStorage.clear());
 });
 
 test('custom RPSGT flashcards persist without duplicate cards or legacy writes',async({page})=>{
