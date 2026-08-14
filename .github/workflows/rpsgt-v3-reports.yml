@@ -18,6 +18,7 @@ on:
       - 'rpsgt-v3/assets/study-summary*.css'
       - 'rpsgt-v3/scripts/test-report*.mjs'
       - 'rpsgt-v3/scripts/test-improvement-plan.mjs'
+      - 'rpsgt-v3/scripts/test-actionable-reports-shell.mjs'
       - 'rpsgt-v3/scripts/test-study-summary*.mjs'
       - '.github/workflows/rpsgt-v3-reports.yml'
   push:
@@ -39,6 +40,7 @@ on:
       - 'rpsgt-v3/assets/study-summary*.css'
       - 'rpsgt-v3/scripts/test-report*.mjs'
       - 'rpsgt-v3/scripts/test-improvement-plan.mjs'
+      - 'rpsgt-v3/scripts/test-actionable-reports-shell.mjs'
       - 'rpsgt-v3/scripts/test-study-summary*.mjs'
       - '.github/workflows/rpsgt-v3-reports.yml'
 
@@ -67,6 +69,8 @@ jobs:
         run: node rpsgt-v3/scripts/test-report-insights.mjs
       - name: Validate actionable improvement plan
         run: node rpsgt-v3/scripts/test-improvement-plan.mjs
+      - name: Validate actionable report shell
+        run: node rpsgt-v3/scripts/test-actionable-reports-shell.mjs
       - name: Validate Reports Center system
         run: node rpsgt-v3/scripts/test-reports-system.mjs
       - name: Validate Reports Center shell
