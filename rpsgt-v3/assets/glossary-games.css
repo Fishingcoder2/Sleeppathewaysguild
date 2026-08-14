@@ -23,8 +23,12 @@
 .glossary-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .glossary-feedback{padding:11px 12px;border-radius:13px;font-weight:820;line-height:1.42}
 .glossary-feedback.correct{background:#e8f7ee;border:1px solid #7cbb93;color:#17613a}.glossary-feedback.incorrect{background:#fff0f1;border:1px solid #d98791;color:#932f40}
+.glossary-reference-list{padding:10px 12px;border:1px solid #d7e2e8;border-radius:12px;background:#fff;color:var(--muted);font-size:.75rem;line-height:1.45}
+.glossary-reference-list strong{display:block;margin-bottom:5px;color:var(--navy);font-size:.78rem}
+.glossary-reference-list ul{margin:0;padding-left:18px}.glossary-reference-list li+li{margin-top:5px}
 .glossary-welcome{display:grid;place-items:center;align-content:center;gap:8px;min-height:210px;text-align:center}.glossary-welcome h3,.glossary-welcome p{margin:0}.glossary-welcome p{max-width:70ch;color:var(--muted)}
 .glossary-source-note{margin:0;padding:10px 12px;border-radius:12px;background:#eef7fb;border:1px solid #c2dce7;color:#315b6b;font-size:.78rem;line-height:1.45}
+.glossary-source-summary{display:block;margin-top:5px;color:#255065;font-weight:800}
 @media(max-width:960px){.glossary-mode-grid{grid-template-columns:1fr 1fr}.glossary-match-board{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:650px){.glossary-mode-grid,.glossary-stats,.glossary-choice-grid{grid-template-columns:1fr}.glossary-match-board{grid-template-columns:1fr 1fr}.glossary-toolbar{display:grid;grid-template-columns:1fr}.glossary-toolbar>*{width:100%}.glossary-tile{min-height:104px;font-size:.8rem}}
 @media(max-width:370px){.glossary-match-board{grid-template-columns:1fr}.glossary-tile{min-height:90px}}
