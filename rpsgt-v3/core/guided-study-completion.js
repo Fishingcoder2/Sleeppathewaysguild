@@ -6,7 +6,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.1';
+  const VERSION='1.1.0';
   const DOMAIN_AWARD_NAMES={
     D1:'Clinical Guide',
     D2:'Study Signal Scout',
@@ -25,11 +25,7 @@
     next.guidedStudy=next.guidedStudy&&typeof next.guidedStudy==='object'?next.guidedStudy:{};
     const missed=asArray(record&&record.responses).filter(item=>item&&!item.correct).map(item=>item.id);
     next.review.missedIds=uniqueIds(asArray(next.review.missedIds).concat(missed));
-    next.guidedStudy.lastCheckpointReview={
-      taskCode:text(record&&record.task),
-      completedAt:record&&record.completedAt||null,
-      missedIds:uniqueIds(missed)
-    };
+    next.guidedStudy.lastCheckpointReview={taskCode:text(record&&record.task),completedAt:record&&record.completedAt||null,missedIds:uniqueIds(missed)};
     return next;
   }
 
@@ -42,24 +38,8 @@
     const domain=code.slice(0,2);
     const prior=before||{};
     const queue=[];
-    if(code&&tasks[code]&&!prior.task){
-      queue.push({
-        id:'guided-task:'+code,
-        kind:'task',
-        code,
-        domain,
-        earnedAt:tasks[code].earnedAt||null
-      });
-    }
-    if(domain&&domains[domain]&&!prior.domain){
-      queue.push({
-        id:'guided-domain:'+domain,
-        kind:'domain',
-        code:domain,
-        domain,
-        earnedAt:domains[domain].earnedAt||null
-      });
-    }
+    if(code&&tasks[code]&&!prior.task) queue.push({id:'guided-task:'+code,kind:'task',code,domain,earnedAt:tasks[code].earnedAt||null});
+    if(domain&&domains[domain]&&!prior.domain) queue.push({id:'guided-domain:'+domain,kind:'domain',code:domain,domain,earnedAt:domains[domain].earnedAt||null});
     return queue;
   }
 
@@ -76,12 +56,7 @@
   }
 
   function nextTaskRoute(blueprint,taskCode){
-    const tasks=(blueprint&&blueprint.domains||[]).flatMap(domain=>(domain.tasks||[]).map(task=>({
-      code:text(task.code),
-      title:text(task.title),
-      domain:text(domain.id),
-      domainName:text(domain.fullName)
-    })));
+    const tasks=(blueprint&&blueprint.domains||[]).flatMap(domain=>(domain.tasks||[]).map(task=>({code:text(task.code),title:text(task.title),domain:text(domain.id),domainName:text(domain.fullName)})));
     const index=tasks.findIndex(task=>task.code===text(taskCode));
     const current=index>=0?tasks[index]:null;
     const next=index>=0?tasks[index+1]||null:null;
@@ -92,8 +67,7 @@
 
   function filterRetakeRecords(records,excludedIds,count){
     const excluded=new Set(asArray(excludedIds).map(String));
-    const filtered=asArray(records).filter(record=>record&&!excluded.has(String(record.id)));
-    return filtered;
+    return asArray(records).filter(record=>record&&!excluded.has(String(record.id)));
   }
 
   function mount(win){
@@ -104,55 +78,28 @@
     const checkpointOverlay=doc.querySelector('[data-checkpoint-overlay]');
     if(!storage||!engine||!checkpointHost||!checkpointOverlay) return null;
 
-    const state={
-      taskCode:null,
-      blueprint:null,
-      awardsBeforeSubmit:null,
-      latestHandledId:null,
-      retakeExclusions:new Map(),
-      ceremonyQueue:[],
-      ceremonyOpen:false,
-      returnFocus:null,
-      observer:null,
-      scheduled:false
-    };
-
+    const state={taskCode:null,blueprint:null,awardsBeforeSubmit:null,latestHandledId:null,retakeExclusions:new Map(),ceremonyQueue:[],ceremonyOpen:false,returnFocus:null,observer:null,scheduled:false};
     const originalSelect=engine.selectQuestions.bind(engine);
     engine.selectQuestions=function(records,taskCode,count,seed){
       const code=text(taskCode);
       const excluded=state.retakeExclusions.get(code)||[];
-      if(excluded.length){
-        state.retakeExclusions.delete(code);
-        return originalSelect(filterRetakeRecords(records,excluded,count),taskCode,count,seed);
-      }
+      if(excluded.length){state.retakeExclusions.delete(code);return originalSelect(filterRetakeRecords(records,excluded,count),taskCode,count,seed);}
       return originalSelect(records,taskCode,count,seed);
     };
 
-    function loadJson(path){
-      return win.fetch(path,{cache:'no-store'}).then(response=>{
-        if(!response.ok) throw new Error(path+' HTTP '+response.status);
-        return response.json();
-      });
+    function loadJson(path){return win.fetch(path,{cache:'no-store'}).then(response=>{if(!response.ok) throw new Error(path+' HTTP '+response.status);return response.json();});}
+    function latestRecord(saved){const history=asArray(saved&&saved.guidedStudy&&saved.guidedStudy.checkpointHistory);return history.find(item=>item&&item.task===state.taskCode)||history[0]||null;}
+    function taskDetails(code){const route=nextTaskRoute(state.blueprint,code);return route.current||{code:text(code),title:'RPSGT task',domain:text(code).slice(0,2),domainName:'RPSGT domain'};}
+    function closeCheckpoint(){const close=checkpointHost.querySelector('[data-checkpoint-cancel]');if(close) close.click();}
+    function captureAwardsBeforeSubmit(){
+      if(!state.taskCode) return;
+      const saved=storage.load();
+      const guided=saved.guidedStudy||{};
+      const awards=guided.trailAwards||{};
+      state.awardsBeforeSubmit={task:Boolean(awards.tasks&&awards.tasks[state.taskCode]),domain:Boolean(awards.domains&&awards.domains[state.taskCode.slice(0,2)])};
     }
-
-    function latestRecord(saved){
-      const history=asArray(saved&&saved.guidedStudy&&saved.guidedStudy.checkpointHistory);
-      return history.find(item=>item&&item.task===state.taskCode)||history[0]||null;
-    }
-
-    function taskDetails(code){
-      const route=nextTaskRoute(state.blueprint,code);
-      return route.current||{code:text(code),title:'RPSGT task',domain:text(code).slice(0,2),domainName:'RPSGT domain'};
-    }
-
-    function closeCheckpoint(){
-      const close=checkpointHost.querySelector('[data-checkpoint-cancel]');
-      if(close) close.click();
-    }
-
     function focusTask(code){
-      const card=doc.getElementById(text(code));
-      if(!card) return;
+      const card=doc.getElementById(text(code));if(!card) return;
       card.scrollIntoView({behavior:win.matchMedia&&win.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
       const focus=card.querySelector('[data-checkpoint-start],h3,button,a');
       if(focus){if(!focus.hasAttribute('tabindex')&&!/^(BUTTON|A|INPUT|SELECT|TEXTAREA)$/.test(focus.tagName)) focus.tabIndex=-1;focus.focus({preventScroll:true});}
@@ -162,9 +109,7 @@
       let overlay=doc.querySelector('[data-guided-award-ceremony]');
       if(overlay) return overlay;
       overlay=doc.createElement('div');
-      overlay.className='guided-award-overlay';
-      overlay.dataset.guidedAwardCeremony='true';
-      overlay.hidden=true;
+      overlay.className='guided-award-overlay';overlay.dataset.guidedAwardCeremony='true';overlay.hidden=true;
       overlay.innerHTML='<section class="guided-award-dialog" role="dialog" aria-modal="true" aria-labelledby="guided-award-title" tabindex="-1"><button class="guided-award-close" type="button" data-guided-award-close aria-label="Close achievement celebration">×</button><div class="guided-award-medal" data-guided-award-symbol aria-hidden="true">★</div><div class="eyebrow">Sleep Pathways Guild educational achievement</div><h2 id="guided-award-title" data-guided-award-title>Achievement earned</h2><p class="guided-award-skill" data-guided-award-skill></p><aside class="guided-award-coach"><strong>Coach Bob</strong><p data-guided-award-coach></p></aside><div class="guided-award-actions"><button class="btn primary" type="button" data-guided-award-continue>Continue</button><a class="btn secondary" href="reports.html#guided-trail-report">View achievements</a></div></section>';
       doc.body.appendChild(overlay);
       overlay.addEventListener('click',event=>{if(event.target===overlay||event.target.closest('[data-guided-award-close],[data-guided-award-continue]')) closeCeremony();});
@@ -176,8 +121,7 @@
       const item=state.ceremonyQueue.shift();
       let saved=storage.load();
       if(asArray(saved.awards&&saved.awards.seenCeremonyIds).some(id=>sameId(id,item.id))){openNextCeremony();return;}
-      saved=markCeremonySeen(saved,item.id);
-      storage.save(saved);
+      saved=markCeremonySeen(saved,item.id);storage.save(saved);
       const task=taskDetails(item.kind==='task'?item.code:item.code+'A');
       const overlay=ensureCeremonyShell();
       const title=overlay.querySelector('[data-guided-award-title]');
@@ -194,22 +138,16 @@
       }else{
         if(symbol) symbol.textContent='✓';
         title.textContent=(task.title||'RPSGT task')+' task badge';
-        skill.textContent='You met the 80% Guided Study checkpoint goal for this task.';
+        skill.textContent='You earned at least 8 correct answers out of the 10-question Guided Study checkpoint.';
         coach.textContent='You earned this badge by showing your reasoning holds up under questions. Keep the badge, and keep the habit that produced it.';
       }
-      state.returnFocus=doc.activeElement;
-      state.ceremonyOpen=true;
-      overlay.hidden=false;
-      doc.body.classList.add('guided-award-open');
+      state.returnFocus=doc.activeElement;state.ceremonyOpen=true;overlay.hidden=false;doc.body.classList.add('guided-award-open');
       win.requestAnimationFrame(()=>overlay.querySelector('[role="dialog"]')?.focus({preventScroll:true}));
     }
 
     function closeCeremony(){
-      const overlay=doc.querySelector('[data-guided-award-ceremony]');
-      if(!overlay||overlay.hidden) return;
-      overlay.hidden=true;
-      doc.body.classList.remove('guided-award-open');
-      state.ceremonyOpen=false;
+      const overlay=doc.querySelector('[data-guided-award-ceremony]');if(!overlay||overlay.hidden) return;
+      overlay.hidden=true;doc.body.classList.remove('guided-award-open');state.ceremonyOpen=false;
       if(state.ceremonyQueue.length){openNextCeremony();return;}
       const target=checkpointHost.querySelector('[data-checkpoint-routes]')||state.returnFocus;
       if(target&&typeof target.focus==='function') target.focus({preventScroll:true});
@@ -223,136 +161,58 @@
       const match=String(progress.textContent||'').match(/Question\s+(\d+)\s+of\s+(\d+)/i);
       if(!match||Number(match[1])!==Number(match[2])) return;
       if(checkpointHost.querySelector('[data-checkpoint-routes]')) return;
-
       const missed=asArray(record&&record.responses).filter(item=>item&&!item.correct);
       const route=nextTaskRoute(state.blueprint,state.taskCode);
-      const panel=doc.createElement('section');
-      panel.className='checkpoint-route-panel';
-      panel.dataset.checkpointRoutes='true';
-      panel.tabIndex=-1;
-      const heading=doc.createElement('h3');
-      heading.textContent='Choose your next step';
-      const copy=doc.createElement('p');
-      copy.textContent='You reviewed all five answers. Continue with the study action that best fits this result.';
-      const actions=doc.createElement('div');
-      actions.className='checkpoint-route-actions';
-
-      if(missed.length){
-        const review=doc.createElement('a');
-        review.className='btn secondary';
-        review.href='review.html?list=missed';
-        review.textContent='Review missed questions';
-        actions.appendChild(review);
-      }
-
-      const retake=doc.createElement('button');
-      retake.type='button';
-      retake.className='btn secondary';
-      retake.dataset.checkpointRetake='true';
-      retake.textContent='Retake with five new questions';
-
-      const practice=doc.createElement('a');
-      practice.className='btn secondary';
-      practice.href='practice.html?task='+encodeURIComponent(state.taskCode);
-      practice.textContent='Practice this task';
-
-      const next=doc.createElement('button');
-      next.type='button';
-      next.className='btn primary';
-      next.dataset.checkpointContinue='true';
-      next.dataset.nextTask=route.next&&route.next.code||'';
-      next.textContent=route.label;
-
-      const map=doc.createElement('button');
-      map.type='button';
-      map.className='btn secondary';
-      map.dataset.checkpointReturnMap='true';
-      map.textContent='Return to Guided Study map';
-
-      actions.append(retake,practice,next,map);
-      panel.append(heading,copy,actions);
-      const footer=checkpointHost.querySelector('.checkpoint-actions');
-      if(footer) footer.insertAdjacentElement('beforebegin',panel); else checkpointHost.appendChild(panel);
+      const panel=doc.createElement('section');panel.className='checkpoint-route-panel';panel.dataset.checkpointRoutes='true';panel.tabIndex=-1;
+      const heading=doc.createElement('h3');heading.textContent='Choose your next step';
+      const copy=doc.createElement('p');copy.textContent='You reviewed all 10 answers. Continue with the study action that best fits this result.';
+      const actions=doc.createElement('div');actions.className='checkpoint-route-actions';
+      if(missed.length){const review=doc.createElement('a');review.className='btn secondary';review.href='review.html?list=missed';review.textContent='Review missed questions';actions.appendChild(review);}
+      const retake=doc.createElement('button');retake.type='button';retake.className='btn secondary';retake.dataset.checkpointRetake='true';retake.textContent='Retake with 10 new questions';
+      const practice=doc.createElement('a');practice.className='btn secondary';practice.href='practice.html?task='+encodeURIComponent(state.taskCode);practice.textContent='Practice this task';
+      const next=doc.createElement('button');next.type='button';next.className='btn primary';next.dataset.checkpointContinue='true';next.dataset.nextTask=route.next&&route.next.code||'';next.textContent=route.label;
+      const map=doc.createElement('button');map.type='button';map.className='btn secondary';map.dataset.checkpointReturnMap='true';map.textContent='Return to Guided Study map';
+      actions.append(retake,practice,next,map);panel.append(heading,copy,actions);
+      const footer=checkpointHost.querySelector('.checkpoint-actions');if(footer) footer.insertAdjacentElement('beforebegin',panel);else checkpointHost.appendChild(panel);
     }
 
     function processResult(){
       if(!state.taskCode||!checkpointHost.querySelector('.checkpoint-result')) return;
-      let saved=storage.load();
-      const record=latestRecord(saved);
-      if(!record) return;
+      let saved=storage.load();const record=latestRecord(saved);if(!record) return;
       if(state.latestHandledId!==record.id){
         saved=updateMissedReview(saved,record);
         const ceremonies=unseenCeremonies(saved,awardCeremonies(saved,state.taskCode,state.awardsBeforeSubmit));
-        saved=storage.save(saved);
-        state.latestHandledId=record.id;
-        state.ceremonyQueue.push(...ceremonies);
-        state.awardsBeforeSubmit=null;
-        openNextCeremony();
+        saved=storage.save(saved);state.latestHandledId=record.id;state.ceremonyQueue.push(...ceremonies);state.awardsBeforeSubmit=null;openNextCeremony();
       }
       if(state.blueprint) injectRoutes(saved,record);
     }
 
-    function scheduleProcess(){
-      if(state.scheduled) return;
-      state.scheduled=true;
-      win.requestAnimationFrame(()=>{state.scheduled=false;processResult();});
-    }
+    function scheduleProcess(){if(state.scheduled) return;state.scheduled=true;win.requestAnimationFrame(()=>{state.scheduled=false;processResult();});}
+
+    doc.addEventListener('rpsgt:guided-checkpoint-finalizing',event=>{
+      const code=text(event.detail&&event.detail.taskCode);if(code) state.taskCode=code;
+      captureAwardsBeforeSubmit();
+    });
+    doc.addEventListener('rpsgt:guided-checkpoint-complete',event=>{
+      const code=text(event.detail&&event.detail.taskCode);if(code) state.taskCode=code;
+      state.latestHandledId=null;scheduleProcess();
+    });
 
     doc.addEventListener('click',event=>{
-      const start=event.target.closest('[data-checkpoint-start]');
-      if(start){state.taskCode=text(start.getAttribute('data-checkpoint-start'));state.latestHandledId=null;}
-
-      if(event.target.closest('[data-checkpoint-score]')&&state.taskCode){
-        const saved=storage.load();
-        const guided=saved.guidedStudy||{};
-        const awards=guided.trailAwards||{};
-        state.awardsBeforeSubmit={
-          task:Boolean(awards.tasks&&awards.tasks[state.taskCode]),
-          domain:Boolean(awards.domains&&awards.domains[state.taskCode.slice(0,2)])
-        };
-      }
-
+      const start=event.target.closest('[data-checkpoint-start]');if(start){state.taskCode=text(start.getAttribute('data-checkpoint-start'));state.latestHandledId=null;}
       if(event.target.closest('[data-checkpoint-retake]')){
-        const saved=storage.load();
-        const record=latestRecord(saved);
-        state.retakeExclusions.set(state.taskCode,asArray(record&&record.questionIds));
-        const code=state.taskCode;
-        closeCheckpoint();
-        win.setTimeout(()=>doc.querySelector('[data-checkpoint-start="'+code+'"]')?.click(),0);
-        return;
+        const saved=storage.load();const record=latestRecord(saved);state.retakeExclusions.set(state.taskCode,asArray(record&&record.questionIds));const code=state.taskCode;closeCheckpoint();win.setTimeout(()=>doc.querySelector('[data-checkpoint-start="'+code+'"]')?.click(),0);return;
       }
-
       const continueButton=event.target.closest('[data-checkpoint-continue]');
-      if(continueButton){
-        const next=text(continueButton.dataset.nextTask);
-        closeCheckpoint();
-        if(next) win.setTimeout(()=>focusTask(next),0);
-        return;
-      }
-
+      if(continueButton){const next=text(continueButton.dataset.nextTask);closeCheckpoint();if(next) win.setTimeout(()=>focusTask(next),0);return;}
       if(event.target.closest('[data-checkpoint-return-map]')){closeCheckpoint();return;}
     },true);
 
-    doc.addEventListener('keydown',event=>{
-      if(event.key==='Escape'&&state.ceremonyOpen){event.preventDefault();closeCeremony();}
-    });
-
-    state.observer=new win.MutationObserver(scheduleProcess);
-    state.observer.observe(checkpointHost,{childList:true,subtree:true});
+    doc.addEventListener('keydown',event=>{if(event.key==='Escape'&&state.ceremonyOpen){event.preventDefault();closeCeremony();}});
+    state.observer=new win.MutationObserver(scheduleProcess);state.observer.observe(checkpointHost,{childList:true,subtree:true});
     loadJson('data/blueprint.json').then(value=>{state.blueprint=value;scheduleProcess();}).catch(error=>console.warn('Guided Study continuation map could not load.',error));
     return state;
   }
 
-  return {
-    VERSION,
-    DOMAIN_AWARD_NAMES,
-    uniqueIds,
-    updateMissedReview,
-    awardCeremonies,
-    unseenCeremonies,
-    markCeremonySeen,
-    nextTaskRoute,
-    filterRetakeRecords,
-    mount
-  };
+  return {VERSION,DOMAIN_AWARD_NAMES,uniqueIds,updateMissedReview,awardCeremonies,unseenCeremonies,markCeremonySeen,nextTaskRoute,filterRetakeRecords,mount};
 });
