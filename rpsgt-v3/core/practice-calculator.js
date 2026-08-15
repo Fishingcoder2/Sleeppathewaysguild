@@ -1,12 +1,15 @@
 (function(root,factory){
   const api=factory();
   if(typeof module==='object'&&module.exports) module.exports=api;
+  root.RPSGTStudyCalculator=api;
   root.RPSGTPracticeCalculator=api;
   if(root.document){
     const styleHref='assets/practice-calculator.css';
     if(!root.document.querySelector(`link[href="${styleHref}"]`)){
       const link=root.document.createElement('link');
-      link.rel='stylesheet';link.href=styleHref;link.dataset.practiceCalculatorStyle='true';
+      link.rel='stylesheet';
+      link.href=styleHref;
+      link.dataset.studyCalculatorStyle='true';
       root.document.head.appendChild(link);
     }
     const start=()=>api.init(root.document);
@@ -17,6 +20,8 @@
   'use strict';
 
   const MAX_EXPRESSION_LENGTH=120;
+  const HOST_SELECTOR='[data-study-calculator],[data-practice-calculator]';
+  const DEFAULT_STATUS='Basic arithmetic · nothing is saved';
 
   function normalizeExpression(value){
     return String(value==null?'':value)
@@ -76,39 +81,20 @@
       }
       throw new Error('Check the calculation.');
     }
-
-    function parsePostfix(){
-      let value=parsePrimary();
-      while(take('%')) value/=100;
-      return value;
-    }
-
-    function parseUnary(){
-      if(take('+')) return parseUnary();
-      if(take('-')) return -parseUnary();
-      return parsePostfix();
-    }
-
+    function parsePostfix(){let value=parsePrimary();while(take('%')) value/=100;return value;}
+    function parseUnary(){if(take('+')) return parseUnary();if(take('-')) return -parseUnary();return parsePostfix();}
     function parseTerm(){
       let value=parseUnary();
       while(true){
         if(take('*')) value*=parseUnary();
-        else if(take('/')){
-          const divisor=parseUnary();
-          if(divisor===0) throw new Error('Cannot divide by zero.');
-          value/=divisor;
-        }else break;
+        else if(take('/')){const divisor=parseUnary();if(divisor===0) throw new Error('Cannot divide by zero.');value/=divisor;}
+        else break;
       }
       return value;
     }
-
     function parseExpression(){
       let value=parseTerm();
-      while(true){
-        if(take('+')) value+=parseTerm();
-        else if(take('-')) value-=parseTerm();
-        else break;
-      }
+      while(true){if(take('+')) value+=parseTerm();else if(take('-')) value-=parseTerm();else break;}
       return value;
     }
 
@@ -138,57 +124,34 @@
       .slice(0,MAX_EXPRESSION_LENGTH);
   }
 
-  function init(scope){
-    const documentRef=scope&&scope.querySelector?scope:null;
-    if(!documentRef) return false;
-    const host=documentRef.querySelector('[data-practice-calculator]');
+  function initHost(host){
     if(!host||host.dataset.calculatorReady==='true') return Boolean(host);
     const display=host.querySelector('[data-calculator-display]');
     const status=host.querySelector('[data-calculator-status]');
     if(!display||!status) return false;
     host.dataset.calculatorReady='true';
 
-    const setStatus=(message,isError)=>{
-      status.textContent=message;
-      status.classList.toggle('error-text',Boolean(isError));
-    };
-    const clear=()=>{
-      display.value='';
-      display.dataset.calculated='false';
-      setStatus('Basic arithmetic · nothing is saved',false);
-      display.focus();
-    };
+    const setStatus=(message,isError)=>{status.textContent=message;status.classList.toggle('error-text',Boolean(isError));};
+    const clear=()=>{display.value='';display.dataset.calculated='false';setStatus(DEFAULT_STATUS,false);display.focus();};
     const backspace=()=>{
       const start=Number.isFinite(display.selectionStart)?display.selectionStart:display.value.length;
       const end=Number.isFinite(display.selectionEnd)?display.selectionEnd:start;
       if(start!==end) display.setRangeText('',start,end,'end');
       else if(start>0) display.setRangeText('',start-1,start,'end');
-      display.dataset.calculated='false';
-      setStatus('Basic arithmetic · nothing is saved',false);
-      display.focus();
+      display.dataset.calculated='false';setStatus(DEFAULT_STATUS,false);display.focus();
     };
     const append=value=>{
       const token=String(value||'');
-      const afterCalculation=display.dataset.calculated==='true';
-      if(afterCalculation&&/^[0-9.(]$/.test(token)) display.value='';
+      if(display.dataset.calculated==='true'&&/^[0-9.(]$/.test(token)) display.value='';
       const start=Number.isFinite(display.selectionStart)?display.selectionStart:display.value.length;
       const end=Number.isFinite(display.selectionEnd)?display.selectionEnd:start;
       if(display.value.length+token.length<=MAX_EXPRESSION_LENGTH) display.setRangeText(token,start,end,'end');
-      display.dataset.calculated='false';
-      setStatus('Basic arithmetic · nothing is saved',false);
-      display.focus();
+      display.dataset.calculated='false';setStatus(DEFAULT_STATUS,false);display.focus();
     };
     const compute=()=>{
       const expression=display.value;
-      try{
-        const result=calculate(expression);
-        display.value=result;
-        display.dataset.calculated='true';
-        setStatus(`${normalizeExpression(expression)} = ${result}`,false);
-      }catch(error){
-        display.dataset.calculated='false';
-        setStatus(error&&error.message||'Check the calculation.',true);
-      }
+      try{const result=calculate(expression);display.value=result;display.dataset.calculated='true';setStatus(`${normalizeExpression(expression)} = ${result}`,false);}
+      catch(error){display.dataset.calculated='false';setStatus(error&&error.message||'Check the calculation.',true);}
       display.focus();
     };
 
@@ -202,18 +165,17 @@
       else if(action==='backspace') backspace();
       else if(action==='calculate') compute();
     });
-    display.addEventListener('input',()=>{
-      const safe=sanitizeInput(display.value);
-      if(display.value!==safe) display.value=safe;
-      display.dataset.calculated='false';
-      setStatus('Basic arithmetic · nothing is saved',false);
-    });
-    display.addEventListener('keydown',event=>{
-      if(event.key==='Enter'||event.key==='='){event.preventDefault();compute();}
-      else if(event.key==='Escape'){event.preventDefault();clear();}
-    });
+    display.addEventListener('input',()=>{const safe=sanitizeInput(display.value);if(display.value!==safe) display.value=safe;display.dataset.calculated='false';setStatus(DEFAULT_STATUS,false);});
+    display.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key==='='){event.preventDefault();compute();}else if(event.key==='Escape'){event.preventDefault();clear();}});
     return true;
   }
 
-  return {MAX_EXPRESSION_LENGTH,normalizeExpression,tokenize,evaluate,formatResult,calculate,sanitizeInput,init};
+  function init(scope){
+    const documentRef=scope&&scope.querySelectorAll?scope:null;
+    if(!documentRef) return 0;
+    const hosts=[...documentRef.querySelectorAll(HOST_SELECTOR)];
+    return hosts.reduce((count,host)=>count+(initHost(host)?1:0),0);
+  }
+
+  return {MAX_EXPRESSION_LENGTH,HOST_SELECTOR,normalizeExpression,tokenize,evaluate,formatResult,calculate,sanitizeInput,initHost,init};
 });

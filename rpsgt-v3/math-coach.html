@@ -28,11 +28,43 @@
 </aside>
 <main class="main">
 <section class="hero math-hero">
-  <div><div class="eyebrow">RPSGT Math Coach</div><h1>Build the calculation before answering the question</h1><p class="lead">The current staged Math Coach is preserved and expanded with more of the report-math depth learners used in earlier Sleep Pathways Guild study tools: timing, epochs, sleep architecture, indices, and PAP calculations. Every skill still moves through a lesson, formula and units, worked example, guided retry, independent practice, and mastery check. Math Coach remains a learning tool—not a Skills Lab simulation or a random question-bank sampler.</p><div class="math-flow" aria-label="Math Coach sequence"><span>Learn</span><b>→</b><span>Worked example</span><b>→</b><span>Guided try</span><b>→</b><span>Independent practice</span><b>→</b><span>Mastery</span></div></div>
+  <div><div class="eyebrow">RPSGT Math Coach</div><h1>Build the calculation before answering the question</h1><p class="lead">The current staged Math Coach is preserved and expanded with more of the report-math depth learners used in earlier Sleep Pathways Guild study tools: timing, epochs, sleep architecture, indices, and PAP calculations. Every skill still moves through a lesson, formula and units, worked example, guided retry, independent practice, and mastery check. Math Coach remains a learning tool—not a Skills Lab simulation or a random question-bank sampler.</p><div class="math-flow" aria-label="Math Coach sequence"><span>Learn</span><b>→</b><span>Worked example</span><b>→</b><span>Guided try</span><b>→</b><span>Independent practice</span><b>→</b><span>Mastery</span></div><div class="actions"><a class="btn secondary" href="#study-calculator">Open study calculator</a></div></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Write the units into the setup.</h2><p>A good calculation is a pathway: identify what the question wants, choose the formula, keep the units consistent, calculate once, and ask whether the result makes sense.</p></aside>
 </section>
 <section class="section notice"><strong>Curated evidence boundary:</strong> This expanded catalog uses original Sleep Pathways Guild instruction derived from verified RPSGT study sources. The earlier RPSGT and CPSGT tools inform the learning experience, but their exam-specific content is not copied into V3.</section>
 <section class="section"><div class="section-head"><div><div class="eyebrow">Your progress</div><h2>Math Coach skills</h2><p>Current coverage includes AHI, sleep efficiency, TST, stage percentage, epoch conversion, TRT, sleep onset latency, WASO, sleep period, total wake time, arousal index, and bilevel pressure support.</p></div><span class="status green">Stored only in spg_rpsgt_v3.mathCoach</span></div><div class="math-summary" data-math-summary><div><span>Curated skills</span><strong>Loading…</strong></div></div></section>
+<section class="section math-calculator-tool" id="study-calculator" aria-labelledby="study-calculator-title">
+  <div class="card math-calculator-copy"><div class="eyebrow">Study utility</div><h2 id="study-calculator-title">Calculator</h2><p>Use the same calculator available in focused Practice while you work through formulas, timing, indices, percentages, and PAP calculations. The calculator is temporary scratch work: it does not save calculations or change Math Coach mastery.</p><p class="math-calculator-tip"><strong>Coach Bob:</strong> Set up the formula and units first, then use the calculator to check the arithmetic.</p></div>
+  <div class="card practice-calculator-card" data-study-calculator>
+    <div class="practice-calculator-head"><h3>Study calculator</h3><span class="status">Utility</span></div>
+    <label class="practice-calculator-label" for="math-calculator-display">Calculation</label>
+    <input id="math-calculator-display" class="practice-calculator-display" data-calculator-display type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0" aria-describedby="math-calculator-status">
+    <div id="math-calculator-status" class="practice-calculator-status" data-calculator-status aria-live="polite">Basic arithmetic · nothing is saved</div>
+    <div class="practice-calculator-keys" role="group" aria-label="Calculator keypad">
+      <button type="button" class="calculator-key utility" data-calculator-action="clear">C</button>
+      <button type="button" class="calculator-key utility" data-calculator-action="backspace" aria-label="Backspace">⌫</button>
+      <button type="button" class="calculator-key utility" data-calculator-value="(">(</button>
+      <button type="button" class="calculator-key utility" data-calculator-value=")">)</button>
+      <button type="button" class="calculator-key" data-calculator-value="7">7</button>
+      <button type="button" class="calculator-key" data-calculator-value="8">8</button>
+      <button type="button" class="calculator-key" data-calculator-value="9">9</button>
+      <button type="button" class="calculator-key operator" data-calculator-value="/">÷</button>
+      <button type="button" class="calculator-key" data-calculator-value="4">4</button>
+      <button type="button" class="calculator-key" data-calculator-value="5">5</button>
+      <button type="button" class="calculator-key" data-calculator-value="6">6</button>
+      <button type="button" class="calculator-key operator" data-calculator-value="*">×</button>
+      <button type="button" class="calculator-key" data-calculator-value="1">1</button>
+      <button type="button" class="calculator-key" data-calculator-value="2">2</button>
+      <button type="button" class="calculator-key" data-calculator-value="3">3</button>
+      <button type="button" class="calculator-key operator" data-calculator-value="-">−</button>
+      <button type="button" class="calculator-key" data-calculator-value="0">0</button>
+      <button type="button" class="calculator-key" data-calculator-value=".">.</button>
+      <button type="button" class="calculator-key" data-calculator-value="%">%</button>
+      <button type="button" class="calculator-key operator" data-calculator-value="+">+</button>
+      <button type="button" class="calculator-key equals" data-calculator-action="calculate">=</button>
+    </div>
+  </div>
+</section>
 <section class="section math-skill-catalog" data-math-catalog><div class="card"><p>Loading curated Math Coach skills…</p></div></section>
 <section class="section card math-workspace" data-math-workspace hidden></section>
 <section class="section notice"><strong>Memory connection:</strong> Math Coach formulas, units, and recognized abbreviations now feed the Memory Games recall pool automatically. Missed recall cards can move into Weak Memory for targeted repair.</section>
@@ -49,5 +81,6 @@
 <script src="core/math-coach-view-base.js"></script>
 <script src="core/math-coach-view-practice.js"></script>
 <script src="core/math-coach.js"></script>
+<script src="core/practice-calculator.js"></script>
 </body>
 </html>

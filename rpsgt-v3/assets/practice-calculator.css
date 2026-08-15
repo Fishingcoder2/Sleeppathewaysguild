@@ -14,4 +14,9 @@
 .calculator-key.utility{background:#f7f9fc;color:#53677f}
 .calculator-key.equals{grid-column:1/-1;min-height:44px;background:var(--navy);border-color:var(--navy);color:#fff;font-size:1.12rem}
 .calculator-key.equals:hover{background:#174f91;border-color:#174f91}
+.math-calculator-tool{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,390px);gap:16px;align-items:start;scroll-margin-top:90px}
+.math-calculator-copy h2{margin:7px 0 8px}
+.math-calculator-copy p{margin:.45rem 0;color:var(--muted);line-height:1.55}
+.math-calculator-tip{margin-top:14px!important;padding:12px 13px;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;background:#fff8e8;color:var(--ink)!important}
 @media(max-width:900px) and (min-width:801px){.practice-session:not(.hidden)>.session-rail>.practice-calculator-card{grid-column:1/-1;width:min(330px,100%);justify-self:center}}
+@media(max-width:760px){.math-calculator-tool{grid-template-columns:1fr}.math-calculator-tool>.practice-calculator-card{width:min(390px,100%);justify-self:center}}
