@@ -1,0 +1,17 @@
+.practice-calculator-card{overflow:hidden}
+.practice-calculator-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.practice-calculator-head h3{margin:0}
+.practice-calculator-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.practice-calculator-display{display:block;width:100%;min-height:50px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:#f7fafc;color:var(--navy);font:800 1.28rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-align:right;letter-spacing:.01em}
+.practice-calculator-display:focus{outline:3px solid rgba(23,79,145,.18);outline-offset:2px;border-color:#6f9cc7}
+.practice-calculator-status{min-height:2.55em;margin:7px 1px 9px;color:var(--muted);font-size:.72rem;line-height:1.3;overflow-wrap:anywhere}
+.practice-calculator-status.error-text{color:#8d3d2f;font-weight:800}
+.practice-calculator-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.calculator-key{appearance:none;display:grid;place-items:center;min-width:0;min-height:42px;padding:5px;border:1px solid #cbd8e1;border-radius:10px;background:#fff;color:var(--navy);font:850 1rem/1 system-ui,-apple-system,Segoe UI,sans-serif;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.calculator-key:hover{border-color:#8ebbd0;background:#f2f8fb}
+.calculator-key:focus-visible{outline:3px solid rgba(23,79,145,.2);outline-offset:1px}
+.calculator-key.operator{background:#eef5fb;color:#174f91}
+.calculator-key.utility{background:#f7f9fc;color:#53677f}
+.calculator-key.equals{grid-column:1/-1;min-height:44px;background:var(--navy);border-color:var(--navy);color:#fff;font-size:1.12rem}
+.calculator-key.equals:hover{background:#174f91;border-color:#174f91}
+@media(max-width:900px) and (min-width:801px){.practice-session:not(.hidden)>.session-rail>.practice-calculator-card{grid-column:1/-1;width:min(330px,100%);justify-self:center}}
