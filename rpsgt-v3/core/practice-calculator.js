@@ -3,6 +3,12 @@
   if(typeof module==='object'&&module.exports) module.exports=api;
   root.RPSGTPracticeCalculator=api;
   if(root.document){
+    const styleHref='assets/practice-calculator.css';
+    if(!root.document.querySelector(`link[href="${styleHref}"]`)){
+      const link=root.document.createElement('link');
+      link.rel='stylesheet';link.href=styleHref;link.dataset.practiceCalculatorStyle='true';
+      root.document.head.appendChild(link);
+    }
     const start=()=>api.init(root.document);
     if(root.document.readyState==='loading') root.document.addEventListener('DOMContentLoaded',start,{once:true});
     else start();
