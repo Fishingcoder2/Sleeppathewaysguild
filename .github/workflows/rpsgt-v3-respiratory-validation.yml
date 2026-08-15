@@ -7,10 +7,13 @@ on:
     paths:
       - 'rpsgt-v3/lab-respiratory.html'
       - 'rpsgt-v3/assets/respiratory.css'
+      - 'rpsgt-v3/assets/respiratory-trace-enhancements.css'
       - 'rpsgt-v3/core/respiratory-lab-engine.js'
+      - 'rpsgt-v3/core/respiratory-signal-model.js'
       - 'rpsgt-v3/core/lab-respiratory.js'
       - 'rpsgt-v3/scripts/test-respiratory-lab-system.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-lab-shell.mjs'
+      - 'rpsgt-v3/scripts/test-respiratory-signal-model.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-validation.yml'
   workflow_dispatch:
 
@@ -31,10 +34,14 @@ jobs:
       - name: Check Respiratory Lab JavaScript syntax
         run: |
           node --check rpsgt-v3/core/respiratory-lab-engine.js
+          node --check rpsgt-v3/core/respiratory-signal-model.js
           node --check rpsgt-v3/core/lab-respiratory.js
           node --check rpsgt-v3/scripts/test-respiratory-lab-system.mjs
           node --check rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
+          node --check rpsgt-v3/scripts/test-respiratory-signal-model.mjs
       - name: Validate respiratory pattern and progress engine
         run: node rpsgt-v3/scripts/test-respiratory-lab-system.mjs
+      - name: Validate respiratory signal physiology
+        run: node rpsgt-v3/scripts/test-respiratory-signal-model.mjs
       - name: Validate respiratory learner shell and interactions
         run: node rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
