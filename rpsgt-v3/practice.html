@@ -74,6 +74,35 @@
   <aside class="session-rail">
     <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span data-progress-policy>Recorded in your learner progress</span></p></div>
     <div class="card"><h3>Overall learner record</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-stat="answered">0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="session-stat"><span>Missed</span><strong data-stat="missed">0</strong></div></div></div>
+    <div class="card practice-calculator-card" data-practice-calculator>
+      <div class="practice-calculator-head"><h3>Calculator</h3><span class="status">Study tool</span></div>
+      <label class="practice-calculator-label" for="practice-calculator-display">Calculation</label>
+      <input id="practice-calculator-display" class="practice-calculator-display" data-calculator-display type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0" aria-describedby="practice-calculator-status">
+      <div id="practice-calculator-status" class="practice-calculator-status" data-calculator-status aria-live="polite">Basic arithmetic · nothing is saved</div>
+      <div class="practice-calculator-keys" role="group" aria-label="Calculator keypad">
+        <button type="button" class="calculator-key utility" data-calculator-action="clear">C</button>
+        <button type="button" class="calculator-key utility" data-calculator-action="backspace" aria-label="Backspace">⌫</button>
+        <button type="button" class="calculator-key utility" data-calculator-value="(">(</button>
+        <button type="button" class="calculator-key utility" data-calculator-value=")">)</button>
+        <button type="button" class="calculator-key" data-calculator-value="7">7</button>
+        <button type="button" class="calculator-key" data-calculator-value="8">8</button>
+        <button type="button" class="calculator-key" data-calculator-value="9">9</button>
+        <button type="button" class="calculator-key operator" data-calculator-value="/">÷</button>
+        <button type="button" class="calculator-key" data-calculator-value="4">4</button>
+        <button type="button" class="calculator-key" data-calculator-value="5">5</button>
+        <button type="button" class="calculator-key" data-calculator-value="6">6</button>
+        <button type="button" class="calculator-key operator" data-calculator-value="*">×</button>
+        <button type="button" class="calculator-key" data-calculator-value="1">1</button>
+        <button type="button" class="calculator-key" data-calculator-value="2">2</button>
+        <button type="button" class="calculator-key" data-calculator-value="3">3</button>
+        <button type="button" class="calculator-key operator" data-calculator-value="-">−</button>
+        <button type="button" class="calculator-key" data-calculator-value="0">0</button>
+        <button type="button" class="calculator-key" data-calculator-value=".">.</button>
+        <button type="button" class="calculator-key" data-calculator-value="%">%</button>
+        <button type="button" class="calculator-key operator" data-calculator-value="+">+</button>
+        <button type="button" class="calculator-key equals" data-calculator-action="calculate">=</button>
+      </div>
+    </div>
   </aside>
   <div class="card session-complete hidden" data-session-complete tabindex="-1" aria-label="Practice complete">
     <span class="status green">Practice complete</span>
@@ -113,5 +142,6 @@
 <script src="core/practice.js"></script>
 <script src="core/practice-coach.js"></script>
 <script src="core/practice-prefill.js"></script>
+<script src="core/practice-calculator.js"></script>
 </body>
 </html>
