@@ -12,7 +12,7 @@ on:
       - 'rpsgt-v3/core/respiratory-lab-engine.js'
       - 'rpsgt-v3/core/respiratory-signal-model.js'
       - 'rpsgt-v3/core/respiratory-timeline-engine.js'
-      - 'rpsgt-v3/core/respiratory-timeline-lab.js'
+      - 'rpsgt-v3/core/respiratory-timeline-ui.js'
       - 'rpsgt-v3/core/lab-respiratory.js'
       - 'rpsgt-v3/data/labs/catalog.json'
       - 'rpsgt-v3/scripts/test-respiratory-lab-system.mjs'
@@ -42,7 +42,7 @@ jobs:
           node --check rpsgt-v3/core/respiratory-lab-engine.js
           node --check rpsgt-v3/core/respiratory-signal-model.js
           node --check rpsgt-v3/core/respiratory-timeline-engine.js
-          node --check rpsgt-v3/core/respiratory-timeline-lab.js
+          node --check rpsgt-v3/core/respiratory-timeline-ui.js
           node --check rpsgt-v3/core/lab-respiratory.js
           node --check rpsgt-v3/scripts/test-respiratory-lab-system.mjs
           node --check rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
