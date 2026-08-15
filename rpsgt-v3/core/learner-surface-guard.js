@@ -4,8 +4,10 @@
   const RETIRED_QUESTION_RULES=[
     {
       id:'malformed-mbm-scoring-item',
+      questionId:'imp-046',
       reason:'Retired from learner use after content review: malformed self-referential answer construction.',
       matches(question){
+        if(String(question&&question.id||'')==='imp-046') return true;
         const prompt=String(question&&question.prompt||'').toLowerCase().replace(/\s+/g,' ').trim();
         return prompt.includes('major body movement (mbm) artifact')&&
           prompt.includes('obscures the eeg')&&
@@ -84,7 +86,7 @@
   }
 
   root.RPSGTLearnerSurfaceGuard={
-    retiredQuestionRules:RETIRED_QUESTION_RULES.map(rule=>({id:rule.id,reason:rule.reason})),
+    retiredQuestionRules:RETIRED_QUESTION_RULES.map(rule=>({id:rule.id,questionId:rule.questionId,reason:rule.reason})),
     retirementFor,
     isRetiredQuestion,
     applyQuestionRetirements
