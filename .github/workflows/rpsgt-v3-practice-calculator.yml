@@ -1,4 +1,4 @@
-name: Validate RPSGT v3 Practice Calculator
+name: Validate RPSGT v3 Study Calculator
 
 on:
   pull_request:
@@ -6,9 +6,11 @@ on:
       - main
     paths:
       - 'rpsgt-v3/practice.html'
+      - 'rpsgt-v3/math-coach.html'
       - 'rpsgt-v3/core/practice-calculator.js'
       - 'rpsgt-v3/assets/practice-calculator.css'
       - 'rpsgt-v3/scripts/test-practice-calculator.mjs'
+      - 'rpsgt-v3/scripts/test-math-coach-shell.mjs'
       - '.github/workflows/rpsgt-v3-practice-calculator.yml'
   workflow_dispatch:
 
@@ -16,7 +18,7 @@ permissions:
   contents: read
 
 jobs:
-  practice-calculator:
+  study-calculator:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -30,5 +32,5 @@ jobs:
         run: |
           node --check rpsgt-v3/core/practice-calculator.js
           node --check rpsgt-v3/scripts/test-practice-calculator.mjs
-      - name: Validate calculator behavior and learner isolation
+      - name: Validate shared calculator behavior and learner isolation
         run: node rpsgt-v3/scripts/test-practice-calculator.mjs
