@@ -2,17 +2,20 @@
   'use strict';
   const engine=window.RPSGTRespiratoryLabEngine;
   const workspace=document.querySelector('[data-respiratory-workspace]');
+  const visualWorkspace=document.querySelector('[data-respiratory-visual-workspace]');
   const summaryHost=document.querySelector('[data-respiratory-summary]');
   const stationHost=document.querySelector('[data-respiratory-stations]');
   const patternHost=document.querySelector('[data-respiratory-patterns]');
   const patternDetail=document.querySelector('[data-respiratory-pattern-detail]');
   const startButton=document.querySelector('[data-respiratory-start]');
-  if(!workspace||!summaryHost||!stationHost||!patternHost||!patternDetail||!startButton) return;
-  const state={saved:null,questions:[],bank:[],activePattern:'obstructive-hypopnea'};
+  const visualStartButtons=[...document.querySelectorAll('[data-respiratory-visual-start]')];
+  if(!workspace||!visualWorkspace||!summaryHost||!stationHost||!patternHost||!patternDetail||!startButton) return;
+  const state={saved:null,questions:[],bank:[],activePattern:'obstructive-hypopnea',visualCases:[],visualIndex:0,visualSelected:null,visualLocked:false,visualCorrect:0,visualFinished:false};
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
   async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok) throw new Error(path+' HTTP '+response.status);return response.json();}
   function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=window.RPSGTStorage.save(state.saved);}
+  function shuffleLocal(items){const copy=items.slice();for(let index=copy.length-1;index>0;index-=1){const swap=Math.floor(Math.random()*(index+1));[copy[index],copy[swap]]=[copy[swap],copy[index]];}return copy;}
   function renderSummary(){
     const report=engine.summary(state.saved.labs);
     summaryHost.innerHTML=`<div><span>Status</span><strong>${report.completed?'Completed':report.status==='in-progress'?'In progress':'Not started'}</strong></div><div><span>Signal stations</span><strong>${report.stationsComplete}/${report.stationCount}</strong></div><div><span>Best checkpoint</span><strong>${report.attempts?report.bestPercent+'%':'—'}</strong></div><div><span>Attempts</span><strong>${report.attempts}</strong></div><div><span>Last checkpoint</span><strong>${report.latestSession?formatDate(report.latestSession.completedAt):'—'}</strong></div>`;
@@ -68,18 +71,44 @@
     }
     return points.join(' ');
   }
-  function patternSvg(pattern){
+  function patternSvg(pattern,revealIdentity=true){
     const airflow=wavePath(pattern.airflow,'airflow',74);const thorax=wavePath(pattern.thorax,'thorax',142);const abdomen=wavePath(pattern.abdomen,'abdomen',210);const oxygen=oxygenPath(pattern.oxygen,278);
-    return `<svg class="respiratory-trace" viewBox="0 0 760 322" role="img" aria-label="Original teaching schematic for ${esc(pattern.title)} showing nasal pressure airflow, thoracic effort, abdominal effort, and oxygen saturation"><rect class="trace-event-window" x="300" y="28" width="260" height="270" rx="12"></rect><text class="trace-event-label" x="430" y="21" text-anchor="middle">event window</text><g class="trace-guides"><line x1="108" y1="74" x2="735" y2="74"></line><line x1="108" y1="142" x2="735" y2="142"></line><line x1="108" y1="210" x2="735" y2="210"></line><line x1="108" y1="278" x2="735" y2="278"></line></g><g class="trace-labels"><text x="12" y="79">Nasal pressure</text><text x="12" y="147">Thorax</text><text x="12" y="215">Abdomen</text><text x="12" y="283">SpO₂</text></g><path class="trace-line airflow" d="${airflow}"></path><path class="trace-line thorax" d="${thorax}"></path><path class="trace-line abdomen" d="${abdomen}"></path><path class="trace-line oxygen" d="${oxygen}"></path>${pattern.oxygen==='drop'?'<text class="trace-oxygen-note" x="615" y="267">delayed O₂ drop</text>':''}</svg>`;
+    const aria=revealIdentity?`Original teaching schematic for ${esc(pattern.title)} showing nasal pressure airflow, thoracic effort, abdominal effort, and oxygen saturation`:'Unlabeled original respiratory teaching schematic showing nasal pressure airflow, thoracic effort, abdominal effort, and oxygen saturation';
+    return `<svg class="respiratory-trace" viewBox="0 0 760 322" role="img" aria-label="${aria}"><rect class="trace-event-window" x="300" y="28" width="260" height="270" rx="12"></rect><text class="trace-event-label" x="430" y="21" text-anchor="middle">event window</text><g class="trace-guides"><line x1="108" y1="74" x2="735" y2="74"></line><line x1="108" y1="142" x2="735" y2="142"></line><line x1="108" y1="210" x2="735" y2="210"></line><line x1="108" y1="278" x2="735" y2="278"></line></g><g class="trace-labels"><text x="12" y="79">Nasal pressure</text><text x="12" y="147">Thorax</text><text x="12" y="215">Abdomen</text><text x="12" y="283">SpO₂</text></g><path class="trace-line airflow" d="${airflow}"></path><path class="trace-line thorax" d="${thorax}"></path><path class="trace-line abdomen" d="${abdomen}"></path><path class="trace-line oxygen" d="${oxygen}"></path>${pattern.oxygen==='drop'?'<text class="trace-oxygen-note" x="615" y="267">delayed O₂ drop</text>':''}</svg>`;
   }
   function renderPatternDetail(){
     const pattern=engine.patternById(state.activePattern);
-    patternDetail.innerHTML=`<div class="respiratory-pattern-heading"><div><span class="status gold">Selected pattern</span><h3>${esc(pattern.title)}</h3><p class="respiratory-pattern-cue">${esc(pattern.cue)}</p></div></div>${patternSvg(pattern)}<div class="respiratory-signal-clues"><div><span>Airflow</span><strong>${esc(humanSignal(pattern.airflow))}</strong></div><div><span>Thorax</span><strong>${esc(humanSignal(pattern.thorax))}</strong></div><div><span>Abdomen</span><strong>${esc(humanSignal(pattern.abdomen))}</strong></div><div><span>Oxygen</span><strong>${esc(humanSignal(pattern.oxygen))}</strong></div></div><div class="respiratory-teaching-note"><strong>What to notice</strong><p>${esc(pattern.teaching)}</p></div>`;
+    patternDetail.innerHTML=`<div class="respiratory-pattern-heading"><div><span class="status gold">Selected pattern</span><h3>${esc(pattern.title)}</h3><p class="respiratory-pattern-cue">${esc(pattern.cue)}</p></div></div>${patternSvg(pattern,true)}<div class="respiratory-signal-clues"><div><span>Airflow</span><strong>${esc(humanSignal(pattern.airflow))}</strong></div><div><span>Thorax</span><strong>${esc(humanSignal(pattern.thorax))}</strong></div><div><span>Abdomen</span><strong>${esc(humanSignal(pattern.abdomen))}</strong></div><div><span>Oxygen</span><strong>${esc(humanSignal(pattern.oxygen))}</strong></div></div><div class="respiratory-teaching-note"><strong>What to notice</strong><p>${esc(pattern.teaching)}</p></div>`;
   }
   function renderPatterns(){
     patternHost.innerHTML=engine.PATTERNS.map(pattern=>`<button class="respiratory-pattern-button ${pattern.id===state.activePattern?'active':''}" type="button" data-respiratory-pattern="${esc(pattern.id)}" aria-pressed="${pattern.id===state.activePattern?'true':'false'}"><strong>${esc(pattern.title)}</strong><span>${esc(pattern.cue)}</span></button>`).join('');
     renderPatternDetail();
   }
+  function buildVisualCases(){
+    const ids=shuffleLocal(engine.PATTERNS.map(pattern=>pattern.id));
+    return ids.map(id=>{const distractors=shuffleLocal(engine.PATTERNS.filter(pattern=>pattern.id!==id).map(pattern=>pattern.id)).slice(0,3);return {patternId:id,optionIds:shuffleLocal([id,...distractors])};});
+  }
+  function visualCase(){return state.visualCases[state.visualIndex]||null;}
+  function renderVisualChallenge(){
+    visualWorkspace.hidden=false;
+    if(state.visualFinished){
+      const percent=Math.round(state.visualCorrect/Math.max(1,state.visualCases.length)*100);
+      visualWorkspace.innerHTML=`<div class="respiratory-visual-result"><div class="eyebrow">Visual respiratory challenge complete</div><h3>${state.visualCorrect}/${state.visualCases.length} correct · ${percent}%</h3><p>Use the comparison gallery above to revisit any airflow-versus-effort relationship that was difficult. This visual score is practice feedback and does not change the formal Respiratory Lab completion rule.</p><div class="actions"><button class="btn primary" type="button" data-respiratory-visual-restart>Practice the visual challenge again</button><button class="btn secondary" type="button" data-respiratory-visual-close>Close visual challenge</button></div></div>`;
+      return;
+    }
+    const item=visualCase();if(!item)return;const pattern=engine.patternById(item.patternId);const selected=state.visualSelected;
+    const options=item.optionIds.map(id=>{const option=engine.patternById(id);let cls='respiratory-visual-choice';if(selected===id)cls+=' selected';if(state.visualLocked&&id===item.patternId)cls+=' correct';if(state.visualLocked&&selected===id&&id!==item.patternId)cls+=' incorrect';return `<button class="${cls}" type="button" data-respiratory-visual-answer="${esc(id)}" ${state.visualLocked?'disabled':''}>${esc(option.title)}</button>`;}).join('');
+    const feedback=state.visualLocked?`<div class="respiratory-visual-feedback ${selected===item.patternId?'correct':'retry'}"><strong>${selected===item.patternId?'Correct':'Review'} · ${esc(pattern.title)}</strong><p>${esc(pattern.cue)}</p><p>${esc(pattern.teaching)}</p><div class="respiratory-signal-clues"><div><span>Airflow</span><strong>${esc(humanSignal(pattern.airflow))}</strong></div><div><span>Thorax</span><strong>${esc(humanSignal(pattern.thorax))}</strong></div><div><span>Abdomen</span><strong>${esc(humanSignal(pattern.abdomen))}</strong></div><div><span>Oxygen</span><strong>${esc(humanSignal(pattern.oxygen))}</strong></div></div></div>`:'';
+    const action=!state.visualLocked?'<button class="btn primary" type="button" data-respiratory-visual-check>Check visual answer</button>':state.visualIndex<state.visualCases.length-1?'<button class="btn primary" type="button" data-respiratory-visual-next>Next visual case</button>':'<button class="btn primary" type="button" data-respiratory-visual-finish>Finish visual challenge</button>';
+    visualWorkspace.innerHTML=`<div class="respiratory-visual-case"><div class="respiratory-visual-progress"><span class="status gold">Case ${state.visualIndex+1} of ${state.visualCases.length}</span><strong>Which respiratory pattern best matches this tracing?</strong></div>${patternSvg(pattern,false)}<p class="respiratory-visual-prompt">Compare the airflow reduction with thoracic and abdominal effort before choosing an answer.</p><div class="respiratory-visual-options" role="group" aria-label="Respiratory pattern answer choices">${options}</div>${feedback}<div class="actions">${action}<button class="btn secondary" type="button" data-respiratory-visual-close>Close visual challenge</button></div></div>`;
+  }
+  function startVisualChallenge(){
+    state.visualCases=buildVisualCases();state.visualIndex=0;state.visualSelected=null;state.visualLocked=false;state.visualCorrect=0;state.visualFinished=false;renderVisualChallenge();visualWorkspace.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function checkVisualAnswer(){
+    const item=visualCase();if(!item||!state.visualSelected||state.visualLocked)return;state.visualLocked=true;if(state.visualSelected===item.patternId)state.visualCorrect+=1;renderVisualChallenge();
+  }
+  function nextVisualCase(){if(!state.visualLocked)return;state.visualIndex+=1;state.visualSelected=null;state.visualLocked=false;renderVisualChallenge();}
   function renderSession(){
     workspace.hidden=false;
     workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D2A · D2B · D3B respiratory checkpoint</div><h2>Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-respiratory-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint draws respiratory-relevant learner questions from the validated setup, troubleshooting, and event-scoring banks.</p><form data-respiratory-form>${state.questions.map((question,index)=>`<fieldset class="respiratory-question"><legend><span>${index+1}</span>${esc(question.prompt)}</legend>${question.options.map(option=>`<label class="respiratory-option"><input type="radio" name="respiratory-${esc(question.id)}" value="${esc(option)}"><span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score respiratory checkpoint</button></div></form><div data-respiratory-result></div>`;
@@ -111,12 +140,21 @@
       state.saved=window.RPSGTStorage.load();const modules=await Promise.all(['data/question-bank/d2a.json','data/question-bank/d2b.json','data/question-bank/d3b.json'].map(loadJson));state.bank=modules.flatMap(module=>module.questions||[]);
       if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE) throw new Error('The validated D2A/D2B/D3B banks do not contain enough eligible respiratory questions.');
       renderSummary();renderStations();renderPatterns();
-    }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Respiratory lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;}
+    }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Respiratory lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;visualStartButtons.forEach(button=>button.disabled=true);}
   }
   startButton.addEventListener('click',startSession);
+  visualStartButtons.forEach(button=>button.addEventListener('click',startVisualChallenge));
   patternHost.addEventListener('click',event=>{const button=event.target.closest('[data-respiratory-pattern]');if(!button)return;state.activePattern=button.dataset.respiratoryPattern;renderPatterns();});
   stationHost.addEventListener('click',event=>{const button=event.target.closest('[data-respiratory-station]');if(!button||button.disabled)return;const report=engine.summary(state.saved.labs);const id=button.dataset.respiratoryStation;const next=!Boolean(report.checklist[id]);saveLabs(engine.setStation(state.saved.labs,id,next,new Date().toISOString()));renderSummary();renderStations();});
-  document.addEventListener('click',event=>{if(event.target.closest('[data-respiratory-cancel]')){state.questions=[];workspace.hidden=true;workspace.innerHTML='';}});
+  document.addEventListener('click',event=>{
+    const visualAnswer=event.target.closest('[data-respiratory-visual-answer]');if(visualAnswer&&!state.visualLocked){state.visualSelected=visualAnswer.dataset.respiratoryVisualAnswer;renderVisualChallenge();return;}
+    if(event.target.closest('[data-respiratory-visual-check]')){checkVisualAnswer();return;}
+    if(event.target.closest('[data-respiratory-visual-next]')){nextVisualCase();return;}
+    if(event.target.closest('[data-respiratory-visual-finish]')){state.visualFinished=true;renderVisualChallenge();return;}
+    if(event.target.closest('[data-respiratory-visual-restart]')){startVisualChallenge();return;}
+    if(event.target.closest('[data-respiratory-visual-close]')){visualWorkspace.hidden=true;visualWorkspace.innerHTML='';return;}
+    if(event.target.closest('[data-respiratory-cancel]')){state.questions=[];workspace.hidden=true;workspace.innerHTML='';}
+  });
   document.addEventListener('submit',event=>{if(event.target.matches('[data-respiratory-form]')){event.preventDefault();submit(event.target);}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
