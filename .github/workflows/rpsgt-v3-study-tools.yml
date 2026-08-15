@@ -7,10 +7,13 @@ on:
       - 'rpsgt-v3/core/memory-arcade.js'
       - 'rpsgt-v3/core/glossary-games.js'
       - 'rpsgt-v3/core/question-option-order.js'
+      - 'rpsgt-v3/core/learner-surface-guard.js'
       - 'rpsgt-v3/practice.html'
       - 'rpsgt-v3/review.html'
       - 'rpsgt-v3/readiness.html'
       - 'rpsgt-v3/mock.html'
+      - 'rpsgt-v3/study.html'
+      - 'rpsgt-v3/lab-scoring.html'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
@@ -21,6 +24,7 @@ on:
       - 'rpsgt-v3/core/math-coach*.js'
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
+      - 'rpsgt-v3/scripts/test-learner-question-retirements.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - 'rpsgt-v3/scripts/test-glossary-games.mjs'
@@ -35,10 +39,13 @@ on:
       - 'rpsgt-v3/core/memory-arcade.js'
       - 'rpsgt-v3/core/glossary-games.js'
       - 'rpsgt-v3/core/question-option-order.js'
+      - 'rpsgt-v3/core/learner-surface-guard.js'
       - 'rpsgt-v3/practice.html'
       - 'rpsgt-v3/review.html'
       - 'rpsgt-v3/readiness.html'
       - 'rpsgt-v3/mock.html'
+      - 'rpsgt-v3/study.html'
+      - 'rpsgt-v3/lab-scoring.html'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
@@ -49,6 +56,7 @@ on:
       - 'rpsgt-v3/core/math-coach*.js'
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
+      - 'rpsgt-v3/scripts/test-learner-question-retirements.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
       - 'rpsgt-v3/scripts/test-glossary-games.mjs'
@@ -69,6 +77,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+      - name: Validate learner question retirement policy
+        run: node rpsgt-v3/scripts/test-learner-question-retirements.mjs
       - name: Validate Math Coach engine and catalog
         run: node rpsgt-v3/scripts/test-math-coach-system.mjs
       - name: Validate Math Coach shell
