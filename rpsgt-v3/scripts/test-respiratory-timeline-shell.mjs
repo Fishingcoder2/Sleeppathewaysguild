@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,'..');
 const html=await readFile(join(root,'lab-respiratory.html'),'utf8');
-const js=await readFile(join(root,'core','respiratory-timeline-lab.js'),'utf8');
+const js=await readFile(join(root,'core','respiratory-timeline-ui.js'),'utf8');
 const css=await readFile(join(root,'assets','respiratory-timeline.css'),'utf8');
 const catalog=JSON.parse(await readFile(join(root,'data','labs','catalog.json'),'utf8'));
 
@@ -18,7 +18,7 @@ for(const token of [
   '5-minute Full Pattern View',
   '2:30 Click-the-Evidence',
   'core/respiratory-timeline-engine.js',
-  'core/respiratory-timeline-lab.js',
+  'core/respiratory-timeline-ui.js',
   'assets/respiratory-timeline.css'
 ]) assert.ok(html.includes(token),`Respiratory page is missing ${token}`);
 
