@@ -61,7 +61,9 @@ jobs:
           for(let index=0;index<8;index+=1){
             const prompt=(await workspace.locator('.report-intro').first().innerText()).trim();
             const item=pack.cases.find(entry=>entry.prompt===prompt);if(!item)throw new Error('Could not match rendered context case to case pack.');
-            if(!captured.has(item.family)){await workspace.screenshot({path:`qa-scoring-context/${item.family}.png`});captured.add(item.family);}
+            const cue=await workspace.locator('[data-scoring-context-scroll-cue]').innerText();if(!/Swipe left\/right to inspect the full/i.test(cue))throw new Error('Full-trace swipe guidance is missing.');
+            const trace=workspace.locator('.scoring-context-trace');const dimensions=await trace.evaluate(node=>({scrollWidth:node.scrollWidth,clientWidth:node.clientWidth}));if(dimensions.scrollWidth<=dimensions.clientWidth)throw new Error('Context trace no longer preserves horizontal detail on mobile.');
+            if(!captured.has(item.family)){await workspace.locator('[data-scoring-context-canvas]').screenshot({path:`qa-scoring-context/${item.family}-full-trace.png`});captured.add(item.family);}
             await workspace.getByRole('button',{name:item.answer,exact:true}).click();
             await page.getByText(/intended teaching decision/i).waitFor();
             if(index===0){const wrong=item.evidence.find(entry=>!entry.correct);await workspace.getByRole('button',{name:wrong.label,exact:true}).click();const proof=(await workspace.locator('[data-scoring-context-evidence]').innerText()).toLowerCase();if(!proof.includes('0/2 clues confirmed'))throw new Error('Wrong evidence choice advanced the context case.');}
