@@ -9,6 +9,7 @@
   const TOP_PAD=34;
   const BOTTOM_PAD=26;
   const ROW_HEIGHT=58;
+  const N3_ROW_SCALE=10;
   const TAU=Math.PI*2;
   const FREQUENCY_BANDS=Object.freeze({
     slowWave:[0.5,2],
@@ -163,7 +164,7 @@
     if(channel.type==='emg')return 22;
     if(channel.type==='spo2')return 28;
     if(channel.type==='resp')return 18;
-    if(channel.profile==='n3-delta')return 17;
+    if(channel.profile==='n3-delta')return N3_ROW_SCALE;
     return 20;
   }
   function drawGrid(ctx,width,height,duration,channels){
@@ -259,5 +260,5 @@
     const plotWidth=metrics.plotRight-metrics.labelWidth,time=((x-metrics.labelWidth)/plotWidth)*metrics.duration;
     return {channel:metrics.channels[index],channelIndex:index,time:clamp(time,0,metrics.duration)};
   }
-  return {VERSION,LABEL_WIDTH,TOP_PAD,BOTTOM_PAD,ROW_HEIGHT,FREQUENCY_BANDS,TEACHING_FREQUENCIES,sample,render,channelBox,regionStyle,targetStyle,pointPosition,hitTest};
+  return {VERSION,LABEL_WIDTH,TOP_PAD,BOTTOM_PAD,ROW_HEIGHT,N3_ROW_SCALE,FREQUENCY_BANDS,TEACHING_FREQUENCIES,sample,render,channelBox,regionStyle,targetStyle,pointPosition,hitTest};
 });
