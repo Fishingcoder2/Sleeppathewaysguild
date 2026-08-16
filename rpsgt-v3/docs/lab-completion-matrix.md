@@ -91,6 +91,18 @@ Dedicated context decisions implemented:
 
 Phase 2 is considered implemented for its single-event/context scope. It does not claim full-night or multi-epoch scoring parity.
 
+### Frequency calibration lock
+
+The original staging renderer and the newer Scoring-context renderer are calibrated to the same teaching bands:
+- Wake posterior alpha: 8–13 Hz, with faster activity mixed in as appropriate.
+- N1: low-amplitude mixed-frequency EEG predominantly in the 4–7 Hz theta range.
+- N2: low-amplitude mixed-frequency/theta background with spindle activity in the 11–16 Hz range, most commonly 12–14 Hz.
+- N3: dominant slow-wave activity in the 0.5–2 Hz range.
+- REM: low-amplitude mixed-frequency EEG, with optional 2–6 Hz sawtooth morphology and low chin tone.
+- Arousal teaching bursts are rendered as an abrupt faster-frequency shift above the surrounding stage background and are sampled densely enough to avoid aliasing into a falsely slow appearance.
+
+Regression coverage measures the generated signal itself, not only configured constants. QA fails if rendered stage-band power drifts from the intended stage character or if the arousal fast-band contrast collapses.
+
 ### Phase 3 — multi-epoch scoring
 
 Still pending:
