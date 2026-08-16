@@ -56,16 +56,17 @@ jobs:
           const pack=await page.evaluate(()=>fetch('data/scoring/context-cases.json').then(r=>r.json()));
           const launchers=page.locator('[data-scoring-context-start]');if(await launchers.count()!==2)throw new Error('Expected two context-skill launch buttons.');
           await launchers.nth(1).click();await page.locator('[data-scoring-context-canvas]').waitFor();
+          const workspace=page.locator('[data-scoring-context-workspace]');
           const captured=new Set();
           for(let index=0;index<8;index+=1){
-            const prompt=(await page.locator('[data-scoring-context-workspace] .report-intro').first().innerText()).trim();
+            const prompt=(await workspace.locator('.report-intro').first().innerText()).trim();
             const item=pack.cases.find(entry=>entry.prompt===prompt);if(!item)throw new Error('Could not match rendered context case to case pack.');
-            if(!captured.has(item.family)){await page.locator('[data-scoring-context-workspace]').screenshot({path:`qa-scoring-context/${item.family}.png`});captured.add(item.family);}
-            await page.locator('[data-scoring-context-answer]').filter({hasText:item.answer}).click();
+            if(!captured.has(item.family)){await workspace.screenshot({path:`qa-scoring-context/${item.family}.png`});captured.add(item.family);}
+            await workspace.getByRole('button',{name:item.answer,exact:true}).click();
             await page.getByText(/intended teaching decision/i).waitFor();
-            if(index===0){const wrong=item.evidence.find(entry=>!entry.correct);await page.locator('[data-scoring-context-evidence-choice]').filter({hasText:wrong.label}).click();const proof=(await page.locator('[data-scoring-context-evidence]').innerText()).toLowerCase();if(!proof.includes('0/2 clues confirmed'))throw new Error('Wrong evidence choice advanced the context case.');}
-            for(const choice of item.evidence.filter(entry=>entry.correct)){await page.locator('[data-scoring-context-evidence-choice]').filter({hasText:choice.label}).click();}
-            await page.getByText(/Evidence confirmed/i).waitFor();await page.locator('[data-scoring-context-next]').click();
+            if(index===0){const wrong=item.evidence.find(entry=>!entry.correct);await workspace.getByRole('button',{name:wrong.label,exact:true}).click();const proof=(await workspace.locator('[data-scoring-context-evidence]').innerText()).toLowerCase();if(!proof.includes('0/2 clues confirmed'))throw new Error('Wrong evidence choice advanced the context case.');}
+            for(const choice of item.evidence.filter(entry=>entry.correct)){await workspace.getByRole('button',{name:choice.label,exact:true}).click();}
+            await page.getByText(/Evidence confirmed/i).waitFor();await workspace.locator('[data-scoring-context-next]').click();
           }
           await page.getByText(/Scoring-context skill passed/i).waitFor();
           const summary=(await page.locator('[data-scoring-summary]').innerText()).toLowerCase();if(!summary.includes('scoring context')||!summary.includes('100%'))throw new Error('Context skill result is missing from Scoring summary.');
