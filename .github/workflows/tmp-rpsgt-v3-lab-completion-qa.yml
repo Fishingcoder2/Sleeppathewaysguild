@@ -33,9 +33,12 @@ jobs:
         run: |
           node --check core/scoring-lab-engine.js
           node --check core/lab-scoring.js
+          node --check core/lab-catalog-engine.js
+          node --check core/labs.js
           node scripts/test-scoring-lab-system.mjs
           node scripts/test-scoring-lab-shell.mjs
           node scripts/test-lab-catalog.mjs
+          node scripts/test-labs-shell.mjs
       - name: Exercise interactive staging skill in Chromium
         run: |
           python3 -m http.server 4173 --directory . >/tmp/rpsgt-v3-lab-http.log 2>&1 &
@@ -49,7 +52,9 @@ jobs:
           const browser = await chromium.launch({ headless: true });
           const page = await browser.newPage({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 1 });
           await page.goto('http://127.0.0.1:4173/lab-scoring.html', { waitUntil: 'networkidle' });
-          await page.locator('[data-scoring-stage-start]').first().click();
+          const launchers = page.locator('[data-scoring-stage-start]');
+          if (await launchers.count() !== 2) throw new Error('Expected two stage-skill launch buttons.');
+          await launchers.nth(1).click();
           await page.locator('[data-scoring-stage-canvas]').waitFor();
           const canvas = page.locator('[data-scoring-stage-canvas]');
           const size = await canvas.evaluate(node => ({ width: node.width, height: node.height }));
@@ -61,13 +66,20 @@ jobs:
             await page.locator('[data-scoring-stage-feedback]').getByText('The intended stage is').waitFor();
             await page.locator('[data-scoring-stage-next]').click();
           }
-          await page.getByText(/Stage recognition skill/).first().waitFor();
+          await page.getByText(/Stage recognition skill (passed|saved)/).waitFor();
           await page.locator('main').screenshot({ path: 'qa-lab-completion/scoring-stage-skill-mobile.png', fullPage: true });
           const bodyText = await page.locator('body').innerText();
           if (!bodyText.includes('Stage skill')) throw new Error('Stage-skill summary is not visible.');
+          await page.goto('http://127.0.0.1:4173/labs.html', { waitUntil: 'networkidle' });
+          const labsText = await page.locator('main').innerText();
+          for (const forbidden of ['Mapped complete','Mapped progress','Last mapped position','No mapped completion yet','task mappings']) {
+            if (labsText.includes(forbidden)) throw new Error(`Learner lab catalog exposes ${forbidden}.`);
+          }
+          if (!labsText.includes('Review + checkpoint') || !labsText.includes('Interactive lab')) throw new Error('Lab completeness labels are not visible.');
+          await page.locator('main').screenshot({ path: 'qa-lab-completion/lab-catalog-mobile.png', fullPage: true });
           await browser.close();
           NODE
-      - name: Upload scoring QA screenshot
+      - name: Upload lab completion QA screenshots
         uses: actions/upload-artifact@v4
         with:
           name: rpsgt-v3-lab-completion-qa
