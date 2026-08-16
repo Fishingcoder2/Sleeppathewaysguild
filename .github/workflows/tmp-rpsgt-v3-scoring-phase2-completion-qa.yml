@@ -57,23 +57,22 @@ jobs:
           const launchers=page.locator('[data-scoring-context-start]');if(await launchers.count()!==2)throw new Error('Expected two context-skill launch buttons.');
           await launchers.nth(1).click();await page.locator('[data-scoring-context-canvas]').waitFor();
           const workspace=page.locator('[data-scoring-context-workspace]');
-          const captured=new Set();
+          const capturedIds=new Set();
           for(let index=0;index<8;index+=1){
             const prompt=(await workspace.locator('.report-intro').first().innerText()).trim();
             const item=pack.cases.find(entry=>entry.prompt===prompt);if(!item)throw new Error('Could not match rendered context case to case pack.');
             const cue=await workspace.locator('[data-scoring-context-scroll-cue]').innerText();if(!/Swipe left\/right to inspect the full/i.test(cue))throw new Error('Full-trace swipe guidance is missing.');
             const trace=workspace.locator('.scoring-context-trace');const dimensions=await trace.evaluate(node=>({scrollWidth:node.scrollWidth,clientWidth:node.clientWidth}));if(dimensions.scrollWidth<=dimensions.clientWidth)throw new Error('Context trace no longer preserves horizontal detail on mobile.');
-            if(!captured.has(item.family)){
-              const dataUrl=await workspace.locator('[data-scoring-context-canvas]').evaluate(canvas=>canvas.toDataURL('image/png'));
-              await writeFile(`qa-scoring-context/${item.family}-full-trace.png`,Buffer.from(dataUrl.split(',')[1],'base64'));
-              captured.add(item.family);
-            }
+            const dataUrl=await workspace.locator('[data-scoring-context-canvas]').evaluate(canvas=>canvas.toDataURL('image/png'));
+            await writeFile(`qa-scoring-context/${item.id}.png`,Buffer.from(dataUrl.split(',')[1],'base64'));
+            capturedIds.add(item.id);
             await workspace.getByRole('button',{name:item.answer,exact:true}).click();
             await page.getByText(/intended teaching decision/i).waitFor();
             if(index===0){const wrong=item.evidence.find(entry=>!entry.correct);await workspace.getByRole('button',{name:wrong.label,exact:true}).click();const proof=(await workspace.locator('[data-scoring-context-evidence]').innerText()).toLowerCase();if(!proof.includes('0/2 clues confirmed'))throw new Error('Wrong evidence choice advanced the context case.');}
             for(const choice of item.evidence.filter(entry=>entry.correct)){await workspace.getByRole('button',{name:choice.label,exact:true}).click();}
             await page.getByText(/Evidence confirmed/i).waitFor();await workspace.locator('[data-scoring-context-next]').click();
           }
+          if(capturedIds.size!==8||pack.cases.some(item=>!capturedIds.has(item.id)))throw new Error('Did not capture all eight context case traces.');
           await page.getByText(/Scoring-context skill passed/i).waitFor();
           const summary=(await page.locator('[data-scoring-summary]').innerText()).toLowerCase();if(!summary.includes('scoring context')||!summary.includes('100%'))throw new Error('Context skill result is missing from Scoring summary.');
           let saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('spg_rpsgt_v3')));if(saved?.labs?.scoring?.contextSkillPassed!==true)throw new Error('Context skill did not persist.');
