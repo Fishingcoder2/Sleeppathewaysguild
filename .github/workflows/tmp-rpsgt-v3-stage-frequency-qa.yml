@@ -1,0 +1,71 @@
+name: Temporary RPSGT v3 sleep-stage frequency QA
+
+on:
+  push:
+    branches:
+      - agent/rpsgt-v3-scoring-phase2-completion-20260816
+    paths:
+      - 'rpsgt-v3/core/scoring-context-renderer.js'
+      - 'rpsgt-v3/scripts/test-sleep-stage-frequency-bands.mjs'
+      - '.github/workflows/tmp-rpsgt-v3-stage-frequency-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  stage-frequency-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install browser dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run stage-frequency regressions
+        run: |
+          node --check core/scoring-context-renderer.js
+          node scripts/test-sleep-stage-frequency-bands.mjs
+          node scripts/test-visual-lab.mjs
+          node scripts/test-scoring-context-system.mjs
+          node scripts/test-scoring-lab-shell.mjs
+      - name: Export staging and arousal canvases
+        run: |
+          python3 -m http.server 4173 --directory . >/tmp/rpsgt-v3-stage-frequency-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          node --input-type=module <<'NODE'
+          import { chromium } from '@playwright/test';
+          import { mkdir, writeFile } from 'node:fs/promises';
+          await mkdir('qa-stage-frequency',{recursive:true});
+          const browser=await chromium.launch({headless:true});
+          const page=await browser.newPage({viewport:{width:430,height:932}});
+          await page.goto('http://127.0.0.1:4173/lab-visual.html',{waitUntil:'networkidle'});
+          const visualPack=await page.evaluate(()=>fetch('data/visual/prototype-sleep-staging.json').then(r=>r.json()));
+          for(const study of visualPack.studies){
+            const dataUrl=await page.evaluate(study=>{const canvas=document.createElement('canvas');document.body.appendChild(canvas);window.RPSGTVisualPSGRenderer.render(canvas,study,{width:1100});return canvas.toDataURL('image/png');},study);
+            await writeFile(`qa-stage-frequency/visual-${study.stage}.png`,Buffer.from(dataUrl.split(',')[1],'base64'));
+          }
+          await page.goto('http://127.0.0.1:4173/lab-scoring.html',{waitUntil:'networkidle'});
+          const contextPack=await page.evaluate(()=>fetch('data/scoring/context-cases.json').then(r=>r.json()));
+          for(const id of ['context-arousal-n2-valid','context-arousal-rem-no-chin']){
+            const item=contextPack.cases.find(entry=>entry.id===id);if(!item)throw new Error('Missing '+id);
+            const dataUrl=await page.evaluate(study=>{const canvas=document.createElement('canvas');document.body.appendChild(canvas);window.RPSGTScoringContextRenderer.render(canvas,study,{width:1100});return canvas.toDataURL('image/png');},item.study);
+            await writeFile(`qa-stage-frequency/${id}.png`,Buffer.from(dataUrl.split(',')[1],'base64'));
+          }
+          await browser.close();
+          NODE
+      - name: Upload stage-frequency QA
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-stage-frequency-qa
+          path: rpsgt-v3/qa-stage-frequency/*.png
+          if-no-files-found: error
+          retention-days: 7
