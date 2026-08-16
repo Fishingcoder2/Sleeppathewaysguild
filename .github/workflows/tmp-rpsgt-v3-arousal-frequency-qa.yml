@@ -1,0 +1,76 @@
+name: Temporary RPSGT v3 arousal frequency QA
+
+on:
+  push:
+    branches:
+      - agent/rpsgt-v3-scoring-phase2-completion-20260816
+    paths:
+      - 'rpsgt-v3/core/scoring-context-renderer.js'
+      - 'rpsgt-v3/scripts/test-scoring-context-system.mjs'
+      - '.github/workflows/tmp-rpsgt-v3-arousal-frequency-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  arousal-frequency-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install browser dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run context regression
+        run: |
+          node --check core/scoring-context-renderer.js
+          node scripts/test-scoring-context-system.mjs
+          node scripts/test-scoring-lab-shell.mjs
+      - name: Exercise all context cases and export arousal canvases
+        run: |
+          python3 -m http.server 4173 --directory . >/tmp/rpsgt-v3-arousal-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          node --input-type=module <<'NODE'
+          import { chromium } from '@playwright/test';
+          import { mkdir, writeFile } from 'node:fs/promises';
+          await mkdir('qa-arousal-frequency',{recursive:true});
+          const browser=await chromium.launch({headless:true});
+          const page=await browser.newPage({viewport:{width:430,height:932}});
+          await page.goto('http://127.0.0.1:4173/lab-scoring.html',{waitUntil:'networkidle'});
+          const pack=await page.evaluate(()=>fetch('data/scoring/context-cases.json').then(r=>r.json()));
+          const launchers=page.locator('[data-scoring-context-start]');
+          await launchers.nth(1).click();
+          const workspace=page.locator('[data-scoring-context-workspace]');
+          await workspace.locator('[data-scoring-context-canvas]').waitFor();
+          const captured=new Set();
+          for(let index=0;index<8;index+=1){
+            const prompt=(await workspace.locator('.report-intro').first().innerText()).trim();
+            const item=pack.cases.find(entry=>entry.prompt===prompt);if(!item)throw new Error('Could not match rendered context case.');
+            if(item.family==='arousal'){
+              const dataUrl=await workspace.locator('[data-scoring-context-canvas]').evaluate(canvas=>canvas.toDataURL('image/png'));
+              await writeFile(`qa-arousal-frequency/${item.id}.png`,Buffer.from(dataUrl.split(',')[1],'base64'));
+              captured.add(item.id);
+            }
+            await workspace.getByRole('button',{name:item.answer,exact:true}).click();
+            for(const choice of item.evidence.filter(entry=>entry.correct))await workspace.getByRole('button',{name:choice.label,exact:true}).click();
+            await workspace.locator('[data-scoring-context-next]').click();
+          }
+          if(captured.size!==2)throw new Error('Expected both arousal cases to be captured.');
+          await browser.close();
+          NODE
+      - name: Upload arousal frequency QA
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-arousal-frequency-qa
+          path: rpsgt-v3/qa-arousal-frequency/*.png
+          if-no-files-found: error
+          retention-days: 7
