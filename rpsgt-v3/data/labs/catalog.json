@@ -8,7 +8,7 @@
     "progressRecord": "spg_rpsgt_v3.labs",
     "routeStatusMeaning": "status=v3-ready means the native V3 route, storage, and controller are wired; it does not mean learner-content parity is complete.",
     "contentStatusMeaning": "contentStatus separately identifies interactive breadth: interactive-foundation, interactive-rich, interactive-in-progress, review-shell, assessment-tool, or interactive-tool.",
-    "copyrightBoundary": "Catalog descriptions and task mappings are app-authored. Legacy lab content and protected source material are not copied into this catalog."
+    "copyrightBoundary": "Lab descriptions, workflow activities, and learning topics are original Sleep Pathways Guild educational material unless a source is specifically identified."
   },
   "labs": [
     {"id":"hookup","title":"Hookup and Electrode Placement","shortTitle":"Hookup","icon":"◎","description":"Landmarks, measurements, placement, impedance, patient preparation, and correction of poor contact.","taskCodes":["D2A","D2B"],"progressKey":"hookup","status":"v3-ready","contentStatus":"review-shell","plannedRoute":"lab-hookup.html","legacyHref":null},
