@@ -7,6 +7,7 @@ on:
     paths:
       - 'rpsgt-v3/core/scoring-context-renderer.js'
       - 'rpsgt-v3/scripts/test-sleep-stage-frequency-bands.mjs'
+      - 'rpsgt-v3/scripts/test-scoring-context-system.mjs'
       - '.github/workflows/tmp-rpsgt-v3-stage-frequency-qa.yml'
 
 permissions:
