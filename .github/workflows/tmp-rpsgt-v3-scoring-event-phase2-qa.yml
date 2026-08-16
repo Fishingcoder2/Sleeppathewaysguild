@@ -1,0 +1,88 @@
+name: Temporary RPSGT v3 scoring event phase 2 QA
+
+on:
+  push:
+    branches:
+      - agent/rpsgt-v3-scoring-event-evidence-phase2
+    paths:
+      - 'rpsgt-v3/**'
+      - '.github/workflows/tmp-rpsgt-v3-scoring-event-phase2-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  scoring-event-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install browser dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run scoring regressions
+        run: |
+          node --check core/scoring-lab-engine.js
+          node --check core/scoring-event-renderer.js
+          node --check core/lab-scoring.js
+          node scripts/test-scoring-lab-system.mjs
+          node scripts/test-scoring-lab-shell.mjs
+          node scripts/test-lab-catalog.mjs
+          node scripts/test-labs-shell.mjs
+      - name: Exercise event evidence drill in Chromium
+        run: |
+          python3 -m http.server 4173 --directory . >/tmp/rpsgt-v3-scoring-event-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          node --input-type=module <<'NODE'
+          import { chromium } from '@playwright/test';
+          import { mkdir } from 'node:fs/promises';
+          await mkdir('qa-scoring-event', { recursive: true });
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 1 });
+          await page.goto('http://127.0.0.1:4173/lab-scoring.html', { waitUntil: 'networkidle' });
+          const launchers = page.locator('[data-scoring-event-start]');
+          if (await launchers.count() !== 2) throw new Error('Expected two event-evidence launch buttons.');
+          await launchers.nth(1).click();
+          await page.locator('[data-scoring-event-svg]').waitFor();
+          for (let caseIndex = 0; caseIndex < 5; caseIndex += 1) {
+            const options = page.locator('[data-scoring-event-answer]');
+            if (await options.count() !== 5) throw new Error('Expected five event classifications.');
+            await options.first().click();
+            await page.getByText(/intended teaching classification/i).waitFor();
+            const svg = page.locator('[data-scoring-event-svg]');
+            await svg.click({ position: { x: 8, y: 8 } });
+            if (!/Evidence 1 of 2/i.test(await page.locator('[data-scoring-event-evidence]').innerText())) throw new Error('Wrong evidence click advanced the task.');
+            for (let target = 0; target < 2; target += 1) {
+              await page.locator('[data-scoring-event-show]').click();
+              const highlight = page.locator('.scoring-event-highlight rect');
+              await highlight.waitFor();
+              await highlight.scrollIntoViewIfNeeded();
+              await highlight.click({ position: { x: 5, y: 5 } });
+            }
+            await page.getByText(/Evidence confirmed/i).waitFor();
+            await page.locator('[data-scoring-event-next]').click();
+          }
+          await page.getByText(/Event-evidence skill (passed|saved)/i).waitFor();
+          const summary = (await page.locator('[data-scoring-summary]').innerText()).toLowerCase();
+          if (!summary.includes('event evidence')) throw new Error('Event-evidence summary is not visible.');
+          await page.locator('main').screenshot({ path: 'qa-scoring-event/scoring-event-phase2-mobile.png', fullPage: true });
+          await browser.close();
+          NODE
+      - name: Upload scoring event QA screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-scoring-event-phase2-qa
+          path: rpsgt-v3/qa-scoring-event/*.png
+          if-no-files-found: error
+          retention-days: 7
