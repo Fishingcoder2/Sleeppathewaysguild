@@ -36,7 +36,7 @@ A checklist may support a lab, but **a checklist by itself is not an interactive
 | EKG Recognition and Response | Seven review checkboxes + checkpoint; current V3 page intentionally omits older generated rhythm strips | `review-shell` | No rhythm-strip recognition/measurement experience in V3 | Original static/teaching rhythm strips, rate/rhythm sequence, signal-validity and response cases |
 | Visual Recognition / Mini PSG Viewer | Five 30-second original staging epochs; stage choices; point-to-feature targets; interval marking | `interactive-foundation` | Limited to Pack 1 staging/feature recognition | Additional visual packs after core lab rebuilds |
 | Artifact Recognition | Five original PSG-style cases, 15 scored visual decisions, no checklist credit | `interactive-foundation` | Pack breadth can grow, but current scope is genuinely interactive | Additional artifact families only after shell labs are rebuilt |
-| Sleep Staging and Event Scoring | Seven review checkboxes + checkpoint on main; staging skill interaction being added in this initiative | `interactive-in-progress` | Event scoring, arousal, respiratory, limb-movement, transition, and multi-epoch practice still incomplete | Reuse validated staging renderer first, then add event-localization and multi-epoch scoring |
+| Sleep Staging and Event Scoring | Five staging epochs + five respiratory event-classification cases with ten required waveform-evidence clicks + seven review stations + D3 checkpoint | `interactive-in-progress` | Limb-movement context, artifact-versus-physiology, stage-transition, broader arousal work, and multi-epoch scoring still incomplete | Expand event-evidence families, then add multi-epoch scoring |
 | Respiratory Signals and Event Recognition | 5-minute pattern views, 2:30 click-the-evidence cases, pattern comparison, 7-case visual challenge, stations, checkpoint | `interactive-rich` | Rich interaction already exists; completion requirements intentionally remain the established seven stations + checkpoint | Preserve current locked completion rule; refine only when clinical/visual QA identifies a concrete gap |
 | PAP and Titration | Seven review checkboxes + 10-question checkpoint | `review-shell` | No patient/PSG titration scenario requiring a next action | Scenario sequence: interface/leak/comfort/event response/stage-position/advanced-mode boundary/documentation |
 | Instrumentation, Filters, and Signal Pathways | Seven review checkboxes + 10-question checkpoint | `review-shell` | No visible manipulation of filters, sensitivity, polarity, sampling, or signal pathway | Interactive signal-path tracing and before/after waveform controls |
@@ -63,6 +63,7 @@ Artifact, Visual Skills, and Respiratory should be used as implementation refere
 
 ### Phase 1 — stage recognition inside Scoring Lab
 
+Implemented:
 - Reuse the five validated original 30-second W/N1/N2/N3/REM schematic epochs.
 - Hide stage identity until the learner answers.
 - Record first-attempt accuracy across all five epochs.
@@ -72,7 +73,19 @@ Artifact, Visual Skills, and Respiratory should be used as implementation refere
 
 ### Phase 2 — event evidence
 
-Add original schematic interactions for arousal, respiratory-event evidence, limb-movement context, artifact-versus-physiology, and stage-transition decisions.
+Respiratory-event subset implemented:
+- Five shuffled original 2:30 schematic cases: obstructive apnea, central apnea, mixed apnea, obstructive hypopnea, and RERA/flow limitation ending in arousal.
+- Learner commits the event classification before the answer is revealed.
+- Two waveform-evidence targets must then be located for every case, for ten required evidence clicks total.
+- Wrong evidence clicks remain on the same target with a persistent hint.
+- “Show me” highlights the target but does not auto-complete it.
+- New Scoring completions require at least 80% classification accuracy plus all ten evidence targets.
+
+Still pending in Phase 2:
+- dedicated arousal-only decisions beyond the RERA context,
+- limb-movement context,
+- artifact-versus-physiology scoring decisions,
+- stage-transition/event-boundary decisions.
 
 ### Phase 3 — multi-epoch scoring
 
