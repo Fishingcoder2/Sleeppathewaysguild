@@ -64,10 +64,13 @@ jobs:
             await svg.click({ position: { x: 8, y: 8 } });
             if (!/Evidence 1 of 2/i.test(await page.locator('[data-scoring-event-evidence]').innerText())) throw new Error('Wrong evidence click advanced the task.');
             for (let target = 0; target < 2; target += 1) {
+              const trace = page.locator('.scoring-event-trace');
+              const before = await trace.evaluate(node => node.scrollLeft);
               await page.locator('[data-scoring-event-show]').click();
               const highlight = page.locator('.scoring-event-highlight rect');
               await highlight.waitFor();
-              await highlight.scrollIntoViewIfNeeded();
+              const after = await trace.evaluate(node => node.scrollLeft);
+              if (after === before && after === 0) throw new Error('Show me did not center the highlighted evidence in the horizontal trace.');
               if (caseIndex === 0 && target === 0) await page.locator('[data-scoring-event-workspace]').screenshot({ path: 'qa-scoring-event/scoring-event-trace-mobile.png' });
               await highlight.click({ position: { x: 5, y: 5 } });
             }
