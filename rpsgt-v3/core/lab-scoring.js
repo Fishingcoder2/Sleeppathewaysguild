@@ -6,9 +6,9 @@
   const summaryHost=document.querySelector('[data-scoring-summary]');
   const stationHost=document.querySelector('[data-scoring-stations]');
   const startButton=document.querySelector('[data-scoring-start]');
-  const stageStartButton=document.querySelector('[data-scoring-stage-start]');
+  const stageStartButtons=[...document.querySelectorAll('[data-scoring-stage-start]')];
   const stageWorkspace=document.querySelector('[data-scoring-stage-workspace]');
-  if(!workspace||!summaryHost||!stationHost||!startButton||!stageStartButton||!stageWorkspace) return;
+  if(!workspace||!summaryHost||!stationHost||!startButton||!stageStartButtons.length||!stageWorkspace) return;
   const state={saved:null,questions:[],bank:[],stageItems:[],stageRun:null};
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
@@ -19,7 +19,7 @@
   function renderSummary(){
     const report=engine.summary(state.saved.labs);
     summaryHost.innerHTML=`<div><span>Status</span><strong>${report.completed?'Completed':report.status==='in-progress'?'In progress':'Not started'}</strong></div><div><span>Stage skill</span><strong>${report.stageSkillAttempts?report.stageSkillBestPercent+'%':'—'}</strong></div><div><span>Review stations</span><strong>${report.stationsComplete}/${report.stationCount}</strong></div><div><span>Best checkpoint</span><strong>${report.attempts?report.bestPercent+'%':'—'}</strong></div><div><span>Checkpoint attempts</span><strong>${report.attempts}</strong></div><div><span>Last checkpoint</span><strong>${report.latestSession?formatDate(report.latestSession.completedAt):'—'}</strong></div>`;
-    stageStartButton.textContent=report.stageSkillPassed?'Practice 5-stage skill check again':'Start 5-stage skill check';
+    stageStartButtons.forEach(button=>{button.textContent=report.stageSkillPassed?'Practice 5-stage skill check again':'Start 5-stage skill check';});
     startButton.textContent=report.attempts?'Start another 10-question checkpoint':'Start 10-question checkpoint';
     if(report.completed) startButton.textContent='Practice another 10-question checkpoint';
   }
@@ -39,6 +39,7 @@
     stageWorkspace.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function startStageSkill(){
+    if(!state.saved||!state.stageItems.length) return;
     saveLabs(engine.start(state.saved.labs,new Date().toISOString()));
     state.stageRun={items:shuffle(state.stageItems),index:0,answers:{},locked:false};
     renderSummary();renderStageQuestion();
@@ -73,6 +74,7 @@
     host.innerHTML=`<div class="scoring-result ${record.passed?'pass':'retry'}"><h3>${report.completed?'Scoring lab completed':record.passed?'Checkpoint passed—finish the remaining skill work':'Checkpoint saved—review and retry'}</h3><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${report.completed?'The staging skill check, all seven review stations, and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish the staging skill check and every review station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}`;
   }
   function startSession(){
+    if(!state.saved) return;
     saveLabs(engine.start(state.saved.labs,new Date().toISOString()));
     state.questions=engine.selectQuestions(state.bank,engine.SESSION_SIZE,'scoring|'+new Date().toISOString());
     if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>Scoring checkpoint unavailable.</strong> Fewer than ten eligible learner-practice questions were found across D3A, D3B, and D3C.</div>';return;}
@@ -107,12 +109,12 @@
       if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE) throw new Error('The validated D3A/D3B/D3C banks do not contain enough eligible scoring questions.');
       if(state.stageItems.length!==engine.STAGE_SKILL_SIZE||new Set(state.stageItems.map(item=>item.question.answer)).size!==engine.STAGE_SKILL_SIZE) throw new Error('The five-stage interactive scoring pack is incomplete.');
       renderSummary();renderStations();
-    }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Scoring lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;stageStartButton.disabled=true;}
+    }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Scoring lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;stageStartButtons.forEach(button=>{button.disabled=true;});}
   }
   startButton.addEventListener('click',startSession);
-  stageStartButton.addEventListener('click',startStageSkill);
   document.addEventListener('change',event=>{const station=event.target.closest('[data-scoring-station]');if(!station)return;saveLabs(engine.setStation(state.saved.labs,station.dataset.scoringStation,station.checked,new Date().toISOString()));renderSummary();renderStations();});
   document.addEventListener('click',event=>{
+    if(event.target.closest('[data-scoring-stage-start]')){startStageSkill();return;}
     const stageAnswer=event.target.closest('[data-scoring-stage-answer]');if(stageAnswer){answerStage(stageAnswer);return;}
     if(event.target.closest('[data-scoring-stage-next]')){nextStage();return;}
     if(event.target.closest('[data-scoring-stage-retry]')){startStageSkill();return;}
