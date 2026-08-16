@@ -68,6 +68,7 @@ jobs:
               const highlight = page.locator('.scoring-event-highlight rect');
               await highlight.waitFor();
               await highlight.scrollIntoViewIfNeeded();
+              if (caseIndex === 0 && target === 0) await page.locator('[data-scoring-event-workspace]').screenshot({ path: 'qa-scoring-event/scoring-event-trace-mobile.png' });
               await highlight.click({ position: { x: 5, y: 5 } });
             }
             await page.getByText(/Evidence confirmed/i).waitFor();
@@ -79,7 +80,7 @@ jobs:
           await page.locator('main').screenshot({ path: 'qa-scoring-event/scoring-event-phase2-mobile.png', fullPage: true });
           await browser.close();
           NODE
-      - name: Upload scoring event QA screenshot
+      - name: Upload scoring event QA screenshots
         uses: actions/upload-artifact@v4
         with:
           name: rpsgt-v3-scoring-event-phase2-qa
