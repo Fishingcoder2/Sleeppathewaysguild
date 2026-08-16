@@ -24,12 +24,12 @@
   }
   function renderSession(){
     workspace.hidden=false;
-    workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D3A · D3B · D3C scoring checkpoint</div><h2>Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-scoring-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint balances learner-eligible scoring questions across D3A, D3B, and D3C and varies question families when the validated bank supports them.</p><form data-scoring-form>${state.questions.map((question,index)=>`<fieldset class="scoring-question"><legend><span>${index+1}</span><span class="question-copy"><small>${esc(question.taskCode)} · ${esc(familyLabel(engine.classifyFamily(question)))}</small>${esc(question.prompt)}</span></legend>${question.options.map(option=>`<label><input type="radio" name="scoring-${esc(question.id)}" value="${esc(option)}"> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score event-scoring checkpoint</button></div></form><div data-scoring-result></div>`;
+    workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D3A · D3B · D3C scoring checkpoint</div><h2>Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-scoring-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint balances learner-eligible scoring questions across D3A, D3B, and D3C and varies question families when the validated bank supports them. Answer all ten questions before scoring the checkpoint.</p><form data-scoring-form>${state.questions.map((question,index)=>`<fieldset class="scoring-question" data-scoring-question-id="${esc(question.id)}"><legend><span>${index+1}</span><span class="question-copy"><small>${esc(question.taskCode)} · ${esc(familyLabel(engine.classifyFamily(question)))}</small>${esc(question.prompt)}</span></legend>${question.options.map((option,optionIndex)=>`<label><input type="radio" name="scoring-${esc(question.id)}" value="${esc(option)}" data-option-index="${optionIndex}" required> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score event-scoring checkpoint</button></div></form><div data-scoring-result></div>`;
     workspace.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function renderResult(record){
     const host=workspace.querySelector('[data-scoring-result]');const byId=new Map(state.questions.map(question=>[String(question.id),question]));
-    const review=record.responses.map((response,index)=>{const question=byId.get(String(response.id));return `<details class="scoring-review ${response.correct?'correct':'retry'}"><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${esc(response.taskCode||'D3')} · ${esc(familyLabel(response.family))}</summary><p><strong>Answer:</strong> ${esc(question&&question.answer)}</p><p>${esc(question&&question.rationale||'Review the scoring evidence, source guidance, and event context before trying another checkpoint.')}</p></details>`;}).join('');
+    const review=record.responses.map((response,index)=>{const question=byId.get(String(response.id));const selected=response.selected==null?'No answer recorded':response.selected;return `<details class="scoring-review ${response.correct?'correct':'retry'}"><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${esc(response.taskCode||'D3')} · ${esc(familyLabel(response.family))}</summary><p><strong>Your answer:</strong> ${esc(selected)}</p><p><strong>Correct answer:</strong> ${esc(question&&question.answer)}</p><p>${esc(question&&question.rationale||'Review the scoring evidence, source guidance, and event context before trying another checkpoint.')}</p></details>`;}).join('');
     const report=engine.summary(state.saved.labs);
     host.innerHTML=`<div class="scoring-result ${record.passed?'pass':'retry'}"><h3>${report.completed?'Scoring lab completed':record.passed?'Checkpoint passed—finish the review stations':'Checkpoint saved—review and retry'}</h3><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${report.completed?'All seven review stations and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish every review station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}`;
   }
@@ -40,7 +40,21 @@
     renderSummary();renderStations();renderSession();
   }
   function submit(form){
-    const answers={};state.questions.forEach(question=>{const selected=form.querySelector(`[name="scoring-${CSS.escape(String(question.id))}"]:checked`);if(selected) answers[String(question.id)]=selected.value;});
+    const answers={};const unanswered=[];
+    state.questions.forEach(question=>{
+      const selected=form.querySelector(`[name="scoring-${CSS.escape(String(question.id))}"]:checked`);
+      if(!selected){unanswered.push(question);return;}
+      const optionIndex=Number(selected.dataset.optionIndex);
+      if(!Number.isInteger(optionIndex)||optionIndex<0||optionIndex>=question.options.length){unanswered.push(question);return;}
+      answers[String(question.id)]=question.options[optionIndex];
+    });
+    if(unanswered.length){
+      const host=workspace.querySelector('[data-scoring-result]');
+      if(host) host.innerHTML=`<div class="notice error"><strong>Checkpoint not scored.</strong> Answer all ${state.questions.length} questions before submitting. Your current selections are still here.</div>`;
+      const first=form.querySelector(`[data-scoring-question-id="${CSS.escape(String(unanswered[0].id))}"]`);
+      if(first){first.scrollIntoView({behavior:'smooth',block:'center'});const input=first.querySelector('input[type="radio"]');if(input)input.focus();}
+      return;
+    }
     const record=engine.gradeSession({questions:state.questions,answers,completedAt:new Date().toISOString()});saveLabs(engine.applySession(state.saved.labs,record));form.querySelectorAll('input,button').forEach(node=>node.disabled=true);renderResult(record);renderSummary();renderStations();
   }
   async function init(){
