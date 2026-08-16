@@ -1,0 +1,35 @@
+name: Temporary RPSGT v3 scoring answer validation
+
+on:
+  push:
+    branches:
+      - work/rpsgt-v3-scoring-lab-answer-fix-20260816
+    paths:
+      - 'rpsgt-v3/core/scoring-lab-engine.js'
+      - 'rpsgt-v3/core/lab-scoring.js'
+      - 'rpsgt-v3/scripts/test-scoring-lab-system.mjs'
+      - 'rpsgt-v3/scripts/test-scoring-lab-shell.mjs'
+      - '.github/workflows/tmp-rpsgt-v3-scoring-answer-ci.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  scoring-answer-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact feature branch head
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Syntax-check scoring modules
+        run: |
+          node --check rpsgt-v3/core/scoring-lab-engine.js
+          node --check rpsgt-v3/core/lab-scoring.js
+      - name: Run scoring lab engine regression
+        run: node rpsgt-v3/scripts/test-scoring-lab-system.mjs
+      - name: Run scoring lab shell regression
+        run: node rpsgt-v3/scripts/test-scoring-lab-shell.mjs
