@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 const engine=window.RPSGTScoringLabEngine;
-const renderer=window.RPSGTVisualPSGRenderer;
+const renderer=window.RPSGTScoringMultiEpochRenderer;
 const storage=window.RPSGTStorage;
 const workspace=document.querySelector('[data-scoring-multi-workspace]');
 const startButtons=[...document.querySelectorAll('[data-scoring-multi-start]')];
@@ -29,15 +29,18 @@ function drawEpochs(){
   const run=currentRun();
   if(!run)return;
   workspace.querySelectorAll('[data-scoring-multi-canvas]').forEach(canvas=>{
-    const index=Number(canvas.dataset.scoringMultiCanvas),epoch=run.epochs[index],study=state.studies.get(String(epoch.studyId));
-    if(study)renderer.render(canvas,study,{width:Math.max(980,workspace.clientWidth-24)});
+    const index=Number(canvas.dataset.scoringMultiCanvas),epoch=run.epochs[index],study=state.studies.get(String(epoch.studyId)),host=canvas.parentElement;
+    if(study)renderer.render(canvas,study,{startSeconds:state.run.windowStart,windowSeconds:10,width:Math.max(280,(host&&host.clientWidth||workspace.clientWidth)-14)});
   });
+}
+function windowControls(){
+  return `<div class="scoring-multi-window-wrap"><strong>Inspect this part of all three neighboring epochs:</strong><div class="scoring-multi-window-options" role="group" aria-label="Choose ten-second inspection window">${[0,10,20].map(start=>`<button class="btn secondary ${state.run.windowStart===start?'active':''}" type="button" data-scoring-multi-window="${start}" aria-pressed="${state.run.windowStart===start?'true':'false'}">${start}–${start+10} s</button>`).join('')}</div><small>No sideways scrolling required. Use these buttons to inspect the beginning, middle, and end of every 30-second epoch.</small></div>`;
 }
 function renderRun(){
   if(!state.run)return;
   if(state.run.runIndex>=state.run.runs.length){finishSkill();return;}
   const run=currentRun();
-  if(state.run.epochIndex>=run.epochs.length){state.run.runIndex+=1;state.run.epochIndex=0;state.run.locked=false;renderRun();return;}
+  if(state.run.epochIndex>=run.epochs.length){state.run.runIndex+=1;state.run.epochIndex=0;state.run.locked=false;state.run.windowStart=0;renderRun();return;}
   const currentIndex=state.run.epochIndex,currentEpoch=run.epochs[currentIndex],currentKey=decisionKey(run,currentIndex),selected=state.run.answers[currentKey]??null;
   workspace.hidden=false;
   const epochCards=run.epochs.map((epoch,index)=>{
@@ -49,67 +52,55 @@ function renderRun(){
     }else if(answered){
       controls=`<div class="scoring-multi-epoch-result ${correct?'correct':'retry'}"><strong>${correct?'Correct':'Review'}:</strong> ${esc(choice)} → ${esc(epoch.answer)}</div>`;
     }else if(isFuture){
-      controls='<div class="scoring-multi-locked">Keep this neighboring epoch in view. Its choices unlock after the current epoch is scored.</div>';
+      controls='<div class="scoring-multi-locked">This neighboring epoch stays visible for context. Its choices unlock after the current epoch is scored.</div>';
     }
-    return `<article class="scoring-multi-epoch-card ${isCurrent?'current':''}"><div class="scoring-multi-epoch-head"><strong>Epoch ${index+1} of ${run.epochs.length}</strong><span>${answered?'Scored':isCurrent?'Stage this epoch':'Next in sequence'}</span></div><div class="scoring-multi-trace"><canvas data-scoring-multi-canvas="${index}" aria-label="Original 30-second schematic PSG epoch ${index+1}"></canvas></div><div class="scoring-multi-scroll-cue">Swipe left/right to inspect the full 30-second epoch.</div>${controls}</article>`;
+    return `<article class="scoring-multi-epoch-card ${isCurrent?'current':''}"><div class="scoring-multi-epoch-head"><strong>Epoch ${index+1} of ${run.epochs.length}</strong><span>${answered?'Scored':isCurrent?'Stage this epoch':'Next in sequence'}</span></div><div class="scoring-multi-trace"><canvas data-scoring-multi-canvas="${index}" aria-label="Original schematic PSG epoch ${index+1}, seconds ${state.run.windowStart} to ${state.run.windowStart+10}"></canvas></div>${controls}</article>`;
   }).join('');
   const feedback=state.run.locked?`<div class="notice ${engine.answersMatch(selected,currentEpoch.answer)?'success':'error'}"><strong>${engine.answersMatch(selected,currentEpoch.answer)?'Correct.':'Review this epoch.'}</strong> The intended stage is <strong>${esc(currentEpoch.answer)}</strong>. ${esc(currentEpoch.rationale)}</div><div class="actions"><button class="btn primary" type="button" data-scoring-multi-next>${state.run.runIndex===state.run.runs.length-1&&currentIndex===run.epochs.length-1?'Finish consecutive-epoch skill':currentIndex===run.epochs.length-1?'Next run':'Next epoch'}</button></div>`:'';
-  workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">Phase 3 consecutive epochs · Run ${state.run.runIndex+1} of ${state.run.runs.length}</div><h3>${esc(run.title)}</h3></div><span class="status gold">First answer counts</span></div><p class="report-intro">${esc(run.focus)} Each 30-second epoch remains fully inspectable; neighboring traces provide context but do not replace the evidence in the epoch being staged.</p><div class="scoring-multi-sequence">${epochCards}</div><div class="scoring-multi-feedback" aria-live="polite">${feedback}</div>`;
+  workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">Phase 3 consecutive epochs · Run ${state.run.runIndex+1} of ${state.run.runs.length}</div><h3>${esc(run.title)}</h3></div><span class="status gold">First answer counts</span></div><p class="report-intro">${esc(run.focus)} Review all three 10-second windows as needed. Neighboring traces provide context but do not replace the evidence in the epoch being staged.</p>${windowControls()}<div class="scoring-multi-sequence">${epochCards}</div><div class="scoring-multi-feedback" aria-live="polite">${feedback}</div>`;
   drawEpochs();
   const currentCard=workspace.querySelector('.scoring-multi-epoch-card.current');
   if(currentCard)currentCard.scrollIntoView({behavior:'smooth',block:'center'});
 }
 function startSkill(){
   if(!state.pack||!state.runs.length)return;
-  const saved=freshState();
-  saved.labs=engine.start(saved.labs,new Date().toISOString());
-  storage.save(saved);
-  state.run={runs:shuffle(state.runs),runIndex:0,epochIndex:0,answers:{},locked:false};
-  ensureSummaryTile();
-  renderRun();
+  const saved=freshState();saved.labs=engine.start(saved.labs,new Date().toISOString());storage.save(saved);
+  state.run={runs:shuffle(state.runs),runIndex:0,epochIndex:0,answers:{},locked:false,windowStart:0};
+  ensureSummaryTile();renderRun();
+}
+function setWindow(button){
+  if(!state.run)return;
+  const start=Number(button.dataset.scoringMultiWindow);if(![0,10,20].includes(start))return;
+  state.run.windowStart=start;renderRun();
 }
 function answerEpoch(button){
   if(!state.run||state.run.locked)return;
   const run=currentRun(),epochIndex=state.run.epochIndex,key=decisionKey(run,epochIndex);
-  state.run.answers[key]=button.dataset.scoringMultiAnswer;
-  state.run.locked=true;
-  renderRun();
+  state.run.answers[key]=button.dataset.scoringMultiAnswer;state.run.locked=true;renderRun();
 }
 function nextEpoch(){
   if(!state.run||!state.run.locked)return;
-  state.run.epochIndex+=1;
-  state.run.locked=false;
-  renderRun();
+  state.run.epochIndex+=1;state.run.locked=false;state.run.windowStart=0;renderRun();
 }
 function finishSkill(){
   if(!state.run)return;
   const record=engine.gradeMultiEpochSkill({runs:state.run.runs,answers:state.run.answers,completedAt:new Date().toISOString()});
-  const saved=freshState();
-  const nextLabs=engine.applyMultiEpochSkill(saved.labs,record);
-  saveLabs(nextLabs);
-  state.run=null;
-  workspace.hidden=false;
+  const saved=freshState(),nextLabs=engine.applyMultiEpochSkill(saved.labs,record);saveLabs(nextLabs);state.run=null;workspace.hidden=false;
   workspace.innerHTML=`<div class="scoring-result ${record.passed?'pass':'retry'}"><h3>${record.passed?'Consecutive-epoch skill passed':'Consecutive-epoch skill saved—review and retry'}</h3><strong>${record.correct}/${record.total} epoch decisions correct · ${record.percent}%</strong><p>${record.passed?'Your Phase 3 consecutive-epoch practice pass is saved.':'Score at least 80% across all twelve neighboring-epoch decisions. Your best Phase 3 score is preserved.'} This new Phase 3 practice layer is tracked separately and does not yet change the Scoring Lab completion requirement while the interaction is being validated.</p></div><div class="actions"><button class="btn primary" type="button" data-scoring-multi-retry>Practice consecutive epochs again</button></div>`;
   ensureSummaryTile();
 }
 async function init(){
   try{
     const [pack,stagePack]=await Promise.all([loadJson('data/scoring/multi-epoch-runs.json'),loadJson('data/visual/prototype-sleep-staging.json')]);
-    const validation=engine.validateMultiEpochPack(pack);
-    if(!validation.valid)throw new Error(validation.errors.join(' '));
-    state.pack=pack;
-    state.studies=new Map((stagePack.studies||[]).map(study=>[String(study.id),study]));
-    state.runs=pack.runs.map(run=>({...run,epochs:run.epochs.map(epoch=>({...epoch}))}));
+    const validation=engine.validateMultiEpochPack(pack);if(!validation.valid)throw new Error(validation.errors.join(' '));
+    state.pack=pack;state.studies=new Map((stagePack.studies||[]).map(study=>[String(study.id),study]));state.runs=pack.runs.map(run=>({...run,epochs:run.epochs.map(epoch=>({...epoch}))}));
     for(const run of state.runs)for(const epoch of run.epochs){const study=state.studies.get(String(epoch.studyId));if(!study)throw new Error(`Missing schematic study ${epoch.studyId}.`);if(study.stage!==epoch.answer)throw new Error(`Study ${epoch.studyId} does not match the intended stage ${epoch.answer}.`);}
     ensureSummaryTile();
-  }catch(error){
-    workspace.hidden=false;
-    workspace.innerHTML=`<div class="notice error"><strong>Consecutive-epoch skill could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;
-    startButtons.forEach(button=>{button.disabled=true;});
-  }
+  }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Consecutive-epoch skill could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButtons.forEach(button=>{button.disabled=true;});}
 }
 document.addEventListener('click',event=>{
   if(event.target.closest('[data-scoring-multi-start]')){startSkill();return;}
+  const windowButton=event.target.closest('[data-scoring-multi-window]');if(windowButton){setWindow(windowButton);return;}
   const answer=event.target.closest('[data-scoring-multi-answer]');if(answer){answerEpoch(answer);return;}
   if(event.target.closest('[data-scoring-multi-next]')){nextEpoch();return;}
   if(event.target.closest('[data-scoring-multi-retry]')){startSkill();}
