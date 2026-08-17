@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 
 const here=dirname(fileURLToPath(import.meta.url));
 const root=join(here,'..');
-const [html,js,contextJs,multiJs,catalog,css,contextCss,multiCss,eventRenderer,eventEngine,contextRenderer,contextEngine,multiEngine,contextPack,multiPack]=await Promise.all([
+const [html,js,contextJs,multiJs,catalog,css,contextCss,multiCss,eventRenderer,eventEngine,contextRenderer,contextEngine,multiEngine,multiRenderer,contextPack,multiPack]=await Promise.all([
   readFile(join(root,'lab-scoring.html'),'utf8'),
   readFile(join(root,'core','lab-scoring.js'),'utf8'),
   readFile(join(root,'core','lab-scoring-context.js'),'utf8'),
@@ -18,15 +18,16 @@ const [html,js,contextJs,multiJs,catalog,css,contextCss,multiCss,eventRenderer,e
   readFile(join(root,'core','scoring-context-renderer.js'),'utf8'),
   readFile(join(root,'core','scoring-context-engine.js'),'utf8'),
   readFile(join(root,'core','scoring-multi-epoch-engine.js'),'utf8'),
+  readFile(join(root,'core','scoring-multi-epoch-renderer.js'),'utf8'),
   readFile(join(root,'data','scoring','context-cases.json'),'utf8').then(JSON.parse),
   readFile(join(root,'data','scoring','multi-epoch-runs.json'),'utf8').then(JSON.parse)
 ]);
 
 for(const selector of ['data-scoring-start','data-scoring-summary','data-scoring-stations','data-scoring-workspace','data-scoring-stage-start','data-scoring-stage-workspace','data-scoring-event-start','data-scoring-event-workspace','data-scoring-context-start','data-scoring-context-workspace','data-scoring-multi-start','data-scoring-multi-workspace']) if(!html.includes(selector)) throw new Error(`Scoring page is missing ${selector}.`);
-for(const script of ['core/storage.js','core/scoring-lab-engine.js','core/scoring-context-engine.js','core/scoring-multi-epoch-engine.js','core/visual-psg-renderer.js','core/respiratory-timeline-engine.js','core/scoring-event-renderer.js','core/artifact-psg-renderer.js','core/scoring-context-renderer.js','core/lab-scoring.js','core/lab-scoring-context.js','core/lab-scoring-multi-epoch.js']) if(!html.includes(script)) throw new Error(`Scoring page does not load ${script}.`);
+for(const script of ['core/storage.js','core/scoring-lab-engine.js','core/scoring-context-engine.js','core/scoring-multi-epoch-engine.js','core/visual-psg-renderer.js','core/scoring-multi-epoch-renderer.js','core/respiratory-timeline-engine.js','core/scoring-event-renderer.js','core/artifact-psg-renderer.js','core/scoring-context-renderer.js','core/lab-scoring.js','core/lab-scoring-context.js','core/lab-scoring-multi-epoch.js']) if(!html.includes(script)) throw new Error(`Scoring page does not load ${script}.`);
 for(const style of ['assets/scoring-context.css','assets/scoring-multi-epoch.css']) if(!html.includes(style)) throw new Error(`Scoring page must load ${style}.`);
 if(html.indexOf('core/scoring-lab-engine.js')>html.indexOf('core/scoring-context-engine.js')||html.indexOf('core/scoring-context-engine.js')>html.indexOf('core/scoring-multi-epoch-engine.js')||html.indexOf('core/scoring-multi-epoch-engine.js')>html.indexOf('core/lab-scoring.js')) throw new Error('Scoring extensions must load after the base engine and before the Scoring controller.');
-if(html.indexOf('core/visual-psg-renderer.js')>html.indexOf('core/lab-scoring.js')||html.indexOf('core/visual-psg-renderer.js')>html.indexOf('core/lab-scoring-multi-epoch.js')) throw new Error('PSG renderer must load before both staging controllers.');
+if(html.indexOf('core/visual-psg-renderer.js')>html.indexOf('core/scoring-multi-epoch-renderer.js')||html.indexOf('core/scoring-multi-epoch-renderer.js')>html.indexOf('core/lab-scoring-multi-epoch.js')) throw new Error('Phase 3 renderer must load after the shared PSG renderer and before its controller.');
 if(html.indexOf('core/respiratory-timeline-engine.js')>html.indexOf('core/scoring-event-renderer.js')||html.indexOf('core/scoring-event-renderer.js')>html.indexOf('core/lab-scoring.js')) throw new Error('Event evidence engine/renderer must load before the Scoring controller.');
 if(html.indexOf('core/artifact-psg-renderer.js')>html.indexOf('core/lab-scoring-context.js')||html.indexOf('core/scoring-context-renderer.js')>html.indexOf('core/lab-scoring-context.js')) throw new Error('Context renderers must load before the context controller.');
 
@@ -44,7 +45,9 @@ for(const family of ['arousal','limb-movement','artifact-physiology','transition
 if(contextPack.cases.length!==8||contextPack.cases.some(item=>item.evidence.filter(option=>option.correct===true).length!==2)) throw new Error('Scoring context pack must contain eight cases with two correct evidence clues each.');
 for(const visualContract of ["kind==='limb'","kind==='boundary'",'arousalStart','legBursts','epochBoundary','Nasal pressure','L Leg','R Leg']) if(!contextRenderer.includes(visualContract)) throw new Error(`Scoring context renderer is missing ${visualContract}.`);
 
-for(const contract of ['data/scoring/multi-epoch-runs.json','data-scoring-multi-answer','data-scoring-multi-next','gradeMultiEpochSkill','applyMultiEpochSkill','MULTI_EPOCH_DECISION_COUNT','First answer counts','twelve neighboring-epoch decisions','does not yet change the Scoring Lab completion requirement','Swipe left/right to inspect the full 30-second epoch.']) if(!multiJs.includes(contract)&&!multiEngine.includes(contract)&&!html.includes(contract)) throw new Error(`Scoring consecutive-epoch contract is missing ${contract}.`);
+for(const contract of ['data/scoring/multi-epoch-runs.json','data-scoring-multi-window','0–10 s','10–20 s','20–30 s','No sideways scrolling required','data-scoring-multi-answer','data-scoring-multi-next','gradeMultiEpochSkill','applyMultiEpochSkill','MULTI_EPOCH_DECISION_COUNT','First answer counts','twelve neighboring-epoch decisions','does not yet change the Scoring Lab completion requirement']) if(!multiJs.includes(contract)&&!multiEngine.includes(contract)&&!html.includes(contract)) throw new Error(`Scoring consecutive-epoch contract is missing ${contract}.`);
+for(const rendererContract of ['RPSGTScoringMultiEpochRenderer','WINDOW_SECONDS','startSeconds','windowSeconds','base.sample','cssWidth<480?76:104']) if(!multiRenderer.includes(rendererContract)) throw new Error(`Scoring consecutive-epoch renderer is missing ${rendererContract}.`);
+if(multiRenderer.includes('Math.max(980')) throw new Error('Phase 3 renderer must not restore the shared 980px minimum-width dependency.');
 if(!Array.isArray(multiPack.runs)||multiPack.runs.length!==4||multiPack.runs.some(run=>!Array.isArray(run.epochs)||run.epochs.length!==3)) throw new Error('Scoring Phase 3 pack must contain four three-epoch runs.');
 if(multiPack.runs.flatMap(run=>run.epochs).length!==12) throw new Error('Scoring Phase 3 pack must contain twelve epoch decisions.');
 for(const stage of ['W','N1','N2','N3','R']) if(!multiPack.runs.some(run=>run.epochs.some(epoch=>epoch.answer===stage))) throw new Error(`Scoring Phase 3 pack is missing stage ${stage}.`);
@@ -58,9 +61,10 @@ if(!html.includes('do not reproduce or replace proprietary AASM scoring-manual t
 
 for(const style of ['.scoring-stage-trace','.scoring-stage-options','.stage-correct','.stage-wrong','.scoring-event-trace','.scoring-event-options','.event-correct','.event-wrong','.scoring-event-highlight','overflow-x:auto']) if(!css.includes(style)) throw new Error(`Scoring skill CSS is missing ${style}.`);
 for(const style of ['.scoring-context-trace','.scoring-context-scroll-cue','.scoring-context-options','.context-correct','.context-wrong','.scoring-context-evidence-options','.context-evidence-revealed','overflow-x:auto']) if(!contextCss.includes(style)) throw new Error(`Scoring context CSS is missing ${style}.`);
-for(const style of ['.scoring-multi-sequence','.scoring-multi-epoch-card','.scoring-multi-trace','.scoring-multi-scroll-cue','.scoring-multi-stage-options','.multi-correct','.multi-wrong','overflow-x:auto']) if(!multiCss.includes(style)) throw new Error(`Scoring consecutive-epoch CSS is missing ${style}.`);
+for(const style of ['.scoring-multi-window-wrap','.scoring-multi-window-options','.scoring-multi-sequence','.scoring-multi-epoch-card','.scoring-multi-trace','.scoring-multi-stage-options','.multi-correct','.multi-wrong','overflow:hidden']) if(!multiCss.includes(style)) throw new Error(`Scoring consecutive-epoch CSS is missing ${style}.`);
+if(multiCss.includes('.scoring-multi-trace{overflow-x:auto')) throw new Error('Phase 3 traces must not depend on horizontal scrolling.');
 
 const lab=catalog.labs.find(item=>item.id==='scoring');
 if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-scoring.html') throw new Error('The laboratory catalog does not route the v3-ready Scoring lab.');
 
-console.log('Scoring page, five-stage skill, Phase 3 four-run consecutive-epoch practice, five-case respiratory event-evidence skill, eight-case scoring-context skill with sixteen supporting clues, biologic respiratory variability, canonical checkpoint capture, AASM-first boundaries, storage isolation, mobile overflow, script order, and catalog route contracts passed.');
+console.log('Scoring page, five-stage skill, Phase 3 four-run consecutive-epoch practice with explicit ten-second inspection windows, five-case respiratory event-evidence skill, eight-case scoring-context skill with sixteen supporting clues, biologic respiratory variability, canonical checkpoint capture, AASM-first boundaries, storage isolation, responsive Phase 3 rendering, script order, and catalog route contracts passed.');
