@@ -1,6 +1,6 @@
 # RPSGT V3 Lab Completion Matrix
 
-Date: 2026-08-16
+Date: 2026-08-17
 
 This document separates **route readiness** from **learner-content completeness**. A lab can have a working V3 route, storage, checkpoint, and completion record while still being only a review shell.
 
@@ -36,7 +36,7 @@ A checklist may support a lab, but **a checklist by itself is not an interactive
 | EKG Recognition and Response | Seven review checkboxes + checkpoint; current V3 page intentionally omits older generated rhythm strips | `review-shell` | No rhythm-strip recognition/measurement experience in V3 | Original static/teaching rhythm strips, rate/rhythm sequence, signal-validity and response cases |
 | Visual Recognition / Mini PSG Viewer | Five 30-second original staging epochs; stage choices; point-to-feature targets; interval marking | `interactive-foundation` | Limited to Pack 1 staging/feature recognition | Additional visual packs after core lab rebuilds |
 | Artifact Recognition | Five original PSG-style cases, 15 scored visual decisions, no checklist credit | `interactive-foundation` | Pack breadth can grow, but current scope is genuinely interactive | Additional artifact families only after shell labs are rebuilt |
-| Sleep Staging and Event Scoring | Five staging epochs + five respiratory event-evidence cases + eight arousal/limb/artifact/boundary cases + seven review stations + D3 checkpoint | `interactive-in-progress` | Single-epoch and event-context Phase 2 is implemented; consecutive-epoch scoring is not | Phase 3 multi-epoch scoring runs with stage/event changes across boundaries |
+| Sleep Staging and Event Scoring | Five staging epochs + four three-epoch consecutive staging runs + five respiratory event-evidence cases + eight arousal/limb/artifact/boundary cases + seven review stations + D3 checkpoint | `interactive-in-progress` | Short consecutive staging runs are implemented; multi-epoch event placement/counting and larger integrated sequences remain | Phase 3 event placement/counting across boundaries, then a larger mobile-validated integrated sequence |
 | Respiratory Signals and Event Recognition | 5-minute pattern views, 2:30 click-the-evidence cases, pattern comparison, 7-case visual challenge, stations, checkpoint | `interactive-rich` | Rich interaction already exists; completion requirements intentionally remain the established seven stations + checkpoint | Preserve current locked completion rule; refine only when clinical/visual QA identifies a concrete gap |
 | PAP and Titration | Seven review checkboxes + 10-question checkpoint | `review-shell` | No patient/PSG titration scenario requiring a next action | Scenario sequence: interface/leak/comfort/event response/stage-position/advanced-mode boundary/documentation |
 | Instrumentation, Filters, and Signal Pathways | Seven review checkboxes + 10-question checkpoint | `review-shell` | No visible manipulation of filters, sensitivity, polarity, sampling, or signal pathway | Interactive signal-path tracing and before/after waveform controls |
@@ -105,10 +105,19 @@ Regression coverage measures the generated signal itself, not only configured co
 
 ### Phase 3 — multi-epoch scoring
 
+Initial consecutive-epoch slice implemented:
+- Four shuffled short runs.
+- Three full 30-second schematic epochs per run, for twelve first-decision stage choices total.
+- Neighboring traces remain available while the learner stages one epoch at a time.
+- The runs reuse the validated original W/N1/N2/N3/REM schematic studies rather than creating lower-fidelity replacements.
+- Immediate stage feedback follows each decision.
+- 80% or higher records a durable Phase 3 practice pass; failed retries do not erase a prior pass.
+- The current five-part Scoring Lab completion gate is intentionally unchanged while the new interaction is being validated.
+- Sequence order is explicitly framed as pedagogic, not a claim that sleep stages must progress in a fixed pattern.
+
 Still pending:
-- Short shuffled runs in which the learner stages consecutive epochs.
-- Stage-transition review across adjacent epochs.
 - Event placement/counting across consecutive epochs.
+- More explicit stage-transition cases that require reasoning about neighboring epoch boundaries rather than only staging each full epoch.
 - A larger integrated scoring sequence only after the short-run interaction is validated on mobile.
 
 ## Locked boundaries preserved
@@ -118,3 +127,4 @@ Still pending:
 - Rule-sensitive cases should point learners to current official AASM guidance rather than pretending app-authored summaries replace the manual.
 - Respiratory's established completion rule remains unchanged unless separately approved; its timeline and visual challenge remain additional practice.
 - Existing learner completion should not be silently revoked when a lab gains a stronger future completion standard.
+- Phase 3 consecutive-epoch practice remains separately tracked until its mobile interaction and downstream event-placement design are validated.
