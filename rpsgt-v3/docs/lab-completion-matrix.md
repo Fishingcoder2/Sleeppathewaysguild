@@ -36,7 +36,7 @@ A checklist may support a lab, but **a checklist by itself is not an interactive
 | EKG Recognition and Response | Seven review checkboxes + checkpoint; current V3 page intentionally omits older generated rhythm strips | `review-shell` | No rhythm-strip recognition/measurement experience in V3 | Original static/teaching rhythm strips, rate/rhythm sequence, signal-validity and response cases |
 | Visual Recognition / Mini PSG Viewer | Five 30-second original staging epochs; stage choices; point-to-feature targets; interval marking | `interactive-foundation` | Limited to Pack 1 staging/feature recognition | Additional visual packs after core lab rebuilds |
 | Artifact Recognition | Five original PSG-style cases, 15 scored visual decisions, no checklist credit | `interactive-foundation` | Pack breadth can grow, but current scope is genuinely interactive | Additional artifact families only after shell labs are rebuilt |
-| Sleep Staging and Event Scoring | Five staging epochs + five respiratory event-classification cases with ten required waveform-evidence clicks + seven review stations + D3 checkpoint | `interactive-in-progress` | Limb-movement context, artifact-versus-physiology, stage-transition, broader arousal work, and multi-epoch scoring still incomplete | Expand event-evidence families, then add multi-epoch scoring |
+| Sleep Staging and Event Scoring | Five staging epochs + five respiratory event-evidence cases + eight arousal/limb/artifact/boundary cases + seven review stations + D3 checkpoint | `interactive-in-progress` | Single-epoch and event-context Phase 2 is implemented; consecutive-epoch scoring is not | Phase 3 multi-epoch scoring runs with stage/event changes across boundaries |
 | Respiratory Signals and Event Recognition | 5-minute pattern views, 2:30 click-the-evidence cases, pattern comparison, 7-case visual challenge, stations, checkpoint | `interactive-rich` | Rich interaction already exists; completion requirements intentionally remain the established seven stations + checkpoint | Preserve current locked completion rule; refine only when clinical/visual QA identifies a concrete gap |
 | PAP and Titration | Seven review checkboxes + 10-question checkpoint | `review-shell` | No patient/PSG titration scenario requiring a next action | Scenario sequence: interface/leak/comfort/event response/stage-position/advanced-mode boundary/documentation |
 | Instrumentation, Filters, and Signal Pathways | Seven review checkboxes + 10-question checkpoint | `review-shell` | No visible manipulation of filters, sensitivity, polarity, sampling, or signal pathway | Interactive signal-path tracing and before/after waveform controls |
@@ -48,7 +48,7 @@ A checklist may support a lab, but **a checklist by itself is not an interactive
 
 ## Priority order
 
-1. Sleep Staging and Event Scoring
+1. Sleep Staging and Event Scoring — finish Phase 3 multi-epoch scoring
 2. Hookup and Electrode Placement
 3. Instrumentation, Filters, and Signal Pathways
 4. PAP and Titration
@@ -71,29 +71,50 @@ Implemented:
 - Preserve existing completed Scoring Lab records rather than revoking historical completion.
 - Keep the 10-question D3A/D3B/D3C checkpoint and the seven review stations.
 
-### Phase 2 — event evidence
+### Phase 2 — event evidence and scoring context
 
-Respiratory-event subset implemented:
+Respiratory event-evidence implemented:
 - Five shuffled original 2:30 schematic cases: obstructive apnea, central apnea, mixed apnea, obstructive hypopnea, and RERA/flow limitation ending in arousal.
 - Learner commits the event classification before the answer is revealed.
 - Two waveform-evidence targets must then be located for every case, for ten required evidence clicks total.
 - Wrong evidence clicks remain on the same target with a persistent hint.
 - “Show me” highlights the target but does not auto-complete it.
-- New Scoring completions require at least 80% classification accuracy plus all ten evidence targets.
 
-Still pending in Phase 2:
-- dedicated arousal-only decisions beyond the RERA context,
-- limb-movement context,
-- artifact-versus-physiology scoring decisions,
-- stage-transition/event-boundary decisions.
+Dedicated context decisions implemented:
+- Two arousal cases, including NREM qualification and REM chin-EMG context.
+- Two limb-movement cases, including a valid series and respiratory-linked exclusion context.
+- Two artifact-versus-physiology cases reusing the original Artifact Lab electrode-pop and broad-movement schematics.
+- Two transition/boundary cases: arousal immediately before awakening and a respiratory event spanning an epoch boundary.
+- Learner commits the scoring decision before feedback, then confirms two supporting clues per case for sixteen required clues total.
+- “Show one clue” may reveal one supporting statement but never auto-completes the case.
+- New Scoring completions require at least 80% first-decision accuracy plus complete evidence confirmation in both Phase 2 interactive skills.
+
+Phase 2 is considered implemented for its single-event/context scope. It does not claim full-night or multi-epoch scoring parity.
+
+### Frequency calibration lock
+
+The original staging renderer and the newer Scoring-context renderer are calibrated to the same teaching bands:
+- Wake posterior alpha: 8–13 Hz, with faster activity mixed in as appropriate.
+- N1: low-amplitude mixed-frequency EEG predominantly in the 4–7 Hz theta range.
+- N2: low-amplitude mixed-frequency/theta background with spindle activity in the 11–16 Hz range, most commonly 12–14 Hz.
+- N3: dominant slow-wave activity in the 0.5–2 Hz range.
+- REM: low-amplitude mixed-frequency EEG, with optional 2–6 Hz sawtooth morphology and low chin tone.
+- Arousal teaching bursts are rendered as an abrupt faster-frequency shift above the surrounding stage background and are sampled densely enough to avoid aliasing into a falsely slow appearance.
+
+Regression coverage measures the generated signal itself, not only configured constants. QA fails if rendered stage-band power drifts from the intended stage character or if the arousal fast-band contrast collapses.
 
 ### Phase 3 — multi-epoch scoring
 
-Add short shuffled runs in which the learner stages consecutive epochs and reviews changes across epoch boundaries before progressing to a larger scoring exercise.
+Still pending:
+- Short shuffled runs in which the learner stages consecutive epochs.
+- Stage-transition review across adjacent epochs.
+- Event placement/counting across consecutive epochs.
+- A larger integrated scoring sequence only after the short-run interaction is validated on mobile.
 
 ## Locked boundaries preserved
 
 - Do not copy proprietary AASM figures, scoring-manual text, textbook figures, patient strips, or third-party tracings.
 - Original Sleep Pathways Guild teaching schematics should preserve recognizable physiology and natural variability.
+- Rule-sensitive cases should point learners to current official AASM guidance rather than pretending app-authored summaries replace the manual.
 - Respiratory's established completion rule remains unchanged unless separately approved; its timeline and visual challenge remain additional practice.
 - Existing learner completion should not be silently revoked when a lab gains a stronger future completion standard.
