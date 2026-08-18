@@ -7,6 +7,7 @@
   const VISUAL_AROUSAL={start:21.8,end:25.8};
   const TIMELINE_DURATION_SECONDS=150;
   const TIMELINE_AROUSAL={start:94,end:100};
+  if(VISUAL_AROUSAL.end-VISUAL_AROUSAL.start<RERA_AROUSAL_MIN_SECONDS||TIMELINE_AROUSAL.end-TIMELINE_AROUSAL.start<RERA_AROUSAL_MIN_SECONDS)throw new Error('RERA teaching arousal must remain at least 3 seconds.');
 
   function clamp(value,min,max){return Math.max(min,Math.min(max,value));}
   function edgeGate(t,start,end){
