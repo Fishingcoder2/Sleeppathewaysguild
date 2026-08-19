@@ -6,19 +6,41 @@ function surfaceFor(control){
   if(selector){
     try{return document.querySelector(selector);}catch(error){return null;}
   }
-  return control.closest('[data-spg-visual-surface]');
+  return control.closest('[data-spg-visual-surface],.spg-visual-surface');
+}
+
+function fullscreenElement(){
+  return document.fullscreenElement||document.webkitFullscreenElement||null;
 }
 
 function fullscreenSupported(){
-  return Boolean(document.fullscreenEnabled&&document.documentElement.requestFullscreen);
+  const root=document.documentElement;
+  return Boolean(root&&(root.requestFullscreen||root.webkitRequestFullscreen));
+}
+
+async function exitFullscreen(){
+  const exit=document.exitFullscreen||document.webkitExitFullscreen;
+  if(typeof exit!=='function')return;
+  try{
+    const result=exit.call(document);
+    if(result&&typeof result.then==='function')await result;
+  }catch(error){
+    /* A browser/custom tab may decline the exit request. */
+  }
 }
 
 async function requestFullscreen(surface){
   if(!surface||!fullscreenSupported())return;
   try{
-    if(document.fullscreenElement===surface){await document.exitFullscreen();return;}
-    if(document.fullscreenElement)await document.exitFullscreen();
-    await surface.requestFullscreen({navigationUI:'hide'});
+    const active=fullscreenElement();
+    if(active===surface){await exitFullscreen();return;}
+    if(active)await exitFullscreen();
+    const request=surface.requestFullscreen||surface.webkitRequestFullscreen;
+    if(typeof request!=='function')return;
+    const result=surface.requestFullscreen
+      ?surface.requestFullscreen({navigationUI:'hide'})
+      :request.call(surface);
+    if(result&&typeof result.then==='function')await result;
   }catch(error){
     /* Browser chrome may refuse fullscreen in embedded/custom-tab contexts. The visual remains usable without it. */
   }
@@ -26,13 +48,14 @@ async function requestFullscreen(surface){
 
 function syncFullscreenControls(){
   const supported=fullscreenSupported();
-  document.querySelectorAll('[data-spg-request-fullscreen]').forEach(control=>{
+  document.querySelectorAll('[data-spg-request-fullscreen],[data-scoring-stage-fullscreen]').forEach(control=>{
     control.hidden=!supported;
     if(!supported)return;
     const surface=surfaceFor(control);
-    const active=Boolean(surface&&document.fullscreenElement===surface);
+    const active=Boolean(surface&&fullscreenElement()===surface);
     control.textContent=active?'Exit full screen':'Full screen';
     control.setAttribute('aria-pressed',active?'true':'false');
+    control.setAttribute('aria-label',active?'Exit full screen':'Enter full screen');
   });
 }
 
@@ -83,7 +106,10 @@ document.addEventListener('click',event=>{
 
 document.addEventListener('pointerup',scheduleSync);
 document.addEventListener('fullscreenchange',syncAll);
+document.addEventListener('webkitfullscreenchange',syncAll);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncAll);else syncAll();
 
-window.SPGVisualDisplay={syncFullscreenControls,syncTeachingDisclosures,fullscreenSupported};
+const api={requestFullscreen,syncFullscreenControls,syncTeachingDisclosures,fullscreenSupported,fullscreenElement};
+window.SPGVisualDisplay=api;
+window.SPGSharedVisualDisplay=api;
 })();
