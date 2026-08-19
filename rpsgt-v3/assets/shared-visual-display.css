@@ -1,0 +1,3 @@
+[data-spg-request-fullscreen][hidden]{display:none!important}
+[data-spg-visual-surface]:fullscreen{width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;margin:0!important;border-radius:0!important}
+@media(max-width:900px) and (orientation:landscape){[data-spg-visual-surface]:fullscreen{padding-top:max(6px,env(safe-area-inset-top))!important;padding-right:max(8px,env(safe-area-inset-right))!important;padding-bottom:max(6px,env(safe-area-inset-bottom))!important;padding-left:max(8px,env(safe-area-inset-left))!important}}
