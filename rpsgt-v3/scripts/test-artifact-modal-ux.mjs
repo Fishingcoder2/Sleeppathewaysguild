@@ -1,0 +1,62 @@
+import {readFile} from 'node:fs/promises';
+import {dirname,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const here=dirname(fileURLToPath(import.meta.url));
+const root=join(here,'..');
+const [html,logic,css,displayLogic,displayCss,renderer]=await Promise.all([
+  readFile(join(root,'lab-artifact.html'),'utf8'),
+  readFile(join(root,'core','lab-artifact.js'),'utf8'),
+  readFile(join(root,'assets','artifact-modal.css'),'utf8'),
+  readFile(join(root,'core','artifact-display-controls.js'),'utf8'),
+  readFile(join(root,'assets','artifact-display-controls.css'),'utf8'),
+  readFile(join(root,'core','artifact-psg-renderer.js'),'utf8')
+]);
+
+for(const token of ['assets/artifact-modal.css','assets/artifact-display-controls.css','data-artifact-workspace','core/lab-artifact.js','core/artifact-display-controls.js','class="section card artifact-workspace"']) if(!html.includes(token)) throw new Error(`Artifact page missing ${token}`);
+if(!css.includes('.artifact-workspace.artifact-modal-active')) throw new Error('Artifact modal CSS must target the same artifact-workspace class used by the HTML shell.');
+for(const forbidden of ['<iframe','MutationObserver']) if(html.includes(forbidden)||logic.includes(forbidden)||css.includes(forbidden)||displayLogic.includes(forbidden)||displayCss.includes(forbidden)) throw new Error(`Artifact modal UX must not use ${forbidden}`);
+if(logic.includes("window.addEventListener('resize'")) throw new Error('Artifact mobile viewer must not restore continuous resize-driven PSG redraws.');
+
+for(const token of [
+  'artifact-modal-open','artifact-modal-active','artifact-rotate','Rotate your phone sideways',
+  'artifact-question-layer','Answer question','Review PSG','artifact-case-nav','artifact-case-button',
+  'Are you sure?','Submit answer','Change answer','Ask for a hint','Correct','Incorrect',
+  'Review and try again','There is no Next option yet','firstAnswers:{}','answers:{...state.firstAnswers}',
+  'retryRequired','data-artifact-prev','data-artifact-outcome="next"','data-artifact-outcome="retry"',
+  'function renderQuestionLayer()','function removeQuestionLayer()','insertAdjacentHTML',
+  'function settledOrientationRedraw()','orientationchange','220'
+]) if(!logic.includes(token)) throw new Error(`Artifact modal logic missing ${token}`);
+
+for(const token of [
+  'position:fixed','height:95dvh','orientation:landscape','orientation:portrait','height:100dvh',
+  '.artifact-question-layer','.artifact-confirm-backdrop','.artifact-outcome-backdrop',
+  '.artifact-case-button.current','.artifact-case-button.complete:not(.needs-review)','content:"✓"',
+  '.artifact-case-button.next-step','content:"Next"','.artifact-case-button.needs-review'
+]) if(!css.includes(token)) throw new Error(`Artifact modal CSS missing ${token}`);
+
+for(const token of [
+  'requestFullscreen','navigationUI','hide','data-artifact-fullscreen','artifact-split-view',
+  'data-artifact-split-toggle','phoneQuestionMode','Split view','Full question','fullscreenchange',
+  'AI-generated teaching schematic · Not a patient recording','Real PSG tracings vary','authentic tracings','ensureTeachingDisclosure','data-artifact-ai-disclosure'
+]) if(!displayLogic.includes(token)) throw new Error(`Artifact display controls missing ${token}`);
+
+for(const token of [
+  '.artifact-workspace:fullscreen','.artifact-question-view-controls','artifact-split-view',
+  'grid-template-areas:"head head" "cases cases" "viewer question"','minmax(0,58fr)','minmax(300px,42fr)',
+  '.artifact-ai-visual-disclosure'
+]) if(!displayCss.includes(token)) throw new Error(`Artifact display-control CSS missing ${token}`);
+
+for(const token of [
+  "if(type==='eeg'||type==='eog')return '#17202a'",
+  "if(type==='ecg')return '#b3261e'",
+  "if(type==='spo2')return '#2e7d4f'",
+  "if(type==='emg')return '#6c4778'",
+  'traceColor(ch)'
+]) if(!renderer.includes(token)) throw new Error(`Artifact PSG palette missing ${token}`);
+
+if(!logic.includes('state.retryRequired=correct?null:key')) throw new Error('Incorrect Artifact answers must block progression until corrected.');
+if(!logic.includes('if(!allLocked()||state.retryRequired)return')) throw new Error('Artifact pack must not save before all required corrections are complete.');
+if((logic.match(/requestAnimationFrame\(renderCanvas\)/g)||[]).length>2) throw new Error('Artifact PSG redraws must remain limited to viewer render and one settled orientation redraw path.');
+
+console.log('Artifact modal UX passed: workspace layering, stable event-driven phone rendering, browser fullscreen request, landscape split view, full-screen native questions, case navigation, confirmation, hint/retry mastery flow, first-pass score preservation, PSG-style signal colors, and the AI teaching-schematic disclosure are present.');

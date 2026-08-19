@@ -10,9 +10,12 @@ on:
       - 'rpsgt-v3/core/learner-surface-guard.js'
       - 'rpsgt-v3/core/visual-navigation.js'
       - 'rpsgt-v3/core/review.js'
+      - 'rpsgt-v3/core/lab-artifact.js'
+      - 'rpsgt-v3/core/artifact-psg-renderer.js'
       - 'rpsgt-v3/practice.html'
       - 'rpsgt-v3/review.html'
       - 'rpsgt-v3/lab-visual.html'
+      - 'rpsgt-v3/lab-artifact.html'
       - 'rpsgt-v3/readiness.html'
       - 'rpsgt-v3/mock.html'
       - 'rpsgt-v3/study.html'
@@ -21,6 +24,7 @@ on:
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
       - 'rpsgt-v3/assets/visual-navigation.css'
+      - 'rpsgt-v3/assets/artifact-modal.css'
       - 'rpsgt-v3/assets/review.css'
       - 'rpsgt-v3/data/memory/**'
       - 'rpsgt-v3/data/terminology/**'
@@ -30,6 +34,7 @@ on:
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
       - 'rpsgt-v3/scripts/test-visual-question-modal-ux.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-modal-ux.mjs'
       - 'rpsgt-v3/scripts/test-learner-question-retirements.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
@@ -48,9 +53,12 @@ on:
       - 'rpsgt-v3/core/learner-surface-guard.js'
       - 'rpsgt-v3/core/visual-navigation.js'
       - 'rpsgt-v3/core/review.js'
+      - 'rpsgt-v3/core/lab-artifact.js'
+      - 'rpsgt-v3/core/artifact-psg-renderer.js'
       - 'rpsgt-v3/practice.html'
       - 'rpsgt-v3/review.html'
       - 'rpsgt-v3/lab-visual.html'
+      - 'rpsgt-v3/lab-artifact.html'
       - 'rpsgt-v3/readiness.html'
       - 'rpsgt-v3/mock.html'
       - 'rpsgt-v3/study.html'
@@ -59,6 +67,7 @@ on:
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
       - 'rpsgt-v3/assets/visual-navigation.css'
+      - 'rpsgt-v3/assets/artifact-modal.css'
       - 'rpsgt-v3/assets/review.css'
       - 'rpsgt-v3/data/memory/**'
       - 'rpsgt-v3/data/terminology/**'
@@ -68,6 +77,7 @@ on:
       - 'rpsgt-v3/data/math-coach/**'
       - 'rpsgt-v3/scripts/test-math-coach*.mjs'
       - 'rpsgt-v3/scripts/test-visual-question-modal-ux.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-modal-ux.mjs'
       - 'rpsgt-v3/scripts/test-learner-question-retirements.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
@@ -107,3 +117,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-question-option-order.mjs
       - name: Validate Visual and Review modal navigation
         run: node rpsgt-v3/scripts/test-visual-question-modal-ux.mjs
+      - name: Validate Artifact modal navigation
+        run: node rpsgt-v3/scripts/test-artifact-modal-ux.mjs
