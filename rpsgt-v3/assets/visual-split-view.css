@@ -1,5 +1,7 @@
 .visual-question-toolbar-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.visual-viewer-fullscreen{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:6px 10px;font-size:.74rem;white-space:nowrap}
 @media(max-width:900px) and (orientation:landscape){
+  .visual-workspace.visual-modal-active .visual-viewer-fullscreen{min-height:34px;padding:6px 9px;font-size:.7rem}
   .visual-workspace.visual-modal-active.visual-question-open.visual-split-view{
     grid-template-columns:minmax(0,1.55fr) minmax(290px,.9fr);
     grid-template-rows:auto auto minmax(0,1fr);
