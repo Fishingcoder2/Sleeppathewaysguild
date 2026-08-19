@@ -1,0 +1,73 @@
+name: Validate RPSGT v3 Scoring Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-scoring.html'
+      - 'rpsgt-v3/assets/scoring*.css'
+      - 'rpsgt-v3/assets/shared-visual-display.css'
+      - 'rpsgt-v3/core/scoring-*.js'
+      - 'rpsgt-v3/core/lab-scoring*.js'
+      - 'rpsgt-v3/core/visual-psg-renderer.js'
+      - 'rpsgt-v3/core/shared-visual-display.js'
+      - 'rpsgt-v3/data/scoring/**'
+      - 'rpsgt-v3/data/visual/prototype-sleep-staging.json'
+      - 'rpsgt-v3/scripts/test-scoring*.mjs'
+      - '.github/workflows/rpsgt-v3-scoring-validation.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-scoring.html'
+      - 'rpsgt-v3/assets/scoring*.css'
+      - 'rpsgt-v3/assets/shared-visual-display.css'
+      - 'rpsgt-v3/core/scoring-*.js'
+      - 'rpsgt-v3/core/lab-scoring*.js'
+      - 'rpsgt-v3/core/visual-psg-renderer.js'
+      - 'rpsgt-v3/core/shared-visual-display.js'
+      - 'rpsgt-v3/data/scoring/**'
+      - 'rpsgt-v3/data/visual/prototype-sleep-staging.json'
+      - 'rpsgt-v3/scripts/test-scoring*.mjs'
+      - '.github/workflows/rpsgt-v3-scoring-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scoring-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check Scoring Lab JavaScript syntax
+        run: |
+          node --check rpsgt-v3/core/scoring-lab-engine.js
+          node --check rpsgt-v3/core/scoring-context-engine.js
+          node --check rpsgt-v3/core/scoring-multi-epoch-engine.js
+          node --check rpsgt-v3/core/scoring-event-boundary-engine.js
+          node --check rpsgt-v3/core/scoring-event-boundary-renderer.js
+          node --check rpsgt-v3/core/scoring-stage-order.js
+          node --check rpsgt-v3/core/lab-scoring.js
+          node --check rpsgt-v3/core/lab-scoring-context.js
+          node --check rpsgt-v3/core/lab-scoring-multi-epoch.js
+          node --check rpsgt-v3/core/lab-scoring-event-boundary.js
+          node --check rpsgt-v3/scripts/test-scoring-lab-system.mjs
+          node --check rpsgt-v3/scripts/test-scoring-lab-shell.mjs
+          node --check rpsgt-v3/scripts/test-scoring-stage-presentation.mjs
+          node --check rpsgt-v3/scripts/test-scoring-event-boundary.mjs
+      - name: Validate Scoring Lab engine and completion boundary
+        run: node rpsgt-v3/scripts/test-scoring-lab-system.mjs
+      - name: Validate Scoring Lab learner shell
+        run: node rpsgt-v3/scripts/test-scoring-lab-shell.mjs
+      - name: Validate fixed-order staging presentation
+        run: node rpsgt-v3/scripts/test-scoring-stage-presentation.mjs
+      - name: Validate Phase 3 event-boundary practice
+        run: node rpsgt-v3/scripts/test-scoring-event-boundary.mjs
