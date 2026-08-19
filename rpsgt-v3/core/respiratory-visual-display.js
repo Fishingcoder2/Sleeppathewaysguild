@@ -5,25 +5,9 @@ const visualWorkspace=document.querySelector('[data-respiratory-visual-workspace
 if(!visualWorkspace)return;
 let hintOpen=false;
 
-const isPhoneLandscape=()=>window.matchMedia('(max-width:900px) and (orientation:landscape)').matches;
 const later=fn=>setTimeout(fn,0);
 
-function addFullscreenControl(section,selector){
-  if(!section||section.querySelector('[data-spg-request-fullscreen]'))return;
-  const head=section.querySelector(':scope > .section-head');
-  if(!head)return;
-  const button=document.createElement('button');
-  button.type='button';
-  button.className='btn secondary respiratory-section-fullscreen';
-  button.dataset.spgRequestFullscreen='true';
-  button.dataset.spgFullscreenTarget=selector;
-  button.textContent='Full screen';
-  head.appendChild(button);
-}
-
 function ensureStaticControls(){
-  addFullscreenControl(document.getElementById('respiratory-timeline-lab'),'#respiratory-timeline-lab');
-  addFullscreenControl(document.getElementById('pattern-lab'),'#pattern-lab');
   window.SPGVisualDisplay?.syncFullscreenControls();
 }
 
