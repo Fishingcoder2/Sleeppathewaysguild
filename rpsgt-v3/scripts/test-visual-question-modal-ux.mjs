@@ -23,7 +23,6 @@ for(const token of ['position:fixed','height:95dvh','grid-template-areas:"head h
 for(const token of ['orientation:landscape','.visual-full-epoch-toggle','.visual-epoch-fullscreen','height:100dvh','grid-template-areas:"viewer"','display:none!important','overflow:auto','.visual-outcome-backdrop','.visual-outcome-dialog','.visual-retry-notice']) if(!visualFullEpochCss.includes(token)) throw new Error(`Visual mobile/outcome CSS is missing ${token}.`);
 if(visualNavCss.includes('.visual-flow-nav{display:flex')) throw new Error('Legacy duplicate visual flow navigation must not return.');
 
-// Visual navigation is intentionally event-driven. Continuous DOM observation caused repeated mobile freezes.
 if(visualNav.includes('MutationObserver')||visualConfirm.includes('MutationObserver')) throw new Error('Visual modal navigation must remain event-driven; do not restore MutationObserver-based synchronization.');
 for(const token of [
   "const scheduleActivate=()=>queueMicrotask(activate)",
@@ -37,7 +36,6 @@ for(const token of ["if(workspace.classList.contains('visual-modal-active'))work
   if(!visualNav.includes(token)) throw new Error(`Visual modal class mutation guard is missing ${token}.`);
 }
 
-// Answer selection now confirms submission instead of exposing a second Check Answer control.
 for(const token of [
   'Are you sure?',
   'Submit answer',
@@ -66,7 +64,6 @@ for(const token of [
   'content:"Next"'
 ]) if(!visualConfirmCss.includes(token)) throw new Error(`Visual confirmation / epoch styling is missing ${token}.`);
 
-// Mastery-gated answer flow: first response is preserved for scoring, while incorrect items reopen until corrected.
 for(const token of [
   'firstAnswers:{}',
   'retryRequired:null',
