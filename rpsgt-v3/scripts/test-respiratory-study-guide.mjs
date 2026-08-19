@@ -1,14 +1,16 @@
 import {readFile} from 'node:fs/promises';
 import {dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {runInNewContext} from 'node:vm';
 
 const here=dirname(fileURLToPath(import.meta.url));
 const root=join(here,'..');
-const [guideJs,guideCss,sharedJs,sharedCss]=await Promise.all([
+const [guideJs,guideCss,sharedJs,sharedCss,engineJs]=await Promise.all([
   readFile(join(root,'core','respiratory-study-guide.js'),'utf8'),
   readFile(join(root,'assets','respiratory-study-guide.css'),'utf8'),
   readFile(join(root,'core','shared-visual-display.js'),'utf8'),
-  readFile(join(root,'assets','shared-visual-display.css'),'utf8')
+  readFile(join(root,'assets','shared-visual-display.css'),'utf8'),
+  readFile(join(root,'core','respiratory-lab-engine.js'),'utf8')
 ]);
 
 for(const source of [guideJs,sharedJs]){
@@ -44,4 +46,14 @@ for(const token of ['respiratory-study-guide-backdrop','respiratory-study-tabs',
 for(const token of ['AI-generated teaching schematic · Not a patient recording','Real PSG tracings vary','authentic tracings','syncTeachingDisclosures','respiratory-study-guide.js','.visual-viewer,.spg-trace-fullscreen-frame,.artifact-viewer'])if(!sharedJs.includes(token))throw new Error(`Shared visual disclosure/guide loader missing ${token}`);
 for(const token of ['spg-ai-visual-disclosure','spg-trace-fullscreen-frame:fullscreen>.spg-ai-visual-disclosure'])if(!sharedCss.includes(token))throw new Error(`AI visual disclosure CSS missing ${token}`);
 
-console.log('Respiratory guided review passed: seven stations are taught through Study → Apply → Recap, completion is recorded through the existing station engine, APA-style self-study sources are shown, and AI teaching visuals carry an authentic-tracing comparison disclosure.');
+const moduleBox={exports:{}};
+runInNewContext(engineJs,{module:moduleBox,exports:moduleBox.exports,globalThis:{},Date,JSON,Math,Set,Map,Number,String,Array,Boolean,Error});
+const respiratoryEngine=moduleBox.exports;
+const legacyCompleted={completed:['respiratory'],respiratory:{completed:true,checklist:{}}};
+const reviewed=respiratoryEngine.setStation(legacyCompleted,'signal-inventory',true,'2026-08-19T13:40:00.000Z');
+const reviewedReport=respiratoryEngine.summary(reviewed);
+if(!reviewedReport.completed||reviewedReport.checklist['signal-inventory']!==true)throw new Error('Legacy-completed Respiratory learners must be able to add missing guided-station review flags without losing completion.');
+const protectedState=respiratoryEngine.setStation(reviewed,'signal-inventory',false,'2026-08-19T13:41:00.000Z');
+if(respiratoryEngine.summary(protectedState).checklist['signal-inventory']!==true)throw new Error('Completed Respiratory learners must not be able to erase an earned guided-station review flag.');
+
+console.log('Respiratory guided review passed: seven stations are taught through Study → Apply → Recap, completion is recorded through the existing station engine, legacy completion remains monotonic while missing station flags can be added, APA-style self-study sources are shown, and AI teaching visuals carry an authentic-tracing comparison disclosure.');
