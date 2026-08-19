@@ -58,6 +58,7 @@ jobs:
             test-scoring-lab-system.mjs
             test-scoring-lab-shell.mjs
             test-scoring-event-boundary.mjs
+            test-scoring-stage-presentation.mjs
             test-respiratory-lab-system.mjs
             test-respiratory-lab-shell.mjs
             test-instrumentation-lab-system.mjs
