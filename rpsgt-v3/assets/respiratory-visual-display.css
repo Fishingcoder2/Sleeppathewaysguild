@@ -1,6 +1,5 @@
 body.respiratory-visual-modal-open{overflow:hidden}
-.respiratory-surface-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:10px 0 6px;padding:5px 7px;border:1px solid var(--line);border-radius:11px;background:#f7fbfd}.respiratory-surface-toolbar span{margin-right:auto;color:var(--muted);font-size:.72rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}.respiratory-surface-toolbar .btn{min-height:36px;padding:6px 10px;font-size:.74rem}
-.resp-timeline-workspace:fullscreen,.respiratory-pattern-detail:fullscreen{background:#f8fbfd;padding:10px;overflow:auto}
+.spg-trace-fullscreen-frame{position:relative;min-width:0;background:#f8fbfd;border-radius:14px;overflow:hidden}.spg-trace-fullscreen-frame>.respiratory-timeline-trace,.spg-trace-fullscreen-frame>.respiratory-trace{display:block;width:100%;max-width:100%}.spg-trace-fullscreen-button{position:absolute;top:8px;right:8px;z-index:8;min-height:36px;padding:6px 10px;font-size:.74rem;background:rgba(255,255,255,.94);box-shadow:0 3px 12px rgba(7,25,45,.16)}.spg-trace-fullscreen-frame:fullscreen{display:flex;align-items:center;justify-content:center;width:100vw;height:100dvh;padding:10px;background:#f8fbfd;border-radius:0}.spg-trace-fullscreen-frame:fullscreen>.respiratory-timeline-trace,.spg-trace-fullscreen-frame:fullscreen>.respiratory-trace{width:100%;height:100%;max-height:100dvh}
 .respiratory-visual-workspace.respiratory-visual-modal-active{position:fixed;inset:2.5vh 1.5vw;z-index:1299;width:auto;height:95dvh;margin:0;padding:12px;border:1px solid var(--line);border-radius:22px;background:#f8fbfd;box-shadow:0 28px 80px rgba(0,0,0,.34);overflow:auto}
 body.respiratory-visual-modal-open::before{content:"";position:fixed;inset:0;z-index:1298;background:rgba(7,25,45,.72)}
 .respiratory-visual-toolbar{position:sticky;top:0;z-index:12;display:flex;justify-content:flex-end;gap:6px;margin:0 0 8px;padding:6px;border:1px solid var(--line);border-radius:12px;background:rgba(248,251,253,.97)}
@@ -13,11 +12,12 @@ body.respiratory-visual-modal-open::before{content:"";position:fixed;inset:0;z-i
 .respiratory-visual-hint{margin:10px 0;padding:10px 12px;border:1px solid #b7d5e8;border-radius:12px;background:#f2f9fd}.respiratory-visual-hint strong,.respiratory-visual-hint span{display:block}.respiratory-visual-hint span{margin-top:3px;line-height:1.4}
 .respiratory-visual-workspace.respiratory-visual-modal-active [data-respiratory-visual-check]{display:none!important}
 @media(max-width:900px) and (orientation:landscape){
-  .respiratory-surface-toolbar{margin:5px 0 4px;padding:3px 5px;border-radius:9px}.respiratory-surface-toolbar span{font-size:.6rem}.respiratory-surface-toolbar .btn{min-height:32px;padding:5px 8px;font-size:.68rem}
+  .spg-trace-fullscreen-button{top:5px;right:5px;min-height:32px;padding:5px 8px;font-size:.68rem}
   .respiratory-visual-workspace.respiratory-visual-modal-active{inset:0;width:100vw;height:100dvh;border:0;border-radius:0;padding:6px 8px;overflow:hidden}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-case{height:100%;min-height:0;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.85fr);grid-template-rows:auto minmax(0,1fr) auto auto auto;grid-template-areas:"progress progress" "trace prompt" "trace options" "trace feedback" "trace actions";gap:6px;overflow:hidden}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-progress{grid-area:progress;min-width:0}
-  .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-trace{grid-area:trace;width:100%;height:100%;min-height:0;align-self:stretch}
+  .respiratory-visual-workspace.respiratory-visual-modal-active .spg-trace-fullscreen-frame{grid-area:trace;width:100%;height:100%;min-height:0;align-self:stretch}
+  .respiratory-visual-workspace.respiratory-visual-modal-active .spg-trace-fullscreen-frame>.respiratory-trace{width:100%;height:100%;min-height:0;align-self:stretch}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-prompt{grid-area:prompt;margin:0;font-size:.72rem;line-height:1.3;overflow:auto}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-options{grid-area:options;display:grid;grid-template-columns:1fr;gap:5px;min-height:0;overflow:auto}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-choice{min-height:40px;padding:7px 8px;font-size:.74rem}
@@ -25,9 +25,9 @@ body.respiratory-visual-modal-open::before{content:"";position:fixed;inset:0;z-i
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-case>.actions{grid-area:actions;margin:0;display:flex;flex-wrap:wrap;gap:5px}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-case>.actions .btn{width:auto;min-height:36px;padding:6px 8px;font-size:.72rem}
   .respiratory-visual-workspace.respiratory-visual-modal-active.respiratory-full-question .respiratory-visual-case{grid-template-columns:1fr;grid-template-areas:"progress" "prompt" "options" "feedback" "actions"}
-  .respiratory-visual-workspace.respiratory-visual-modal-active.respiratory-full-question .respiratory-trace{display:none}
+  .respiratory-visual-workspace.respiratory-visual-modal-active.respiratory-full-question .spg-trace-fullscreen-frame{display:none}
   .respiratory-visual-toolbar{position:absolute;top:5px;right:7px;margin:0;padding:3px;border:0;background:rgba(255,255,255,.94)}
-  .respiratory-visual-progress{padding-right:220px}
+  .respiratory-visual-progress{padding-right:150px}
   .respiratory-visual-confirm-dialog{width:min(680px,96vw);padding:14px}.respiratory-visual-confirm-dialog h3{font-size:1.05rem}.respiratory-visual-confirm-dialog p{font-size:.78rem}.respiratory-visual-confirm-actions{margin-top:10px}
 }
 @media(max-width:900px) and (orientation:portrait){
