@@ -50,8 +50,14 @@
     if(!result.querySelector('.visual-result-next')){const panel=document.createElement('div');panel.className='visual-result-next';panel.innerHTML='<div class="eyebrow">Suggested next visual practice</div><h3>Keep moving from recognition to scoring context</h3><p>Choose the next visual skill without returning to the catalog.</p><div class="actions"><a class="btn primary" href="lab-scoring.html">Continue to Scoring Lab visuals</a><a class="btn secondary" href="lab-artifact.html">Practice Artifact Recognition</a><a class="btn secondary" href="lab-respiratory.html">Practice Respiratory visuals</a></div>';result.appendChild(panel);}return true;
   }
   function activate(){
-    if(workspace.hidden){document.body.classList.remove('visual-modal-open');workspace.classList.remove('visual-modal-active');workspace.removeAttribute('role');workspace.removeAttribute('aria-modal');delete workspace.dataset.visualModalSnapshot;return;}
-    document.body.classList.add('visual-modal-open');workspace.classList.add('visual-modal-active');workspace.setAttribute('role','dialog');workspace.setAttribute('aria-modal','true');workspace.setAttribute('aria-label','Visual Skills viewer');ensureChrome();workspace.querySelectorAll('.visual-flow-nav,.visual-up-next').forEach(node=>node.remove());
+    if(workspace.hidden){
+      document.body.classList.remove('visual-modal-open');
+      if(workspace.classList.contains('visual-modal-active'))workspace.classList.remove('visual-modal-active');
+      workspace.removeAttribute('role');workspace.removeAttribute('aria-modal');delete workspace.dataset.visualModalSnapshot;return;
+    }
+    document.body.classList.add('visual-modal-open');
+    if(!workspace.classList.contains('visual-modal-active'))workspace.classList.add('visual-modal-active');
+    workspace.setAttribute('role','dialog');workspace.setAttribute('aria-modal','true');workspace.setAttribute('aria-label','Visual Skills viewer');ensureChrome();workspace.querySelectorAll('.visual-flow-nav,.visual-up-next').forEach(node=>node.remove());
     const snapshot=stateSnapshot();if(workspace.dataset.visualModalSnapshot===snapshot)return;workspace.dataset.visualModalSnapshot=snapshot;
     if(renderResultNext())return;renderFooter();
   }
@@ -62,5 +68,7 @@
     const buttons=epochButtons(),index=currentEpochIndex();if(action==='prev-epoch'&&index>0){buttons[index-1].click();return;}if(action==='next-epoch'&&index>=0&&index<buttons.length-1)buttons[index+1].click();
   });
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!workspace.hidden)clickExisting('[data-visual-close]');});
-  const observer=new MutationObserver(()=>queueMicrotask(activate));observer.observe(workspace,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class','aria-current']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',activate);else activate();
+  const observer=new MutationObserver(()=>queueMicrotask(activate));
+  observer.observe(workspace,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','aria-current']});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',activate);else activate();
 })();
