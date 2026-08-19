@@ -17,7 +17,7 @@ function ensureStyle(href,marker){
 ensureStyle('assets/scoring-checkpoint-modal.css','data-scoring-checkpoint-modal-style');
 
 const state={bank:[],questions:[],answerIndices:{},index:0,active:false,scored:false,record:null,loading:null};
-const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
+const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const familyLabel=value=>({'stage-transition':'Stage transition','sleep-stage':'Sleep stage','arousal':'Arousal','respiratory-event':'Respiratory event','limb-movement':'Limb movement','artifact':'Artifact review','pediatric':'Age-specific context','other':'Scoring context'}[value]||'Scoring context');
 async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
 function freshState(){return storage.load();}
