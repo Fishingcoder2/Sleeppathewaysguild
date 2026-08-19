@@ -18,7 +18,7 @@ if(js.includes('CSS.escape')) throw new Error('Respiratory checkpoint should not
 if(/localStorage\.(?:setItem|removeItem|clear)/.test(js)) throw new Error('Respiratory controller must write only through versioned RPSGT storage.');
 if(!html.includes('original teaching schematics')||!html.includes('all seven respiratory stations')||!html.includes('80% or higher')) throw new Error('Respiratory evidence and completion boundaries must be visible.');
 if(!html.includes('Visual recognition challenge')||!html.includes('7 visual cases')||!html.includes('diagnosis stays hidden until you answer')) throw new Error('Respiratory visual-recognition learner framing is missing.');
-if(!html.includes('terminates in an EEG arousal')) throw new Error('RERA learner framing must require terminal EEG arousal.');
+if(!html.includes('terminates in a sustained faster-frequency EEG arousal')) throw new Error('RERA learner framing must require the current terminal sustained faster-frequency EEG arousal wording.');
 if(!html.includes('thermistor/thermal airflow')||!html.includes('numeric SpO₂')) throw new Error('Thermistor and numeric SpO₂ learner framing is missing.');
 if(!html.includes('Tap the whole card')||!js.includes("stationHost.addEventListener('click'")||!js.includes('<button class="respiratory-station')) throw new Error('Respiratory station controls are not implemented as reliable full-card buttons.');
 for(const visualToken of ['trace-line eeg','trace-line airflow','trace-line thermal','trace-line thorax','trace-line abdomen','trace-line oxygen','trace-spo2-value','trace-arousal-note','EEG arousal']) if(!js.includes(visualToken)) throw new Error(`Respiratory teaching trace is missing ${visualToken}.`);
