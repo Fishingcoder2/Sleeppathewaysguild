@@ -20,6 +20,43 @@
     return Boolean(existing('.visual-outcome-dialog.correct'));
   }
 
+  function questionPrompt(){
+    return String(existing('.visual-question-top h2')?.textContent||'Open the current question').trim();
+  }
+
+  function closeQuestion(focusLauncher=true){
+    if(!workspace.classList.contains('visual-question-open'))return;
+    workspace.classList.remove('visual-question-open');
+    existing('[data-visual-question-toolbar]')?.remove();
+    if(focusLauncher)requestAnimationFrame(()=>existing('[data-visual-open-question]')?.focus());
+  }
+
+  function ensureQuestionToolbar(){
+    const card=existing('.visual-question-card');
+    if(!card)return;
+    let toolbar=card.querySelector('[data-visual-question-toolbar]');
+    if(!toolbar){
+      toolbar=document.createElement('div');
+      toolbar.className='visual-question-modal-toolbar';
+      toolbar.dataset.visualQuestionToolbar='true';
+      card.prepend(toolbar);
+    }
+    const counter=existing('.visual-counter')?.textContent?.trim()||'Current question';
+    toolbar.innerHTML=`<div><small>Visual Skills question</small><strong>${counter}</strong></div><button class="btn secondary" type="button" data-visual-question-close>← Review PSG</button>`;
+  }
+
+  function openQuestion(){
+    if(workspace.hidden||existing('.visual-result')||existing('.visual-outcome-backdrop'))return;
+    const card=existing('.visual-question-card');
+    if(!card)return;
+    workspace.classList.add('visual-question-open');
+    ensureQuestionToolbar();
+    requestAnimationFrame(()=>{
+      const target=card.querySelector('[data-visual-answer]:not(:disabled),[data-visual-question-close],h2');
+      if(target&&typeof target.focus==='function')target.focus();
+    });
+  }
+
   function ensureStatusPanel(){
     const head=existing(':scope > .section-head');
     if(!head)return;
@@ -38,7 +75,8 @@
     if(retryRequired())stateLabel='Retry required';
     else if(outcomeCorrect())stateLabel='Correct';
     else if(hasSelection())stateLabel='Answer selected';
-    panel.innerHTML=`<span><small>Epoch</small><strong>${epochHeading.replace(/^Epoch\s+/i,'')}</strong></span><span><small>Question</small><strong>${question}</strong></span><span><small>Completed</small><strong>${completed}/5 epochs</strong></span><span class="${retryRequired()?'retry':outcomeCorrect()?'correct':''}"><small>Status</small><strong>${stateLabel}</strong></span>`;
+    const canPrevious=Boolean(existing('[data-visual-prev]'))&&!retryRequired();
+    panel.innerHTML=`<span><small>Epoch</small><strong>${epochHeading.replace(/^Epoch\s+/i,'')}</strong></span><span><small>Question</small><strong>${question}</strong></span><span><small>Completed</small><strong>${completed}/5 epochs</strong></span><span class="${retryRequired()?'retry':outcomeCorrect()?'correct':''}"><small>Status</small><strong>${stateLabel}</strong></span><div class="visual-question-launch"><div><small>Current task</small><strong>${questionPrompt()}</strong></div><button class="btn secondary" type="button" data-visual-question-prev ${canPrevious?'':'disabled'}>← Previous</button><button class="btn primary" type="button" data-visual-open-question>Answer question</button></div>`;
   }
 
   function syncEpochNav(){
@@ -92,21 +130,39 @@
     const check=existing('.visual-modal-footer [data-visual-modal-action="check"]');
     if(check)check.hidden=true;
     const cue=existing('.visual-modal-next-cue strong');
-    if(cue&&existing('[data-visual-check]'))cue.textContent=hasSelection()?'Answer selected — confirm submission':'Choose an answer to submit';
+    if(cue&&existing('[data-visual-check]'))cue.textContent='Open Answer question in the upper-right to respond';
   }
 
   function syncChrome(){
-    if(workspace.hidden){removeConfirmation();return;}
+    if(workspace.hidden){removeConfirmation();closeQuestion(false);return;}
     syncEpochNav();
     ensureStatusPanel();
     syncFooterCue();
+    if(workspace.classList.contains('visual-question-open'))ensureQuestionToolbar();
   }
 
   if(startButton)startButton.addEventListener('click',scheduleSync);
 
   document.addEventListener('click',event=>{
+    if(event.target.closest('[data-visual-open-question]')){
+      openQuestion();
+      return;
+    }
+    if(event.target.closest('[data-visual-question-close]')){
+      closeQuestion();
+      return;
+    }
+    if(event.target.closest('[data-visual-question-prev]')){
+      const previous=existing('[data-visual-prev]');
+      if(!previous)return;
+      closeQuestion(false);
+      previous.click();
+      scheduleSync();
+      return;
+    }
     if(event.target.closest('[data-visual-confirm-submit]')){
       const submit=existing('[data-visual-check]');
+      closeQuestion(false);
       removeConfirmation();
       if(submit)submit.click();
       scheduleSync();
@@ -121,7 +177,10 @@
       setTimeout(()=>{syncChrome();showConfirmation();},0);
       return;
     }
-    if(event.target.closest('[data-visual-epoch],[data-visual-prev],[data-visual-next],[data-visual-finish],[data-visual-restart],[data-visual-close],[data-visual-outcome-action],[data-visual-modal-action]'))scheduleSync();
+    if(event.target.closest('[data-visual-epoch],[data-visual-prev],[data-visual-next],[data-visual-finish],[data-visual-restart],[data-visual-close],[data-visual-outcome-action],[data-visual-modal-action]')){
+      closeQuestion(false);
+      scheduleSync();
+    }
   });
 
   document.addEventListener('pointerup',event=>{
@@ -129,10 +188,16 @@
   });
 
   document.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&existing('[data-visual-submit-confirmation]')){
+    if(event.key!=='Escape')return;
+    if(existing('[data-visual-submit-confirmation]')){
       event.stopImmediatePropagation();
       removeConfirmation();
       scheduleSync();
+      return;
+    }
+    if(workspace.classList.contains('visual-question-open')){
+      event.stopImmediatePropagation();
+      closeQuestion();
     }
   },true);
 
