@@ -4,20 +4,21 @@ import {fileURLToPath} from 'node:url';
 
 const here=dirname(fileURLToPath(import.meta.url));
 const root=join(here,'..');
-const [visualHtml,visualNav,visualNavCss,visualFullEpochCss,visualConfirm,visualConfirmCss,labVisual,practiceHtml,reviewHtml,reviewJs]=await Promise.all([
+const [visualHtml,visualNav,visualNavCss,visualFullEpochCss,visualConfirm,visualConfirmCss,visualSignalPalette,labVisual,practiceHtml,reviewHtml,reviewJs]=await Promise.all([
   readFile(join(root,'lab-visual.html'),'utf8'),
   readFile(join(root,'core','visual-navigation.js'),'utf8'),
   readFile(join(root,'assets','visual-navigation.css'),'utf8'),
   readFile(join(root,'assets','visual-full-epoch.css'),'utf8'),
   readFile(join(root,'core','visual-confirmation.js'),'utf8'),
   readFile(join(root,'assets','visual-confirmation.css'),'utf8'),
+  readFile(join(root,'core','visual-signal-palette.js'),'utf8'),
   readFile(join(root,'core','lab-visual.js'),'utf8'),
   readFile(join(root,'practice.html'),'utf8'),
   readFile(join(root,'review.html'),'utf8'),
   readFile(join(root,'core','review.js'),'utf8')
 ]);
 
-for(const token of ['core/visual-navigation.js','assets/visual-navigation.css','assets/visual-full-epoch.css','core/visual-confirmation.js','assets/visual-confirmation.css','data-visual-workspace']) if(!visualHtml.includes(token)) throw new Error(`Visual page is missing ${token}.`);
+for(const token of ['core/visual-navigation.js','assets/visual-navigation.css','assets/visual-full-epoch.css','core/visual-confirmation.js','assets/visual-confirmation.css','core/visual-signal-palette.js','data-visual-workspace']) if(!visualHtml.includes(token)) throw new Error(`Visual page is missing ${token}.`);
 for(const token of ['visual-modal-open','visual-modal-active','visual-modal-footer','Rotate your phone sideways','Previous visual','Previous epoch','Next epoch','Check answer','Next visual','data-visual-modal-close','aria-modal','View full epoch','Back to question','data-visual-full-epoch','visual-epoch-fullscreen']) if(!visualNav.includes(token)) throw new Error(`Visual modal navigation is missing ${token}.`);
 for(const token of ['position:fixed','height:95dvh','grid-template-areas:"head head"','"viewer question"','orientation:landscape','height:100dvh','orientation:portrait','.visual-modal-rotate','.visual-modal-footer','.visual-question-actions']) if(!visualNavCss.includes(token)) throw new Error(`Visual modal CSS is missing ${token}.`);
 for(const token of ['orientation:landscape','.visual-full-epoch-toggle','.visual-epoch-fullscreen','height:100dvh','grid-template-areas:"viewer"','display:none!important','overflow:auto','.visual-outcome-backdrop','.visual-outcome-dialog','.visual-retry-notice']) if(!visualFullEpochCss.includes(token)) throw new Error(`Visual mobile/outcome CSS is missing ${token}.`);
@@ -64,6 +65,20 @@ for(const token of [
   'content:"Next"'
 ]) if(!visualConfirmCss.includes(token)) throw new Error(`Visual confirmation / epoch styling is missing ${token}.`);
 
+// PSG-style signal coloring remains separate from navigation/status colors.
+for(const token of [
+  "if(type==='eeg'||type==='eog')return '#17202a'",
+  "if(type==='ecg')return '#b3261e'",
+  "if(type==='spo2')return '#2e7d4f'",
+  "if(type==='emg')return '#6c4778'",
+  "/air|flow|nasal|pressure/",
+  "/thor|chest/",
+  "/abd|abdom/",
+  'renderer.render=function',
+  'renderer.traceColor=traceColor'
+]) if(!visualSignalPalette.includes(token)) throw new Error(`Visual PSG signal palette is missing ${token}.`);
+if(visualSignalPalette.includes('MutationObserver')) throw new Error('Signal palette must not add background DOM observation.');
+
 for(const token of [
   'firstAnswers:{}',
   'retryRequired:null',
@@ -95,4 +110,4 @@ for(const token of ['selections:new Map()','responses:new Map()','function previ
 for(const forbidden of ['Mapped source keys','referenceKeys']) if(reviewJs.includes(forbidden)||reviewHtml.includes(forbidden)) throw new Error(`Learner-facing Review must not expose ${forbidden}.`);
 if(!reviewJs.includes('state.responses.has(key)')) throw new Error('Review must preserve answered state when navigating backward.');
 
-console.log('Visual and regular-question modal UX passed: near-full-screen Visual viewer, phone landscape guidance, full-epoch toggle, event-driven freeze protection, tap-to-confirm answer submission, green completed epoch tabs with next-step guidance, correct/incorrect mastery-gated outcomes, first-pass score preservation, Practice modal continuity, Review backward navigation, and learner-safe feedback are present.');
+console.log('Visual and regular-question modal UX passed: near-full-screen Visual viewer, phone landscape guidance, full-epoch toggle, event-driven freeze protection, tap-to-confirm answer submission, green completed epoch tabs with next-step guidance, PSG-style signal palette, correct/incorrect mastery-gated outcomes, first-pass score preservation, Practice modal continuity, Review backward navigation, and learner-safe feedback are present.');
