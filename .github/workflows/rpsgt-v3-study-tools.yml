@@ -15,15 +15,17 @@ on:
       - 'rpsgt-v3/core/review.js'
       - 'rpsgt-v3/core/lab-artifact.js'
       - 'rpsgt-v3/core/artifact-psg-renderer.js'
+      - 'rpsgt-v3/core/scoring-*.js'
+      - 'rpsgt-v3/core/lab-scoring*.js'
       - 'rpsgt-v3/practice.html'
       - 'rpsgt-v3/review.html'
       - 'rpsgt-v3/lab-visual.html'
       - 'rpsgt-v3/lab-respiratory.html'
       - 'rpsgt-v3/lab-artifact.html'
+      - 'rpsgt-v3/lab-scoring.html'
       - 'rpsgt-v3/readiness.html'
       - 'rpsgt-v3/mock.html'
       - 'rpsgt-v3/study.html'
-      - 'rpsgt-v3/lab-scoring.html'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
@@ -33,9 +35,12 @@ on:
       - 'rpsgt-v3/assets/shared-visual-display.css'
       - 'rpsgt-v3/assets/respiratory-visual-display.css'
       - 'rpsgt-v3/assets/artifact-modal.css'
+      - 'rpsgt-v3/assets/scoring*.css'
       - 'rpsgt-v3/assets/review.css'
       - 'rpsgt-v3/data/memory/**'
       - 'rpsgt-v3/data/terminology/**'
+      - 'rpsgt-v3/data/scoring/**'
+      - 'rpsgt-v3/data/visual/prototype-sleep-staging.json'
       - 'rpsgt-v3/math-coach.html'
       - 'rpsgt-v3/assets/math-question-modal.css'
       - 'rpsgt-v3/core/math-coach*.js'
@@ -44,6 +49,7 @@ on:
       - 'rpsgt-v3/scripts/test-visual-question-modal-ux.mjs'
       - 'rpsgt-v3/scripts/test-shared-visual-display.mjs'
       - 'rpsgt-v3/scripts/test-artifact-modal-ux.mjs'
+      - 'rpsgt-v3/scripts/test-scoring*.mjs'
       - 'rpsgt-v3/scripts/test-learner-question-retirements.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
@@ -67,15 +73,17 @@ on:
       - 'rpsgt-v3/core/review.js'
       - 'rpsgt-v3/core/lab-artifact.js'
       - 'rpsgt-v3/core/artifact-psg-renderer.js'
+      - 'rpsgt-v3/core/scoring-*.js'
+      - 'rpsgt-v3/core/lab-scoring*.js'
       - 'rpsgt-v3/practice.html'
       - 'rpsgt-v3/review.html'
       - 'rpsgt-v3/lab-visual.html'
       - 'rpsgt-v3/lab-respiratory.html'
       - 'rpsgt-v3/lab-artifact.html'
+      - 'rpsgt-v3/lab-scoring.html'
       - 'rpsgt-v3/readiness.html'
       - 'rpsgt-v3/mock.html'
       - 'rpsgt-v3/study.html'
-      - 'rpsgt-v3/lab-scoring.html'
       - 'rpsgt-v3/memory-games.html'
       - 'rpsgt-v3/assets/memory-arcade.css'
       - 'rpsgt-v3/assets/glossary-games.css'
@@ -85,9 +93,12 @@ on:
       - 'rpsgt-v3/assets/shared-visual-display.css'
       - 'rpsgt-v3/assets/respiratory-visual-display.css'
       - 'rpsgt-v3/assets/artifact-modal.css'
+      - 'rpsgt-v3/assets/scoring*.css'
       - 'rpsgt-v3/assets/review.css'
       - 'rpsgt-v3/data/memory/**'
       - 'rpsgt-v3/data/terminology/**'
+      - 'rpsgt-v3/data/scoring/**'
+      - 'rpsgt-v3/data/visual/prototype-sleep-staging.json'
       - 'rpsgt-v3/math-coach.html'
       - 'rpsgt-v3/assets/math-question-modal.css'
       - 'rpsgt-v3/core/math-coach*.js'
@@ -96,6 +107,7 @@ on:
       - 'rpsgt-v3/scripts/test-visual-question-modal-ux.mjs'
       - 'rpsgt-v3/scripts/test-shared-visual-display.mjs'
       - 'rpsgt-v3/scripts/test-artifact-modal-ux.mjs'
+      - 'rpsgt-v3/scripts/test-scoring*.mjs'
       - 'rpsgt-v3/scripts/test-learner-question-retirements.mjs'
       - 'rpsgt-v3/scripts/test-memory-games-weak.mjs'
       - 'rpsgt-v3/scripts/test-memory-arcade.mjs'
@@ -139,3 +151,17 @@ jobs:
         run: node rpsgt-v3/scripts/test-shared-visual-display.mjs
       - name: Validate Artifact modal navigation
         run: node rpsgt-v3/scripts/test-artifact-modal-ux.mjs
+      - name: Check Scoring visual JavaScript syntax
+        run: |
+          node --check rpsgt-v3/core/scoring-stage-order.js
+          node --check rpsgt-v3/core/lab-scoring-event-boundary.js
+          node --check rpsgt-v3/core/scoring-event-boundary-engine.js
+          node --check rpsgt-v3/core/scoring-event-boundary-renderer.js
+      - name: Validate Scoring Lab engine and shell
+        run: |
+          node rpsgt-v3/scripts/test-scoring-lab-system.mjs
+          node rpsgt-v3/scripts/test-scoring-lab-shell.mjs
+      - name: Validate Scoring visual workflows
+        run: |
+          node rpsgt-v3/scripts/test-scoring-stage-presentation.mjs
+          node rpsgt-v3/scripts/test-scoring-event-boundary.mjs

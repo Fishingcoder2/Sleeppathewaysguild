@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "name": "RPSGT Scoring Lab Phase 3 event-boundary pack",
+    "version": 1,
+    "appAuthored": true,
+    "sourceType": "app-authored-continuous-respiratory-schematic",
+    "sourceBasis": "Original Sleep Pathways Guild teaching signals created to practice continuous respiratory-event placement and counting across 30-second display boundaries.",
+    "clinicalBoundary": "Epoch boundaries organize the display; they do not divide one continuous physiologic event into separate events. These cases teach event continuity and placement only and do not reproduce proprietary scoring-rule text or establish clinical competency."
+  },
+  "durationSeconds": 90,
+  "epochSeconds": 30,
+  "passPercent": 80,
+  "toleranceSeconds": 4,
+  "cases": [
+    {
+      "id": "boundary-one-001",
+      "title": "One event across the first boundary",
+      "prompt": "Count the physiologic respiratory events, then mark the event that continues from Epoch 1 into Epoch 2.",
+      "focus": "The 30-second divider crosses the event, but the underlying reduction remains continuous.",
+      "events": [{"start": 23, "end": 39, "depth": 0.46}],
+      "targetEventIndex": 0,
+      "rationale": "The airflow reduction begins before 0:30 and recovers after 0:30 without returning to baseline at the divider. It is one continuous physiologic event even though the display changes epochs."
+    },
+    {
+      "id": "boundary-two-002",
+      "title": "Two events with one crossing 1:00",
+      "prompt": "Count all physiologic respiratory events, then mark the event that crosses from Epoch 2 into Epoch 3.",
+      "focus": "Separate events are divided by a clear return toward baseline; an epoch divider alone is not a separator.",
+      "events": [{"start": 8, "end": 20, "depth": 0.48}, {"start": 54, "end": 69, "depth": 0.43}],
+      "targetEventIndex": 1,
+      "rationale": "There are two distinct reductions because airflow recovers between them. The second begins before 1:00 and continues after 1:00, so that boundary-crossing reduction is still one event."
+    },
+    {
+      "id": "boundary-two-003",
+      "title": "Boundary event followed by a separate event",
+      "prompt": "Count the physiologic respiratory events, then mark the event that crosses the 0:30 boundary.",
+      "focus": "Use recovery of the physiologic signal—not the epoch label—to decide where one event ends and another can begin.",
+      "events": [{"start": 27, "end": 43, "depth": 0.44}, {"start": 70, "end": 82, "depth": 0.50}],
+      "targetEventIndex": 0,
+      "rationale": "The first reduction remains continuous through 0:30 and recovers near 0:43. A separate later reduction begins after a substantial return toward baseline, producing two events total."
+    },
+    {
+      "id": "boundary-three-004",
+      "title": "Three events with a middle boundary crossing",
+      "prompt": "Count all physiologic respiratory events, then mark the middle event that continues across the 1:00 boundary.",
+      "focus": "Track onset, continuity, and recovery through all three epochs before deciding the count.",
+      "events": [{"start": 11, "end": 23, "depth": 0.49}, {"start": 48, "end": 64, "depth": 0.42}, {"start": 73, "end": 85, "depth": 0.47}],
+      "targetEventIndex": 1,
+      "rationale": "Three reductions are separated by clear recovery. The middle reduction crosses 1:00 without recovering at the divider, so it remains one event rather than becoming two."
+    }
+  ]
+}
