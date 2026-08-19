@@ -37,12 +37,14 @@ for(const token of [
 
 for(const token of [
   'requestFullscreen','navigationUI','hide','data-artifact-fullscreen','artifact-split-view',
-  'data-artifact-split-toggle','phoneQuestionMode','Split view','Full question','fullscreenchange'
+  'data-artifact-split-toggle','phoneQuestionMode','Split view','Full question','fullscreenchange',
+  'AI-generated teaching schematic · Not a patient recording','Real PSG tracings vary','authentic tracings','ensureTeachingDisclosure','data-artifact-ai-disclosure'
 ]) if(!displayLogic.includes(token)) throw new Error(`Artifact display controls missing ${token}`);
 
 for(const token of [
   '.artifact-workspace:fullscreen','.artifact-question-view-controls','artifact-split-view',
-  'grid-template-areas:"head head" "cases cases" "viewer question"','minmax(0,58fr)','minmax(300px,42fr)'
+  'grid-template-areas:"head head" "cases cases" "viewer question"','minmax(0,58fr)','minmax(300px,42fr)',
+  '.artifact-ai-visual-disclosure'
 ]) if(!displayCss.includes(token)) throw new Error(`Artifact display-control CSS missing ${token}`);
 
 for(const token of [
@@ -57,4 +59,4 @@ if(!logic.includes('state.retryRequired=correct?null:key')) throw new Error('Inc
 if(!logic.includes('if(!allLocked()||state.retryRequired)return')) throw new Error('Artifact pack must not save before all required corrections are complete.');
 if((logic.match(/requestAnimationFrame\(renderCanvas\)/g)||[]).length>2) throw new Error('Artifact PSG redraws must remain limited to viewer render and one settled orientation redraw path.');
 
-console.log('Artifact modal UX passed: workspace layering, stable event-driven phone rendering, browser fullscreen request, landscape split view, full-screen native questions, case navigation, confirmation, hint/retry mastery flow, first-pass score preservation, and PSG-style signal colors are present.');
+console.log('Artifact modal UX passed: workspace layering, stable event-driven phone rendering, browser fullscreen request, landscape split view, full-screen native questions, case navigation, confirmation, hint/retry mastery flow, first-pass score preservation, PSG-style signal colors, and the AI teaching-schematic disclosure are present.');
