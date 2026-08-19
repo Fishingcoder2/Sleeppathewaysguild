@@ -8,10 +8,12 @@ on:
       - 'rpsgt-v3/lab-respiratory.html'
       - 'rpsgt-v3/assets/shared-visual-display.css'
       - 'rpsgt-v3/assets/respiratory.css'
+      - 'rpsgt-v3/assets/respiratory-study-guide.css'
       - 'rpsgt-v3/assets/respiratory-trace-enhancements.css'
       - 'rpsgt-v3/assets/respiratory-timeline.css'
       - 'rpsgt-v3/assets/respiratory-visual-display.css'
       - 'rpsgt-v3/core/shared-visual-display.js'
+      - 'rpsgt-v3/core/respiratory-study-guide.js'
       - 'rpsgt-v3/core/respiratory-visual-display.js'
       - 'rpsgt-v3/core/respiratory-lab-engine.js'
       - 'rpsgt-v3/core/respiratory-signal-model.js'
@@ -22,6 +24,7 @@ on:
       - 'rpsgt-v3/scripts/test-respiratory-lab-system.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-lab-shell.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-signal-model.mjs'
+      - 'rpsgt-v3/scripts/test-respiratory-study-guide.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-timeline-lab.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-timeline-shell.mjs'
       - 'rpsgt-v3/scripts/test-shared-visual-display.mjs'
@@ -45,6 +48,7 @@ jobs:
       - name: Check Respiratory Lab JavaScript syntax
         run: |
           node --check rpsgt-v3/core/shared-visual-display.js
+          node --check rpsgt-v3/core/respiratory-study-guide.js
           node --check rpsgt-v3/core/respiratory-visual-display.js
           node --check rpsgt-v3/core/respiratory-lab-engine.js
           node --check rpsgt-v3/core/respiratory-signal-model.js
@@ -54,6 +58,7 @@ jobs:
           node --check rpsgt-v3/scripts/test-respiratory-lab-system.mjs
           node --check rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
           node --check rpsgt-v3/scripts/test-respiratory-signal-model.mjs
+          node --check rpsgt-v3/scripts/test-respiratory-study-guide.mjs
           node --check rpsgt-v3/scripts/test-respiratory-timeline-lab.mjs
           node --check rpsgt-v3/scripts/test-respiratory-timeline-shell.mjs
           node --check rpsgt-v3/scripts/test-shared-visual-display.mjs
@@ -65,6 +70,8 @@ jobs:
         run: node rpsgt-v3/scripts/test-respiratory-timeline-lab.mjs
       - name: Validate respiratory learner shell and interactions
         run: node rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
+      - name: Validate guided respiratory study flow
+        run: node rpsgt-v3/scripts/test-respiratory-study-guide.mjs
       - name: Validate restored respiratory timeline shell
         run: node rpsgt-v3/scripts/test-respiratory-timeline-shell.mjs
       - name: Validate shared visual display
