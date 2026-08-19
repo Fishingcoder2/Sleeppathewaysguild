@@ -51,6 +51,7 @@ for(const token of [
   'Epoch navigator',
   'Choose the next epoch',
   'Completed epochs are green',
+  'Tap any epoch tab to open it',
   'next-step',
   'needs-review'
 ]) if(!visualConfirm.includes(token)) throw new Error(`Visual confirmation / epoch guidance is missing ${token}.`);
