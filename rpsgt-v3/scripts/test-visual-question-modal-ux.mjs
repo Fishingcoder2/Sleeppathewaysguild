@@ -18,10 +18,18 @@ for(const token of ['visual-modal-open','visual-modal-active','visual-modal-foot
 for(const token of ['position:fixed','height:95dvh','grid-template-areas:"head head"','"viewer question"','orientation:landscape','height:100dvh','orientation:portrait','.visual-modal-rotate','.visual-modal-footer','.visual-question-actions']) if(!visualNavCss.includes(token)) throw new Error(`Visual modal CSS is missing ${token}.`);
 if(visualNavCss.includes('.visual-flow-nav{display:flex')) throw new Error('Legacy duplicate visual flow navigation must not return.');
 
+// The modal toggles visual-modal-active on the same workspace it observes.
+// Never observe the workspace class attribute or the observer can recursively trigger itself before pack initialization completes.
+if(/attributeFilter\s*:\s*\[[^\]]*['"]class['"]/s.test(visualNav)) throw new Error('Visual modal observer must not watch workspace class changes; this can create a Page Unresponsive loop.');
+if(!visualNav.includes("attributeFilter:['hidden','aria-current']")) throw new Error('Visual modal observer must remain limited to hidden and aria-current state changes.');
+for(const token of ["if(workspace.classList.contains('visual-modal-active'))workspace.classList.remove('visual-modal-active')","if(!workspace.classList.contains('visual-modal-active'))workspace.classList.add('visual-modal-active')"]){
+  if(!visualNav.includes(token)) throw new Error(`Visual modal class mutation guard is missing ${token}.`);
+}
+
 for(const token of ['role="dialog"','aria-modal="true"','data-previous-question','data-next-question','practice-modal-footer']) if(!practiceHtml.includes(token)) throw new Error(`Practice modal contract is missing ${token}.`);
 for(const token of ['role="dialog"','aria-modal="true"','data-previous-question','data-review-forward','data-review-close','practice-modal-footer','assets/practice-navigation.css']) if(!reviewHtml.includes(token)) throw new Error(`Review modal contract is missing ${token}.`);
 for(const token of ['selections:new Map()','responses:new Map()','function previousQuestion()','function forward()','"Check answer"','"Next question"','renderFeedback(question,response)','practice-answer-review']) if(!reviewJs.includes(token)) throw new Error(`Review navigation state is missing ${token}.`);
 for(const forbidden of ['Mapped source keys','referenceKeys']) if(reviewJs.includes(forbidden)||reviewHtml.includes(forbidden)) throw new Error(`Learner-facing Review must not expose ${forbidden}.`);
 if(!reviewJs.includes('state.responses.has(key)')) throw new Error('Review must preserve answered state when navigating backward.');
 
-console.log('Visual and regular-question modal UX passed: near-full-screen Visual viewer, phone landscape guidance, one persistent navigation bar, Practice modal continuity, Review backward navigation, single Check/Next action, and learner-safe feedback are present.');
+console.log('Visual and regular-question modal UX passed: near-full-screen Visual viewer, phone landscape guidance, observer-loop protection, one persistent navigation bar, Practice modal continuity, Review backward navigation, single Check/Next action, and learner-safe feedback are present.');
