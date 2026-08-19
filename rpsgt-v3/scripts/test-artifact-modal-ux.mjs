@@ -13,13 +13,16 @@ const [html,logic,css,renderer]=await Promise.all([
 
 for(const token of ['assets/artifact-modal.css','data-artifact-workspace','core/lab-artifact.js']) if(!html.includes(token)) throw new Error(`Artifact page missing ${token}`);
 for(const forbidden of ['<iframe','MutationObserver']) if(html.includes(forbidden)||logic.includes(forbidden)||css.includes(forbidden)) throw new Error(`Artifact modal UX must not use ${forbidden}`);
+if(logic.includes("window.addEventListener('resize'")) throw new Error('Artifact mobile viewer must not restore continuous resize-driven PSG redraws.');
 
 for(const token of [
   'artifact-modal-open','artifact-modal-active','artifact-rotate','Rotate your phone sideways',
   'artifact-question-layer','Answer question','Review PSG','artifact-case-nav','artifact-case-button',
   'Are you sure?','Submit answer','Change answer','Ask for a hint','Correct','Incorrect',
   'Review and try again','There is no Next option yet','firstAnswers:{}','answers:{...state.firstAnswers}',
-  'retryRequired','data-artifact-prev','data-artifact-outcome="next"','data-artifact-outcome="retry"'
+  'retryRequired','data-artifact-prev','data-artifact-outcome="next"','data-artifact-outcome="retry"',
+  'function renderQuestionLayer()','function removeQuestionLayer()','insertAdjacentHTML',
+  'function settledOrientationRedraw()','orientationchange','220'
 ]) if(!logic.includes(token)) throw new Error(`Artifact modal logic missing ${token}`);
 
 for(const token of [
@@ -39,5 +42,6 @@ for(const token of [
 
 if(!logic.includes('state.retryRequired=correct?null:key')) throw new Error('Incorrect Artifact answers must block progression until corrected.');
 if(!logic.includes('if(!allLocked()||state.retryRequired)return')) throw new Error('Artifact pack must not save before all required corrections are complete.');
+if((logic.match(/requestAnimationFrame\(renderCanvas\)/g)||[]).length>2) throw new Error('Artifact PSG redraws must remain limited to viewer render and one settled orientation redraw path.');
 
-console.log('Artifact modal UX passed: landscape phone viewer, full-screen native questions, case navigation, confirmation, hint/retry mastery flow, first-pass score preservation, and PSG-style signal colors are present.');
+console.log('Artifact modal UX passed: stable event-driven phone rendering, landscape viewer, full-screen native questions, case navigation, confirmation, hint/retry mastery flow, first-pass score preservation, and PSG-style signal colors are present.');
