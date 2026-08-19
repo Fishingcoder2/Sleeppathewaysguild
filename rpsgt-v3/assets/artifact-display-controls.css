@@ -1,4 +1,5 @@
 .artifact-display-control{white-space:nowrap}
+.artifact-ai-visual-disclosure{display:flex;align-items:flex-start;gap:8px;margin:6px 8px 8px;padding:7px 9px;border:1px solid #cbdce5;border-radius:10px;background:#f7fbfd;color:#405663;font-size:.72rem;line-height:1.35}.artifact-ai-visual-disclosure strong{flex:0 0 auto;color:#173b58}.artifact-ai-visual-disclosure span{min-width:0}
 .artifact-question-view-controls{display:flex;gap:7px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-left:auto}
 .artifact-question-view-controls .btn{min-height:38px;padding:7px 10px;font-size:.78rem}
 .artifact-workspace:fullscreen,.artifact-workspace:-webkit-full-screen{inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;border:0!important;border-radius:0!important;margin:0!important;background:#f8fbfd!important}
@@ -16,6 +17,7 @@
   .artifact-case-button{flex-basis:104px;min-height:36px;padding:4px 6px}
   .artifact-case-nav{min-height:36px}
   .artifact-workspace.artifact-modal-active .artifact-viewer-head{min-height:34px}
+  .artifact-ai-visual-disclosure{margin:3px 5px 5px;padding:4px 6px;font-size:.58rem;line-height:1.2}.artifact-ai-visual-disclosure strong{white-space:nowrap}
   .artifact-workspace.artifact-modal-active.artifact-split-view{grid-template-columns:minmax(0,58fr) minmax(300px,42fr);grid-template-rows:auto auto minmax(0,1fr);grid-template-areas:"head head" "cases cases" "viewer question"}
   .artifact-workspace.artifact-modal-active.artifact-split-view>.artifact-viewer{grid-area:viewer;min-width:0}
   .artifact-workspace.artifact-modal-active.artifact-split-view .artifact-question-layer{position:relative;inset:auto;grid-area:question;z-index:10;display:block;padding:0 0 0 6px;background:transparent;overflow:hidden}
@@ -37,3 +39,4 @@
   .artifact-workspace.artifact-modal-active.artifact-split-view .artifact-dialog h2{font-size:.84rem}
   .artifact-workspace.artifact-modal-active.artifact-split-view .artifact-dialog p,.artifact-workspace.artifact-modal-active.artifact-split-view .artifact-dialog-actions .btn{font-size:.66rem}
 }
+@media(max-width:640px) and (orientation:portrait){.artifact-ai-visual-disclosure{display:block}.artifact-ai-visual-disclosure strong,.artifact-ai-visual-disclosure span{display:block}.artifact-ai-visual-disclosure span{margin-top:3px}}
