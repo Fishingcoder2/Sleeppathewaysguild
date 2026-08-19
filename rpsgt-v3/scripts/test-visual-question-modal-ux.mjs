@@ -65,7 +65,6 @@ for(const token of [
   'content:"Next"'
 ]) if(!visualConfirmCss.includes(token)) throw new Error(`Visual confirmation / epoch styling is missing ${token}.`);
 
-// PSG-style signal coloring remains separate from navigation/status colors.
 for(const token of [
   "if(type==='eeg'||type==='eog')return '#17202a'",
   "if(type==='ecg')return '#b3261e'",
