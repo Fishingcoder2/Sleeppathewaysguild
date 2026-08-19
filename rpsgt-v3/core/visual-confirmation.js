@@ -60,6 +60,22 @@
     });
   }
 
+  function ensureViewerFullscreenControl(){
+    const head=existing('.visual-viewer-head');
+    if(!head)return;
+    let control=head.querySelector('[data-spg-request-fullscreen]');
+    if(!control){
+      control=document.createElement('button');
+      control.type='button';
+      control.className='btn secondary visual-viewer-fullscreen';
+      control.dataset.spgRequestFullscreen='true';
+      control.dataset.spgFullscreenTarget='[data-visual-workspace]';
+      control.textContent='Full screen';
+      head.appendChild(control);
+    }
+    window.SPGVisualDisplay?.syncFullscreenControls();
+  }
+
   function ensureStatusPanel(){
     const head=existing(':scope > .section-head');
     if(!head)return;
@@ -79,8 +95,7 @@
     else if(outcomeCorrect())stateLabel='Correct';
     else if(hasSelection())stateLabel='Answer selected';
     const canPrevious=Boolean(existing('[data-visual-prev]'))&&!retryRequired();
-    panel.innerHTML=`<span><small>Epoch</small><strong>${epochHeading.replace(/^Epoch\s+/i,'')}</strong></span><span><small>Question</small><strong>${question}</strong></span><span><small>Completed</small><strong>${completed}/5 epochs</strong></span><span class="${retryRequired()?'retry':outcomeCorrect()?'correct':''}"><small>Status</small><strong>${stateLabel}</strong></span><div class="visual-question-launch"><div><small>Current task</small><strong>${questionPrompt()}</strong></div><button class="btn secondary" type="button" data-spg-request-fullscreen data-spg-fullscreen-target="[data-visual-workspace]">Full screen</button><button class="btn secondary" type="button" data-visual-question-prev ${canPrevious?'':'disabled'}>← Previous</button><button class="btn primary" type="button" data-visual-open-question>Answer question</button></div>`;
-    window.SPGVisualDisplay?.syncFullscreenControls();
+    panel.innerHTML=`<span><small>Epoch</small><strong>${epochHeading.replace(/^Epoch\s+/i,'')}</strong></span><span><small>Question</small><strong>${question}</strong></span><span><small>Completed</small><strong>${completed}/5 epochs</strong></span><span class="${retryRequired()?'retry':outcomeCorrect()?'correct':''}"><small>Status</small><strong>${stateLabel}</strong></span><div class="visual-question-launch"><div><small>Current task</small><strong>${questionPrompt()}</strong></div><button class="btn secondary" type="button" data-visual-question-prev ${canPrevious?'':'disabled'}>← Previous</button><button class="btn primary" type="button" data-visual-open-question>Answer question</button></div>`;
   }
 
   function syncEpochNav(){
@@ -141,6 +156,7 @@
     if(workspace.hidden){removeConfirmation();closeQuestion(false);return;}
     syncEpochNav();
     ensureStatusPanel();
+    ensureViewerFullscreenControl();
     syncFooterCue();
     if(workspace.classList.contains('visual-question-open'))ensureQuestionToolbar();
   }
