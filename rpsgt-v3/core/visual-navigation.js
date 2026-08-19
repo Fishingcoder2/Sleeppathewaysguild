@@ -32,6 +32,25 @@
     if(!workspace.querySelector('.visual-modal-rotate'))workspace.insertAdjacentHTML('afterbegin','<div class="visual-modal-rotate" role="status"><div class="visual-modal-rotate-icon" aria-hidden="true">↻</div><strong>Rotate your phone sideways</strong><span>The Visual Skills viewer uses landscape mode so the waveform and question controls fit together.</span></div>');
     if(!workspace.querySelector('[data-visual-modal-close]'))workspace.insertAdjacentHTML('afterbegin','<button class="visual-modal-close" type="button" data-visual-modal-close aria-label="Close Visual Skills viewer">×</button>');
   }
+  function ensureFullEpochControl(){
+    const head=existing('.visual-viewer-head');if(!head)return;
+    let control=head.querySelector('[data-visual-full-epoch]');
+    if(!control){
+      control=document.createElement('button');
+      control.type='button';
+      control.className='btn secondary visual-full-epoch-toggle';
+      control.dataset.visualFullEpoch='true';
+      head.appendChild(control);
+    }
+    const expanded=workspace.classList.contains('visual-epoch-fullscreen');
+    control.textContent=expanded?'Back to question':'View full epoch';
+    control.setAttribute('aria-pressed',expanded?'true':'false');
+  }
+  function setFullEpoch(expanded){
+    workspace.classList.toggle('visual-epoch-fullscreen',Boolean(expanded));
+    ensureFullEpochControl();
+    requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));
+  }
   function stateSnapshot(){
     const result=existing('.visual-result');if(result)return 'result|'+text(result.querySelector('h2')?.textContent);
     const counter=text(existing('.visual-counter')?.textContent),progress=currentProgress(),epoch=currentEpochIndex();
@@ -53,21 +72,28 @@
     if(workspace.hidden){
       document.body.classList.remove('visual-modal-open');
       if(workspace.classList.contains('visual-modal-active'))workspace.classList.remove('visual-modal-active');
+      if(workspace.classList.contains('visual-epoch-fullscreen'))workspace.classList.remove('visual-epoch-fullscreen');
       workspace.removeAttribute('role');workspace.removeAttribute('aria-modal');delete workspace.dataset.visualModalSnapshot;return;
     }
     document.body.classList.add('visual-modal-open');
     if(!workspace.classList.contains('visual-modal-active'))workspace.classList.add('visual-modal-active');
-    workspace.setAttribute('role','dialog');workspace.setAttribute('aria-modal','true');workspace.setAttribute('aria-label','Visual Skills viewer');ensureChrome();workspace.querySelectorAll('.visual-flow-nav,.visual-up-next').forEach(node=>node.remove());
+    workspace.setAttribute('role','dialog');workspace.setAttribute('aria-modal','true');workspace.setAttribute('aria-label','Visual Skills viewer');ensureChrome();workspace.querySelectorAll('.visual-flow-nav,.visual-up-next').forEach(node=>node.remove());ensureFullEpochControl();
     const snapshot=stateSnapshot();if(workspace.dataset.visualModalSnapshot===snapshot)return;workspace.dataset.visualModalSnapshot=snapshot;
     if(renderResultNext())return;renderFooter();
   }
   document.addEventListener('click',event=>{
+    const fullEpoch=event.target.closest('[data-visual-full-epoch]');
+    if(fullEpoch){setFullEpoch(!workspace.classList.contains('visual-epoch-fullscreen'));return;}
     if(event.target.closest('[data-visual-modal-close]')){clickExisting('[data-visual-close]');return;}
     const control=event.target.closest('[data-visual-modal-action]');if(!control||control.disabled)return;const action=control.dataset.visualModalAction;
     if(action==='prev'){clickExisting('[data-visual-prev]');return;}if(action==='check'){clickExisting('[data-visual-check]');return;}if(action==='next'){clickExisting('[data-visual-next]');return;}if(action==='finish'){clickExisting('[data-visual-finish]');return;}
     const buttons=epochButtons(),index=currentEpochIndex();if(action==='prev-epoch'&&index>0){buttons[index-1].click();return;}if(action==='next-epoch'&&index>=0&&index<buttons.length-1)buttons[index+1].click();
   });
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!workspace.hidden)clickExisting('[data-visual-close]');});
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='Escape'||workspace.hidden)return;
+    if(workspace.classList.contains('visual-epoch-fullscreen')){setFullEpoch(false);return;}
+    clickExisting('[data-visual-close]');
+  });
   const observer=new MutationObserver(()=>queueMicrotask(activate));
   observer.observe(workspace,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','aria-current']});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',activate);else activate();
