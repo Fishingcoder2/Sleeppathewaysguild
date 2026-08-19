@@ -1,3 +1,4 @@
+.visual-question-toolbar-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 @media(max-width:900px) and (orientation:landscape){
   .visual-workspace.visual-modal-active.visual-question-open.visual-split-view{
     grid-template-columns:minmax(0,1.55fr) minmax(290px,.9fr);
@@ -30,6 +31,8 @@
     left:8px;
     right:8px;
   }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-question-modal-toolbar>div:first-child{display:none}
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-question-toolbar-actions{margin-left:auto}
   .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-question-top{
     display:block;
     padding-top:6px;
