@@ -20,14 +20,18 @@ for(const token of ['position:fixed','height:95dvh','grid-template-areas:"head h
 for(const token of ['orientation:landscape','.visual-full-epoch-toggle','.visual-epoch-fullscreen','height:100dvh','grid-template-areas:"viewer"','display:none!important','overflow:auto']) if(!visualFullEpochCss.includes(token)) throw new Error(`Full-epoch mobile viewer CSS is missing ${token}.`);
 if(visualNavCss.includes('.visual-flow-nav{display:flex')) throw new Error('Legacy duplicate visual flow navigation must not return.');
 
-// The modal toggles visual-modal-active on the same workspace it observes.
-// Never observe the workspace class attribute or the observer can recursively trigger itself before pack initialization completes.
-if(/attributeFilter\s*:\s*\[[^\]]*['"]class['"]/s.test(visualNav)) throw new Error('Visual modal observer must not watch workspace class changes; this can create a Page Unresponsive loop.');
-if(!visualNav.includes("attributeFilter:['hidden','aria-current']")) throw new Error('Visual modal observer must remain limited to hidden and aria-current state changes.');
+// Visual navigation is intentionally event-driven. Continuous DOM observation caused repeated mobile freezes.
+if(visualNav.includes('MutationObserver')) throw new Error('Visual modal navigation must remain event-driven; do not restore MutationObserver-based synchronization.');
+for(const token of [
+  "const scheduleActivate=()=>queueMicrotask(activate)",
+  "startButton.addEventListener('click',scheduleActivate)",
+  "document.addEventListener('pointerup'",
+  "if(control.textContent!==label)control.textContent=label",
+  "requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')))"
+]) if(!visualNav.includes(token)) throw new Error(`Visual event-driven navigation guard is missing ${token}.`);
 for(const token of ["if(workspace.classList.contains('visual-modal-active'))workspace.classList.remove('visual-modal-active')","if(!workspace.classList.contains('visual-modal-active'))workspace.classList.add('visual-modal-active')"]){
   if(!visualNav.includes(token)) throw new Error(`Visual modal class mutation guard is missing ${token}.`);
 }
-if(!visualNav.includes("requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')))")) throw new Error('Full-epoch mode must request a waveform redraw after the viewport layout changes.');
 
 for(const token of ['role="dialog"','aria-modal="true"','data-previous-question','data-next-question','practice-modal-footer']) if(!practiceHtml.includes(token)) throw new Error(`Practice modal contract is missing ${token}.`);
 for(const token of ['role="dialog"','aria-modal="true"','data-previous-question','data-review-forward','data-review-close','practice-modal-footer','assets/practice-navigation.css']) if(!reviewHtml.includes(token)) throw new Error(`Review modal contract is missing ${token}.`);
@@ -35,4 +39,4 @@ for(const token of ['selections:new Map()','responses:new Map()','function previ
 for(const forbidden of ['Mapped source keys','referenceKeys']) if(reviewJs.includes(forbidden)||reviewHtml.includes(forbidden)) throw new Error(`Learner-facing Review must not expose ${forbidden}.`);
 if(!reviewJs.includes('state.responses.has(key)')) throw new Error('Review must preserve answered state when navigating backward.');
 
-console.log('Visual and regular-question modal UX passed: near-full-screen Visual viewer, phone landscape guidance, full-epoch landscape toggle, observer-loop protection, one persistent navigation bar, Practice modal continuity, Review backward navigation, single Check/Next action, and learner-safe feedback are present.');
+console.log('Visual and regular-question modal UX passed: near-full-screen Visual viewer, phone landscape guidance, full-epoch landscape toggle, event-driven freeze protection, one persistent navigation bar, Practice modal continuity, Review backward navigation, single Check/Next action, and learner-safe feedback are present.');
