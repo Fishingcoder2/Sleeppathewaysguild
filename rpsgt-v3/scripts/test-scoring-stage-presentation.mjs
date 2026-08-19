@@ -25,6 +25,9 @@ if(/Math\.random\s*=/.test(orderJs)) throw new Error('Staging controller must no
 for(const token of ['height:94dvh','position:fixed','z-index:9999','body.scoring-stage-modal-open','orientation:landscape','height:100dvh','orientation:portrait','.scoring-stage-rotate-prompt','grid-template-columns:repeat(5,minmax(0,1fr))','.scoring-stage-nav.complete','.scoring-stage-nav.current','.scoring-stage-nav.recommended','.scoring-stage-nav.retry','.scoring-stage-confirmation']){
   if(!modalCss.includes(token)) throw new Error(`Near-full-screen staging modal CSS is missing ${token}.`);
 }
+for(const token of ['@media(orientation:landscape) and (max-height:600px)','grid-template-columns:minmax(0,1fr) minmax(300px,36vw)','grid-row:3/7','min-height:190px','grid-template-columns:repeat(3,minmax(0,1fr))']){
+  if(!modalCss.includes(token)) throw new Error(`Short-landscape staging layout is missing ${token}.`);
+}
 if(!html.includes('Wake → N1 → N2 → N3 → R')) throw new Error('Learner-facing staging order is not visible.');
 if(!html.includes('core/scoring-stage-order.js')) throw new Error('Scoring page does not load the fixed staging controller.');
 if(html.indexOf('core/lab-scoring.js')>html.indexOf('core/scoring-stage-order.js')) throw new Error('Fixed staging controller must load after the base Scoring controller so capture-phase actions can protect the dedicated visual workflow.');
@@ -33,4 +36,4 @@ for(const token of ['@media(min-width:1100px)', 'grid-template-columns:repeat(3,
 }
 if(!html.includes('the three neighboring epoch cards appear side by side')) throw new Error('Desktop horizontal layout cue is not visible to learners.');
 
-console.log('Scoring staging presentation passed: fixed W → N1 → N2 → N3 → R controller, first-pass scoring with correction mastery, confirmation, hint, Previous/Next, on-tracing fullscreen, AI disclosure, phone landscape guidance, and three-column desktop consecutive-epoch layout are present without DOM observers or Math.random overrides.');
+console.log('Scoring staging presentation passed: fixed W → N1 → N2 → N3 → R controller, first-pass scoring with correction mastery, confirmation, hint, Previous/Next, on-tracing fullscreen, AI disclosure, compact short-landscape phone layout with a protected tracing area, phone landscape guidance, and three-column desktop consecutive-epoch layout are present without DOM observers or Math.random overrides.');
