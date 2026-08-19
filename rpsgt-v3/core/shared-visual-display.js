@@ -48,7 +48,8 @@ async function requestFullscreen(surface){
 
 function syncFullscreenControls(){
   const supported=fullscreenSupported();
-  document.querySelectorAll('[data-spg-request-fullscreen],[data-scoring-stage-fullscreen]').forEach(control=>{
+  const selector='[data-spg-request-fullscreen],[data-scoring-stage-fullscreen],[data-scoring-event-fullscreen],[data-scoring-context-fullscreen],[data-scoring-multi-fullscreen],[data-scoring-boundary-fullscreen]';
+  document.querySelectorAll(selector).forEach(control=>{
     control.hidden=!supported;
     if(!supported)return;
     const surface=surfaceFor(control);
