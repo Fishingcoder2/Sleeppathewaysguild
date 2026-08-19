@@ -1,0 +1,62 @@
+@media(max-width:900px) and (orientation:landscape){
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view{
+    grid-template-columns:minmax(0,1.55fr) minmax(290px,.9fr);
+    grid-template-rows:auto auto minmax(0,1fr);
+    grid-template-areas:"head head" "epochs epochs" "viewer question";
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view>.visual-question-card{
+    position:relative;
+    inset:auto;
+    grid-area:question;
+    z-index:24;
+    display:block;
+    min-width:0;
+    min-height:0;
+    height:100%;
+    margin:0;
+    padding:52px 10px 10px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#f7fbfd;
+    overflow:auto;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view>.visual-viewer-shell{
+    grid-area:viewer;
+    min-width:0;
+    min-height:0;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-question-modal-toolbar{
+    top:6px;
+    left:8px;
+    right:8px;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-question-top{
+    display:block;
+    padding-top:6px;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-question-top h2{
+    font-size:1rem;
+    line-height:1.25;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-question-top p{
+    font-size:.72rem;
+    line-height:1.3;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-stage-options{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    margin-top:10px;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-region-options,
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-point-options,
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-interval-options{
+    grid-template-columns:1fr;
+    gap:6px;
+    margin-top:10px;
+  }
+  .visual-workspace.visual-modal-active.visual-question-open.visual-split-view .visual-choice{
+    min-height:42px;
+    padding:7px 8px;
+    font-size:.76rem;
+  }
+}
