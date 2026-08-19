@@ -7,6 +7,7 @@
   const existing=selector=>workspace.querySelector(selector);
   const epochButtons=()=>[...workspace.querySelectorAll('[data-visual-epoch]')];
   const scheduleSync=()=>setTimeout(syncChrome,0);
+  const isPhoneLandscape=()=>window.matchMedia('(max-width:900px) and (orientation:landscape)').matches;
 
   function hasSelection(){
     return Boolean(existing('.visual-choice.selected,.visual-region-button.selected,.visual-point-marker.selected,.visual-interval-selection'));
@@ -26,7 +27,7 @@
 
   function closeQuestion(focusLauncher=true){
     if(!workspace.classList.contains('visual-question-open'))return;
-    workspace.classList.remove('visual-question-open');
+    workspace.classList.remove('visual-question-open','visual-split-view');
     existing('[data-visual-question-toolbar]')?.remove();
     if(focusLauncher)requestAnimationFrame(()=>existing('[data-visual-open-question]')?.focus());
   }
@@ -42,7 +43,8 @@
       card.prepend(toolbar);
     }
     const counter=existing('.visual-counter')?.textContent?.trim()||'Current question';
-    toolbar.innerHTML=`<div><small>Visual Skills question</small><strong>${counter}</strong></div><button class="btn secondary" type="button" data-visual-question-close>← Review PSG</button>`;
+    const split=workspace.classList.contains('visual-split-view');
+    toolbar.innerHTML=`<div><small>Visual Skills question</small><strong>${counter}</strong></div><div class="visual-question-toolbar-actions"><button class="btn secondary" type="button" data-visual-question-layout>${split?'Full question':'Split view'}</button><button class="btn secondary" type="button" data-visual-question-close>← Review PSG</button></div>`;
   }
 
   function openQuestion(){
@@ -50,11 +52,28 @@
     const card=existing('.visual-question-card');
     if(!card)return;
     workspace.classList.add('visual-question-open');
+    workspace.classList.toggle('visual-split-view',isPhoneLandscape());
     ensureQuestionToolbar();
     requestAnimationFrame(()=>{
       const target=card.querySelector('[data-visual-answer]:not(:disabled),[data-visual-question-close],h2');
       if(target&&typeof target.focus==='function')target.focus();
     });
+  }
+
+  function ensureViewerFullscreenControl(){
+    const head=existing('.visual-viewer-head');
+    if(!head)return;
+    let control=head.querySelector('[data-spg-request-fullscreen]');
+    if(!control){
+      control=document.createElement('button');
+      control.type='button';
+      control.className='btn secondary visual-viewer-fullscreen';
+      control.dataset.spgRequestFullscreen='true';
+      control.dataset.spgFullscreenTarget='[data-visual-workspace]';
+      control.textContent='Full screen';
+      head.appendChild(control);
+    }
+    window.SPGVisualDisplay?.syncFullscreenControls();
   }
 
   function ensureStatusPanel(){
@@ -137,6 +156,7 @@
     if(workspace.hidden){removeConfirmation();closeQuestion(false);return;}
     syncEpochNav();
     ensureStatusPanel();
+    ensureViewerFullscreenControl();
     syncFooterCue();
     if(workspace.classList.contains('visual-question-open'))ensureQuestionToolbar();
   }
@@ -146,6 +166,11 @@
   document.addEventListener('click',event=>{
     if(event.target.closest('[data-visual-open-question]')){
       openQuestion();
+      return;
+    }
+    if(event.target.closest('[data-visual-question-layout]')){
+      workspace.classList.toggle('visual-split-view');
+      ensureQuestionToolbar();
       return;
     }
     if(event.target.closest('[data-visual-question-close]')){
