@@ -4,11 +4,13 @@ import {fileURLToPath} from 'node:url';
 
 const here=dirname(fileURLToPath(import.meta.url));
 const root=join(here,'..');
-const [html,orderJs,multiCss,modalCss,stagePack,scoringJs]=await Promise.all([
+const [html,orderJs,multiCss,modalCss,sharedJs,sharedCss,stagePack,scoringJs]=await Promise.all([
   readFile(join(root,'lab-scoring.html'),'utf8'),
   readFile(join(root,'core','scoring-stage-order.js'),'utf8'),
   readFile(join(root,'assets','scoring-multi-epoch.css'),'utf8'),
   readFile(join(root,'assets','scoring-stage-modal.css'),'utf8'),
+  readFile(join(root,'core','shared-visual-display.js'),'utf8'),
+  readFile(join(root,'assets','shared-visual-display.css'),'utf8'),
   readFile(join(root,'data','visual','prototype-sleep-staging.json'),'utf8').then(JSON.parse),
   readFile(join(root,'core','lab-scoring.js'),'utf8')
 ]);
@@ -28,6 +30,12 @@ for(const token of ['height:94dvh','position:fixed','z-index:9999','body.scoring
 for(const token of ['@media(orientation:landscape) and (max-height:600px)','grid-template-columns:minmax(0,1fr) minmax(300px,36vw)','grid-row:3/7','min-height:190px','grid-template-columns:repeat(3,minmax(0,1fr))']){
   if(!modalCss.includes(token)) throw new Error(`Short-landscape staging layout is missing ${token}.`);
 }
+for(const token of ["window.SPGSharedVisualDisplay=api","[data-spg-request-fullscreen],[data-scoring-stage-fullscreen]","active?'Exit full screen':'Full screen'",'fullscreenElement()===surface','document.addEventListener(\'fullscreenchange\',syncAll)']){
+  if(!sharedJs.includes(token)) throw new Error(`Shared staging fullscreen controller is missing ${token}.`);
+}
+for(const token of ['.scoring-stage-confirmation{position:fixed!important','box-shadow:0 0 0 100vmax','.scoring-stage-confirmation .actions','grid-template-columns:1fr 1fr','.scoring-stage-trace:fullscreen [data-scoring-stage-fullscreen]','z-index:2147483647!important']){
+  if(!sharedCss.includes(token)) throw new Error(`Staging popout/fullscreen CSS is missing ${token}.`);
+}
 if(!html.includes('Wake → N1 → N2 → N3 → R')) throw new Error('Learner-facing staging order is not visible.');
 if(!html.includes('core/scoring-stage-order.js')) throw new Error('Scoring page does not load the fixed staging controller.');
 if(html.indexOf('core/lab-scoring.js')>html.indexOf('core/scoring-stage-order.js')) throw new Error('Fixed staging controller must load after the base Scoring controller so capture-phase actions can protect the dedicated visual workflow.');
@@ -36,4 +44,4 @@ for(const token of ['@media(min-width:1100px)', 'grid-template-columns:repeat(3,
 }
 if(!html.includes('the three neighboring epoch cards appear side by side')) throw new Error('Desktop horizontal layout cue is not visible to learners.');
 
-console.log('Scoring staging presentation passed: fixed W → N1 → N2 → N3 → R controller, first-pass scoring with correction mastery, confirmation, hint, Previous/Next, on-tracing fullscreen, AI disclosure, compact short-landscape phone layout with a protected tracing area, phone landscape guidance, and three-column desktop consecutive-epoch layout are present without DOM observers or Math.random overrides.');
+console.log('Scoring staging presentation passed: fixed W → N1 → N2 → N3 → R controller, first-pass scoring with correction mastery, popout answer confirmation, explicit Full screen / Exit full screen toggle, hint, Previous/Next, AI disclosure, compact short-landscape phone layout with a protected tracing area, phone landscape guidance, and three-column desktop consecutive-epoch layout are present without DOM observers or Math.random overrides.');
