@@ -109,4 +109,4 @@ for(const token of ['selections:new Map()','responses:new Map()','function previ
 for(const forbidden of ['Mapped source keys','referenceKeys']) if(reviewJs.includes(forbidden)||reviewHtml.includes(forbidden)) throw new Error(`Learner-facing Review must not expose ${forbidden}.`);
 if(!reviewJs.includes('state.responses.has(key)')) throw new Error('Review must preserve answered state when navigating backward.');
 
-console.log('Visual and regular-question modal UX passed: near-full-screen Visual viewer, phone landscape guidance, full-epoch toggle, event-driven freeze protection, tap-to-confirm answer submission, green completed epoch tabs with next-step guidance, PSG-style signal palette, correct/incorrect mastery-gated outcomes, first-pass score preservation, Practice modal continuity, Review backward navigation, and learner-safe feedback are present.');
+console.log('Visual and regular-question modal UX passed.');
