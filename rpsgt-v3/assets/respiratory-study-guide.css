@@ -1,3 +1,4 @@
+.respiratory-station-action{font-size:0}.respiratory-station-action::after{content:'Open guided review';font-size:.78rem}.respiratory-station.complete .respiratory-station-action::after{content:'Review complete · Open again'}
 body.respiratory-study-open{overflow:hidden}
 .respiratory-study-guide-backdrop[hidden]{display:none!important}.respiratory-study-guide-backdrop{position:fixed;inset:0;z-index:1520;display:grid;place-items:center;padding:2vh 1.5vw;background:rgba(7,25,45,.78)}
 .respiratory-study-modal{width:min(1120px,97vw);height:min(94dvh,900px);display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#f8fbfd;box-shadow:0 30px 90px rgba(0,0,0,.38)}
