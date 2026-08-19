@@ -42,6 +42,17 @@ function controlButton(label,attribute){
   return button;
 }
 
+function ensureTeachingDisclosure(){
+  const viewer=workspace.querySelector('.artifact-viewer');
+  if(!viewer||viewer.querySelector('[data-artifact-ai-disclosure]'))return;
+  const note=document.createElement('div');
+  note.className='artifact-ai-visual-disclosure';
+  note.dataset.artifactAiDisclosure='true';
+  note.setAttribute('role','note');
+  note.innerHTML='<strong>AI-generated teaching schematic · Not a patient recording</strong><span>Use this visual to practice pattern recognition and troubleshooting. Real PSG tracings vary. For deeper learning, compare with authentic tracings in current sleep-technology textbooks, peer-reviewed educational resources, and official guidance.</span>';
+  viewer.appendChild(note);
+}
+
 function ensureStatusControls(){
   const panel=workspace.querySelector('.artifact-status-panel');
   if(!panel)return;
@@ -79,6 +90,7 @@ function ensureQuestionControls(){
 function syncControls(){
   ensureStatusControls();
   ensureQuestionControls();
+  ensureTeachingDisclosure();
 }
 
 function afterArtifactAction(target){
