@@ -1,4 +1,6 @@
 body.respiratory-visual-modal-open{overflow:hidden}
+.respiratory-surface-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:10px 0 6px;padding:5px 7px;border:1px solid var(--line);border-radius:11px;background:#f7fbfd}.respiratory-surface-toolbar span{margin-right:auto;color:var(--muted);font-size:.72rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}.respiratory-surface-toolbar .btn{min-height:36px;padding:6px 10px;font-size:.74rem}
+.resp-timeline-workspace:fullscreen,.respiratory-pattern-detail:fullscreen{background:#f8fbfd;padding:10px;overflow:auto}
 .respiratory-visual-workspace.respiratory-visual-modal-active{position:fixed;inset:2.5vh 1.5vw;z-index:1299;width:auto;height:95dvh;margin:0;padding:12px;border:1px solid var(--line);border-radius:22px;background:#f8fbfd;box-shadow:0 28px 80px rgba(0,0,0,.34);overflow:auto}
 body.respiratory-visual-modal-open::before{content:"";position:fixed;inset:0;z-index:1298;background:rgba(7,25,45,.72)}
 .respiratory-visual-toolbar{position:sticky;top:0;z-index:12;display:flex;justify-content:flex-end;gap:6px;margin:0 0 8px;padding:6px;border:1px solid var(--line);border-radius:12px;background:rgba(248,251,253,.97)}
@@ -10,8 +12,8 @@ body.respiratory-visual-modal-open::before{content:"";position:fixed;inset:0;z-i
 .respiratory-visual-confirm-dialog h3{margin:4px 0 8px;font-size:1.35rem}.respiratory-visual-confirm-dialog p{margin:0;color:var(--muted)}.respiratory-visual-confirm-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .respiratory-visual-hint{margin:10px 0;padding:10px 12px;border:1px solid #b7d5e8;border-radius:12px;background:#f2f9fd}.respiratory-visual-hint strong,.respiratory-visual-hint span{display:block}.respiratory-visual-hint span{margin-top:3px;line-height:1.4}
 .respiratory-visual-workspace.respiratory-visual-modal-active [data-respiratory-visual-check]{display:none!important}
-.respiratory-section-fullscreen{display:inline-flex;margin-left:8px}
 @media(max-width:900px) and (orientation:landscape){
+  .respiratory-surface-toolbar{margin:5px 0 4px;padding:3px 5px;border-radius:9px}.respiratory-surface-toolbar span{font-size:.6rem}.respiratory-surface-toolbar .btn{min-height:32px;padding:5px 8px;font-size:.68rem}
   .respiratory-visual-workspace.respiratory-visual-modal-active{inset:0;width:100vw;height:100dvh;border:0;border-radius:0;padding:6px 8px;overflow:hidden}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-case{height:100%;min-height:0;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.85fr);grid-template-rows:auto minmax(0,1fr) auto auto auto;grid-template-areas:"progress progress" "trace prompt" "trace options" "trace feedback" "trace actions";gap:6px;overflow:hidden}
   .respiratory-visual-workspace.respiratory-visual-modal-active .respiratory-visual-progress{grid-area:progress;min-width:0}
