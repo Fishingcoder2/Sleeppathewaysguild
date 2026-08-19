@@ -6,9 +6,13 @@ on:
       - main
     paths:
       - 'rpsgt-v3/lab-respiratory.html'
+      - 'rpsgt-v3/assets/shared-visual-display.css'
       - 'rpsgt-v3/assets/respiratory.css'
       - 'rpsgt-v3/assets/respiratory-trace-enhancements.css'
       - 'rpsgt-v3/assets/respiratory-timeline.css'
+      - 'rpsgt-v3/assets/respiratory-visual-display.css'
+      - 'rpsgt-v3/core/shared-visual-display.js'
+      - 'rpsgt-v3/core/respiratory-visual-display.js'
       - 'rpsgt-v3/core/respiratory-lab-engine.js'
       - 'rpsgt-v3/core/respiratory-signal-model.js'
       - 'rpsgt-v3/core/respiratory-timeline-engine.js'
@@ -20,6 +24,7 @@ on:
       - 'rpsgt-v3/scripts/test-respiratory-signal-model.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-timeline-lab.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-timeline-shell.mjs'
+      - 'rpsgt-v3/scripts/test-shared-visual-display.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-validation.yml'
   workflow_dispatch:
 
@@ -39,6 +44,8 @@ jobs:
           node-version: '24'
       - name: Check Respiratory Lab JavaScript syntax
         run: |
+          node --check rpsgt-v3/core/shared-visual-display.js
+          node --check rpsgt-v3/core/respiratory-visual-display.js
           node --check rpsgt-v3/core/respiratory-lab-engine.js
           node --check rpsgt-v3/core/respiratory-signal-model.js
           node --check rpsgt-v3/core/respiratory-timeline-engine.js
@@ -49,6 +56,7 @@ jobs:
           node --check rpsgt-v3/scripts/test-respiratory-signal-model.mjs
           node --check rpsgt-v3/scripts/test-respiratory-timeline-lab.mjs
           node --check rpsgt-v3/scripts/test-respiratory-timeline-shell.mjs
+          node --check rpsgt-v3/scripts/test-shared-visual-display.mjs
       - name: Validate respiratory pattern and progress engine
         run: node rpsgt-v3/scripts/test-respiratory-lab-system.mjs
       - name: Validate respiratory signal physiology
@@ -59,3 +67,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
       - name: Validate restored respiratory timeline shell
         run: node rpsgt-v3/scripts/test-respiratory-timeline-shell.mjs
+      - name: Validate shared visual display
+        run: node rpsgt-v3/scripts/test-shared-visual-display.mjs
