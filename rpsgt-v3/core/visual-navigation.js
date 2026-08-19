@@ -4,9 +4,10 @@
   if(!workspace)return;
 
   const text=value=>String(value==null?'':value).trim();
+  const existing=selector=>workspace.querySelector(selector);
   function epochButtons(){return [...workspace.querySelectorAll('[data-visual-epoch]')];}
   function currentEpochIndex(){return epochButtons().findIndex(button=>button.classList.contains('current')||button.getAttribute('aria-current')==='true');}
-  function currentEpochLabel(){const buttons=epochButtons(),index=currentEpochIndex();return index>=0?`Epoch ${index+1}`:'this epoch';}
+  function currentEpochLabel(){const index=currentEpochIndex();return index>=0?`Epoch ${index+1}`:'current epoch';}
   function currentProgress(){
     const buttons=epochButtons(),index=currentEpochIndex();
     if(index<0)return null;
@@ -14,73 +15,52 @@
     const match=text(small&&small.textContent).match(/(\d+)\s*\/\s*(\d+)/);
     return match?{done:Number(match[1]),total:Number(match[2])}:null;
   }
-  function nextSuggestion(){
-    const buttons=epochButtons(),index=currentEpochIndex(),progress=currentProgress();
-    if(workspace.querySelector('[data-visual-finish]'))return {title:'Up next: save this Pack 1 attempt',body:'You have reached the last visual item. Save the attempt, then choose the next visual practice area.'};
-    if(!workspace.querySelector('[data-visual-next]'))return null;
-    if(progress&&progress.done<progress.total)return {title:`Up next: another visual in ${currentEpochLabel()}`,body:'Stay with this 30-second tracing and inspect the next requested stage or waveform feature.'};
-    if(index>=0&&index<buttons.length-1)return {title:`Up next: Epoch ${index+2}`,body:'This epoch is reviewed. Continue to the next 30-second tracing and apply the same evidence-first approach.'};
-    return {title:'Up next: the next visual item',body:'Continue to the next waveform task in Sleep Staging Pack 1.'};
-  }
-  function button(label,action,enabled,primary){
-    return `<button class="btn ${primary?'primary':'secondary'}" type="button" data-visual-flow-action="${action}" ${enabled?'':'disabled'}>${label}</button>`;
-  }
-  function renderActive(){
-    const card=workspace.querySelector('.visual-question-card');
-    if(!card)return;
-    const buttons=epochButtons(),epochIndex=currentEpochIndex(),hasPrev=Boolean(workspace.querySelector('[data-visual-prev]')),hasNext=Boolean(workspace.querySelector('[data-visual-next]')),hasFinish=Boolean(workspace.querySelector('[data-visual-finish]'));
-    const counter=text(workspace.querySelector('.visual-counter')&&workspace.querySelector('.visual-counter').textContent);
-    const snapshot=['active',counter,hasPrev,hasNext,hasFinish,epochIndex,currentProgress()&&currentProgress().done].join('|');
-    if(workspace.dataset.visualFlowSnapshot===snapshot)return;
-    workspace.dataset.visualFlowSnapshot=snapshot;
-    workspace.querySelectorAll('.visual-flow-nav,.visual-up-next').forEach(node=>node.remove());
-
-    const nav=document.createElement('nav');
-    nav.className='visual-flow-nav';
-    nav.setAttribute('aria-label','Visual item navigation');
-    nav.innerHTML=`<div class="visual-flow-main">${button('← Previous visual','prev',hasPrev,false)}${button(hasFinish?'Save Pack 1 attempt':'Next visual →',hasFinish?'finish':'next',hasNext||hasFinish,hasNext||hasFinish)}</div><div class="visual-flow-epochs">${button('← Previous epoch','prev-epoch',epochIndex>0,false)}${button('Next epoch →','next-epoch',epochIndex>=0&&epochIndex<buttons.length-1,false)}</div>`;
-    card.parentNode.insertBefore(nav,card);
-
-    const suggestion=nextSuggestion();
-    const actionArea=card.querySelector('.visual-question-actions');
-    if(suggestion&&actionArea){
-      const panel=document.createElement('div');
-      panel.className='visual-up-next';
-      panel.innerHTML=`<strong>${suggestion.title}</strong><span>${suggestion.body}</span>`;
-      card.insertBefore(panel,actionArea);
+  function suggestion(){
+    if(existing('[data-visual-finish]'))return 'Save this Pack 1 attempt';
+    if(existing('[data-visual-check]'))return `Check this ${currentEpochLabel()} answer`;
+    const progress=currentProgress(),buttons=epochButtons(),index=currentEpochIndex();
+    if(existing('[data-visual-next]')){
+      if(progress&&progress.done<progress.total)return `Next visual in ${currentEpochLabel()}`;
+      if(index>=0&&index<buttons.length-1)return `Continue to Epoch ${index+2}`;
+      return 'Continue to the next visual';
     }
+    return '';
   }
-  function renderFinished(){
-    const result=workspace.querySelector('.visual-result');
-    if(!result)return false;
-    const snapshot='finished|'+text(result.querySelector('h2')&&result.querySelector('h2').textContent);
-    if(workspace.dataset.visualFlowSnapshot===snapshot)return true;
-    workspace.dataset.visualFlowSnapshot=snapshot;
-    workspace.querySelectorAll('.visual-flow-nav,.visual-up-next,.visual-result-next').forEach(node=>node.remove());
-    const panel=document.createElement('div');
-    panel.className='visual-result-next';
-    panel.innerHTML='<div class="eyebrow">Suggested next visual practice</div><h3>Keep moving from recognition to scoring context</h3><p>Choose the next visual skill instead of returning to the catalog and searching for it.</p><div class="actions"><a class="btn primary" href="lab-scoring.html">Continue to Scoring Lab visuals</a><a class="btn secondary" href="lab-artifact.html">Practice Artifact Recognition</a><a class="btn secondary" href="lab-respiratory.html">Practice Respiratory visuals</a></div>';
-    result.appendChild(panel);
-    return true;
+  function clickExisting(selector){const target=existing(selector);if(target)target.click();}
+  function button(label,action,enabled,primary){return `<button class="btn ${primary?'primary':'secondary'}" type="button" data-visual-modal-action="${action}" ${enabled?'':'disabled'}>${label}</button>`;}
+  function ensureChrome(){
+    if(!workspace.querySelector('.visual-modal-rotate'))workspace.insertAdjacentHTML('afterbegin','<div class="visual-modal-rotate" role="status"><div class="visual-modal-rotate-icon" aria-hidden="true">↻</div><strong>Rotate your phone sideways</strong><span>The Visual Skills viewer uses landscape mode so the waveform and question controls fit together.</span></div>');
+    if(!workspace.querySelector('[data-visual-modal-close]'))workspace.insertAdjacentHTML('afterbegin','<button class="visual-modal-close" type="button" data-visual-modal-close aria-label="Close Visual Skills viewer">×</button>');
   }
-  function enhance(){
-    if(workspace.hidden)return;
-    if(renderFinished())return;
-    renderActive();
+  function stateSnapshot(){
+    const result=existing('.visual-result');if(result)return 'result|'+text(result.querySelector('h2')?.textContent);
+    const counter=text(existing('.visual-counter')?.textContent),progress=currentProgress(),epoch=currentEpochIndex();
+    return ['active',counter,epoch,progress&&progress.done,Boolean(existing('[data-visual-prev]')),Boolean(existing('[data-visual-check]')),Boolean(existing('[data-visual-next]')),Boolean(existing('[data-visual-finish]'))].join('|');
   }
-  function clickExisting(selector){const target=workspace.querySelector(selector);if(target)target.click();}
+  function renderFooter(){
+    workspace.querySelectorAll('.visual-modal-footer').forEach(node=>node.remove());
+    const card=existing('.visual-question-card');if(!card)return;
+    const buttons=epochButtons(),epochIndex=currentEpochIndex(),hasPrev=Boolean(existing('[data-visual-prev]')),hasCheck=Boolean(existing('[data-visual-check]')),hasNext=Boolean(existing('[data-visual-next]')),hasFinish=Boolean(existing('[data-visual-finish]'));
+    const footer=document.createElement('footer');footer.className='visual-modal-footer';footer.setAttribute('aria-label','Visual question navigation');
+    const primaryLabel=hasCheck?'Check answer':hasFinish?'Save Pack 1 attempt':'Next visual →',primaryAction=hasCheck?'check':hasFinish?'finish':'next',primaryEnabled=hasCheck||hasFinish||hasNext;
+    footer.innerHTML=`<div class="visual-modal-footer-left">${button('← Previous visual','prev',hasPrev,false)}${button('← Previous epoch','prev-epoch',epochIndex>0,false)}</div><div class="visual-modal-next-cue"><small>Suggested next action</small><strong>${text(suggestion())}</strong></div><div class="visual-modal-footer-right">${button('Next epoch →','next-epoch',epochIndex>=0&&epochIndex<buttons.length-1,false)}${button(primaryLabel,primaryAction,primaryEnabled,true)}</div>`;workspace.appendChild(footer);
+  }
+  function renderResultNext(){
+    const result=existing('.visual-result');if(!result)return false;
+    if(!result.querySelector('.visual-result-next')){const panel=document.createElement('div');panel.className='visual-result-next';panel.innerHTML='<div class="eyebrow">Suggested next visual practice</div><h3>Keep moving from recognition to scoring context</h3><p>Choose the next visual skill without returning to the catalog.</p><div class="actions"><a class="btn primary" href="lab-scoring.html">Continue to Scoring Lab visuals</a><a class="btn secondary" href="lab-artifact.html">Practice Artifact Recognition</a><a class="btn secondary" href="lab-respiratory.html">Practice Respiratory visuals</a></div>';result.appendChild(panel);}return true;
+  }
+  function activate(){
+    if(workspace.hidden){document.body.classList.remove('visual-modal-open');workspace.classList.remove('visual-modal-active');workspace.removeAttribute('role');workspace.removeAttribute('aria-modal');delete workspace.dataset.visualModalSnapshot;return;}
+    document.body.classList.add('visual-modal-open');workspace.classList.add('visual-modal-active');workspace.setAttribute('role','dialog');workspace.setAttribute('aria-modal','true');workspace.setAttribute('aria-label','Visual Skills viewer');ensureChrome();workspace.querySelectorAll('.visual-flow-nav,.visual-up-next').forEach(node=>node.remove());
+    const snapshot=stateSnapshot();if(workspace.dataset.visualModalSnapshot===snapshot)return;workspace.dataset.visualModalSnapshot=snapshot;
+    if(renderResultNext())return;renderFooter();
+  }
   document.addEventListener('click',event=>{
-    const control=event.target.closest('[data-visual-flow-action]');
-    if(!control||control.disabled)return;
-    const action=control.dataset.visualFlowAction;
-    if(action==='prev'){clickExisting('[data-visual-prev]');return;}
-    if(action==='next'){clickExisting('[data-visual-next]');return;}
-    if(action==='finish'){clickExisting('[data-visual-finish]');return;}
-    const buttons=epochButtons(),index=currentEpochIndex();
-    if(action==='prev-epoch'&&index>0){buttons[index-1].click();return;}
-    if(action==='next-epoch'&&index>=0&&index<buttons.length-1)buttons[index+1].click();
+    if(event.target.closest('[data-visual-modal-close]')){clickExisting('[data-visual-close]');return;}
+    const control=event.target.closest('[data-visual-modal-action]');if(!control||control.disabled)return;const action=control.dataset.visualModalAction;
+    if(action==='prev'){clickExisting('[data-visual-prev]');return;}if(action==='check'){clickExisting('[data-visual-check]');return;}if(action==='next'){clickExisting('[data-visual-next]');return;}if(action==='finish'){clickExisting('[data-visual-finish]');return;}
+    const buttons=epochButtons(),index=currentEpochIndex();if(action==='prev-epoch'&&index>0){buttons[index-1].click();return;}if(action==='next-epoch'&&index>=0&&index<buttons.length-1)buttons[index+1].click();
   });
-  const observer=new MutationObserver(()=>queueMicrotask(enhance));
-  observer.observe(workspace,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class','aria-current']});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else enhance();
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!workspace.hidden)clickExisting('[data-visual-close]');});
+  const observer=new MutationObserver(()=>queueMicrotask(activate));observer.observe(workspace,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class','aria-current']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',activate);else activate();
 })();
