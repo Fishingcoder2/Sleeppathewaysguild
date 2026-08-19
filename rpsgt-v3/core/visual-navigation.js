@@ -124,7 +124,7 @@
       if(action==='prev-epoch'&&index>0){buttons[index-1].click();scheduleActivate();return;}
       if(action==='next-epoch'&&index>=0&&index<buttons.length-1){buttons[index+1].click();scheduleActivate();return;}
     }
-    if(event.target.closest('[data-visual-epoch],[data-visual-answer],[data-visual-region],[data-visual-point-surface],[data-visual-check],[data-visual-prev],[data-visual-next],[data-visual-finish],[data-visual-restart],[data-visual-close]'))scheduleActivate();
+    if(event.target.closest('[data-visual-epoch],[data-visual-answer],[data-visual-region],[data-visual-point-surface],[data-visual-check],[data-visual-prev],[data-visual-next],[data-visual-finish],[data-visual-restart],[data-visual-close],[data-visual-outcome-action]'))scheduleActivate();
   });
 
   document.addEventListener('pointerup',event=>{
