@@ -19,6 +19,7 @@ const [visualHtml,visualNav,visualNavCss,visualFullEpochCss,visualConfirm,visual
 ]);
 
 for(const token of ['core/visual-navigation.js','assets/visual-navigation.css','assets/visual-full-epoch.css','core/visual-confirmation.js','assets/visual-confirmation.css','core/visual-signal-palette.js','data-visual-workspace']) if(!visualHtml.includes(token)) throw new Error(`Visual page is missing ${token}.`);
+if(visualHtml.includes('<iframe')) throw new Error('Visual Skills question flow must remain native; do not add an iframe layer.');
 for(const token of ['visual-modal-open','visual-modal-active','visual-modal-footer','Rotate your phone sideways','Previous visual','Previous epoch','Next epoch','Check answer','Next visual','data-visual-modal-close','aria-modal','View full epoch','Back to question','data-visual-full-epoch','visual-epoch-fullscreen']) if(!visualNav.includes(token)) throw new Error(`Visual modal navigation is missing ${token}.`);
 for(const token of ['position:fixed','height:95dvh','grid-template-areas:"head head"','"viewer question"','orientation:landscape','height:100dvh','orientation:portrait','.visual-modal-rotate','.visual-modal-footer','.visual-question-actions']) if(!visualNavCss.includes(token)) throw new Error(`Visual modal CSS is missing ${token}.`);
 for(const token of ['orientation:landscape','.visual-full-epoch-toggle','.visual-epoch-fullscreen','height:100dvh','grid-template-areas:"viewer"','display:none!important','overflow:auto','.visual-outcome-backdrop','.visual-outcome-dialog','.visual-retry-notice']) if(!visualFullEpochCss.includes(token)) throw new Error(`Visual mobile/outcome CSS is missing ${token}.`);
@@ -44,26 +45,37 @@ for(const token of [
   'data-visual-confirm-submit',
   'data-visual-confirm-cancel',
   "existing('[data-visual-check]')",
-  'Answer selected — confirm submission',
-  'Choose an answer to submit',
   'visual-item-status',
+  'data-visual-open-question',
+  'Answer question',
+  'data-visual-question-close',
+  'Review PSG',
+  'data-visual-question-prev',
+  'visual-question-open',
+  'Open Answer question in the upper-right to respond',
+  'Current task',
   'Epoch navigator',
   'Choose the next epoch',
   'Completed epochs are green',
   'Tap any epoch tab to open it',
   'next-step',
   'needs-review'
-]) if(!visualConfirm.includes(token)) throw new Error(`Visual confirmation / epoch guidance is missing ${token}.`);
+]) if(!visualConfirm.includes(token)) throw new Error(`Visual confirmation / full-screen question guidance is missing ${token}.`);
 for(const token of [
   '[data-visual-modal-action="check"]{display:none!important}',
   '.visual-submit-backdrop',
   '.visual-submit-dialog',
   '.visual-item-status',
+  '.visual-question-launch',
+  'grid-template-areas:"head" "epochs" "meta" "viewer" "footer"',
+  '.visual-workspace.visual-modal-active>.visual-question-card{display:none}',
+  '.visual-workspace.visual-modal-active.visual-question-open>.visual-question-card',
+  '.visual-question-modal-toolbar',
   '.visual-epoch-button.complete:not(.needs-review)',
   'content:"✓"',
   '.visual-epoch-button.next-step',
   'content:"Next"'
-]) if(!visualConfirmCss.includes(token)) throw new Error(`Visual confirmation / epoch styling is missing ${token}.`);
+]) if(!visualConfirmCss.includes(token)) throw new Error(`Visual confirmation / question-layer styling is missing ${token}.`);
 
 for(const token of [
   "if(type==='eeg'||type==='eog')return '#17202a'",
@@ -109,4 +121,4 @@ for(const token of ['selections:new Map()','responses:new Map()','function previ
 for(const forbidden of ['Mapped source keys','referenceKeys']) if(reviewJs.includes(forbidden)||reviewHtml.includes(forbidden)) throw new Error(`Learner-facing Review must not expose ${forbidden}.`);
 if(!reviewJs.includes('state.responses.has(key)')) throw new Error('Review must preserve answered state when navigating backward.');
 
-console.log('Visual and regular-question modal UX passed.');
+console.log('Visual and regular-question modal UX passed: PSG-first viewer, native full-screen question layer, confirmation flow, mastery gate, PSG signal palette, and Review navigation are present.');
