@@ -30,11 +30,11 @@ for(const token of ['height:94dvh','position:fixed','z-index:9999','body.scoring
 for(const token of ['@media(orientation:landscape) and (max-height:600px)','grid-template-columns:minmax(0,1fr) minmax(300px,36vw)','grid-row:3/7','min-height:190px','grid-template-columns:repeat(3,minmax(0,1fr))']){
   if(!modalCss.includes(token)) throw new Error(`Short-landscape staging layout is missing ${token}.`);
 }
-for(const token of ["window.SPGSharedVisualDisplay=api","[data-spg-request-fullscreen],[data-scoring-stage-fullscreen]","active?'Exit full screen':'Full screen'",'fullscreenElement()===surface','document.addEventListener(\'fullscreenchange\',syncAll)']){
-  if(!sharedJs.includes(token)) throw new Error(`Shared staging fullscreen controller is missing ${token}.`);
+for(const token of ["window.SPGSharedVisualDisplay=api","[data-spg-request-fullscreen],[data-scoring-stage-fullscreen]","[data-scoring-event-fullscreen]","[data-scoring-context-fullscreen]","[data-scoring-multi-fullscreen]","[data-scoring-boundary-fullscreen]","active?'Exit full screen':'Full screen'",'fullscreenElement()===surface','document.addEventListener(\'fullscreenchange\',syncAll)']){
+  if(!sharedJs.includes(token)) throw new Error(`Shared Scoring fullscreen controller is missing ${token}.`);
 }
-for(const token of ['.scoring-stage-confirmation{position:fixed!important','box-shadow:0 0 0 100vmax','.scoring-stage-confirmation .actions','grid-template-columns:1fr 1fr','.scoring-stage-trace:fullscreen [data-scoring-stage-fullscreen]','z-index:2147483647!important']){
-  if(!sharedCss.includes(token)) throw new Error(`Staging popout/fullscreen CSS is missing ${token}.`);
+for(const token of ['.scoring-stage-confirmation,.scoring-event-confirmation,.scoring-context-confirmation,.scoring-multi-confirmation,.scoring-boundary-confirmation{position:fixed!important','box-shadow:0 0 0 100vmax','.scoring-stage-confirmation .actions,.scoring-event-confirmation .actions','grid-template-columns:1fr 1fr','.spg-visual-surface:fullscreen [data-scoring-stage-fullscreen]','.spg-visual-surface:fullscreen [data-scoring-boundary-fullscreen]','z-index:2147483647!important']){
+  if(!sharedCss.includes(token)) throw new Error(`Scoring popout/fullscreen CSS is missing ${token}.`);
 }
 if(!html.includes('Wake → N1 → N2 → N3 → R')) throw new Error('Learner-facing staging order is not visible.');
 if(!html.includes('core/scoring-stage-order.js')) throw new Error('Scoring page does not load the fixed staging controller.');
@@ -44,4 +44,4 @@ for(const token of ['@media(min-width:1100px)', 'grid-template-columns:repeat(3,
 }
 if(!html.includes('the three neighboring epoch cards appear side by side')) throw new Error('Desktop horizontal layout cue is not visible to learners.');
 
-console.log('Scoring staging presentation passed: fixed W → N1 → N2 → N3 → R controller, first-pass scoring with correction mastery, popout answer confirmation, explicit Full screen / Exit full screen toggle, hint, Previous/Next, AI disclosure, compact short-landscape phone layout with a protected tracing area, phone landscape guidance, and three-column desktop consecutive-epoch layout are present without DOM observers or Math.random overrides.');
+console.log('Scoring staging presentation passed: fixed W → N1 → N2 → N3 → R controller, first-pass scoring with correction mastery, Scoring-wide popout answer confirmations, explicit Full screen / Exit full screen toggles, hint, Previous/Next, AI disclosure, compact short-landscape phone layout with a protected tracing area, phone landscape guidance, and three-column desktop consecutive-epoch layout are present without DOM observers or Math.random overrides.');
