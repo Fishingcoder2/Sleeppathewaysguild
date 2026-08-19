@@ -55,6 +55,7 @@ jobs:
           node --check rpsgt-v3/core/scoring-event-boundary-engine.js
           node --check rpsgt-v3/core/scoring-event-boundary-renderer.js
           node --check rpsgt-v3/core/scoring-event-boundary-drag.js
+          node --check rpsgt-v3/core/scoring-event-boundary-overlap-edit.js
           node --check rpsgt-v3/core/scoring-event-workflow.js
           node --check rpsgt-v3/core/scoring-stage-order.js
           node --check rpsgt-v3/core/scoring-checkpoint-modal.js
@@ -66,6 +67,7 @@ jobs:
           node --check rpsgt-v3/scripts/test-scoring-lab-shell.mjs
           node --check rpsgt-v3/scripts/test-scoring-stage-presentation.mjs
           node --check rpsgt-v3/scripts/test-scoring-event-boundary.mjs
+          node --check rpsgt-v3/scripts/test-scoring-boundary-overlap-edit.mjs
           node --check rpsgt-v3/scripts/test-scoring-checkpoint-modal.mjs
           node --check rpsgt-v3/scripts/test-scoring-visual-workflows.mjs
       - name: Validate Scoring Lab engine and completion boundary
@@ -76,6 +78,8 @@ jobs:
         run: node rpsgt-v3/scripts/test-scoring-stage-presentation.mjs
       - name: Validate Phase 3 event-boundary practice
         run: node rpsgt-v3/scripts/test-scoring-event-boundary.mjs
+      - name: Validate boundary overlap editing
+        run: node rpsgt-v3/scripts/test-scoring-boundary-overlap-edit.mjs
       - name: Validate focused Scoring checkpoint modal
         run: node rpsgt-v3/scripts/test-scoring-checkpoint-modal.mjs
       - name: Validate Scoring visual stability and mastery flows
