@@ -70,7 +70,7 @@
       if(next&&next!==current)next.classList.add('next-step');
       cue.innerHTML=next?'<strong>Choose the next epoch</strong><span>Completed epochs are green. Tap the highlighted epoch to continue.</span>':'<strong>All epochs reviewed</strong><span>You can tap any green epoch to review it again.</span>';
     }else{
-      cue.innerHTML='<strong>Epoch navigator</strong><span>Tap an epoch to open it. Finish the current epoch before moving on.</span>';
+      cue.innerHTML='<strong>Epoch navigator</strong><span>Tap any epoch tab to open it. Completed epochs turn green with a checkmark.</span>';
     }
   }
 
