@@ -7,8 +7,35 @@ let hintOpen=false;
 
 const later=fn=>setTimeout(fn,0);
 
-function ensureStaticControls(){
+function makeTraceFullscreenButton(){
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='btn secondary spg-trace-fullscreen-button';
+  button.dataset.spgRequestFullscreen='true';
+  button.textContent='Full screen';
+  button.setAttribute('aria-label','View this tracing full screen');
+  return button;
+}
+
+function ensureTraceFrame(surface,traceSelector){
+  if(!surface)return;
+  const trace=surface.querySelector(traceSelector);
+  if(!trace)return;
+  const existingFrame=trace.closest('.spg-trace-fullscreen-frame');
+  if(existingFrame){window.SPGVisualDisplay?.syncFullscreenControls();return;}
+  const frame=document.createElement('div');
+  frame.className='spg-trace-fullscreen-frame';
+  frame.dataset.spgVisualSurface='true';
+  trace.before(frame);
+  frame.appendChild(trace);
+  frame.appendChild(makeTraceFullscreenButton());
   window.SPGVisualDisplay?.syncFullscreenControls();
+}
+
+function ensureEmbeddedTraceControls(){
+  ensureTraceFrame(document.querySelector('[data-respiratory-timeline-workspace]'),'.respiratory-timeline-trace');
+  ensureTraceFrame(document.querySelector('[data-respiratory-pattern-detail]'),'.respiratory-trace');
+  ensureTraceFrame(visualWorkspace,'.respiratory-trace');
 }
 
 function removeConfirmation(){
@@ -54,9 +81,8 @@ function ensureToolbar(){
   const toolbar=document.createElement('div');
   toolbar.className='respiratory-visual-toolbar';
   const fullQuestion=visualWorkspace.classList.contains('respiratory-full-question');
-  toolbar.innerHTML=`<button class="btn secondary" type="button" data-spg-request-fullscreen data-spg-fullscreen-target="[data-respiratory-visual-workspace]">Full screen</button><button class="btn secondary" type="button" data-respiratory-visual-layout>${fullQuestion?'Split view':'Full question'}</button><button class="btn secondary" type="button" data-respiratory-visual-hint-toggle>${hintOpen?'Hide hint':'Hint'}</button>`;
+  toolbar.innerHTML=`<button class="btn secondary" type="button" data-respiratory-visual-layout>${fullQuestion?'Split view':'Full question'}</button><button class="btn secondary" type="button" data-respiratory-visual-hint-toggle>${hintOpen?'Hide hint':'Hint'}</button>`;
   visualWorkspace.prepend(toolbar);
-  window.SPGVisualDisplay?.syncFullscreenControls();
 }
 
 function syncChallenge(){
@@ -72,6 +98,7 @@ function syncChallenge(){
   ensureRotate();
   ensureToolbar();
   ensureHint();
+  ensureEmbeddedTraceControls();
 }
 
 function resetQuestionTools(){
@@ -81,6 +108,8 @@ function resetQuestionTools(){
 }
 
 document.addEventListener('click',event=>{
+  if(event.target.closest('[data-respiratory-timeline-mode],[data-respiratory-timeline-workspace],[data-respiratory-pattern]'))later(ensureEmbeddedTraceControls);
+
   if(event.target.closest('[data-respiratory-visual-start]')){
     resetQuestionTools();
     later(syncChallenge);
@@ -134,5 +163,12 @@ document.addEventListener('keydown',event=>{
   }
 });
 
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{ensureStaticControls();syncChallenge();});else{ensureStaticControls();syncChallenge();}
+function initialSync(){
+  ensureEmbeddedTraceControls();
+  syncChallenge();
+  setTimeout(ensureEmbeddedTraceControls,300);
+}
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialSync);else initialSync();
+window.addEventListener('load',()=>later(ensureEmbeddedTraceControls),{once:true});
 })();
