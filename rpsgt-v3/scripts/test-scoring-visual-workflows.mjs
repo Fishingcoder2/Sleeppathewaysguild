@@ -46,11 +46,11 @@ for(const token of ['body.scoring-context-modal-open','.scoring-context-nav.comp
   if(!contextCss.includes(token)) throw new Error(`Context visual modal CSS is missing ${token}.`);
 }
 
-for(const token of ['firstAnswers','data-scoring-multi-submit','Are you sure?','Review and try again.','data-scoring-multi-prev','data-scoring-multi-next','data-scoring-multi-hint','data-scoring-multi-fullscreen','AI-generated teaching schematics · Not patient recordings','scheduleSummarySync','answers:state.run.firstAnswers']){
+for(const token of ['firstAnswers','data-scoring-multi-submit','Are you sure?','Review and try again.','data-scoring-multi-prev','data-scoring-multi-next','data-scoring-multi-hint','data-scoring-multi-fullscreen','AI-generated teaching schematics · Not patient recordings','scheduleSummarySync','answers:state.run.firstAnswers','prior=state.run.runIndex','target<prior?state.run.runs[target].epochs.length-1:0']){
   if(!multiJs.includes(token)) throw new Error(`Consecutive-epoch workflow is missing ${token}.`);
 }
 for(const token of ['body.scoring-multi-modal-open','.scoring-multi-nav.complete','.scoring-multi-nav.current','.scoring-multi-nav.recommended','.scoring-multi-nav.retry','.scoring-multi-confirmation','orientation:landscape','orientation:portrait','.scoring-multi-rotate-prompt','@media(min-width:1100px)','grid-template-columns:repeat(3,minmax(0,1fr))']){
   if(!multiCss.includes(token)) throw new Error(`Consecutive-epoch modal CSS is missing ${token}.`);
 }
 
-console.log('Scoring visual workflows passed: event evidence, scoring context, consecutive epochs, fixed staging, and boundary placement are observer-free, use event-driven mobile visual workspaces, preserve first-pass scoring with correction mastery, expose confirmation/hint/Previous/Next/fullscreen where applicable, and carry the teaching-schematic disclosure without changing the Scoring completion gate.');
+console.log('Scoring visual workflows passed: event evidence, scoring context, consecutive epochs, fixed staging, and boundary placement are observer-free, use event-driven mobile visual workspaces, preserve first-pass scoring with correction mastery, expose confirmation/hint/Previous/Next/fullscreen where applicable, preserve backward run navigation, and carry the teaching-schematic disclosure without changing the Scoring completion gate.');
