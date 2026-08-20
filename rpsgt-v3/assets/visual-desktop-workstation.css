@@ -1,0 +1,98 @@
+@media(min-width:901px){
+  .visual-workspace.visual-modal-active.visual-desktop-workstation{
+    grid-template-columns:minmax(0,2.45fr) minmax(360px,.9fr)!important;
+    grid-template-rows:auto auto minmax(0,1fr) auto!important;
+    grid-template-areas:"head head" "epochs epochs" "viewer question" "footer footer"!important;
+    gap:10px;
+  }
+  .visual-workspace.visual-modal-active.visual-desktop-workstation>.visual-study-meta{display:none!important}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation>.visual-viewer-shell{grid-area:viewer;min-width:0;min-height:0;height:100%}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation>.visual-question-card{
+    display:block!important;
+    position:relative!important;
+    inset:auto!important;
+    grid-area:question;
+    min-width:0;
+    min-height:0;
+    height:100%;
+    margin:0!important;
+    padding:14px!important;
+    border:1px solid var(--line)!important;
+    border-radius:16px!important;
+    background:#f7fbfd!important;
+    overflow:auto!important;
+    overscroll-behavior:contain;
+  }
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-question-modal-toolbar,
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-item-status,
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-question-launch,
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-epoch-cue{display:none!important}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation>.visual-epoch-nav{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:8px;
+    margin:0;
+    overflow:visible;
+  }
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-epoch-button{min-height:54px;padding:8px 12px}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-epoch-button strong{font-size:.82rem}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-epoch-button small{font-size:.68rem}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-question-top{display:block;padding-top:2px}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-question-top h2{font-size:1.16rem;line-height:1.28;margin:0 0 7px}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-question-top p{font-size:.86rem;line-height:1.42}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-stage-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-stage-options .visual-choice:last-child:nth-child(odd){grid-column:1/-1}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-region-options,
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-point-options,
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-interval-options{grid-template-columns:1fr;gap:7px;margin-top:12px}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-choice{min-height:44px;padding:8px 10px;font-size:.82rem}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-point-help{font-size:.78rem;line-height:1.38}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-feedback,
+  .visual-workspace.visual-modal-active.visual-desktop-workstation .visual-retry-notice{margin-top:9px;padding:9px 10px;font-size:.79rem;line-height:1.38}
+  .visual-workstation-task-rail{position:sticky;top:-14px;z-index:3;margin:-14px -14px 14px;padding:14px;background:#f7fbfd;border-bottom:1px solid var(--line)}
+  .visual-workstation-rail-head small,.visual-workstation-rail-head strong,.visual-workstation-rail-head span{display:block}
+  .visual-workstation-rail-head small{color:var(--muted);font-size:.68rem;font-weight:850;text-transform:uppercase;letter-spacing:.045em}
+  .visual-workstation-rail-head strong{margin-top:3px;color:var(--navy);font-size:1rem}
+  .visual-workstation-rail-head span{margin-top:3px;color:var(--muted);font-size:.72rem;line-height:1.35}
+  .visual-workstation-steps{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:10px 0 0;padding:0}
+  .visual-workstation-steps li{display:flex;align-items:center;gap:5px;min-width:0;padding:6px;border:1px solid #cbdde5;border-radius:10px;background:#fff;color:var(--muted)}
+  .visual-workstation-steps li span{flex:0 0 11px;width:11px;height:11px;border:2px solid #9db4bf;border-radius:999px;background:#fff}
+  .visual-workstation-steps li strong{min-width:0;font-size:.66rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .visual-workstation-steps li.current{border-color:var(--teal);background:#eaf7f6;color:#155e68}
+  .visual-workstation-steps li.current span{border-color:var(--teal);background:#fff}
+  .visual-workstation-steps li.complete{border-color:#8fc5ae;background:#eff9f3;color:#1d6244}
+  .visual-workstation-steps li.complete span{border-color:#2f8c69;background:#2f8c69;box-shadow:inset 0 0 0 2px #eff9f3}
+  .visual-workstation-steps li.optional{opacity:.62}
+  .visual-workstation-tool-buttons{display:flex;gap:6px;margin-top:9px}
+  .visual-workstation-tool-buttons .btn{min-height:34px;padding:6px 9px;font-size:.7rem}
+  .visual-workstation-hint,.visual-workstation-eeg-tools{margin-top:8px;padding:9px 10px;border:1px solid #c8dfe8;border-radius:11px;background:#fff}
+  .visual-workstation-hint strong,.visual-workstation-hint span,.visual-workstation-eeg-tools>strong,.visual-workstation-eeg-tools small{display:block}
+  .visual-workstation-hint strong,.visual-workstation-eeg-tools>strong{color:var(--navy);font-size:.76rem}
+  .visual-workstation-hint span,.visual-workstation-eeg-tools small{margin-top:3px;color:var(--muted);font-size:.71rem;line-height:1.4}
+  .visual-workstation-eeg-tools>div{display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-bottom:1px solid #edf2f4;font-size:.7rem}
+  .visual-workstation-eeg-tools>div:last-of-type{border-bottom:0}
+  .visual-workstation-eeg-tools b{color:var(--navy)}
+  .visual-modal-footer.visual-workstation-footer{display:grid!important;grid-template-columns:auto minmax(220px,1fr) auto;align-items:center;gap:12px;padding:9px 12px}
+  .visual-workstation-footer-left,.visual-workstation-footer-right{display:flex;align-items:center;gap:8px}
+  .visual-workstation-footer-right{justify-content:flex-end}
+  .visual-workstation-footer .btn{min-height:40px;padding:7px 12px}
+  .visual-workstation-footer-progress{text-align:center;min-width:0}
+  .visual-workstation-footer-progress small,.visual-workstation-footer-progress strong{display:block}
+  .visual-workstation-footer-progress small{color:var(--muted);font-size:.66rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+  .visual-workstation-footer-progress strong{margin-top:2px;color:var(--navy);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .visual-workstation-recap{margin:12px 0;padding:12px 14px;border:1px solid #9ccfc4;border-radius:14px;background:#eff9f3;color:#1d6244}
+  .visual-workstation-recap>strong{display:block;margin-bottom:6px}
+  .visual-workstation-recap ul{margin:0;padding-left:18px}
+  .visual-workstation-recap li{margin:4px 0;line-height:1.4}
+  .visual-workspace.visual-modal-active.visual-desktop-workstation.visual-epoch-fullscreen{
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto auto minmax(0,1fr) auto!important;
+    grid-template-areas:"head" "epochs" "viewer" "footer"!important;
+  }
+  .visual-workspace.visual-modal-active.visual-desktop-workstation.visual-epoch-fullscreen>.visual-question-card{display:none!important}
+}
+@media(min-width:901px) and (max-width:1160px){
+  .visual-workspace.visual-modal-active.visual-desktop-workstation{grid-template-columns:minmax(0,1.85fr) minmax(330px,.95fr)!important}
+  .visual-workstation-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .visual-modal-footer.visual-workstation-footer{grid-template-columns:auto minmax(170px,1fr) auto}
+}
