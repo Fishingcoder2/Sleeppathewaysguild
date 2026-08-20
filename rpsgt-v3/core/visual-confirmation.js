@@ -6,8 +6,25 @@
 
   const existing=selector=>workspace.querySelector(selector);
   const epochButtons=()=>[...workspace.querySelectorAll('[data-visual-epoch]')];
-  const scheduleSync=()=>setTimeout(syncChrome,0);
+  const isDesktop=()=>window.matchMedia('(min-width:901px)').matches;
   const isPhoneLandscape=()=>window.matchMedia('(max-width:900px) and (orientation:landscape)').matches;
+  let desktopHintOpen=false;
+  let desktopToolsOpen=false;
+  let viewportSnapshot=null;
+
+  const DESKTOP_RECAPS=[
+    ['Posterior alpha is the dominant wake teaching clue.','Eye activity and relatively higher chin tone support the wake context.'],
+    ['Low-amplitude mixed-frequency/theta-oriented EEG replaces the wake alpha pattern.','Slow eye movements and the vertex teaching feature support the N1 context.'],
+    ['A K-complex and sleep-spindle teaching burst support the N2 pattern.','Use the one-second grid to connect spindle density and duration with the marked feature.'],
+    ['Sustained high-amplitude slow activity is strongest in the frontal teaching channels.','Judge the slow-wave run in the context of the complete epoch rather than one isolated deflection.'],
+    ['Low-amplitude mixed-frequency EEG combines with REM-oriented eye activity and low chin tone.','Sawtooth morphology is a supporting clue only when the surrounding REM context agrees.']
+  ];
+
+  const scheduleSync=()=>{
+    queueMicrotask(syncChrome);
+    setTimeout(()=>{syncChrome();restoreViewport();},0);
+    requestAnimationFrame(()=>{syncChrome();restoreViewport();});
+  };
 
   function hasSelection(){
     return Boolean(existing('.visual-choice.selected,.visual-region-button.selected,.visual-point-marker.selected,.visual-interval-selection'));
@@ -25,7 +42,68 @@
     return String(existing('.visual-question-top h2')?.textContent||'Open the current question').trim();
   }
 
+  function currentEpochIndex(){
+    return epochButtons().findIndex(button=>button.classList.contains('current')||button.getAttribute('aria-current')==='true');
+  }
+
+  function currentProgress(){
+    const index=currentEpochIndex();
+    const button=epochButtons()[index];
+    const match=String(button?.querySelector('small')?.textContent||'').match(/(\d+)\s*\/\s*(\d+)/);
+    return match?{done:Number(match[1]),total:Number(match[2])}:null;
+  }
+
+  function currentStage(){
+    const index=currentEpochIndex();
+    const strong=String(epochButtons()[index]?.querySelector('strong')?.textContent||'');
+    const match=strong.match(/·\s*(W|N1|N2|N3|R)\b/);
+    return match?match[1]:'';
+  }
+
+  function currentTaskType(){
+    if(existing('.visual-stage-options'))return 'stage';
+    if(existing('.visual-interval-options,[data-visual-interval-surface]'))return 'mark';
+    if(existing('.visual-point-options,[data-visual-point-surface],.visual-region-options'))return 'evidence';
+    return 'review';
+  }
+
+  function currentTaskLabel(){
+    const type=currentTaskType();
+    if(type==='stage')return 'Stage the epoch';
+    if(type==='mark')return 'Mark the feature';
+    if(type==='evidence')return 'Find the evidence';
+    return 'Review the epoch';
+  }
+
+  function hintText(){
+    const type=currentTaskType();
+    if(type==='stage')return 'Compare the EEG background, EOG behavior, chin tone, and stage-defining features across the full 30-second epoch before committing a stage.';
+    if(type==='mark')return 'Identify where the requested morphology clearly begins, stay on the same channel, and drag through the point where it returns toward the surrounding background.';
+    if(type==='evidence')return 'Stay on the channel named in the prompt. Use the one-second grid and compare morphology, frequency, amplitude, and neighboring channels before selecting the feature.';
+    return 'Use the full PSG context and the one-second grid before moving forward.';
+  }
+
+  function captureViewport(){
+    if(!isDesktop())return;
+    const scroll=existing('.visual-scroll');
+    if(!scroll)return;
+    viewportSnapshot={epoch:currentEpochIndex(),left:scroll.scrollLeft,top:scroll.scrollTop};
+  }
+
+  function restoreViewport(){
+    if(!isDesktop()||!viewportSnapshot||viewportSnapshot.epoch!==currentEpochIndex())return;
+    const scroll=existing('.visual-scroll');
+    if(!scroll)return;
+    scroll.scrollLeft=viewportSnapshot.left;
+    scroll.scrollTop=viewportSnapshot.top;
+  }
+
   function closeQuestion(focusLauncher=true){
+    if(isDesktop()){
+      workspace.classList.remove('visual-question-open','visual-split-view');
+      existing('[data-visual-question-toolbar]')?.remove();
+      return;
+    }
     if(!workspace.classList.contains('visual-question-open'))return;
     workspace.classList.remove('visual-question-open','visual-split-view');
     existing('[data-visual-question-toolbar]')?.remove();
@@ -33,6 +111,7 @@
   }
 
   function ensureQuestionToolbar(){
+    if(isDesktop())return;
     const card=existing('.visual-question-card');
     if(!card)return;
     let toolbar=card.querySelector('[data-visual-question-toolbar]');
@@ -51,6 +130,11 @@
     if(workspace.hidden||existing('.visual-result')||existing('.visual-outcome-backdrop'))return;
     const card=existing('.visual-question-card');
     if(!card)return;
+    if(isDesktop()){
+      workspace.classList.add('visual-desktop-workstation');
+      requestAnimationFrame(()=>card.querySelector('[data-visual-answer]:not(:disabled),h2')?.focus?.());
+      return;
+    }
     workspace.classList.add('visual-question-open');
     workspace.classList.toggle('visual-split-view',isPhoneLandscape());
     ensureQuestionToolbar();
@@ -152,18 +236,131 @@
     if(cue&&existing('[data-visual-check]'))cue.textContent='Open Answer question in the upper-right to respond';
   }
 
+  function railStep(label,state){
+    return `<li class="${state}"><span aria-hidden="true"></span><strong>${label}</strong></li>`;
+  }
+
+  function syncDesktopTaskRail(){
+    if(!isDesktop()||existing('.visual-result'))return;
+    const card=existing('.visual-question-card');
+    if(!card)return;
+    let rail=card.querySelector('[data-visual-workstation-rail]');
+    if(!rail){
+      rail=document.createElement('section');
+      rail.className='visual-workstation-task-rail';
+      rail.dataset.visualWorkstationRail='true';
+      rail.setAttribute('aria-label','PSG scoring workflow');
+      card.prepend(rail);
+    }
+    const index=currentEpochIndex();
+    const progress=currentProgress()||{done:0,total:1};
+    const stage=currentStage();
+    const type=currentTaskType();
+    const currentButton=epochButtons()[index];
+    const epochComplete=Boolean(currentButton?.classList.contains('complete')&&!currentButton.classList.contains('needs-review'));
+    const stageState=stage?'complete':type==='stage'?'current':'upcoming';
+    const evidenceState=type==='evidence'?'current':progress.done>1||epochComplete?'complete':'upcoming';
+    const markState=type==='mark'?'current':epochComplete&&progress.total>=3?'complete':'optional';
+    const reviewState=epochComplete?'current':'upcoming';
+    const step=Math.min(progress.total,Math.max(1,progress.done+(epochComplete?0:1)));
+    rail.innerHTML=`<div class="visual-workstation-rail-head"><small>Epoch ${index+1} of ${epochButtons().length} · Step ${step} of ${progress.total}</small><strong>${currentTaskLabel()}</strong><span>${stage?`Stage ${stage} revealed after your scoring decision`:'Stage label stays hidden until you commit the stage'}</span></div><ol class="visual-workstation-steps">${railStep('Stage',stageState)}${railStep('Prove it',evidenceState)}${railStep('Mark / measure',markState)}${railStep('Review',reviewState)}</ol><div class="visual-workstation-tool-buttons"><button class="btn secondary" type="button" data-visual-desktop-hint>${desktopHintOpen?'Hide hint':'Hint'}</button><button class="btn secondary" type="button" data-visual-desktop-tools>${desktopToolsOpen?'Hide EEG tools':'EEG tools'}</button></div>${desktopHintOpen?`<div class="visual-workstation-hint" role="note"><strong>Hint</strong><span>${hintText()}</span></div>`:''}${desktopToolsOpen?'<div class="visual-workstation-eeg-tools" role="note"><strong>EEG frequency anchors</strong><div><span>Slow wave</span><b>0.5–2 Hz</b></div><div><span>Theta / sleep LAMF</span><b>4–7 Hz</b></div><div><span>Alpha</span><b>8–13 Hz</b></div><div><span>Sleep spindle</span><b>11–16 Hz</b></div><div><span>Sawtooth</span><b>2–6 Hz</b></div><small>Use the one-second grid to count cycles; always interpret frequency with morphology and full PSG context.</small></div>':''}`;
+  }
+
+  function syncDesktopFooter(){
+    if(!isDesktop()||existing('.visual-result'))return;
+    const footer=existing('.visual-modal-footer');
+    if(!footer)return;
+    footer.classList.add('visual-workstation-footer');
+    const progress=currentProgress()||{done:0,total:1};
+    const index=currentEpochIndex();
+    const previous=Boolean(existing('[data-visual-prev]'))&&!retryRequired();
+    let primaryAction='submit';
+    let primaryLabel='Submit answer';
+    let primaryEnabled=Boolean(existing('[data-visual-check]')&&hasSelection());
+    if(existing('[data-visual-next]')){primaryAction='next';primaryLabel='Next →';primaryEnabled=true;}
+    if(existing('[data-visual-finish]')){primaryAction='finish';primaryLabel='Save Pack 1 attempt';primaryEnabled=true;}
+    footer.innerHTML=`<div class="visual-workstation-footer-left"><button class="btn secondary" type="button" data-visual-desktop-action="prev" ${previous?'':'disabled'}>← Previous</button></div><div class="visual-workstation-footer-progress"><small>Epoch ${index+1} of ${epochButtons().length}</small><strong>${currentTaskLabel()} · ${progress.done}/${progress.total} complete</strong></div><div class="visual-workstation-footer-right"><button class="btn secondary" type="button" data-visual-desktop-hint>${desktopHintOpen?'Hide hint':'Hint'}</button><button class="btn primary" type="button" data-visual-desktop-action="${primaryAction}" ${primaryEnabled?'':'disabled'}>${primaryLabel}</button></div>`;
+  }
+
+  function enhanceDesktopOutcome(){
+    if(!isDesktop())return;
+    const dialog=existing('.visual-outcome-dialog.correct');
+    const index=currentEpochIndex();
+    const button=epochButtons()[index];
+    if(!dialog||!button?.classList.contains('complete')||dialog.querySelector('[data-visual-workstation-recap]'))return;
+    const title=dialog.querySelector('h2');
+    const paragraph=title?.nextElementSibling;
+    if(title)title.textContent=`Epoch ${index+1} complete — review the evidence`;
+    if(paragraph&&paragraph.tagName==='P')paragraph.textContent='You completed the required visual tasks for this teaching epoch. Review the pattern, then continue without leaving the PSG workstation.';
+    const recap=document.createElement('div');
+    recap.className='visual-workstation-recap';
+    recap.dataset.visualWorkstationRecap='true';
+    const points=DESKTOP_RECAPS[index]||[];
+    recap.innerHTML=`<strong>${currentStage()?`Stage ${currentStage()}`:'Teaching epoch'} recap</strong><ul>${points.map(point=>`<li>${point}</li>`).join('')}</ul>`;
+    const actions=dialog.querySelector('.visual-outcome-actions');
+    if(actions)dialog.querySelector('div>div')?.insertBefore(recap,actions);
+    const next=dialog.querySelector('[data-visual-outcome-action="next"]');
+    if(next)next.textContent=index<epochButtons().length-1?`Continue to Epoch ${index+2} →`:'Finish Pack 1';
+  }
+
+  function syncDesktopWorkstation(){
+    if(!isDesktop()){
+      workspace.classList.remove('visual-desktop-workstation');
+      return;
+    }
+    workspace.classList.add('visual-desktop-workstation');
+    existing('[data-visual-question-toolbar]')?.remove();
+    const fullEpoch=existing('[data-visual-full-epoch]');
+    if(fullEpoch)fullEpoch.textContent=workspace.classList.contains('visual-epoch-fullscreen')?'Split view':'PSG only';
+    syncDesktopTaskRail();
+    syncDesktopFooter();
+    enhanceDesktopOutcome();
+  }
+
   function syncChrome(){
-    if(workspace.hidden){removeConfirmation();closeQuestion(false);return;}
+    if(workspace.hidden){
+      removeConfirmation();
+      closeQuestion(false);
+      workspace.classList.remove('visual-desktop-workstation');
+      return;
+    }
     syncEpochNav();
     ensureStatusPanel();
     ensureViewerFullscreenControl();
-    syncFooterCue();
-    if(workspace.classList.contains('visual-question-open'))ensureQuestionToolbar();
+    if(isDesktop())syncDesktopWorkstation();
+    else{
+      syncFooterCue();
+      if(workspace.classList.contains('visual-question-open'))ensureQuestionToolbar();
+    }
   }
 
   if(startButton)startButton.addEventListener('click',scheduleSync);
 
+  workspace.addEventListener('pointerdown',captureViewport,true);
+
   document.addEventListener('click',event=>{
+    const desktopHint=event.target.closest('[data-visual-desktop-hint]');
+    if(desktopHint&&isDesktop()){
+      desktopHintOpen=!desktopHintOpen;
+      syncDesktopWorkstation();
+      return;
+    }
+    const desktopTools=event.target.closest('[data-visual-desktop-tools]');
+    if(desktopTools&&isDesktop()){
+      desktopToolsOpen=!desktopToolsOpen;
+      syncDesktopWorkstation();
+      return;
+    }
+    const desktopAction=event.target.closest('[data-visual-desktop-action]');
+    if(desktopAction&&isDesktop()&&!desktopAction.disabled){
+      const action=desktopAction.dataset.visualDesktopAction;
+      if(action==='prev')existing('[data-visual-prev]')?.click();
+      if(action==='submit')showConfirmation();
+      if(action==='next')existing('[data-visual-next]')?.click();
+      if(action==='finish')existing('[data-visual-finish]')?.click();
+      scheduleSync();
+      return;
+    }
     if(event.target.closest('[data-visual-open-question]')){
       openQuestion();
       return;
@@ -199,17 +396,23 @@
       return;
     }
     if(event.target.closest('[data-visual-answer],[data-visual-region],[data-visual-point-surface]')){
-      setTimeout(()=>{syncChrome();showConfirmation();},0);
+      setTimeout(()=>{
+        syncChrome();
+        if(!isDesktop())showConfirmation();
+      },0);
       return;
     }
-    if(event.target.closest('[data-visual-epoch],[data-visual-prev],[data-visual-next],[data-visual-finish],[data-visual-restart],[data-visual-close],[data-visual-outcome-action],[data-visual-modal-action]')){
+    if(event.target.closest('[data-visual-epoch],[data-visual-prev],[data-visual-next],[data-visual-finish],[data-visual-restart],[data-visual-close],[data-visual-outcome-action],[data-visual-modal-action],[data-visual-full-epoch]')){
       closeQuestion(false);
       scheduleSync();
     }
   });
 
   document.addEventListener('pointerup',event=>{
-    if(event.target.closest('[data-visual-interval-surface]'))setTimeout(()=>{syncChrome();showConfirmation();},0);
+    if(event.target.closest('[data-visual-interval-surface]'))setTimeout(()=>{
+      syncChrome();
+      if(!isDesktop())showConfirmation();
+    },0);
   });
 
   document.addEventListener('keydown',event=>{
@@ -220,11 +423,12 @@
       scheduleSync();
       return;
     }
-    if(workspace.classList.contains('visual-question-open')){
+    if(!isDesktop()&&workspace.classList.contains('visual-question-open')){
       event.stopImmediatePropagation();
       closeQuestion();
     }
   },true);
 
+  window.matchMedia('(min-width:901px)').addEventListener?.('change',scheduleSync);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncChrome);else syncChrome();
 })();

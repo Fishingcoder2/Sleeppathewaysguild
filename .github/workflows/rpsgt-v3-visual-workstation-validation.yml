@@ -1,0 +1,61 @@
+name: Validate RPSGT v3 Visual PSG Workstation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-visual.html'
+      - 'rpsgt-v3/assets/visual*.css'
+      - 'rpsgt-v3/assets/shared-visual-display.css'
+      - 'rpsgt-v3/core/lab-visual.js'
+      - 'rpsgt-v3/core/visual-*.js'
+      - 'rpsgt-v3/core/shared-visual-display.js'
+      - 'rpsgt-v3/data/visual/**'
+      - 'rpsgt-v3/scripts/test-visual*.mjs'
+      - '.github/workflows/rpsgt-v3-visual-workstation-validation.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-visual.html'
+      - 'rpsgt-v3/assets/visual*.css'
+      - 'rpsgt-v3/assets/shared-visual-display.css'
+      - 'rpsgt-v3/core/lab-visual.js'
+      - 'rpsgt-v3/core/visual-*.js'
+      - 'rpsgt-v3/core/shared-visual-display.js'
+      - 'rpsgt-v3/data/visual/**'
+      - 'rpsgt-v3/scripts/test-visual*.mjs'
+      - '.github/workflows/rpsgt-v3-visual-workstation-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-psg-workstation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check Visual Skills JavaScript syntax
+        run: |
+          node --check rpsgt-v3/core/lab-visual.js
+          node --check rpsgt-v3/core/visual-navigation.js
+          node --check rpsgt-v3/core/visual-confirmation.js
+          node --check rpsgt-v3/core/visual-psg-renderer.js
+          node --check rpsgt-v3/core/shared-visual-display.js
+          node --check rpsgt-v3/scripts/test-visual-desktop-workstation.mjs
+      - name: Validate Visual Skills engine and content
+        run: node rpsgt-v3/scripts/test-visual-lab.mjs
+      - name: Validate Visual modal navigation and mastery flow
+        run: node rpsgt-v3/scripts/test-visual-question-modal-ux.mjs
+      - name: Validate desktop PSG workstation
+        run: node rpsgt-v3/scripts/test-visual-desktop-workstation.mjs
+      - name: Validate shared visual display
+        run: node rpsgt-v3/scripts/test-shared-visual-display.mjs
