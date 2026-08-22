@@ -1,0 +1,27 @@
+@media(min-width:901px){
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation .artifact-status-panel [data-artifact-prev]{display:none!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation .artifact-question-footer [data-artifact-review-psg]{display:none!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation .artifact-question-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation .artifact-flow-prev{margin-right:auto}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation.artifact-desktop-confirming .artifact-question-footer,
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation.artifact-desktop-outcome .artifact-question-footer{display:none!important}
+
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-confirm-backdrop.artifact-desktop-inline-confirmation,
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-outcome-backdrop.artifact-desktop-inline-outcome{position:relative!important;inset:auto!important;z-index:6!important;display:block!important;margin:10px 0 0!important;padding:0!important;background:transparent!important;backdrop-filter:none!important;overflow:visible!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-confirm-backdrop.artifact-desktop-inline-confirmation .artifact-dialog,
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-outcome-backdrop.artifact-desktop-inline-outcome .artifact-dialog{width:100%!important;max-height:none!important;margin:0!important;padding:12px!important;grid-template-columns:40px minmax(0,1fr)!important;gap:10px!important;border-radius:14px!important;box-shadow:none!important;overflow:visible!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-confirm-backdrop.artifact-desktop-inline-confirmation .artifact-dialog-actions,
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-outcome-backdrop.artifact-desktop-inline-outcome .artifact-dialog-actions{display:flex!important;align-items:center!important;gap:8px!important;margin-top:10px!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-confirm-backdrop.artifact-desktop-inline-confirmation .artifact-dialog-actions .btn,
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-outcome-backdrop.artifact-desktop-inline-outcome .artifact-dialog-actions .btn{min-height:42px!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation.artifact-desktop-answer-correct .artifact-desktop-inline-outcome [data-artifact-outcome="next"]{width:100%;min-height:44px!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation.artifact-desktop-answer-retry .artifact-desktop-inline-outcome [data-artifact-outcome="retry"]{flex:1;min-height:44px!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-workstation .artifact-desktop-inline-outcome [hidden]{display:none!important}
+}
+
+@media(min-width:901px) and (max-width:1160px){
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-confirm-backdrop.artifact-desktop-inline-confirmation .artifact-dialog-actions,
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-outcome-backdrop.artifact-desktop-inline-outcome .artifact-dialog-actions{display:grid!important;grid-template-columns:1fr!important}
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-confirm-backdrop.artifact-desktop-inline-confirmation .artifact-dialog-actions .btn,
+  .artifact-workspace.artifact-modal-active.artifact-desktop-split .artifact-question-shell>.artifact-outcome-backdrop.artifact-desktop-inline-outcome .artifact-dialog-actions .btn{width:100%}
+}
