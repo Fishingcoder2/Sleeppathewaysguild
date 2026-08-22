@@ -1,0 +1,216 @@
+{
+  "version": "1.0.0",
+  "reference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby/Elsevier.",
+  "stations": [
+    {
+      "id": "signal-pathway",
+      "title": "Trace the signal from patient to display",
+      "study": {
+        "intro": "A displayed PSG channel is the end of a pathway, not the beginning. When a waveform changes, start with the physiologic source and follow the acquisition path before changing a display setting.",
+        "points": [
+          "Begin with the physiologic source and the sensor or electrode that converts or carries that signal into the recording system.",
+          "Follow the channel through the input or headbox pathway, amplification and acquisition electronics, digital conversion, software, display, and storage as the specific system is designed.",
+          "Different manufacturers place amplification, conversion, and ancillary devices in different physical locations, so use the system documentation rather than assuming one universal hardware order.",
+          "Separate a display-only change from a change that alters acquired or stored data; the same screen appearance can have very different consequences for later review."
+        ]
+      },
+      "visual": {"kind":"signal-path","label":"Original SPG schematic tracing a physiologic signal through patient interface, acquisition hardware, software, display, and storage."},
+      "apply": {
+        "prompt": "One EEG channel becomes flat while neighboring EEG channels and the rest of the study remain stable. What is the best first troubleshooting direction?",
+        "options": [
+          "Increase the high-frequency filter until the flat channel looks active",
+          "Trace that channel from its electrode and lead through its input pathway before changing acquisition settings",
+          "Reconfigure every respiratory channel because the problem may be systemic",
+          "Assume the patient stopped producing cerebral activity in one derivation"
+        ],
+        "answer": "Trace that channel from its electrode and lead through its input pathway before changing acquisition settings",
+        "hint": "A problem limited to one channel usually deserves a local pathway check before a system-wide setting change.",
+        "rationale": "A single-channel failure is most efficiently approached by tracing that channel's local patient-to-input pathway before altering filters or other acquisition settings."
+      },
+      "recap": {
+        "reviewed": "Patient-to-display signal flow, system variation, local pathway checks, and display-versus-storage changes.",
+        "canDo": "Follow a questionable waveform backward through the acquisition pathway instead of treating the screen as the source of the problem."
+      }
+    },
+    {
+      "id": "derivations-polarity",
+      "title": "Derivations, polarity, and shared references",
+      "study": {
+        "intro": "A PSG derivation represents a relationship between inputs. Understanding which channels share a reference makes it possible to predict which channels should change together when one reference pathway is disturbed.",
+        "points": [
+          "A displayed bioelectric derivation depends on the potential difference between its selected inputs; changing the input relationship changes the waveform that is displayed.",
+          "Reversing the two inputs reverses the displayed polarity without reversing the patient's underlying physiology.",
+          "A disturbance at a shared reference can appear simultaneously in every derivation that uses that reference while independent derivations remain comparatively clean.",
+          "Use channel relationships to localize the problem: shared-reference contamination should follow the reference, not every channel in the montage."
+        ]
+      },
+      "visual": {"kind":"shared-reference","label":"Original SPG reference-tree schematic comparing M2-referenced channels with independent M1 and bipolar pathways."},
+      "apply": {
+        "prompt": "F3-M2, C3-M2, E1-M2, and E2-M2 develop the same disturbance, while F4-M1, C4-M1, chin EMG, and ECG remain comparatively clean. Which pathway should be inspected first?",
+        "options": [
+          "The shared M2 reference pathway",
+          "The chin EMG bipolar pair",
+          "Every respiratory sensor simultaneously",
+          "The M1 reference because the M1 channels are the cleanest"
+        ],
+        "answer": "The shared M2 reference pathway",
+        "hint": "Look for the component shared only by the channels that changed together.",
+        "rationale": "The disturbed channels all use M2, while independent M1-referenced and bipolar channels remain comparatively clean. That pattern localizes the first check to the shared M2 pathway."
+      },
+      "recap": {
+        "reviewed": "Input relationships, polarity, referential versus independent pathways, and shared-reference localization.",
+        "canDo": "Use the pattern of affected derivations to distinguish a local channel problem from a shared-reference disturbance."
+      }
+    },
+    {
+      "id": "amplifiers-common-mode",
+      "title": "Differential amplification and common-mode rejection",
+      "study": {
+        "intro": "Differential amplifiers emphasize the difference between two inputs while reducing signals that arrive similarly at both inputs. Electrode quality and balance influence how well this works in real recordings.",
+        "points": [
+          "The amplifier should preserve the physiologic difference between its inputs while reducing unwanted signals that are common to both.",
+          "Low, reasonably balanced electrode impedances support effective rejection of environmental interference across a derivation.",
+          "Marked impedance imbalance can make a channel more vulnerable to line-frequency and other common environmental noise.",
+          "Correct the patient-electrode and lead pathway before using a notch filter or other setting to cosmetically hide preventable interference."
+        ]
+      },
+      "visual": {"kind":"common-mode","label":"Original SPG schematic showing two inputs carrying shared noise plus a smaller differential physiologic signal."},
+      "apply": {
+        "prompt": "A derivation develops strong line-frequency interference and its two electrode impedances are markedly unequal. What should the technologist do first?",
+        "options": [
+          "Correct and rebalance the electrode contacts, then reassess the channel",
+          "Apply the strongest available notch filter and leave the electrodes unchanged",
+          "Increase display gain so the interference occupies more of the screen",
+          "Delete the derivation from the montage"
+        ],
+        "answer": "Correct and rebalance the electrode contacts, then reassess the channel",
+        "hint": "Common-mode rejection depends on the quality and balance of the two input pathways.",
+        "rationale": "Marked impedance imbalance can weaken rejection of common interference. Correcting the electrode pathways addresses the source before filtering is considered."
+      },
+      "recap": {
+        "reviewed": "Differential amplification, common-mode rejection, impedance balance, and line-frequency susceptibility.",
+        "canDo": "Recognize when a noisy derivation should be repaired at the inputs instead of hidden with a filter."
+      }
+    },
+    {
+      "id": "sensitivity-calibration",
+      "title": "Sensitivity, gain, calibration, and display scale",
+      "study": {
+        "intro": "The height of a waveform on the screen is not the same thing as the size of the physiologic signal. Sensitivity, gain, scale, and calibration determine how recorded voltage is represented visually.",
+        "points": [
+          "Changing sensitivity, gain, or display scale can make the same underlying signal appear taller or shorter without changing the patient.",
+          "Calibration provides a known reference response that helps verify the relationship between signal amplitude and the recording system.",
+          "When amplitude changes abruptly, check whether a setting changed before assuming the patient's physiology changed by the same amount.",
+          "Know whether the system applies a change only to the current display or commits it to acquisition or stored data."
+        ]
+      },
+      "visual": {"kind":"display-scale","label":"Original SPG schematic showing the same underlying waveform displayed at two different vertical scales."},
+      "apply": {
+        "prompt": "An EEG waveform suddenly appears much taller immediately after the display sensitivity was changed, but timing and morphology are otherwise unchanged. What should be checked before calling this a physiologic amplitude increase?",
+        "options": [
+          "The sensitivity or gain/display-scale setting and whether the change was display-only or stored",
+          "Whether the patient entered REM solely because the waveform is taller",
+          "Whether the pulse oximeter needs a new sampling rate",
+          "Whether every electrode should be replaced"
+        ],
+        "answer": "The sensitivity or gain/display-scale setting and whether the change was display-only or stored",
+        "hint": "Displayed height depends on both the recorded signal and the scale used to show it.",
+        "rationale": "A settings change can alter displayed amplitude without an equivalent physiologic change. Verify the scale and how the system applies that change before interpreting amplitude."
+      },
+      "recap": {
+        "reviewed": "Displayed amplitude, sensitivity/gain, calibration, and display-only versus stored changes.",
+        "canDo": "Separate a true signal-amplitude change from a change caused by the way the system displays the signal."
+      }
+    },
+    {
+      "id": "filters-frequency",
+      "title": "Filters, frequency response, and distortion",
+      "study": {
+        "intro": "Filters change which frequency components remain prominent in a recorded channel. They can improve readability, but excessive filtering can also remove or distort clinically important waveform components.",
+        "points": [
+          "A low-frequency filter attenuates components below the selected range, while a high-frequency filter attenuates components above the selected range.",
+          "Filter changes affect waveform shape and amplitude, so they should be made deliberately and within current technical guidance and facility policy.",
+          "A display filter may change only what the technologist sees, whereas another system setting may alter data that are stored or later reviewed.",
+          "Do not use filtering as the first response to an electrode, movement, sweat, or hardware problem that can be corrected at its source."
+        ]
+      },
+      "visual": {"kind":"filter-effect","label":"Original SPG frequency schematic comparing a mixed signal with slow components attenuated and fast components attenuated."},
+      "apply": {
+        "prompt": "A channel develops large slow baseline drift after the patient becomes warm and sweaty. What is the best first response?",
+        "options": [
+          "Inspect and correct the electrode/site and other likely artifact sources before changing filters",
+          "Raise the low-frequency filter aggressively until the drift disappears",
+          "Lower the high-frequency filter to remove the slow drift",
+          "Change the sleep stage so the drift is no longer considered artifact"
+        ],
+        "answer": "Inspect and correct the electrode/site and other likely artifact sources before changing filters",
+        "hint": "A filter can alter the appearance without correcting the physical cause of the artifact.",
+        "rationale": "Slow drift should prompt a source check first. Aggressive filtering can attenuate legitimate slow components and make the channel look cleaner without repairing the recording pathway."
+      },
+      "recap": {
+        "reviewed": "Low- and high-frequency attenuation, filter-related distortion, and source-first artifact correction.",
+        "canDo": "Predict the general effect of a filter change and avoid using filters to conceal a correctable signal problem."
+      }
+    },
+    {
+      "id": "sampling-digital",
+      "title": "Sampling, resolution, and digital acquisition",
+      "study": {
+        "intro": "Digital PSG represents continuous physiologic signals with discrete samples. The acquisition rate must be high enough to represent the fastest signal component of interest without creating misleading lower-frequency aliases.",
+        "points": [
+          "Sampling rate is expressed as samples per second and determines how densely the original signal is represented in digital data.",
+          "As a minimum mathematical principle, the sampling rate must exceed twice the highest frequency that must be represented; practical systems may sample higher to improve reconstruction and reduce aliasing risk.",
+          "Too few samples can blunt or distort a waveform, and aliasing can make high-frequency content appear falsely at lower frequencies.",
+          "Higher sampling increases data volume, so channel settings should follow current technical guidance, manufacturer capability, and facility policy rather than simply using the maximum value everywhere."
+        ]
+      },
+      "visual": {"kind":"sampling","label":"Original SPG schematic comparing dense digital samples with undersampling of the same continuous waveform."},
+      "apply": {
+        "prompt": "A digital channel is configured with a sampling rate below twice the highest frequency the channel is expected to represent. What is the primary signal-integrity risk?",
+        "options": [
+          "Aliasing and distortion of the reconstructed waveform",
+          "Improved common-mode rejection",
+          "Automatic correction of electrode impedance",
+          "Reversal of recording polarity"
+        ],
+        "answer": "Aliasing and distortion of the reconstructed waveform",
+        "hint": "Think about what happens when the system takes too few snapshots of a changing signal.",
+        "rationale": "Undersampling can misrepresent higher-frequency content and create aliases in the reconstructed signal. Acquisition sampling should be adequate for the intended bandwidth."
+      },
+      "recap": {
+        "reviewed": "Sampling rate, waveform reconstruction, aliasing, and the tradeoff between resolution and data volume.",
+        "canDo": "Recognize an undersampling risk and explain why adequate acquisition sampling matters before display or scoring."
+      }
+    },
+    {
+      "id": "artifact-troubleshooting",
+      "title": "Troubleshoot, correct, and document the pathway",
+      "study": {
+        "intro": "Efficient troubleshooting uses the pattern of failure. One abnormal channel suggests a local pathway; several related channels changing together suggests a component they share.",
+        "points": [
+          "Compare affected and unaffected channels before touching settings; the pattern often identifies whether the problem is local, shared, or system-wide.",
+          "Follow the most likely path from patient interface through lead, connector/input, reference, amplifier/acquisition pathway, software, and display as appropriate to the equipment.",
+          "Restore the physiologic signal instead of making a cosmetic display change that hides the defect.",
+          "Document what changed, what was checked or corrected, whether data quality was affected, and any unresolved limitation that matters to later review."
+        ]
+      },
+      "visual": {"kind":"troubleshooting-tree","label":"Original SPG decision schematic separating one-channel, shared-reference, and broader acquisition failures."},
+      "apply": {
+        "prompt": "Several related bioelectric channels fail together while respiratory device channels continue normally. Which approach is most efficient?",
+        "options": [
+          "Inspect the shared bioelectric reference/input/amplifier pathway before reworking unrelated respiratory sensors",
+          "Replace every sensor on the patient at once",
+          "Apply stronger filters to all channels without checking the hardware pattern",
+          "Ignore the failure because some channels are still recording"
+        ],
+        "answer": "Inspect the shared bioelectric reference/input/amplifier pathway before reworking unrelated respiratory sensors",
+        "hint": "Use what the affected channels have in common to narrow the search.",
+        "rationale": "A simultaneous failure limited to related bioelectric channels points first to a shared component in that pathway, not to independent respiratory device channels."
+      },
+      "recap": {
+        "reviewed": "Pattern-based troubleshooting, local versus shared failures, source correction, and documentation.",
+        "canDo": "Localize a signal failure efficiently and leave a clear record of the corrective action and remaining data-quality limits."
+      }
+    }
+  ]
+}
