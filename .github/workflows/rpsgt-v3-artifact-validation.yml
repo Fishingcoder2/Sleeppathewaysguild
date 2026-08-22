@@ -7,12 +7,16 @@ on:
     paths:
       - 'rpsgt-v3/lab-artifact.html'
       - 'rpsgt-v3/assets/artifact.css'
+      - 'rpsgt-v3/assets/artifact-modal.css'
+      - 'rpsgt-v3/assets/artifact-display-controls.css'
       - 'rpsgt-v3/core/artifact-lab-engine.js'
       - 'rpsgt-v3/core/artifact-psg-renderer.js'
       - 'rpsgt-v3/core/lab-artifact.js'
+      - 'rpsgt-v3/core/artifact-display-controls.js'
       - 'rpsgt-v3/data/visual/artifact-pack-1.json'
       - 'rpsgt-v3/scripts/test-artifact-lab-system.mjs'
       - 'rpsgt-v3/scripts/test-artifact-lab-shell.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs'
       - '.github/workflows/rpsgt-v3-artifact-validation.yml'
   workflow_dispatch:
 
@@ -35,9 +39,13 @@ jobs:
           node --check rpsgt-v3/core/artifact-lab-engine.js
           node --check rpsgt-v3/core/artifact-psg-renderer.js
           node --check rpsgt-v3/core/lab-artifact.js
+          node --check rpsgt-v3/core/artifact-display-controls.js
           node --check rpsgt-v3/scripts/test-artifact-lab-system.mjs
           node --check rpsgt-v3/scripts/test-artifact-lab-shell.mjs
+          node --check rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs
       - name: Validate artifact answer order, physiology, and progress engine
         run: node rpsgt-v3/scripts/test-artifact-lab-system.mjs
       - name: Validate artifact learner shell
         run: node rpsgt-v3/scripts/test-artifact-lab-shell.mjs
+      - name: Validate Artifact desktop workstation
+        run: node rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs
