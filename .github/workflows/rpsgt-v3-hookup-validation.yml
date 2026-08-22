@@ -1,0 +1,59 @@
+name: Validate RPSGT v3 Hookup Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-hookup.html'
+      - 'rpsgt-v3/assets/hookup*.css'
+      - 'rpsgt-v3/core/hookup*.js'
+      - 'rpsgt-v3/core/lab-hookup.js'
+      - 'rpsgt-v3/data/hookup/**'
+      - 'rpsgt-v3/data/question-bank/d2a.json'
+      - 'rpsgt-v3/data/question-bank/d2b.json'
+      - 'rpsgt-v3/scripts/test-hookup*.mjs'
+      - '.github/workflows/rpsgt-v3-hookup-validation.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-hookup.html'
+      - 'rpsgt-v3/assets/hookup*.css'
+      - 'rpsgt-v3/core/hookup*.js'
+      - 'rpsgt-v3/core/lab-hookup.js'
+      - 'rpsgt-v3/data/hookup/**'
+      - 'rpsgt-v3/data/question-bank/d2a.json'
+      - 'rpsgt-v3/data/question-bank/d2b.json'
+      - 'rpsgt-v3/scripts/test-hookup*.mjs'
+      - '.github/workflows/rpsgt-v3-hookup-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hookup-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check Hookup Lab JavaScript syntax
+        run: |
+          node --check rpsgt-v3/core/hookup-lab-engine.js
+          node --check rpsgt-v3/core/hookup-guided-lab.js
+          node --check rpsgt-v3/scripts/test-hookup-lab-system.mjs
+          node --check rpsgt-v3/scripts/test-hookup-lab-shell.mjs
+          node --check rpsgt-v3/scripts/test-hookup-guided-study.mjs
+          node -e "JSON.parse(require('fs').readFileSync('rpsgt-v3/data/hookup/guided-stations.json','utf8'))"
+      - name: Validate Hookup Lab engine and completion boundary
+        run: node rpsgt-v3/scripts/test-hookup-lab-system.mjs
+      - name: Validate Hookup Lab learner shell
+        run: node rpsgt-v3/scripts/test-hookup-lab-shell.mjs
+      - name: Validate guided Hookup station and checkpoint flow
+        run: node rpsgt-v3/scripts/test-hookup-guided-study.mjs

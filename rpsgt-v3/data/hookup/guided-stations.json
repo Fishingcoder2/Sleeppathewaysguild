@@ -1,0 +1,180 @@
+{
+  "version": "1.0.0",
+  "reference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby/Elsevier.",
+  "stations": [
+    {
+      "id": "order-equipment",
+      "title": "Order and equipment review",
+      "study": {
+        "intro": "A reliable hookup begins before the first electrode touches the patient. Confirm the ordered study, the patient, the planned montage, and the equipment pathway before application starts.",
+        "points": [
+          "Verify the patient, order, study type, and any protocol-specific requirements before setup.",
+          "Confirm the recording montage and required sensors before application so missing channels are caught early.",
+          "Inspect reusable electrodes, leads, sensors, connectors, and the input pathway for visible damage or missing components.",
+          "Keep equipment checks separate from patient physiologic calibration: one verifies the system, the other verifies that patient actions produce expected signals."
+        ]
+      },
+      "apply": {
+        "prompt": "You are about to begin a diagnostic PSG. The patient is ready, but the technologist has not yet compared the physician order with the planned montage. What is the best next step?",
+        "options": [
+          "Start applying electrodes and reconcile the order after lights out",
+          "Verify the order, study type, and planned montage before continuing",
+          "Run physiologic calibrations before connecting the patient",
+          "Use the previous night's montage because it loaded without an error"
+        ],
+        "answer": "Verify the order, study type, and planned montage before continuing",
+        "hint": "Think about which error is easiest to prevent before the hookup becomes difficult to change.",
+        "rationale": "The setup plan should match the ordered procedure before application. This prevents avoidable omissions and reduces rework later in the study."
+      },
+      "recap": {
+        "reviewed": "Order verification, montage planning, equipment readiness, and the distinction between equipment checks and patient physiologic calibration.",
+        "canDo": "Begin a hookup with a repeatable pre-application check instead of discovering missing channels after the study starts."
+      }
+    },
+    {
+      "id": "patient-site",
+      "title": "Patient explanation and site inspection",
+      "study": {
+        "intro": "Good signal quality starts with communication and careful site preparation. The goal is reliable electrode-to-skin contact without unnecessary skin trauma or excess conductive material.",
+        "points": [
+          "Explain what will be applied and what the patient should expect before beginning site preparation.",
+          "Inspect each intended site and follow facility-approved preparation methods while protecting skin integrity.",
+          "Remove oils and surface material that interfere with conduction, then use conductive material only where needed for electrode contact.",
+          "Avoid overly broad preparation or excessive conductive material because neighboring electrodes can become electrically bridged."
+        ]
+      },
+      "apply": {
+        "prompt": "Two nearby scalp electrodes show suspiciously very low impedance after a large amount of conductive paste spread between the sites. What should you suspect first?",
+        "options": [
+          "The patient has unusually strong EEG activity",
+          "A conductive bridge may be connecting the electrode sites",
+          "The amplifier sensitivity is too low",
+          "Physiologic calibration must be repeated before checking the sites"
+        ],
+        "answer": "A conductive bridge may be connecting the electrode sites",
+        "hint": "Very low values are not always proof of a perfect electrode contact.",
+        "rationale": "Excess conductive material between nearby sites can create a bridge and produce falsely low impedance while degrading channel independence."
+      },
+      "recap": {
+        "reviewed": "Patient explanation, site inspection, skin preparation, skin integrity, and conductive-bridge risk.",
+        "canDo": "Prepare an electrode site for reliable contact while recognizing when an apparently low impedance may actually represent a problem."
+      }
+    },
+    {
+      "id": "landmark-plan",
+      "title": "Landmark and measurement plan",
+      "study": {
+        "intro": "Cephalic placement should be measured from reproducible anatomic landmarks rather than estimated by eye. A measured plan makes the montage repeatable between technologists and across nights.",
+        "points": [
+          "Identify the standard head landmarks before marking derived positions.",
+          "Measure the head rather than visually estimating electrode locations.",
+          "Use the measured distances to place symmetrical left/right sites and to preserve the intended relationship among frontal, central, occipital, and reference locations.",
+          "Recheck questionable marks before skin preparation; moving a mark is easier than repairing a fully applied electrode."
+        ]
+      },
+      "apply": {
+        "prompt": "A technologist has identified the head landmarks but is tempted to place the remaining scalp electrodes by visual symmetry alone. What is the better approach?",
+        "options": [
+          "Use measured landmark distances to derive the electrode positions",
+          "Place one side by eye and mirror the other side",
+          "Use the patient's hairline as the primary reference",
+          "Apply the electrodes first and correct locations only if impedance is high"
+        ],
+        "answer": "Use measured landmark distances to derive the electrode positions",
+        "hint": "The goal is reproducibility, not simply making the electrodes look symmetrical.",
+        "rationale": "Standardized cephalic placement depends on measurements from reproducible landmarks rather than visual estimation."
+      },
+      "recap": {
+        "reviewed": "Landmark identification, measured placement, symmetry, and rechecking marks before application.",
+        "canDo": "Plan cephalic electrode placement from reproducible measurements instead of visual approximation."
+      }
+    },
+    {
+      "id": "application-impedance",
+      "title": "Application and impedance review",
+      "study": {
+        "intro": "Impedance is a pathway clue. A single number should be interpreted together with neighboring electrodes, the derivation, the lead, and the quality of the recorded signal.",
+        "points": [
+          "Check electrode-to-skin contact after application and compare related electrodes for balance rather than looking at one value in isolation.",
+          "High or imbalanced impedance can make a derivation more vulnerable to electrical interference and artifact.",
+          "Unexpectedly low impedance can indicate conductive bridging, moisture, or another unintended connection.",
+          "If a problem persists after site correction, continue through the pathway: electrode, lead wire, connector/input board, amplifier connection, and acquisition channel."
+        ]
+      },
+      "apply": {
+        "prompt": "One EEG derivation develops strong line-frequency artifact. The paired electrode impedances are markedly unequal. Which action best follows the signal pathway?",
+        "options": [
+          "Increase the display gain until the artifact is less noticeable",
+          "Inspect and correct the electrode contact and then verify the lead and connections",
+          "Disable the channel because the remaining montage is probably enough",
+          "Change the sleep stage to artifact and continue recording"
+        ],
+        "answer": "Inspect and correct the electrode contact and then verify the lead and connections",
+        "hint": "Troubleshoot the patient circuit before trying to hide the waveform problem with display settings.",
+        "rationale": "Imbalanced electrode contact can weaken common-mode rejection. If correcting the site does not solve the problem, the technologist should continue checking the lead and connection pathway."
+      },
+      "recap": {
+        "reviewed": "Balanced impedance, high/low impedance clues, line-frequency susceptibility, and pathway-based troubleshooting.",
+        "canDo": "Use impedance and signal behavior together to decide where to troubleshoot first."
+      }
+    },
+    {
+      "id": "calibrations",
+      "title": "Physiologic calibrations",
+      "study": {
+        "intro": "Physiologic calibrations link patient actions to recorded channels and establish a baseline for interpreting the overnight study.",
+        "points": [
+          "Perform the facility's pre-study calibration sequence after the patient is connected and before the recording begins in earnest.",
+          "Use instructed patient actions to confirm that expected channels respond appropriately.",
+          "Treat calibration responses as a baseline for later signal-quality decisions during the night.",
+          "Repeat and document required post-study calibrations using the final recording settings according to facility procedure."
+        ]
+      },
+      "apply": {
+        "prompt": "During pre-study physiologic calibration, a patient follows an eye-movement command but the expected EOG response is absent. What should the technologist do?",
+        "options": [
+          "Begin the study because the signal may appear once the patient falls asleep",
+          "Troubleshoot the EOG pathway before relying on the channel overnight",
+          "Increase all EEG sensitivities at the same time",
+          "Document normal calibration because the patient followed the command"
+        ],
+        "answer": "Troubleshoot the EOG pathway before relying on the channel overnight",
+        "hint": "Calibration is useful because it exposes a missing or incorrect signal before it becomes an overnight data problem.",
+        "rationale": "An expected physiologic response that does not appear should trigger troubleshooting before the channel is relied upon for the recording."
+      },
+      "recap": {
+        "reviewed": "The purpose of physiologic calibration, expected channel responses, baseline creation, and post-study documentation.",
+        "canDo": "Use physiologic calibration to verify that patient actions produce the expected recorded signals before lights out."
+      }
+    },
+    {
+      "id": "signal-documentation",
+      "title": "Signal and documentation check",
+      "study": {
+        "intro": "A good hookup is not finished when every sensor is attached. The technologist must confirm usable signals and document meaningful changes so later review has context.",
+        "points": [
+          "Review the complete recording for missing, flat, noisy, reversed, or physiologically inconsistent channels before lights out.",
+          "When a problem affects one channel, trace that channel's pathway. When many channels fail together, consider shared connections or system-level components.",
+          "Document what changed and why, not merely that a setting or connection changed.",
+          "Preserve a faithful representation of the patient's physiology; troubleshooting should restore the signal rather than cosmetically hide a problem."
+        ]
+      },
+      "apply": {
+        "prompt": "Several bioelectric channels abruptly flatten at the same time while respiratory transducers continue to display. What is the most useful first troubleshooting direction?",
+        "options": [
+          "Inspect a shared bioelectric connection, reference, input board, or amplifier pathway",
+          "Re-prep every respiratory sensor",
+          "Change the high-frequency filter on all channels",
+          "Wait for the signals to return before documenting anything"
+        ],
+        "answer": "Inspect a shared bioelectric connection, reference, input board, or amplifier pathway",
+        "hint": "A simultaneous change across several related channels often points to something they share.",
+        "rationale": "Multiple bioelectric channels changing together suggests a shared pathway problem. Connections and shared system components should be checked before individual electrodes are reworked one by one."
+      },
+      "recap": {
+        "reviewed": "Whole-record signal review, shared-pathway troubleshooting, meaningful documentation, and preserving physiologic fidelity.",
+        "canDo": "Distinguish a likely local electrode problem from a shared pathway problem and document the corrective action clearly."
+      }
+    }
+  ]
+}
