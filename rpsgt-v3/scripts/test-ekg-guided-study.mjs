@@ -23,7 +23,7 @@ const expected=engine.STATIONS.map(item=>item.id);
 
 assert.equal(pack.version,'1.0.0');
 assert.equal(pack.stations.length,7);
-assert.deepEqual(pack.stations.map(item=>item.id),expected,'Guided EKG station IDs/order must remain aligned with the durable engine checklist keys.');
+assert.equal(JSON.stringify(pack.stations.map(item=>item.id)),JSON.stringify(expected),'Guided EKG station IDs/order must remain aligned with the durable engine checklist keys.');
 for(const station of pack.stations){
   assert.ok(station.title&&station.study&&station.apply&&station.recap&&station.visual,`${station.id} is missing guided station content.`);
   assert.ok(station.study.intro&&Array.isArray(station.study.points)&&station.study.points.length>=4,`${station.id} Study content is too thin.`);
