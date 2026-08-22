@@ -1,0 +1,46 @@
+name: Validate RPSGT v3 Instrumentation Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-instrumentation.html'
+      - 'rpsgt-v3/core/instrumentation-lab-engine.js'
+      - 'rpsgt-v3/core/lab-instrumentation.js'
+      - 'rpsgt-v3/assets/instrumentation.css'
+      - 'rpsgt-v3/assets/instrumentation-guided.css'
+      - 'rpsgt-v3/data/instrumentation/**'
+      - 'rpsgt-v3/data/question-bank/d2a.json'
+      - 'rpsgt-v3/data/question-bank/d2b.json'
+      - 'rpsgt-v3/data/question-bank/d2c.json'
+      - 'rpsgt-v3/scripts/test-instrumentation-*.mjs'
+      - '.github/workflows/rpsgt-v3-instrumentation-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  instrumentation-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate Instrumentation modules and guided station pack
+        run: |
+          set -euo pipefail
+          node --check rpsgt-v3/core/instrumentation-lab-engine.js
+          node --check rpsgt-v3/core/lab-instrumentation.js
+          node -e "const fs=require('fs'); const pack=JSON.parse(fs.readFileSync('rpsgt-v3/data/instrumentation/guided-stations.json','utf8')); if(pack.stations.length!==7) throw new Error('Expected seven guided Instrumentation stations.');"
+      - name: Run dedicated Instrumentation regressions
+        run: |
+          set -euo pipefail
+          node rpsgt-v3/scripts/test-instrumentation-lab-system.mjs
+          node rpsgt-v3/scripts/test-instrumentation-lab-shell.mjs
+          node rpsgt-v3/scripts/test-instrumentation-guided-study.mjs
