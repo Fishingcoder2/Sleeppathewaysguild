@@ -48,14 +48,18 @@ jobs:
           node --check rpsgt-v3/core/lab-visual.js
           node --check rpsgt-v3/core/visual-navigation.js
           node --check rpsgt-v3/core/visual-confirmation.js
+          node --check rpsgt-v3/core/visual-desktop-submit-fix.js
           node --check rpsgt-v3/core/visual-psg-renderer.js
           node --check rpsgt-v3/core/shared-visual-display.js
           node --check rpsgt-v3/scripts/test-visual-desktop-workstation.mjs
+          node --check rpsgt-v3/scripts/test-visual-desktop-submit.mjs
       - name: Validate Visual Skills engine and content
         run: node rpsgt-v3/scripts/test-visual-lab.mjs
       - name: Validate Visual modal navigation and mastery flow
         run: node rpsgt-v3/scripts/test-visual-question-modal-ux.mjs
       - name: Validate desktop PSG workstation
         run: node rpsgt-v3/scripts/test-visual-desktop-workstation.mjs
+      - name: Validate persistent desktop submit action
+        run: node rpsgt-v3/scripts/test-visual-desktop-submit.mjs
       - name: Validate shared visual display
         run: node rpsgt-v3/scripts/test-shared-visual-display.mjs
