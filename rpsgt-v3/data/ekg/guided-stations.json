@@ -1,0 +1,216 @@
+{
+  "version": "1.0.0",
+  "reference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby/Elsevier.",
+  "stations": [
+    {
+      "id": "signal-validity",
+      "title": "Verify signal vs artifact",
+      "study": {
+        "intro": "Before naming a rhythm, decide whether the ECG channel is faithfully representing the patient. In polysomnography, movement, muscle activity, poor electrode contact, loose leads, and electrical interference can distort the ECG channel.",
+        "points": [
+          "Start with signal validity: inspect electrode contact, lead integrity, sudden baseline changes, and whether the morphology is physiologically plausible.",
+          "Correlate suspicious ECG changes with video, patient movement, pulse or oximetry trends, and neighboring PSG channels instead of judging one channel alone.",
+          "An abrupt noisy burst that does not produce a matching physiologic change elsewhere should raise artifact concern before rhythm interpretation.",
+          "Correct the recording pathway when possible and document meaningful signal limitations or corrective actions."
+        ]
+      },
+      "visual": {"kind":"artifact-burst","label":"Synthetic ECG with a brief motion/noise burst while the underlying pulse timing remains regular."},
+      "apply": {
+        "prompt": "A brief jagged burst appears on the ECG channel at the same moment the video shows repositioning, while the pulse trend remains steady. What is the best next technologist action?",
+        "options": [
+          "Call the burst ventricular fibrillation from the ECG channel alone",
+          "Correlate the patient and neighboring signals, inspect the ECG pathway, and treat artifact as a leading possibility",
+          "Ignore the ECG for the rest of the night",
+          "Change the sleep stage because the ECG waveform changed"
+        ],
+        "answer": "Correlate the patient and neighboring signals, inspect the ECG pathway, and treat artifact as a leading possibility",
+        "hint": "Ask whether the whole patient changed when the ECG channel changed.",
+        "rationale": "A suspicious waveform should be validated against the patient and other signals before it is treated as a true cardiac rhythm change."
+      },
+      "recap": {
+        "reviewed": "ECG signal validity, artifact correlation, patient/video context, and pathway troubleshooting.",
+        "canDo": "Pause rhythm labeling long enough to decide whether the waveform is physiologic or artifact."
+      }
+    },
+    {
+      "id": "rate-regularity",
+      "title": "Use a rate-and-rhythm sequence",
+      "study": {
+        "intro": "A repeatable rhythm review starts with the time base, ventricular rate, and R-R regularity. Describing what is actually visible is safer than jumping directly to a diagnostic label.",
+        "points": [
+          "Confirm the displayed time span before calculating or estimating heart rate.",
+          "For a 10-second teaching strip, count QRS complexes and multiply by six for an approximate beats-per-minute rate.",
+          "Compare successive R-R intervals and describe the pattern as regular, regularly irregular, or irregular rather than relying on a single interval.",
+          "Continue to atrial activity and the P-QRS relationship only after rate and regularity are understood."
+        ]
+      },
+      "visual": {"kind":"regular-60","label":"Synthetic 10-second ECG with ten evenly spaced QRS complexes."},
+      "apply": {
+        "prompt": "The teaching strip spans 10 seconds and contains 10 QRS complexes with nearly equal R-R intervals. Which description is best?",
+        "options": [
+          "Approximately 60 beats/min and regular",
+          "Approximately 100 beats/min and irregular",
+          "Approximately 30 beats/min and regular",
+          "Rate cannot be estimated from a known 10-second strip"
+        ],
+        "answer": "Approximately 60 beats/min and regular",
+        "hint": "For this teaching strip, multiply the 10-second QRS count by six.",
+        "rationale": "Ten QRS complexes in 10 seconds gives an approximate rate of 60 beats/min, and similar R-R spacing supports a regular pattern."
+      },
+      "recap": {
+        "reviewed": "Time base, approximate heart-rate calculation, and R-R regularity.",
+        "canDo": "Describe rate and regularity before moving deeper into rhythm recognition."
+      }
+    },
+    {
+      "id": "atrial-activity",
+      "title": "Check the P-QRS relationship",
+      "study": {
+        "intro": "After rate and regularity, inspect atrial activity. Look for whether visible P waves occur in a consistent relationship to the QRS complexes and whether that relationship changes across the strip.",
+        "points": [
+          "Look for repeating atrial deflections rather than assuming every small deflection is a P wave.",
+          "Ask whether each visible P wave is followed by a QRS and whether each QRS has a consistent preceding atrial deflection.",
+          "Notice changes in PR timing, dropped relationships, or atrial activity that no longer tracks the ventricular pattern.",
+          "Use this relationship as a recognition clue; a sleep technologist should still follow facility policy rather than independently making a cardiac diagnosis."
+        ]
+      },
+      "visual": {"kind":"p-before-qrs","label":"Synthetic ECG showing a small P wave before each QRS with a consistent relationship."},
+      "apply": {
+        "prompt": "On this schematic, each QRS is preceded by a similar small atrial deflection at a consistent interval. What feature should you document from the strip?",
+        "options": [
+          "A consistent one-to-one P-to-QRS relationship",
+          "No visible atrial activity before the QRS complexes",
+          "Every P wave is blocked from the ventricles",
+          "The ECG channel is definitely artifact"
+        ],
+        "answer": "A consistent one-to-one P-to-QRS relationship",
+        "hint": "Focus on the relationship you can see, not a diagnostic name.",
+        "rationale": "The schematic shows a repeated atrial deflection before each QRS, supporting a consistent one-to-one P-to-QRS relationship."
+      },
+      "recap": {
+        "reviewed": "Visible atrial activity, P-wave consistency, and the atrial-ventricular relationship.",
+        "canDo": "Describe whether visible atrial activity consistently precedes and relates to ventricular complexes."
+      }
+    },
+    {
+      "id": "conduction-ventricular",
+      "title": "Recognize slow or fast patterns",
+      "study": {
+        "intro": "Sleep changes autonomic tone, and heart rate can vary across sleep and respiratory events. The technologist should recognize when the recorded ventricular rate is notably slow or fast, verify the signal, assess context, and follow the facility response pathway.",
+        "points": [
+          "Calculate the rate from the known time base before calling a pattern slow or fast.",
+          "Confirm that the apparent rate change is real by checking R-R timing, waveform quality, pulse information, and the patient.",
+          "Describe the observed rate pattern and its context instead of overreaching into independent diagnosis.",
+          "Escalation depends on the patient, symptoms, persistence, associated findings, orders, and facility protocol—not on a rate number in isolation."
+        ]
+      },
+      "visual": {"kind":"slow-48","label":"Synthetic 10-second ECG with eight evenly spaced QRS complexes, approximately 48 beats/min."},
+      "apply": {
+        "prompt": "A validated 10-second strip contains 8 evenly spaced QRS complexes. Which observation is best?",
+        "options": [
+          "The ventricular rate is approximately 48 beats/min and slow; correlate the patient and context",
+          "The ventricular rate is approximately 80 beats/min and normal",
+          "The strip proves a complete heart block",
+          "The strip cannot be described without a 12-lead ECG"
+        ],
+        "answer": "The ventricular rate is approximately 48 beats/min and slow; correlate the patient and context",
+        "hint": "Use the 10-second count first, then keep the wording descriptive.",
+        "rationale": "Eight complexes in 10 seconds is approximately 48 beats/min. The technologist should validate the finding and correlate symptoms and study context before deciding the response pathway."
+      },
+      "recap": {
+        "reviewed": "Rate recognition, slow/fast pattern description, validation, and contextual response.",
+        "canDo": "Recognize a notably slow or fast ventricular pattern without turning the lab into diagnostic cardiology."
+      }
+    },
+    {
+      "id": "pattern-context",
+      "title": "Recognize ectopy and common sleep-lab patterns",
+      "study": {
+        "intro": "A sleep technologist may encounter isolated premature beats, pauses, irregular rhythms, or runs of unusual complexes. The immediate task is recognition, validation, patient correlation, and appropriate escalation—not definitive cardiac diagnosis.",
+        "points": [
+          "Compare the unusual beat with the surrounding rhythm: timing, width, morphology, and the interval before and after it all provide clues.",
+          "An isolated early wide-complex beat is visually different from a long sustained run of wide complexes and should be described accordingly.",
+          "Check for artifact, movement, respiratory-event timing, oxygen changes, symptoms, and whether the pattern persists.",
+          "Document the observed pattern and follow the laboratory's notification or emergency pathway when required."
+        ]
+      },
+      "visual": {"kind":"isolated-ectopy","label":"Synthetic regular rhythm with one early wide complex followed by a longer pause."},
+      "apply": {
+        "prompt": "The schematic shows a regular baseline rhythm interrupted by one early, wider complex followed by a longer pause. What is the best recognition-level description?",
+        "options": [
+          "An isolated premature wide-complex ectopic pattern that should be correlated and documented",
+          "A sustained regular narrow-complex rhythm with no ectopy",
+          "Definite ventricular fibrillation requiring no patient check",
+          "Pure respiratory artifact because one beat is different"
+        ],
+        "answer": "An isolated premature wide-complex ectopic pattern that should be correlated and documented",
+        "hint": "Describe what makes the unusual beat different from its neighbors.",
+        "rationale": "The key recognition features are that the unusual complex is early, wider than surrounding beats, isolated, and followed by a longer interval."
+      },
+      "recap": {
+        "reviewed": "Ectopic-pattern recognition, comparison with surrounding beats, artifact checks, and clinical context.",
+        "canDo": "Recognize and describe an isolated ectopic pattern without claiming a definitive diagnosis from a sleep-lab channel."
+      }
+    },
+    {
+      "id": "safety-escalation",
+      "title": "Assess the patient and choose the response",
+      "study": {
+        "intro": "The waveform never outranks the patient. A concerning ECG change becomes a patient-safety problem when symptoms, instability, or facility-defined urgent criteria are present.",
+        "points": [
+          "If a concerning ECG pattern appears, confirm signal validity while promptly assessing the patient's condition and symptoms.",
+          "Use video and direct assessment as appropriate; note chest discomfort, dyspnea, dizziness, altered responsiveness, diaphoresis, palpitations, or other concerning changes.",
+          "Follow the facility cardiac-rhythm, physician-notification, emergency, and medical-direction pathway rather than inventing an independent treatment plan.",
+          "Do not delay an urgent response merely to obtain a perfect rhythm label from the sleep-study channel."
+        ]
+      },
+      "visual": {"kind":"concerning-run","label":"Synthetic ECG segment with an abrupt run of rapid wide complexes used only to practice patient-first response."},
+      "apply": {
+        "prompt": "A new rapid wide-complex pattern appears and the patient reports chest discomfort and dizziness. What should the sleep technologist do first?",
+        "options": [
+          "Continue scoring until the exact rhythm diagnosis is certain",
+          "Assess the patient immediately and activate the facility's appropriate escalation or emergency pathway while validating the signal",
+          "Turn off the ECG channel so the pattern does not distract from respiratory scoring",
+          "Wait until morning to include the finding in the final note"
+        ],
+        "answer": "Assess the patient immediately and activate the facility's appropriate escalation or emergency pathway while validating the signal",
+        "hint": "The patient is symptomatic; the response cannot depend on perfect diagnostic certainty.",
+        "rationale": "Symptoms plus a concerning new pattern require patient assessment and the facility-defined response pathway while signal validity is checked."
+      },
+      "recap": {
+        "reviewed": "Patient-first assessment, symptom correlation, urgent escalation, and the limit of rhythm-label certainty.",
+        "canDo": "Choose a safe technologist response when the ECG and the patient's condition demand action."
+      }
+    },
+    {
+      "id": "documentation-handoff",
+      "title": "Document and hand off clearly",
+      "study": {
+        "intro": "Useful documentation describes what happened, when it happened, what the patient was doing or feeling, what the technologist did, and who was notified. It should preserve observations without presenting the technologist's note as a physician diagnosis.",
+        "points": [
+          "Record onset, approximate duration, observed rate or pattern, signal quality, and relevant sleep or respiratory context.",
+          "Document symptoms or the absence of symptoms when assessed, plus any intervention or repositioning that occurred.",
+          "Record notifications, escalation steps, instructions received, patient response, and unresolved signal or safety concerns.",
+          "Use descriptive language that another clinician can reconstruct rather than vague entries such as 'bad ECG' or unsupported diagnostic labels."
+        ]
+      },
+      "visual": {"kind":"event-marker","label":"Synthetic ECG event timeline with an observation marker for documentation practice."},
+      "apply": {
+        "prompt": "Which technologist note best supports clinical review after a new ECG event?",
+        "options": [
+          "02:14 — bad rhythm; doctor knows",
+          "02:14 — abrupt irregular ECG pattern noted for ~35 sec; signal checked, patient awake and denied chest discomfort or dizziness; charge/covering clinician notified per protocol; pattern resolved and continued monitoring documented",
+          "02:14 — definite atrial fibrillation diagnosed by technologist",
+          "02:14 — ECG changed; no other details needed because the waveform is stored"
+        ],
+        "answer": "02:14 — abrupt irregular ECG pattern noted for ~35 sec; signal checked, patient awake and denied chest discomfort or dizziness; charge/covering clinician notified per protocol; pattern resolved and continued monitoring documented",
+        "hint": "Choose the note that lets another clinician reconstruct the event and the technologist's response.",
+        "rationale": "Useful handoff documentation captures timing, observed pattern, signal validation, symptoms, notification, response, and continued monitoring without overstating diagnosis."
+      },
+      "recap": {
+        "reviewed": "Event timing, descriptive rhythm language, patient symptoms, interventions, notifications, and handoff completeness.",
+        "canDo": "Write a concise, reconstructable sleep-study ECG event note that stays within the technologist's scope."
+      }
+    }
+  ]
+}
