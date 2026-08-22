@@ -17,6 +17,7 @@ on:
       - 'rpsgt-v3/scripts/test-artifact-lab-system.mjs'
       - 'rpsgt-v3/scripts/test-artifact-lab-shell.mjs'
       - 'rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-shared-reference.mjs'
       - '.github/workflows/rpsgt-v3-artifact-validation.yml'
   workflow_dispatch:
 
@@ -43,8 +44,11 @@ jobs:
           node --check rpsgt-v3/scripts/test-artifact-lab-system.mjs
           node --check rpsgt-v3/scripts/test-artifact-lab-shell.mjs
           node --check rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs
+          node --check rpsgt-v3/scripts/test-artifact-shared-reference.mjs
       - name: Validate artifact answer order, physiology, and progress engine
         run: node rpsgt-v3/scripts/test-artifact-lab-system.mjs
+      - name: Validate shared-reference artifact physiology
+        run: node rpsgt-v3/scripts/test-artifact-shared-reference.mjs
       - name: Validate artifact learner shell
         run: node rpsgt-v3/scripts/test-artifact-lab-shell.mjs
       - name: Validate Artifact desktop workstation
