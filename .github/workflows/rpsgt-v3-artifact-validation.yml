@@ -9,15 +9,18 @@ on:
       - 'rpsgt-v3/assets/artifact.css'
       - 'rpsgt-v3/assets/artifact-modal.css'
       - 'rpsgt-v3/assets/artifact-display-controls.css'
+      - 'rpsgt-v3/assets/artifact-navigation-flow.css'
       - 'rpsgt-v3/core/artifact-lab-engine.js'
       - 'rpsgt-v3/core/artifact-psg-renderer.js'
       - 'rpsgt-v3/core/lab-artifact.js'
       - 'rpsgt-v3/core/artifact-display-controls.js'
+      - 'rpsgt-v3/core/artifact-navigation-flow.js'
       - 'rpsgt-v3/data/visual/artifact-pack-1.json'
       - 'rpsgt-v3/scripts/test-artifact-lab-system.mjs'
       - 'rpsgt-v3/scripts/test-artifact-lab-shell.mjs'
       - 'rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs'
       - 'rpsgt-v3/scripts/test-artifact-shared-reference.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-navigation-flow.mjs'
       - '.github/workflows/rpsgt-v3-artifact-validation.yml'
   workflow_dispatch:
 
@@ -41,10 +44,12 @@ jobs:
           node --check rpsgt-v3/core/artifact-psg-renderer.js
           node --check rpsgt-v3/core/lab-artifact.js
           node --check rpsgt-v3/core/artifact-display-controls.js
+          node --check rpsgt-v3/core/artifact-navigation-flow.js
           node --check rpsgt-v3/scripts/test-artifact-lab-system.mjs
           node --check rpsgt-v3/scripts/test-artifact-lab-shell.mjs
           node --check rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs
           node --check rpsgt-v3/scripts/test-artifact-shared-reference.mjs
+          node --check rpsgt-v3/scripts/test-artifact-navigation-flow.mjs
       - name: Validate artifact answer order, physiology, and progress engine
         run: node rpsgt-v3/scripts/test-artifact-lab-system.mjs
       - name: Validate shared-reference artifact physiology
@@ -53,3 +58,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-artifact-lab-shell.mjs
       - name: Validate Artifact desktop workstation
         run: node rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs
+      - name: Validate Artifact desktop navigation flow
+        run: node rpsgt-v3/scripts/test-artifact-navigation-flow.mjs
