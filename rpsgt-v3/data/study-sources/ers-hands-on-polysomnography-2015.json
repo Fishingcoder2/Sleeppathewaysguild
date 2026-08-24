@@ -1,0 +1,27 @@
+{
+  "id": "ers-hands-on-polysomnography-2015",
+  "shortTitle": "Hands-on Polysomnography",
+  "fullTitle": "Educational Skills Workshop 25, 27 — Hands-on Polysomnography",
+  "year": 2015,
+  "sourceType": "educational workshop material",
+  "sourceRole": "studySupport",
+  "publisher": "European Respiratory Society",
+  "apaCitation": "European Respiratory Society. (2015). Hands-on polysomnography: Educational Skills Workshop 25, 27 [Educational workshop material]. ERS Annual Congress Amsterdam.",
+  "bestFor": "Practical PSG setup, signal troubleshooting and artifact recognition, plus introductory scoring of sleep stages, respiratory events, arousals, and limb movements.",
+  "copyrightUse": "Use bibliographic metadata, section titles, and original Sleep Pathways Guild teaching directions only. Do not reproduce workshop slides, PSG screenshots, figures, tables, source examples, or evaluation questions.",
+  "authorityBoundary": "Educational workshop material from 2015. Current AASM scoring/technical specifications, current AAST guidance, current BRPT framework, and facility policy take precedence for rule-sensitive or operational requirements.",
+  "currencyNote": "Strong practical study support, but older AASM-era examples and technical settings must be verified against current authority before learner release.",
+  "referenceKeys": [
+    "ers-hands-on-polysomnography-2015",
+    "ers-psg-artifact-workshop",
+    "hands-on-polysomnography-ers"
+  ],
+  "mappingBoundary": "Workshop topics are mapped to the RPSGT tasks they directly support. Source PSG screenshots and answer keys are not imported; any production practice traces should be original, synthetic, or separately licensed.",
+  "sections": [
+    {"id":"ers-psg-overview","label":"Workshop Overview: Full Polysomnography, Wiring, Troubleshooting, and Scoring","taskCodes":["D2A","D2B","D2C","D3A"]},
+    {"id":"ers-psg-1020","label":"Workstation 1: The International 10-20 EEG System — A Brief Introduction","taskCodes":["D2A","D2B"]},
+    {"id":"ers-psg-artifact","label":"Workstation 2: PSG Artifact Recognition and Resolution","taskCodes":["D2C"]},
+    {"id":"ers-psg-scoring","label":"Workstation 3: Scoring Sleep Using AASM Guidelines — Sleep, Respiratory Events, Arousals, and Limb Movements","taskCodes":["D3A"]},
+    {"id":"ers-psg-resources","label":"Recommended Reading and E-learning Resources","taskCodes":["D2A","D2B","D2C","D3A"]}
+  ]
+}
