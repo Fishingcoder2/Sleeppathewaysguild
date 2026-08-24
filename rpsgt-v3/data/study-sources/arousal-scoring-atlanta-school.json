@@ -1,0 +1,29 @@
+{
+  "id": "arousal-scoring-atlanta-school",
+  "shortTitle": "Arousal Scoring",
+  "fullTitle": "Arousal Scoring — Essentials of Sleep Technology",
+  "year": "n.d.",
+  "sourceType": "educational slide presentation",
+  "sourceRole": "studySupport",
+  "publisher": "The Atlanta School of Sleep Medicine and Technology",
+  "apaCitation": "The Atlanta School of Sleep Medicine and Technology. (n.d.). Arousal scoring [Slide presentation].",
+  "bestFor": "Visual review of arousal recognition, NREM versus REM arousal logic, common non-arousal lookalikes, alpha intrusion, and a practical arousal-scoring workflow.",
+  "copyrightUse": "Use the presentation to inform original Sleep Pathways Guild explanations and original/synthetic practice examples. Do not reproduce source PSG screenshots, slide images, proprietary examples, or source questions.",
+  "authorityBoundary": "Historical instructional presentation. It references older scoring-manual-era material and is not a current scoring authority. Current AASM scoring guidance controls rule-sensitive content.",
+  "currencyNote": "Publication date is not identified in the uploaded presentation. Treat all scoring criteria as requiring current AASM verification before learner release.",
+  "referenceKeys": [
+    "arousal-scoring-atlanta-school",
+    "arousal-scoring-essentials-presentation"
+  ],
+  "mappingBoundary": "Mapped to adult scoring for instructional review only. The presentation's examples are not imported as answer keys or production waveform assets.",
+  "sections": [
+    {"id":"arousal-history","label":"Historic Perspective and Sleep Microstructure","taskCodes":["D3A"]},
+    {"id":"arousal-rule-review","label":"Arousal Rule Review","taskCodes":["D3A"]},
+    {"id":"arousal-duration-context","label":"Minimum Duration and Preceding Sleep Context","taskCodes":["D3A"]},
+    {"id":"arousal-nrem-rem","label":"NREM and REM Arousal Examples","taskCodes":["D3A"]},
+    {"id":"arousal-nonexamples","label":"Delta Waves, K Complexes, and Other Non-Arousal Examples","taskCodes":["D3A"]},
+    {"id":"arousal-alpha","label":"Alpha EEG, Alpha-Delta, and Alpha Intrusion","taskCodes":["D3A"]},
+    {"id":"arousal-process","label":"Arousal Scoring Process and Scoring Issues","taskCodes":["D3A"]},
+    {"id":"arousal-practice","label":"Arousal Scoring Practice Samples","taskCodes":["D3A"]}
+  ]
+}
