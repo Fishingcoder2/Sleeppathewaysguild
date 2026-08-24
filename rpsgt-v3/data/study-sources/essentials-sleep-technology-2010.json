@@ -1,0 +1,37 @@
+{
+  "id": "essentials-sleep-technology-2010",
+  "shortTitle": "Essentials of Sleep Technology",
+  "fullTitle": "Essentials of Sleep Technology",
+  "year": 2010,
+  "sourceType": "sleep technology instructional reference",
+  "sourceRole": "studySupport",
+  "publisher": "American Academy of Sleep Medicine",
+  "apaCitation": "Rosenberg, R. S. (2010). Essentials of sleep technology. American Academy of Sleep Medicine.",
+  "bestFor": "Practical technologist workflow: patient preparation, electrode application, biological calibrations, recording quality, troubleshooting, emergencies, scoring concepts, reporting parameters, and introductory sleep-disorder review.",
+  "copyrightUse": "Use bibliographic metadata, section titles, and original Sleep Pathways Guild teaching directions only. Do not reproduce the source's prose, figures, screenshots, tables, proprietary scoring text, or study questions.",
+  "authorityBoundary": "Instructional study support from 2010. Current AASM scoring/technical rules, current ICSD terminology, current BRPT framework, and current facility policy take precedence when criteria or terminology have changed.",
+  "currencyNote": "Legacy instructional reference; rule-sensitive details require current-authority verification before learner release.",
+  "referenceKeys": [
+    "essentials-sleep-technology-2010",
+    "rosenberg-essentials-sleep-technology",
+    "essentials-sleep-tech"
+  ],
+  "mappingBoundary": "Task mappings identify useful reading areas only and are not page-level provenance claims. No existing question is remapped to this source unless a verified source key is added to that question or to the alias registry.",
+  "sections": [
+    {"id":"est-review-patient-chart","label":"A Technologist's Guide to Performing Sleep Studies: Review the Patient Chart","taskCodes":["D1A"]},
+    {"id":"est-welcome-patient","label":"A Technologist's Guide to Performing Sleep Studies: Welcome the Patient to the Sleep Center","taskCodes":["D1B"]},
+    {"id":"est-electrode-preparation","label":"A Technologist's Guide to Performing Sleep Studies: Prepare the Patient for Electrode Application and Apply the Electrodes","taskCodes":["D2A","D2B"]},
+    {"id":"est-test-electrodes","label":"A Technologist's Guide to Performing Sleep Studies: Test the Electrode Application","taskCodes":["D2A","D2B"]},
+    {"id":"est-recording-quality","label":"A Technologist's Guide to Performing Sleep Studies: During the Recording — Provide Documentation and Maintain the Recording Quality","taskCodes":["D2B","D2C"]},
+    {"id":"est-emergencies","label":"A Technologist's Guide to Performing Sleep Studies: Sleep Center Emergencies and Interventions","taskCodes":["D2C"]},
+    {"id":"est-ending-study","label":"A Technologist's Guide to Performing Sleep Studies: Ending the Sleep Study","taskCodes":["D1B","D2B"]},
+    {"id":"est-technical-digital","label":"A Technologist's Handbook for Understanding and Implementing the AASM Manual: Technical and Digital Specifications","taskCodes":["D2A","D2C"]},
+    {"id":"est-visual-rules","label":"A Technologist's Handbook for Understanding and Implementing the AASM Manual: Visual Rules","taskCodes":["D3A"]},
+    {"id":"est-arousal-rules","label":"A Technologist's Handbook for Understanding and Implementing the AASM Manual: Arousal Rules","taskCodes":["D3A"]},
+    {"id":"est-cardiac-rules","label":"A Technologist's Handbook for Understanding and Implementing the AASM Manual: Cardiac Rules","taskCodes":["D3A"]},
+    {"id":"est-movement-rules","label":"A Technologist's Handbook for Understanding and Implementing the AASM Manual: Movement Rules","taskCodes":["D3A"]},
+    {"id":"est-respiratory-rules","label":"A Technologist's Handbook for Understanding and Implementing the AASM Manual: Respiratory Rules","taskCodes":["D3A"]},
+    {"id":"est-reporting-parameters","label":"A Technologist's Handbook for Understanding and Implementing the AASM Manual: Parameters to Be Reported for Polysomnography","taskCodes":["D3C"]},
+    {"id":"est-sleep-disorders-intro","label":"A Technologist's Introduction to Sleep Disorders: Insomnias, Sleep Related Breathing Disorders, Hypersomnias, Circadian Rhythm Sleep Disorders, Parasomnias, and Sleep Related Movement Disorders","taskCodes":["D1A"]}
+  ]
+}
