@@ -1,0 +1,35 @@
+{
+  "id": "ers-10-20-eeg-placement-2016",
+  "shortTitle": "10-20 System EEG Placement",
+  "fullTitle": "10-20 System EEG Placement",
+  "year": 2016,
+  "sourceType": "educational workshop slide presentation",
+  "sourceRole": "studySupport",
+  "publisher": "European Respiratory Society",
+  "apaCitation": "Morley, A., Hill, L., & Kaditis, A. G. (2016). 10-20 system EEG placement [Workshop slide presentation]. European Respiratory Society.",
+  "bestFor": "Hands-on review of the International 10-20 system, head measurement, EEG/EOG/chin-EMG placement, skin preparation, impedance awareness, and physiological calibrations for polysomnography.",
+  "copyrightUse": "Use bibliographic metadata, section titles, and original Sleep Pathways Guild teaching directions only. Do not reproduce source photographs, diagrams, slide images, proprietary examples, or assessment questions.",
+  "authorityBoundary": "Instructional workshop material from 2016. Current AASM technical specifications, current AAST guidance, current BRPT framework, and facility policy take precedence for current hookup and recording requirements.",
+  "currencyNote": "Useful for technique and spatial concepts, but version-sensitive montage, impedance, filter, and calibration details require current-authority verification before learner release.",
+  "referenceKeys": [
+    "ers-10-20-eeg-placement-2016",
+    "10-20-eeg-placement-ers",
+    "eeg-placement-workshop"
+  ],
+  "mappingBoundary": "Task mappings indicate useful technical-preparation and study-performance reading areas only. No source image or measurement diagram is imported into production; learner visuals should be original redraws or app-authored schematics.",
+  "sections": [
+    {"id":"ers1020-basics","label":"International 10-20 EEG System Basics","taskCodes":["D2A"]},
+    {"id":"ers1020-sleep-montage","label":"Sleep PSG Montage and EEG Derivations","taskCodes":["D2A"]},
+    {"id":"ers1020-preparation","label":"Preparation, Skin Preparation, and Signal Contact","taskCodes":["D2A","D2B"]},
+    {"id":"ers1020-impedance","label":"Impedance and Consequences of Poor Placement","taskCodes":["D2A","D2C"]},
+    {"id":"ers1020-landmarks","label":"Four Skull Landmarks: Nasion, Inion, and Pre-Auricular Points","taskCodes":["D2A"]},
+    {"id":"ers1020-cz","label":"Measurement of Cz","taskCodes":["D2A"]},
+    {"id":"ers1020-transverse","label":"Transverse 10-20 Measurements","taskCodes":["D2A"]},
+    {"id":"ers1020-midline","label":"Midline 10-20 Measurements","taskCodes":["D2A"]},
+    {"id":"ers1020-circumference","label":"Circumference and Frontal Electrode Measurements","taskCodes":["D2A"]},
+    {"id":"ers1020-mastoids","label":"M1 and M2 Reference Electrode Placement","taskCodes":["D2A"]},
+    {"id":"ers1020-eog","label":"Electro-oculogram Electrode Placement","taskCodes":["D2A","D2B"]},
+    {"id":"ers1020-chin-emg","label":"Chin EMG Electrode Placement","taskCodes":["D2A","D2B"]},
+    {"id":"ers1020-calibration","label":"Calibration: Checking the Signals","taskCodes":["D2B","D2C"]}
+  ]
+}
