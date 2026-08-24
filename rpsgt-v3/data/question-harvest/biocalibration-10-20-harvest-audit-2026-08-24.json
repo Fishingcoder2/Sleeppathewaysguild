@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Biocalibration + 10-20 Harvest Overlap Audit",
+    "created": "2026-08-24",
+    "harvestFile": "rpsgt-v3/data/question-harvest/biocalibration-10-20-harvest-2026-08-24.json",
+    "comparisonFile": "rpsgt-v3/data/practice-slice/d2.json",
+    "purpose": "Prevent duplicate competencies from being added to the active D2 bank and identify candidates that should replace or strengthen existing questions instead."
+  },
+  "findings": [
+    {
+      "harvestId": "RPSGT-HARVEST-D2A-005",
+      "existingId": "boost-024",
+      "overlap": "high",
+      "finding": "Both items test calculation of the first 10% interval from a preauricular-to-preauricular head measurement.",
+      "action": "Do not activate as an additional question. Replace the harvest item with a different measurement-workflow competency before merge."
+    },
+    {
+      "harvestId": "RPSGT-HARVEST-D2C-006",
+      "existingId": "imp-017",
+      "overlap": "high",
+      "finding": "Both items identify sweat artifact as slow low-frequency or rolling baseline drift.",
+      "action": "Do not add as a separate basic item. Use the new source to improve the existing question/rationale or create a more advanced correction scenario."
+    },
+    {
+      "harvestId": "RPSGT-HARVEST-D2C-007",
+      "existingId": "boost-015",
+      "overlap": "moderate-high",
+      "finding": "Both test recognition of contamination caused by a shared reference electrode. The harvest item is more specific because it uses C3-M2 and O1-M2 and asks the learner to localize the M2 problem.",
+      "action": "Consider the harvest item as an upgrade/replacement rather than an additive question."
+    },
+    {
+      "harvestId": "RPSGT-HARVEST-D2C-002",
+      "existingId": "imp-006",
+      "overlap": "moderate",
+      "finding": "Both involve high-frequency muscle activity, but the harvest item anchors the artifact to a known jaw-clench biocalibration maneuver and therefore tests applied interpretation rather than generic recognition.",
+      "action": "Keep as a distinct applied candidate if the final bank needs calibration-based troubleshooting."
+    },
+    {
+      "harvestId": "RPSGT-HARVEST-HOLD-001",
+      "existingId": null,
+      "overlap": "not-assessed-for-activation",
+      "finding": "The item depends on a numerical impedance target stated in a 2016 source.",
+      "action": "Blocked until current AASM technical specifications are verified."
+    },
+    {
+      "harvestId": "RPSGT-HARVEST-HOLD-002",
+      "existingId": null,
+      "overlap": "not-assessed-for-activation",
+      "finding": "The item is tied to a legacy description of the PSG EEG montage and minimum regional sampling.",
+      "action": "Blocked until current AASM technical requirements and BRPT alignment are verified."
+    }
+  ],
+  "recommendedNextPass": {
+    "replaceBeforeMerge": ["RPSGT-HARVEST-D2A-005"],
+    "upgradeExistingRatherThanAdd": ["RPSGT-HARVEST-D2C-006", "RPSGT-HARVEST-D2C-007"],
+    "keepAsAppliedCandidate": ["RPSGT-HARVEST-D2C-002"],
+    "currentAuthorityHold": ["RPSGT-HARVEST-HOLD-001", "RPSGT-HARVEST-HOLD-002"],
+    "mergePerformed": false
+  }
+}
