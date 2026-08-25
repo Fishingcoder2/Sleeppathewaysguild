@@ -4,7 +4,7 @@
   const EXPECTED={flashcards:312,glossary:258,mathLessons:20,mathQuestions:100,parts:5};
   const EXPECTED_BASE64_LENGTH=67644;
   const EXPECTED_PART_LENGTHS=[14000,14000,14000,14000,11644];
-  const VERSION='2026-08-14-v2-learning-library-3';
+  const VERSION='2026-08-25-v2-learning-library-recovery-1';
   let payload=null;
   let loading=null;
 
@@ -35,6 +35,48 @@
     }
   }
 
+  async function decompressText(bytes,format){
+    const stream=new Blob([bytes]).stream().pipeThrough(new root.DecompressionStream(format));
+    return readTextStream(stream);
+  }
+
+  function uint32LE(bytes,offset){
+    return (bytes[offset]|(bytes[offset+1]<<8)|(bytes[offset+2]<<16)|(bytes[offset+3]<<24))>>>0;
+  }
+
+  function gzipPayloadRange(bytes){
+    if(bytes.length<18||bytes[0]!==0x1f||bytes[1]!==0x8b||bytes[2]!==0x08){
+      throw new Error('The RPSGT learning library payload is not a valid gzip file.');
+    }
+    const flags=bytes[3];
+    if(flags&0xe0) throw new Error('The RPSGT learning library gzip header uses unsupported reserved flags.');
+    const trailerStart=bytes.length-8;
+    let index=10;
+
+    if(flags&0x04){
+      if(index+2>trailerStart) throw new Error('The RPSGT learning library gzip extra field is incomplete.');
+      const length=bytes[index]|(bytes[index+1]<<8);
+      index+=2+length;
+      if(index>trailerStart) throw new Error('The RPSGT learning library gzip extra field is incomplete.');
+    }
+
+    function skipZeroTerminated(label){
+      while(index<trailerStart&&bytes[index]!==0) index+=1;
+      if(index>=trailerStart) throw new Error('The RPSGT learning library gzip '+label+' field is incomplete.');
+      index+=1;
+    }
+
+    if(flags&0x08) skipZeroTerminated('filename');
+    if(flags&0x10) skipZeroTerminated('comment');
+    if(flags&0x02){
+      if(index+2>trailerStart) throw new Error('The RPSGT learning library gzip header checksum is incomplete.');
+      index+=2;
+    }
+    if(index>=trailerStart) throw new Error('The RPSGT learning library gzip data body is empty.');
+
+    return {start:index,end:trailerStart,expectedSize:uint32LE(bytes,trailerStart+4)};
+  }
+
   function libraryParts(){
     const parts=Array.isArray(root.RPSGTLearningLibraryParts)?root.RPSGTLearningLibraryParts:[];
     if(parts.length!==EXPECTED.parts){
@@ -63,13 +105,30 @@
       throw new Error('The RPSGT learning library payload is not a valid gzip file.');
     }
     try{
-      const stream=new Blob([bytes]).stream().pipeThrough(new root.DecompressionStream('gzip'));
-      const json=await readTextStream(stream);
+      const json=await decompressText(bytes,'gzip');
       if(!json.trim()) throw new Error('The decompressed learning library was empty.');
       return JSON.parse(json);
     }catch(error){
-      const detail=error&&error.message?String(error.message):'Unknown decompression error';
-      throw new Error('The RPSGT learning library could not be decompressed in this browser. '+detail);
+      // The imported V2 payload has a damaged gzip integrity trailer in some builds.
+      // Recovery is intentionally narrow: decode only the original deflate body,
+      // require the gzip ISIZE to match, parse valid JSON, and require every
+      // expected V2 library count before accepting the recovered content.
+      try{
+        const range=gzipPayloadRange(bytes);
+        const json=await decompressText(bytes.slice(range.start,range.end),'deflate-raw');
+        if(!json.trim()) throw new Error('The recovered learning library was empty.');
+        const actualSize=new Blob([json]).size>>>0;
+        if(actualSize!==range.expectedSize){
+          throw new Error('Recovered payload size did not match the gzip metadata.');
+        }
+        const recovered=JSON.parse(json);
+        validate(recovered);
+        return recovered;
+      }catch(recoveryError){
+        const detail=error&&error.message?String(error.message):'Unknown decompression error';
+        const recoveryDetail=recoveryError&&recoveryError.message?String(recoveryError.message):'Unknown recovery error';
+        throw new Error('The RPSGT learning library could not be decompressed in this browser. '+detail+' Recovery validation also failed: '+recoveryDetail);
+      }
     }
   }
 
