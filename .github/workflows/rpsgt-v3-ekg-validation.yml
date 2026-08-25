@@ -1,0 +1,46 @@
+name: Validate RPSGT v3 EKG Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-ekg.html'
+      - 'rpsgt-v3/core/ekg-lab-engine.js'
+      - 'rpsgt-v3/core/lab-ekg.js'
+      - 'rpsgt-v3/assets/ekg.css'
+      - 'rpsgt-v3/assets/ekg-guided.css'
+      - 'rpsgt-v3/data/ekg/**'
+      - 'rpsgt-v3/data/labs/ekg-checkpoint-supplement.json'
+      - 'rpsgt-v3/data/question-bank/d2b.json'
+      - 'rpsgt-v3/data/question-bank/d3c.json'
+      - 'rpsgt-v3/scripts/test-ekg-*.mjs'
+      - '.github/workflows/rpsgt-v3-ekg-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ekg-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate EKG modules and guided station pack
+        run: |
+          set -euo pipefail
+          node --check rpsgt-v3/core/ekg-lab-engine.js
+          node --check rpsgt-v3/core/lab-ekg.js
+          node -e "const fs=require('fs'); const pack=JSON.parse(fs.readFileSync('rpsgt-v3/data/ekg/guided-stations.json','utf8')); if(pack.stations.length!==7) throw new Error('Expected seven guided EKG stations.');"
+      - name: Run dedicated EKG regressions
+        run: |
+          set -euo pipefail
+          node rpsgt-v3/scripts/test-ekg-lab-system.mjs
+          node rpsgt-v3/scripts/test-ekg-lab-shell.mjs
+          node rpsgt-v3/scripts/test-ekg-guided-study.mjs
