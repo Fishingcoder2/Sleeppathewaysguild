@@ -58,6 +58,6 @@ assert.deepEqual(engine.DOMAIN_AWARD_NAMES,{
   D3:'Scoring Pathfinder',
   D4:'Therapy Trail Guide'
 });
-assert.equal(storageGuard.VERSION,'1.0.0');
+assert.equal(storageGuard.VERSION,'1.0.1');
 assert.equal(coachSafety.VERSION,'2.0.0');
 console.log('Guided Study completion system contract passed.');
