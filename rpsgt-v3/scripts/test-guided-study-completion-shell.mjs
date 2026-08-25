@@ -39,7 +39,8 @@ for(const awardName of ['Clinical Guide','Study Signal Scout','Scoring Pathfinde
   assert.ok(completion.includes(awardName),`Guided Study completion layer is missing named Guild domain medal: ${awardName}`);
 }
 assert.match(storageGuard,/data-trail-mark/);
-assert.match(storageGuard,/data-checkpoint-score/);
+assert.match(storageGuard,/data-checkpoint-next/);
+assert.doesNotMatch(storageGuard,/data-checkpoint-score/,'storage guard must follow the Next-driven checkpoint control');
 
 assert.doesNotMatch(coachSafety,/MutationObserver/,'Coach Bob safety utility must not watch or rewrite the DOM');
 assert.match(coachSafety,/safePreAnswer/);
@@ -65,7 +66,8 @@ assert.match(coachEngine,/nextAction/);
 
 assert.doesNotMatch(guidedCoach,/MutationObserver/,'Guided Study Coach Bob adapter must be event-driven, not observer-driven');
 assert.match(guidedCoach,/data-coach-toggle/);
-assert.match(guidedCoach,/data-checkpoint-score/);
+assert.match(guidedCoach,/data-checkpoint-next/);
+assert.doesNotMatch(guidedCoach,/data-checkpoint-score/,'Coach Bob adapter must follow the Next-driven checkpoint control');
 assert.match(guidedCoach,/resolveQuestion\(question\)/);
 assert.match(guidedCoach,/checkpointHistory/);
 assert.match(guidedCoach,/Reasoning Compass/);
