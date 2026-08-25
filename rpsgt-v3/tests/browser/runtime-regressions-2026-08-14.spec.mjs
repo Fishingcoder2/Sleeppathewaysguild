@@ -27,7 +27,9 @@ test('Practice Modes and Mock-Style Exam remain separate Launchpad destinations'
   await expect(practiceLink).toHaveAttribute('aria-current','page');
   await expect(mockLink).not.toHaveClass(/active/);
 
-  await mockLink.click();
+  // Navigate directly so this route-identity regression remains valid when the
+  // responsive sidebar is intentionally collapsed on tablet and mobile.
+  await page.goto('mock.html');
   await expect(page).toHaveURL(/mock\.html/);
 
   const mockPracticeLink=page.locator('.sidebar a[href="practice.html"]').filter({hasText:'Practice Modes'});
@@ -36,7 +38,7 @@ test('Practice Modes and Mock-Style Exam remain separate Launchpad destinations'
   await expect(activeMockLink).toHaveAttribute('aria-current','page');
   await expect(mockPracticeLink).not.toHaveClass(/active/);
 
-  await mockPracticeLink.click();
+  await page.goto('practice.html');
   await expect(page).toHaveURL(/practice\.html/);
   await expect(page.locator('.sidebar a[href="practice.html"]').filter({hasText:'Practice Modes'})).toHaveClass(/active/);
   await expect(page.locator('.sidebar a[href="mock.html"]').filter({hasText:'Mock-Style Exam'})).not.toHaveClass(/active/);
