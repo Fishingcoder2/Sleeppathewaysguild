@@ -119,7 +119,7 @@
       taskQuestions(state.activeTaskCode).catch(()=>{});
       return;
     }
-    if(event.target.closest('[data-coach-toggle],[data-checkpoint-score]')) scheduleCoach();
+    if(event.target.closest('[data-coach-toggle],[data-checkpoint-next]')) scheduleCoach();
   });
 
   if(resources) resources.load().catch(()=>null);
