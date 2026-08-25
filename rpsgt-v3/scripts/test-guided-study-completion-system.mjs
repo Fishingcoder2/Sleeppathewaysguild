@@ -51,7 +51,7 @@ const blocked=coachSafety.safePreAnswer('Choose N2 because it is correct.','N2',
 assert.equal(blocked,'Use the evidence in the stem.','pre-score safety must replace answer-leaking guidance');
 assert.equal(coachSafety.containsAnswer('Remove choices that do not fit.','REM'),false,'short answer tokens must not match inside unrelated words');
 assert.equal(coachSafety.containsAnswer('The answer is REM.','REM'),true);
-assert.equal(engine.VERSION,'1.0.1');
+assert.equal(engine.VERSION,'1.1.0');
 assert.deepEqual(engine.DOMAIN_AWARD_NAMES,{
   D1:'Clinical Guide',
   D2:'Study Signal Scout',
