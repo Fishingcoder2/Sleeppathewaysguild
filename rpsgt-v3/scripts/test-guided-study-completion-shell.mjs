@@ -27,7 +27,7 @@ assert.ok(study.indexOf('guided-study-completion.js')<study.indexOf('core/study.
 assert.ok(study.indexOf('guided-study-storage-guard.js')<study.indexOf('core/study.js'),'storage guard must mount before the controller starts');
 assert.ok(study.indexOf('core/study.js')<study.indexOf('guided-study-coach.js'),'event-driven Coach Bob adapter must attach after the checkpoint controller');
 assert.match(practice,/core\/practice-prefill\.js/);
-assert.match(completion,/Retake with five new questions/);
+assert.match(completion,/Retake with 10 new questions/);
 assert.match(completion,/Begin the next domain/);
 assert.match(completion,/Review missed questions/);
 assert.match(completion,/seenCeremonyIds/);
