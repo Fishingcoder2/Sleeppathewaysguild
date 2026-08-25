@@ -22,13 +22,13 @@
   "contentVerifiedByV3": false,
   "structuredForLearnerMapping": false,
   "mappingEnabled": false,
-  "usageStatus": "bibliographic identity verified; learner-facing content mapping intentionally pending",
+  "usageStatus": "bibliographic identity verified; learner-facing content verification intentionally pending",
   "referenceKeys": [],
   "mappedTaskCodes": [],
-  "publicOutlineStatus": "Elsevier publishes a public table of contents, but V3 has not yet reviewed the owner's Kindle content or built a verified third-edition chapter/page locator map.",
-  "bestFor": "Future case-based reinforcement after selected third-edition content is lawfully reviewed and mapped. The verified identity may be shown in the Reference Center now, but the book must not silently inherit second-edition page/case mappings.",
+  "publicOutlineStatus": "Elsevier publishes a public table of contents, but V3 has not yet reviewed the owner's Kindle content or built verified third-edition chapter/page locators.",
+  "bestFor": "Future case-based reinforcement after selected third-edition content is lawfully reviewed. The verified identity may be shown in the Reference Center now, but third-edition page and case details must be verified directly and cannot be inherited from the second edition.",
   "authorityBoundary": "BRPT-listed study support only. Current AASM Scoring Manual Version 3 controls scoring and technical rules; ICSD-3-TR controls current diagnostic classification; current AASM/AAST guidance controls version-sensitive testing, treatment, and technologist-practice content.",
-  "editionBoundary": "Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators to this record. Third-edition learner mappings require direct verification from the lawful third-edition copy or another reliable exact-edition source.",
+  "editionBoundary": "Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators to this record. Third-edition learner locators require direct verification from the lawful third-edition copy or another reliable exact-edition source.",
   "copyrightUse": "Store bibliographic metadata, public table-of-contents headings, verified locators, and original Sleep Pathways Guild summaries only. Do not reproduce proprietary cases, questions, figures, tracings, tables, or substantial textbook prose.",
   "sections": []
 }
