@@ -53,6 +53,7 @@ jobs:
           node --check rpsgt-v3/core/scoring-context-engine.js
           node --check rpsgt-v3/core/scoring-multi-epoch-engine.js
           node --check rpsgt-v3/core/scoring-event-boundary-engine.js
+          node --check rpsgt-v3/core/scoring-mini-study-engine.js
           node --check rpsgt-v3/core/scoring-event-boundary-renderer.js
           node --check rpsgt-v3/core/scoring-event-boundary-drag.js
           node --check rpsgt-v3/core/scoring-event-boundary-overlap-edit.js
@@ -63,6 +64,7 @@ jobs:
           node --check rpsgt-v3/core/lab-scoring-context.js
           node --check rpsgt-v3/core/lab-scoring-multi-epoch.js
           node --check rpsgt-v3/core/lab-scoring-event-boundary.js
+          node --check rpsgt-v3/core/lab-scoring-mini-study.js
           node --check rpsgt-v3/scripts/test-scoring-lab-system.mjs
           node --check rpsgt-v3/scripts/test-scoring-lab-shell.mjs
           node --check rpsgt-v3/scripts/test-scoring-stage-presentation.mjs
@@ -70,6 +72,7 @@ jobs:
           node --check rpsgt-v3/scripts/test-scoring-boundary-overlap-edit.mjs
           node --check rpsgt-v3/scripts/test-scoring-checkpoint-modal.mjs
           node --check rpsgt-v3/scripts/test-scoring-visual-workflows.mjs
+          node --check rpsgt-v3/scripts/test-scoring-mini-study.mjs
       - name: Validate Scoring Lab engine and completion boundary
         run: node rpsgt-v3/scripts/test-scoring-lab-system.mjs
       - name: Validate Scoring Lab learner shell
@@ -84,3 +87,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-scoring-checkpoint-modal.mjs
       - name: Validate Scoring visual stability and mastery flows
         run: node rpsgt-v3/scripts/test-scoring-visual-workflows.mjs
+      - name: Validate Phase 3 scored mini-study
+        run: node rpsgt-v3/scripts/test-scoring-mini-study.mjs
