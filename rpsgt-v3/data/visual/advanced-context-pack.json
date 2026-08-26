@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "name": "RPSGT Visual Skills Pack 2 — neighboring-epoch evidence",
+    "version": 1,
+    "appAuthored": true,
+    "sourceType": "app-authored-schematic-sequence",
+    "sourceBasis": "Five 90-second teaching sequences reuse original Sleep Pathways Guild 30-second W, N1, N2, N3, and REM schematic epochs to practice visual recognition across neighboring context.",
+    "clinicalBoundary": "Sequence order is pedagogic and does not imply mandatory sleep architecture. Real staging requires the current official scoring criteria, the complete recording, facility procedures, and supervised scorer training.",
+    "caseCount": 5,
+    "decisionsPerCase": 3,
+    "decisionCount": 15,
+    "passPercent": 80
+  },
+  "stageOptions": ["W", "N1", "N2", "N3", "R"],
+  "cases": [
+    {
+      "id": "visual-pack2-wake-context",
+      "title": "Brief wake-oriented context",
+      "sequence": ["schematic-n1-001", "schematic-w-001", "schematic-n1-001"],
+      "focusEpochIndex": 1,
+      "stagePrompt": "Which stage is the center 30-second teaching epoch designed to represent?",
+      "stageAnswer": "W",
+      "channelPrompt": "Which displayed channel best demonstrates the posterior alpha teaching clue in the center epoch?",
+      "channelOptions": ["F3-M2", "C3-M2", "O1-M2", "Chin EMG"],
+      "channelAnswer": "O1-M2",
+      "evidence": {
+        "type": "point-click",
+        "prompt": "Click one prominent eye-blink teaching deflection in E1-M2 within the center epoch.",
+        "target": {"channel": "E1-M2", "start": 6.9, "end": 7.9},
+        "toleranceSeconds": 0.25,
+        "fallbackPoints": [
+          {"label": "E1-M2 near 3 s", "channel": "E1-M2", "time": 3.0},
+          {"label": "E1-M2 near 7.4 s", "channel": "E1-M2", "time": 7.4},
+          {"label": "E1-M2 near 13 s", "channel": "E1-M2", "time": 13.0},
+          {"label": "E1-M2 near 25 s", "channel": "E1-M2", "time": 25.0}
+        ],
+        "rationale": "The center teaching epoch combines posterior alpha with wake-oriented eye activity and relatively higher chin tone."
+      }
+    },
+    {
+      "id": "visual-pack2-n1-context",
+      "title": "Wake-to-light-sleep context",
+      "sequence": ["schematic-w-001", "schematic-n1-001", "schematic-n2-001"],
+      "focusEpochIndex": 1,
+      "stagePrompt": "Which stage is the center 30-second teaching epoch designed to represent?",
+      "stageAnswer": "N1",
+      "channelPrompt": "Which displayed channel best demonstrates the slow-eye-movement teaching clue in the center epoch?",
+      "channelOptions": ["O1-M2", "E1-M2", "Chin EMG", "ECG"],
+      "channelAnswer": "E1-M2",
+      "evidence": {
+        "type": "point-click",
+        "prompt": "Click the vertex-wave teaching feature in C3-M2 within the center epoch.",
+        "target": {"channel": "C3-M2", "start": 20.25, "end": 20.95},
+        "toleranceSeconds": 0.2,
+        "fallbackPoints": [
+          {"label": "C3-M2 near 5 s", "channel": "C3-M2", "time": 5.0},
+          {"label": "C3-M2 near 12 s", "channel": "C3-M2", "time": 12.0},
+          {"label": "C3-M2 near 20.6 s", "channel": "C3-M2", "time": 20.6},
+          {"label": "C3-M2 near 27 s", "channel": "C3-M2", "time": 27.0}
+        ],
+        "rationale": "The center teaching epoch emphasizes a light-sleep background, slow eye movements, and a vertex teaching feature without the N2 teaching markers used in the next epoch."
+      }
+    },
+    {
+      "id": "visual-pack2-n2-context",
+      "title": "Light-to-deeper NREM context",
+      "sequence": ["schematic-n1-001", "schematic-n2-001", "schematic-n3-001"],
+      "focusEpochIndex": 1,
+      "stagePrompt": "Which stage is the center 30-second teaching epoch designed to represent?",
+      "stageAnswer": "N2",
+      "channelPrompt": "Which displayed channel carries the clearest spindle and K-complex teaching morphology in the center epoch?",
+      "channelOptions": ["C3-M2", "O2-M1", "E1-M2", "ECG"],
+      "channelAnswer": "C3-M2",
+      "evidence": {
+        "type": "interval-mark",
+        "prompt": "Mark the spindle teaching burst from beginning to end in C3-M2 within the center epoch.",
+        "target": {"channel": "C3-M2", "start": 13.4, "end": 15.0},
+        "toleranceSeconds": 0.4,
+        "fallbackIntervals": [
+          {"label": "C3-M2 · 7.8–9.8 s", "channel": "C3-M2", "start": 7.8, "end": 9.8},
+          {"label": "C3-M2 · 13.4–15.0 s", "channel": "C3-M2", "start": 13.4, "end": 15.0},
+          {"label": "C3-M2 · 19.0–21.0 s", "channel": "C3-M2", "start": 19.0, "end": 21.0},
+          {"label": "C4-M1 · 13.5–15.1 s", "channel": "C4-M1", "start": 13.5, "end": 15.1}
+        ],
+        "rationale": "The center teaching epoch contains the spindle/K-complex morphology used to distinguish this schematic N2 example from its neighboring N1 and N3 examples."
+      }
+    },
+    {
+      "id": "visual-pack2-n3-context",
+      "title": "Deep NREM context",
+      "sequence": ["schematic-n2-001", "schematic-n3-001", "schematic-n2-001"],
+      "focusEpochIndex": 1,
+      "stagePrompt": "Which stage is the center 30-second teaching epoch designed to represent?",
+      "stageAnswer": "N3",
+      "channelPrompt": "Which displayed channel best demonstrates the large frontal slow-wave teaching activity in the center epoch?",
+      "channelOptions": ["F3-M2", "O1-M2", "E2-M2", "Chin EMG"],
+      "channelAnswer": "F3-M2",
+      "evidence": {
+        "type": "interval-mark",
+        "prompt": "Mark the first sustained slow-wave teaching run in F3-M2 within the center epoch.",
+        "target": {"channel": "F3-M2", "start": 4.5, "end": 13.0},
+        "toleranceSeconds": 0.6,
+        "fallbackIntervals": [
+          {"label": "F3-M2 · 1.0–4.0 s", "channel": "F3-M2", "start": 1.0, "end": 4.0},
+          {"label": "F3-M2 · 4.5–13.0 s", "channel": "F3-M2", "start": 4.5, "end": 13.0},
+          {"label": "F3-M2 · 13.5–17.5 s", "channel": "F3-M2", "start": 13.5, "end": 17.5},
+          {"label": "C3-M2 · 4.5–13.0 s", "channel": "C3-M2", "start": 4.5, "end": 13.0}
+        ],
+        "rationale": "The center teaching epoch emphasizes large frontal slow-wave activity compared with the lighter N2 examples on both sides."
+      }
+    },
+    {
+      "id": "visual-pack2-rem-context",
+      "title": "REM-to-awakening context",
+      "sequence": ["schematic-n2-001", "schematic-r-001", "schematic-w-001"],
+      "focusEpochIndex": 1,
+      "stagePrompt": "Which stage is the center 30-second teaching epoch designed to represent?",
+      "stageAnswer": "R",
+      "channelPrompt": "Which displayed channel best demonstrates the rapid-eye-movement teaching clue in the center epoch?",
+      "channelOptions": ["E1-M2", "F3-M2", "O1-M2", "ECG"],
+      "channelAnswer": "E1-M2",
+      "evidence": {
+        "type": "interval-mark",
+        "prompt": "Mark the rapid-eye-movement teaching burst in E1-M2 within the center epoch.",
+        "target": {"channel": "E1-M2", "start": 16.2, "end": 19.1},
+        "toleranceSeconds": 0.5,
+        "fallbackIntervals": [
+          {"label": "E1-M2 · 4.0–7.0 s", "channel": "E1-M2", "start": 4.0, "end": 7.0},
+          {"label": "E1-M2 · 10.0–13.0 s", "channel": "E1-M2", "start": 10.0, "end": 13.0},
+          {"label": "E1-M2 · 16.2–19.1 s", "channel": "E1-M2", "start": 16.2, "end": 19.1},
+          {"label": "E2-M2 · 16.2–19.1 s", "channel": "E2-M2", "start": 16.2, "end": 19.1}
+        ],
+        "rationale": "The center teaching epoch combines rapid eye movements with a REM-oriented EEG background and low chin tone before the neighboring wake example."
+      }
+    }
+  ]
+}
