@@ -1,0 +1,216 @@
+{
+  "version": "1.0.0",
+  "reference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby/Elsevier.",
+  "stations": [
+    {
+      "id": "protocol-boundaries",
+      "title": "Confirm the order, protocol, and escalation boundary",
+      "study": {
+        "intro": "A PAP titration begins before the first therapy change. The technologist must know what study was ordered, what therapy is authorized, which facility protocol applies, and which findings require physician or supervisory escalation.",
+        "points": [
+          "Verify the ordered study and therapy pathway before starting or changing treatment.",
+          "Use the current facility protocol, current professional guidance, manufacturer instructions, and the patient's clinical context rather than relying on memory alone.",
+          "Know which changes fall within the technologist's supervised protocol and which findings require escalation or a new order.",
+          "Review the diagnostic pattern, relevant history, current equipment, and baseline signals so the titration plan matches the actual study context."
+        ]
+      },
+      "visual": {"kind":"protocol-map","label":"Original SPG decision schematic linking order, protocol, patient context, and escalation boundaries."},
+      "apply": {
+        "prompt": "A patient arrives for a PAP titration, but the chart and device setup do not clearly show whether an advanced mode is authorized. What is the best next action?",
+        "options": [
+          "Proceed with the advanced mode because it may treat more event types",
+          "Clarify the order and current protocol boundary before initiating an unauthorized therapy change",
+          "Choose the mode used most often in the laboratory",
+          "Skip the setup review and decide after the first respiratory event"
+        ],
+        "answer": "Clarify the order and current protocol boundary before initiating an unauthorized therapy change",
+        "hint": "The first PAP decision is often whether the next action is actually authorized and appropriate for this study.",
+        "rationale": "Therapy changes should follow the active order, current protocol, manufacturer directions, facility policy, and supervision requirements. Unclear authorization is a reason to clarify before proceeding."
+      },
+      "recap": {
+        "reviewed": "Order verification, protocol authority, baseline review, and escalation boundaries.",
+        "canDo": "Identify when a PAP decision can proceed within protocol and when clarification or escalation is required."
+      }
+    },
+    {
+      "id": "equipment-interface",
+      "title": "Prepare the device, circuit, humidification, and interface",
+      "study": {
+        "intro": "Good titration data depend on a functioning therapy pathway and an interface the patient can tolerate. Device readiness, tubing, humidification, intentional leak pathways, mask selection, and fit should be checked before persistent residual events are interpreted as pressure failure.",
+        "points": [
+          "Confirm the therapy device, tubing, connectors, humidification, and interface are assembled and functioning as intended.",
+          "Choose and fit an interface that supports the ordered therapy while minimizing avoidable leak, pressure points, and discomfort.",
+          "Differentiate expected intentional vent flow from unintentional mask, mouth, or circuit leak.",
+          "Reassess fit after position changes because seal and comfort can change when the patient turns or settles into sleep."
+        ]
+      },
+      "visual": {"kind":"interface-path","label":"Original SPG schematic tracing device flow through tubing, mask interface, intentional vent, and patient airway."},
+      "apply": {
+        "prompt": "The patient is comfortable while upright, but after lying on the side the leak rises sharply and the mask edge visibly lifts. What should the technologist do first?",
+        "options": [
+          "Increase therapy pressure immediately",
+          "Refit or reposition the interface and reassess the leak before changing therapy",
+          "Disable all leak monitoring",
+          "End the titration because side sleeping is incompatible with PAP"
+        ],
+        "answer": "Refit or reposition the interface and reassess the leak before changing therapy",
+        "hint": "A positional seal problem should be corrected at the interface before it is treated as inadequate therapy pressure.",
+        "rationale": "The observed positional mask leak identifies a correctable interface problem. Restoring the seal and reassessing the signal pattern comes before changing therapy for an event pattern that may be leak-distorted."
+      },
+      "recap": {
+        "reviewed": "Device readiness, interface fit, intentional versus unintentional leak, and position-related seal changes.",
+        "canDo": "Trace an apparent PAP problem back through the equipment and interface before assuming the therapy setting is inadequate."
+      }
+    },
+    {
+      "id": "acclimation-comfort",
+      "title": "Coach acclimation, communication, and comfort",
+      "study": {
+        "intro": "PAP tolerance is part of the treatment pathway. Patient education, calm coaching, interface adjustments, positioning, and time to acclimate can improve both sleep continuity and the quality of the titration data.",
+        "points": [
+          "Explain what the patient will feel and what they can communicate during the titration.",
+          "Use gradual acclimation, calm coaching, and comfort adjustments when anxiety or claustrophobia interferes with therapy tolerance.",
+          "Address pressure points, dryness, condensation, noise, or positional discomfort when these are contributing to awakenings or mask removal.",
+          "Do not label therapy ineffective when the primary problem is that the patient cannot yet maintain sleep or tolerate the interface long enough for a valid assessment."
+        ]
+      },
+      "visual": {"kind":"comfort-cycle","label":"Original SPG patient-centered schematic linking education, fit, acclimation, sleep continuity, and reassessment."},
+      "apply": {
+        "prompt": "Soon after mask placement, the patient repeatedly removes the interface and reports feeling panicked, while the device and signals are otherwise functioning. What is the best first response?",
+        "options": [
+          "Escalate therapy settings so the patient notices the pressure less",
+          "Pause for reassurance, coaching, and gradual reacclimation while checking interface comfort",
+          "Document treatment failure without further intervention",
+          "Ignore the complaint until stable sleep occurs"
+        ],
+        "answer": "Pause for reassurance, coaching, and gradual reacclimation while checking interface comfort",
+        "hint": "Treat tolerance as a solvable part of the PAP pathway before judging therapy effectiveness.",
+        "rationale": "Anxiety and interface intolerance can prevent adequate sleep and valid titration. Patient-centered coaching and comfort correction should be attempted before the study is interpreted as treatment failure."
+      },
+      "recap": {
+        "reviewed": "Education, desensitization, comfort troubleshooting, and the relationship between tolerance and valid titration data.",
+        "canDo": "Choose a patient-centered intervention when intolerance, rather than residual respiratory physiology, is limiting the study."
+      }
+    },
+    {
+      "id": "event-response",
+      "title": "Interpret the complete response pattern before the next action",
+      "study": {
+        "intro": "A titration decision should be based on the complete pattern, not one isolated event. Airflow, effort, oxygenation, arousals, sleep continuity, stage, body position, leak, and the current therapy context all affect what the next action means.",
+        "points": [
+          "Confirm the event type and signal quality before treating a residual pattern as persistent obstruction.",
+          "Use stage and body position as context because respiratory severity can change across the night.",
+          "Review leak and arousal timing because poor seal or wake-transition breathing can mimic or obscure treatment response.",
+          "Follow the current titration protocol only after the observed pattern is coherent enough to support the next action."
+        ]
+      },
+      "visual": {"kind":"response-grid","label":"Original SPG multi-signal teaching panel comparing airflow, effort, oxygen, arousal, position, stage, and leak context."},
+      "apply": {
+        "prompt": "Several apparent residual events occur just after repeated arousals while leak is also elevated and sleep is fragmented. What is the strongest next step before changing therapy?",
+        "options": [
+          "Treat every apparent event as persistent obstruction and change therapy immediately",
+          "Validate leak, sleep state, and the full respiratory pattern before deciding whether the protocol calls for a therapy change",
+          "Ignore the respiratory channels and use oxygen saturation alone",
+          "Base the decision only on the most recent event"
+        ],
+        "answer": "Validate leak, sleep state, and the full respiratory pattern before deciding whether the protocol calls for a therapy change",
+        "hint": "A treatment decision is only as reliable as the event classification and signal context supporting it.",
+        "rationale": "Fragmented sleep and elevated leak can make event interpretation unreliable. The technologist should validate the complete pattern before applying the next protocol-directed therapy step."
+      },
+      "recap": {
+        "reviewed": "Full-pattern event response, stage and position context, arousal timing, signal quality, and protocol-directed decisions.",
+        "canDo": "Avoid chasing one event or one number when the surrounding PAP data do not yet support a clear intervention."
+      }
+    },
+    {
+      "id": "leak-troubleshooting",
+      "title": "Separate leak, signal problems, and persistent respiratory events",
+      "study": {
+        "intro": "Leak can reduce comfort, disrupt sleep, distort airflow interpretation, and interfere with effective therapy. Troubleshooting should determine whether the source is the interface, mouth, circuit, position, sensor, or a true residual respiratory pattern.",
+        "points": [
+          "Compare the leak change with body movement, mask position, mouth opening, circuit integrity, and airflow waveform quality.",
+          "Correct a mechanical or interface problem when possible before treating the consequence as persistent respiratory obstruction.",
+          "Reassess the patient after leak correction because both comfort and the apparent respiratory pattern may change.",
+          "Document unresolved leak and its effect on data quality or therapy tolerance when it cannot be fully corrected."
+        ]
+      },
+      "visual": {"kind":"leak-tree","label":"Original SPG troubleshooting tree separating interface leak, mouth leak, circuit leak, signal artifact, and residual events."},
+      "apply": {
+        "prompt": "Leak suddenly rises after the patient turns, the mask seal becomes noisy, and airflow morphology becomes difficult to interpret. Which action is most appropriate first?",
+        "options": [
+          "Correct the likely interface leak and then reassess airflow and respiratory events",
+          "Increase therapy because the airflow signal looks worse",
+          "Turn off the airflow channel",
+          "Assume the patient developed a new central breathing disorder"
+        ],
+        "answer": "Correct the likely interface leak and then reassess airflow and respiratory events",
+        "hint": "When the disturbance begins with a clear mechanical change, repair the source before interpreting its downstream effects.",
+        "rationale": "The timing and mask noise strongly support a positional interface leak. Correcting that source restores a better basis for judging therapy response."
+      },
+      "recap": {
+        "reviewed": "Leak-source localization, position and interface effects, signal validity, reassessment, and documentation of unresolved limitations.",
+        "canDo": "Distinguish a correctable leak problem from a true residual event pattern before making a treatment decision."
+      }
+    },
+    {
+      "id": "advanced-modes",
+      "title": "Recognize advanced-mode boundaries and when to escalate",
+      "study": {
+        "intro": "Bilevel, backup-rate, oxygen, and other advanced therapies require accurate recognition of the breathing pattern plus current orders, protocol authority, device knowledge, and supervision. The technologist should recognize when the study has moved beyond routine obstructive-response reasoning without independently inventing a new treatment plan.",
+        "points": [
+          "Differentiate persistent obstruction, treatment-emergent central events, hypoventilation concerns, oxygenation issues, and intolerance before considering what class of therapy may be relevant.",
+          "Confirm that the therapy mode or supplemental treatment is ordered or otherwise authorized by the current protocol.",
+          "Know the capabilities and limitations of the laboratory device being used and the monitoring signals needed to assess response.",
+          "Escalate when the observed pattern falls outside the protocol, the patient's condition changes, or safe continuation requires physician or supervisory input."
+        ]
+      },
+      "visual": {"kind":"advanced-boundary","label":"Original SPG boundary schematic separating recognition of complex patterns from protocol-authorized therapy decisions."},
+      "apply": {
+        "prompt": "During titration, a new pattern of repeated central-appearing pauses emerges and persists despite stable signal quality. The current order does not clearly authorize an advanced mode. What should the technologist do?",
+        "options": [
+          "Independently select an advanced mode and titrate it to a target",
+          "Verify the pattern, assess the patient, follow the current protocol, and escalate for clarification before an unauthorized mode change",
+          "Ignore the central-appearing pattern because PAP is already in use",
+          "Increase pressure repeatedly until the pauses disappear"
+        ],
+        "answer": "Verify the pattern, assess the patient, follow the current protocol, and escalate for clarification before an unauthorized mode change",
+        "hint": "Recognition of a complex breathing pattern does not automatically authorize a new therapy mode.",
+        "rationale": "The technologist should validate the finding and remain within the current order and protocol. A persistent complex pattern without clear authorization is a reason for escalation rather than independent treatment selection."
+      },
+      "recap": {
+        "reviewed": "Complex respiratory-pattern recognition, advanced-therapy boundaries, device capability, and escalation.",
+        "canDo": "Recognize when PAP titration has moved beyond routine protocol reasoning and requires clarification or higher-level clinical direction."
+      }
+    },
+    {
+      "id": "documentation-handoff",
+      "title": "Document the intervention, response, and handoff",
+      "study": {
+        "intro": "A PAP titration record should make the reasoning and patient response understandable to the clinician reviewing the study. Documentation connects what was observed, what changed, why it changed, how the patient responded, and what remained unresolved.",
+        "points": [
+          "Document the therapy mode and settings in use at meaningful points in the study according to facility workflow.",
+          "Record the reason for an intervention and the observed response, including respiratory pattern, leak, oxygenation, sleep continuity, comfort, stage, and position when relevant.",
+          "Record patient tolerance, interface issues, troubleshooting, adverse reactions, and communication with the physician or supervisor when these affect the study.",
+          "Include unresolved concerns and follow-up needs so the final interpretation has an accurate technical and patient-response context."
+        ]
+      },
+      "visual": {"kind":"handoff-card","label":"Original SPG handoff schematic linking observation, intervention, response, communication, and unresolved concerns."},
+      "apply": {
+        "prompt": "A mask refit reduces leak, sleep becomes more continuous, and the respiratory pattern becomes easier to interpret. Which documentation is strongest?",
+        "options": [
+          "Mask fixed",
+          "Document the leak problem, interface intervention, patient tolerance, resulting signal/respiratory improvement, relevant stage or position context, and any remaining concern",
+          "Record only the final therapy setting",
+          "Document only that the patient slept better"
+        ],
+        "answer": "Document the leak problem, interface intervention, patient tolerance, resulting signal/respiratory improvement, relevant stage or position context, and any remaining concern",
+        "hint": "A useful handoff connects the observed problem to the intervention and the patient's measurable response.",
+        "rationale": "Complete documentation preserves the reason for the intervention, what was done, and how the patient and data changed afterward, which supports accurate interpretation and follow-up."
+      },
+      "recap": {
+        "reviewed": "Intervention rationale, patient response, leak and signal context, therapy documentation, communication, and unresolved concerns.",
+        "canDo": "Write a PAP handoff that explains what happened and why, rather than listing settings without clinical or technical context."
+      }
+    }
+  ]
+}

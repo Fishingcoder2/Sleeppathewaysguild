@@ -1,58 +1,107 @@
 (function(){
-  'use strict';
-  const engine=window.RPSGTPapLabEngine;
-  const workspace=document.querySelector('[data-pap-workspace]');
-  const summaryHost=document.querySelector('[data-pap-summary]');
-  const stationHost=document.querySelector('[data-pap-stations]');
-  const startButton=document.querySelector('[data-pap-start]');
-  if(!workspace||!summaryHost||!stationHost||!startButton) return;
-  const state={saved:null,questions:[],bank:[]};
-  const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
-  async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok) throw new Error(path+' HTTP '+response.status);return response.json();}
-  function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=window.RPSGTStorage.save(state.saved);}
-  function renderSummary(){
-    const report=engine.summary(state.saved.labs);
-    summaryHost.innerHTML=`<div><span>Status</span><strong>${report.completed?'Completed':report.status==='in-progress'?'In progress':'Not started'}</strong></div><div><span>Review stations</span><strong>${report.stationsComplete}/${report.stationCount}</strong></div><div><span>Best checkpoint</span><strong>${report.attempts?report.bestPercent+'%':'—'}</strong></div><div><span>Attempts</span><strong>${report.attempts}</strong></div><div><span>Last checkpoint</span><strong>${report.latestSession?formatDate(report.latestSession.completedAt):'—'}</strong></div>`;
-    startButton.textContent=report.attempts?'Start another 10-question checkpoint':'Start 10-question checkpoint';
-    if(report.completed) startButton.textContent='Practice another 10-question checkpoint';
-  }
-  function renderStations(){
-    const report=engine.summary(state.saved.labs);
-    stationHost.innerHTML=engine.STATIONS.map((station,index)=>`<label class="pap-station ${report.checklist[station.id]?'complete':''}"><input type="checkbox" data-pap-station="${esc(station.id)}" ${report.checklist[station.id]?'checked':''} ${report.completed?'disabled':''}><span class="pap-station-number">${index+1}</span><span><strong>${esc(station.title)}</strong><small>${esc(station.focus)}</small></span></label>`).join('');
-  }
-  function renderSession(){
-    workspace.hidden=false;
-    workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D4A · D4B · D4C PAP checkpoint</div><h2>Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-pap-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint draws PAP-relevant learner questions from the validated treatment, titration, and follow-up banks.</p><form data-pap-form>${state.questions.map((question,index)=>`<fieldset class="pap-question"><legend><span>${index+1}</span>${esc(question.prompt)}</legend>${question.options.map(option=>`<label><input type="radio" name="pap-${esc(question.id)}" value="${esc(option)}"> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score PAP checkpoint</button></div></form><div data-pap-result></div>`;
-    workspace.scrollIntoView({behavior:'smooth',block:'start'});
-  }
-  function renderResult(record){
-    const host=workspace.querySelector('[data-pap-result]');const byId=new Map(state.questions.map(question=>[String(question.id),question]));
-    const review=record.responses.map((response,index)=>{const question=byId.get(String(response.id));return `<details class="pap-review ${response.correct?'correct':'retry'}"><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${esc(question&&question.topic||response.taskCode||'PAP')}</summary><p><strong>Answer:</strong> ${esc(question&&question.answer)}</p><p>${esc(question&&question.rationale||'Review the PAP pathway and try another checkpoint.')}</p></details>`;}).join('');
-    const report=engine.summary(state.saved.labs);
-    host.innerHTML=`<div class="pap-result ${record.passed?'pass':'retry'}"><h3>${report.completed?'PAP lab completed':record.passed?'Checkpoint passed—finish the review stations':'Checkpoint saved—review and retry'}</h3><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${report.completed?'All seven review stations and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish every review station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}`;
-  }
-  function startSession(){
-    saveLabs(engine.start(state.saved.labs,new Date().toISOString()));
-    state.questions=engine.selectQuestions(state.bank,engine.SESSION_SIZE,'pap|'+new Date().toISOString());
-    if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>PAP checkpoint unavailable.</strong> Fewer than ten eligible PAP learner-practice questions were found.</div>';return;}
-    renderSummary();renderStations();renderSession();
-  }
-  function submit(form){
-    const answers={};state.questions.forEach(question=>{const selected=form.querySelector(`[name="pap-${CSS.escape(String(question.id))}"]:checked`);if(selected) answers[String(question.id)]=selected.value;});
-    const record=engine.gradeSession({questions:state.questions,answers,completedAt:new Date().toISOString()});saveLabs(engine.applySession(state.saved.labs,record));form.querySelectorAll('input,button').forEach(node=>node.disabled=true);renderResult(record);renderSummary();renderStations();
-  }
-  async function init(){
-    try{
-      if(!engine||!window.RPSGTStorage) throw new Error('A required PAP lab module is unavailable.');
-      state.saved=window.RPSGTStorage.load();const modules=await Promise.all(['data/question-bank/d4a.json','data/question-bank/d4b.json','data/question-bank/d4c.json'].map(loadJson));state.bank=modules.flatMap(module=>module.questions||[]);
-      if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE) throw new Error('The validated D4A/D4B/D4C banks do not contain enough eligible PAP questions.');
-      renderSummary();renderStations();
-    }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>PAP lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;}
-  }
-  startButton.addEventListener('click',startSession);
-  document.addEventListener('change',event=>{const station=event.target.closest('[data-pap-station]');if(!station)return;saveLabs(engine.setStation(state.saved.labs,station.dataset.papStation,station.checked,new Date().toISOString()));renderSummary();renderStations();});
-  document.addEventListener('click',event=>{if(event.target.closest('[data-pap-cancel]')){state.questions=[];workspace.hidden=true;workspace.innerHTML='';}});
-  document.addEventListener('submit',event=>{if(event.target.matches('[data-pap-form]')){event.preventDefault();submit(event.target);}});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+'use strict';
+const engine=window.RPSGTPapLabEngine;
+const storage=window.RPSGTStorage;
+const workspace=document.querySelector('[data-pap-workspace]');
+const summaryHost=document.querySelector('[data-pap-summary]');
+const stationHost=document.querySelector('[data-pap-stations]');
+const checkpointButtons=[...document.querySelectorAll('[data-pap-start]')];
+if(!engine||!storage||!workspace||!summaryHost||!stationHost||!checkpointButtons.length)return;
+
+const state={saved:null,bank:[],pack:null,mode:null,stationIndex:0,stationStep:'study',applySelected:null,applyFeedback:null,showHint:false,confirming:null,questions:[],checkpointIndex:0,answers:{},checkpointNotice:'',record:null};
+const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
+async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
+function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=storage.save(state.saved);}
+function report(){return engine.summary(state.saved.labs);}
+function currentStation(){return state.pack&&state.pack.stations&&state.pack.stations[state.stationIndex]||null;}
+
+function renderSummary(){
+  const data=report();
+  summaryHost.innerHTML=`<div><span>Status</span><strong>${data.completed?'Completed':data.status==='in-progress'?'In progress':'Not started'}</strong></div><div><span>Guided stations</span><strong>${data.stationsComplete}/${data.stationCount}</strong></div><div><span>Best checkpoint</span><strong>${data.attempts?data.bestPercent+'%':'—'}</strong></div><div><span>Attempts</span><strong>${data.attempts}</strong></div><div><span>Last checkpoint</span><strong>${data.latestSession?formatDate(data.latestSession.completedAt):'—'}</strong></div>`;
+  checkpointButtons.forEach(button=>{button.textContent=data.completed?'Practice another 10-question checkpoint':data.attempts?'Start another 10-question checkpoint':'Start 10-question checkpoint';});
+}
+function recommendedStationIndex(){const data=report();const stations=state.pack&&state.pack.stations||[];const found=stations.findIndex(item=>!data.checklist[item.id]);return found<0?0:found;}
+function renderStations(){
+  const data=report();const stations=state.pack&&state.pack.stations||[];const recommended=recommendedStationIndex();
+  stationHost.classList.add('guided');
+  stationHost.innerHTML=stations.map((station,index)=>{const complete=data.checklist[station.id]===true;const cls=complete?'complete':index===recommended?'recommended':'';return `<button class="pap-station-card ${cls}" type="button" data-pap-open-station="${index}"><span class="number">${complete?'✓':index+1}</span><span><strong>${esc(station.title)}</strong><small>${complete?'Guided station completed':'Study → Apply → Recap'}</small></span><span class="state">${complete?'Completed':index===recommended?'Recommended next':'Open station'}</span></button>`;}).join('');
+}
+function openWorkspace(label){workspace.hidden=false;workspace.classList.add('pap-guided-active');workspace.setAttribute('aria-label',label);workspace.scrollIntoView({behavior:'smooth',block:'start'});}
+function closeWorkspace(){state.mode=null;state.confirming=null;state.questions=[];state.record=null;workspace.hidden=true;workspace.classList.remove('pap-guided-active');workspace.innerHTML='';workspace.removeAttribute('aria-label');}
+function stationNavMarkup(){const data=report();return (state.pack.stations||[]).map((station,index)=>{const complete=data.checklist[station.id]===true,current=index===state.stationIndex,recommended=!complete&&index===recommendedStationIndex();const cls=complete?'complete':current?'current':recommended?'recommended':'';return `<button type="button" class="${cls}" data-pap-station-nav="${index}" aria-label="${esc(station.title)}" aria-current="${current?'step':'false'}">${complete?'✓':index+1}</button>`;}).join('');}
+function stepperMarkup(){return `<div class="pap-stepper"><span class="${state.stationStep==='study'?'active':''}">1 · Study</span><span class="${state.stationStep==='apply'?'active':''}">2 · Apply</span><span class="${state.stationStep==='recap'?'active':''}">3 · Recap</span></div>`;}
+function frame(title,body,label){return `<div class="pap-schematic"><div class="pap-schematic-head"><strong>${esc(title)}</strong><span>${esc(label)}</span></div><div class="pap-diagram">${body}</div><p class="pap-disclosure"><strong>AI-generated teaching schematic · Not a patient recording.</strong> Real PAP systems, masks, device outputs, protocols, and patient responses vary. Use current orders, official guidance, manufacturer instructions, facility policy, and supervised clinical training.</p></div>`;}
+function schematicMarkup(station){
+  const kind=station.visual&&station.visual.kind;const label=station.visual&&station.visual.label||station.title;
+  if(kind==='protocol-map')return frame('Order-to-action boundary',`<div class="pap-flow"><span>Ordered study</span><b>→</b><span>Current protocol</span><b>→</b><span>Patient + baseline pattern</span><b>→</b><span>Authorized action or escalation</span></div>`,label);
+  if(kind==='interface-path')return frame('Therapy pathway before interpretation',`<div class="pap-flow"><span>PAP device</span><b>→</b><span>Tubing / humidification</span><b>→</b><span>Mask + intentional vent</span><b>→</b><span>Patient airway</span></div><div class="pap-grid"><div><strong>Check first</strong><span>Connection, seal, comfort, position</span></div><div><strong>Then reassess</strong><span>Leak and respiratory response</span></div></div>`,label);
+  if(kind==='comfort-cycle')return frame('Tolerance supports valid titration',`<div class="pap-flow"><span>Explain</span><b>→</b><span>Fit</span><b>→</b><span>Acclimate</span><b>→</b><span>Sleep continuity</span><b>→</b><span>Reassess response</span></div>`,label);
+  if(kind==='response-grid')return frame('Use the whole response pattern',`<div class="pap-context"><div class="pap-context-card"><strong>Airflow + effort</strong><span>What event pattern is present?</span></div><div class="pap-context-card"><strong>Oxygen + arousal</strong><span>What physiologic consequence follows?</span></div><div class="pap-context-card"><strong>Stage + position</strong><span>What context changes severity?</span></div><div class="pap-context-card warning"><strong>Leak</strong><span>Can the event be trusted?</span></div><div class="pap-context-card"><strong>Sleep continuity</strong><span>Stable sleep or transition?</span></div><div class="pap-context-card good"><strong>Protocol</strong><span>What action is authorized next?</span></div></div>`,label);
+  if(kind==='leak-tree')return frame('Localize leak before changing therapy',`<div class="pap-leak-tree"><div><strong>Interface leak</strong><span>Seal, position, headgear</span></div><div><strong>Mouth leak</strong><span>Route of airflow, comfort, interface choice</span></div><div><strong>Circuit leak</strong><span>Tubing, connector, humidifier path</span></div><div><strong>Residual events</strong><span>Reassess only after signal validity improves</span></div></div>`,label);
+  if(kind==='advanced-boundary')return frame('Recognition is not authorization',`<div class="pap-boundary"><div class="recognize"><strong>Recognize the pattern</strong><span>Persistent obstruction, central-appearing events, hypoventilation concern, oxygenation issue, or intolerance</span></div><div><strong>Verify</strong><span>Signal quality, patient condition, current order, device capability, protocol</span></div><div class="escalate"><strong>Escalate when needed</strong><span>Do not independently invent an unauthorized advanced-therapy plan</span></div></div>`,label);
+  return frame('Make the handoff reconstruct the night',`<div class="pap-handoff"><div class="pap-handoff-row"><strong>Observation</strong><span>What changed?</span></div><div class="pap-handoff-row"><strong>Intervention</strong><span>What did you do and why?</span></div><div class="pap-handoff-row"><strong>Response</strong><span>What happened to leak, signals, breathing, comfort, sleep, stage, or position?</span></div><div class="pap-handoff-row"><strong>Communication</strong><span>What remained unresolved or required escalation?</span></div></div>`,label);
+}
+function studyMarkup(station){return `<div class="pap-task-panel"><h3>${esc(station.title)}</h3><p>${esc(station.study.intro)}</p><ul class="pap-points">${station.study.points.map(point=>`<li>${esc(point)}</li>`).join('')}</ul></div>`;}
+function applyMarkup(station){const selected=state.applySelected,feedback=state.applyFeedback;return `<div class="pap-task-panel"><h3>Apply it</h3><p>${esc(station.apply.prompt)}</p><div class="pap-options">${station.apply.options.map(option=>`<label class="pap-option ${selected===option?'selected':''}"><input type="radio" name="pap-station-answer" value="${esc(option)}" ${selected===option?'checked':''}><span>${esc(option)}</span></label>`).join('')}</div><div class="pap-feedback" aria-live="polite">${state.showHint?`<div class="notice"><strong>Hint:</strong> ${esc(station.apply.hint)}</div>`:''}${feedback?`<div class="notice ${feedback.correct?'success':'error'}"><strong>${feedback.correct?'Correct.':'Review and try again.'}</strong> ${esc(feedback.correct?station.apply.rationale:'Use the schematic and full PAP pathway before trying again.')}</div>`:''}</div></div>`;}
+function recapMarkup(station){return `<div class="pap-task-panel"><h3>Recap</h3><div class="pap-recap-grid"><div><strong>What you reviewed</strong><p>${esc(station.recap.reviewed)}</p></div><div><strong>You should now be able to…</strong><p>${esc(station.recap.canDo)}</p></div></div><div class="pap-reference"><strong>Further study:</strong> ${esc(state.pack.reference)}</div></div>`;}
+function stationConfirmMarkup(){if(state.confirming!=='station')return '';return `<div class="pap-confirm" role="dialog" aria-modal="true" aria-label="Confirm station answer"><strong>Are you sure?</strong><p>${state.applySelected?`You selected <strong>${esc(state.applySelected)}</strong>.`:''}</p><div class="actions"><button class="btn primary" type="button" data-pap-station-submit>Submit answer</button><button class="btn secondary" type="button" data-pap-station-change>Change answer</button></div></div>`;}
+function renderStation(){
+  const station=currentStation();if(!station)return;state.mode='station';openWorkspace(station.title+' guided station');
+  const task=state.stationStep==='study'?studyMarkup(station):state.stationStep==='apply'?applyMarkup(station):recapMarkup(station);
+  let primary='';if(state.stationStep==='study')primary='<button class="btn primary" type="button" data-pap-station-step="apply">Apply this skill</button>';else if(state.stationStep==='apply'&&state.applyFeedback&&state.applyFeedback.correct)primary='<button class="btn primary" type="button" data-pap-station-step="recap">Continue to recap</button>';else if(state.stationStep==='apply')primary=`<button class="btn primary" type="button" data-pap-station-check ${state.applySelected?'':'disabled'}>Check answer</button>`;else primary='<button class="btn primary" type="button" data-pap-station-complete>Complete & continue</button>';
+  workspace.innerHTML=`<div class="pap-workspace-top"><div><div class="eyebrow">PAP guided station · ${state.stationIndex+1} of ${state.pack.stations.length}</div><h2>${esc(station.title)}</h2></div><div class="pap-display-actions"><button class="btn secondary" type="button" data-pap-fullscreen>Full screen</button><button class="btn secondary" type="button" data-pap-exit-fullscreen>Exit full screen</button><button class="btn secondary" type="button" data-pap-close>Close</button></div></div><div class="pap-rotate-note">For the clearest PAP pathway view on a phone, rotate to landscape.</div><div class="pap-station-nav">${stationNavMarkup()}</div>${stepperMarkup()}<div class="pap-visual-workstation"><div class="pap-visual-pane">${schematicMarkup(station)}</div><aside class="pap-task-rail">${task}<div class="pap-workspace-actions"><button class="btn secondary" type="button" data-pap-station-prev ${state.stationIndex===0?'disabled':''}>Previous station</button><div class="right">${state.stationStep==='apply'?`<button class="btn secondary" type="button" data-pap-station-hint>${state.showHint?'Hide hint':'Hint'}</button>`:''}${primary}</div></div></aside></div>${stationConfirmMarkup()}`;
+}
+function resetStationInteraction(){state.stationStep='study';state.applySelected=null;state.applyFeedback=null;state.showHint=false;state.confirming=null;}
+function openStation(index){state.stationIndex=Math.max(0,Math.min((state.pack.stations||[]).length-1,Number(index)));resetStationInteraction();renderStation();}
+function gradeStationAnswer(){const station=currentStation();const correct=state.applySelected===station.apply.answer;state.applyFeedback={correct};state.confirming=null;if(!correct)state.showHint=true;renderStation();}
+function completeStation(){const station=currentStation();if(!station||state.stationStep!=='recap')return;saveLabs(engine.setStation(state.saved.labs,station.id,true,new Date().toISOString()));renderSummary();renderStations();if(state.stationIndex<state.pack.stations.length-1){state.stationIndex+=1;resetStationInteraction();renderStation();}else closeWorkspace();}
+
+function checkpointNavMarkup(){return state.questions.map((question,index)=>{const answered=Object.prototype.hasOwnProperty.call(state.answers,String(question.id)),current=index===state.checkpointIndex;return `<button type="button" class="${current?'current':answered?'answered':''}" data-pap-checkpoint-go="${index}" aria-current="${current?'step':'false'}">${index+1}</button>`;}).join('');}
+function checkpointConfirmMarkup(){if(state.confirming!=='checkpoint')return '';return `<div class="pap-confirm" role="dialog" aria-modal="true" aria-label="Confirm PAP checkpoint"><strong>Are you sure?</strong><p>This will score all 10 answers and save the attempt to your PAP lab history.</p><div class="actions"><button class="btn primary" type="button" data-pap-checkpoint-submit>Score checkpoint</button><button class="btn secondary" type="button" data-pap-checkpoint-change>Keep reviewing</button></div></div>`;}
+function renderCheckpoint(){
+  if(!state.questions.length)return;state.mode='checkpoint';openWorkspace('PAP checkpoint');const question=state.questions[state.checkpointIndex];const selected=state.answers[String(question.id)]||'';const answered=Object.keys(state.answers).length;
+  workspace.innerHTML=`<div class="pap-workspace-top"><div><div class="eyebrow">D4A · D4B · D4C PAP checkpoint</div><h2>Question ${state.checkpointIndex+1} of ${state.questions.length}</h2></div><div class="pap-display-actions"><button class="btn secondary" type="button" data-pap-fullscreen>Full screen</button><button class="btn secondary" type="button" data-pap-exit-fullscreen>Exit full screen</button><button class="btn secondary" type="button" data-pap-close>Close</button></div></div><div class="pap-rotate-note">Rotate to landscape if you want more room for the answer panel.</div><div class="pap-checkpoint-shell"><div class="pap-checkpoint-progress">${checkpointNavMarkup()}</div><div class="pap-question-focused"><div class="qnum">${esc(question.taskCode||'PAP')} · ${answered}/${state.questions.length} answered</div><h3>${esc(question.prompt)}</h3><div class="pap-options">${question.options.map(option=>`<label class="pap-option ${selected===option?'selected':''}"><input type="radio" name="pap-checkpoint-answer" value="${esc(option)}" ${selected===option?'checked':''}><span>${esc(option)}</span></label>`).join('')}</div>${state.checkpointNotice?`<div class="notice error">${esc(state.checkpointNotice)}</div>`:''}</div><div class="pap-workspace-actions"><button class="btn secondary" type="button" data-pap-checkpoint-prev ${state.checkpointIndex===0?'disabled':''}>Previous</button><div class="right">${state.checkpointIndex<state.questions.length-1?'<button class="btn primary" type="button" data-pap-checkpoint-next>Next</button>':'<button class="btn primary" type="button" data-pap-checkpoint-review>Review & score</button>'}</div></div>${checkpointConfirmMarkup()}</div>`;
+}
+function startCheckpoint(){saveLabs(engine.start(state.saved.labs,new Date().toISOString()));state.questions=engine.selectQuestions(state.bank,engine.SESSION_SIZE,'pap|'+new Date().toISOString());if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>PAP checkpoint unavailable.</strong> Fewer than ten eligible PAP learner-practice questions were found.</div>';return;}state.answers={};state.checkpointIndex=0;state.checkpointNotice='';state.confirming=null;renderSummary();renderStations();renderCheckpoint();}
+function requestCheckpointScore(){if(Object.keys(state.answers).length<state.questions.length){state.checkpointNotice='Answer every question before scoring the checkpoint.';const firstMissing=state.questions.findIndex(question=>!Object.prototype.hasOwnProperty.call(state.answers,String(question.id)));if(firstMissing>=0)state.checkpointIndex=firstMissing;renderCheckpoint();return;}state.checkpointNotice='';state.confirming='checkpoint';renderCheckpoint();}
+function scoreCheckpoint(){const record=engine.gradeSession({questions:state.questions,answers:state.answers,completedAt:new Date().toISOString()});saveLabs(engine.applySession(state.saved.labs,record));state.record=record;state.confirming=null;renderSummary();renderStations();renderCheckpointResult();}
+function renderCheckpointResult(){const record=state.record;if(!record)return;state.mode='result';openWorkspace('PAP checkpoint result');const byId=new Map(state.questions.map(question=>[String(question.id),question]));const review=record.responses.map((response,index)=>{const question=byId.get(String(response.id));return `<details class="pap-review ${response.correct?'correct':'retry'}"><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${esc(question&&question.topic||response.taskCode||'PAP')}</summary><p><strong>Answer:</strong> ${esc(question&&question.answer)}</p><p>${esc(question&&question.rationale||'Review the PAP pathway and try another checkpoint.')}</p></details>`;}).join('');const data=report();workspace.innerHTML=`<div class="pap-workspace-top"><div><div class="eyebrow">PAP checkpoint result</div><h2>${data.completed?'PAP lab completed':record.passed?'Checkpoint passed':'Checkpoint saved—review and retry'}</h2></div><button class="btn secondary" type="button" data-pap-close>Close</button></div><div class="pap-result ${record.passed?'pass':'retry'}"><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${data.completed?'All seven guided stations and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish every guided station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}<div class="actions"><button class="btn primary" type="button" data-pap-start-again>Practice another checkpoint</button></div>`;}
+
+function requestFullscreen(){if(workspace.requestFullscreen)workspace.requestFullscreen().catch(()=>{});}
+function exitFullscreen(){if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});}
+async function init(){
+  try{
+    state.saved=storage.load();const [pack,...modules]=await Promise.all([loadJson('data/pap/guided-stations.json'),...['data/question-bank/d4a.json','data/question-bank/d4b.json','data/question-bank/d4c.json'].map(loadJson)]);state.pack=pack;state.bank=modules.flatMap(module=>module.questions||[]);
+    if(!Array.isArray(pack.stations)||pack.stations.length!==engine.STATIONS.length)throw new Error('The guided PAP station pack is incomplete.');
+    if(JSON.stringify(pack.stations.map(item=>item.id))!==JSON.stringify(engine.STATIONS.map(item=>item.id)))throw new Error('The guided PAP station IDs do not match the durable lab checklist.');
+    if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE)throw new Error('The validated D4A/D4B/D4C banks do not contain enough eligible PAP questions.');
+    renderSummary();renderStations();
+  }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>PAP lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;checkpointButtons.forEach(button=>button.disabled=true);}
+}
+
+document.addEventListener('change',event=>{const stationAnswer=event.target.closest('[name="pap-station-answer"]');if(stationAnswer){state.applySelected=stationAnswer.value;state.applyFeedback=null;state.confirming=null;renderStation();return;}const checkpointAnswer=event.target.closest('[name="pap-checkpoint-answer"]');if(checkpointAnswer){const question=state.questions[state.checkpointIndex];if(question)state.answers[String(question.id)]=checkpointAnswer.value;state.checkpointNotice='';renderCheckpoint();}});
+document.addEventListener('click',event=>{
+  const open=event.target.closest('[data-pap-open-station]');if(open){openStation(open.dataset.papOpenStation);return;}
+  const nav=event.target.closest('[data-pap-station-nav]');if(nav){openStation(nav.dataset.papStationNav);return;}
+  if(event.target.closest('[data-pap-station-prev]')){openStation(state.stationIndex-1);return;}
+  const step=event.target.closest('[data-pap-station-step]');if(step){state.stationStep=step.dataset.papStationStep;state.confirming=null;renderStation();return;}
+  if(event.target.closest('[data-pap-station-hint]')){state.showHint=!state.showHint;renderStation();return;}
+  if(event.target.closest('[data-pap-station-check]')){if(state.applySelected){state.confirming='station';renderStation();}return;}
+  if(event.target.closest('[data-pap-station-change]')){state.confirming=null;renderStation();return;}
+  if(event.target.closest('[data-pap-station-submit]')){gradeStationAnswer();return;}
+  if(event.target.closest('[data-pap-station-complete]')){completeStation();return;}
+  const go=event.target.closest('[data-pap-checkpoint-go]');if(go){state.checkpointIndex=Number(go.dataset.papCheckpointGo);state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pap-checkpoint-prev]')){state.checkpointIndex=Math.max(0,state.checkpointIndex-1);state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pap-checkpoint-next]')){state.checkpointIndex=Math.min(state.questions.length-1,state.checkpointIndex+1);state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pap-checkpoint-review]')){requestCheckpointScore();return;}
+  if(event.target.closest('[data-pap-checkpoint-change]')){state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pap-checkpoint-submit]')){scoreCheckpoint();return;}
+  if(event.target.closest('[data-pap-start-again]')){startCheckpoint();return;}
+  if(event.target.closest('[data-pap-fullscreen]')){requestFullscreen();return;}
+  if(event.target.closest('[data-pap-exit-fullscreen]')){exitFullscreen();return;}
+  if(event.target.closest('[data-pap-close]')){closeWorkspace();return;}
+});
+checkpointButtons.forEach(button=>button.addEventListener('click',startCheckpoint));
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

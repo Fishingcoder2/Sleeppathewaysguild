@@ -19,7 +19,7 @@ assert.equal(validation.count,13);
 assert.equal(new Set(catalog.labs.map(lab=>lab.id)).size,13);
 assert.equal(catalog.meta.individualLabParityComplete,false,'Interactive laboratory completion pass must remain open while checklist-style labs are being rebuilt.');
 assert.equal(catalog.meta.interactiveCompletionPass,'in-progress');
-assert.equal(catalog.meta.version,21);
+assert.equal(catalog.meta.version,22);
 assert.ok(catalog.meta.routeStatusMeaning.includes('does not mean learner-content parity is complete'));
 
 const linked=catalog.labs.filter(lab=>lab.status==='legacy-linked');
@@ -31,9 +31,9 @@ for(const [id,route] of Object.entries({hookup:'lab-hookup.html',ekg:'lab-ekg.ht
 
 const validContentStatuses=new Set(['interactive-foundation','interactive-rich','interactive-in-progress','review-shell','assessment-tool','interactive-tool']);
 for(const lab of catalog.labs)assert.ok(validContentStatuses.has(lab.contentStatus),`Lab ${lab.id} is missing a valid contentStatus.`);
-assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='review-shell').map(lab=>lab.id).sort(),['daytime-testing','pap','pediatric','troubleshooting']);
+assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='review-shell').map(lab=>lab.id).sort(),['daytime-testing','pediatric','troubleshooting']);
 assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-foundation').map(lab=>lab.id).sort(),['artifact','visual']);
-assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-rich').map(lab=>lab.id).sort(),['ekg','hookup','instrumentation','respiratory']);
+assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-rich').map(lab=>lab.id).sort(),['ekg','hookup','instrumentation','pap','respiratory']);
 assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-in-progress').map(lab=>lab.id),['scoring']);
 
 const hookup=ready.find(lab=>lab.id==='hookup');
@@ -47,6 +47,10 @@ assert.ok(ekg.description.includes('Study → Apply → Recap')&&ekg.description
 const instrumentation=ready.find(lab=>lab.id==='instrumentation');
 assert.equal(instrumentation.contentStatus,'interactive-rich');
 assert.ok(instrumentation.description.includes('Study → Apply → Recap')&&instrumentation.description.includes('shared references')&&instrumentation.description.includes('sampling and aliasing')&&instrumentation.description.includes('10-question D2A/D2B/D2C checkpoint'),'Instrumentation catalog copy must reflect the guided signal-pathway workflow and focused checkpoint.');
+
+const pap=ready.find(lab=>lab.id==='pap');
+assert.equal(pap.contentStatus,'interactive-rich');
+assert.ok(pap.description.includes('Study → Apply → Recap')&&pap.description.includes('order/protocol boundaries')&&pap.description.includes('leak troubleshooting')&&pap.description.includes('10-question D4A/D4B/D4C checkpoint'),'PAP catalog copy must reflect the guided protocol-first workflow and focused checkpoint.');
 
 const scoring=ready.find(lab=>lab.id==='scoring');
 assert.ok(scoring.description.includes('five respiratory event-evidence cases')&&scoring.description.includes('eight arousal/limb-movement/artifact/transition-boundary decisions')&&scoring.description.includes('multi-epoch scoring remains the next expansion'),'Scoring catalog description must describe completed Phase 2 while keeping Phase 3 open.');
@@ -81,4 +85,4 @@ assert.ok(objectProgress.completed.includes('pediatric'));
 assert.ok(objectProgress.completed.includes('daytime-testing'));
 assert.ok(objectProgress.completed.includes('troubleshooting'));
 
-console.log('Laboratory catalog passed with 13 native routes, four audited review shells, Hookup, EKG, Instrumentation, and Respiratory marked interactive-rich, Scoring Phase 2 described as interactive-in-progress, and multi-epoch Scoring explicitly left for Phase 3.');
+console.log('Laboratory catalog passed with 13 native routes, three audited review shells, Hookup, EKG, Instrumentation, PAP, and Respiratory marked interactive-rich, Scoring Phase 2 described as interactive-in-progress, and multi-epoch Scoring explicitly left for Phase 3.');
