@@ -1,0 +1,51 @@
+name: Validate RPSGT v3 Pediatric Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-pediatric.html'
+      - 'rpsgt-v3/core/pediatric-lab-engine.js'
+      - 'rpsgt-v3/core/lab-pediatric.js'
+      - 'rpsgt-v3/assets/pediatric.css'
+      - 'rpsgt-v3/assets/pediatric-guided.css'
+      - 'rpsgt-v3/data/pediatric/**'
+      - 'rpsgt-v3/data/labs/catalog.json'
+      - 'rpsgt-v3/data/question-bank/d1a.json'
+      - 'rpsgt-v3/data/question-bank/d1c.json'
+      - 'rpsgt-v3/data/question-bank/d3a.json'
+      - 'rpsgt-v3/data/question-bank/d3b.json'
+      - 'rpsgt-v3/data/question-bank/d4a.json'
+      - 'rpsgt-v3/scripts/test-pediatric-*.mjs'
+      - 'rpsgt-v3/scripts/test-lab-catalog.mjs'
+      - '.github/workflows/rpsgt-v3-pediatric-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pediatric-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate Pediatric modules and guided station pack
+        run: |
+          set -euo pipefail
+          node --check rpsgt-v3/core/pediatric-lab-engine.js
+          node --check rpsgt-v3/core/lab-pediatric.js
+          node -e "const fs=require('fs'); const pack=JSON.parse(fs.readFileSync('rpsgt-v3/data/pediatric/guided-stations.json','utf8')); if(pack.stations.length!==7) throw new Error('Expected seven guided Pediatric stations.');"
+      - name: Run dedicated Pediatric regressions
+        run: |
+          set -euo pipefail
+          node rpsgt-v3/scripts/test-pediatric-lab-system.mjs
+          node rpsgt-v3/scripts/test-pediatric-lab-shell.mjs
+          node rpsgt-v3/scripts/test-pediatric-guided-study.mjs
+          node rpsgt-v3/scripts/test-lab-catalog.mjs
