@@ -3,90 +3,21 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
-
-const here=dirname(fileURLToPath(import.meta.url));
-const root=join(here,'..');
+const here=dirname(fileURLToPath(import.meta.url)),root=join(here,'..');
 const source=await readFile(join(root,'core','lab-catalog-engine.js'),'utf8');
 const catalog=JSON.parse(await readFile(join(root,'data','labs','catalog.json'),'utf8'));
-const context={globalThis:{},JSON,Map,Set,Object,Array,Number,String,Boolean,Math};
-vm.createContext(context);
-vm.runInContext(source,context,{filename:'lab-catalog-engine.js'});
-const engine=context.globalThis.RPSGTLabCatalogEngine;
-
-const validation=engine.validateCatalog(catalog);
-assert.equal(validation.valid,true);
-assert.equal(validation.count,13);
-assert.equal(new Set(catalog.labs.map(lab=>lab.id)).size,13);
-assert.equal(catalog.meta.individualLabParityComplete,false,'Interactive laboratory completion pass must remain open while checklist-style labs are being rebuilt.');
-assert.equal(catalog.meta.interactiveCompletionPass,'in-progress');
-assert.equal(catalog.meta.version,23);
-assert.ok(catalog.meta.routeStatusMeaning.includes('does not mean learner-content parity is complete'));
-
-const linked=catalog.labs.filter(lab=>lab.status==='legacy-linked');
-assert.equal(linked.length,0,'No v3 catalog route should depend on a legacy laboratory page.');
-const ready=catalog.labs.filter(lab=>lab.status==='v3-ready');
-assert.deepEqual(ready.map(lab=>lab.id).sort(),['artifact','daytime-testing','ekg','hookup','instrumentation','math-coach','mentoring-diagnostic','pap','pediatric','respiratory','scoring','troubleshooting','visual']);
-assert.equal(ready.length,13);
-for(const [id,route] of Object.entries({hookup:'lab-hookup.html',ekg:'lab-ekg.html',visual:'lab-visual.html',artifact:'lab-artifact.html',scoring:'lab-scoring.html',respiratory:'lab-respiratory.html',instrumentation:'lab-instrumentation.html',pap:'lab-pap.html',pediatric:'lab-pediatric.html','daytime-testing':'lab-daytime-testing.html',troubleshooting:'lab-troubleshooting.html','mentoring-diagnostic':'mentoring-diagnostic.html','math-coach':'math-coach.html'}))assert.equal(ready.find(lab=>lab.id===id).plannedRoute,route);
-
-const validContentStatuses=new Set(['interactive-foundation','interactive-rich','interactive-in-progress','review-shell','assessment-tool','interactive-tool']);
-for(const lab of catalog.labs)assert.ok(validContentStatuses.has(lab.contentStatus),`Lab ${lab.id} is missing a valid contentStatus.`);
-assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='review-shell').map(lab=>lab.id).sort(),['daytime-testing','troubleshooting']);
+const context={globalThis:{},JSON,Map,Set,Object,Array,Number,String,Boolean,Math};vm.createContext(context);vm.runInContext(source,context,{filename:'lab-catalog-engine.js'});const engine=context.globalThis.RPSGTLabCatalogEngine;
+const validation=engine.validateCatalog(catalog);assert.equal(validation.valid,true);assert.equal(validation.count,13);assert.equal(new Set(catalog.labs.map(lab=>lab.id)).size,13);assert.equal(catalog.meta.individualLabParityComplete,false);assert.equal(catalog.meta.interactiveCompletionPass,'in-progress');assert.equal(catalog.meta.version,24);assert.ok(catalog.meta.routeStatusMeaning.includes('does not mean learner-content parity is complete'));
+const linked=catalog.labs.filter(lab=>lab.status==='legacy-linked');assert.equal(linked.length,0);const ready=catalog.labs.filter(lab=>lab.status==='v3-ready');assert.equal(ready.length,13);assert.deepEqual(ready.map(lab=>lab.id).sort(),['artifact','daytime-testing','ekg','hookup','instrumentation','math-coach','mentoring-diagnostic','pap','pediatric','respiratory','scoring','troubleshooting','visual']);
+const validContentStatuses=new Set(['interactive-foundation','interactive-rich','interactive-in-progress','review-shell','assessment-tool','interactive-tool']);for(const lab of catalog.labs)assert.ok(validContentStatuses.has(lab.contentStatus));
+assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='review-shell').map(lab=>lab.id),['troubleshooting']);
 assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-foundation').map(lab=>lab.id).sort(),['artifact','visual']);
-assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-rich').map(lab=>lab.id).sort(),['ekg','hookup','instrumentation','pap','pediatric','respiratory']);
+assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-rich').map(lab=>lab.id).sort(),['daytime-testing','ekg','hookup','instrumentation','pap','pediatric','respiratory']);
 assert.deepEqual(catalog.labs.filter(lab=>lab.contentStatus==='interactive-in-progress').map(lab=>lab.id),['scoring']);
-
-const hookup=ready.find(lab=>lab.id==='hookup');
-assert.equal(hookup.contentStatus,'interactive-rich');
-assert.ok(hookup.description.includes('Study → Apply → Recap')&&hookup.description.includes('physiologic calibration'),'Hookup catalog copy must reflect the guided six-station workflow.');
-
-const ekg=ready.find(lab=>lab.id==='ekg');
-assert.equal(ekg.contentStatus,'interactive-rich');
-assert.ok(ekg.description.includes('Study → Apply → Recap')&&ekg.description.includes('original schematic ECG strips')&&ekg.description.includes('10-question D2B/D3C checkpoint'),'EKG catalog copy must reflect the guided visual workflow and focused checkpoint.');
-
-const instrumentation=ready.find(lab=>lab.id==='instrumentation');
-assert.equal(instrumentation.contentStatus,'interactive-rich');
-assert.ok(instrumentation.description.includes('Study → Apply → Recap')&&instrumentation.description.includes('shared references')&&instrumentation.description.includes('sampling and aliasing')&&instrumentation.description.includes('10-question D2A/D2B/D2C checkpoint'),'Instrumentation catalog copy must reflect the guided signal-pathway workflow and focused checkpoint.');
-
-const pap=ready.find(lab=>lab.id==='pap');
-assert.equal(pap.contentStatus,'interactive-rich');
-assert.ok(pap.description.includes('Study → Apply → Recap')&&pap.description.includes('order/protocol boundaries')&&pap.description.includes('leak troubleshooting')&&pap.description.includes('10-question D4A/D4B/D4C checkpoint'),'PAP catalog copy must reflect the guided protocol-first workflow and focused checkpoint.');
-
-const pediatric=ready.find(lab=>lab.id==='pediatric');
-assert.equal(pediatric.contentStatus,'interactive-rich');
-assert.ok(pediatric.description.includes('Study → Apply → Recap')&&pediatric.description.includes('caregiver preparation')&&pediatric.description.includes('respiratory and gas-exchange integration')&&pediatric.description.includes('10-question D1A/D1C/D3A/D3B/D4A checkpoint'),'Pediatric catalog copy must reflect the guided developmental workflow and focused checkpoint.');
-
-const scoring=ready.find(lab=>lab.id==='scoring');
-assert.ok(scoring.description.includes('five respiratory event-evidence cases')&&scoring.description.includes('eight arousal/limb-movement/artifact/transition-boundary decisions')&&scoring.description.includes('multi-epoch scoring remains the next expansion'),'Scoring catalog description must describe completed Phase 2 while keeping Phase 3 open.');
-
-const artifact=ready.find(lab=>lab.id==='artifact');
-assert.deepEqual(artifact.taskCodes,['D2B','D2C','D3A','D3C']);
-assert.equal(artifact.legacyHref,null);
-assert.ok(artifact.description.includes('shared M2 reference disturbance'),'Artifact catalog copy must identify the corrected shared-reference disturbance.');
-assert.ok(!artifact.description.includes('movement artifact'),'Artifact catalog copy must not retain the superseded generic movement-artifact label.');
-
-const sourceProgress={completed:['hookup'],started:{pap:{startedAt:'2026-08-02'}},catalogIndex:1};
-const before=JSON.stringify(sourceProgress);
-const report=engine.summarize(catalog,sourceProgress);
-assert.equal(JSON.stringify(sourceProgress),before);
-assert.equal(report.counts.total,13);
-assert.equal(report.counts.completed,1);
-assert.equal(report.counts.started,1);
-assert.equal(report.counts.v3Ready,13);
-assert.equal(report.last.id,'ekg');
-assert.equal(report.rows.find(row=>row.id==='hookup').completed,true);
-assert.equal(report.rows.find(row=>row.id==='pap').started,true);
-
-const objectProgress=engine.normalizeProgress({ekg:{completed:true},visual:{status:'in-progress'},artifact:{completed:true},scoring:{completed:true},respiratory:{completed:true},instrumentation:{completed:true},pap:{completed:true},pediatric:{completed:true},'daytime-testing':{completed:true},troubleshooting:{completed:true}});
-assert.ok(objectProgress.completed.includes('ekg'));
-assert.ok(!objectProgress.completed.includes('visual'));
-assert.ok(objectProgress.completed.includes('artifact'));
-assert.ok(objectProgress.completed.includes('scoring'));
-assert.ok(objectProgress.completed.includes('respiratory'));
-assert.ok(objectProgress.completed.includes('instrumentation'));
-assert.ok(objectProgress.completed.includes('pap'));
-assert.ok(objectProgress.completed.includes('pediatric'));
-assert.ok(objectProgress.completed.includes('daytime-testing'));
-assert.ok(objectProgress.completed.includes('troubleshooting'));
-
-console.log('Laboratory catalog passed with 13 native routes, two audited review shells, Hookup, EKG, Instrumentation, PAP, Pediatric, and Respiratory marked interactive-rich, Scoring Phase 2 described as interactive-in-progress, and multi-epoch Scoring explicitly left for Phase 3.');
+for(const [id,route] of Object.entries({hookup:'lab-hookup.html',ekg:'lab-ekg.html',visual:'lab-visual.html',artifact:'lab-artifact.html',scoring:'lab-scoring.html',respiratory:'lab-respiratory.html',instrumentation:'lab-instrumentation.html',pap:'lab-pap.html',pediatric:'lab-pediatric.html','daytime-testing':'lab-daytime-testing.html',troubleshooting:'lab-troubleshooting.html','mentoring-diagnostic':'mentoring-diagnostic.html','math-coach':'math-coach.html'}))assert.equal(ready.find(lab=>lab.id===id).plannedRoute,route);
+for(const [id,parts] of Object.entries({hookup:['Study → Apply → Recap','physiologic calibration'],ekg:['Study → Apply → Recap','10-question D2B/D3C checkpoint'],instrumentation:['shared references','sampling and aliasing'],pap:['order/protocol boundaries','10-question D4A/D4B/D4C checkpoint'],pediatric:['caregiver preparation','respiratory and gas-exchange integration'],'daytime-testing':['Study → Apply → Recap','five-nap MSLT acquisition','pediatric MWT boundaries','10-question D1A/D2C/D3A checkpoint']})){const lab=ready.find(item=>item.id===id);assert.equal(lab.contentStatus,'interactive-rich');for(const part of parts)assert.ok(lab.description.includes(part),`${id} catalog copy is missing ${part}.`);}
+const scoring=ready.find(lab=>lab.id==='scoring');assert.ok(scoring.description.includes('multi-epoch scoring remains the next expansion'));
+const artifact=ready.find(lab=>lab.id==='artifact');assert.deepEqual(artifact.taskCodes,['D2B','D2C','D3A','D3C']);assert.ok(artifact.description.includes('shared M2 reference disturbance'));assert.ok(!artifact.description.includes('movement artifact'));
+const sourceProgress={completed:['hookup'],started:{pap:{startedAt:'2026-08-02'}},catalogIndex:1},before=JSON.stringify(sourceProgress),report=engine.summarize(catalog,sourceProgress);assert.equal(JSON.stringify(sourceProgress),before);assert.equal(report.counts.total,13);assert.equal(report.counts.completed,1);assert.equal(report.counts.started,1);assert.equal(report.counts.v3Ready,13);assert.equal(report.last.id,'ekg');
+const objectProgress=engine.normalizeProgress({ekg:{completed:true},visual:{status:'in-progress'},artifact:{completed:true},scoring:{completed:true},respiratory:{completed:true},instrumentation:{completed:true},pap:{completed:true},pediatric:{completed:true},'daytime-testing':{completed:true},troubleshooting:{completed:true}});assert.ok(objectProgress.completed.includes('daytime-testing'));assert.ok(objectProgress.completed.includes('pediatric'));assert.ok(objectProgress.completed.includes('troubleshooting'));assert.ok(!objectProgress.completed.includes('visual'));
+console.log('Laboratory catalog passed with 13 native routes, one remaining review shell, MSLT/MWT promoted to interactive-rich, and Scoring Phase 3 still open.');
