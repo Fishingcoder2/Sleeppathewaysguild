@@ -1,0 +1,49 @@
+name: Validate RPSGT v3 MSLT MWT Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-daytime-testing.html'
+      - 'rpsgt-v3/core/daytime-testing-lab-engine.js'
+      - 'rpsgt-v3/core/lab-daytime-testing.js'
+      - 'rpsgt-v3/assets/daytime-testing.css'
+      - 'rpsgt-v3/assets/daytime-testing-guided.css'
+      - 'rpsgt-v3/data/daytime-testing/**'
+      - 'rpsgt-v3/data/labs/catalog.json'
+      - 'rpsgt-v3/data/question-bank/d1a.json'
+      - 'rpsgt-v3/data/question-bank/d2c.json'
+      - 'rpsgt-v3/data/question-bank/d3a.json'
+      - 'rpsgt-v3/scripts/test-daytime-testing-*.mjs'
+      - 'rpsgt-v3/scripts/test-lab-catalog.mjs'
+      - '.github/workflows/rpsgt-v3-daytime-testing-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  daytime-testing-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate MSLT MWT modules and guided station pack
+        run: |
+          set -euo pipefail
+          node --check rpsgt-v3/core/daytime-testing-lab-engine.js
+          node --check rpsgt-v3/core/lab-daytime-testing.js
+          node -e "const fs=require('fs'); const pack=JSON.parse(fs.readFileSync('rpsgt-v3/data/daytime-testing/guided-stations.json','utf8')); if(pack.stations.length!==7) throw new Error('Expected seven guided MSLT/MWT stations.');"
+      - name: Run dedicated MSLT MWT regressions
+        run: |
+          set -euo pipefail
+          node rpsgt-v3/scripts/test-daytime-testing-lab-system.mjs
+          node rpsgt-v3/scripts/test-daytime-testing-lab-shell.mjs
+          node rpsgt-v3/scripts/test-daytime-testing-guided-study.mjs
+          node rpsgt-v3/scripts/test-lab-catalog.mjs
