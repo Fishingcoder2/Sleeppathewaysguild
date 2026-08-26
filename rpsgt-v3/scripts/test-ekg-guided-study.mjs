@@ -42,6 +42,33 @@ for(const token of [
   'requestFullscreen','data-ekg-exit-fullscreen','data/ekg/guided-stations.json'
 ])assert.ok(controller.includes(token),`Guided EKG controller is missing ${token}.`);
 
+for(const token of [
+  'function sinusBeatPath',
+  'function wideComplexPath',
+  'function timeScaleMarkup',
+  'width="9" height="9"',
+  'width="45" height="45"',
+  '#fde2e6',
+  '#f7bdc5',
+  'Array.from({length:11}'
+])assert.ok(controller.includes(token),`Improved EKG teaching-strip renderer is missing ${token}.`);
+
+const regularMatch=controller.match(/if\(kind==='regular-60'\)beats=\[([^\]]+)\]/);
+assert.ok(regularMatch,'Could not inspect the regular 60-bpm teaching strip.');
+const regularBeats=regularMatch[1].split(',').map(Number);
+assert.equal(regularBeats.length,10,'The 10-second rate teaching strip must contain exactly ten QRS complexes.');
+const regularSpacing=regularBeats.slice(1).map((value,index)=>value-regularBeats[index]);
+assert.equal(new Set(regularSpacing).size,1,'The ten QRS complexes must remain evenly spaced.');
+
+const runMatch=controller.match(/const normalBeats=\[([^\]]+)\],runBeats=\[([^\]]+)\],recoveryBeats=\[([^\]]+)\]/);
+assert.ok(runMatch,'Could not inspect the patient-first rapid wide-complex teaching strip.');
+const preRun=runMatch[1].split(',').map(Number),wideRun=runMatch[2].split(',').map(Number),recovery=runMatch[3].split(',').map(Number);
+assert.equal(preRun.length,3,'The concerning-run schematic should establish organized sinus morphology before the run.');
+assert.equal(wideRun.length,6,'The concerning-run schematic should show a short, visually distinct wide-complex run.');
+assert.equal(recovery.length,2,'The concerning-run schematic should return to organized sinus morphology afterward.');
+assert.ok(wideRun.every((value,index)=>index===0||value-wideRun[index-1]>=45),'Wide complexes must remain separated enough to avoid tangled overlap.');
+assert.equal(controller.includes("kind==='concerning-run'&&index>=2&&index<=6"),false,'The old overlapping wide-beat loop must not return.');
+
 assert.equal(controller.includes('type="checkbox"'),false,'Guided EKG stations must not use learner self-attestation checkboxes.');
 assert.equal(controller.includes("type='checkbox'"),false,'Guided EKG stations must not use learner self-attestation checkboxes.');
 assert.equal(controller.includes('MutationObserver'),false,'Guided EKG controller must remain event-driven.');
@@ -80,4 +107,4 @@ assert.ok(css.includes('.ekg-workspace:fullscreen'));
 assert.equal(engine.SESSION_SIZE,10);
 assert.equal(engine.PASS_PERCENT,80);
 assert.equal(engine.STATIONS.length,7);
-console.log('EKG guided-study regression passed: seven Study → Apply → Recap stations, original schematic ECG renderer, earned completion, focused 10-question checkpoint, APA reference, fullscreen/phone guidance, and event-driven safety boundaries are present.');
+console.log('EKG guided-study regression passed: seven Study → Apply → Recap stations, polished sinus and rapid wide-complex schematics, earned completion, focused 10-question checkpoint, APA reference, fullscreen/phone guidance, and event-driven safety boundaries are present.');
