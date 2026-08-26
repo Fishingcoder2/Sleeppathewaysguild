@@ -1,0 +1,216 @@
+{
+  "version": "1.0.0",
+  "reference": "American Association of Sleep Technologists. (2021). Standard polysomnography: AAST technical guideline. https://www.aastweb.org/Portals/0/Docs/Resources/Guidelines/AAST%20PSG%20Guideline%20Final.pdf · Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Elsevier.",
+  "stations": [
+    {
+      "id": "safety-first",
+      "title": "Protect the patient and assess urgency first",
+      "visual": {"kind": "safety-gate", "label": "Patient condition outranks waveform cleanup"},
+      "study": {
+        "intro": "A troubleshooting sequence starts by deciding whether the problem is technical, physiologic, or potentially urgent.",
+        "points": [
+          "Look at and assess the patient when the tracing suggests a possible acute problem rather than assuming artifact.",
+          "Use video, audio, direct observation, symptoms, and neighboring physiologic channels to establish context.",
+          "If there is an immediate safety concern, follow the active emergency procedure and chain of command before pursuing routine signal correction.",
+          "Do not let a technically unusual waveform distract from the patient’s actual condition."
+        ]
+      },
+      "apply": {
+        "prompt": "A new abnormal ECG pattern appears while the patient reports chest discomfort and looks distressed. What should the technologist do first?",
+        "options": [
+          "Assess the patient immediately and follow the facility emergency/escalation procedure",
+          "Change the ECG sensitivity until the tracing looks normal",
+          "Disconnect and reconnect every sensor before checking the patient",
+          "Wait several minutes to see whether the pattern disappears"
+        ],
+        "answer": "Assess the patient immediately and follow the facility emergency/escalation procedure",
+        "hint": "Separate a possible patient emergency from a routine technical problem before touching display settings.",
+        "rationale": "Patient assessment and the facility safety pathway come before ordinary artifact troubleshooting when symptoms or clinical distress suggest urgency."
+      },
+      "recap": {
+        "reviewed": "Patient-first triage before signal cleanup.",
+        "canDo": "Distinguish a routine technical correction from a situation that requires immediate assessment and escalation."
+      }
+    },
+    {
+      "id": "define-problem",
+      "title": "Define the problem and affected data",
+      "visual": {"kind": "problem-map", "label": "Onset + distribution + behavior narrow the cause"},
+      "study": {
+        "intro": "Before changing equipment, describe exactly what changed and where.",
+        "points": [
+          "Identify the onset time and whether the change was abrupt or gradual.",
+          "List the affected channels and compare them with channels that remain clean.",
+          "Decide whether the problem is continuous, intermittent, position-linked, movement-linked, or event-linked.",
+          "Use the distribution of affected data to decide whether to investigate one sensor, a shared pathway, or the acquisition system."
+        ]
+      },
+      "apply": {
+        "prompt": "At 02:13, EEG, EOG, chin EMG, ECG, airflow, effort, and oximetry all become flat at nearly the same moment. Which observation is most useful before reapplying individual sensors?",
+        "options": [
+          "The simultaneous multi-system onset suggests a common acquisition or connection problem",
+          "Every individual sensor probably failed independently at the same second",
+          "Only the EEG channels need to be inspected",
+          "The event can be ignored because several channels changed together"
+        ],
+        "answer": "The simultaneous multi-system onset suggests a common acquisition or connection problem",
+        "hint": "Ask what single failure could affect many unrelated channel types at the same time.",
+        "rationale": "A common abrupt onset across unrelated systems should push troubleshooting toward a shared connection, headbox, amplifier, acquisition, power, or display pathway before multiple independent sensor failures are assumed."
+      },
+      "recap": {
+        "reviewed": "How timing and channel distribution localize a problem before intervention.",
+        "canDo": "Describe a signal problem precisely enough to choose the next troubleshooting branch."
+      }
+    },
+    {
+      "id": "localize-source",
+      "title": "Localize the source through the signal pathway",
+      "visual": {"kind": "circuit-path", "label": "Trace from patient context through the recording chain"},
+      "study": {
+        "intro": "Troubleshoot systematically through the recording pathway instead of changing several variables at once.",
+        "points": [
+          "Trace the likely path from patient/signal source to sensor or electrode, lead/connector, headbox or input, amplifier/acquisition system, and display/storage.",
+          "When several derivations share one reference or input, compare them with derivations that use a different reference.",
+          "A disturbance limited to channels sharing one electrode or reference is evidence for a shared-pathway problem.",
+          "Secure connections and verify sensor/electrode integrity before using display filters as a shortcut for unexplained artifact."
+        ]
+      },
+      "apply": {
+        "prompt": "F3-M2, C3-M2, E1-M2, and E2-M2 become noisy together, while F4-M1, C4-M1, chin EMG, and ECG remain comparatively clean. What should be inspected first?",
+        "options": [
+          "The shared M2 reference pathway",
+          "The chin EMG electrodes",
+          "The ECG derivation",
+          "Every channel independently"
+        ],
+        "answer": "The shared M2 reference pathway",
+        "hint": "Group the affected derivations by what they have in common.",
+        "rationale": "The affected channels share M2, while channels using M1 or separate bipolar derivations remain comparatively clean. That pattern localizes the first check to the shared M2 pathway."
+      },
+      "recap": {
+        "reviewed": "Systematic signal-pathway tracing and shared-reference localization.",
+        "canDo": "Use affected-versus-clean channel patterns to identify the most likely shared source."
+      }
+    },
+    {
+      "id": "correlate-context",
+      "title": "Correlate physiology, video, and neighboring channels",
+      "visual": {"kind": "correlation-grid", "label": "One channel rarely tells the whole story"},
+      "study": {
+        "intro": "Artifact recognition improves when the suspicious signal is compared with independent evidence.",
+        "points": [
+          "Compare the suspicious channel with physiologically related channels and with signals that should not share the same source.",
+          "Use synchronized video, body position, movement, snoring/audio, and technologist observations when available.",
+          "Ask whether the morphology and timing are physiologically plausible before calling a pattern true physiology.",
+          "A channel that changes with movement or cable tension may require a different correction than a true physiologic event."
+        ]
+      },
+      "apply": {
+        "prompt": "Large transient deflections appear in several channels exactly when video shows the patient turning, then disappear when movement stops. What is the best next interpretation step?",
+        "options": [
+          "Correlate the movement, neighboring channels, and signal recovery before labeling the deflections as physiology",
+          "Score the deflections as a physiologic event based on amplitude alone",
+          "Turn on additional filtering before checking video",
+          "Delete the affected segment from the recording"
+        ],
+        "answer": "Correlate the movement, neighboring channels, and signal recovery before labeling the deflections as physiology",
+        "hint": "Use evidence that is independent of the suspicious waveform.",
+        "rationale": "Synchronized behavior and cross-channel timing help separate patient-generated movement artifact from true physiology and protect both scoring and later interpretation."
+      },
+      "recap": {
+        "reviewed": "Cross-channel and video correlation before labeling artifact or physiology.",
+        "canDo": "Use independent context to test whether a suspicious waveform is believable."
+      }
+    },
+    {
+      "id": "correct-recheck",
+      "title": "Apply the least disruptive correction and recheck",
+      "visual": {"kind": "correction-loop", "label": "One targeted correction → verify the result"},
+      "study": {
+        "intro": "A correction is not complete until the technologist confirms that it solved the problem without creating a new one.",
+        "points": [
+          "Choose the most likely cause and change one variable when practical so the effect is interpretable.",
+          "Prefer the least disruptive correction that restores valid data while protecting patient comfort and sleep continuity.",
+          "After any sensor, lead, connection, montage, sensitivity, or other technical change, recheck the affected signal and related channels.",
+          "Do not use aggressive filtering as a first-line substitute for finding a correctable artifact source because filtering can distort physiologic data."
+        ]
+      },
+      "apply": {
+        "prompt": "Nasal pressure becomes weak after the patient changes position, while effort and thermal airflow remain credible. What is the best targeted first correction?",
+        "options": [
+          "Inspect and reposition the nasal pressure interface, then verify the signal",
+          "Change filters on all respiratory channels",
+          "Replace every respiratory sensor at once",
+          "Leave the signal unchanged because other channels still work"
+        ],
+        "answer": "Inspect and reposition the nasal pressure interface, then verify the signal",
+        "hint": "The problem is localized; choose the smallest intervention that tests the most likely cause.",
+        "rationale": "A localized post-position-change loss supports a targeted interface check followed by signal verification rather than broad changes that make the cause harder to identify."
+      },
+      "recap": {
+        "reviewed": "Targeted correction, sleep preservation, and post-intervention verification.",
+        "canDo": "Correct one likely cause and prove that the recording improved afterward."
+      }
+    },
+    {
+      "id": "escalate-boundaries",
+      "title": "Escalate unsafe, abnormal, or unresolved conditions",
+      "visual": {"kind": "escalation-gate", "label": "Know when troubleshooting leaves the routine technical lane"},
+      "study": {
+        "intro": "Some problems are not appropriate for bedside improvisation.",
+        "points": [
+          "Escalate suspected emergencies, significant patient changes, electrical or equipment safety concerns, and unresolved problems according to facility policy.",
+          "Follow the active order, medical-director protocols, equipment instructions, and chain of command rather than inventing an unauthorized therapy or repair.",
+          "If equipment appears unsafe, remove it from patient use as required by facility procedure and use approved backup pathways when available.",
+          "Document who was contacted, why escalation occurred, and any resulting instruction or limitation."
+        ]
+      },
+      "apply": {
+        "prompt": "A bedside device develops an electrical odor and repeatedly faults during the recording. What is the best response?",
+        "options": [
+          "Follow the facility equipment-safety procedure, remove the unsafe device from use as directed, and escalate for approved backup or service",
+          "Open the device and attempt an internal repair while it remains connected to the patient",
+          "Ignore the odor if the waveform is still visible",
+          "Increase display gain to compensate for the faults"
+        ],
+        "answer": "Follow the facility equipment-safety procedure, remove the unsafe device from use as directed, and escalate for approved backup or service",
+        "hint": "This is an equipment safety problem, not a display-quality problem.",
+        "rationale": "Unsafe or malfunctioning equipment requires the facility safety/service pathway rather than improvised repair or continued patient use."
+      },
+      "recap": {
+        "reviewed": "Escalation boundaries for patient safety, equipment safety, and unresolved technical problems.",
+        "canDo": "Recognize when the correct troubleshooting action is to stop, escalate, and use an approved alternative."
+      }
+    },
+    {
+      "id": "document-integrity",
+      "title": "Document the problem, action, response, and limitation",
+      "visual": {"kind": "handoff-log", "label": "Make the record reconstruct what happened"},
+      "study": {
+        "intro": "Troubleshooting documentation protects later scoring, interpretation, quality review, and continuity of care.",
+        "points": [
+          "Record when the problem began and ended and which channels or systems were affected.",
+          "Document the observation or likely cause, what intervention was performed, and the patient or signal response.",
+          "Record room entries, montage or setting changes, environmental disturbances, and unresolved data limitations when relevant.",
+          "A good handoff lets the scorer or interpreting clinician distinguish missing data, corrected artifact, true physiology, and residual uncertainty."
+        ]
+      },
+      "apply": {
+        "prompt": "Nasal pressure was unusable for 12 minutes, the cannula was repositioned, and a stable signal returned. Which note best protects study integrity?",
+        "options": [
+          "Document onset/end time, affected signal, observed problem, cannula repositioning, restored signal quality, and any remaining limitation",
+          "Write only 'fixed sensor' with no time or channel",
+          "Do not document because the signal eventually returned",
+          "Document only the final stable signal and omit the lost interval"
+        ],
+        "answer": "Document onset/end time, affected signal, observed problem, cannula repositioning, restored signal quality, and any remaining limitation",
+        "hint": "Could someone reviewing the study tomorrow reconstruct the data-quality gap and what was done about it?",
+        "rationale": "Timing, affected data, intervention, response, and residual limitation give later reviewers the context needed to judge study integrity."
+      },
+      "recap": {
+        "reviewed": "Chronologic technical documentation and handoff after troubleshooting.",
+        "canDo": "Write a concise troubleshooting note that preserves the meaning and limitations of the recording."
+      }
+    }
+  ]
+}
