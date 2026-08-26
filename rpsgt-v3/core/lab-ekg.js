@@ -33,7 +33,7 @@ function stationNavMarkup(){const data=report();return (state.pack.stations||[])
 function stepperMarkup(){return `<div class="ekg-stepper"><span class="${state.stationStep==='study'?'active':''}">1 · Study</span><span class="${state.stationStep==='apply'?'active':''}">2 · Apply</span><span class="${state.stationStep==='recap'?'active':''}">3 · Recap</span></div>`;}
 
 function sinusBeatPath(x){
-  return `L ${x-36} 118 Q ${x-32} 118 ${x-29} 113 Q ${x-25} 106 ${x-21} 113 Q ${x-18} 118 ${x-13} 118 L ${x-8} 118 L ${x-4} 126 L ${x} 67 L ${x+6} 141 L ${x+10} 118 L ${x+24} 118 Q ${x+31} 118 ${x+37} 108 Q ${x+44} 98 ${x+52} 108 Q ${x+58} 118 ${x+66} 118`;
+  return `L ${x-30} 118 Q ${x-27} 118 ${x-24} 113 Q ${x-20} 106 ${x-16} 113 Q ${x-13} 118 ${x-10} 118 L ${x-6} 118 L ${x-3} 125 L ${x} 67 L ${x+5} 141 L ${x+9} 118 L ${x+18} 118 Q ${x+25} 118 ${x+30} 108 Q ${x+36} 99 ${x+42} 108 Q ${x+46} 118 ${x+50} 118`;
 }
 function wideComplexPath(x){
   return `L ${x-22} 118 Q ${x-16} 113 ${x-11} 96 Q ${x-5} 75 ${x} 69 Q ${x+6} 77 ${x+12} 104 Q ${x+17} 130 ${x+20} 145 Q ${x+24} 131 ${x+28} 118`;
