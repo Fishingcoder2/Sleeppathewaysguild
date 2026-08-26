@@ -1,0 +1,49 @@
+name: Validate RPSGT v3 Troubleshooting Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-troubleshooting.html'
+      - 'rpsgt-v3/core/troubleshooting-lab-engine.js'
+      - 'rpsgt-v3/core/lab-troubleshooting.js'
+      - 'rpsgt-v3/assets/troubleshooting.css'
+      - 'rpsgt-v3/assets/troubleshooting-guided.css'
+      - 'rpsgt-v3/data/troubleshooting/**'
+      - 'rpsgt-v3/data/labs/catalog.json'
+      - 'rpsgt-v3/data/question-bank/d2b.json'
+      - 'rpsgt-v3/data/question-bank/d2c.json'
+      - 'rpsgt-v3/data/question-bank/d3c.json'
+      - 'rpsgt-v3/scripts/test-troubleshooting-*.mjs'
+      - 'rpsgt-v3/scripts/test-lab-catalog.mjs'
+      - '.github/workflows/rpsgt-v3-troubleshooting-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  troubleshooting-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate Troubleshooting modules and guided station pack
+        run: |
+          set -euo pipefail
+          node --check rpsgt-v3/core/troubleshooting-lab-engine.js
+          node --check rpsgt-v3/core/lab-troubleshooting.js
+          node -e "const fs=require('fs'); const pack=JSON.parse(fs.readFileSync('rpsgt-v3/data/troubleshooting/guided-stations.json','utf8')); if(pack.stations.length!==7) throw new Error('Expected seven guided Troubleshooting stations.');"
+      - name: Run dedicated Troubleshooting regressions
+        run: |
+          set -euo pipefail
+          node rpsgt-v3/scripts/test-troubleshooting-lab-system.mjs
+          node rpsgt-v3/scripts/test-troubleshooting-lab-shell.mjs
+          node rpsgt-v3/scripts/test-troubleshooting-guided-study.mjs
+          node rpsgt-v3/scripts/test-lab-catalog.mjs
