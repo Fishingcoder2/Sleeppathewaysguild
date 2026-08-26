@@ -1,0 +1,216 @@
+{
+  "version": "1.0.0",
+  "reference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby/Elsevier.",
+  "stations": [
+    {
+      "id": "development-context",
+      "title": "Start with age, development, history, and the ordered study",
+      "study": {
+        "intro": "Pediatric polysomnography begins with the child’s developmental and clinical context. Before setup, the technologist should reconcile the ordered study with age, developmental needs, relevant history, medications or supports that affect the night, and any special precautions documented for the patient.",
+        "points": [
+          "Confirm the ordered study, indication, and required monitoring before applying an adult-style routine by habit.",
+          "Review chronological and developmental context, relevant medical history, and known precautions that may affect setup, observation, or interpretation.",
+          "Identify communication, mobility, behavioral, airway, neurologic, or equipment needs that could change how the study is performed safely.",
+          "Escalate unclear orders or safety concerns before the study proceeds beyond the technologist’s authorized protocol."
+        ]
+      },
+      "visual": {"kind":"development-map","label":"Original SPG decision schematic linking ordered study, developmental context, history, precautions, and the technical plan."},
+      "apply": {
+        "prompt": "A child arrives for an overnight study. The order is present, but the caregiver reports developmental and mobility needs that are not reflected in the usual setup plan. What is the best next action?",
+        "options": [
+          "Use the standard adult setup unchanged so every patient is treated the same",
+          "Reconcile the child’s developmental and safety needs with the order and protocol before finalizing the setup plan",
+          "Skip the history review because the caregiver can explain concerns later",
+          "Remove optional monitoring before assessing what the ordered study requires"
+        ],
+        "answer": "Reconcile the child’s developmental and safety needs with the order and protocol before finalizing the setup plan",
+        "hint": "The correct technical plan starts with the actual child, the ordered study, and documented needs—not a default adult template.",
+        "rationale": "Pediatric testing should integrate patient information with the ordered procedure and current protocol. Developmental or mobility needs can change communication, placement, observation, and safety planning and should be addressed before setup is finalized."
+      },
+      "recap": {
+        "reviewed": "Ordered-study verification, developmental context, relevant history, special precautions, and escalation boundaries.",
+        "canDo": "Build a pediatric technical plan from the child’s actual needs while remaining inside the ordered study and facility protocol."
+      }
+    },
+    {
+      "id": "caregiver-preparation",
+      "title": "Prepare the child, caregiver, and sleep environment",
+      "study": {
+        "intro": "A calm, developmentally appropriate preparation can improve cooperation and the validity of the study. Caregiver partnership is useful for understanding routines, communication style, comfort needs, and behavior while the technologist still preserves required monitoring and safety.",
+        "points": [
+          "Use age-appropriate explanations and show or describe equipment in a way the child can tolerate.",
+          "Invite caregiver information about routines, soothing strategies, communication, mobility, and behaviors that may affect the study.",
+          "Preserve the ordered technical requirements while adapting the sequence and pace of preparation when possible.",
+          "Set expectations for overnight observation, caregiver participation, sensor replacement, and communication with the technologist."
+        ]
+      },
+      "visual": {"kind":"caregiver-plan","label":"Original SPG preparation schematic linking child communication, caregiver input, familiar routine, required sensors, and safe sleep opportunity."},
+      "apply": {
+        "prompt": "A young child becomes increasingly anxious during hookup, while the caregiver identifies a familiar calming routine that can be used without interfering with the ordered study. What is the best response?",
+        "options": [
+          "Continue the hookup at the same pace and ignore the caregiver so the protocol remains standardized",
+          "Use age-appropriate explanation and the safe familiar routine while preserving the required study setup",
+          "Cancel the study immediately because anxiety makes pediatric PSG impossible",
+          "Allow the caregiver to decide which required sensors can be omitted"
+        ],
+        "answer": "Use age-appropriate explanation and the safe familiar routine while preserving the required study setup",
+        "hint": "Adapt the process without abandoning the study requirements.",
+        "rationale": "Patient education and caregiver partnership can support cooperation and sleep opportunity. The goal is to adapt communication and preparation while maintaining the ordered monitoring and safety requirements."
+      },
+      "recap": {
+        "reviewed": "Developmentally appropriate explanation, caregiver partnership, familiar routines, expectations, and preservation of required monitoring.",
+        "canDo": "Choose preparation strategies that support cooperation without turning caregiver preference into a substitute for the ordered study."
+      }
+    },
+    {
+      "id": "pediatric-setup",
+      "title": "Adapt hookup and signal acquisition without losing required data",
+      "study": {
+        "intro": "Pediatric setup requires the same commitment to usable physiologic data as any PSG, with additional attention to skin, movement, lead security, tubing, belts, and the child’s ability to tolerate the sensors. Signal quality should be verified before lights out and after any intervention or movement that may disrupt the hookup.",
+        "points": [
+          "Apply the ordered electrodes and sensors with attention to skin protection, secure routing, comfort, and the child’s movement pattern.",
+          "Keep wires, belts, tubing, and other equipment arranged to reduce avoidable entanglement or displacement risk.",
+          "Verify signal quality and physiologic calibrations rather than assuming that a sensor is usable because it remains attached.",
+          "After position changes, caregiver interaction, or sensor replacement, reassess the affected channels and document meaningful limitations."
+        ]
+      },
+      "visual": {"kind":"sensor-plan","label":"Original SPG child-centered setup schematic tracing required signals, secure routing, skin protection, movement risk, and signal verification."},
+      "apply": {
+        "prompt": "A child turns repeatedly after lights out. Several leads remain physically attached, but two channels become noisy and a respiratory belt shifts. What should the technologist do?",
+        "options": [
+          "Leave the sensors alone because they are still attached",
+          "Reassess the affected sensors, correct secure placement safely, verify signal quality, and document the intervention",
+          "Disable the noisy channels for the remainder of the study",
+          "Wait until morning because pediatric movement is expected"
+        ],
+        "answer": "Reassess the affected sensors, correct secure placement safely, verify signal quality, and document the intervention",
+        "hint": "Attachment is not the same as valid acquisition.",
+        "rationale": "The technologist is responsible for monitoring tracing quality throughout the study. Movement can alter placement or signal validity even when equipment appears attached, so affected signals should be corrected and reverified when safe and appropriate."
+      },
+      "recap": {
+        "reviewed": "Sensor application, skin and routing safety, movement-related displacement, signal verification, and post-intervention reassessment.",
+        "canDo": "Recognize when pediatric movement has changed data quality and restore the ordered signals without sacrificing safety or comfort."
+      }
+    },
+    {
+      "id": "developmental-staging",
+      "title": "Interpret sleep through developmental context",
+      "study": {
+        "intro": "Sleep organization changes across development. The technologist should recognize that pediatric recordings may not look like an adult template and should apply the current scoring guidance appropriate to the patient rather than relying on memorized adult shortcuts.",
+        "points": [
+          "Use the patient’s developmental context when reviewing sleep organization and staging features.",
+          "Apply current professionally accepted scoring guidance rather than forcing ambiguous pediatric data into an adult expectation.",
+          "Review the complete epoch and surrounding sleep sequence when one feature is uncertain or developmentally atypical.",
+          "Document technical or behavioral limitations that reduce confidence in staging rather than hiding uncertainty."
+        ]
+      },
+      "visual": {"kind":"staging-context","label":"Original SPG comparison schematic showing developmental context, epoch features, surrounding sleep sequence, and current scoring guidance."},
+      "apply": {
+        "prompt": "A pediatric epoch does not match the technologist’s usual adult pattern, and one familiar adult shortcut would produce a confident answer despite conflicting developmental context. What is the best approach?",
+        "options": [
+          "Use the adult shortcut because the same rule should always look identical",
+          "Review the full epoch and developmental context and apply current age-appropriate scoring guidance",
+          "Score the epoch from one channel only",
+          "Choose the most common adult stage and move on"
+        ],
+        "answer": "Review the full epoch and developmental context and apply current age-appropriate scoring guidance",
+        "hint": "The station is about resisting an adult-template shortcut when development changes the context.",
+        "rationale": "Pediatric staging should be interpreted with developmental context and current professional guidance. When features are uncertain, the complete epoch and surrounding sleep sequence are stronger than a memorized adult shortcut."
+      },
+      "recap": {
+        "reviewed": "Developmental sleep organization, complete-epoch review, current scoring guidance, and documentation of uncertainty or limitations.",
+        "canDo": "Recognize when an adult expectation is a poor substitute for developmentally appropriate scoring review."
+      }
+    },
+    {
+      "id": "respiratory-gas-exchange",
+      "title": "Integrate airflow, effort, oxygen, carbon dioxide, and clinical context",
+      "study": {
+        "intro": "Pediatric respiratory assessment depends on the complete signal pattern. Airflow, respiratory effort, oxygen saturation, carbon dioxide monitoring when ordered, sleep context, and signal quality should be reviewed together because one channel alone may underrepresent or misclassify the physiologic change.",
+        "points": [
+          "Validate airflow and effort signals before classifying a respiratory pattern.",
+          "Review oxygen saturation and carbon dioxide trends in context rather than treating either value as a stand-alone diagnosis.",
+          "Recognize that pediatric respiratory events may have physiologic consequences even when they do not resemble an adult-style arousal pattern.",
+          "When carbon dioxide monitoring is used, assess both data quality and the relationship of the signal to the rest of the respiratory recording before acting on a trend."
+        ]
+      },
+      "visual": {"kind":"respiratory-grid","label":"Original SPG multi-signal teaching panel comparing airflow, effort, oxygen, carbon dioxide, sleep context, and signal validity."},
+      "apply": {
+        "prompt": "A child has a concerning change in breathing. Oxygen saturation alone changes only modestly, while airflow, effort, and the carbon dioxide trend also change. What is the strongest technologist response?",
+        "options": [
+          "Ignore the event because oxygen saturation did not change dramatically",
+          "Validate and integrate airflow, effort, oxygen, carbon dioxide, and sleep context before classifying or escalating the finding",
+          "Use the carbon dioxide number alone to make an independent diagnosis",
+          "Turn off the carbon dioxide channel so it does not complicate interpretation"
+        ],
+        "answer": "Validate and integrate airflow, effort, oxygen, carbon dioxide, and sleep context before classifying or escalating the finding",
+        "hint": "Pediatric gas-exchange monitoring is most useful when it is interpreted as part of the whole respiratory pattern.",
+        "rationale": "A complete respiratory assessment integrates signal quality and multiple physiologic channels. Oxygen alone may not capture the full pediatric breathing change, while carbon dioxide data must also be checked for validity and interpreted in context."
+      },
+      "recap": {
+        "reviewed": "Airflow, effort, oxygen, carbon dioxide, sleep context, signal validity, and pediatric respiratory-pattern integration.",
+        "canDo": "Avoid single-channel respiratory decisions and identify when the complete pediatric gas-exchange pattern supports further action."
+      }
+    },
+    {
+      "id": "safety-observation",
+      "title": "Protect skin, airway, mobility, and patient safety throughout the study",
+      "study": {
+        "intro": "Pediatric monitoring is continuous patient care as well as data acquisition. The technologist should observe the child’s condition, skin, airway, movement, equipment routing, and environment throughout the study and respond to urgent changes according to facility policy and the ordered protocol.",
+        "points": [
+          "Continue direct observation of the child rather than relying on waveforms alone when behavior, breathing, movement, or condition changes.",
+          "Correct avoidable hazards involving skin, wires, tubing, belts, mobility, or equipment when it is safe and within protocol to do so.",
+          "Follow infection-control and electrical-safety practices for pediatric sensors and equipment just as carefully as for adult studies.",
+          "Escalate urgent clinical changes or conditions outside the technologist’s protocol while preserving patient safety first."
+        ]
+      },
+      "visual": {"kind":"safety-loop","label":"Original SPG safety loop linking patient observation, skin and airway check, equipment routing, corrective action, and escalation."},
+      "apply": {
+        "prompt": "During the study, the child becomes restless and a bundle of sensor wires has shifted across the child’s movement path while one skin site is becoming irritated. What is the best first response?",
+        "options": [
+          "Ignore the setup because the signals are still recording",
+          "Assess the child, correct the immediate routing and skin-safety problem, then reverify affected signals and document the intervention",
+          "Increase filter settings so movement is less visible",
+          "Wait for the caregiver to correct the equipment without technologist assessment"
+        ],
+        "answer": "Assess the child, correct the immediate routing and skin-safety problem, then reverify affected signals and document the intervention",
+        "hint": "Patient safety comes before preserving an uninterrupted tracing.",
+        "rationale": "The technologist should address the patient and immediate hazard first, then restore and verify data quality. Safety interventions and their effect on the recording should be documented."
+      },
+      "recap": {
+        "reviewed": "Continuous observation, skin and airway safety, equipment routing, infection/electrical safety, corrective action, and escalation.",
+        "canDo": "Prioritize the child when the technically convenient choice conflicts with immediate safety."
+      }
+    },
+    {
+      "id": "documentation-handoff",
+      "title": "Document caregiver input, interventions, limitations, and handoff",
+      "study": {
+        "intro": "A pediatric study record should help the interpreting clinician reconstruct what happened during the night. Caregiver observations, behavior, sleep opportunity, sensor changes, respiratory or safety concerns, interventions, signal limitations, and communication can all be important context for interpretation and follow-up.",
+        "points": [
+          "Record meaningful caregiver observations and the timing of behaviors or events that affect the study context.",
+          "Document sensor replacement, troubleshooting, position changes, and other interventions with the resulting change in data quality or patient tolerance.",
+          "Identify limitations such as fragmented sleep opportunity, repeated sensor loss, or incomplete monitoring rather than implying the recording was unaffected.",
+          "Include unresolved respiratory, safety, behavioral, or technical concerns and any required communication or follow-up without making an independent diagnosis."
+        ]
+      },
+      "visual": {"kind":"handoff-card","label":"Original SPG handoff schematic linking caregiver report, observation, intervention, signal response, limitations, and communication."},
+      "apply": {
+        "prompt": "A caregiver reports an unusual behavior, the technologist replaces a displaced respiratory sensor, and sleep remains fragmented afterward. Which documentation is strongest?",
+        "options": [
+          "Child restless",
+          "Document the caregiver report and timing, observed behavior, sensor problem and intervention, post-intervention signal quality, sleep fragmentation, and any unresolved concern or communication",
+          "Document only the final signal quality",
+          "Record only that the caregiver was present"
+        ],
+        "answer": "Document the caregiver report and timing, observed behavior, sensor problem and intervention, post-intervention signal quality, sleep fragmentation, and any unresolved concern or communication",
+        "hint": "A useful handoff connects what was reported or observed with what the technologist did and what happened afterward.",
+        "rationale": "Complete pediatric documentation preserves caregiver context, technical interventions, patient response, data limitations, and unresolved concerns so the study can be interpreted with an accurate account of the night."
+      },
+      "recap": {
+        "reviewed": "Caregiver input, behavior and timing, interventions, signal response, study limitations, escalation, and follow-up context.",
+        "canDo": "Create a pediatric handoff that explains the night rather than reducing it to a list of final signals."
+      }
+    }
+  ]
+}
