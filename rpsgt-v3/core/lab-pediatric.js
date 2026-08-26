@@ -1,58 +1,107 @@
 (function(){
-  'use strict';
-  const engine=window.RPSGTPediatricLabEngine;
-  const workspace=document.querySelector('[data-pediatric-workspace]');
-  const summaryHost=document.querySelector('[data-pediatric-summary]');
-  const stationHost=document.querySelector('[data-pediatric-stations]');
-  const startButton=document.querySelector('[data-pediatric-start]');
-  if(!workspace||!summaryHost||!stationHost||!startButton) return;
-  const state={saved:null,questions:[],bank:[]};
-  const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
-  async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok) throw new Error(path+' HTTP '+response.status);return response.json();}
-  function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=window.RPSGTStorage.save(state.saved);}
-  function renderSummary(){
-    const report=engine.summary(state.saved.labs);
-    summaryHost.innerHTML=`<div><span>Status</span><strong>${report.completed?'Completed':report.status==='in-progress'?'In progress':'Not started'}</strong></div><div><span>Review stations</span><strong>${report.stationsComplete}/${report.stationCount}</strong></div><div><span>Best checkpoint</span><strong>${report.attempts?report.bestPercent+'%':'—'}</strong></div><div><span>Attempts</span><strong>${report.attempts}</strong></div><div><span>Last checkpoint</span><strong>${report.latestSession?formatDate(report.latestSession.completedAt):'—'}</strong></div>`;
-    startButton.textContent=report.attempts?'Start another 10-question checkpoint':'Start 10-question checkpoint';
-    if(report.completed) startButton.textContent='Practice another 10-question checkpoint';
-  }
-  function renderStations(){
-    const report=engine.summary(state.saved.labs);
-    stationHost.innerHTML=engine.STATIONS.map((station,index)=>`<label class="pediatric-station ${report.checklist[station.id]?'complete':''}"><input type="checkbox" data-pediatric-station="${esc(station.id)}" ${report.checklist[station.id]?'checked':''} ${report.completed?'disabled':''}><span class="pediatric-station-number">${index+1}</span><span><strong>${esc(station.title)}</strong><small>${esc(station.focus)}</small></span></label>`).join('');
-  }
-  function renderSession(){
-    workspace.hidden=false;
-    workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D1A · D1C · D3A · D3B · D4A pediatric checkpoint</div><h2>Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-pediatric-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint draws pediatric-relevant learner questions from the validated assessment, safety, staging, respiratory, and treatment banks.</p><form data-pediatric-form>${state.questions.map((question,index)=>`<fieldset class="pediatric-question"><legend><span>${index+1}</span>${esc(question.prompt)}</legend>${question.options.map(option=>`<label><input type="radio" name="pediatric-${esc(question.id)}" value="${esc(option)}"> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score pediatric checkpoint</button></div></form><div data-pediatric-result></div>`;
-    workspace.scrollIntoView({behavior:'smooth',block:'start'});
-  }
-  function renderResult(record){
-    const host=workspace.querySelector('[data-pediatric-result]');const byId=new Map(state.questions.map(question=>[String(question.id),question]));
-    const review=record.responses.map((response,index)=>{const question=byId.get(String(response.id));return `<details class="pediatric-review ${response.correct?'correct':'retry'}"><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${esc(question&&question.topic||response.taskCode||'Pediatric sleep')}</summary><p><strong>Answer:</strong> ${esc(question&&question.answer)}</p><p>${esc(question&&question.rationale||'Review the pediatric sleep-study pathway and try another checkpoint.')}</p></details>`;}).join('');
-    const report=engine.summary(state.saved.labs);
-    host.innerHTML=`<div class="pediatric-result ${record.passed?'pass':'retry'}"><h3>${report.completed?'Pediatric and Infant Sleep lab completed':record.passed?'Checkpoint passed—finish the review stations':'Checkpoint saved—review and retry'}</h3><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${report.completed?'All seven review stations and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish every review station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}`;
-  }
-  function startSession(){
-    saveLabs(engine.start(state.saved.labs,new Date().toISOString()));
-    state.questions=engine.selectQuestions(state.bank,engine.SESSION_SIZE,'pediatric|'+new Date().toISOString());
-    if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>Pediatric checkpoint unavailable.</strong> Fewer than ten eligible pediatric learner-practice questions were found.</div>';return;}
-    renderSummary();renderStations();renderSession();
-  }
-  function submit(form){
-    const answers={};state.questions.forEach(question=>{const selected=form.querySelector(`[name="pediatric-${CSS.escape(String(question.id))}"]:checked`);if(selected) answers[String(question.id)]=selected.value;});
-    const record=engine.gradeSession({questions:state.questions,answers,completedAt:new Date().toISOString()});saveLabs(engine.applySession(state.saved.labs,record));form.querySelectorAll('input,button').forEach(node=>node.disabled=true);renderResult(record);renderSummary();renderStations();
-  }
-  async function init(){
-    try{
-      if(!engine||!window.RPSGTStorage) throw new Error('A required Pediatric lab module is unavailable.');
-      state.saved=window.RPSGTStorage.load();const modules=await Promise.all(['data/question-bank/d1a.json','data/question-bank/d1c.json','data/question-bank/d3a.json','data/question-bank/d3b.json','data/question-bank/d4a.json'].map(loadJson));state.bank=modules.flatMap(module=>module.questions||[]);
-      if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE) throw new Error('The validated pediatric task banks do not contain enough eligible questions.');
-      renderSummary();renderStations();
-    }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Pediatric lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;}
-  }
-  startButton.addEventListener('click',startSession);
-  document.addEventListener('change',event=>{const station=event.target.closest('[data-pediatric-station]');if(!station)return;saveLabs(engine.setStation(state.saved.labs,station.dataset.pediatricStation,station.checked,new Date().toISOString()));renderSummary();renderStations();});
-  document.addEventListener('click',event=>{if(event.target.closest('[data-pediatric-cancel]')){state.questions=[];workspace.hidden=true;workspace.innerHTML='';}});
-  document.addEventListener('submit',event=>{if(event.target.matches('[data-pediatric-form]')){event.preventDefault();submit(event.target);}});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+'use strict';
+const engine=window.RPSGTPediatricLabEngine;
+const storage=window.RPSGTStorage;
+const workspace=document.querySelector('[data-pediatric-workspace]');
+const summaryHost=document.querySelector('[data-pediatric-summary]');
+const stationHost=document.querySelector('[data-pediatric-stations]');
+const checkpointButtons=[...document.querySelectorAll('[data-pediatric-start]')];
+if(!engine||!storage||!workspace||!summaryHost||!stationHost||!checkpointButtons.length)return;
+
+const state={saved:null,bank:[],pack:null,mode:null,stationIndex:0,stationStep:'study',applySelected:null,applyFeedback:null,showHint:false,confirming:null,questions:[],checkpointIndex:0,answers:{},checkpointNotice:'',record:null};
+const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
+async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
+function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=storage.save(state.saved);}
+function report(){return engine.summary(state.saved.labs);}
+function currentStation(){return state.pack&&state.pack.stations&&state.pack.stations[state.stationIndex]||null;}
+
+function renderSummary(){
+  const data=report();
+  summaryHost.innerHTML=`<div><span>Status</span><strong>${data.completed?'Completed':data.status==='in-progress'?'In progress':'Not started'}</strong></div><div><span>Guided stations</span><strong>${data.stationsComplete}/${data.stationCount}</strong></div><div><span>Best checkpoint</span><strong>${data.attempts?data.bestPercent+'%':'—'}</strong></div><div><span>Attempts</span><strong>${data.attempts}</strong></div><div><span>Last checkpoint</span><strong>${data.latestSession?formatDate(data.latestSession.completedAt):'—'}</strong></div>`;
+  checkpointButtons.forEach(button=>{button.textContent=data.completed?'Practice another 10-question checkpoint':data.attempts?'Start another 10-question checkpoint':'Start 10-question checkpoint';});
+}
+function recommendedStationIndex(){const data=report();const stations=state.pack&&state.pack.stations||[];const found=stations.findIndex(item=>!data.checklist[item.id]);return found<0?0:found;}
+function renderStations(){
+  const data=report();const stations=state.pack&&state.pack.stations||[];const recommended=recommendedStationIndex();
+  stationHost.classList.add('guided');
+  stationHost.innerHTML=stations.map((station,index)=>{const complete=data.checklist[station.id]===true;const cls=complete?'complete':index===recommended?'recommended':'';return `<button class="pediatric-station-card ${cls}" type="button" data-pediatric-open-station="${index}"><span class="number">${complete?'✓':index+1}</span><span><strong>${esc(station.title)}</strong><small>${complete?'Guided station completed':'Study → Apply → Recap'}</small></span><span class="state">${complete?'Completed':index===recommended?'Recommended next':'Open station'}</span></button>`;}).join('');
+}
+function openWorkspace(label){workspace.hidden=false;workspace.classList.add('pediatric-guided-active');workspace.setAttribute('aria-label',label);workspace.scrollIntoView({behavior:'smooth',block:'start'});}
+function closeWorkspace(){state.mode=null;state.confirming=null;state.questions=[];state.record=null;workspace.hidden=true;workspace.classList.remove('pediatric-guided-active');workspace.innerHTML='';workspace.removeAttribute('aria-label');}
+function stationNavMarkup(){const data=report();return (state.pack.stations||[]).map((station,index)=>{const complete=data.checklist[station.id]===true,current=index===state.stationIndex,recommended=!complete&&index===recommendedStationIndex();const cls=complete?'complete':current?'current':recommended?'recommended':'';return `<button type="button" class="${cls}" data-pediatric-station-nav="${index}" aria-label="${esc(station.title)}" aria-current="${current?'step':'false'}">${complete?'✓':index+1}</button>`;}).join('');}
+function stepperMarkup(){return `<div class="pediatric-stepper"><span class="${state.stationStep==='study'?'active':''}">1 · Study</span><span class="${state.stationStep==='apply'?'active':''}">2 · Apply</span><span class="${state.stationStep==='recap'?'active':''}">3 · Recap</span></div>`;}
+function frame(title,body,label){return `<div class="pediatric-schematic"><div class="pediatric-schematic-head"><strong>${esc(title)}</strong><span>${esc(label)}</span></div><div class="pediatric-diagram">${body}</div><p class="pediatric-disclosure"><strong>AI-generated teaching schematic · Not a patient recording.</strong> Real pediatric PSG tracings, developmental presentations, sensors, respiratory patterns, carbon dioxide signals, and facility workflows vary. Use current orders, official guidance, equipment instructions, facility policy, and supervised pediatric clinical training.</p></div>`;}
+function schematicMarkup(station){
+  const kind=station.visual&&station.visual.kind;const label=station.visual&&station.visual.label||station.title;
+  if(kind==='development-map')return frame('Build the plan around the child',`<div class="pediatric-flow"><span>Ordered study</span><b>→</b><span>Age + development</span><b>→</b><span>History + precautions</span><b>→</b><span>Technical + safety plan</span></div>`,label);
+  if(kind==='caregiver-plan')return frame('Preparation supports valid data',`<div class="pediatric-flow"><span>Explain at the child’s level</span><b>→</b><span>Use caregiver knowledge</span><b>→</b><span>Preserve required sensors</span><b>→</b><span>Create a safe sleep opportunity</span></div>`,label);
+  if(kind==='sensor-plan')return frame('Attachment is not the same as valid signal',`<div class="pediatric-grid"><div><strong>Skin + application</strong><span>Protect sites while securing required sensors</span></div><div><strong>Wire + tubing route</strong><span>Reduce displacement and avoidable entanglement</span></div><div><strong>Movement</strong><span>Expect position changes and recheck affected channels</span></div><div><strong>Verification</strong><span>Confirm physiologic signal quality after intervention</span></div></div>`,label);
+  if(kind==='staging-context')return frame('Use development plus the complete epoch',`<div class="pediatric-flow"><span>Developmental context</span><b>→</b><span>Full epoch features</span><b>→</b><span>Surrounding sleep sequence</span><b>→</b><span>Current scoring guidance</span></div>`,label);
+  if(kind==='respiratory-grid')return frame('Use the whole pediatric respiratory pattern',`<div class="pediatric-context"><div class="pediatric-context-card"><strong>Airflow</strong><span>Is the signal valid and what changed?</span></div><div class="pediatric-context-card"><strong>Effort</strong><span>What does chest/abdomen activity show?</span></div><div class="pediatric-context-card"><strong>Oxygen</strong><span>What physiologic consequence follows?</span></div><div class="pediatric-context-card good"><strong>Carbon dioxide</strong><span>When ordered, is the trend and waveform credible?</span></div><div class="pediatric-context-card"><strong>Sleep context</strong><span>Stage, sequence, movement, arousal, behavior</span></div><div class="pediatric-context-card warning"><strong>Signal quality</strong><span>Can the pattern be trusted before escalation?</span></div></div>`,label);
+  if(kind==='safety-loop')return frame('Patient first, then restore the recording',`<div class="pediatric-boundary"><div class="good"><strong>Observe the child</strong><span>Breathing, behavior, skin, airway, movement, condition</span></div><div><strong>Correct the immediate hazard</strong><span>Routing, sensor, skin, equipment, environment</span></div><div><strong>Reverify signals</strong><span>Restore usable data after the safety intervention</span></div><div class="warning"><strong>Escalate when needed</strong><span>Follow the active order, facility policy, and supervision boundary</span></div></div>`,label);
+  return frame('Make the handoff reconstruct the night',`<div class="pediatric-handoff"><div class="pediatric-handoff-row"><strong>Caregiver report + observation</strong><span>What happened and when?</span></div><div class="pediatric-handoff-row"><strong>Intervention</strong><span>What did the technologist change or correct?</span></div><div class="pediatric-handoff-row"><strong>Response + signal quality</strong><span>What happened afterward?</span></div><div class="pediatric-handoff-row"><strong>Limitations + communication</strong><span>What remained unresolved or required follow-up?</span></div></div>`,label);
+}
+function studyMarkup(station){return `<div class="pediatric-task-panel"><h3>${esc(station.title)}</h3><p>${esc(station.study.intro)}</p><ul class="pediatric-points">${station.study.points.map(point=>`<li>${esc(point)}</li>`).join('')}</ul></div>`;}
+function applyMarkup(station){const selected=state.applySelected,feedback=state.applyFeedback;return `<div class="pediatric-task-panel"><h3>Apply it</h3><p>${esc(station.apply.prompt)}</p><div class="pediatric-options">${station.apply.options.map(option=>`<label class="pediatric-option ${selected===option?'selected':''}"><input type="radio" name="pediatric-station-answer" value="${esc(option)}" ${selected===option?'checked':''}><span>${esc(option)}</span></label>`).join('')}</div><div class="pediatric-feedback" aria-live="polite">${state.showHint?`<div class="notice"><strong>Hint:</strong> ${esc(station.apply.hint)}</div>`:''}${feedback?`<div class="notice ${feedback.correct?'success':'error'}"><strong>${feedback.correct?'Correct.':'Review and try again.'}</strong> ${esc(feedback.correct?station.apply.rationale:'Use the schematic and complete pediatric pathway before trying again.')}</div>`:''}</div></div>`;}
+function recapMarkup(station){return `<div class="pediatric-task-panel"><h3>Recap</h3><div class="pediatric-recap-grid"><div><strong>What you reviewed</strong><p>${esc(station.recap.reviewed)}</p></div><div><strong>You should now be able to…</strong><p>${esc(station.recap.canDo)}</p></div></div><div class="pediatric-reference"><strong>Further study:</strong> ${esc(state.pack.reference)}</div></div>`;}
+function stationConfirmMarkup(){if(state.confirming!=='station')return '';return `<div class="pediatric-confirm" role="dialog" aria-modal="true" aria-label="Confirm station answer"><strong>Are you sure?</strong><p>${state.applySelected?`You selected <strong>${esc(state.applySelected)}</strong>.`:''}</p><div class="actions"><button class="btn primary" type="button" data-pediatric-station-submit>Submit answer</button><button class="btn secondary" type="button" data-pediatric-station-change>Change answer</button></div></div>`;}
+function renderStation(){
+  const station=currentStation();if(!station)return;state.mode='station';openWorkspace(station.title+' guided station');
+  const task=state.stationStep==='study'?studyMarkup(station):state.stationStep==='apply'?applyMarkup(station):recapMarkup(station);
+  let primary='';if(state.stationStep==='study')primary='<button class="btn primary" type="button" data-pediatric-station-step="apply">Apply this skill</button>';else if(state.stationStep==='apply'&&state.applyFeedback&&state.applyFeedback.correct)primary='<button class="btn primary" type="button" data-pediatric-station-step="recap">Continue to recap</button>';else if(state.stationStep==='apply')primary=`<button class="btn primary" type="button" data-pediatric-station-check ${state.applySelected?'':'disabled'}>Check answer</button>`;else primary='<button class="btn primary" type="button" data-pediatric-station-complete>Complete & continue</button>';
+  workspace.innerHTML=`<div class="pediatric-workspace-top"><div><div class="eyebrow">Pediatric guided station · ${state.stationIndex+1} of ${state.pack.stations.length}</div><h2>${esc(station.title)}</h2></div><div class="pediatric-display-actions"><button class="btn secondary" type="button" data-pediatric-fullscreen>Full screen</button><button class="btn secondary" type="button" data-pediatric-exit-fullscreen>Exit full screen</button><button class="btn secondary" type="button" data-pediatric-close>Close</button></div></div><div class="pediatric-rotate-note">For the clearest pediatric pathway view on a phone, rotate to landscape.</div><div class="pediatric-station-nav">${stationNavMarkup()}</div>${stepperMarkup()}<div class="pediatric-visual-workstation"><div class="pediatric-visual-pane">${schematicMarkup(station)}</div><aside class="pediatric-task-rail">${task}<div class="pediatric-workspace-actions"><button class="btn secondary" type="button" data-pediatric-station-prev ${state.stationIndex===0?'disabled':''}>Previous station</button><div class="right">${state.stationStep==='apply'?`<button class="btn secondary" type="button" data-pediatric-station-hint>${state.showHint?'Hide hint':'Hint'}</button>`:''}${primary}</div></div></aside></div>${stationConfirmMarkup()}`;
+}
+function resetStationInteraction(){state.stationStep='study';state.applySelected=null;state.applyFeedback=null;state.showHint=false;state.confirming=null;}
+function openStation(index){state.stationIndex=Math.max(0,Math.min((state.pack.stations||[]).length-1,Number(index)));resetStationInteraction();renderStation();}
+function gradeStationAnswer(){const station=currentStation();const correct=state.applySelected===station.apply.answer;state.applyFeedback={correct};state.confirming=null;if(!correct)state.showHint=true;renderStation();}
+function completeStation(){const station=currentStation();if(!station||state.stationStep!=='recap')return;saveLabs(engine.setStation(state.saved.labs,station.id,true,new Date().toISOString()));renderSummary();renderStations();if(state.stationIndex<state.pack.stations.length-1){state.stationIndex+=1;resetStationInteraction();renderStation();}else closeWorkspace();}
+
+function checkpointNavMarkup(){return state.questions.map((question,index)=>{const answered=Object.prototype.hasOwnProperty.call(state.answers,String(question.id)),current=index===state.checkpointIndex;return `<button type="button" class="${current?'current':answered?'answered':''}" data-pediatric-checkpoint-go="${index}" aria-current="${current?'step':'false'}">${index+1}</button>`;}).join('');}
+function checkpointConfirmMarkup(){if(state.confirming!=='checkpoint')return '';return `<div class="pediatric-confirm" role="dialog" aria-modal="true" aria-label="Confirm Pediatric checkpoint"><strong>Are you sure?</strong><p>This will score all 10 answers and save the attempt to your Pediatric lab history.</p><div class="actions"><button class="btn primary" type="button" data-pediatric-checkpoint-submit>Score checkpoint</button><button class="btn secondary" type="button" data-pediatric-checkpoint-change>Keep reviewing</button></div></div>`;}
+function renderCheckpoint(){
+  if(!state.questions.length)return;state.mode='checkpoint';openWorkspace('Pediatric checkpoint');const question=state.questions[state.checkpointIndex];const selected=state.answers[String(question.id)]||'';const answered=Object.keys(state.answers).length;
+  workspace.innerHTML=`<div class="pediatric-workspace-top"><div><div class="eyebrow">D1A · D1C · D3A · D3B · D4A Pediatric checkpoint</div><h2>Question ${state.checkpointIndex+1} of ${state.questions.length}</h2></div><div class="pediatric-display-actions"><button class="btn secondary" type="button" data-pediatric-fullscreen>Full screen</button><button class="btn secondary" type="button" data-pediatric-exit-fullscreen>Exit full screen</button><button class="btn secondary" type="button" data-pediatric-close>Close</button></div></div><div class="pediatric-rotate-note">Rotate to landscape if you want more room for the answer panel.</div><div class="pediatric-checkpoint-shell"><div class="pediatric-checkpoint-progress">${checkpointNavMarkup()}</div><div class="pediatric-question-focused"><div class="qnum">${esc(question.taskCode||'Pediatric')} · ${answered}/${state.questions.length} answered</div><h3>${esc(question.prompt)}</h3><div class="pediatric-options">${question.options.map(option=>`<label class="pediatric-option ${selected===option?'selected':''}"><input type="radio" name="pediatric-checkpoint-answer" value="${esc(option)}" ${selected===option?'checked':''}><span>${esc(option)}</span></label>`).join('')}</div>${state.checkpointNotice?`<div class="notice error">${esc(state.checkpointNotice)}</div>`:''}</div><div class="pediatric-workspace-actions"><button class="btn secondary" type="button" data-pediatric-checkpoint-prev ${state.checkpointIndex===0?'disabled':''}>Previous</button><div class="right">${state.checkpointIndex<state.questions.length-1?'<button class="btn primary" type="button" data-pediatric-checkpoint-next>Next</button>':'<button class="btn primary" type="button" data-pediatric-checkpoint-review>Review & score</button>'}</div></div>${checkpointConfirmMarkup()}</div>`;
+}
+function startCheckpoint(){saveLabs(engine.start(state.saved.labs,new Date().toISOString()));state.questions=engine.selectQuestions(state.bank,engine.SESSION_SIZE,'pediatric|'+new Date().toISOString());if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>Pediatric checkpoint unavailable.</strong> Fewer than ten eligible Pediatric learner-practice questions were found.</div>';return;}state.answers={};state.checkpointIndex=0;state.checkpointNotice='';state.confirming=null;renderSummary();renderStations();renderCheckpoint();}
+function requestCheckpointScore(){if(Object.keys(state.answers).length<state.questions.length){state.checkpointNotice='Answer every question before scoring the checkpoint.';const firstMissing=state.questions.findIndex(question=>!Object.prototype.hasOwnProperty.call(state.answers,String(question.id)));if(firstMissing>=0)state.checkpointIndex=firstMissing;renderCheckpoint();return;}state.checkpointNotice='';state.confirming='checkpoint';renderCheckpoint();}
+function scoreCheckpoint(){const record=engine.gradeSession({questions:state.questions,answers:state.answers,completedAt:new Date().toISOString()});saveLabs(engine.applySession(state.saved.labs,record));state.record=record;state.confirming=null;renderSummary();renderStations();renderCheckpointResult();}
+function renderCheckpointResult(){const record=state.record;if(!record)return;state.mode='result';openWorkspace('Pediatric checkpoint result');const byId=new Map(state.questions.map(question=>[String(question.id),question]));const review=record.responses.map((response,index)=>{const question=byId.get(String(response.id));return `<details class="pediatric-review ${response.correct?'correct':'retry'}"><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${esc(question&&question.topic||response.taskCode||'Pediatric sleep')}</summary><p><strong>Answer:</strong> ${esc(question&&question.answer)}</p><p>${esc(question&&question.rationale||'Review the pediatric sleep-study pathway and try another checkpoint.')}</p></details>`;}).join('');const data=report();workspace.innerHTML=`<div class="pediatric-workspace-top"><div><div class="eyebrow">Pediatric checkpoint result</div><h2>${data.completed?'Pediatric and Infant Sleep lab completed':record.passed?'Checkpoint passed':'Checkpoint saved—review and retry'}</h2></div><button class="btn secondary" type="button" data-pediatric-close>Close</button></div><div class="pediatric-result ${record.passed?'pass':'retry'}"><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${data.completed?'All seven guided stations and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish every guided station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}<div class="actions"><button class="btn primary" type="button" data-pediatric-start-again>Practice another checkpoint</button></div>`;}
+
+function requestFullscreen(){if(workspace.requestFullscreen)workspace.requestFullscreen().catch(()=>{});}
+function exitFullscreen(){if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});}
+async function init(){
+  try{
+    state.saved=storage.load();const [pack,...modules]=await Promise.all([loadJson('data/pediatric/guided-stations.json'),...['data/question-bank/d1a.json','data/question-bank/d1c.json','data/question-bank/d3a.json','data/question-bank/d3b.json','data/question-bank/d4a.json'].map(loadJson)]);state.pack=pack;state.bank=modules.flatMap(module=>module.questions||[]);
+    if(!Array.isArray(pack.stations)||pack.stations.length!==engine.STATIONS.length)throw new Error('The guided Pediatric station pack is incomplete.');
+    if(JSON.stringify(pack.stations.map(item=>item.id))!==JSON.stringify(engine.STATIONS.map(item=>item.id)))throw new Error('The guided Pediatric station IDs do not match the durable lab checklist.');
+    if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE)throw new Error('The validated Pediatric task banks do not contain enough eligible questions.');
+    renderSummary();renderStations();
+  }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Pediatric lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;checkpointButtons.forEach(button=>button.disabled=true);}
+}
+
+document.addEventListener('change',event=>{const stationAnswer=event.target.closest('[name="pediatric-station-answer"]');if(stationAnswer){state.applySelected=stationAnswer.value;state.applyFeedback=null;state.confirming=null;renderStation();return;}const checkpointAnswer=event.target.closest('[name="pediatric-checkpoint-answer"]');if(checkpointAnswer){const question=state.questions[state.checkpointIndex];if(question)state.answers[String(question.id)]=checkpointAnswer.value;state.checkpointNotice='';renderCheckpoint();}});
+document.addEventListener('click',event=>{
+  const open=event.target.closest('[data-pediatric-open-station]');if(open){openStation(open.dataset.pediatricOpenStation);return;}
+  const nav=event.target.closest('[data-pediatric-station-nav]');if(nav){openStation(nav.dataset.pediatricStationNav);return;}
+  if(event.target.closest('[data-pediatric-station-prev]')){openStation(state.stationIndex-1);return;}
+  const step=event.target.closest('[data-pediatric-station-step]');if(step){state.stationStep=step.dataset.pediatricStationStep;state.confirming=null;renderStation();return;}
+  if(event.target.closest('[data-pediatric-station-hint]')){state.showHint=!state.showHint;renderStation();return;}
+  if(event.target.closest('[data-pediatric-station-check]')){if(state.applySelected){state.confirming='station';renderStation();}return;}
+  if(event.target.closest('[data-pediatric-station-change]')){state.confirming=null;renderStation();return;}
+  if(event.target.closest('[data-pediatric-station-submit]')){gradeStationAnswer();return;}
+  if(event.target.closest('[data-pediatric-station-complete]')){completeStation();return;}
+  const go=event.target.closest('[data-pediatric-checkpoint-go]');if(go){state.checkpointIndex=Number(go.dataset.pediatricCheckpointGo);state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pediatric-checkpoint-prev]')){state.checkpointIndex=Math.max(0,state.checkpointIndex-1);state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pediatric-checkpoint-next]')){state.checkpointIndex=Math.min(state.questions.length-1,state.checkpointIndex+1);state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pediatric-checkpoint-review]')){requestCheckpointScore();return;}
+  if(event.target.closest('[data-pediatric-checkpoint-change]')){state.confirming=null;renderCheckpoint();return;}
+  if(event.target.closest('[data-pediatric-checkpoint-submit]')){scoreCheckpoint();return;}
+  if(event.target.closest('[data-pediatric-start-again]')){startCheckpoint();return;}
+  if(event.target.closest('[data-pediatric-fullscreen]')){requestFullscreen();return;}
+  if(event.target.closest('[data-pediatric-exit-fullscreen]')){exitFullscreen();return;}
+  if(event.target.closest('[data-pediatric-close]')){closeWorkspace();return;}
+});
+checkpointButtons.forEach(button=>button.addEventListener('click',startCheckpoint));
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
