@@ -1,1 +1,0 @@
-Learner-facing reference display remains APA-style only. Do not expose internal source keys or mapping labels in the Scoring Lab UI.
