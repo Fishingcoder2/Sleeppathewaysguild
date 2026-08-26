@@ -1,0 +1,49 @@
+name: Validate RPSGT v3 PAP Lab
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/lab-pap.html'
+      - 'rpsgt-v3/core/pap-lab-engine.js'
+      - 'rpsgt-v3/core/lab-pap.js'
+      - 'rpsgt-v3/assets/pap.css'
+      - 'rpsgt-v3/assets/pap-guided.css'
+      - 'rpsgt-v3/data/pap/**'
+      - 'rpsgt-v3/data/labs/catalog.json'
+      - 'rpsgt-v3/data/question-bank/d4a.json'
+      - 'rpsgt-v3/data/question-bank/d4b.json'
+      - 'rpsgt-v3/data/question-bank/d4c.json'
+      - 'rpsgt-v3/scripts/test-pap-*.mjs'
+      - 'rpsgt-v3/scripts/test-lab-catalog.mjs'
+      - '.github/workflows/rpsgt-v3-pap-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pap-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate PAP modules and guided station pack
+        run: |
+          set -euo pipefail
+          node --check rpsgt-v3/core/pap-lab-engine.js
+          node --check rpsgt-v3/core/lab-pap.js
+          node -e "const fs=require('fs'); const pack=JSON.parse(fs.readFileSync('rpsgt-v3/data/pap/guided-stations.json','utf8')); if(pack.stations.length!==7) throw new Error('Expected seven guided PAP stations.');"
+      - name: Run dedicated PAP regressions
+        run: |
+          set -euo pipefail
+          node rpsgt-v3/scripts/test-pap-lab-system.mjs
+          node rpsgt-v3/scripts/test-pap-lab-shell.mjs
+          node rpsgt-v3/scripts/test-pap-guided-study.mjs
+          node rpsgt-v3/scripts/test-lab-catalog.mjs
