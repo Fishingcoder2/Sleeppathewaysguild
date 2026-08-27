@@ -3,6 +3,7 @@
 
   const host=document.querySelector('[data-respiratory-study-trail]');
   if(!host) return;
+  const guidedEngine=window.RPSGTGuidedTrailEngine;
 
   const state={trail:null,source:null,chapters:new Map(),activeIndex:0,completedThrough:-1,taskEntryObserver:null};
   const text=value=>String(value==null?'':value).trim();
@@ -88,9 +89,9 @@
     return '<section class="respiratory-guided-sequence" aria-label="What to do in this step">'+
       '<div class="respiratory-guided-title"><span class="eyebrow">Do this step in order</span><h4>Start here, then move down the list</h4></div>'+
       '<ol class="respiratory-guided-list">'+
-        '<li><span>1</span><div><strong>Learn this first</strong><p>Read why this matters, the primary authority, the study chapter, and the current-rule warning below.</p></div></li>'+
+        '<li><span>1</span><div><strong>Learn this first</strong><p>Read why this matters, the primary authority, the textbook study support, and the current-rule warning below.</p></div></li>'+
         '<li><span>2</span><div><strong>Apply it</strong><p>Use the related skills lab to see the concept in a practical sleep-tech workflow.</p>'+labLink+'</div></li>'+
-        '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question '+esc(step.taskCode)+' badge checkpoint. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'">Take 15-question badge checkpoint</button></div></li>'+
+        '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question '+esc(step.taskCode)+' checkpoint matched to <strong>this respiratory concept</strong>. Unrelated questions from the broader task—such as sleep-stage questions in an OSA-scoring step—are excluded. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'" data-checkpoint-concept="'+esc(step.id)+'">Take 15-question concept checkpoint</button></div></li>'+
         '<li><span>4</span><div><strong>Then continue</strong><p>'+(last?'When this step makes sense, mark the trail complete.':'When this step makes sense, continue to the next topic: '+esc(next.title)+'.')+'</p>'+continueButton+'</div></li>'+
       '</ol>'+
     '</section>';
@@ -205,6 +206,12 @@
   }
 
   host.addEventListener('click',event=>{
+    const checkpoint=event.target.closest('[data-checkpoint-start][data-checkpoint-concept]');
+    if(checkpoint&&state.trail&&guidedEngine&&typeof guidedEngine.queueQuestionFilter==='function'){
+      const concept=state.trail.steps.find(step=>step.id===checkpoint.dataset.checkpointConcept);
+      if(concept) guidedEngine.queueQuestionFilter(concept.taskCode,concept.checkpointFilter,{conceptId:concept.id,conceptLabel:concept.title});
+      return;
+    }
     const next=event.target.closest('[data-respiratory-next]');
     if(next&&state.trail){completeAndContinue();return;}
     const previous=event.target.closest('[data-respiratory-prev]');
