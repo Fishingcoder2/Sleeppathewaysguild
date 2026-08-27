@@ -47,6 +47,18 @@
   letter-spacing:.12em;
   pointer-events:none;
 }
+.guided-award-dialog:after{
+  content:"✦  ✧  ✦";
+  position:absolute;
+  top:20px;
+  left:22px;
+  color:#8d69c7;
+  font-size:1rem;
+  letter-spacing:.2em;
+  opacity:.75;
+  animation:guided-award-sparkle 1.2s ease-out both;
+  pointer-events:none;
+}
 .guided-award-dialog:focus{outline:3px solid #79b9d5;outline-offset:4px}
 .guided-award-close{
   position:absolute;
@@ -90,6 +102,7 @@
 .guided-award-dialog .eyebrow{margin-top:30px;color:#0b6c80;font-weight:950;letter-spacing:.08em}
 .guided-award-dialog h2{margin:7px 0 8px;font-size:clamp(1.55rem,5vw,2.3rem);color:var(--navy,#12324d)}
 .guided-award-skill{margin:0 auto;max-width:48ch;color:#405562;font-size:1.02rem;line-height:1.5}
+.guided-award-xp{display:inline-flex;align-items:center;justify-content:center;min-height:38px;margin:14px auto 0;padding:7px 15px;border:1px solid #cbb9ec;border-radius:999px;background:linear-gradient(100deg,#f5efff,#edf9fb,#fff7dd);color:#594293;font-weight:950;letter-spacing:.02em;box-shadow:0 6px 16px rgba(81,58,142,.1);animation:guided-award-xp-pop .42s .12s ease-out both}
 .guided-award-domain-note{
   display:grid;
   gap:3px;
@@ -133,12 +146,22 @@ body.guided-award-open{overflow:hidden}
   from{opacity:0;transform:translateY(18px) scale(.96)}
   to{opacity:1;transform:none}
 }
+@keyframes guided-award-xp-pop{
+  from{opacity:0;transform:scale(.78) translateY(6px)}
+  to{opacity:1;transform:none}
+}
+@keyframes guided-award-sparkle{
+  from{opacity:0;transform:translateY(7px) scale(.8)}
+  45%{opacity:1}
+  to{opacity:.75;transform:none}
+}
 @media(max-width:640px){
   .checkpoint-route-actions{display:grid;grid-template-columns:1fr}
   .checkpoint-route-actions .btn{width:100%;justify-content:center;text-align:center}
   .guided-award-overlay{align-items:end;padding:0}
   .guided-award-dialog{width:100%;max-height:94vh;border-radius:24px 24px 0 0;padding:25px 18px calc(24px + env(safe-area-inset-bottom))}
   .guided-award-dialog:before{display:none}
+  .guided-award-dialog:after{left:18px;top:18px}
   .guided-award-medal{width:104px;height:104px;font-size:3.25rem;margin-bottom:17px}
   .guided-award-medal:before,.guided-award-medal:after{bottom:-29px;width:30px;height:49px}
   .guided-award-medal:before{left:19px}.guided-award-medal:after{right:19px}
@@ -148,6 +171,6 @@ body.guided-award-open{overflow:hidden}
   .guided-award-actions .btn{width:100%;justify-content:center;text-align:center}
 }
 @media(prefers-reduced-motion:reduce){
-  .guided-award-dialog{animation:none}
+  .guided-award-dialog,.guided-award-dialog:after,.guided-award-xp{animation:none}
   .guided-award-medal{transition:none}
 }

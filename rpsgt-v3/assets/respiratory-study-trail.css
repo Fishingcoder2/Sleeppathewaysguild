@@ -8,34 +8,44 @@
 .respiratory-route-progress{display:grid;gap:6px}
 .respiratory-route-progress small{text-align:right;font-size:.78rem}
 .respiratory-route-meter{height:12px;border-radius:999px;background:var(--sky);overflow:hidden;border:1px solid var(--line);box-shadow:inset 0 1px 2px rgba(8,43,87,.08)}
-.respiratory-route-meter span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--blue));border-radius:inherit;transition:width .2s ease}
+.respiratory-route-meter span{display:block;height:100%;background:linear-gradient(90deg,#0d8298,#7254bd,#d09a2f,#cf6570);border-radius:inherit;transition:width .2s ease}
 .respiratory-trail-shell{display:grid;gap:20px;max-width:920px;margin:0 auto;align-items:start}
 .respiratory-learning-path{position:relative;display:grid;gap:16px;width:min(100%,560px);margin:0 auto;padding:10px 0 18px}
-.respiratory-path-stop{position:relative;min-height:92px;display:flex;align-items:center;width:100%}
-.respiratory-path-stop:not(:last-child)::after{content:"";position:absolute;z-index:0;width:4px;height:43px;top:72px;left:50%;border-radius:999px;background:var(--line);transform:translateX(-50%)}
+.respiratory-path-stop{--lesson-accent:#075fa8;position:relative;min-height:92px;display:flex;align-items:center;width:100%}
+.respiratory-path-stop:nth-child(9n+1){--lesson-accent:#0d8298}
+.respiratory-path-stop:nth-child(9n+2){--lesson-accent:#7254bd}
+.respiratory-path-stop:nth-child(9n+3){--lesson-accent:#cf7d2e}
+.respiratory-path-stop:nth-child(9n+4){--lesson-accent:#2f72c4}
+.respiratory-path-stop:nth-child(9n+5){--lesson-accent:#a9507c}
+.respiratory-path-stop:nth-child(9n+6){--lesson-accent:#3b8065}
+.respiratory-path-stop:nth-child(9n+7){--lesson-accent:#c65d4b}
+.respiratory-path-stop:nth-child(9n+8){--lesson-accent:#5368ba}
+.respiratory-path-stop:nth-child(9n+9){--lesson-accent:#ad7d13}
+.respiratory-path-stop:not(:last-child)::after{content:"";position:absolute;z-index:0;width:4px;height:43px;top:72px;left:50%;border-radius:999px;background:linear-gradient(180deg,var(--lesson-accent),var(--line));opacity:.5;transform:translateX(-50%)}
 .respiratory-path-stop.stop-1{justify-content:flex-start;padding-left:13%}
 .respiratory-path-stop.stop-2{justify-content:center}
 .respiratory-path-stop.stop-3{justify-content:flex-end;padding-right:13%}
 .respiratory-path-node{appearance:none;position:relative;z-index:1;border:0;background:transparent;padding:0;display:flex;align-items:center;gap:12px;color:inherit;cursor:pointer;text-align:left;max-width:310px}
-.respiratory-path-orb{width:66px;height:66px;flex:0 0 66px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:4px solid var(--blue);box-shadow:0 6px 0 rgba(8,43,87,.14),0 9px 18px rgba(8,43,87,.12);font-weight:950;font-size:1.05rem;color:var(--blue);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.respiratory-path-orb{width:66px;height:66px;flex:0 0 66px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:4px solid var(--lesson-accent);box-shadow:0 6px 0 rgba(8,43,87,.14),0 9px 18px rgba(8,43,87,.12);font-weight:950;font-size:1.05rem;color:var(--lesson-accent);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
 .respiratory-path-copy{min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:0 5px 16px rgba(8,43,87,.06)}
 .respiratory-path-copy strong,.respiratory-path-copy small{display:block}
 .respiratory-path-copy strong{font-size:.9rem;line-height:1.25;color:var(--navy)}
 .respiratory-path-copy small{margin-top:3px;color:var(--muted);font-size:.73rem;font-weight:800}
 .respiratory-path-node:hover .respiratory-path-orb,.respiratory-path-node:focus-visible .respiratory-path-orb{transform:translateY(-2px);box-shadow:0 8px 0 rgba(8,43,87,.14),0 12px 22px rgba(8,43,87,.14)}
 .respiratory-path-node:focus-visible{outline:none}
-.respiratory-path-node:focus-visible .respiratory-path-copy{outline:3px solid rgba(7,95,168,.25);outline-offset:2px}
-.respiratory-path-node.is-complete .respiratory-path-orb{background:var(--teal);border-color:var(--teal);color:#fff}
-.respiratory-path-node.is-current .respiratory-path-orb{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 7px 0 rgba(8,43,87,.19),0 0 0 8px rgba(7,95,168,.09),0 14px 24px rgba(8,43,87,.15)}
-.respiratory-path-node.is-current .respiratory-path-copy{border-color:rgba(7,95,168,.36);background:var(--sky)}
-.respiratory-path-node.is-locked{cursor:not-allowed;opacity:.56}
+.respiratory-path-node:focus-visible .respiratory-path-copy{outline:3px solid color-mix(in srgb,var(--lesson-accent) 28%,transparent);outline-offset:2px}
+.respiratory-path-node.is-complete .respiratory-path-orb{background:var(--lesson-accent);border-color:var(--lesson-accent);color:#fff}
+.respiratory-path-node.is-current .respiratory-path-orb{background:var(--lesson-accent);border-color:var(--lesson-accent);color:#fff;box-shadow:0 7px 0 rgba(8,43,87,.19),0 0 0 8px color-mix(in srgb,var(--lesson-accent) 12%,transparent),0 14px 24px rgba(8,43,87,.15)}
+.respiratory-path-node.is-current .respiratory-path-copy{border-color:color-mix(in srgb,var(--lesson-accent) 42%,var(--line));background:color-mix(in srgb,var(--lesson-accent) 8%,#fff)}
+.respiratory-path-node.is-locked{cursor:not-allowed;opacity:.54}
 .respiratory-path-node.is-locked .respiratory-path-orb{background:var(--sky);border-color:var(--line);color:var(--muted);box-shadow:0 4px 0 rgba(8,43,87,.08)}
 .respiratory-path-node.is-locked .respiratory-path-copy{background:var(--sky)}
-.respiratory-path-callout{position:absolute;z-index:3;top:-4px;left:50%;transform:translate(-50%,-100%);padding:6px 10px;border-radius:10px;background:var(--navy);color:#fff;font-size:.72rem;font-weight:950;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 5px 14px rgba(8,43,87,.15)}
-.respiratory-path-callout::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);border-width:6px 6px 0;border-style:solid;border-color:var(--navy) transparent transparent}
+.respiratory-path-callout{position:absolute;z-index:3;top:-4px;left:50%;transform:translate(-50%,-100%);padding:6px 10px;border-radius:10px;background:var(--lesson-accent);color:#fff;font-size:.72rem;font-weight:950;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 5px 14px rgba(8,43,87,.15)}
+.respiratory-path-callout::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);border-width:6px 6px 0;border-style:solid;border-color:var(--lesson-accent) transparent transparent}
 .respiratory-current-lesson{scroll-margin-top:90px}
 .respiratory-trail-panel{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:clamp(17px,2.4vw,26px);box-shadow:0 10px 28px rgba(8,43,87,.08)}
 .respiratory-lesson-kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.86rem;font-weight:760}
+.respiratory-mastery-stars{display:inline-flex;padding:4px 9px;border:1px solid #dfc36f;border-radius:999px;background:#fff8dd;color:#a6720c;font-size:.94rem;letter-spacing:.06em;line-height:1}
 .respiratory-trail-panel h3{font-size:clamp(1.35rem,2.4vw,1.85rem);margin:.75rem 0 .45rem;color:var(--navy)}
 .respiratory-lesson-prompt{margin:0 0 16px;color:var(--muted);line-height:1.5;font-weight:700}
 .respiratory-guided-sequence{border:1px solid var(--line);border-radius:18px;background:var(--sky);padding:16px;margin:0 0 16px}
@@ -45,14 +55,20 @@
 .respiratory-guided-list li{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:0 0 16px}
 .respiratory-guided-list li:not(:last-child)::after{content:"";position:absolute;left:19px;top:37px;bottom:0;border-left:3px solid var(--line)}
 .respiratory-guided-list li>span{position:relative;z-index:1;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:3px solid var(--teal);color:var(--teal);font-weight:950;box-shadow:0 3px 0 rgba(8,43,87,.08)}
+.respiratory-guided-list li:nth-child(2)>span{border-color:#7254bd;color:#7254bd}
+.respiratory-guided-list li:nth-child(3)>span{border-color:#cf7d2e;color:#a75d16}
 .respiratory-guided-list li strong{display:block;font-size:.98rem;margin-top:2px;color:var(--navy)}
 .respiratory-guided-list li p{margin:.3rem 0 .65rem;color:var(--muted);line-height:1.48;max-width:72ch}
 .respiratory-guided-list .btn{min-height:42px}
 .respiratory-lesson-finish{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:3px;padding-top:14px;border-top:1px solid var(--line)}
 .respiratory-lesson-finish>span{font-weight:850;color:var(--navy)}
 .respiratory-lesson-finish .btn{min-height:44px}
+.respiratory-lesson-finish .btn[disabled]{opacity:.58;cursor:not-allowed;box-shadow:none}
 .respiratory-trail-learning-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .respiratory-trail-learning-grid section{border:1px solid var(--line);border-radius:14px;padding:13px;background:var(--sky)}
+.respiratory-trail-learning-grid section:nth-child(1){background:#eef9fb;border-color:#b9dce3}
+.respiratory-trail-learning-grid section:nth-child(2){background:#f7f3ff;border-color:#d4c7ee}
+.respiratory-trail-learning-grid section:nth-child(3){background:#fff9e8;border-color:#e7d39a}
 .respiratory-trail-learning-grid section>span{display:block;text-transform:uppercase;letter-spacing:.07em;font-size:.7rem;font-weight:800;color:var(--muted);margin-bottom:6px}
 .respiratory-trail-learning-grid p{margin:0;line-height:1.52}
 .respiratory-study-chapter strong,.respiratory-study-chapter small,.respiratory-study-chapter span{display:block}

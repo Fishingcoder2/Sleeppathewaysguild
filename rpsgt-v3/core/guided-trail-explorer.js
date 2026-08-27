@@ -5,6 +5,7 @@
   if(!engine||!storage) return;
 
   const RECENT_CHECKPOINT_WINDOW=3;
+  const XP_REWARDS={taskBadge:100,domainMedal:250};
   const DOMAIN_MEDALS={
     D1:'Clinical Guide',
     D2:'Study Signal Scout',
@@ -26,11 +27,11 @@
   function seededRandom(seed){let state=hash(seed)||1;return function(){state^=state<<13;state^=state>>>17;state^=state<<5;return(state>>>0)/4294967296;};}
   function shuffle(items,seed){const copy=items.slice();const random=seededRandom(seed);for(let index=copy.length-1;index>0;index-=1){const swap=Math.floor(random()*(index+1));[copy[index],copy[swap]]=[copy[swap],copy[index]];}return copy;}
 
-  function uniqueEligible(records,taskCode){
+  function uniqueEligible(records,taskCode,filter){
     const seen=new Set();
     const unique=[];
     (records||[]).forEach(question=>{
-      if(!engine.eligibleQuestion(question,taskCode)) return;
+      if(!engine.eligibleQuestion(question,taskCode,filter)) return;
       const key=fingerprint(question);
       if(!key||seen.has(key)) return;
       seen.add(key);
@@ -43,10 +44,10 @@
     const history=saved&&saved.guidedStudy&&Array.isArray(saved.guidedStudy.checkpointHistory)?saved.guidedStudy.checkpointHistory:[];
     return history.filter(item=>item&&item.task===taskCode).slice(0,RECENT_CHECKPOINT_WINDOW).flatMap(item=>Array.isArray(item.questionIds)?item.questionIds:[]).map(String);
   }
-  function selectFreshQuestions(records,taskCode,count,seed){
+  function selectFreshQuestions(records,taskCode,count,seed,filter){
     const desired=Math.max(0,Number(count)||15);
-    const eligible=(records||[]).filter(question=>engine.eligibleQuestion(question,taskCode));
-    const unique=uniqueEligible(records,taskCode);
+    const eligible=(records||[]).filter(question=>engine.eligibleQuestion(question,taskCode,filter));
+    const unique=uniqueEligible(records,taskCode,filter);
     const recentIds=new Set(recentQuestionIds(taskCode));
     const byId=new Map(eligible.map(question=>[String(question.id),fingerprint(question)]));
     const recentFingerprints=new Set([...recentIds].map(id=>byId.get(id)).filter(Boolean));
@@ -59,14 +60,17 @@
   }
 
   const originalSelect=engine.selectQuestions.bind(engine);
-  engine.selectQuestions=function(records,taskCode,count,seed){
+  engine.selectQuestions=function(records,taskCode,count,seed,filter){
+    const desired=Math.max(0,Number(count)||15);
     try{
-      const selected=selectFreshQuestions(records,taskCode,count,seed);
-      const desired=Math.max(0,Number(count)||15);
-      return selected.length>=Math.min(desired,uniqueEligible(records,taskCode).length)?selected:originalSelect(records,taskCode,count,seed);
+      // Let the canonical selector apply an explicit or queued concept filter first.
+      // Fresh-question rotation then works only inside that already-approved pool.
+      const filteredPool=originalSelect(records,taskCode,Math.max(desired,(records||[]).length),String(seed||taskCode)+'|concept-pool',filter);
+      const selected=selectFreshQuestions(filteredPool,taskCode,desired,seed);
+      return selected.length>=Math.min(desired,filteredPool.length)?selected:filteredPool.slice(0,desired).map(clone);
     }catch(error){
       console.warn('Fresh Guided Trail rotation fell back to the standard selector.',error);
-      return originalSelect(records,taskCode,count,seed);
+      return originalSelect(records,taskCode,count,seed,filter);
     }
   };
 
@@ -96,7 +100,10 @@
       {id:'four-horizons',name:'Four Horizons Ribbon',icon:'🌄',earned:domainMedalCount===4,description:'Earn all four domain medals.'},
       {id:'full-expedition',name:'Full Expedition Ribbon',icon:'🏕️',earned:taskBadgeCount===12,description:'Earn all 12 Guided Trail task badges.'}
     ];
-    return {taskBadgeCount,domainMedalCount,studyMarkCount,checkpointCount:history.length,taskAwards,domainAwards,history,rank,nextRank,ribbons};
+    const earnedRibbonCount=ribbons.filter(item=>item.earned).length;
+    const xp=taskBadgeCount*XP_REWARDS.taskBadge+domainMedalCount*XP_REWARDS.domainMedal;
+    const maxXp=taskCodes().length*XP_REWARDS.taskBadge+Object.keys(DOMAIN_MEDALS).length*XP_REWARDS.domainMedal;
+    return {taskBadgeCount,domainMedalCount,studyMarkCount,checkpointCount:history.length,taskAwards,domainAwards,history,rank,nextRank,ribbons,earnedRibbonCount,xp,maxXp};
   }
 
   function currentTaskTitle(code){const card=document.getElementById(code);return String(card&&card.querySelector('h3')&&card.querySelector('h3').textContent||code).trim();}
@@ -108,13 +115,15 @@
     const medals=Object.entries(DOMAIN_MEDALS).map(([code,name])=>`<div class="explorer-medal ${p.domainAwards[code]?'earned':'locked'}"><span aria-hidden="true">${p.domainAwards[code]?'🏅':'○'}</span><strong>${name}</strong><small>${code} domain medal</small></div>`).join('');
     const ribbons=p.ribbons.map(item=>`<div class="explorer-ribbon ${item.earned?'earned':'locked'}"><span aria-hidden="true">${item.earned?item.icon:'◇'}</span><div><strong>${item.name}</strong><small>${item.earned?'Earned':item.description}</small></div></div>`).join('');
     const next=p.nextRank?`${p.nextRank.name} at ${p.nextRank.minimum} task badges${p.nextRank.domainMinimum?' and '+p.nextRank.domainMinimum+' domain medals':''}.`:'You have reached the top Explorer rank in this Guided Trail.';
+    const xpPercent=p.maxXp?Math.round(p.xp/p.maxXp*100):0;
     host.innerHTML=`<div class="explorer-journey-card">
       <div class="explorer-heading"><div><div class="eyebrow">Sleep Pathways Explorer Journey</div><h2>Build your field kit as you learn</h2><p>Task badges become trail patches. Domain completions earn medals. Special study milestones add ribbons and virtual uniform upgrades.</p></div><div class="explorer-rank"><span class="explorer-rank-icon" aria-hidden="true">${p.rank.icon}</span><small>Current rank</small><strong>${p.rank.name}</strong><span>${p.rank.upgrade}</span></div></div>
-      <div class="explorer-stats"><span><strong>${p.taskBadgeCount}/12</strong> trail patches</span><span><strong>${p.domainMedalCount}/4</strong> domain medals</span><span><strong>${p.ribbons.filter(item=>item.earned).length}/${p.ribbons.length}</strong> ribbons</span></div>
+      <div class="explorer-stats"><span><strong>${p.xp.toLocaleString()}</strong> Explorer XP</span><span><strong>${p.taskBadgeCount}/12</strong> trail patches</span><span><strong>${p.domainMedalCount}/4</strong> domain medals</span><span><strong>${p.earnedRibbonCount}/${p.ribbons.length}</strong> ribbons</span></div>
+      <div class="explorer-xp"><div><strong>Explorer XP</strong><span>${p.xp.toLocaleString()} / ${p.maxXp.toLocaleString()}</span></div><div class="explorer-xp-track" aria-label="${xpPercent}% of Guided Study Explorer XP earned"><span style="width:${xpPercent}%"></span></div><small>First-time task badges earn ${XP_REWARDS.taskBadge} XP and domain medals earn ${XP_REWARDS.domainMedal} XP. Retakes can strengthen mastery without farming XP.</small></div>
       <div class="explorer-uniform"><div class="explorer-uniform-label"><strong>Your virtual Explorer vest</strong><span>Next uniform upgrade: ${next}</span></div><div class="explorer-patch-rack">${patches}</div></div>
       <div class="explorer-award-grid"><section><h3>Domain medals</h3><div class="explorer-medal-grid">${medals}</div></section><section><h3>Trail ribbons</h3><div class="explorer-ribbon-grid">${ribbons}</div></section></div>
       <div class="explorer-rotation-note"><strong>Fresh-question rotation:</strong> Guided Trail holds back recently used questions when enough unseen questions are available, and identical question wording is kept out of the same checkpoint.</div>
-      <p class="explorer-boundary">Sleep Pathways Explorer ranks, patches, ribbons, and medals are fun educational achievements from Sleep Pathways Guild. They are not BRPT credentials or exam results.</p>
+      <p class="explorer-boundary">Sleep Pathways Explorer XP, ranks, patches, ribbons, and medals are fun educational achievements from Sleep Pathways Guild. They are not BRPT credentials or exam results.</p>
     </div>`;
   }
 
@@ -158,5 +167,5 @@
   if(achievement)new MutationObserver(()=>requestAnimationFrame(()=>{enhanceAchievement();render();})).observe(achievement,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);else render();
 
-  window.RPSGTGuidedTrailExplorer={RECENT_CHECKPOINT_WINDOW,RANKS:clone(RANKS),uniqueEligible,selectFreshQuestions,progress,render};
+  window.RPSGTGuidedTrailExplorer={RECENT_CHECKPOINT_WINDOW,XP_REWARDS:clone(XP_REWARDS),RANKS:clone(RANKS),uniqueEligible,selectFreshQuestions,progress,render};
 })();
