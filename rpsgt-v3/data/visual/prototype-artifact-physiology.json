@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "name": "RPSGT Artifact vs Physiology Visual Pack 1",
+    "version": 1,
+    "stationId": "artifact-physiology",
+    "appAuthored": true,
+    "sourceType": "app-authored-schematic",
+    "sourceBasis": "Built from Robertson, Marshall, and Carno (2014), especially Chapter 10 on recognizing and minimizing recording artifacts. No patient tracing or proprietary scoring-manual figure is reproduced.",
+    "clinicalBoundary": "Educational signal-quality and pattern-recognition practice only. Current official guidance, facility policy, equipment instructions, and supervised clinical competency remain authoritative.",
+    "apaReference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby/Elsevier."
+  },
+  "cases": [
+    {
+      "id": "artifact-line-frequency",
+      "title": "Uniform high-frequency contamination across bioelectric channels",
+      "answer": "Artifact — line-frequency / electrical interference",
+      "rationale": "The suspicious activity is highly uniform in frequency and morphology and appears across several bioelectric channels at the same time. That cross-channel uniformity is characteristic of electrical interference rather than a physiologic EEG event.",
+      "evidence": {
+        "answer": "The same uniform high-frequency pattern appears simultaneously across multiple bioelectric channels.",
+        "options": [
+          "The same uniform high-frequency pattern appears simultaneously across multiple bioelectric channels.",
+          "Only one EEG channel changes while all other channels remain normal.",
+          "The waveform is time-locked to every QRS complex.",
+          "Airflow and effort fall together with a delayed oxygen change."
+        ]
+      },
+      "features": [{"type":"line-noise","start":7.0,"end":20.0,"channels":["F4-M1","C4-M1","O2-M1","E1-M2","E2-M2","Chin"]}]
+    },
+    {
+      "id": "artifact-ecg",
+      "title": "Cardiac contamination in EEG and EOG channels",
+      "answer": "Artifact — ECG contamination",
+      "rationale": "The extra deflections in the EEG and EOG channels repeat at the same interval as the ECG QRS complexes. A waveform that is locked to the cardiac cycle should be traced back to the ECG before it is interpreted as cerebral or ocular physiology.",
+      "evidence": {
+        "answer": "Suspicious deflections in the EEG/EOG channels are time-locked to the QRS complexes on ECG.",
+        "options": [
+          "Suspicious deflections in the EEG/EOG channels are time-locked to the QRS complexes on ECG.",
+          "The activity is a uniform 60-cycle pattern unrelated to the cardiac rhythm.",
+          "The slow waves appear only during an airflow reduction.",
+          "The nasal pressure channel alone becomes flat while the thermal and effort channels remain normal."
+        ]
+      },
+      "features": [{"type":"ecg-contamination","start":3.0,"end":27.0,"channels":["F4-M1","C4-M1","E1-M2","E2-M2"]}]
+    },
+    {
+      "id": "artifact-sweat",
+      "title": "Very slow high-amplitude drift that resembles delta activity",
+      "answer": "Artifact — slow-frequency / sweat pattern",
+      "rationale": "The broad slow baseline shifts occur across scalp and eye channels but are not expressed like normal physiologic slow waves across the montage. Robertson, Marshall, and Carno describe sweat and breathing-related artifact as slow-frequency activity that may be mistaken for N3 by inexperienced scorers.",
+      "evidence": {
+        "answer": "Broad slow baseline shifts affect scalp/face channels while ECG and chin EMG do not show the same slow waveform.",
+        "options": [
+          "Broad slow baseline shifts affect scalp/face channels while ECG and chin EMG do not show the same slow waveform.",
+          "All respiratory channels show a coordinated reduction with a delayed desaturation.",
+          "The deflections are locked to each QRS complex.",
+          "The activity is confined to one isolated spindle-frequency burst."
+        ]
+      },
+      "features": [{"type":"slow-drift","start":5.0,"end":26.0,"channels":["F4-M1","C4-M1","O2-M1","E1-M2","E2-M2"]}]
+    },
+    {
+      "id": "artifact-airflow-dropout",
+      "title": "Single-sensor airflow loss with preserved corroborating signals",
+      "answer": "Artifact — nasal pressure signal dropout",
+      "rationale": "Nasal pressure becomes flat, but thermal airflow and both effort channels continue normally and oxygen remains stable. A single-channel loss without corroboration should be treated as a signal-quality problem rather than automatically scored as a respiratory event.",
+      "evidence": {
+        "answer": "Nasal pressure is lost while thermal airflow, thoracic effort, abdominal effort, and SpO₂ remain physiologically consistent.",
+        "options": [
+          "Nasal pressure is lost while thermal airflow, thoracic effort, abdominal effort, and SpO₂ remain physiologically consistent.",
+          "Both airflow channels fall while effort persists and oxygen later declines.",
+          "EEG and EOG show the same uniform high-frequency electrical pattern.",
+          "All suspicious EEG deflections repeat with the ECG QRS complexes."
+        ]
+      },
+      "features": [{"type":"nasal-dropout","start":9.0,"end":21.0,"channels":["Nasal Pressure"]}]
+    },
+    {
+      "id": "physiology-obstructive",
+      "title": "Corroborated respiratory physiology — not artifact",
+      "answer": "Physiologic event — corroborated obstructive respiratory pattern",
+      "rationale": "Both airflow channels are markedly reduced while thoracic and abdominal effort continue, followed by recovery and a delayed oxygen change. Multiple independent channels tell the same physiologic story, so the finding should not be dismissed as a single-sensor artifact.",
+      "evidence": {
+        "answer": "Both airflow channels change together while respiratory effort persists, followed by recovery and a delayed SpO₂ response.",
+        "options": [
+          "Both airflow channels change together while respiratory effort persists, followed by recovery and a delayed SpO₂ response.",
+          "Only nasal pressure becomes flat while thermal airflow and effort remain unchanged.",
+          "The EEG deflections are exactly time-locked to the QRS complexes.",
+          "A uniform high-frequency waveform appears in unrelated bioelectric channels."
+        ]
+      },
+      "features": [{"type":"obstructive-pattern","start":8.0,"end":20.0,"channels":["Nasal Pressure","Thermistor","Thorax RIP","Abdomen RIP","SpO2"]}]
+    }
+  ]
+}
