@@ -16,17 +16,17 @@ function beatsForKind(kind){
 
 function normalBeatPath(x){
   return [
-    `L ${x-38} ${BASELINE}`,
-    `C ${x-34} ${BASELINE} ${x-32} 111 ${x-27} 111`,
-    `C ${x-22} 111 ${x-20} ${BASELINE} ${x-16} ${BASELINE}`,
-    `L ${x-8} ${BASELINE}`,
-    `L ${x-5} 122`,
-    `L ${x} 68`,
-    `L ${x+4} 139`,
+    `L ${x-40} ${BASELINE}`,
+    `C ${x-37} ${BASELINE} ${x-35} 108 ${x-30} 108`,
+    `C ${x-25} 108 ${x-23} ${BASELINE} ${x-19} ${BASELINE}`,
+    `L ${x-9} ${BASELINE}`,
+    `L ${x-6} 121`,
+    `L ${x} 76`,
+    `L ${x+4} 134`,
     `L ${x+8} ${BASELINE}`,
-    `L ${x+19} ${BASELINE}`,
-    `C ${x+24} ${BASELINE} ${x+27} 104 ${x+34} 103`,
-    `C ${x+42} 102 ${x+47} 111 ${x+51} ${BASELINE}`
+    `L ${x+18} ${BASELINE}`,
+    `C ${x+22} ${BASELINE} ${x+25} 106 ${x+30} 102`,
+    `C ${x+35} 98 ${x+40} 105 ${x+44} ${BASELINE}`
   ].join(' ');
 }
 
@@ -113,7 +113,7 @@ function artifactPath(){
 }
 
 function pLabelMarkup(kind){
-  return beatsForKind(kind).slice(0,3).map(x=>`<text x="${x-30}" y="101">P</text>`).join('');
+  return beatsForKind(kind).slice(0,3).map(x=>`<text x="${x-30}" y="96">P</text>`).join('');
 }
 
 function syncPulseRow(svg,kind){
