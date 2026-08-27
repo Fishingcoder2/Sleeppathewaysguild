@@ -8,6 +8,7 @@ const read=relative=>fs.readFileSync(path.join(root,relative),'utf8');
 const study=read('study.html');
 const practice=read('practice.html');
 const completion=read('core/guided-study-completion.js');
+const completionCss=read('assets/guided-study-completion.css');
 const actions=read('core/guided-study-question-actions.js');
 const resources=read('core/study-resource-catalog.js');
 const storageGuard=read('core/guided-study-storage-guard.js');
@@ -38,8 +39,20 @@ assert.match(completion,/data-guided-award-launch/);
 assert.match(completion,/Start Readiness Check/);
 assert.match(completion,/marked complete automatically/);
 assert.match(completion,/domain medal/);
+assert.match(completion,/XP_REWARDS=\{taskBadge:100,domainMedal:250\}/);
+assert.match(completion,/data-guided-award-xp/);
+assert.match(completion,/soundEffects/);
+assert.match(completion,/AudioContext\|\|win\.webkitAudioContext/);
+assert.match(completion,/playFanfare\(win,saved/);
+assert.doesNotMatch(completion,/\bCharge\b|audio\/(?:mpeg|mp3)|\.mp3|\.wav/i,'achievement audio must be an original generated tone, not an embedded recognizable song');
+assert.match(completion,/engine\.selectQuestions=function\(records,taskCode,count,seed,filter\)/);
+assert.match(completion,/originalSelect\(filterRetakeRecords\(records,excluded,count\),taskCode,count,seed,filter\)/);
+assert.match(completion,/data-checkpoint-concept/);
+assert.match(completion,/conceptId/);
 assert.match(completion,/querySelectorAll\('\[data-trail-mark\]'\)\.forEach\(button=>button\.remove\(\)\)/);
 assert.match(completion,/legacyAchievement\.remove\(\)/);
+assert.match(completionCss,/guided-award-xp/);
+assert.match(completionCss,/prefers-reduced-motion/);
 for(const awardName of ['Clinical Guide','Study Signal Scout','Scoring Pathfinder','Therapy Trail Guide']){
   assert.ok(completion.includes(awardName),`Guided Study completion layer is missing named Guild domain medal: ${awardName}`);
 }
@@ -79,4 +92,4 @@ assert.match(guidedCoach,/Repeat pattern/);
 assert.match(resources,/topicFamilyFiles/);
 assert.match(resources,/titlesForQuestion/);
 
-console.log('Guided Study automatic accomplishment and next-step completion shell contract passed.');
+console.log('Guided Study automatic accomplishment, XP, opt-in fanfare, concept-retake, and next-step shell contracts passed.');

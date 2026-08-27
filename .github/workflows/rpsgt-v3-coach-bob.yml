@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - build/rpsgt-v3-modular
+      - main
     paths:
       - rpsgt-v3/core/coach-bob-engine.js
       - rpsgt-v3/core/guided-study-coach.js
@@ -12,9 +13,12 @@ on:
       - rpsgt-v3/core/guided-study-completion.js
       - rpsgt-v3/core/guided-study-storage-guard.js
       - rpsgt-v3/core/guided-trail-engine.js
+      - rpsgt-v3/core/guided-trail-explorer.js
+      - rpsgt-v3/core/study.js
       - rpsgt-v3/core/practice-coach.js
       - rpsgt-v3/core/practice-question-actions.js
       - rpsgt-v3/assets/guided-study-completion.css
+      - rpsgt-v3/assets/guided-trail-explorer.css
       - rpsgt-v3/assets/practice-coach.css
       - rpsgt-v3/study.html
       - rpsgt-v3/practice.html
@@ -37,9 +41,12 @@ on:
       - rpsgt-v3/core/guided-study-completion.js
       - rpsgt-v3/core/guided-study-storage-guard.js
       - rpsgt-v3/core/guided-trail-engine.js
+      - rpsgt-v3/core/guided-trail-explorer.js
+      - rpsgt-v3/core/study.js
       - rpsgt-v3/core/practice-coach.js
       - rpsgt-v3/core/practice-question-actions.js
       - rpsgt-v3/assets/guided-study-completion.css
+      - rpsgt-v3/assets/guided-trail-explorer.css
       - rpsgt-v3/assets/practice-coach.css
       - rpsgt-v3/study.html
       - rpsgt-v3/practice.html
@@ -70,6 +77,8 @@ jobs:
           node --check rpsgt-v3/core/guided-study-completion.js
           node --check rpsgt-v3/core/guided-study-storage-guard.js
           node --check rpsgt-v3/core/guided-trail-engine.js
+          node --check rpsgt-v3/core/guided-trail-explorer.js
+          node --check rpsgt-v3/core/study.js
           node --check rpsgt-v3/core/practice-coach.js
       - name: Validate Coach Bob reasoning engine
         run: node rpsgt-v3/scripts/test-coach-bob-engine.mjs

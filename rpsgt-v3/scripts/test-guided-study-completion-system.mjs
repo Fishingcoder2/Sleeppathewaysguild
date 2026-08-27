@@ -40,6 +40,15 @@ assert.equal(engine.nextTaskRoute(blueprint,'D1C').next.code,'D2A');
 const records=[{id:'q1'},{id:'q2'},{id:'q3'},{id:'q4'},{id:'q5'},{id:'q6'}];
 assert.deepEqual(engine.filterRetakeRecords(records,['q1','q2'],5).map(item=>item.id),['q3','q4','q5','q6']);
 
+assert.deepEqual(engine.XP_REWARDS,{taskBadge:100,domainMedal:250});
+assert.equal(engine.soundEnabled({learner:{settings:{soundEffects:true}}}),true);
+assert.equal(engine.soundEnabled({learner:{settings:{soundEffects:false}}}),false);
+assert.equal(engine.soundEnabled({}),false,'celebration sounds must remain off by default');
+let contextConstructed=false;
+const silentWin={AudioContext:class{constructor(){contextConstructed=true;}}};
+assert.equal(engine.playFanfare(silentWin,{},'task'),false,'sound-off learners must not create an AudioContext');
+assert.equal(contextConstructed,false,'sound-off learners must remain silent');
+
 const before={review:{flaggedIds:['q1']},flashcards:{cards:{one:{id:'one'}}},awards:{seenCeremonyIds:['guided-task:D1A']},guidedStudy:{checkpointHistory:[]}};
 const after={review:{flaggedIds:[]},flashcards:{cards:{}},awards:{seenCeremonyIds:[]},guidedStudy:{checkpointHistory:[record]}};
 const reconciled=storageGuard.reconcile(before,after);
@@ -54,7 +63,7 @@ const blocked=coachSafety.safePreAnswer('Choose N2 because it is correct.','N2',
 assert.equal(blocked,'Use the evidence in the stem.','pre-score safety must replace answer-leaking guidance');
 assert.equal(coachSafety.containsAnswer('Remove choices that do not fit.','REM'),false,'short answer tokens must not match inside unrelated words');
 assert.equal(coachSafety.containsAnswer('The answer is REM.','REM'),true);
-assert.equal(engine.VERSION,'1.1.0');
+assert.equal(engine.VERSION,'1.2.0');
 assert.deepEqual(engine.DOMAIN_AWARD_NAMES,{
   D1:'Clinical Guide',
   D2:'Study Signal Scout',
@@ -63,4 +72,4 @@ assert.deepEqual(engine.DOMAIN_AWARD_NAMES,{
 });
 assert.equal(storageGuard.VERSION,'1.1.0');
 assert.equal(coachSafety.VERSION,'2.0.0');
-console.log('Guided Study automatic accomplishment system contract passed.');
+console.log('Guided Study automatic accomplishment, XP, opt-in sound, and safety contracts passed.');
