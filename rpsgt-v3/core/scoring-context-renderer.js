@@ -1,8 +1,8 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;root.RPSGTScoringContextRenderer=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
 'use strict';
-const VERSION='1.1.0',TAU=Math.PI*2,LABEL_WIDTH=118,TOP=36,BOTTOM=28,ROW=62;
-const FREQUENCY_BANDS=Object.freeze({slowWave:[0.5,2],thetaLamf:[4,7],alpha:[8,13],spindle:[11,16],spindleCommon:[12,14],sawtooth:[2,6],betaMin:14,arousalFast:[16,30]});
-const TEACHING_FREQUENCIES=Object.freeze({slowLow:.9,slowHigh:1.4,sawtooth:3.2,thetaLow:4.7,thetaMid:5.6,thetaHigh:6.6,alpha:10,beta:18,spindle:13.2,arousalLow:16.8,arousalMid:21.6,arousalHigh:27.4});
+const VERSION='1.2.0',TAU=Math.PI*2,LABEL_WIDTH=118,TOP=36,BOTTOM=28,ROW=62;
+const FREQUENCY_BANDS=Object.freeze({slowWave:[0.5,2],thetaLamf:[4,7],alpha:[8,13],spindle:[11,16],spindleCommon:[12,14],sawtooth:[2,6],betaMin:14,arousalFast:[6,20]});
+const TEACHING_FREQUENCIES=Object.freeze({slowLow:.9,slowHigh:1.4,sawtooth:3.2,thetaLow:4.7,thetaMid:5.6,thetaHigh:6.6,alpha:10,beta:18,spindle:13.2,arousalLow:6.2,arousalMid:9.6,arousalHigh:17.8});
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 const gauss=(x,c,w)=>Math.exp(-Math.pow((x-c)/Math.max(.001,w),2));
 const jitter=(t,p)=>.055*Math.sin(TAU*17.3*t+p)+.035*Math.sin(TAU*23.7*t+p*.7)+.022*Math.sin(TAU*31.1*t+.3+p);
@@ -15,7 +15,7 @@ function thetaLamf(t,p,profile){
 function wakeEEG(t,p){return .68*mod(t,TEACHING_FREQUENCIES.alpha,p,.055,.05)+.14*mod(t,11.2,p*.7+.2,.071,.04)+.12*mod(t,TEACHING_FREQUENCIES.beta,p*.45+.6,.109,.04)+.08*mod(t,TEACHING_FREQUENCIES.thetaHigh,p*.83+.4,.083,.07)+.35*jitter(t,p);}
 function n3EEG(t,p){return .62*mod(t,TEACHING_FREQUENCIES.slowLow,p,.041,.09)+.34*mod(t,TEACHING_FREQUENCIES.slowHigh,p*.73+.45,.053,.08)+.07*mod(t,TEACHING_FREQUENCIES.thetaMid,p*.51+.61,.091,.06)+.22*jitter(t,p);}
 const fast=(t,p)=>.32*Math.sin(TAU*14.5*t+p)+.22*Math.sin(TAU*19.2*t+.4+p)+.12*Math.sin(TAU*25.7*t+p*.8);
-const arousalFast=(t,p)=>.46*Math.sin(TAU*TEACHING_FREQUENCIES.arousalLow*t+p)+.28*Math.sin(TAU*TEACHING_FREQUENCIES.arousalMid*t+.4+p)+.14*Math.sin(TAU*TEACHING_FREQUENCIES.arousalHigh*t+p*.8);
+const arousalFast=(t,p)=>.25*mod(t,TEACHING_FREQUENCIES.arousalLow,p,.081,.08)+.46*mod(t,TEACHING_FREQUENCIES.arousalMid,p*.79+.32,.093,.07)+.17*mod(t,TEACHING_FREQUENCIES.arousalHigh,p*.61+.64,.121,.05)+.035*jitter(t,p+.2);
 const breath=(t,p)=>Math.sin(TAU*(.235+.012*Math.sin(TAU*.018*t+p))*t+p)*(.92+.09*Math.sin(TAU*.031*t+p*.4));
 const inWindow=(t,start,end)=>t>=Number(start)&&t<=Number(end);
 function rowsFor(study){if(study.kind==='limb')return [{label:'C3-M2',type:'eeg'},{label:'Chin EMG',type:'chin'},{label:'L Leg',type:'leg-left'},{label:'R Leg',type:'leg-right'},{label:'Nasal pressure',type:'airflow'}];if(study.kind==='boundary')return [{label:'C3-M2',type:'eeg'},{label:'Nasal pressure',type:'airflow'},{label:'Thermistor',type:'thermal'},{label:'Thorax',type:'thorax'},{label:'Abdomen',type:'abdomen'}];return [{label:'F3-M2',type:'eeg'},{label:'C3-M2',type:'eeg'},{label:'E1-M2',type:'eog-left'},{label:'E2-M2',type:'eog-right'},{label:'Chin EMG',type:'chin'}];}
@@ -30,13 +30,13 @@ function stageEEG(study,t,phase){
   if(study.kind==='transition'&&Number.isFinite(Number(study.wakeStart))&&t>=Number(study.wakeStart))value=wakeEEG(t,phase);
   const aStart=Number(study.arousalStart),aEnd=aStart+Number(study.arousalDuration||0);
   if(Number.isFinite(aStart)&&inWindow(t,aStart,aEnd)){
-    const edge=Math.min(1,(t-aStart)/.08,(aEnd-t)/.08),mix=Math.max(0,edge);
-    value=(1-.72*mix)*value+mix*(1.32*arousalFast(t,phase+.2));
+    const edge=Math.min(1,(t-aStart)/.18,(aEnd-t)/.18),mix=Math.max(0,edge);
+    value=(1-.48*mix)*value+mix*(.72*arousalFast(t,phase+.2));
   }
   return value;
 }
 function eye(study,t,polarity,phase){const stage=String(study.stage||'N2').toUpperCase(),cerebral=.45*stageEEG(study,t,phase);if(stage==='R')return cerebral+polarity*(.54*Math.sin(TAU*.42*t+phase)+.72*(gauss(t,8.4,.09)-gauss(t,8.7,.12))-.62*(gauss(t,21.2,.08)-gauss(t,21.5,.12)));return cerebral+polarity*.18*Math.sin(TAU*.12*t+phase);}
-function chin(study,t,phase){const stage=String(study.stage||'N2').toUpperCase();let value=(stage==='R'?.08:.2)*fast(t,phase);const aStart=Number(study.arousalStart),aEnd=aStart+Number(study.arousalDuration||0);if(study.chinRise===true&&Number.isFinite(aStart)&&inWindow(t,aStart,aEnd))value+=.9*fast(t,phase+.4);if(study.kind==='transition'&&Number.isFinite(Number(study.wakeStart))&&t>=Number(study.wakeStart))value+=.65*fast(t,phase+.7);return value;}
+function chin(study,t,phase){const stage=String(study.stage||'N2').toUpperCase();let value=(stage==='R'?.08:.2)*fast(t,phase);const aStart=Number(study.arousalStart),aEnd=aStart+Number(study.arousalDuration||0);if(Number.isFinite(aStart)&&inWindow(t,aStart,aEnd)&&(study.chinRise===true||study.chinRise==='slight'))value+=(study.chinRise==='slight'?.28:.55)*fast(t,phase+.4);if(study.kind==='transition'&&Number.isFinite(Number(study.wakeStart))&&t>=Number(study.wakeStart))value+=.65*fast(t,phase+.7);return value;}
 function leg(study,t,side){let value=.05*fast(t,side==='left'?.4:1.1);for(const center of Array.isArray(study.legBursts)?study.legBursts:[]){const offset=side==='right'?.12:0,env=gauss(t,Number(center)+offset,.42);value+=env*(1.35*fast(t,side==='left'?.2:.9)+.58*Math.sin(TAU*7*t));}return value;}
 function respiratoryAmplitude(study,t){for(const event of Array.isArray(study.respEvents)?study.respEvents:[]){if(inWindow(t,event.start,event.end))return .16;}if(study.respEvent&&inWindow(t,study.respEvent.start,study.respEvent.end))return .08;return 1;}
 function sample(study,row,t,index){const p=.31+index*.83;if(row.type==='eeg')return stageEEG(study,t,p);if(row.type==='eog-left')return eye(study,t,1,p);if(row.type==='eog-right')return eye(study,t,-1,p);if(row.type==='chin')return chin(study,t,p);if(row.type==='leg-left')return leg(study,t,'left');if(row.type==='leg-right')return leg(study,t,'right');if(row.type==='airflow')return breath(t,p)*respiratoryAmplitude(study,t);if(row.type==='thermal')return .82*breath(t,p+.06)*respiratoryAmplitude(study,t);if(row.type==='thorax')return breath(t,p+.12)*(study.respEvent&&inWindow(t,study.respEvent.start,study.respEvent.end)?1.22:1);if(row.type==='abdomen')return breath(t,p+.22)*(study.respEvent&&inWindow(t,study.respEvent.start,study.respEvent.end)?1.18:1);return 0;}
