@@ -7,6 +7,7 @@
   const VERSION='1.3.0';
   const PASS_PERCENT=80;
   const BADGE_QUESTION_COUNT=15;
+  let pendingQuestionFilter=null;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const taskList=blueprint=>(blueprint&&blueprint.domains||[]).flatMap(domain=>(domain.tasks||[]).map(task=>({...task,domain:domain.id,domainName:domain.fullName})));
@@ -69,10 +70,24 @@
     if(!matchesQuestionFilter(record,filter)) return false;
     return true;
   }
+  function queueQuestionFilter(taskCode,filter,meta){
+    pendingQuestionFilter={taskCode:String(taskCode||''),filter:isObject(filter)?clone(filter):null,meta:isObject(meta)?clone(meta):{},queuedAt:Date.now()};
+    return clone(pendingQuestionFilter.meta);
+  }
+  function consumeQuestionFilter(taskCode){
+    const pending=pendingQuestionFilter;
+    if(!pending) return null;
+    if(Date.now()-Number(pending.queuedAt||0)>15000){pendingQuestionFilter=null;return null;}
+    if(pending.taskCode!==String(taskCode||'')) return null;
+    pendingQuestionFilter=null;
+    return pending.filter;
+  }
+  function clearQueuedQuestionFilter(){pendingQuestionFilter=null;}
   function hash(text){let value=2166136261;for(let i=0;i<String(text).length;i+=1){value^=String(text).charCodeAt(i);value=Math.imul(value,16777619);}return value>>>0;}
   function seededRandom(seed){let state=hash(seed)||1;return function(){state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;};}
   function selectQuestions(records,taskCode,count,seed,filter){
-    const eligible=(records||[]).filter(record=>eligibleQuestion(record,taskCode,filter));
+    const effectiveFilter=isObject(filter)?filter:consumeQuestionFilter(taskCode);
+    const eligible=(records||[]).filter(record=>eligibleQuestion(record,taskCode,effectiveFilter));
     const copy=eligible.slice();const random=seededRandom(seed||taskCode);
     for(let i=copy.length-1;i>0;i-=1){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
     return copy.slice(0,Math.max(0,Number(count)||BADGE_QUESTION_COUNT)).map(clone);
@@ -129,5 +144,5 @@
     });
     return {state,rows,domains,counts:{studyMarks:rows.filter(row=>row.studyMarked).length,taskAwards:rows.filter(row=>row.award).length,domainAwards:domains.filter(domain=>domain.award).length,checkpoints:state.checkpointHistory.length},latestCheckpoint:state.checkpointHistory[0]||null,currentFocus:state.trailFocus||state.lastTrailPost||null};
   }
-  return {VERSION,PASS_PERCENT,BADGE_QUESTION_COUNT,normalizeState,taskList,taskMap,completePrompt,matchesQuestionFilter,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
+  return {VERSION,PASS_PERCENT,BADGE_QUESTION_COUNT,normalizeState,taskList,taskMap,completePrompt,matchesQuestionFilter,eligibleQuestion,queueQuestionFilter,clearQueuedQuestionFilter,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
 });
