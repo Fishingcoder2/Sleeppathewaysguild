@@ -35,6 +35,25 @@
     return 'sources-disclosures.html?'+params.toString();
   }
 
+  function guidedStudy(){
+    if(!window.RPSGTStorage) return {};
+    const saved=window.RPSGTStorage.load();
+    return saved&&saved.guidedStudy&&typeof saved.guidedStudy==='object'?saved.guidedStudy:{};
+  }
+
+  function conceptRecords(step){
+    const history=Array.isArray(guidedStudy().checkpointHistory)?guidedStudy().checkpointHistory:[];
+    return history.filter(item=>item&&item.conceptId===step.id&&item.task===step.taskCode);
+  }
+
+  function conceptMastery(step){
+    const records=conceptRecords(step);
+    const best=records.reduce((max,item)=>Math.max(max,Number(item&&item.score)||0),0);
+    const passed=records.some(item=>item&&item.passed===true&&Number(item.total)>=15);
+    const stars=best===100?3:best>=90?2:best>=80?1:0;
+    return {attempted:records.length>0,passed,best,stars};
+  }
+
   function indexForStepId(stepId){
     const steps=Array.isArray(state.trail&&state.trail.steps)?state.trail.steps:[];
     const index=steps.findIndex(step=>step.id===stepId);
@@ -43,8 +62,7 @@
 
   function loadProgress(){
     if(!window.RPSGTStorage||!state.trail) return;
-    const saved=window.RPSGTStorage.load();
-    const guided=saved&&saved.guidedStudy&&typeof saved.guidedStudy==='object'?saved.guidedStudy:{};
+    const guided=guidedStudy();
     const progress=guided.respiratoryStudyTrail&&typeof guided.respiratoryStudyTrail==='object'?guided.respiratoryStudyTrail:{};
     const active=indexForStepId(progress.activeStepId);
     const completed=indexForStepId(progress.completedThroughStepId);
@@ -83,26 +101,31 @@
     const last=index===state.trail.steps.length-1;
     const next=state.trail.steps[index+1]||null;
     const alreadyComplete=index<=state.completedThrough;
+    const mastery=conceptMastery(step);
     const labLabel=step.lab&&text(step.lab.label)?text(step.lab.label):'Skills Lab';
     const labLink=step.lab&&text(step.lab.href)?'<a class="btn secondary" href="'+esc(step.lab.href)+'">Open '+esc(labLabel)+'</a>':'';
-    const nextLabel=last?(alreadyComplete?'Trail complete ✓':'Finish respiratory trail'):'Finish lesson → Unlock '+esc(next.navLabel||next.title);
-    const continueButton='<button class="btn '+(last&&alreadyComplete?'secondary':'primary')+'" type="button" data-respiratory-next '+(last&&alreadyComplete?'disabled':'')+'>'+nextLabel+'</button>';
+    const lockedByCheckpoint=!alreadyComplete&&!mastery.passed;
+    const nextLabel=lockedByCheckpoint?'Pass checkpoint to unlock next lesson':last?(alreadyComplete?'Trail complete ✓':'Finish respiratory trail'):'Finish lesson → Unlock '+esc(next.navLabel||next.title);
+    const continueButton='<button class="btn '+(last&&alreadyComplete?'secondary':'primary')+'" type="button" data-respiratory-next '+((last&&alreadyComplete)||lockedByCheckpoint?'disabled aria-disabled="true"':'')+'>'+nextLabel+'</button>';
+    const masteryCopy=mastery.attempted?(mastery.passed?'Checkpoint passed · best '+mastery.best+'%':'Keep practicing · best '+mastery.best+'%'):'Pass the concept checkpoint to unlock the next lesson.';
     return '<section class="respiratory-guided-sequence" aria-label="What to do in this lesson">'+
       '<div class="respiratory-guided-title"><span class="eyebrow">Lesson route</span><h4>Learn → Apply → Check</h4><p>Finish these three activities, then unlock the next lesson.</p></div>'+
       '<ol class="respiratory-guided-list">'+
         '<li><span>1</span><div><strong>Learn this first</strong><p>Read why this matters, the primary authority, the textbook study support, and the current-rule warning below.</p></div></li>'+
         '<li><span>2</span><div><strong>Apply it</strong><p>Use the related skills lab to see the concept in a practical sleep-tech workflow.</p>'+labLink+'</div></li>'+
-        '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question checkpoint matched to <strong>this respiratory concept</strong>. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'" data-checkpoint-concept="'+esc(step.id)+'">Take 15-question concept checkpoint</button></div></li>'+
+        '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question checkpoint matched to <strong>this respiratory concept</strong>. Score at least 80% to unlock the next lesson. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'" data-checkpoint-concept="'+esc(step.id)+'" data-checkpoint-concept-label="'+esc(step.title)+'">'+(mastery.passed?'Review 15-question concept checkpoint':'Take 15-question concept checkpoint')+'</button></div></li>'+
       '</ol>'+
-      '<div class="respiratory-lesson-finish"><span>Ready to move on?</span>'+continueButton+'</div>'+
+      '<div class="respiratory-lesson-finish"><span>'+esc(masteryCopy)+'</span>'+continueButton+'</div>'+
     '</section>';
   }
 
   function panelHtml(step,index){
     const complete=index<=state.completedThrough;
+    const mastery=conceptMastery(step);
     const previous=index>0?'<button class="respiratory-trail-link" type="button" data-respiratory-prev>← Previous lesson</button>':'';
+    const stars=mastery.stars?'<span class="respiratory-mastery-stars" aria-label="'+mastery.stars+' mastery stars">'+('★'.repeat(mastery.stars))+('☆'.repeat(3-mastery.stars))+'</span>':'';
     return '<article class="respiratory-trail-panel" aria-labelledby="respiratory-trail-title">'+
-      '<div class="respiratory-lesson-kicker"><span class="status '+(complete?'green':'')+'">'+(complete?'Completed lesson':'Current lesson')+'</span><span>Lesson '+(index+1)+' · '+esc(step.taskCode)+'</span></div>'+
+      '<div class="respiratory-lesson-kicker"><span class="status '+(complete?'green':'')+'">'+(complete?'Completed lesson':'Current lesson')+'</span><span>Lesson '+(index+1)+' · '+esc(step.taskCode)+'</span>'+stars+'</div>'+
       '<h3 id="respiratory-trail-title">'+esc(step.title)+'</h3>'+
       '<p class="respiratory-lesson-prompt">Complete this lesson to move one step farther along the Respiratory/PAP path.</p>'+
       workflowHtml(step,index)+
@@ -122,8 +145,10 @@
     const locked=index>unlocked;
     const complete=index<=state.completedThrough;
     const current=index===state.activeIndex;
+    const mastery=conceptMastery(step);
     const marker=complete?'✓':locked?'🔒':String(index+1);
-    const stateLabel=complete?'Completed':current?'Continue here':locked?'Locked':'Available';
+    const masteryLabel=mastery.stars?' · '+('★'.repeat(mastery.stars)):'';
+    const stateLabel=(complete?'Completed':current?'Continue here':locked?'Locked':'Available')+masteryLabel;
     const classes=['respiratory-path-node'];
     if(complete) classes.push('is-complete');
     if(current) classes.push('is-current');
@@ -165,6 +190,8 @@
 
   function completeAndContinue(){
     const last=state.trail.steps.length-1;
+    const active=state.trail.steps[state.activeIndex];
+    if(!active||state.activeIndex>state.completedThrough&&!conceptMastery(active).passed) return;
     if(state.activeIndex===last&&state.completedThrough===last) return;
     state.completedThrough=Math.max(state.completedThrough,state.activeIndex);
     if(state.activeIndex<last) state.activeIndex+=1;
@@ -233,6 +260,11 @@
     const index=Number(button.dataset.respiratoryStep);
     if(index===state.activeIndex) return;
     setActive(index);
+  });
+
+  document.addEventListener('click',event=>{
+    if(!event.target.closest('[data-checkpoint-score]')||!state.trail) return;
+    window.setTimeout(()=>{render();},0);
   });
 
   init();
