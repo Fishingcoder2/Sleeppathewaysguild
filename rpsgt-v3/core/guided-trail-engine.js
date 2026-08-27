@@ -4,7 +4,7 @@
   root.RPSGTGuidedTrailEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.2.0';
+  const VERSION='1.3.0';
   const PASS_PERCENT=80;
   const BADGE_QUESTION_COUNT=15;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
@@ -40,19 +40,39 @@
     if(/\b(?:tbd|to be completed|incomplete question|placeholder)\b/i.test(prompt)) return false;
     return true;
   }
-  function eligibleQuestion(record,taskCode){
+  function lowerList(value){return Array.isArray(value)?value.map(item=>String(item||'').trim().toLowerCase()).filter(Boolean):[];}
+  function questionText(record){return [record&&record.topic,record&&record.prompt,record&&record.rationale,record&&record.reportCategory].map(value=>String(value||'')).join(' ').toLowerCase();}
+  function questionTopic(record){return String(record&&record.topic||'').toLowerCase();}
+  function includesAny(haystack,terms){return terms.some(term=>haystack.includes(term));}
+  function matchesQuestionFilter(record,filter){
+    if(!isObject(filter)) return true;
+    const text=questionText(record),topic=questionTopic(record);
+    const includeAny=lowerList(filter.includeAny);
+    const excludeAny=lowerList(filter.excludeAny);
+    const includeTopicAny=lowerList(filter.includeTopicAny);
+    const excludeTopicAny=lowerList(filter.excludeTopicAny);
+    const groups=Array.isArray(filter.includeAllGroups)?filter.includeAllGroups.map(lowerList).filter(group=>group.length):[];
+    if(includeAny.length&&!includesAny(text,includeAny)) return false;
+    if(includeTopicAny.length&&!includesAny(topic,includeTopicAny)) return false;
+    if(excludeAny.length&&includesAny(text,excludeAny)) return false;
+    if(excludeTopicAny.length&&includesAny(topic,excludeTopicAny)) return false;
+    if(groups.length&&!groups.every(group=>includesAny(text,group))) return false;
+    return true;
+  }
+  function eligibleQuestion(record,taskCode,filter){
     if(!record||record.taskCode!==taskCode) return false;
     if(record.qa&&record.qa.manualReviewRecommended||record.manualReviewRecommended) return false;
     if(!completePrompt(record.prompt)) return false;
     if(!Array.isArray(record.options)||record.options.length<2) return false;
     if(record.options.some(option=>!String(option==null?'':option).trim())) return false;
     if(!String(record.answer==null?'':record.answer).trim()||!record.options.includes(record.answer)) return false;
+    if(!matchesQuestionFilter(record,filter)) return false;
     return true;
   }
   function hash(text){let value=2166136261;for(let i=0;i<String(text).length;i+=1){value^=String(text).charCodeAt(i);value=Math.imul(value,16777619);}return value>>>0;}
   function seededRandom(seed){let state=hash(seed)||1;return function(){state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;};}
-  function selectQuestions(records,taskCode,count,seed){
-    const eligible=(records||[]).filter(record=>eligibleQuestion(record,taskCode));
+  function selectQuestions(records,taskCode,count,seed,filter){
+    const eligible=(records||[]).filter(record=>eligibleQuestion(record,taskCode,filter));
     const copy=eligible.slice();const random=seededRandom(seed||taskCode);
     for(let i=copy.length-1;i>0;i-=1){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
     return copy.slice(0,Math.max(0,Number(count)||BADGE_QUESTION_COUNT)).map(clone);
@@ -68,9 +88,11 @@
     const completedAt=input&&input.completedAt||new Date().toISOString();
     const passPercent=Number.isFinite(Number(input&&input.passPercent))?Number(input.passPercent):PASS_PERCENT;
     const badgeEligible=total>=BADGE_QUESTION_COUNT;
+    const conceptId=input&&input.conceptId?String(input.conceptId):null;
+    const conceptLabel=input&&input.conceptLabel?String(input.conceptLabel):null;
     return {
       id:'trail-'+String(taskCode||'unknown').toLowerCase()+'-'+completedAt,
-      source:'v3-guided-trail-checkpoint',scope:'task',domain,task:taskCode,
+      source:conceptId?'v3-guided-trail-concept-checkpoint':'v3-guided-trail-checkpoint',scope:conceptId?'concept':'task',domain,task:taskCode,conceptId,conceptLabel,
       score:percent,percent,total,correct,badgeEligible,minQuestions:BADGE_QUESTION_COUNT,passed:badgeEligible&&total>0&&percent>=passPercent,passPercent,completedAt,
       questionIds:questions.map(question=>question.id),
       responses:questions.map(question=>({id:question.id,selected:answers[String(question.id)]??null,correct:answers[String(question.id)]===question.answer}))
@@ -87,7 +109,7 @@
     const next=normalizeState(value);const safe=clone(record);
     next.checkpointHistory=[safe,...next.checkpointHistory.filter(item=>item&&item.id!==safe.id)];
     next.trailDomain=safe.domain||next.trailDomain;next.trailFocus={domain:safe.domain,task:safe.task};
-    next.lastTrailPost={domain:safe.domain,task:safe.task,kind:'checkpoint',score:safe.score,passed:safe.passed,completedAt:safe.completedAt};
+    next.lastTrailPost={domain:safe.domain,task:safe.task,kind:safe.conceptId?'concept-checkpoint':'checkpoint',conceptId:safe.conceptId||null,score:safe.score,passed:safe.passed,completedAt:safe.completedAt};
     if(safe.passed&&Number(safe.total)>=BADGE_QUESTION_COUNT&&safe.task){next.trailAwards.tasks[safe.task]={earnedAt:safe.completedAt,score:safe.score,checkpointId:safe.id,questionCount:safe.total,passPercent:safe.passPercent};}
     const tasks=taskList(blueprint).filter(task=>task.domain===safe.domain);
     if(tasks.length&&tasks.every(task=>next.trailAwards.tasks[task.code])){
@@ -107,5 +129,5 @@
     });
     return {state,rows,domains,counts:{studyMarks:rows.filter(row=>row.studyMarked).length,taskAwards:rows.filter(row=>row.award).length,domainAwards:domains.filter(domain=>domain.award).length,checkpoints:state.checkpointHistory.length},latestCheckpoint:state.checkpointHistory[0]||null,currentFocus:state.trailFocus||state.lastTrailPost||null};
   }
-  return {VERSION,PASS_PERCENT,BADGE_QUESTION_COUNT,normalizeState,taskList,taskMap,completePrompt,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
+  return {VERSION,PASS_PERCENT,BADGE_QUESTION_COUNT,normalizeState,taskList,taskMap,completePrompt,matchesQuestionFilter,eligibleQuestion,selectQuestions,gradeCheckpoint,markTaskStudy,applyCheckpoint,summary};
 });
