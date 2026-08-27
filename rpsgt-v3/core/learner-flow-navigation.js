@@ -9,6 +9,7 @@
   let hashTimer=null;
   let studyObserver=null;
   let shellObserver=null;
+  let locationBeforeHomeClick=null;
 
   function injectStyles(){
     if(document.getElementById(STYLE_ID)) return;
@@ -60,7 +61,7 @@
     document.querySelectorAll('[data-toggle-menu]').forEach(button=>{
       button.setAttribute('aria-expanded',open?'true':'false');
       if(sidebar) button.setAttribute('aria-controls',sidebar.id);
-      if(!button.getAttribute('aria-label')) button.setAttribute('aria-label','Open navigation menu');
+      button.setAttribute('aria-label',open?'Close navigation menu':'Open navigation menu');
     });
   }
 
@@ -163,12 +164,27 @@
     return file+url.search+url.hash;
   }
 
+  function captureLearningPositionBeforeHome(event){
+    const anchor=event.target&&event.target.closest?event.target.closest('a[href]'):null;
+    if(!anchor||!root.RPSGTStorage||typeof root.RPSGTStorage.load!=='function') return;
+    if(destinationFor(anchor)!=='index.html') return;
+    const saved=root.RPSGTStorage.load();
+    const prior=String(saved&&saved.lastLocation||'').trim();
+    locationBeforeHomeClick=prior&&prior!=='index.html'?prior:null;
+  }
+
   function rememberExactDestination(event){
     const anchor=event.target&&event.target.closest?event.target.closest('a[href]'):null;
     if(!anchor||!root.RPSGTStorage||typeof root.RPSGTStorage.rememberLocation!=='function') return;
     const destination=destinationFor(anchor);
     if(!destination) return;
+    if(destination==='index.html'&&locationBeforeHomeClick){
+      root.RPSGTStorage.rememberLocation(locationBeforeHomeClick);
+      locationBeforeHomeClick=null;
+      return;
+    }
     root.RPSGTStorage.rememberLocation(destination);
+    locationBeforeHomeClick=null;
   }
 
   function watchStudyMap(){
@@ -203,6 +219,7 @@
     renderStudyAreaChooser();
     watchStudyMap();
     watchShell();
+    document.addEventListener('click',captureLearningPositionBeforeHome,true);
     document.addEventListener('click',rememberExactDestination,false);
     root.addEventListener('hashchange',scheduleHashRestore);
     root.addEventListener('orientationchange',()=>root.setTimeout(syncTopbarHeight,80),{passive:true});
