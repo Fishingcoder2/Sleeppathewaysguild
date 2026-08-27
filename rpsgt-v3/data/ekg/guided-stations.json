@@ -164,7 +164,7 @@
           "Do not delay an urgent response merely to obtain a perfect rhythm label from the sleep-study channel."
         ]
       },
-      "visual": {"kind":"concerning-run","label":"Synthetic ECG segment with an abrupt short regular run of rapid wide complexes used only to practice patient-first response."},
+      "visual": {"kind":"concerning-run","label":"Synthetic ECG segment with an abrupt run of rapid wide complexes used only to practice patient-first response."},
       "apply": {
         "prompt": "A new rapid wide-complex pattern appears and the patient reports chest discomfort and dizziness. What should the sleep technologist do first?",
         "options": [
