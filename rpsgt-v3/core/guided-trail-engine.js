@@ -4,7 +4,7 @@
   root.RPSGTGuidedTrailEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.2.0';
+  const VERSION='1.3.0';
   const PASS_PERCENT=80;
   const BADGE_QUESTION_COUNT=15;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
@@ -88,7 +88,12 @@
     next.checkpointHistory=[safe,...next.checkpointHistory.filter(item=>item&&item.id!==safe.id)];
     next.trailDomain=safe.domain||next.trailDomain;next.trailFocus={domain:safe.domain,task:safe.task};
     next.lastTrailPost={domain:safe.domain,task:safe.task,kind:'checkpoint',score:safe.score,passed:safe.passed,completedAt:safe.completedAt};
-    if(safe.passed&&Number(safe.total)>=BADGE_QUESTION_COUNT&&safe.task){next.trailAwards.tasks[safe.task]={earnedAt:safe.completedAt,score:safe.score,checkpointId:safe.id,questionCount:safe.total,passPercent:safe.passPercent};}
+    if(safe.passed&&Number(safe.total)>=BADGE_QUESTION_COUNT&&safe.task){
+      next.trailAwards.tasks[safe.task]={earnedAt:safe.completedAt,score:safe.score,checkpointId:safe.id,questionCount:safe.total,passPercent:safe.passPercent};
+      if(!next.trailStudyMarks[safe.task]||next.trailStudyMarks[safe.task].completed!==true){
+        next.trailStudyMarks[safe.task]={completed:true,completedAt:safe.completedAt,source:'v3-guided-study-auto'};
+      }
+    }
     const tasks=taskList(blueprint).filter(task=>task.domain===safe.domain);
     if(tasks.length&&tasks.every(task=>next.trailAwards.tasks[task.code])){
       next.trailAwards.domains[safe.domain]={earnedAt:safe.completedAt,taskCount:tasks.length,source:'v3-guided-trail'};

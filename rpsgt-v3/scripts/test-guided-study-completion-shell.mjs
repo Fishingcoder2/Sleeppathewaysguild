@@ -27,18 +27,23 @@ assert.ok(study.indexOf('guided-study-completion.js')<study.indexOf('core/study.
 assert.ok(study.indexOf('guided-study-storage-guard.js')<study.indexOf('core/study.js'),'storage guard must mount before the controller starts');
 assert.ok(study.indexOf('core/study.js')<study.indexOf('guided-study-coach.js'),'event-driven Coach Bob adapter must attach after the checkpoint controller');
 assert.match(practice,/core\/practice-prefill\.js/);
-assert.match(completion,/Retake with five new questions/);
+assert.match(completion,/Retake with new questions/);
 assert.match(completion,/Begin the next domain/);
 assert.match(completion,/Review missed questions/);
 assert.match(completion,/seenCeremonyIds/);
-assert.match(completion,/Sleep Pathways Guild educational achievement/);
-assert.match(completion,/80% Guided Study checkpoint goal/);
-assert.match(completion,/task badge/);
+assert.match(completion,/Sleep Pathways Guild accomplishment/);
+assert.match(completion,/Congratulations — you completed/);
+assert.match(completion,/Would you like to/);
+assert.match(completion,/data-guided-award-launch/);
+assert.match(completion,/Start Readiness Check/);
+assert.match(completion,/marked complete automatically/);
 assert.match(completion,/domain medal/);
+assert.match(completion,/querySelectorAll\('\[data-trail-mark\]'\)\.forEach\(button=>button\.remove\(\)\)/);
+assert.match(completion,/legacyAchievement\.remove\(\)/);
 for(const awardName of ['Clinical Guide','Study Signal Scout','Scoring Pathfinder','Therapy Trail Guide']){
   assert.ok(completion.includes(awardName),`Guided Study completion layer is missing named Guild domain medal: ${awardName}`);
 }
-assert.match(storageGuard,/data-trail-mark/);
+assert.doesNotMatch(storageGuard,/data-trail-mark/);
 assert.match(storageGuard,/data-checkpoint-score/);
 
 assert.doesNotMatch(coachSafety,/MutationObserver/,'Coach Bob safety utility must not watch or rewrite the DOM');
@@ -74,4 +79,4 @@ assert.match(guidedCoach,/Repeat pattern/);
 assert.match(resources,/topicFamilyFiles/);
 assert.match(resources,/titlesForQuestion/);
 
-console.log('Guided Study completion shell contract passed.');
+console.log('Guided Study automatic accomplishment and next-step completion shell contract passed.');
