@@ -1,0 +1,44 @@
+name: Audit RPSGT v3 browser learner flow
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/**'
+      - '.github/workflows/rpsgt-v3-browser-ux-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-learner-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v6
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Install browser test dependencies
+        working-directory: rpsgt-v3
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        working-directory: rpsgt-v3
+        run: npx playwright install --with-deps chromium
+      - name: Run desktop, tablet, and mobile learner-flow regression
+        working-directory: rpsgt-v3
+        run: npm run test:browser
+      - name: Upload Playwright evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-browser-ux-audit
+          path: |
+            rpsgt-v3/playwright-report
+            rpsgt-v3/test-results
+          if-no-files-found: ignore
+          retention-days: 14

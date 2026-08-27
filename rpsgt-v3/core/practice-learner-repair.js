@@ -66,9 +66,12 @@
     const prompt=normalize(document.querySelector('[data-question-prompt]')?.textContent);
     if(!prompt) return null;
     const options=[...document.querySelectorAll('[data-choice-index] span:last-child')].map(node=>normalize(node.textContent));
-    let matches=questionCache.filter(question=>normalize(question.prompt)===prompt);
-    if(options.length) matches=matches.filter(question=>Array.isArray(question.options)&&question.options.length===options.length&&question.options.every((option,index)=>normalize(option)===options[index]));
-    return matches.length===1?matches[0]:null;
+    const matches=questionCache.filter(question=>normalize(question.prompt)===prompt);
+    if(matches.length===1) return matches[0];
+    if(!options.length) return null;
+    const visibleOptions=options.slice().sort();
+    const optionMatches=matches.filter(question=>Array.isArray(question.options)&&question.options.length===options.length&&question.options.map(normalize).sort().every((option,index)=>option===visibleOptions[index]));
+    return optionMatches.length===1?optionMatches[0]:null;
   }
 
   function sanitizeQuestion(){

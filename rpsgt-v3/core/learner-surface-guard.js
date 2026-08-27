@@ -78,8 +78,17 @@
     });
   }
 
+  function loadLearnerFlowNavigation(){
+    if(root.RPSGTLearnerFlowNavigation||document.querySelector('script[data-rpsgt-learner-flow-navigation]')) return;
+    const script=document.createElement('script');
+    script.src='core/learner-flow-navigation.js';
+    script.dataset.rpsgtLearnerFlowNavigation='true';
+    document.head.appendChild(script);
+  }
+
   function init(){
     suppressLegacyOptionalShelf();
+    loadLearnerFlowNavigation();
     if(typeof MutationObserver!=='function') return;
     const observer=new MutationObserver(suppressLegacyOptionalShelf);
     observer.observe(document.body,{childList:true,subtree:true});
