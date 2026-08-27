@@ -27,6 +27,15 @@ const LAB_ROUTES = [
   'lab-troubleshooting.html'
 ];
 
+const LEARNER_TOOL_ROUTES = [
+  'flashcards.html',
+  'memory-games.html',
+  'notes.html',
+  'review-queue.html',
+  'sources-disclosures.html',
+  'mentoring-diagnostic.html'
+];
+
 const TOOL_ROUTES = [
   'math-coach.html',
   'lab-math-coach.html'
@@ -87,7 +96,7 @@ async function waitForApplication(page) {
   await expect(page.locator('h1').first()).toBeVisible();
 }
 
-for (const route of [...PRIMARY_ROUTES, ...LAB_ROUTES, ...TOOL_ROUTES]) {
+for (const route of [...PRIMARY_ROUTES, ...LAB_ROUTES, ...LEARNER_TOOL_ROUTES, ...TOOL_ROUTES]) {
   test(`${route} loads without runtime errors or body overflow`, async ({ page }) => {
     const guards = attachRuntimeGuards(page);
     await page.goto(route);
