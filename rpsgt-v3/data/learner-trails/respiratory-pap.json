@@ -13,10 +13,7 @@
       "primaryAuthority": "AASM Scoring Manual Version 3 for adult respiratory scoring; ICSD-3-TR controls diagnostic classification.",
       "studyChapter": 131,
       "referenceTopic": "adult respiratory rules",
-      "checkpointFilter": {
-        "includeAny": ["respiratory", "apnea", "hypopnea", "rera", "airflow", "flow limitation", "snoring", "ahi", "obstructive"],
-        "excludeTopicAny": ["sleep staging", "arousal scoring", "limb movement", "cardiac"]
-      },
+      "checkpointFilter": {"includeAny": ["respiratory", "apnea", "hypopnea", "rera", "airflow", "flow limitation", "snoring", "ahi", "obstructive"], "excludeTopicAny": ["sleep staging", "arousal scoring", "limb movement", "cardiac"]},
       "warning": "Use AASM Version 3 for actual scoring rules. Do not use textbook wording or older scoring guidance to override current rules.",
       "lab": {"href": "lab-respiratory.html", "label": "Respiratory Lab"},
       "navLabel": "OSA scoring"
@@ -94,7 +91,7 @@
       "primaryAuthority": "AASM Version 3 for scoring plus current ETCO2/TcCO2 technical guidance; local orders and device instructions govern NIV execution.",
       "studyChapter": 138,
       "referenceTopic": "respiratory rules",
-      "checkpointFilter": {"includeAny": ["hypoventilation", "niv", "noninvasive ventilation", "backup rate", "bilevel st", "volume assured", "avaps", "ivaps", "hypercapnia", "carbon dioxide", "co2"]},
+      "checkpointFilter": {"includeAny": ["hypoventilation", "niv", "noninvasive ventilation", "ventilation", "ventilatory", "backup rate", "bilevel st", "bilevel", "pressure support", "volume assured", "tidal volume", "respiratory rate", "avaps", "ivaps", "hypercapnia", "carbon dioxide", "co2"]},
       "warning": "Do not derive universal NIV settings, backup rates, target volumes, alarms, or pressure-support rules from OSA PAP or textbook material.",
       "lab": {"href": "lab-respiratory.html", "label": "Respiratory Lab"},
       "navLabel": "Hypoventilation / NIV"
