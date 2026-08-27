@@ -87,20 +87,21 @@
     const isLast=checkpoint.currentIndex===checkpoint.questions.length-1;
     const result=checkpoint.record;
     const response=feedbackFor(question);
-    const resultBanner=checkpoint.submitted?`<div class="checkpoint-result ${result.passed?'pass':'retry'}" aria-live="polite"><h3>${result.passed?'Task award earned':'Checkpoint saved—review and retry'}</h3><strong>${result.correct}/${result.total} correct · ${result.score}%</strong><p>${result.passed?'This task award is now part of the Guided Trail report.':`Complete all ${badgeQuestionCount()} questions and score at least 80% to earn the task badge. Your attempt remains in checkpoint history.`}</p></div>`:'';
+    const resultBanner=checkpoint.submitted?`<div class="checkpoint-result ${result.passed?'pass':'retry'}" aria-live="polite"><h3>${result.passed?'Checkpoint passed':'Checkpoint saved—review and retry'}</h3><strong>${result.correct}/${result.total} correct · ${result.score}%</strong><p>${result.passed?'This checkpoint result is now part of your Guided Trail progress.':`Complete all ${badgeQuestionCount()} questions and score at least 80% to pass this checkpoint. Your attempt remains in checkpoint history.`}</p></div>`:'';
     const options=(question.options||[]).map((option,index)=>{
       const checked=selected===option;
       const correctClass=checkpoint.submitted&&option===question.answer?' correct-option':'';
       const selectedClass=checkpoint.submitted&&checked&&option!==question.answer?' incorrect-option':'';
       return `<label class="checkpoint-option${correctClass}${selectedClass}"><input type="radio" name="checkpoint-question" value="${index}" data-checkpoint-option="${index}" ${checked?'checked':''} ${checkpoint.submitted?'disabled':''}><span>${esc(option)}</span></label>`;
     }).join('');
+    const conceptMeta=checkpoint.conceptLabel?`<span>Concept: ${esc(checkpoint.conceptLabel)}</span>`:`<span>Exact task mapping: ${esc(question.taskCode||checkpoint.taskCode)}</span>`;
     checkpointHost.innerHTML=`<header class="checkpoint-modal-head"><div><div class="eyebrow">${esc(checkpoint.domain)} · ${esc(checkpoint.domainName)}</div><p class="checkpoint-task-label"><strong>${esc(checkpoint.taskCode)}</strong> · ${esc(checkpoint.taskTitle)}</p></div><button class="icon-close" type="button" data-checkpoint-cancel aria-label="Close checkpoint">×</button></header>
       ${resultBanner}
       <div class="checkpoint-progress-wrap"><div class="checkpoint-progress-copy"><strong>Question ${checkpoint.currentIndex+1} of ${checkpoint.questions.length}</strong><span>${Math.round((checkpoint.currentIndex+1)/checkpoint.questions.length*100)}% through checkpoint</span></div><div class="checkpoint-progress" aria-hidden="true"><span style="width:${(checkpoint.currentIndex+1)/checkpoint.questions.length*100}%"></span></div></div>
       <div class="checkpoint-content ${checkpoint.coachOpen?'coach-visible':''}">
         <div class="checkpoint-question-pane">
           <fieldset class="checkpoint-question"><legend class="sr-only">Question ${checkpoint.currentIndex+1}</legend>
-            <div class="checkpoint-question-meta"><span class="status">${esc(question.topic||checkpoint.taskCode)}</span><span>Exact task mapping: ${esc(question.taskCode||checkpoint.taskCode)}</span></div>
+            <div class="checkpoint-question-meta"><span class="status">${esc(question.topic||checkpoint.taskCode)}</span>${conceptMeta}</div>
             <h2 id="checkpoint-title" tabindex="-1">${esc(question.prompt)}</h2>
             <div class="checkpoint-options">${options}</div>
             ${checkpoint.notice?`<div class="checkpoint-inline-notice" role="alert">${esc(checkpoint.notice)}</div>`:''}
@@ -149,9 +150,11 @@
     if(state.returnFocus&&typeof state.returnFocus.focus==='function') state.returnFocus.focus({preventScroll:true});
     state.returnFocus=null;
   }
-  async function startCheckpoint(taskCode){
+  async function startCheckpoint(taskCode,trigger){
     const task=engine.taskMap(state.blueprint).get(taskCode);
     const required=badgeQuestionCount();
+    const conceptId=trigger&&trigger.dataset?String(trigger.dataset.checkpointConcept||'').trim():'';
+    const conceptLabel=trigger&&trigger.dataset?String(trigger.dataset.checkpointConceptLabel||'').trim():'';
     openCheckpoint();
     checkpointHost.innerHTML='<div class="checkpoint-loading"><p>Loading a learner-practice badge checkpoint…</p></div>';
     try{
@@ -163,6 +166,8 @@
         taskTitle:task&&task.title||taskCode,
         domain:task&&task.domain||String(taskCode).slice(0,2),
         domainName:task&&task.domainName||'RPSGT domain',
+        conceptId:conceptId||null,
+        conceptLabel:conceptLabel||null,
         questions,
         currentIndex:0,
         answers:{},
@@ -200,7 +205,7 @@
       return;
     }
     const before=engine.normalizeState(state.saved.guidedStudy);
-    const record=engine.gradeCheckpoint({taskCode:state.checkpoint.taskCode,questions:state.checkpoint.questions,answers:state.checkpoint.answers,completedAt:new Date().toISOString()});
+    const record=engine.gradeCheckpoint({taskCode:state.checkpoint.taskCode,conceptId:state.checkpoint.conceptId,conceptLabel:state.checkpoint.conceptLabel,questions:state.checkpoint.questions,answers:state.checkpoint.answers,completedAt:new Date().toISOString()});
     const next=engine.applyCheckpoint(state.saved.guidedStudy,record,state.blueprint);
     const after=engine.normalizeState(next);
     const taskEarned=Boolean(record.passed&&!before.trailAwards.tasks[record.task]&&after.trailAwards.tasks[record.task]);
@@ -229,7 +234,7 @@
     if(event.target===achievementOverlay&&state.achievementOpen){closeAchievement();return;}
     if(state.achievementOpen) return;
     const mark=event.target.closest('[data-trail-mark]');if(mark){saveTrail(engine.markTaskStudy(state.saved.guidedStudy,mark.dataset.trailMark,new Date().toISOString()));renderMap();return;}
-    const start=event.target.closest('[data-checkpoint-start]');if(start){startCheckpoint(start.dataset.checkpointStart);return;}
+    const start=event.target.closest('[data-checkpoint-start]');if(start){startCheckpoint(start.dataset.checkpointStart,start);return;}
     if(event.target.closest('[data-checkpoint-cancel]')){closeCheckpoint();return;}
     if(event.target.closest('[data-checkpoint-prev]')){moveCheckpoint(-1);return;}
     if(event.target.closest('[data-checkpoint-next]')){moveCheckpoint(1);return;}
