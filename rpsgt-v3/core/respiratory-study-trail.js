@@ -4,9 +4,9 @@
   const host=document.querySelector('[data-respiratory-study-trail]');
   if(!host) return;
 
-  const state={trail:null,chapters:new Map(),activeIndex:0,taskEntryObserver:null};
+  const state={trail:null,chapters:new Map(),activeIndex:0,completedThrough:-1,taskEntryObserver:null};
   const text=value=>String(value==null?'':value).trim();
-  const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
 
   async function loadJson(path){
     const response=await fetch(path,{cache:'no-store'});
@@ -31,38 +31,128 @@
     return 'sources-disclosures.html?'+params.toString();
   }
 
+  function indexForStepId(stepId){
+    const steps=Array.isArray(state.trail&&state.trail.steps)?state.trail.steps:[];
+    const index=steps.findIndex(step=>step.id===stepId);
+    return index>=0?index:null;
+  }
+
+  function loadProgress(){
+    if(!window.RPSGTStorage||!state.trail) return;
+    const saved=window.RPSGTStorage.load();
+    const guided=saved&&saved.guidedStudy&&typeof saved.guidedStudy==='object'?saved.guidedStudy:{};
+    const progress=guided.respiratoryStudyTrail&&typeof guided.respiratoryStudyTrail==='object'?guided.respiratoryStudyTrail:{};
+    const active=indexForStepId(progress.activeStepId);
+    const completed=indexForStepId(progress.completedThroughStepId);
+    state.completedThrough=completed==null?-1:completed;
+    const unlocked=Math.min(state.completedThrough+1,state.trail.steps.length-1);
+    state.activeIndex=active==null?Math.max(0,unlocked):Math.min(active,Math.max(0,unlocked));
+  }
+
+  function saveProgress(){
+    if(!window.RPSGTStorage||!state.trail) return;
+    const saved=window.RPSGTStorage.load();
+    if(!saved.guidedStudy||typeof saved.guidedStudy!=='object') saved.guidedStudy={};
+    const active=state.trail.steps[state.activeIndex]||state.trail.steps[0];
+    const completed=state.completedThrough>=0?state.trail.steps[state.completedThrough]:null;
+    saved.guidedStudy.respiratoryStudyTrail={
+      activeStepId:active&&active.id||null,
+      completedThroughStepId:completed&&completed.id||null,
+      updatedAt:new Date().toISOString()
+    };
+    window.RPSGTStorage.save(saved);
+  }
+
+  function progressHtml(){
+    const total=state.trail.steps.length;
+    const completed=Math.max(0,state.completedThrough+1);
+    const percent=Math.round(completed/total*100);
+    const finished=completed===total;
+    return '<div class="respiratory-route-overview" aria-live="polite">'+
+      '<div><span class="eyebrow">Your guided route</span><strong>'+(finished?'Trail complete':('Step '+(state.activeIndex+1)+' of '+total))+'</strong><small>'+completed+' of '+total+' steps completed</small></div>'+
+      '<div class="respiratory-route-meter" aria-hidden="true"><span style="width:'+percent+'%"></span></div>'+
+    '</div>';
+  }
+
+  function workflowHtml(step,index){
+    const last=index===state.trail.steps.length-1;
+    const next=state.trail.steps[index+1]||null;
+    const labLabel=step.lab&&text(step.lab.label)?text(step.lab.label):'Skills Lab';
+    const labLink=step.lab&&text(step.lab.href)?'<a class="btn secondary" href="'+esc(step.lab.href)+'">Open '+esc(labLabel)+'</a>':'';
+    const nextLabel=last?'Mark trail complete':'Step complete → Continue to '+esc(next.navLabel||next.title);
+    const continueButton='<button class="btn primary" type="button" data-respiratory-next>'+nextLabel+'</button>';
+    return '<section class="respiratory-guided-sequence" aria-label="What to do in this step">'+
+      '<div class="respiratory-guided-title"><span class="eyebrow">Do this step in order</span><h4>Start here, then move down the list</h4></div>'+
+      '<ol class="respiratory-guided-list">'+
+        '<li><span>1</span><div><strong>Learn this first</strong><p>Read why this matters, the primary authority, the study chapter, and the current-rule warning below.</p></div></li>'+
+        '<li><span>2</span><div><strong>Apply it</strong><p>Use the related skills lab to see the concept in a practical sleep-tech workflow.</p>'+labLink+'</div></li>'+
+        '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question '+esc(step.taskCode)+' badge checkpoint. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'">Take 15-question badge checkpoint</button></div></li>'+
+        '<li><span>4</span><div><strong>Then continue</strong><p>'+(last?'When this step makes sense, mark the trail complete.':'When this step makes sense, continue to the next topic: '+esc(next.title)+'.')+'</p>'+continueButton+'</div></li>'+
+      '</ol>'+
+    '</section>';
+  }
+
   function panelHtml(step,index){
-    const lab=step.lab&&text(step.lab.href)&&text(step.lab.label)?'<a class="respiratory-trail-link" href="'+esc(step.lab.href)+'">'+esc(step.lab.label)+'</a>':'';
+    const complete=index<=state.completedThrough;
+    const previous=index>0?'<button class="respiratory-trail-link" type="button" data-respiratory-prev>← Previous step</button>':'';
     return '<article class="respiratory-trail-panel" aria-labelledby="respiratory-trail-title">'+
-      '<div class="respiratory-trail-progress"><span class="status green">Step '+(index+1)+' of '+state.trail.steps.length+'</span><span>'+esc(step.taskCode)+' pathway</span></div>'+
+      '<div class="respiratory-trail-progress"><span class="status '+(complete?'green':'')+'">Step '+(index+1)+' of '+state.trail.steps.length+(complete?' · completed':'')+'</span><span>'+esc(step.taskCode)+' pathway</span></div>'+
       '<h3 id="respiratory-trail-title">'+esc(step.title)+'</h3>'+
+      workflowHtml(step,index)+
       '<div class="respiratory-trail-learning-grid">'+
         '<section><span>Why this matters</span><p>'+esc(step.whyThisMatters)+'</p></section>'+
         '<section><span>Primary authority</span><p>'+esc(step.primaryAuthority)+'</p></section>'+
         '<section class="respiratory-study-chapter"><span>Best study chapter</span>'+chapterHtml(step)+'</section>'+
       '</div>'+
       '<aside class="respiratory-rule-warning"><strong>Current-rule warning</strong><p>'+esc(step.warning)+'</p></aside>'+
-      '<div class="respiratory-trail-actions">'+
-        '<a class="btn primary" href="practice.html?task='+encodeURIComponent(text(step.taskCode))+'">Practice this concept</a>'+
-        '<a class="respiratory-trail-link" href="'+esc(referenceHref(step))+'">Related reference materials</a>'+lab+
-        '<button class="respiratory-trail-link respiratory-coach-link" type="button" data-checkpoint-start="'+esc(step.taskCode)+'">Ask Coach Bob</button>'+
-      '</div>'+
-      '<p class="respiratory-coach-note">Coach Bob opens the existing 15-question badge checkpoint. Use “Ask Coach Bob” inside a question for reasoning help without revealing the answer.</p>'+
+      '<details class="respiratory-extra-study"><summary>Need more study before the checkpoint?</summary><div class="respiratory-extra-study-links"><a class="respiratory-trail-link" href="'+esc(referenceHref(step))+'">Related reference materials</a><a class="respiratory-trail-link" href="practice.html?task='+encodeURIComponent(text(step.taskCode))+'">Extra practice questions</a></div></details>'+
+      '<div class="respiratory-panel-footer">'+previous+'<span>Use the numbered route above instead of choosing actions at random.</span></div>'+
     '</article>';
+  }
+
+  function stepButton(step,index){
+    const unlocked=Math.min(state.completedThrough+1,state.trail.steps.length-1);
+    const locked=index>unlocked;
+    const complete=index<=state.completedThrough;
+    const current=index===state.activeIndex;
+    const marker=complete?'✓':String(index+1);
+    const stateLabel=complete?'Completed':current?'Current step':locked?'Locked until prior step is completed':'Available';
+    return '<button type="button" data-respiratory-step="'+index+'" aria-current="'+(current?'step':'false')+'" '+(locked?'disabled aria-disabled="true"':'')+' class="'+(complete?'is-complete ':'')+(locked?'is-locked':'')+'"><span>'+marker+'</span><strong>'+esc(step.navLabel||step.title)+'</strong><small>'+stateLabel+'</small></button>';
   }
 
   function render(){
     const steps=Array.isArray(state.trail&&state.trail.steps)?state.trail.steps:[];
     if(!steps.length) throw new Error('Respiratory/PAP trail has no learner steps.');
     const active=steps[state.activeIndex]||steps[0];
-    host.innerHTML='<div class="section-head respiratory-trail-head"><div><div class="eyebrow">Featured Study Trail · Respiratory / PAP</div><h2>'+esc(state.trail.title)+'</h2><p>'+esc(state.trail.description)+'</p></div><span class="status">Authority-aware</span></div>'+
+    host.innerHTML='<div class="section-head respiratory-trail-head"><div><div class="eyebrow">Featured Study Trail · Respiratory / PAP</div><h2>'+esc(state.trail.title)+'</h2><p>'+esc(state.trail.description)+'</p></div><span class="status">Guided sequence</span></div>'+progressHtml()+
       '<div class="respiratory-trail-shell">'+
-        '<nav class="respiratory-trail-steps" aria-label="Respiratory and PAP study steps">'+
-          steps.map((step,index)=>'<button type="button" data-respiratory-step="'+index+'" aria-current="'+(index===state.activeIndex?'step':'false')+'"><span>'+(index+1)+'</span><strong>'+esc(step.navLabel||step.title)+'</strong></button>').join('')+
-        '</nav>'+
+        '<nav class="respiratory-trail-steps" aria-label="Respiratory and PAP study steps">'+steps.map(stepButton).join('')+'</nav>'+
         '<div data-respiratory-trail-panel>'+panelHtml(active,state.activeIndex)+'</div>'+
       '</div>'+
       '<p class="respiratory-trail-boundary">'+esc(state.trail.learnerBoundary)+'</p>';
+  }
+
+  function focusPanel(){
+    const title=host.querySelector('#respiratory-trail-title');
+    if(title){title.setAttribute('tabindex','-1');title.focus({preventScroll:true});}
+  }
+
+  function setActive(index){
+    const unlocked=Math.min(state.completedThrough+1,state.trail.steps.length-1);
+    if(!Number.isInteger(index)||index<0||index>unlocked||index>=state.trail.steps.length) return;
+    state.activeIndex=index;
+    saveProgress();
+    render();
+    focusPanel();
+  }
+
+  function completeAndContinue(){
+    const last=state.trail.steps.length-1;
+    state.completedThrough=Math.max(state.completedThrough,state.activeIndex);
+    if(state.activeIndex<last) state.activeIndex+=1;
+    saveProgress();
+    render();
+    focusPanel();
   }
 
   function addD4AEntryPoint(){
@@ -100,6 +190,7 @@
       ]);
       state.trail=trail;
       state.chapters=new Map((Array.isArray(ppsm&&ppsm.verifiedChapterLocators)?ppsm.verifiedChapterLocators:[]).map(chapter=>[Number(chapter.chapter),chapter]));
+      loadProgress();
       render();
     }catch(error){
       console.error(error);
@@ -108,14 +199,15 @@
   }
 
   host.addEventListener('click',event=>{
+    const next=event.target.closest('[data-respiratory-next]');
+    if(next&&state.trail){completeAndContinue();return;}
+    const previous=event.target.closest('[data-respiratory-prev]');
+    if(previous&&state.trail){setActive(Math.max(0,state.activeIndex-1));return;}
     const button=event.target.closest('[data-respiratory-step]');
     if(!button||!state.trail) return;
     const index=Number(button.dataset.respiratoryStep);
-    if(!Number.isInteger(index)||index<0||index>=state.trail.steps.length||index===state.activeIndex) return;
-    state.activeIndex=index;
-    render();
-    const nextButton=host.querySelector('[data-respiratory-step="'+index+'"]');
-    if(nextButton) nextButton.focus({preventScroll:true});
+    if(index===state.activeIndex) return;
+    setActive(index);
   });
 
   init();
