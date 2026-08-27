@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="assets/labs.css">
 <link rel="stylesheet" href="assets/hookup.css">
 <link rel="stylesheet" href="assets/hookup-guided.css">
+<link rel="stylesheet" href="assets/hookup-aasm.css">
 </head>
 <body data-module="labs">
 <div class="app-shell">
@@ -17,15 +18,49 @@
 <aside class="sidebar"><div class="nav-label">Learning Center</div><a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a><a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a><a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a><a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a><a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a></aside>
 <main class="main">
 <section class="hero"><div><div class="eyebrow">Skills Lab · Hookup</div><h1>Build a repeatable setup and signal-quality workflow</h1><p class="lead">Work through six guided Study → Apply → Recap stations covering setup planning, patient/site preparation, measured landmark placement, electrode application and impedance, physiologic calibration, and signal-pathway troubleshooting. Then complete a focused ten-question D2A/D2B checkpoint.</p><div class="actions"><button class="btn primary" type="button" data-hookup-open-station="0">Start guided hookup</button><button class="btn secondary" type="button" data-hookup-start>Start 10-question checkpoint</button><a class="btn secondary" href="labs.html">Return to laboratory catalog</a></div></div><aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Do not troubleshoot the waveform before checking the pathway.</h2><p>Confirm the order, patient, site, placement, connection, impedance, calibration, and documentation in a consistent sequence.</p></aside></section>
-<section class="section notice"><strong>Evidence boundary:</strong> Guided stations are original Sleep Pathways Guild teaching interactions based on the project reference library. Checkpoint questions and rationales come from the validated learner-practice bank. This lab does not replace current professional guidance, manufacturer directions, facility procedures, or supervised competency validation. Hookup results do not change ordinary Practice, Readiness, Mock, or Guided Trail history.</section>
+<section class="section notice"><strong>Evidence boundary:</strong> Guided stations and the AASM/10–20 checkpoint supplement use original Sleep Pathways Guild wording based on the project reference library. They do not reproduce AASM figures, tables, or proprietary manual text. This lab does not replace current AASM instructions, manufacturer directions, facility procedures, or supervised competency validation. Hookup results do not change ordinary Practice, Readiness, Mock, or Guided Trail history.</section>
+
+<section class="section card hookup-aasm-board" aria-labelledby="hookup-aasm-title">
+  <div class="section-head"><div><div class="eyebrow">International 10–20 + AASM correlation</div><h2 id="hookup-aasm-title">Adult PSG head-hookup reference</h2></div><span class="status green">AASM recommended set highlighted</span></div>
+  <p class="report-intro">Use the International 10–20 map to understand where PSG EEG sites come from, then connect those positions to the recommended adult sleep-staging derivations. Recommended and acceptable alternatives are not interchangeable labels; this board emphasizes the recommended configuration while preserving backup logic.</p>
+  <div class="hookup-aasm-grid">
+    <div class="hookup-1020-visual">
+      <div class="hookup-schematic-title">International 10–20 scalp map · PSG correlation</div>
+      <svg viewBox="0 0 720 590" role="img" aria-label="International 10-20 scalp map with AASM recommended adult PSG EEG sites F4, C4 and O2 highlighted and backup sites F3, C3, O1 plus mastoids M1 and M2 shown">
+        <defs><radialGradient id="headFill" cx="50%" cy="42%" r="62%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e9f5f7"/></radialGradient></defs>
+        <path d="M360 54 C224 54 130 154 130 300 C130 436 224 526 360 526 C496 526 590 436 590 300 C590 154 496 54 360 54Z" fill="url(#headFill)" stroke="#176873" stroke-width="5"/>
+        <path d="M337 53 Q360 24 383 53" fill="#e9f5f7" stroke="#176873" stroke-width="4"/>
+        <path d="M130 250 Q91 260 100 318 Q108 356 132 346" fill="#e9f5f7" stroke="#176873" stroke-width="4"/><path d="M590 250 Q629 260 620 318 Q612 356 588 346" fill="#e9f5f7" stroke="#176873" stroke-width="4"/>
+        <path d="M360 74 L360 508 M154 300 L566 300" stroke="#9dcbd0" stroke-width="2" stroke-dasharray="8 7" fill="none"/>
+        <path d="M190 196 Q360 126 530 196 M170 300 Q360 242 550 300 M190 410 Q360 356 530 410" stroke="#9dcbd0" stroke-width="2" stroke-dasharray="8 7" fill="none"/>
+        <g class="site muted"><circle cx="235" cy="138" r="24"/><text x="235" y="146">Fp1</text><circle cx="485" cy="138" r="24"/><text x="485" y="146">Fp2</text><circle cx="176" cy="214" r="24"/><text x="176" y="222">F7</text><circle cx="360" cy="186" r="24"/><text x="360" y="194">Fz</text><circle cx="544" cy="214" r="24"/><text x="544" y="222">F8</text><circle cx="158" cy="302" r="24"/><text x="158" y="310">T7</text><circle cx="360" cy="300" r="24"/><text x="360" y="308">Cz</text><circle cx="562" cy="302" r="24"/><text x="562" y="310">T8</text><circle cx="190" cy="402" r="24"/><text x="190" y="410">P7</text><circle cx="280" cy="390" r="24"/><text x="280" y="398">P3</text><circle cx="360" cy="382" r="24"/><text x="360" y="390">Pz</text><circle cx="440" cy="390" r="24"/><text x="440" y="398">P4</text><circle cx="530" cy="402" r="24"/><text x="530" y="410">P8</text></g>
+        <g class="site backup"><circle cx="280" cy="196" r="27"/><text x="280" y="204">F3</text><circle cx="270" cy="300" r="27"/><text x="270" y="308">C3</text><circle cx="290" cy="464" r="27"/><text x="290" y="472">O1</text></g>
+        <g class="site recommended"><circle cx="440" cy="196" r="29"/><text x="440" y="204">F4</text><circle cx="450" cy="300" r="29"/><text x="450" y="308">C4</text><circle cx="430" cy="464" r="29"/><text x="430" y="472">O2</text></g>
+        <g class="mastoid"><circle cx="89" cy="300" r="18"/><text x="45" y="278">M1</text><circle cx="631" cy="300" r="18"/><text x="650" y="278">M2</text></g>
+        <text class="landmark-label" x="360" y="20" text-anchor="middle">Nasion</text><text class="landmark-label" x="360" y="565" text-anchor="middle">Inion</text><text class="landmark-label" x="32" y="338">L preauricular</text><text class="landmark-label" x="582" y="338">R preauricular</text>
+      </svg>
+      <div class="hookup-legend"><span><b class="dot recommended"></b>Recommended adult PSG EEG sites</span><span><b class="dot backup"></b>Contralateral backup sites</span><span><b class="dot context"></b>10–20 context sites</span></div>
+      <p class="hookup-disclosure"><strong>Original educational schematic.</strong> Not copied from the AASM manual. Site positions are simplified for teaching and are not a substitute for measured patient placement.</p>
+    </div>
+    <div class="hookup-aasm-facts">
+      <article><span class="aasm-kicker">Recommended EEG</span><h3>F4-M1 · C4-M1 · O2-M1</h3><p>Adult routine sleep staging uses frontal, central, and occipital coverage. Backup electrodes F3, C3, O1, and M2 support contralateral substitution when needed.</p></article>
+      <article><span class="aasm-kicker">Recommended EOG</span><h3>E1-M2 · E2-M2</h3><p>E1 is positioned below and lateral to the left outer canthus; E2 is positioned above and lateral to the right outer canthus.</p></article>
+      <article><span class="aasm-kicker">Chin EMG</span><h3>Three-electrode submental setup</h3><p>One superior midline electrode and two inferior electrodes on opposite sides provide a working derivation plus backup capability.</p></article>
+      <article><span class="aasm-kicker">Impedance</span><h3>Know the channel-specific target</h3><p>EEG, EOG, and chin EMG measured electrode impedance: maximum 5 kΩ. Limb EMG: 10 kΩ or less is acceptable, while 5 kΩ or less is preferred.</p></article>
+      <article><span class="aasm-kicker">Respiratory hookup</span><h3>Match the sensor to the scoring purpose</h3><p>For adult diagnostic PSG, oronasal thermal airflow is the recommended apnea airflow signal; nasal pressure is the recommended hypopnea airflow signal.</p></article>
+      <article class="aasm-source"><span class="aasm-kicker">Source basis</span><p>Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). <em>The AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications</em> (Version 3). American Academy of Sleep Medicine.</p></article>
+    </div>
+  </div>
+</section>
+
 <section class="section"><div class="section-head"><div><div class="eyebrow">Skills Lab record</div><h2>Hookup progress</h2></div><span class="status green">Saved in this browser</span></div><div class="hookup-summary" data-hookup-summary><div><span>Status</span><strong>Loading…</strong></div></div></section>
-<section class="section card"><div class="section-head"><div><div class="eyebrow">Six guided stations</div><h2>Study → Apply → Recap</h2></div><span class="status gold">Activity earns completion</span></div><p class="report-intro">Open a station to study the workflow, apply it to a short decision, and complete the recap. A station is recorded automatically only after you finish the guided activity. Completion still requires all six stations plus an 80% checkpoint.</p><div class="hookup-stations" data-hookup-stations><p>Loading guided stations…</p></div></section>
+<section class="section card"><div class="section-head"><div><div class="eyebrow">Six guided stations</div><h2>Study → Apply → Recap</h2></div><span class="status gold">Activity earns completion</span></div><p class="report-intro">Open a station to study the workflow, apply it to a short decision, and complete the recap. A station is recorded automatically only after you finish the guided activity. Completion still requires all six stations plus an 80% checkpoint. The checkpoint now draws from the validated D2A/D2B pool plus an original AASM/10–20 Hookup supplement, with six of ten questions targeted to that deeper technical content.</p><div class="hookup-stations" data-hookup-stations><p>Loading guided stations…</p></div></section>
 <section class="section card hookup-workspace" data-hookup-workspace hidden></section>
 <section class="section notice"><strong>Completion rule:</strong> Complete all six guided workflow stations and score 80% or higher on a ten-question checkpoint. Historical completion remains preserved, and failed attempts never erase a previously earned completion.</section>
 <footer class="footer">Sleep Pathways Guild · Educational review, not a substitute for current standards or supervised clinical competency</footer>
 </main></div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
 </div>
-<script src="core/storage.js"></script><script src="core/app-shell.js"></script><script src="core/hookup-lab-engine.js"></script><script src="core/hookup-guided-lab.js"></script>
+<script src="core/storage.js"></script><script src="core/app-shell.js"></script><script src="core/hookup-lab-engine.js"></script><script src="core/hookup-aasm-supplement.js"></script><script src="core/hookup-guided-lab.js"></script>
 </body>
 </html>

@@ -46,10 +46,12 @@ jobs:
       - name: Check Hookup Lab JavaScript syntax
         run: |
           node --check rpsgt-v3/core/hookup-lab-engine.js
+          node --check rpsgt-v3/core/hookup-aasm-supplement.js
           node --check rpsgt-v3/core/hookup-guided-lab.js
           node --check rpsgt-v3/scripts/test-hookup-lab-system.mjs
           node --check rpsgt-v3/scripts/test-hookup-lab-shell.mjs
           node --check rpsgt-v3/scripts/test-hookup-guided-study.mjs
+          node --check rpsgt-v3/scripts/test-hookup-aasm-1020.mjs
           node -e "JSON.parse(require('fs').readFileSync('rpsgt-v3/data/hookup/guided-stations.json','utf8'))"
       - name: Validate Hookup Lab engine and completion boundary
         run: node rpsgt-v3/scripts/test-hookup-lab-system.mjs
@@ -57,3 +59,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-hookup-lab-shell.mjs
       - name: Validate guided Hookup station and checkpoint flow
         run: node rpsgt-v3/scripts/test-hookup-guided-study.mjs
+      - name: Validate AASM and International 10-20 Hookup depth
+        run: node rpsgt-v3/scripts/test-hookup-aasm-1020.mjs

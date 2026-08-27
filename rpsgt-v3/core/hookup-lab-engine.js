@@ -23,7 +23,7 @@
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const safeNumber=(value,fallback=0)=>Number.isFinite(Number(value))?Number(value):fallback;
   const normalizedPrompt=value=>String(value||'').trim().toLowerCase().replace(/\s+/g,' ');
-  const hookupTopic=value=>/(electrode|impedance|10[-–]20|landmark|measure|site prep|skin prep|montage|reference|ground|chin emg|leg emg|ecg|ekg|biocal|physiologic calibration|sensor placement|lead placement|application|hookup|conductive|paste|collodion|cup electrode|\bm1\b|\bm2\b|\bf3\b|\bf4\b|\bc3\b|\bc4\b|\bo1\b|\bo2\b|\be1\b|\be2\b)/i.test(String(value||''));
+  const hookupTopic=value=>/(electrode|impedance|10[-–]20|landmark|measure|site prep|skin prep|montage|reference|ground|chin emg|leg emg|ecg|ekg|biocal|physiologic calibration|respiratory calibration|sensor placement|lead placement|application|hookup|conductive|paste|collodion|cup electrode|airflow|respiratory effort|effort belt|thermal sensor|nasal pressure|oximeter|pleth|anterior tibialis|\bm1\b|\bm2\b|\bf3\b|\bf4\b|\bc3\b|\bc4\b|\bo1\b|\bo2\b|\be1\b|\be2\b)/i.test(String(value||''));
   function eligibleQuestions(records){
     const seen=new Set();
     return (Array.isArray(records)?records:[]).filter(record=>{
