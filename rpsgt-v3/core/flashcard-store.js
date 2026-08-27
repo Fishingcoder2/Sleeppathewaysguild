@@ -21,6 +21,45 @@
     return {saved:next,store:engine.normalizeStore(next.flashcards)};
   }
 
+  function compareKey(card){
+    const clean=value=>String(value==null?'':value).trim().toLowerCase().replace(/\s+/g,' ');
+    return clean(card&&card.front)+'\n'+clean(card&&card.back);
+  }
+
+  function migrateTemporaryCatalog(store,engine,stamp){
+    const legacyIds=store.order.filter(id=>/^builtin:v2-/i.test(id));
+    if(!legacyIds.length) return {store,migrated:0,removed:0};
+
+    const restoredByContent=new Map();
+    store.order.filter(id=>/^v2:/i.test(id)).forEach(id=>{
+      const card=store.cards[id];
+      if(card) restoredByContent.set(compareKey(card),id);
+    });
+
+    let migrated=0;
+    let removed=0;
+    legacyIds.forEach(id=>{
+      const legacy=store.cards[id];
+      const targetId=legacy&&restoredByContent.get(compareKey(legacy));
+      if(targetId&&store.cards[targetId]){
+        const target=store.cards[targetId];
+        const legacyStatus=String(legacy.masteryStatus||'learning');
+        const targetStatus=String(target.masteryStatus||'learning');
+        const masteryStatus=targetStatus!=='learning'?targetStatus:legacyStatus;
+        const flagged=Boolean(target.flagged||legacy.flagged);
+        if(flagged!==Boolean(target.flagged)||masteryStatus!==targetStatus){
+          const result=engine.upsertCard(store,Object.assign({},target,{id:targetId,flagged,masteryStatus}),stamp);
+          store=result.store;
+          migrated+=1;
+        }
+      }
+      const result=engine.removeCard(store,id,stamp);
+      store=result.store;
+      if(result.removed) removed+=1;
+    });
+    return {store,migrated,removed};
+  }
+
   function seedLibrary(inputs,now){
     const {engine}=dependencies();
     const current=snapshot();
@@ -62,6 +101,10 @@
       refreshed+=1;
     });
 
+    const migrated=migrateTemporaryCatalog(store,engine,stamp);
+    store=migrated.store;
+    if(migrated.removed||migrated.migrated) changed=true;
+
     const stale=store.order.filter(id=>/^v2:/i.test(id)&&!expected.has(id));
     stale.forEach(id=>{
       const result=engine.removeCard(store,id,stamp);
@@ -69,9 +112,10 @@
       changed=changed||result.removed;
     });
 
-    if(!changed) return {saved:current.saved,store:current.store,created:0,refreshed:0,removed:0};
+    const removed=stale.length+migrated.removed;
+    if(!changed) return {saved:current.saved,store:current.store,created:0,refreshed:0,removed:0,migrated:0};
     const persisted=persist(current.saved,store);
-    return {saved:persisted.saved,store:persisted.store,created,refreshed,removed:stale.length};
+    return {saved:persisted.saved,store:persisted.store,created,refreshed,removed,migrated:migrated.migrated};
   }
 
   function addQuestion(question,options,now){
