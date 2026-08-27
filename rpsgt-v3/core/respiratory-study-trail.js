@@ -72,9 +72,10 @@
     const completed=Math.max(0,state.completedThrough+1);
     const percent=Math.round(completed/total*100);
     const finished=completed===total;
+    const active=state.trail.steps[state.activeIndex]||null;
     return '<div class="respiratory-route-overview" aria-live="polite">'+
-      '<div><span class="eyebrow">Your guided route</span><strong>'+(finished?'Trail complete':('Step '+(state.activeIndex+1)+' of '+total))+'</strong><small>'+completed+' of '+total+' steps completed</small></div>'+
-      '<div class="respiratory-route-meter" aria-hidden="true"><span style="width:'+percent+'%"></span></div>'+
+      '<div class="respiratory-route-copy"><span class="eyebrow">Your learning path</span><strong>'+(finished?'Respiratory trail complete':('Lesson '+(state.activeIndex+1)+' of '+total))+'</strong><small>'+(finished?'All '+total+' lessons completed':('Continue with '+esc(active&&active.navLabel||active&&active.title||'your next lesson')))+'</small></div>'+
+      '<div class="respiratory-route-progress"><div class="respiratory-route-meter" aria-hidden="true"><span style="width:'+percent+'%"></span></div><small>'+completed+' / '+total+' complete</small></div>'+
     '</div>';
   }
 
@@ -84,25 +85,26 @@
     const alreadyComplete=index<=state.completedThrough;
     const labLabel=step.lab&&text(step.lab.label)?text(step.lab.label):'Skills Lab';
     const labLink=step.lab&&text(step.lab.href)?'<a class="btn secondary" href="'+esc(step.lab.href)+'">Open '+esc(labLabel)+'</a>':'';
-    const nextLabel=last?(alreadyComplete?'Trail complete ✓':'Mark trail complete'):'Step complete → Continue to '+esc(next.navLabel||next.title);
+    const nextLabel=last?(alreadyComplete?'Trail complete ✓':'Finish respiratory trail'):'Finish lesson → Unlock '+esc(next.navLabel||next.title);
     const continueButton='<button class="btn '+(last&&alreadyComplete?'secondary':'primary')+'" type="button" data-respiratory-next '+(last&&alreadyComplete?'disabled':'')+'>'+nextLabel+'</button>';
-    return '<section class="respiratory-guided-sequence" aria-label="What to do in this step">'+
-      '<div class="respiratory-guided-title"><span class="eyebrow">Do this step in order</span><h4>Start here, then move down the list</h4></div>'+
+    return '<section class="respiratory-guided-sequence" aria-label="What to do in this lesson">'+
+      '<div class="respiratory-guided-title"><span class="eyebrow">Lesson route</span><h4>Learn → Apply → Check</h4><p>Finish these three activities, then unlock the next lesson.</p></div>'+
       '<ol class="respiratory-guided-list">'+
         '<li><span>1</span><div><strong>Learn this first</strong><p>Read why this matters, the primary authority, the textbook study support, and the current-rule warning below.</p></div></li>'+
         '<li><span>2</span><div><strong>Apply it</strong><p>Use the related skills lab to see the concept in a practical sleep-tech workflow.</p>'+labLink+'</div></li>'+
         '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question checkpoint matched to <strong>this respiratory concept</strong>. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'" data-checkpoint-concept="'+esc(step.id)+'">Take 15-question concept checkpoint</button></div></li>'+
-        '<li><span>4</span><div><strong>Then continue</strong><p>'+(last?'When this step makes sense, mark the trail complete.':'When this step makes sense, continue to the next topic: '+esc(next.title)+'.')+'</p>'+continueButton+'</div></li>'+
       '</ol>'+
+      '<div class="respiratory-lesson-finish"><span>Ready to move on?</span>'+continueButton+'</div>'+
     '</section>';
   }
 
   function panelHtml(step,index){
     const complete=index<=state.completedThrough;
-    const previous=index>0?'<button class="respiratory-trail-link" type="button" data-respiratory-prev>← Previous step</button>':'';
+    const previous=index>0?'<button class="respiratory-trail-link" type="button" data-respiratory-prev>← Previous lesson</button>':'';
     return '<article class="respiratory-trail-panel" aria-labelledby="respiratory-trail-title">'+
-      '<div class="respiratory-trail-progress"><span class="status '+(complete?'green':'')+'">Step '+(index+1)+' of '+state.trail.steps.length+(complete?' · completed':'')+'</span><span>'+esc(step.taskCode)+' pathway</span></div>'+
+      '<div class="respiratory-lesson-kicker"><span class="status '+(complete?'green':'')+'">'+(complete?'Completed lesson':'Current lesson')+'</span><span>Lesson '+(index+1)+' · '+esc(step.taskCode)+'</span></div>'+
       '<h3 id="respiratory-trail-title">'+esc(step.title)+'</h3>'+
+      '<p class="respiratory-lesson-prompt">Complete this lesson to move one step farther along the Respiratory/PAP path.</p>'+
       workflowHtml(step,index)+
       '<div class="respiratory-trail-learning-grid">'+
         '<section><span>Why this matters</span><p>'+esc(step.whyThisMatters)+'</p></section>'+
@@ -111,7 +113,7 @@
       '</div>'+
       '<aside class="respiratory-rule-warning"><strong>Current-rule warning</strong><p>'+esc(step.warning)+'</p></aside>'+
       '<details class="respiratory-extra-study"><summary>Need more study before the checkpoint?</summary><div class="respiratory-extra-study-links"><a class="respiratory-trail-link" href="'+esc(referenceHref(step))+'">Related reference materials</a><a class="respiratory-trail-link" href="practice.html?task='+encodeURIComponent(text(step.taskCode))+'">Extra practice questions</a></div></details>'+
-      '<div class="respiratory-panel-footer">'+previous+'<span>Use the numbered route above instead of choosing actions at random.</span></div>'+
+      '<div class="respiratory-panel-footer">'+previous+'<span>Your next unlocked lesson is always highlighted on the path.</span></div>'+
     '</article>';
   }
 
@@ -120,19 +122,29 @@
     const locked=index>unlocked;
     const complete=index<=state.completedThrough;
     const current=index===state.activeIndex;
-    const marker=complete?'✓':String(index+1);
-    const stateLabel=complete?'Completed':current?'Current step':locked?'Locked until prior step is completed':'Available';
-    return '<button type="button" data-respiratory-step="'+index+'" aria-current="'+(current?'step':'false')+'" '+(locked?'disabled aria-disabled="true"':'')+' class="'+(complete?'is-complete ':'')+(locked?'is-locked':'')+'"><span>'+marker+'</span><strong>'+esc(step.navLabel||step.title)+'</strong><small>'+stateLabel+'</small></button>';
+    const marker=complete?'✓':locked?'🔒':String(index+1);
+    const stateLabel=complete?'Completed':current?'Continue here':locked?'Locked':'Available';
+    const classes=['respiratory-path-node'];
+    if(complete) classes.push('is-complete');
+    if(current) classes.push('is-current');
+    if(locked) classes.push('is-locked');
+    return '<div class="respiratory-path-stop stop-'+((index%3)+1)+'">'+
+      '<button type="button" data-respiratory-step="'+index+'" aria-current="'+(current?'step':'false')+'" '+(locked?'disabled aria-disabled="true"':'')+' class="'+classes.join(' ')+'">'+
+        '<span class="respiratory-path-orb" aria-hidden="true">'+marker+'</span>'+
+        '<span class="respiratory-path-copy"><strong>'+esc(step.navLabel||step.title)+'</strong><small>'+stateLabel+'</small></span>'+
+      '</button>'+
+      (current?'<span class="respiratory-path-callout">Continue</span>':'')+
+    '</div>';
   }
 
   function render(){
     const steps=Array.isArray(state.trail&&state.trail.steps)?state.trail.steps:[];
     if(!steps.length) throw new Error('Respiratory/PAP trail has no learner steps.');
     const active=steps[state.activeIndex]||steps[0];
-    host.innerHTML='<div class="section-head respiratory-trail-head"><div><div class="eyebrow">Featured Study Trail · Respiratory / PAP</div><h2>'+esc(state.trail.title)+'</h2><p>'+esc(state.trail.description)+'</p></div><span class="status">Guided sequence</span></div>'+progressHtml()+
+    host.innerHTML='<div class="section-head respiratory-trail-head"><div><div class="eyebrow">Featured Study Trail · Respiratory / PAP</div><h2>'+esc(state.trail.title)+'</h2><p>'+esc(state.trail.description)+'</p></div><span class="status">Guided learning path</span></div>'+progressHtml()+
       '<div class="respiratory-trail-shell">'+
-        '<nav class="respiratory-trail-steps" aria-label="Respiratory and PAP study steps">'+steps.map(stepButton).join('')+'</nav>'+
-        '<div data-respiratory-trail-panel>'+panelHtml(active,state.activeIndex)+'</div>'+
+        '<nav class="respiratory-trail-steps respiratory-learning-path" aria-label="Respiratory and PAP learning path">'+steps.map(stepButton).join('')+'</nav>'+
+        '<div class="respiratory-current-lesson" data-respiratory-trail-panel>'+panelHtml(active,state.activeIndex)+'</div>'+
       '</div>'+
       '<p class="respiratory-trail-boundary">'+esc(state.trail.learnerBoundary)+'</p>';
   }
