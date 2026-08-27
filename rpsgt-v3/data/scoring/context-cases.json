@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "RPSGT Scoring Context Skill Cases",
-    "version": 1,
+    "version": 2,
     "developmentOnly": true,
     "appAuthored": true,
     "sourceType": "app-authored-schematic",
@@ -23,12 +23,12 @@
       "prompt": "The schematic shows stable N2 sleep followed by an abrupt EEG frequency shift lasting about 4 seconds. What is the intended scoring decision?",
       "options": ["Score an arousal", "Do not score an arousal", "Score a limb movement", "Treat the EEG shift as artifact"],
       "answer": "Score an arousal",
-      "rationale": "The teaching trace supplies the two core NREM arousal elements: a qualifying abrupt EEG-frequency shift and sufficient stable sleep before the change.",
-      "study": {"kind":"arousal","durationSeconds":30,"stage":"N2","stableSleepSeconds":12,"arousalStart":17,"arousalDuration":4,"chinRise":false},
+      "rationale": "The teaching trace shows stable N2 sleep followed by a clear, readable EEG frequency shift lasting about 4 seconds. A modest chin-EMG rise is shown as supportive physiologic context; it is not required for an NREM arousal score.",
+      "study": {"kind":"arousal","durationSeconds":30,"stage":"N2","stableSleepSeconds":12,"arousalStart":17,"arousalDuration":4,"chinRise":"slight"},
       "evidence": [
-        {"id":"abrupt-shift","label":"The EEG changes abruptly for at least 3 seconds.","correct":true,"hint":"Look at the short faster-frequency EEG burst near the end of the epoch."},
-        {"id":"stable-before","label":"At least 10 seconds of stable sleep precedes the EEG change.","correct":true,"hint":"Use the quiet N2 segment before the burst as context."},
-        {"id":"chin-always","label":"A chin EMG increase is required for every arousal in every stage.","correct":false,"hint":"The extra chin-EMG requirement is stage-specific rather than universal."},
+        {"id":"abrupt-shift","label":"The EEG changes abruptly for at least 3 seconds.","correct":true,"hint":"Look for the clear change in EEG frequency near the end of the epoch. It should remain readable rather than looking like a dense artifact burst."},
+        {"id":"stable-before","label":"At least 10 seconds of stable sleep precedes the EEG change.","correct":true,"hint":"Use the quiet N2 segment before the EEG shift as context."},
+        {"id":"chin-always","label":"A chin EMG increase is required for every arousal in every stage.","correct":false,"hint":"A modest chin rise can accompany an NREM arousal, but it is not required for the NREM arousal score."},
         {"id":"resp-required","label":"A respiratory event must be present before any arousal can be scored.","correct":false,"hint":"Arousals can occur with or without a respiratory event."}
       ]
     },
