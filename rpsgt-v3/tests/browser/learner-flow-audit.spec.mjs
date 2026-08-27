@@ -67,6 +67,15 @@ test('sidebar blueprint labels resolve to real D1-D4 containers and Readiness us
   await expect(page.locator('.sidebar a[href="readiness.html"]')).not.toContainText('Targeted Review');
 });
 
+test('Continue where I left off preserves the learner section rather than dropping the study anchor',async({page})=>{
+  await page.goto('study.html');
+  await page.locator('.sidebar a[href="study.html#D3"]').click();
+  await expectTargetNearTop(page,'#D3');
+  await page.locator('.brand').click();
+  await expect(page).toHaveURL(/index\.html/);
+  await expect(page.locator('[data-continue]')).toHaveAttribute('href','study.html#D3');
+});
+
 test('Practice keeps the question, choices, and primary submit/next control usable on the learner screen',async({page})=>{
   await page.goto('practice.html');
   await page.locator('[data-practice-size]').selectOption('5');
@@ -93,9 +102,10 @@ test('Guided Study checkpoint keeps prompt, answer choices, and navigation contr
   await expectBoxInsideViewport(page,'#checkpoint-title');
   await expectBoxInsideViewport(page,'.checkpoint-option');
   await expectBoxInsideViewport(page,'[data-checkpoint-next]');
-  await expect(page.locator('[data-checkpoint-next]')).toBeDisabled();
   await page.locator('.checkpoint-option').first().click();
-  await expect(page.locator('[data-checkpoint-next]')).toBeEnabled();
+  await page.locator('[data-checkpoint-next]').click();
+  await expect(page.locator('.checkpoint-progress-copy strong')).toContainText('Question 2 of 15');
+  await expectBoxInsideViewport(page,'[data-checkpoint-next]');
 });
 
 test('compact navigation leaves room for learning content on phone-sized screens',async({page},testInfo)=>{
