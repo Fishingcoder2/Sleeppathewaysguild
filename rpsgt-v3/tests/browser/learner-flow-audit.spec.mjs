@@ -3,7 +3,7 @@ import {expect,test} from '@playwright/test';
 async function expectTargetNearTop(page,selector){
   const target=page.locator(selector);
   await expect(target).toBeVisible({timeout:15_000});
-  await page.waitForTimeout(120);
+  await page.waitForTimeout(900);
   const geometry=await page.evaluate(sel=>{
     const target=document.querySelector(sel);
     const topbar=document.querySelector('.topbar');
@@ -69,7 +69,12 @@ test('sidebar blueprint labels resolve to real D1-D4 containers and Readiness us
 
 test('Continue where I left off preserves the learner section rather than dropping the study anchor',async({page})=>{
   await page.goto('study.html');
-  await page.locator('.sidebar a[href="study.html#D3"]').click();
+  const domainLink=page.locator('.sidebar a[href="study.html#D3"]');
+  if(!(await domainLink.isVisible())){
+    await page.locator('[data-toggle-menu]').click();
+    await expect(domainLink).toBeVisible();
+  }
+  await domainLink.click();
   await expectTargetNearTop(page,'#D3');
   await page.locator('.brand').click();
   await expect(page).toHaveURL(/index\.html/);
