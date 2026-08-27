@@ -9,7 +9,7 @@ function beatsForKind(kind){
   if(kind==='slow-48')return [80,185,290,395,500,605,710,815];
   if(kind==='p-before-qrs')return [90,205,320,435,550,665,780];
   if(kind==='isolated-ectopy')return [90,210,330,430,585,705,825];
-  if(kind==='concerning-run')return [90,210,360,410,460,510,560,720,835];
+  if(kind==='concerning-run')return [90,210,350,415,480,545,610,735,845];
   if(kind==='event-marker')return [90,210,330,450,555,670,790];
   return [90,190,290,390,490,590,690,790];
 }
@@ -43,21 +43,14 @@ function pvcBeatPath(x){
   ].join(' ');
 }
 
-function runBeatPath(x,index){
-  const up=index%2===0;
-  if(up){
-    return [
-      `L ${x-20} ${BASELINE}`,
-      `C ${x-14} ${BASELINE} ${x-10} 100 ${x-5} 86`,
-      `C ${x} 72 ${x+6} 153 ${x+14} 147`,
-      `C ${x+20} 142 ${x+22} 124 ${x+27} ${BASELINE}`
-    ].join(' ');
-  }
+function ventricularRunBeatPath(x){
   return [
     `L ${x-20} ${BASELINE}`,
-    `C ${x-14} ${BASELINE} ${x-10} 136 ${x-4} 149`,
-    `C ${x+2} 160 ${x+8} 80 ${x+15} 86`,
-    `C ${x+21} 91 ${x+23} 113 ${x+27} ${BASELINE}`
+    `C ${x-16} ${BASELINE} ${x-13} 105 ${x-9} 95`,
+    `C ${x-4} 82 ${x+1} 72 ${x+7} 78`,
+    `C ${x+13} 85 ${x+17} 113 ${x+22} 138`,
+    `C ${x+27} 156 ${x+33} 151 ${x+38} 132`,
+    `C ${x+41} 123 ${x+43} ${BASELINE} ${x+46} ${BASELINE}`
   ].join(' ');
 }
 
@@ -69,7 +62,7 @@ function stripPath(kind){
 
   beats.forEach((x,index)=>{
     if(kind==='concerning-run'&&index>=2&&index<=6){
-      path+=runBeatPath(x,index-2);
+      path+=ventricularRunBeatPath(x);
     }else if(index===wideAt){
       path+=pvcBeatPath(x);
     }else{
@@ -124,7 +117,7 @@ function syncPulseRow(svg,kind){
   const row=svg.querySelector('.ekg-pulse-row');
   if(!row||kind!=='artifact-burst')return;
   const beats=beatsForKind('artifact-burst');
-  row.innerHTML=`<text x="24" y="205">Pulse trend</text><line x1="120" y1="200" x2="865" y2="200"/>${beats.map(x=>`<circle cx="${x}" cy="200" r="5"/>`).join('')}`;
+  row.innerHTML=`<text x="24" y="205">Pulse trend</text><line x1="45" y1="200" x2="865" y2="200"/>${beats.map(x=>`<circle cx="${x}" cy="200" r="5"/>`).join('')}`;
 }
 
 function polishGrid(svg){
