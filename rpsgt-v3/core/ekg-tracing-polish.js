@@ -4,32 +4,42 @@
 const KIND_BY_INDEX=['artifact-burst','regular-60','p-before-qrs','slow-48','isolated-ectopy','concerning-run','event-marker'];
 const BASELINE=118;
 
+function beatsForKind(kind){
+  if(kind==='regular-60'||kind==='artifact-burst')return [65,150,235,320,405,490,575,660,745,830];
+  if(kind==='slow-48')return [80,185,290,395,500,605,710,815];
+  if(kind==='p-before-qrs')return [90,205,320,435,550,665,780];
+  if(kind==='isolated-ectopy')return [90,210,330,430,585,705,825];
+  if(kind==='concerning-run')return [90,210,360,410,460,510,560,720,835];
+  if(kind==='event-marker')return [90,210,330,450,555,670,790];
+  return [90,190,290,390,490,590,690,790];
+}
+
 function normalBeatPath(x){
   return [
-    `L ${x-36} ${BASELINE}`,
-    `C ${x-32} ${BASELINE} ${x-30} 110 ${x-25} 110`,
-    `C ${x-20} 110 ${x-18} ${BASELINE} ${x-14} ${BASELINE}`,
-    `L ${x-7} ${BASELINE}`,
-    `L ${x-4} 124`,
-    `L ${x} 70`,
-    `L ${x+4} 143`,
+    `L ${x-38} ${BASELINE}`,
+    `C ${x-34} ${BASELINE} ${x-32} 111 ${x-27} 111`,
+    `C ${x-22} 111 ${x-20} ${BASELINE} ${x-16} ${BASELINE}`,
+    `L ${x-8} ${BASELINE}`,
+    `L ${x-5} 122`,
+    `L ${x} 68`,
+    `L ${x+4} 139`,
     `L ${x+8} ${BASELINE}`,
-    `L ${x+17} ${BASELINE}`,
-    `C ${x+20} ${BASELINE} ${x+23} 101 ${x+30} 101`,
-    `C ${x+37} 101 ${x+40} ${BASELINE} ${x+46} ${BASELINE}`
+    `L ${x+19} ${BASELINE}`,
+    `C ${x+24} ${BASELINE} ${x+27} 104 ${x+34} 103`,
+    `C ${x+42} 102 ${x+47} 111 ${x+51} ${BASELINE}`
   ].join(' ');
 }
 
 function pvcBeatPath(x){
   return [
-    `L ${x-45} ${BASELINE}`,
-    `C ${x-34} ${BASELINE} ${x-28} 121 ${x-19} 132`,
-    `C ${x-10} 144 ${x-5} 81 ${x+2} 74`,
-    `C ${x+10} 68 ${x+17} 150 ${x+29} 150`,
-    `C ${x+41} 150 ${x+47} 120 ${x+55} ${BASELINE}`,
-    `L ${x+61} ${BASELINE}`,
-    `C ${x+67} ${BASELINE} ${x+72} 136 ${x+83} 136`,
-    `C ${x+94} 136 ${x+99} ${BASELINE} ${x+108} ${BASELINE}`
+    `L ${x-46} ${BASELINE}`,
+    `C ${x-36} ${BASELINE} ${x-29} 124 ${x-21} 135`,
+    `C ${x-12} 148 ${x-6} 84 ${x+1} 73`,
+    `C ${x+9} 61 ${x+18} 151 ${x+30} 150`,
+    `C ${x+42} 149 ${x+48} 122 ${x+57} ${BASELINE}`,
+    `L ${x+64} ${BASELINE}`,
+    `C ${x+70} ${BASELINE} ${x+76} 135 ${x+87} 136`,
+    `C ${x+98} 137 ${x+104} 123 ${x+112} ${BASELINE}`
   ].join(' ');
 }
 
@@ -37,31 +47,25 @@ function runBeatPath(x,index){
   const up=index%2===0;
   if(up){
     return [
-      `L ${x-19} ${BASELINE}`,
-      `C ${x-14} ${BASELINE} ${x-10} 101 ${x-5} 88`,
-      `C ${x} 74 ${x+6} 151 ${x+13} 146`,
-      `C ${x+19} 141 ${x+21} 123 ${x+25} ${BASELINE}`
+      `L ${x-20} ${BASELINE}`,
+      `C ${x-14} ${BASELINE} ${x-10} 100 ${x-5} 86`,
+      `C ${x} 72 ${x+6} 153 ${x+14} 147`,
+      `C ${x+20} 142 ${x+22} 124 ${x+27} ${BASELINE}`
     ].join(' ');
   }
   return [
-    `L ${x-19} ${BASELINE}`,
-    `C ${x-14} ${BASELINE} ${x-10} 134 ${x-4} 147`,
-    `C ${x+2} 158 ${x+7} 82 ${x+14} 87`,
-    `C ${x+20} 92 ${x+22} 113 ${x+25} ${BASELINE}`
+    `L ${x-20} ${BASELINE}`,
+    `C ${x-14} ${BASELINE} ${x-10} 136 ${x-4} 149`,
+    `C ${x+2} 160 ${x+8} 80 ${x+15} 86`,
+    `C ${x+21} 91 ${x+23} 113 ${x+27} ${BASELINE}`
   ].join(' ');
 }
 
 function stripPath(kind){
-  let beats=[90,190,290,390,490,590,690,790];
+  const beats=beatsForKind(kind);
   let wideAt=-1;
   let path=`M 20 ${BASELINE}`;
-
-  if(kind==='regular-60')beats=[65,150,235,320,405,490,575,660,745,830];
-  if(kind==='slow-48')beats=[80,185,290,395,500,605,710,815];
-  if(kind==='p-before-qrs')beats=[90,205,320,435,550,665,780];
-  if(kind==='isolated-ectopy'){beats=[90,210,330,430,585,705,825];wideAt=3;}
-  if(kind==='concerning-run')beats=[90,210,360,410,460,510,560,720,835];
-  if(kind==='event-marker')beats=[90,210,330,450,555,670,790];
+  if(kind==='isolated-ectopy')wideAt=3;
 
   beats.forEach((x,index)=>{
     if(kind==='concerning-run'&&index>=2&&index<=6){
@@ -72,16 +76,55 @@ function stripPath(kind){
       path+=normalBeatPath(x);
     }
   });
+  return `${path} L 880 ${BASELINE}`;
+}
 
+function artifactSignalPath(){
+  const left=[65,150,235];
+  const right=[575,660,745,830];
+  let path=`M 20 ${BASELINE}`;
+  left.forEach(x=>{path+=normalBeatPath(x);});
+  path+=` L 340 ${BASELINE} M 515 ${BASELINE}`;
+  right.forEach(x=>{path+=normalBeatPath(x);});
   return `${path} L 880 ${BASELINE}`;
 }
 
 function artifactPath(){
-  return `M 350 ${BASELINE} L 360 111 L 368 77 L 377 150 L 386 88 L 395 145 L 405 69 L 416 153 L 427 92 L 438 143 L 450 75 L 461 147 L 472 96 L 482 131 L 492 114 L 504 ${BASELINE}`;
+  return [
+    `M 340 ${BASELINE}`,
+    'C 346 116 350 123 354 120',
+    'L 359 105',
+    'L 364 132',
+    'L 370 91',
+    'L 375 145',
+    'L 382 113',
+    'C 388 104 393 130 398 119',
+    'L 403 76',
+    'L 409 150',
+    'L 415 96',
+    'L 421 137',
+    'L 427 109',
+    'C 433 129 439 106 445 121',
+    'L 451 86',
+    'L 456 140',
+    'L 463 101',
+    'L 469 129',
+    'C 476 134 482 108 489 119',
+    'L 495 98',
+    'L 500 127',
+    'C 505 123 510 116 515 118'
+  ].join(' ');
 }
 
-function pLabelMarkup(){
-  return '<text x="56" y="101">P</text><text x="171" y="101">P</text><text x="286" y="101">P</text>';
+function pLabelMarkup(kind){
+  return beatsForKind(kind).slice(0,3).map(x=>`<text x="${x-30}" y="101">P</text>`).join('');
+}
+
+function syncPulseRow(svg,kind){
+  const row=svg.querySelector('.ekg-pulse-row');
+  if(!row||kind!=='artifact-burst')return;
+  const beats=beatsForKind('artifact-burst');
+  row.innerHTML=`<text x="24" y="205">Pulse trend</text><line x1="120" y1="200" x2="865" y2="200"/>${beats.map(x=>`<circle cx="${x}" cy="200" r="5"/>`).join('')}`;
 }
 
 function polishGrid(svg){
@@ -117,14 +160,15 @@ function polishSvg(svg,kind){
   polishGrid(svg);
 
   const signal=svg.querySelector('.ekg-signal-line');
-  if(signal)signal.setAttribute('d',stripPath(kind==='artifact-burst'?'regular-60':kind));
+  if(signal)signal.setAttribute('d',kind==='artifact-burst'?artifactSignalPath():stripPath(kind));
 
   const artifact=svg.querySelector('.ekg-artifact-line');
   if(artifact)artifact.setAttribute('d',artifactPath());
 
   const labels=svg.querySelector('.ekg-p-labels');
-  if(labels&&kind==='p-before-qrs')labels.innerHTML=pLabelMarkup();
+  if(labels&&kind==='p-before-qrs')labels.innerHTML=pLabelMarkup(kind);
 
+  syncPulseRow(svg,kind);
   svg.dataset.spgTracingPolish=kind;
 }
 
@@ -137,7 +181,6 @@ function polishWorkspace(workspace){
 function init(){
   const workspace=document.querySelector('[data-ekg-workspace]');
   if(!workspace)return;
-
   const observer=new MutationObserver(()=>polishWorkspace(workspace));
   observer.observe(workspace,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-current']});
   polishWorkspace(workspace);
