@@ -20,10 +20,13 @@ assert.deepEqual(updated.guidedStudy.lastCheckpointReview.missedIds,['q1','q3'])
 assert.equal(saved.guidedStudy.lastCheckpointReview,undefined,'input state must remain unchanged');
 
 const ceremonies=engine.awardCeremonies(saved,'D1C',{task:false,domain:false});
-assert.deepEqual(ceremonies.map(item=>item.kind),['task','domain']);
+assert.deepEqual(ceremonies.map(item=>item.kind),['task'],'a task that also completes its domain should produce one combined accomplishment modal');
+assert.equal(ceremonies[0].domainEarned,true,'the combined task accomplishment must carry the newly completed domain');
 assert.deepEqual(engine.awardCeremonies(saved,'D1C',{task:true,domain:true}),[],'existing awards must not replay');
 const seen=engine.markCeremonySeen(saved,'guided-task:D1C');
-assert.deepEqual(engine.unseenCeremonies(seen,ceremonies).map(item=>item.kind),['domain']);
+assert.deepEqual(engine.unseenCeremonies(seen,ceremonies),[],'a combined accomplishment already seen must not replay');
+const domainOnly=engine.awardCeremonies(saved,'D1C',{task:true,domain:false});
+assert.deepEqual(domainOnly.map(item=>item.kind),['domain'],'legacy or recovered domain-only completion may still produce one domain accomplishment');
 
 const blueprint={domains:[
   {id:'D1',fullName:'Clinical Overview',tasks:[{code:'D1A',title:'A'},{code:'D1B',title:'B'},{code:'D1C',title:'C'}]},
@@ -51,13 +54,13 @@ const blocked=coachSafety.safePreAnswer('Choose N2 because it is correct.','N2',
 assert.equal(blocked,'Use the evidence in the stem.','pre-score safety must replace answer-leaking guidance');
 assert.equal(coachSafety.containsAnswer('Remove choices that do not fit.','REM'),false,'short answer tokens must not match inside unrelated words');
 assert.equal(coachSafety.containsAnswer('The answer is REM.','REM'),true);
-assert.equal(engine.VERSION,'1.0.1');
+assert.equal(engine.VERSION,'1.1.0');
 assert.deepEqual(engine.DOMAIN_AWARD_NAMES,{
   D1:'Clinical Guide',
   D2:'Study Signal Scout',
   D3:'Scoring Pathfinder',
   D4:'Therapy Trail Guide'
 });
-assert.equal(storageGuard.VERSION,'1.0.0');
+assert.equal(storageGuard.VERSION,'1.1.0');
 assert.equal(coachSafety.VERSION,'2.0.0');
-console.log('Guided Study completion system contract passed.');
+console.log('Guided Study automatic accomplishment system contract passed.');
