@@ -17,6 +17,7 @@ const LAB_ROUTES = [
   'lab-hookup.html',
   'lab-ekg.html',
   'lab-visual.html',
+  'lab-artifact.html',
   'lab-scoring.html',
   'lab-respiratory.html',
   'lab-pap.html',
@@ -216,10 +217,10 @@ test('Mock builds 175 questions, saves, reloads, and resumes', async ({ page }) 
   await expect(page.locator('[data-question-number]')).toContainText('2');
 });
 
-test('Skills Lab catalog exposes exactly the ten native v3 routes', async ({ page }) => {
+test('Skills Lab catalog exposes exactly the eleven native v3 routes', async ({ page }) => {
   await page.goto('labs.html');
   await expect(page.locator('[data-lab-catalog]')).toBeVisible();
-  await expect(page.locator('[data-lab-catalog] a[href^="lab-"]')).toHaveCount(10);
+  await expect(page.locator('[data-lab-catalog] a[href^="lab-"]')).toHaveCount(11);
 
   const hrefs = await page.locator('[data-lab-catalog] a[href^="lab-"]').evaluateAll((links) =>
     links.map((link) => link.getAttribute('href')).sort()
