@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "RPSGT Scoring Context Skill Cases",
-    "version": 2,
+    "version": 3,
     "developmentOnly": true,
     "appAuthored": true,
     "sourceType": "app-authored-schematic",
@@ -131,17 +131,17 @@
     {
       "id": "context-boundary-respiratory-spans",
       "family": "transition-boundary",
-      "title": "Respiratory event crossing an epoch boundary",
-      "prompt": "A respiratory event begins near the end of one sleep epoch and continues into the next sleep epoch. In the AASM ISR scoring interface, how is the event represented across the two epochs?",
-      "options": ["Score the respiratory event in both epochs it occupies", "Score it only in the epoch where it begins", "Score it only in the epoch where it ends", "Do not score events that cross an epoch boundary"],
-      "answer": "Score the respiratory event in both epochs it occupies",
-      "rationale": "The public AASM ISR instructions direct scorers to mark a respiratory event in each epoch where any portion of that event appears. The schematic keeps both epochs in sleep context.",
+      "title": "Obstructive apnea crossing an epoch boundary",
+      "prompt": "In this adult diagnostic PSG, airflow falls to less than 10% of baseline for about 13 seconds while thoracic and abdominal effort continue. The event begins near the end of one 30-second epoch and continues into the next. What should be scored?",
+      "options": ["One obstructive apnea spanning the epoch boundary", "Two obstructive apneas, one in each epoch", "One central apnea spanning the epoch boundary", "Do not score the event because it crosses an epoch boundary"],
+      "answer": "One obstructive apnea spanning the epoch boundary",
+      "rationale": "AASM Scoring Manual Version 3 defines an adult apnea by a drop of at least 90% in the recommended apnea signal for at least 10 seconds. Continued or increased inspiratory effort throughout the absent-airflow period identifies an obstructive apnea. The epoch boundary does not divide one continuous respiratory event into two events.",
       "study": {"kind":"boundary","durationSeconds":60,"stage":"N2","epochBoundary":30,"respEvent":{"start":25,"end":38}},
       "evidence": [
-        {"id":"crosses-boundary","label":"The airflow/effort event visibly extends across the 30-second epoch boundary.","correct":true,"hint":"Trace the reduced airflow from before the vertical boundary line to after it."},
-        {"id":"sleep-both","label":"Both displayed epochs remain sleep rather than wake.","correct":true,"hint":"Respiratory events are not entered for epochs scored as wake in the ISR instructions."},
-        {"id":"start-only","label":"Only the event start matters, so the second epoch can never carry the respiratory score.","correct":false,"hint":"The ISR instructions explicitly address events that span more than one epoch."},
-        {"id":"boundary-invalid","label":"Crossing an epoch boundary makes a respiratory event invalid.","correct":false,"hint":"The boundary changes where the score is recorded, not whether the event can exist."}
+        {"id":"apnea-amplitude","label":"The thermistor airflow signal falls by at least 90% from baseline during the event.","correct":true,"hint":"For an adult diagnostic apnea, judge the airflow reduction using the oronasal thermal signal. The tracing becomes nearly flat during the event."},
+        {"id":"duration-effort","label":"The reduction lasts about 13 seconds and inspiratory effort continues throughout it.","correct":true,"hint":"Follow the thorax and abdomen channels while timing the near-flat thermal airflow segment across the boundary."},
+        {"id":"split-event","label":"Crossing the 30-second boundary automatically turns one continuous event into two apneas.","correct":false,"hint":"Measure the respiratory event continuously from onset until breathing returns toward baseline; the epoch line does not restart the event."},
+        {"id":"central-effort","label":"Continued thoracic and abdominal effort makes this a central apnea.","correct":false,"hint":"A central apnea requires absent inspiratory effort; persistent effort supports obstruction."}
       ]
     }
   ]
