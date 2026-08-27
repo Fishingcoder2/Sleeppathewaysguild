@@ -6,7 +6,7 @@
 
   const state={trail:null,chapters:new Map(),activeIndex:0,completedThrough:-1,taskEntryObserver:null};
   const text=value=>String(value==null?'':value).trim();
-  const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
+  const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
   async function loadJson(path){
     const response=await fetch(path,{cache:'no-store'});
@@ -77,10 +77,11 @@
   function workflowHtml(step,index){
     const last=index===state.trail.steps.length-1;
     const next=state.trail.steps[index+1]||null;
+    const alreadyComplete=index<=state.completedThrough;
     const labLabel=step.lab&&text(step.lab.label)?text(step.lab.label):'Skills Lab';
     const labLink=step.lab&&text(step.lab.href)?'<a class="btn secondary" href="'+esc(step.lab.href)+'">Open '+esc(labLabel)+'</a>':'';
-    const nextLabel=last?'Mark trail complete':'Step complete → Continue to '+esc(next.navLabel||next.title);
-    const continueButton='<button class="btn primary" type="button" data-respiratory-next>'+nextLabel+'</button>';
+    const nextLabel=last?(alreadyComplete?'Trail complete ✓':'Mark trail complete'):'Step complete → Continue to '+esc(next.navLabel||next.title);
+    const continueButton='<button class="btn '+(last&&alreadyComplete?'secondary':'primary')+'" type="button" data-respiratory-next '+(last&&alreadyComplete?'disabled':'')+'>'+nextLabel+'</button>';
     return '<section class="respiratory-guided-sequence" aria-label="What to do in this step">'+
       '<div class="respiratory-guided-title"><span class="eyebrow">Do this step in order</span><h4>Start here, then move down the list</h4></div>'+
       '<ol class="respiratory-guided-list">'+
@@ -148,6 +149,7 @@
 
   function completeAndContinue(){
     const last=state.trail.steps.length-1;
+    if(state.activeIndex===last&&state.completedThrough===last) return;
     state.completedThrough=Math.max(state.completedThrough,state.activeIndex);
     if(state.activeIndex<last) state.activeIndex+=1;
     saveProgress();
