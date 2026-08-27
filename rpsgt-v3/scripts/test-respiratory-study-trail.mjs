@@ -42,6 +42,7 @@ if(/driveFileId|sourceId|referenceKeys/.test(trailText)) throw new Error('Learne
 
 const chapter131=chapters.get(131);
 if(!chapter131||chapter131.label!=='Obstructive Sleep Apnea: Clinical Features, Evaluation, and Principles of Management'||Number(chapter131.printedStartPage)!==1245) throw new Error('Chapter 131 locator changed unexpectedly.');
+if(!trailJs.includes("sourceTitle+(edition?', '+edition:'')")||!trailJs.includes("Book: <em>")) throw new Error('Respiratory chapter card must identify Principles and Practice of Sleep Medicine with its edition before the chapter locator.');
 
 const engineContext={globalThis:{},Date,JSON,Map,Math,Object,Array,String,Number,Boolean};
 vm.createContext(engineContext);vm.runInContext(engineJs,engineContext,{filename:'guided-trail-engine.js'});
@@ -75,10 +76,10 @@ if(/open mapped references|five-question task checkpoint|Practice this concept|C
 new Function(trailJs);
 if(!trailCss.includes('@media(max-width:760px)')||!trailCss.includes('overflow-x:auto')||!trailCss.includes('grid-template-columns:1fr')) throw new Error('Respiratory trail CSS is missing mobile/compact behavior.');
 if(/var\(--(?:card|soft)\)/.test(trailCss)) throw new Error('Respiratory trail CSS references undefined legacy surface variables.');
-for(const token of ['var(--panel)','var(--sky)',':focus-visible','respiratory-route-overview','respiratory-guided-list','is-locked']) if(!trailCss.includes(token)) throw new Error(`Respiratory trail CSS polish is missing ${token}.`);
+for(const token of ['var(--panel)','var(--sky)',':focus-visible','respiratory-route-overview','respiratory-guided-list','is-locked','respiratory-study-book']) if(!trailCss.includes(token)) throw new Error(`Respiratory trail CSS polish is missing ${token}.`);
 
 for(const token of ['data-featured-respiratory-trail','study.html#respiratory-pap-trail','Start Respiratory/PAP Study Trail']) if(!homeJs.includes(token)) throw new Error(`Dashboard respiratory trail entry point is missing ${token}.`);
 for(const token of ["new Set(['respiratory','pap','troubleshooting'])",'study.html#respiratory-pap-trail','Study respiratory/PAP trail first']) if(!labsJs.includes(token)) throw new Error(`Skills Lab respiratory trail entry point is missing ${token}.`);
 new Function(homeJs);new Function(labsJs);
 
-console.log('Respiratory/PAP Study Trail authority, nine-step order, guided Learn → Apply → Check → Continue flow, concept-matched 15-question checkpoints, Sleep Staging exclusion from OSA scoring, saved progression, textbook identity, chapter locator, learner-facing reference wording, front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
+console.log('Respiratory/PAP Study Trail authority, nine-step order, guided Learn → Apply → Check → Continue flow, concept-matched 15-question checkpoints, Sleep Staging exclusion from OSA scoring, saved progression, explicit Principles and Practice of Sleep Medicine 7th-edition textbook identity, chapter locator, learner-facing reference wording, front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
