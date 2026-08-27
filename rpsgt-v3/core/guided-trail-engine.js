@@ -4,9 +4,9 @@
   root.RPSGTGuidedTrailEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.2.0';
+  const VERSION='1.3.0';
   const PASS_PERCENT=80;
-  const BADGE_QUESTION_COUNT=10;
+  const BADGE_QUESTION_COUNT=15;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const isObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
   const taskList=blueprint=>(blueprint&&blueprint.domains||[]).flatMap(domain=>(domain.tasks||[]).map(task=>({...task,domain:domain.id,domainName:domain.fullName})));
