@@ -18,10 +18,7 @@
         "excludeTopicAny": ["sleep staging", "arousal scoring", "limb movement", "cardiac"]
       },
       "warning": "Use AASM Version 3 for actual scoring rules. Do not use textbook wording or older scoring guidance to override current rules.",
-      "lab": {
-        "href": "lab-respiratory.html",
-        "label": "Respiratory Lab"
-      },
+      "lab": {"href": "lab-respiratory.html", "label": "Respiratory Lab"},
       "navLabel": "OSA scoring"
     },
     {
@@ -32,14 +29,9 @@
       "primaryAuthority": "AASM Adult PAP Treatment Guideline for adult OSA PAP treatment and support concepts.",
       "studyChapter": 132,
       "referenceTopic": "adult OSA PAP treatment",
-      "checkpointFilter": {
-        "includeAny": ["obstructive sleep apnea", "osa", "cpap", "apap", "positive airway pressure", "pap therapy", "pap treatment"]
-      },
+      "checkpointFilter": {"includeAny": ["obstructive sleep apnea", "osa", "cpap", "apap", "positive airway pressure", "pap therapy", "pap treatment"]},
       "warning": "This is the adult OSA PAP route. Do not generalize CPAP/APAP/BPAP treatment logic to CSA/ASV or hypoventilation/NIV.",
-      "lab": {
-        "href": "lab-pap.html",
-        "label": "PAP Lab"
-      },
+      "lab": {"href": "lab-pap.html", "label": "PAP Lab"},
       "navLabel": "OSA PAP"
     },
     {
@@ -50,14 +42,9 @@
       "primaryAuthority": "AASM manual PAP titration guidance with AAST PAP titration technical guidance; AASM Version 3 controls scoring.",
       "studyChapter": 132,
       "referenceTopic": "manual PAP titration",
-      "checkpointFilter": {
-        "includeAny": ["titration", "pressure increase", "pressure adjustment", "optimal pressure", "cpap pressure", "bpap pressure", "maximum pressure", "minimum pressure"]
-      },
+      "checkpointFilter": {"includeAny": ["titration", "pressure increase", "pressure adjustment", "optimal pressure", "cpap pressure", "bpap pressure", "maximum pressure", "minimum pressure"]},
       "warning": "Do not generalize OSA pressure-adjustment logic to ASV or NIV. Rule-sensitive scoring remains controlled by AASM Version 3.",
-      "lab": {
-        "href": "lab-pap.html",
-        "label": "PAP Lab"
-      },
+      "lab": {"href": "lab-pap.html", "label": "PAP Lab"},
       "navLabel": "Manual titration"
     },
     {
@@ -68,14 +55,9 @@
       "primaryAuthority": "AAST PAP acclimation/technical guidance and current scope/competency boundaries for technologist support.",
       "studyChapter": 201,
       "referenceTopic": "PAP acclimation",
-      "checkpointFilter": {
-        "includeAny": ["mask", "leak", "acclimat", "adherence", "humidif", "comfort", "interface", "chin strap", "dry mouth", "skin irritation", "desensit"]
-      },
+      "checkpointFilter": {"includeAny": ["mask", "leak", "acclimat", "adherence", "humidif", "comfort", "interface", "chin strap", "dry mouth", "skin irritation", "desensit"]},
       "warning": "Comfort, interface, education, and adherence support can cross PAP modalities; they do not decide diagnosis, treatment indication, modality, or device settings.",
-      "lab": {
-        "href": "lab-troubleshooting.html",
-        "label": "Troubleshooting Lab"
-      },
+      "lab": {"href": "lab-troubleshooting.html", "label": "Troubleshooting Lab"},
       "navLabel": "PAP support"
     },
     {
@@ -86,14 +68,9 @@
       "primaryAuthority": "AASM Scoring Manual Version 3 for event scoring; ICSD-3-TR for classification; 2025 AASM CSA guidance for treatment.",
       "studyChapter": 124,
       "referenceTopic": "central sleep apnea",
-      "checkpointFilter": {
-        "includeAny": ["central apnea", "central sleep apnea", "central event", "cheyne-stokes", "periodic breathing", "treatment-emergent", "mixed apnea", "respiratory effort"]
-      },
+      "checkpointFilter": {"includeAny": ["central apnea", "central sleep apnea", "central event", "cheyne-stokes", "periodic breathing", "treatment-emergent", "mixed apnea", "respiratory effort"]},
       "warning": "Do not respond to central events by automatically applying the obstructive OSA pressure-increase pathway.",
-      "lab": {
-        "href": "lab-respiratory.html",
-        "label": "Respiratory Lab"
-      },
+      "lab": {"href": "lab-respiratory.html", "label": "Respiratory Lab"},
       "navLabel": "CSA distinction"
     },
     {
@@ -104,14 +81,9 @@
       "primaryAuthority": "2025 AASM Adult Central Sleep Apnea Treatment Guideline.",
       "studyChapter": 125,
       "referenceTopic": "central sleep apnea",
-      "checkpointFilter": {
-        "includeAny": ["central sleep apnea", "central apnea", "asv", "adaptive servo", "servo-ventilation", "treatment-emergent"]
-      },
+      "checkpointFilter": {"includeAny": ["central sleep apnea", "central apnea", "asv", "adaptive servo", "servo-ventilation", "servo ventilation", "servoventilation", "treatment-emergent", "complex sleep apnea", "advanced pap"]},
       "warning": "The 2025 AASM CSA guideline controls current adult CSA treatment recommendations. Device-specific execution still requires the order, facility protocol, scope requirements, and manufacturer instructions.",
-      "lab": {
-        "href": "lab-pap.html",
-        "label": "PAP Lab"
-      },
+      "lab": {"href": "lab-pap.html", "label": "PAP Lab"},
       "navLabel": "CSA / ASV"
     },
     {
@@ -122,14 +94,9 @@
       "primaryAuthority": "AASM Version 3 for scoring plus current ETCO2/TcCO2 technical guidance; local orders and device instructions govern NIV execution.",
       "studyChapter": 138,
       "referenceTopic": "respiratory rules",
-      "checkpointFilter": {
-        "includeAny": ["hypoventilation", "niv", "noninvasive ventilation", "backup rate", "bilevel st", "volume assured", "avaps", "ivaps", "hypercapnia", "carbon dioxide", "co2"]
-      },
+      "checkpointFilter": {"includeAny": ["hypoventilation", "niv", "noninvasive ventilation", "backup rate", "bilevel st", "volume assured", "avaps", "ivaps", "hypercapnia", "carbon dioxide", "co2"]},
       "warning": "Do not derive universal NIV settings, backup rates, target volumes, alarms, or pressure-support rules from OSA PAP or textbook material.",
-      "lab": {
-        "href": "lab-respiratory.html",
-        "label": "Respiratory Lab"
-      },
+      "lab": {"href": "lab-respiratory.html", "label": "Respiratory Lab"},
       "navLabel": "Hypoventilation / NIV"
     },
     {
@@ -140,14 +107,9 @@
       "primaryAuthority": "Pathway-dependent current AASM/AAST guidance plus the physician order, facility protocol, and applicable device instructions.",
       "studyChapter": 200,
       "referenceTopic": "oxygen",
-      "checkpointFilter": {
-        "includeAny": ["oxygen", "spo2", "co2", "carbon dioxide", "capnography", "etco2", "tc co2", "transcutaneous", "hypoxemia", "supplemental oxygen"]
-      },
+      "checkpointFilter": {"includeAny": ["oxygen", "spo2", "co2", "carbon dioxide", "capnography", "etco2", "tc co2", "transcutaneous", "hypoxemia", "supplemental oxygen"]},
       "warning": "Improved SpO2 alone does not establish adequate ventilation. Keep ordered oxygen, OSA PAP titration oxygen, CSA, altitude, hypoventilation, and pediatric/infant routes distinct.",
-      "lab": {
-        "href": "lab-respiratory.html",
-        "label": "Respiratory Lab"
-      },
+      "lab": {"href": "lab-respiratory.html", "label": "Respiratory Lab"},
       "navLabel": "Oxygen / CO₂"
     },
     {
@@ -158,17 +120,9 @@
       "primaryAuthority": "Current AAST role/scope guidance, AASM laboratory requirements, physician orders, and facility policy.",
       "studyChapter": 200,
       "referenceTopic": "documentation",
-      "checkpointFilter": {
-        "includeAllGroups": [
-          ["respiratory", "airflow", "effort", "spo2", "oximeter", "oxygen", "co2", "pap", "nasal", "thermistor", "thorax", "abdomen"],
-          ["signal", "artifact", "verify", "document", "escalat", "notify", "troubleshoot", "disconnect", "sensor", "safety", "correct"]
-        ]
-      },
+      "checkpointFilter": {"includeAllGroups": [["respiratory", "airflow", "effort", "spo2", "oximeter", "oxygen", "co2", "pap", "nasal", "thermistor", "thorax", "abdomen"], ["signal", "artifact", "verify", "document", "escalat", "notify", "troubleshoot", "disconnect", "sensor", "safety", "correct"]]},
       "warning": "Use the sequence recognize → verify patient and signal → document → permitted technical correction → escalate per facility policy. If immediate patient danger is suspected, patient safety takes priority. Do not hard-code universal emergency or notification thresholds.",
-      "lab": {
-        "href": "lab-troubleshooting.html",
-        "label": "Troubleshooting Lab"
-      },
+      "lab": {"href": "lab-troubleshooting.html", "label": "Troubleshooting Lab"},
       "navLabel": "Escalation"
     }
   ]
