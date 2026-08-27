@@ -6,7 +6,7 @@ const DURATION=120,LABEL_WIDTH=116,TOP_PAD=34,BOTTOM_PAD=24,ROW_HEIGHT=56,TAU=Ma
 const CHANNELS=['C3-M2','L LEG','R LEG','Nasal Pressure','Thorax RIP','Abdomen RIP','SpO2'];
 const CLASS_OPTIONS=['Qualifying PLM series','Too few movements for a PLM series','Respiratory-associated movements — exclude from PLM scoring','Wake leg movements — do not score as PLMs'];
 const state={pack:null,cases:[],index:0,classification:null,classificationLocked:false,evidence:null,evidenceLocked:false,classCorrect:0,evidenceCorrect:0};
-const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
 const gauss=(x,c,w)=>Math.exp(-Math.pow((x-c)/Math.max(.001,w),2));
 const current=()=>state.cases[state.index]||null;
