@@ -7,6 +7,14 @@
   const $=selector=>document.querySelector(selector);
   const setText=(selector,value)=>document.querySelectorAll(selector).forEach(node=>{node.textContent=value;});
 
+  function loadLearnerFlowNavigation(){
+    if(window.RPSGTLearnerFlowNavigation||document.querySelector('script[data-rpsgt-learner-flow-navigation]')) return;
+    const script=document.createElement('script');
+    script.src='core/learner-flow-navigation.js';
+    script.dataset.rpsgtLearnerFlowNavigation='true';
+    document.head.appendChild(script);
+  }
+
   function externalLink(resource){
     const link=document.createElement('a');
     link.className='official-resource-card';
@@ -137,6 +145,7 @@
   }
 
   function init(){
+    loadLearnerFlowNavigation();
     promotePrimaryDestinations();
     insertFeaturedRespiratoryTrail();
     normalizeAchievementCopy();
