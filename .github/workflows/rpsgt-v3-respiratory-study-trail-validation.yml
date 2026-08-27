@@ -5,12 +5,19 @@ on:
     paths:
       - 'rpsgt-v3/data/learner-trails/respiratory-pap.json'
       - 'rpsgt-v3/core/respiratory-study-trail.js'
+      - 'rpsgt-v3/core/guided-trail-engine.js'
       - 'rpsgt-v3/assets/respiratory-study-trail.css'
       - 'rpsgt-v3/study.html'
       - 'rpsgt-v3/core/home-dashboard.js'
       - 'rpsgt-v3/core/labs.js'
+      - 'rpsgt-v3/data/question-bank/d1c.json'
+      - 'rpsgt-v3/data/question-bank/d2c.json'
+      - 'rpsgt-v3/data/question-bank/d3a.json'
+      - 'rpsgt-v3/data/question-bank/d4a.json'
+      - 'rpsgt-v3/data/question-bank/d4c.json'
       - 'rpsgt-v3/data/study-sources/principles-practice-sleep-medicine-7e.json'
       - 'rpsgt-v3/data/study-sources/topic-families-pap-modalities.json'
+      - 'rpsgt-v3/scripts/test-guided-trail-system.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-study-trail.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-study-trail-validation.yml'
   push:
@@ -19,12 +26,19 @@ on:
     paths:
       - 'rpsgt-v3/data/learner-trails/respiratory-pap.json'
       - 'rpsgt-v3/core/respiratory-study-trail.js'
+      - 'rpsgt-v3/core/guided-trail-engine.js'
       - 'rpsgt-v3/assets/respiratory-study-trail.css'
       - 'rpsgt-v3/study.html'
       - 'rpsgt-v3/core/home-dashboard.js'
       - 'rpsgt-v3/core/labs.js'
+      - 'rpsgt-v3/data/question-bank/d1c.json'
+      - 'rpsgt-v3/data/question-bank/d2c.json'
+      - 'rpsgt-v3/data/question-bank/d3a.json'
+      - 'rpsgt-v3/data/question-bank/d4a.json'
+      - 'rpsgt-v3/data/question-bank/d4c.json'
       - 'rpsgt-v3/data/study-sources/principles-practice-sleep-medicine-7e.json'
       - 'rpsgt-v3/data/study-sources/topic-families-pap-modalities.json'
+      - 'rpsgt-v3/scripts/test-guided-trail-system.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-study-trail.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-study-trail-validation.yml'
 
@@ -41,5 +55,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+      - name: Validate Guided Trail selection engine
+        run: node rpsgt-v3/scripts/test-guided-trail-system.mjs
       - name: Validate Respiratory/PAP Study Trail
         run: node rpsgt-v3/scripts/test-respiratory-study-trail.mjs
