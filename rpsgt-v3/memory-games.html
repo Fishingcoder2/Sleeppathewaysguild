@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Memory Games | Sleep Pathways Guild</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/study-tools.css">
+<link rel="stylesheet" href="assets/memory-arcade.css">
+<link rel="stylesheet" href="assets/glossary-games.css">
+</head>
+<body data-module="study">
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Memory Games</strong><span>Active recall from flashcards, glossary terms, Math Coach, and handbook terms</span></span></a>
+  <div class="top-actions"><a href="flashcards.html">Flashcards</a><a href="math-coach.html">Math Coach</a><a href="index.html">Dashboard</a></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
+  <a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+  <div class="nav-label">Study tools</div>
+  <a class="nav-link" href="flashcards.html"><span>▱</span>Flashcards</a>
+  <a class="nav-link active" href="memory-games.html"><span>▦</span>Memory Games</a>
+  <a class="nav-link" href="math-coach.html"><span>∑</span>Math Coach</a>
+  <a class="nav-link" href="notes.html"><span>✎</span>My Notes</a>
+</aside>
+<main class="main">
+<section class="hero study-tool-hero">
+  <div><div class="eyebrow">RPSGT active recall</div><h1>Memory Games</h1><p class="lead">Practice the RPSGT flashcard library, original Sleep Pathways Guild glossary definitions, Math Coach formulas and units, and the common abbreviations listed in the current BRPT RPSGT Candidate Handbook. Match both sides, retrieve in either direction, then let Weak Memory automatically bring back the concepts you miss.</p><div class="study-tool-links"><a class="btn primary" href="flashcards.html">Open Flashcards</a><a class="btn secondary" href="math-coach.html">Math Coach</a><a class="btn secondary" href="study.html">Guided Study</a></div></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Missed does not mean lost.</h2><p>Every miss is useful data. Weak Memory keeps the troublesome connection in your rotation until recall becomes stronger.</p></aside>
+</section>
+
+<div class="section study-tool-shell" data-memory-app>
+  <section class="memory-mode-cards">
+    <article class="card memory-mode-card"><span class="status">Game 1</span><h2>Memory Match</h2><p>Find the front and back that belong to the same RPSGT card.</p></article>
+    <article class="card memory-mode-card"><span class="status">Game 2</span><h2>Front → Answer</h2><p>Read the prompt and retrieve the correct answer from four choices.</p></article>
+    <article class="card memory-mode-card"><span class="status">Game 3</span><h2>Answer → Term</h2><p>Reverse retrieval and identify the matching term, formula name, or abbreviation.</p></article>
+    <article class="card memory-mode-card"><span class="status gold">Game 4</span><h2>Weak Memory</h2><p>Automatically revisit cards you have missed, prioritizing the weakest connections.</p></article>
+  </section>
+
+  <section class="card memory-controls">
+    <div class="section-head"><div><div class="eyebrow">Choose a game</div><h2>Build a short recall round</h2><p data-memory-mode-description>Match each front with its answer.</p></div><span class="status green" data-memory-library-count>Loading recall cards…</span></div>
+    <div class="memory-control-row"><button class="btn secondary active" type="button" data-memory-mode="match">Memory Match</button><button class="btn secondary" type="button" data-memory-mode="recall">Front → Answer</button><button class="btn secondary" type="button" data-memory-mode="reverse">Answer → Term</button><button class="btn secondary" type="button" data-memory-mode="weak">Weak Memory</button></div>
+    <div class="memory-control-row"><label><strong>Category</strong><select class="memory-select" data-memory-category><option>Loading categories…</option></select></label><span><strong>Match size</strong></span><button class="btn secondary" type="button" data-memory-size="4">4 pairs</button><button class="btn secondary active" type="button" data-memory-size="6">6 pairs</button><button class="btn secondary" type="button" data-memory-size="8">8 pairs</button><button class="btn primary" type="button" data-memory-start>Start / restart</button></div>
+    <div class="memory-stats"><article class="memory-stat"><strong data-stat-moves>0</strong><span>moves this round</span></article><article class="memory-stat"><strong data-stat-matches>0 / 0</strong><span>pairs matched</span></article><article class="memory-stat"><strong data-stat-games>0</strong><span>games started</span></article><article class="memory-stat"><strong data-stat-accuracy>0%</strong><span>recall accuracy</span></article><article class="memory-stat"><strong data-stat-weak>0</strong><span>weak cards</span></article></div>
+    <div class="notice" data-memory-error hidden></div>
+  </section>
+
+  <section class="card memory-arcade" data-memory-arcade aria-labelledby="memory-arcade-title">
+    <div class="section-head"><div><div class="eyebrow">RPSGT Memory Arcade</div><h2 id="memory-arcade-title">Build the connection, not just the answer</h2><p>Use the same curated Math Coach skills and BRPT handbook abbreviation deck in fast retrieval games. Misses feed the same Weak Memory record so troublesome formulas, units, and abbreviations come back again.</p></div><span class="status gold">4 arcade games</span></div>
+    <div class="arcade-mode-grid" aria-label="Memory Arcade game choices">
+      <button class="arcade-mode-button active" type="button" data-arcade-mode="formula-builder"><strong>Formula Builder</strong><span>Put formula pieces into the correct order.</span></button>
+      <button class="arcade-mode-button" type="button" data-arcade-mode="missing-piece"><strong>Missing Formula Piece</strong><span>Retrieve the missing operator or formula component.</span></button>
+      <button class="arcade-mode-button" type="button" data-arcade-mode="units"><strong>Units Challenge</strong><span>Match each Math Coach skill with its reporting unit.</span></button>
+      <button class="arcade-mode-button" type="button" data-arcade-mode="abbreviation-sprint"><strong>Abbreviation Sprint</strong><span>Recall BRPT Candidate Handbook abbreviations for 60 seconds.</span></button>
+    </div>
+    <div class="arcade-toolbar"><p data-arcade-description>Put the pieces of an RPSGT calculation formula into the correct order.</p><button class="btn primary" type="button" data-arcade-start>New challenge</button></div>
+    <div class="arcade-stats" aria-label="Memory Arcade progress">
+      <article class="arcade-stat"><strong data-arcade-accuracy>0%</strong><span>arcade accuracy</span></article>
+      <article class="arcade-stat"><strong data-arcade-streak>0</strong><span>current streak</span></article>
+      <article class="arcade-stat"><strong data-arcade-best-streak>0</strong><span>best streak</span></article>
+      <article class="arcade-stat"><strong data-arcade-best-sprint>0</strong><span>best 60-sec sprint</span></article>
+    </div>
+    <div class="arcade-panel" data-arcade-panel aria-live="polite"><div class="arcade-welcome"><strong>Loading Memory Arcade…</strong></div></div>
+    <p class="arcade-sound-note"><strong>Retro sound:</strong> Memory Games use short original 8-bit-style synthesized tones when Sound effects are enabled in Settings. Sounds remain off by default.</p>
+  </section>
+
+  <section class="card glossary-lab" data-glossary-games aria-labelledby="glossary-lab-title">
+    <div class="section-head"><div><div class="eyebrow">Terminology Glossary Lab</div><h2 id="glossary-lab-title">Know the term in both directions</h2><p>Practice term-to-definition and definition-to-term retrieval from the existing Sleep Pathways Guild glossary plus authority-based terminology additions. Scoring terminology is checked against the AASM Scoring Manual Version 3, clinical classification terminology against ICSD-3 and ICSD-3-TR, and broader sleep-technology vocabulary against AAST Terms and Definitions.</p></div><span class="status green" data-glossary-count>Loading glossary…</span></div>
+    <div class="glossary-mode-grid" aria-label="Glossary game choices">
+      <button class="glossary-mode-button active" type="button" data-glossary-mode="match"><strong>Glossary Match</strong><span>Pair each term with its definition.</span></button>
+      <button class="glossary-mode-button" type="button" data-glossary-mode="forward"><strong>Term → Definition</strong><span>Retrieve the best definition from the term.</span></button>
+      <button class="glossary-mode-button" type="button" data-glossary-mode="reverse"><strong>Definition → Term</strong><span>Reverse the connection and name the term.</span></button>
+      <button class="glossary-mode-button" type="button" data-glossary-mode="weak"><strong>Weak Glossary</strong><span>Prioritize terminology you have previously missed.</span></button>
+    </div>
+    <div class="glossary-toolbar"><label><strong>Glossary category</strong><select class="memory-select" data-glossary-category><option>Loading categories…</option></select></label><span><strong>Match size</strong></span><button class="btn secondary" type="button" data-glossary-size="4">4 pairs</button><button class="btn secondary active" type="button" data-glossary-size="6">6 pairs</button><button class="btn primary" type="button" data-glossary-start>Start / restart</button></div>
+    <p data-glossary-description>Match each RPSGT term with its Sleep Pathways Guild definition.</p>
+    <div class="glossary-stats" aria-label="Glossary recall progress">
+      <article class="glossary-stat"><strong data-glossary-stat-accuracy>0%</strong><span>glossary accuracy</span></article>
+      <article class="glossary-stat"><strong data-glossary-stat-streak>0</strong><span>current streak</span></article>
+      <article class="glossary-stat"><strong data-glossary-stat-best>0</strong><span>best streak</span></article>
+      <article class="glossary-stat"><strong data-glossary-stat-weak>0</strong><span>weak glossary terms</span></article>
+    </div>
+    <div class="glossary-panel" data-glossary-panel aria-live="polite"><div class="glossary-welcome"><strong>Loading terminology glossary…</strong></div></div>
+    <p class="glossary-source-note"><strong>Terminology source boundary:</strong> The master bank inventories term names from the AASM Scoring Manual Version 3, ICSD-3/ICSD-3-TR, and AAST Terms and Definitions. Learner-facing definitions are original Sleep Pathways Guild summaries or existing reviewed SPG content; published glossary definitions are not reproduced. <span class="glossary-source-summary" data-glossary-source-summary>Loading source inventory…</span></p>
+  </section>
+
+  <section class="card memory-game-panel" data-memory-match-panel>
+    <div class="section-head"><div><div class="eyebrow">Memory Match</div><h2>Find the pairs</h2></div><span class="status">Front ↔ Back</span></div>
+    <div class="memory-board" data-memory-board></div>
+    <div class="memory-complete" data-memory-complete hidden></div>
+  </section>
+
+  <section class="card recall-card memory-game-panel" data-memory-recall-panel hidden>
+    <div class="section-head"><div><div class="eyebrow">Four-choice recall</div><h2>Choose the best match</h2></div><span class="status">Flashcards + glossary + Math + BRPT abbreviations</span></div>
+    <div class="recall-prompt" data-recall-prompt><strong>Start a recall round.</strong></div>
+    <div class="recall-choices" data-recall-choices></div>
+    <div class="recall-feedback" data-recall-feedback hidden></div>
+    <div class="actions"><button class="btn primary" type="button" data-recall-next hidden>Next card</button></div>
+  </section>
+
+  <section class="notice"><strong>Study boundary:</strong> These games use original Sleep Pathways Guild study content and curated Math Coach concepts for recall practice. The glossary lab combines reviewed SPG terminology with original SPG definitions developed from authority checks against AASM Scoring Manual Version 3, ICSD-3/ICSD-3-TR, and AAST terminology. Published source glossary definitions are not reproduced. The BRPT abbreviation category is based on the current public RPSGT Candidate Handbook abbreviation list. Weak Memory is a study aid based on the learner's own misses. These are not BRPT exam questions and do not produce an official readiness or passing score.</section>
+</div>
+<footer class="footer">Sleep Pathways Guild · RPSGT Memory Games</footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+<script src="core/flashcard-v2-library.js"></script>
+<script src="core/memory-games.js"></script>
+<script src="core/memory-arcade.js"></script>
+<script src="core/memory-arcade-navigation.js"></script>
+<script src="core/glossary-games.js"></script>
+</body>
+</html>

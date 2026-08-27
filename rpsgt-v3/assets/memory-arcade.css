@@ -1,0 +1,39 @@
+.memory-arcade{display:grid;gap:14px;border-top:6px solid var(--gold)}
+.memory-arcade .section-head{align-items:flex-start}
+.arcade-mode-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.arcade-mode-button{min-height:104px;padding:14px;border:2px solid #cbdbe4;border-radius:16px;background:#fff;color:var(--ink);text-align:left;cursor:pointer}
+.arcade-mode-button strong{display:block;color:var(--navy);font-size:1rem;margin-bottom:5px}
+.arcade-mode-button span{display:block;color:var(--muted);font-size:.8rem;line-height:1.4}
+.arcade-mode-button.active{border-color:#a8781c;background:#fff8e7;box-shadow:0 0 0 3px rgba(189,139,39,.12)}
+.arcade-mode-button:focus-visible{outline:4px solid rgba(34,132,166,.22);outline-offset:2px}
+.arcade-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:12px;border:1px solid #d6e3e9;border-radius:14px;background:#f8fbfc}
+.arcade-toolbar p{margin:0;color:var(--muted);max-width:70ch}
+.arcade-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.arcade-stat{padding:11px;border:1px solid #cadce5;border-radius:14px;background:#fff;text-align:center}
+.arcade-stat strong{display:block;color:var(--navy);font-size:1.28rem}
+.arcade-stat span{font-size:.75rem;color:var(--muted)}
+.arcade-panel{min-height:250px;padding:16px;border:1px solid #c9dce5;border-radius:17px;background:linear-gradient(180deg,#fbfdff,#f5fafc)}
+.arcade-welcome,.arcade-finish{display:grid;place-items:center;gap:8px;min-height:215px;text-align:center}
+.arcade-welcome h3,.arcade-finish h3,.arcade-question h3{margin:0;color:var(--navy)}
+.arcade-welcome p,.arcade-finish p{margin:0;max-width:65ch;color:var(--muted)}
+.arcade-question{display:grid;gap:13px}
+.arcade-memory-clue{margin:0;color:var(--muted);font-size:.88rem}
+.arcade-build-zone,.arcade-token-bank{display:flex;gap:8px;flex-wrap:wrap;align-items:center;min-height:58px;padding:11px;border-radius:14px}
+.arcade-build-zone{border:2px dashed #92b7c8;background:#fff}
+.arcade-token-bank{border:1px solid #d0e0e7;background:#eef6f9}
+.arcade-placeholder{color:#6b7f89;font-style:italic}
+.arcade-token{min-height:40px;padding:8px 11px;border:1px solid #a9c5d2;border-radius:10px;background:#fff;color:#173e54;font-weight:850;cursor:pointer}
+.arcade-token.built{background:#e9f5fb;border-color:#6ba7c0}
+.arcade-token:disabled{cursor:default;opacity:.8}
+.arcade-formula-display{padding:18px;border:1px solid #b9d3df;border-radius:15px;background:#fff;color:#123e59;font-size:clamp(1.15rem,2.8vw,1.55rem);font-weight:900;text-align:center;line-height:1.45}
+.arcade-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.arcade-feedback{padding:12px 13px;border-radius:13px;font-weight:850;line-height:1.45}
+.arcade-feedback.correct{background:#e8f7ee;border:1px solid #7cbb93;color:#17613a}
+.arcade-feedback.incorrect{background:#fff0f1;border:1px solid #d98791;color:#932f40}
+.arcade-next-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;padding-top:2px}
+.arcade-sprint-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:13px;background:#fff7df;border:1px solid #e4ca83;color:#674f16}
+.arcade-sprint-head strong{font-size:1.05rem}
+.arcade-sound-note{margin:0;padding:9px 11px;border-radius:12px;background:#f3f7fa;color:#526b79;font-size:.78rem}
+@media(max-width:920px){.arcade-mode-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.arcade-mode-grid,.arcade-choice-grid,.arcade-stats{grid-template-columns:1fr}.arcade-toolbar{align-items:stretch}.arcade-toolbar .btn{width:100%}.arcade-mode-button{min-height:0}.arcade-next-actions{position:sticky;bottom:calc(-16px - env(safe-area-inset-bottom));z-index:3;display:grid;grid-template-columns:1fr;margin:0 -16px calc(-16px - env(safe-area-inset-bottom));padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #d6e3e9;background:rgba(255,255,255,.97);backdrop-filter:blur(8px)}.arcade-next-actions .btn{width:100%;justify-content:center;text-align:center}}
+@media(prefers-reduced-motion:reduce){.arcade-mode-button{transition:none}}

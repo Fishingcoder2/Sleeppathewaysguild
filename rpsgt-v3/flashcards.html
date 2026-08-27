@@ -1,70 +1,135 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RPSGT Flashcard Center v3 | Sleep Pathways Guild</title><meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="assets/rpsgt-v3.css"><link rel="stylesheet" href="assets/flashcards.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Flashcard Center v3 | Sleep Pathways Guild</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/flashcards.css">
+<link rel="stylesheet" href="assets/flashcards-v2-layout.css">
+<link rel="stylesheet" href="assets/flashcards-real-card.css">
 </head>
 <body data-module="study">
 <div class="app-shell">
-<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Flashcard Center</strong><span>Full RPSGT recall library</span></span></a><div class="top-actions"><a href="glossary.html">Glossary</a><a href="memory.html">Memory Lab</a><a href="math-coach.html">Math Coach</a><a href="study.html">Guided Study</a><a href="practice.html">Practice</a><a href="index.html">Dashboard</a></div></header>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Flashcard Center</strong><span>Focused RPSGT concept review</span></span></a>
+  <div class="top-actions"><a href="study.html">Guided Study</a><a href="practice.html">Practice</a><a href="index.html">Dashboard</a></div>
+</header>
 <div class="layout">
-<aside class="sidebar"><div class="nav-label">Learning Center</div><a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a><a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a><a class="nav-link active" href="flashcards.html"><span>🗂️</span>Flashcards</a><a class="nav-link" href="glossary.html"><span>📖</span>Glossary</a><a class="nav-link" href="memory.html"><span>🧠</span>Memory Lab</a><a class="nav-link" href="math-coach.html"><span>∑</span>Math Coach</a><a class="nav-link" href="notes.html"><span>📝</span>Study Notes</a><a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice &amp; Exam</a><a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a></aside>
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice & Exam</a>
+  <a class="nav-link" data-nav="labs" href="labs.html"><span>⚗</span>Skills Labs</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+  <div class="nav-label">Study tools</div>
+  <a class="nav-link active" href="flashcards.html"><span>▱</span>Flashcards</a>
+  <a class="nav-link" href="memory-games.html"><span>▦</span>Memory Games</a>
+  <a class="nav-link" href="notes.html"><span>✎</span>My Notes</a>
+</aside>
 <main class="main">
-<section class="section card flashcard-deck-intro">
-  <div class="eyebrow">RPSGT built-in deck + your saved cards</div>
-  <h1>RPSGT Flashcards</h1>
-  <p class="lead">Browse the complete restored RPSGT deck as colorful study notes. Tap or click a note to flip it. Use Focus to open the larger study card with explanation, memory clue, mastery controls, and verified related references when available.</p>
-  <div class="flashcard-quick-actions">
-    <button class="btn secondary" type="button" data-preset-math>Math &amp; formulas</button>
-    <button class="btn secondary" type="button" data-study-flagged>Study flagged only</button>
-    <button class="btn secondary" type="button" data-print-flagged>Print flagged cards</button>
-    <button class="btn secondary" type="button" data-show-all>Show all cards</button>
-    <a class="btn secondary" href="memory.html">Open Memory Lab</a>
-    <button class="btn primary" type="button" data-custom-card-open>Create a custom card</button>
+<section class="hero flashcard-hero">
+  <div><div class="eyebrow">RPSGT learning tool</div><h1>Flashcard Center</h1><p class="lead">Browse your RPSGT cards by learning category. Open a card, answer from memory, then flip it to check yourself. Flag cards that need another pass.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Make your own card</button><button class="btn secondary" type="button" data-card-show-flagged>Review flagged cards</button><a class="btn secondary" href="memory-games.html">Memory games</a><a class="btn secondary" href="notes.html">My notes</a></div></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Recall first. Then reveal.</h2><p>Say the answer before you flip the card. Flag the cards you want to revisit and keep moving through the deck.</p></aside>
+</section>
+
+<section class="section card flashcard-deck-bar" aria-labelledby="flashcard-deck-title">
+  <div class="flashcard-deck-main">
+    <label class="flashcard-deck-select"><span id="flashcard-deck-title">Deck</span><select data-card-status><option value="all">All cards</option><option value="flagged">Flagged for review</option><option value="custom">My custom cards</option><option value="missed">Missed questions</option><option value="mastered">Mastered</option><option value="review-again">Review again</option></select></label>
+    <div class="flashcard-library-summary"><strong data-card-total>0 cards</strong><span data-card-context>Browse by learning category</span></div>
+    <div class="flashcard-deck-actions"><button class="btn primary" type="button" data-custom-card-open>+ Make a card</button><a class="btn secondary" href="notes.html">My notes</a><a class="btn secondary" href="memory-games.html">Memory games</a><button class="btn secondary" type="button" data-card-shuffle>Shuffle</button></div>
   </div>
+  <details class="flashcard-more-filters">
+    <summary>More deck filters</summary>
+    <div class="flashcard-filters">
+      <label><span>Domain</span><select data-card-domain><option value="all">All domains</option></select></label>
+      <label><span>Task</span><select data-card-task><option value="all">All tasks</option></select></label>
+      <label><span>Topic</span><select data-card-topic><option value="all">All topics</option></select></label>
+    </div>
+  </details>
 </section>
 
-<section class="section card flashcard-filter-card" aria-labelledby="flashcard-filter-title">
-  <div class="section-head"><div><div class="eyebrow">Deck filters</div><h2 id="flashcard-filter-title">Choose what to review</h2></div><strong data-card-total>Loading…</strong></div>
-  <div class="flashcard-filters">
-    <label class="flashcard-search"><span>Search</span><input type="search" data-card-search placeholder="Search term, answer, or memory clue"></label>
-    <label><span>Category</span><select data-card-category><option value="all">All categories</option></select></label>
-    <label><span>Domain</span><select data-card-domain><option value="all">All domains</option></select></label>
-    <label><span>Task</span><select data-card-task><option value="all">All tasks</option></select></label>
-    <label><span>Topic</span><select data-card-topic><option value="all">All topics</option></select></label>
-    <label><span>Review list</span><select data-card-status><option value="all">All cards</option><option value="built-in">Built-in library</option><option value="missed">Missed questions</option><option value="flagged">Flagged</option><option value="custom">My cards</option><option value="mastered">Mastered</option><option value="review-again">Review again</option></select></label>
-  </div>
+<section class="section flashcard-library" data-card-library aria-live="polite" aria-label="RPSGT flashcard library"></section>
+
+<section class="section flashcard-empty card" data-card-empty hidden>
+  <span class="status">No cards in this deck</span><h2>No cards match this deck</h2><p>Change the deck or filters, or make your own flashcard.</p><div class="actions"><button class="btn primary" type="button" data-custom-card-open>Make your own card</button><a class="btn secondary" href="notes.html">Open My Notes</a><a class="btn secondary" href="study.html">Open Guided Study</a></div>
 </section>
 
-<section class="section flashcard-deck-section" aria-labelledby="deck-title">
-  <div class="section-head deck-heading"><div><div class="eyebrow">RPSGT study deck</div><h2 id="deck-title">Built-in and saved cards</h2><p data-card-summary>Loading the deck…</p></div><span class="status green">Tap a note to flip</span></div>
-  <div class="flashcard-deck-grid" data-card-grid aria-live="polite"></div>
-</section>
+<div class="flashcard-review-overlay flashcard-stage" data-card-stage hidden>
+  <section class="flashcard-review-dialog" data-card-dialog role="dialog" aria-modal="true" aria-labelledby="flashcard-review-title" tabindex="-1">
+    <header class="flashcard-review-header">
+      <div><span class="flashcard-category-pill" data-card-front-topic>RPSGT review</span><h2 id="flashcard-review-title" data-card-modal-title>Flashcard</h2><p class="flashcard-position" data-card-position>Card 0 / 0</p></div>
+      <button class="btn secondary flashcard-close" type="button" data-card-close>Close</button>
+    </header>
 
-<section class="section flashcard-empty card" data-card-empty hidden><span class="status">No cards match this view</span><h2>Try another search or filter</h2><p>The complete RPSGT deck remains available. Clear the search, choose another category, or create a custom card.</p><div class="actions"><button class="btn primary" type="button" data-show-all>Show all cards</button><button class="btn secondary" type="button" data-custom-card-open>Create a custom card</button></div></section>
-
-<div class="flashcard-focus-overlay" data-focus-dialog hidden>
-<section class="flashcard-focus-dialog" role="dialog" aria-modal="true" aria-labelledby="focus-card-title" tabindex="-1">
-  <div class="flashcard-focus-head"><div><span class="status" data-card-position>Card</span><strong data-card-context>RPSGT review</strong></div><button class="icon-close" type="button" data-focus-close aria-label="Close focused flashcard">×</button></div>
-  <section class="flashcard-stage" data-card-stage hidden aria-live="polite">
-    <div class="flashcard-toolbar"><button class="btn secondary" type="button" data-card-prev>Previous</button><h2 id="focus-card-title">Focused study</h2><button class="btn secondary" type="button" data-card-next>Next</button></div>
     <button class="flashcard" type="button" data-flashcard aria-pressed="false" aria-label="Flip flashcard">
-      <span class="flashcard-sheet flashcard-front"><span class="flashcard-face-label">Front</span><span class="flashcard-topic" data-card-front-topic>RPSGT concept</span><span class="flashcard-front-text" data-card-front></span><span class="flashcard-flip-hint">Tap or press Enter to flip</span></span>
-      <span class="flashcard-sheet flashcard-back"><span class="flashcard-face-label">Back</span><span class="flashcard-answer" data-card-back></span><span class="flashcard-back-section" data-card-explanation-wrap><strong>Explanation</strong><span data-card-explanation></span></span><span class="flashcard-back-section" data-card-memory-wrap><strong>Memory clue</strong><span data-card-memory></span></span><span class="flashcard-back-section coach-back" data-card-coach-wrap><strong>Coach Bob</strong><span data-card-coach></span></span><span class="flashcard-back-section" data-card-resources-wrap><strong>Related references</strong><span class="flashcard-resource-list" data-card-resources></span></span></span>
+      <span class="flashcard-sheet flashcard-front">
+        <span class="flashcard-card-brand">Sleep Pathways Guild · RPSGT study card</span>
+        <span class="flashcard-face-label">FRONT OF CARD</span>
+        <span class="flashcard-flag-badge" data-card-flag-state hidden>Flagged for review</span>
+        <span class="flashcard-front-text" data-card-front></span>
+        <span class="flashcard-front-meta" aria-label="RPSGT card alignment">
+          <span><strong>Domain</strong><span data-card-front-domain>General review</span></span>
+          <span><strong>Task</strong><span data-card-front-task>Cross-task concept</span></span>
+          <span><strong>Study area</strong><span data-card-front-study-area>RPSGT review</span></span>
+        </span>
+        <span class="flashcard-real-card-hint">Think first · flip to check</span>
+      </span>
+      <span class="flashcard-sheet flashcard-back">
+        <span class="flashcard-card-brand">Sleep Pathways Guild · RPSGT study card</span>
+        <span class="flashcard-face-label">BACK OF CARD</span>
+        <span class="flashcard-answer" data-card-back></span>
+        <span class="flashcard-back-section flashcard-explanation" data-card-explanation-wrap><strong>Explanation</strong><span data-card-explanation></span></span>
+        <span class="flashcard-back-section flashcard-memory-callout" data-card-memory-wrap><strong>Memory clue</strong><span data-card-memory></span></span>
+        <span class="flashcard-back-section coach-back" data-card-coach-wrap><strong>Coach Bob</strong><span data-card-coach></span></span>
+        <span class="flashcard-review-map" data-card-review-map>
+          <span data-card-review-area><strong>RPSGT alignment:</strong> <span class="flashcard-review-chips" data-card-review-chips></span></span>
+          <span data-card-resources-wrap><strong>References:</strong> <span class="flashcard-resource-list" data-card-resources></span></span>
+        </span>
+      </span>
     </button>
-    <div class="flashcard-actions"><button class="btn secondary" type="button" data-card-flip>Flip card</button><button class="btn secondary" type="button" data-card-flag>Flag</button><button class="btn secondary" type="button" data-card-mastered>Mastered</button><button class="btn secondary" type="button" data-card-review-again>Review again</button><button class="btn secondary" type="button" data-focus-close>Back to deck</button></div>
+
+    <div class="flashcard-v2-controls" aria-label="Flashcard navigation and review controls">
+      <button class="btn primary" type="button" data-card-flip>Flip to reveal</button>
+      <button class="btn flag-control" type="button" data-card-flag aria-pressed="false">Flag for review</button>
+      <button class="btn secondary" type="button" data-card-prev>Previous</button>
+      <button class="btn secondary" type="button" data-card-next>Next</button>
+    </div>
+    <details class="flashcard-learning-details">
+      <summary>Learning status</summary>
+      <div class="flashcard-learning-controls" aria-label="Flashcard learning status">
+        <button class="btn secondary" type="button" data-card-mastered>Mastered</button>
+        <button class="btn secondary" type="button" data-card-review-again>Review again</button>
+      </div>
+    </details>
   </section>
-</section>
 </div>
 
-<div class="flashcard-dialog-overlay" data-custom-card-dialog hidden><section class="flashcard-dialog card" role="dialog" aria-modal="true" aria-labelledby="custom-card-title" tabindex="-1"><div class="section-head"><div><div class="eyebrow">Custom RPSGT card</div><h2 id="custom-card-title">Create a flashcard</h2></div><button class="icon-close" type="button" data-custom-card-close aria-label="Close custom-card form">×</button></div><form data-custom-card-form><label><span>Front</span><textarea name="front" rows="3" required></textarea></label><label><span>Back</span><textarea name="back" rows="3" required></textarea></label><label><span>Explanation</span><textarea name="explanation" rows="3"></textarea></label><label><span>Memory clue</span><textarea name="memoryClue" rows="2"></textarea></label><label><span>Coach Bob note</span><textarea name="coachBobNote" rows="2"></textarea></label><div class="custom-card-grid"><label><span>Category</span><input name="category" placeholder="Example: Report Math & Indexes"></label><label><span>Domain</span><input name="domain" placeholder="Example: Study Analysis and Reporting"></label><label><span>Task</span><input name="task" placeholder="Example: Generate and verify report"></label><label><span>Topic</span><input name="topic" placeholder="Example: Report calculations"></label></div><p class="notice">Custom cards do not receive an automatic reference recommendation. Related references appear only when a verified source relationship is available.</p><div class="actions"><button class="btn secondary" type="button" data-custom-card-close>Cancel</button><button class="btn primary" type="submit">Save flashcard</button></div></form></section></div>
-
-<div class="flashcard-print-host" data-print-host aria-hidden="true"></div>
-<section class="section notice"><strong>Study note:</strong> Flashcards support recall and discrimination practice. Current official standards, lab policy, and verified study references remain the source for formal scoring and clinical requirements.</section>
-<footer class="footer">Sleep Pathways Guild · RPSGT V3 Flashcard Center</footer>
-</main></div>
-<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a href="flashcards.html"><span>🗂️</span><small>Cards</small></a><a href="memory.html"><span>🧠</span><small>Memory</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+<div class="flashcard-dialog-overlay" data-custom-card-dialog hidden>
+  <section class="flashcard-dialog card" role="dialog" aria-modal="true" aria-labelledby="custom-card-title" tabindex="-1">
+    <div class="section-head"><div><div class="eyebrow">Custom RPSGT card</div><h2 id="custom-card-title">Make your own flashcard</h2><p>Create a personal study card and keep it with your RPSGT deck on this device.</p></div><button class="icon-close" type="button" data-custom-card-close aria-label="Close custom-card form">×</button></div>
+    <form data-custom-card-form>
+      <label><span>Front</span><textarea name="front" rows="3" required placeholder="Question, term, formula, or memory prompt"></textarea></label><label><span>Back</span><textarea name="back" rows="3" required placeholder="Answer or definition"></textarea></label><label><span>Explanation</span><textarea name="explanation" rows="3" placeholder="Why this answer is correct"></textarea></label><label><span>Memory clue</span><textarea name="memoryClue" rows="2" placeholder="Your own memory trick or common trap"></textarea></label><label><span>Coach Bob note</span><textarea name="coachBobNote" rows="2" placeholder="Optional reminder"></textarea></label>
+      <div class="custom-card-grid"><label><span>Domain</span><input name="domain" placeholder="Optional verified domain"></label><label><span>Task</span><input name="task" placeholder="Optional verified task"></label><label><span>Topic</span><input name="topic" placeholder="Example: Report calculations"></label></div>
+      <p class="notice">Custom cards save locally on this device. They do not receive automatic references. Add a reference only after its APA citation is verified against a current RPSGT source.</p>
+      <div class="actions"><a class="btn secondary" href="notes.html">Open My Notes</a><button class="btn secondary" type="button" data-custom-card-close>Cancel</button><button class="btn primary" type="submit">Save flashcard</button></div>
+    </form>
+  </section>
 </div>
-<script src="core/storage.js"></script><script src="core/app-shell.js"></script><script src="core/learner-surface-guard.js"></script><script src="core/flashcard-engine.js"></script><script src="data/learning-library/library-part-01.js"></script><script src="data/learning-library/library-part-02.js"></script><script src="data/learning-library/library-part-03.js"></script><script src="data/learning-library/library-part-04.js"></script><script src="data/learning-library/library-part-05.js"></script><script src="core/learning-library.js"></script><script src="core/flashcard-store.js"></script><script src="core/flashcard-prefill.js"></script><script src="core/flashcards.js"></script>
-</body></html>
+<section class="section notice"><strong>Content boundary:</strong> The Flashcard Center preserves source-supported and learner-created RPSGT cards without exposing internal source keys. Legacy study cards use the verified V2 front/back teaching content while current V3 authority controls scoring, technical, diagnostic, and treatment references.</section>
+<footer class="footer">Sleep Pathways Guild · RPSGT Flashcard Center · <a href="memory-games.html">Memory Games</a> · <a href="notes.html">My Notes</a></footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+<script src="core/flashcard-engine.js"></script>
+<script src="core/flashcard-store.js"></script>
+<script src="core/flashcard-v2-library.js"></script>
+<script src="core/flashcards.js"></script>
+<script src="core/flashcard-visual.js"></script>
+</body>
+</html>

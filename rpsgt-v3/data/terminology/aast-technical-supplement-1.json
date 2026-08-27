@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "id": "aast-technical-supplement-1",
+  "title": "AAST terminology gap supplement — instrumentation foundations",
+  "sourceRole": "Learner-ready Sleep Pathways Guild definitions for high-value sleep-technology terms identified from the AAST terminology inventory and cross-checked against current AASM Scoring Manual Version 3 usage where applicable.",
+  "apaReference": "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+  "aasmReference": "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+  "copyrightBoundary": "Term names and abbreviations are factual inventory data. Definitions and memory clues in this file are original Sleep Pathways Guild summaries and do not reproduce published AAST or AASM definitions.",
+  "reviewFocus": "Signals, filters, digital acquisition, electrode derivations, sensor concepts, and electrode-placement landmarks.",
+  "items": [
+    {
+      "id": "aast-tech:alternating-current-amplifier",
+      "term": "Alternating Current Amplifier",
+      "abbreviation": "AC Amp",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "An amplifier used for changing biopotential signals whose frequency response is shaped by low- and high-frequency filtering so selected portions of the signal can be displayed and recorded.",
+      "memoryClue": "AC amplifier = changing signals plus filter limits."
+    },
+    {
+      "id": "aast-tech:analog-to-digital-converters",
+      "term": "Analog to Digital Converters",
+      "abbreviation": "ADC",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The part of a digital recording system that samples a continuous analog signal at set time intervals and assigns numeric amplitude values so the waveform can be stored and displayed digitally.",
+      "memoryClue": "ADC turns continuous voltage into sampled numbers."
+    },
+    {
+      "id": "aast-tech:differential-amplifier",
+      "term": "Differential Amplifier",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "An amplifier that compares the voltages present at two inputs and amplifies the difference between them; a PSG channel therefore represents the voltage difference between its two electrode inputs.",
+      "memoryClue": "Two inputs in, voltage difference out."
+    },
+    {
+      "id": "aast-tech:high-frequency-filter",
+      "term": "High Frequency Filter",
+      "abbreviation": "HFF",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The upper-frequency cutoff control that progressively reduces activity above the selected cutoff. Functionally, it behaves as a low-pass filter.",
+      "memoryClue": "HFF cuts the highs.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:low-frequency-filter",
+      "term": "Low Frequency Filter",
+      "abbreviation": "LFF",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The lower-frequency cutoff control that reduces slow activity below the selected cutoff. Functionally, it behaves as a high-pass filter.",
+      "memoryClue": "LFF cuts the lows.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:notch-filter",
+      "term": "Notch Filter",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "A narrow-band filter used to suppress power-line interference around the local mains frequency, commonly 60 Hz in the United States. It can hide electrical contamination, so it should not replace troubleshooting the signal source.",
+      "memoryClue": "Notch = narrow slice removed around line noise.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:nyquist-theory",
+      "term": "Nyquist Theory",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The sampling principle that a signal frequency requires a sampling rate of at least twice that frequency to be represented without aliasing.",
+      "memoryClue": "Sample at least 2× the highest frequency of interest.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:impedance",
+      "term": "Impedance",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "Opposition to alternating current at an electrode or circuit interface. Excessive or poorly balanced electrode impedance can increase noise and reduce recording quality.",
+      "memoryClue": "Impedance is opposition to AC; lower and balanced is cleaner.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:sensitivity",
+      "term": "Sensitivity",
+      "abbreviation": "Sens or S",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The display scale relating an input voltage to the height of the recorded waveform. Changing sensitivity changes how large the trace appears, not the biological voltage itself.",
+      "memoryClue": "Sensitivity changes the display scale, not the patient signal."
+    },
+    {
+      "id": "aast-tech:polarity",
+      "term": "Polarity",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The positive-or-negative direction assigned to a voltage difference. In standard PSG display convention, a relatively negative voltage at the first input produces an upward deflection.",
+      "memoryClue": "PSG convention: negative at input 1 goes up.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:system-reference",
+      "term": "System Reference",
+      "category": "Montage & Electrode Placement",
+      "definition": "A digital acquisition method in which electrode signals are initially recorded against a common reference and later recombined mathematically to display the desired derivations.",
+      "memoryClue": "Record to one common reference, then re-derive digitally."
+    },
+    {
+      "id": "aast-tech:referential-derivation",
+      "term": "Referential Derivation",
+      "category": "Montage & Electrode Placement",
+      "definition": "A channel formed by comparing an active electrode with a reference electrode at another site, such as C3-M2.",
+      "memoryClue": "Active site compared with a reference site.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:reference-electrode",
+      "term": "Reference Electrode",
+      "category": "Montage & Electrode Placement",
+      "definition": "An electrode used as the comparison input in a derivation. In recommended AASM EEG derivations, the mastoid electrodes M1 and M2 commonly serve as references.",
+      "memoryClue": "Reference electrode = the comparison point.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:montage",
+      "term": "Montage",
+      "category": "Montage & Electrode Placement",
+      "definition": "The planned selection and display order of recording channels or derivations, together with the settings used to view the physiologic signals.",
+      "memoryClue": "Montage = which channels are displayed and how they are arranged."
+    },
+    {
+      "id": "aast-tech:microvolt",
+      "term": "Microvolt",
+      "abbreviation": "µV",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "One millionth of a volt, written 10^-6 V. Microvolts are commonly used to describe the amplitude of EEG, EOG, and EMG signals.",
+      "memoryClue": "Micro = one millionth."
+    },
+    {
+      "id": "aast-tech:voltage",
+      "term": "Voltage",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "Electrical potential difference between two points. A PSG channel displays how the voltage difference between its inputs changes over time.",
+      "memoryClue": "Voltage is a difference in electrical potential."
+    },
+    {
+      "id": "aast-tech:waveform-morphology",
+      "term": "Waveform Morphology",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The overall shape and appearance of a waveform produced by its frequency components, amplitude, and phase relationships. Morphology helps distinguish expected physiologic patterns from artifact.",
+      "memoryClue": "Morphology means the waveform's shape."
+    },
+    {
+      "id": "aast-tech:ohm",
+      "term": "Ohm",
+      "abbreviation": "Ω",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The SI unit used to express electrical resistance and impedance.",
+      "memoryClue": "Ohm measures opposition to current."
+    },
+    {
+      "id": "aast-tech:ohms-law",
+      "term": "Ohm’s Law",
+      "category": "Signals, Filters & Instrumentation",
+      "definition": "The electrical relationship V = I × R, linking voltage, current, and resistance in a circuit.",
+      "memoryClue": "V = I × R."
+    },
+    {
+      "id": "aast-tech:thermistor",
+      "term": "Thermistor",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "A temperature-sensitive resistive sensor that detects the temperature change between inspired and expired air and can therefore serve as a thermal airflow signal.",
+      "memoryClue": "Thermistor senses airflow through temperature-dependent resistance.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:thermocouple",
+      "term": "Thermocouple",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "A thermal airflow sensor made from dissimilar metals that produces an electrical signal related to temperature differences between inspired and expired air.",
+      "memoryClue": "Thermocouple = two metals sensing temperature change.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:piezo-electric-sensor",
+      "term": "Piezo-Electric Sensor",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "A sensor that generates an electrical signal when its material is mechanically deformed. In PSG, piezoelectric sensing can be used to detect vibration or movement such as snoring.",
+      "memoryClue": "Mechanical stress becomes an electrical signal.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:pvdf-sensor",
+      "term": "PVDF Sensor",
+      "category": "Sensors, Equipment & Standards",
+      "definition": "A flexible polyvinylidene fluoride sensor that converts physical changes into an electrical signal and may be configured to monitor airflow or thoracoabdominal effort depending on the sensor design.",
+      "memoryClue": "PVDF is a flexible sensor material used for airflow or effort signals.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:nasion",
+      "term": "Nasion",
+      "category": "Montage & Electrode Placement",
+      "definition": "The midline depression at the bridge of the nose where the frontal and nasal bones meet; it is one of the landmarks used for standardized head measurements in electrode placement.",
+      "memoryClue": "Nasion = front midline landmark at the bridge of the nose."
+    },
+    {
+      "id": "aast-tech:inion",
+      "term": "Inion",
+      "category": "Montage & Electrode Placement",
+      "definition": "The palpable midline bony prominence at the back of the skull used as a landmark for standardized electrode-placement measurements.",
+      "memoryClue": "Inion = back-of-head midline landmark."
+    },
+    {
+      "id": "aast-tech:outer-canthus",
+      "term": "Outer Canthus",
+      "category": "Montage & Electrode Placement",
+      "definition": "The outer corner of the eye, used as an anatomic landmark when positioning EOG electrodes.",
+      "memoryClue": "Outer canthus anchors EOG placement.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    },
+    {
+      "id": "aast-tech:preauricular-point",
+      "term": "Preauricular Point",
+      "category": "Montage & Electrode Placement",
+      "definition": "A landmark immediately in front of the ear used for left-to-right head measurements in standardized electrode-placement systems.",
+      "memoryClue": "Preauricular = just in front of the ear."
+    },
+    {
+      "id": "aast-tech:intercostal-muscle",
+      "term": "Intercostal Muscle",
+      "category": "Respiratory Events & Patterns",
+      "definition": "A muscle located between adjacent ribs that contributes to breathing. In selected physiologic recordings, intercostal EMG can reflect respiratory muscle activity.",
+      "memoryClue": "Intercostal = between the ribs."
+    },
+    {
+      "id": "aast-tech:tidal-volume",
+      "term": "Tidal Volume",
+      "abbreviation": "Vt",
+      "category": "Respiratory Events & Patterns",
+      "definition": "The volume of air moved during a typical breath. In PSG, thoracoabdominal effort signals may estimate relative changes in tidal volume but do not ordinarily provide a direct absolute volume measurement.",
+      "memoryClue": "Tidal volume = air moved in one normal breath.",
+      "references": [
+        "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.). American Association of Sleep Technologists.",
+        "Troester, M. M., Quan, S. F., Berry, R. B., et al. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+      ]
+    }
+  ]
+}
