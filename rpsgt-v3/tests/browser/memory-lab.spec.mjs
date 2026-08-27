@@ -1,14 +1,19 @@
 import {test,expect} from '@playwright/test';
 
 test.beforeEach(async({page})=>{
+  await page.addInitScript(()=>{
+    try{Object.defineProperty(window,'DecompressionStream',{value:undefined,configurable:true});}catch(error){}
+  });
   await page.goto('memory.html');
   await page.evaluate(()=>localStorage.clear());
   await page.reload();
 });
 
-test('Memory Lab uses the shared term and formula libraries for matching',async({page})=>{
-  await expect(page.locator('[data-memory-term-total]')).toHaveText('258');
-  await expect(page.locator('[data-memory-formula-total]')).toHaveText('20');
+test('Memory Lab uses the reviewed term pool and current Math Coach skills for matching',async({page})=>{
+  const termTotal=Number(await page.locator('[data-memory-term-total]').textContent());
+  expect(termTotal).toBeGreaterThanOrEqual(300);
+  await expect(page.locator('[data-memory-formula-total]')).toHaveText('4');
+  await expect(page.locator('[data-memory-load-error]')).toBeHidden();
 
   await page.locator('[data-start-matching]').first().click();
   const board=page.locator('[data-memory-board]');
@@ -29,7 +34,7 @@ test('Memory Lab uses the shared term and formula libraries for matching',async(
   await expect(page.locator('[data-memory-matched]')).toHaveText('0 / 12');
 });
 
-test('Memory Lab formula recall runs a 10-question bidirectional round',async({page})=>{
+test('Memory Lab formula recall runs a 10-question bidirectional round without compressed-browser APIs',async({page})=>{
   await page.locator('[data-memory-pool]').selectOption('formulas');
   await expect(page.locator('[data-memory-category]')).toBeDisabled();
   await page.locator('[data-start-memory-recall]').first().click();
