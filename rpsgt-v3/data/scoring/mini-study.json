@@ -45,7 +45,7 @@
       "afterEpoch":11,
       "caseId":"context-boundary-respiratory-spans",
       "label":"Respiratory boundary context stop",
-      "focus":"Follow one continuous respiratory event across the displayed epoch boundary before finishing the mini-study."
+      "focus":"Use the thermal airflow and respiratory-effort channels to identify one continuous adult apnea across the epoch boundary."
     }
   ],
   "reference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Elsevier. American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events (Version 3). American Academy of Sleep Medicine."
