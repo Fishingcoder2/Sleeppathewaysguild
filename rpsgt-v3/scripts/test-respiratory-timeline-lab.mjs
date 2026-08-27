@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 const require=createRequire(import.meta.url);
 const engine=require('../core/respiratory-timeline-engine.js');
 
-assert.equal(engine.VERSION,'1.0.0');
+assert.equal(engine.VERSION,'1.1.0');
 assert.equal(engine.LONG_DURATION,300);
 assert.equal(engine.EVIDENCE_DURATION,150);
 assert.deepEqual(engine.CHANNELS,['eeg','nasal','thermal','thorax','abdomen','spo2']);
@@ -42,12 +42,17 @@ const obstructive=engine.evidenceCaseById('obstructive-apnea-evidence');
 assert.ok(obstructive.tasks.some(task=>task.channel==='thermal'&&/thermistor/i.test(task.prompt)),'Obstructive apnea evidence must explicitly use the thermistor');
 assert.ok(obstructive.tasks.some(task=>task.channel==='thorax'),'Obstructive apnea must include continued effort evidence');
 const central=engine.evidenceCaseById('central-apnea-evidence');
-assert.ok(central.tasks.some(task=>task.channel==='thorax')&&central.tasks.some(task=>task.channel==='abdomen'),'Central apnea must check both effort belts');
+assert.ok(central.tasks.some(task=>task.channel==='thermal'),'Central apnea evidence must first establish the near-absent recommended apnea airflow signal');
+assert.ok(central.tasks.some(task=>task.channel==='thorax'&&/effort/i.test(`${task.prompt} ${task.explanation}`)),'Central apnea evidence must establish absent inspiratory effort during the airflow pause');
 const mixed=engine.evidenceCaseById('mixed-apnea-evidence');
 assert.ok(Number.isFinite(mixed.transition),'Mixed apnea must define an effort-return transition');
+const hypopnea=engine.evidenceCaseById('obstructive-hypopnea-evidence');
+assert.ok(hypopnea.tasks.some(task=>task.channel==='nasal'&&/>30%|30%/i.test(`${task.hint} ${task.explanation}`)),'Adult hypopnea evidence must use nasal pressure and preserve the >=30% reduction criterion');
+assert.ok(hypopnea.tasks.some(task=>task.channel==='spo2'&&/>=3%|3%/i.test(`${task.hint} ${task.explanation}`)),'Adult hypopnea evidence must include the >=3% consequence used by this teaching case');
 const rera=engine.evidenceCaseById('rera-evidence');
 assert.ok(rera.tasks.some(task=>task.channel==='eeg'&&/arousal/i.test(task.prompt)),'RERA teaching case must require the terminal EEG arousal');
 assert.ok(rera.tasks.some(task=>task.channel==='nasal'&&/flow/i.test(task.prompt)),'RERA teaching case must also localize flow limitation');
+assert.ok(rera.tasks.some(task=>/short of|does not meet|threshold/i.test(`${task.hint} ${task.explanation}`)),'RERA teaching must explicitly remain below apnea/hypopnea criteria.');
 const oxygen=engine.evidenceCaseById('oxygen-lag-evidence');
 assert.ok(oxygen.tasks.some(task=>task.channel==='spo2'&&/nadir/i.test(task.prompt)),'Oxygen-lag case must localize the delayed SpO2 nadir');
 
@@ -56,4 +61,4 @@ const ticks230=engine.timelineTicks(150,30);
 assert.equal(ticks5.at(-1),300);
 assert.equal(ticks230.at(-1),150);
 
-console.log('Respiratory timeline lab model passed:',engine.LONG_CASES.length,'five-minute cases and',engine.EVIDENCE_CASES.length,'2:30 evidence cases.');
+console.log('Respiratory timeline lab model passed:',engine.LONG_CASES.length,'five-minute cases and',engine.EVIDENCE_CASES.length,'2:30 evidence cases with Version 3-aligned evidence targets.');
