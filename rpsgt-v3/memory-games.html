@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RPSGT Memory Games v3 | Sleep Pathways Guild</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/rpsgt-v3.css">
+<link rel="stylesheet" href="assets/study-tools.css">
+<link rel="stylesheet" href="assets/memory-arcade.css">
+<link rel="stylesheet" href="assets/glossary-games.css">
+</head>
+<body data-module="study">
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Memory Games</strong><span>Recall · formulas · terminology</span></span></a>
+  <div class="top-actions"><a href="flashcards.html">Flashcards</a><a href="memory.html">Basic Memory Lab</a><a href="math-coach.html">Math Coach</a><a href="study.html">Guided Study</a><a href="index.html">Dashboard</a></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">Learning Center</div>
+  <a class="nav-link" data-nav="home" href="index.html"><span>⌂</span>Dashboard</a>
+  <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>
+  <a class="nav-link" href="flashcards.html"><span>🗂️</span>Flashcards</a>
+  <a class="nav-link active" href="memory-games.html"><span>🧠</span>Memory Games</a>
+  <a class="nav-link" href="memory.html"><span>↔</span>Basic Memory Lab</a>
+  <a class="nav-link" href="math-coach.html"><span>∑</span>Math Coach</a>
+  <a class="nav-link" data-nav="practice" href="practice.html"><span>✓</span>Practice &amp; Exam</a>
+  <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
+</aside>
+<main class="main">
+<section class="hero study-tool-hero">
+  <div><div class="eyebrow">Full retrieval-practice arcade</div><h1>Remember it from more than one direction.</h1><p class="lead">Work the reviewed RPSGT flashcards as matching and reverse-recall games, rebuild formulas from Math Coach, drill units and abbreviations, and strengthen terminology with bidirectional glossary practice.</p><div class="study-tool-links"><a class="btn primary" href="#card-memory">Start Memory Games</a><a class="btn secondary" href="#formula-arcade">Formula Arcade</a><a class="btn secondary" href="#glossary-games">Terminology Games</a><a class="btn secondary" href="flashcards.html">Review Flashcards</a></div></div>
+  <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Recognition first. Retrieval next.</h2><p>When an item feels easy in one direction, reverse it. A strong memory can find the concept from the term, the answer, the formula, or the unit.</p></aside>
+</section>
+
+<section class="section card memory-app" id="card-memory" data-memory-app>
+  <div class="section-head"><div><div class="eyebrow">Reviewed flashcard deck</div><h2>Memory Games</h2><p>Built from the reviewed 332-card RPSGT inventory.</p></div><span class="status green">JSON-loaded for mobile reliability</span></div>
+  <p class="notice" data-memory-error hidden></p>
+  <div class="memory-mode-cards" aria-label="Memory game modes">
+    <button class="memory-mode-button active" type="button" data-memory-mode="match"><strong>Memory Match</strong><span>Pair a concept with its answer.</span></button>
+    <button class="memory-mode-button" type="button" data-memory-mode="front-answer"><strong>Front → Answer</strong><span>Retrieve the answer from the card front.</span></button>
+    <button class="memory-mode-button" type="button" data-memory-mode="answer-term"><strong>Answer → Term</strong><span>Reverse the relationship and identify the concept.</span></button>
+    <button class="memory-mode-button" type="button" data-memory-mode="weak"><strong>Weak Memory</strong><span>Prioritize pairs you have missed.</span></button>
+  </div>
+  <div class="memory-control-row"><label><span>Category</span><select data-memory-category><option value="all">All categories</option></select></label><button class="btn primary" type="button" data-memory-start>Start round</button></div>
+  <div class="memory-stats"><div class="memory-stat"><span>Rounds</span><strong data-memory-stat-rounds>0</strong></div><div class="memory-stat"><span>Correct</span><strong data-memory-stat-correct>0</strong></div><div class="memory-stat"><span>Weak items</span><strong data-memory-stat-weak>0</strong></div><div class="memory-stat"><span>Deck</span><strong>332</strong></div></div>
+  <div class="memory-feedback" data-memory-panel aria-live="polite">Loading reviewed flashcards…</div>
+</section>
+
+<section class="section card memory-arcade" id="formula-arcade" data-memory-arcade>
+  <div class="section-head"><div><div class="eyebrow">Math Coach retrieval</div><h2>Formula &amp; Abbreviation Arcade</h2><p>Practice structure and units instead of memorizing isolated numbers.</p></div></div>
+  <div class="arcade-mode-grid" aria-label="Formula arcade modes">
+    <button class="arcade-mode-button active" type="button" data-arcade-mode="formula-builder"><strong>Formula Builder</strong><span>Put a calculation back together in the correct order.</span></button>
+    <button class="arcade-mode-button" type="button" data-arcade-mode="missing-piece"><strong>Missing Formula Piece</strong><span>Identify what belongs in the blank.</span></button>
+    <button class="arcade-mode-button" type="button" data-arcade-mode="units"><strong>Units Challenge</strong><span>Match calculations with the units they report.</span></button>
+    <button class="arcade-mode-button" type="button" data-arcade-mode="abbreviation-sprint"><strong>60-second Abbreviation Sprint</strong><span>Rapidly retrieve common RPSGT abbreviations.</span></button>
+  </div>
+  <div class="arcade-panel" data-arcade-panel aria-live="polite">Loading Math Coach arcade…</div>
+  <p class="arcade-sound-note">These games are recall practice. Math Coach remains available for worked instruction and calculation reasoning.</p>
+</section>
+
+<section class="section card glossary-lab" id="glossary-games" data-glossary-games>
+  <div class="section-head"><div><div class="eyebrow">Terminology retrieval</div><h2>Glossary Games</h2><p>Strengthen the language used throughout the RPSGT learning center.</p></div></div>
+  <div class="glossary-mode-grid" aria-label="Glossary game modes">
+    <button class="glossary-mode-button active" type="button" data-glossary-mode="match"><strong>Glossary Match</strong><span>Pair terms with their learner definitions.</span></button>
+    <button class="glossary-mode-button" type="button" data-glossary-mode="term-definition"><strong>Term → Definition</strong><span>Choose the meaning from the term.</span></button>
+    <button class="glossary-mode-button" type="button" data-glossary-mode="definition-term"><strong>Definition → Term</strong><span>Reverse recall: name the term.</span></button>
+    <button class="glossary-mode-button" type="button" data-glossary-mode="weak"><strong>Weak Glossary</strong><span>Revisit terminology you miss.</span></button>
+  </div>
+  <div class="glossary-panel" data-glossary-panel aria-live="polite">Loading terminology games…</div>
+  <p class="glossary-source-note"><strong>Study boundary:</strong> These are Sleep Pathways Guild learner-recall activities. For formal scoring criteria and clinical requirements, use the current authoritative source identified elsewhere in the learning center.</p>
+</section>
+
+<section class="section notice"><strong>Choose the right tool:</strong> Use this full arcade for repeated retrieval practice. Use <a href="memory.html">Basic Memory Lab</a> for the simpler matching/recall workflow, <a href="flashcards.html">Flashcards</a> for focused card review, and <a href="math-coach.html">Math Coach</a> for worked calculations.</section>
+<footer class="footer">Sleep Pathways Guild · RPSGT V3 Memory Games</footer>
+</main>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a href="flashcards.html"><span>🗂️</span><small>Cards</small></a><a class="active" href="memory-games.html"><span>🧠</span><small>Memory</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
+</div>
+<script src="core/storage.js"></script>
+<script src="core/app-shell.js"></script>
+<script src="core/learner-surface-guard.js"></script>
+<script src="core/flashcard-v2-library.js"></script>
+<script src="core/memory-games.js"></script>
+<script src="core/memory-arcade.js"></script>
+<script src="core/memory-arcade-navigation.js"></script>
+<script src="core/glossary-games.js"></script>
+</body>
+</html>
