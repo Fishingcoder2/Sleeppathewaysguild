@@ -36,6 +36,8 @@
 .respiratory-trail-learning-grid p{margin:0;line-height:1.52}
 .respiratory-study-chapter strong,.respiratory-study-chapter small,.respiratory-study-chapter span{display:block}
 .respiratory-study-chapter strong{line-height:1.4}
+.respiratory-study-chapter .respiratory-study-book{margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--line);font-size:.9rem;color:var(--navy)}
+.respiratory-study-chapter .respiratory-study-book em{font-weight:800}
 .respiratory-study-chapter span{font-size:.82rem;color:var(--muted);margin-top:5px}
 .respiratory-study-chapter small{margin-top:7px;color:var(--muted);font-weight:700}
 .respiratory-rule-warning{margin:12px 0 0;border-left:4px solid var(--gold);background:#fff8e8;border-radius:0 12px 12px 0;padding:12px 14px}
