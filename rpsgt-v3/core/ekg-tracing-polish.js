@@ -46,10 +46,10 @@ function pvcBeatPath(x){
 function ventricularRunBeatPath(x){
   return [
     `L ${x-20} ${BASELINE}`,
-    `C ${x-16} ${BASELINE} ${x-13} 105 ${x-9} 95`,
-    `C ${x-4} 82 ${x+1} 72 ${x+7} 78`,
-    `C ${x+13} 85 ${x+17} 113 ${x+22} 138`,
-    `C ${x+27} 156 ${x+33} 151 ${x+38} 132`,
+    `C ${x-16} ${BASELINE} ${x-13} 104 ${x-9} 94`,
+    `C ${x-4} 80 ${x+1} 72 ${x+7} 78`,
+    `C ${x+13} 85 ${x+17} 111 ${x+22} 137`,
+    `C ${x+27} 154 ${x+33} 151 ${x+38} 132`,
     `C ${x+41} 123 ${x+43} ${BASELINE} ${x+46} ${BASELINE}`
   ].join(' ');
 }
