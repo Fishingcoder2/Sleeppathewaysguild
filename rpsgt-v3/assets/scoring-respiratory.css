@@ -1,0 +1,19 @@
+.scoring-respiratory-visual{overflow:hidden}
+.scoring-respiratory-roadmap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:1rem 0}
+.scoring-respiratory-roadmap>div,.scoring-respiratory-meta span{border:1px solid var(--line,#d8e2e8);border-radius:14px;background:#f8fbfc}
+.scoring-respiratory-roadmap>div{padding:.9rem}
+.scoring-respiratory-roadmap strong,.scoring-respiratory-roadmap small{display:block}
+.scoring-respiratory-roadmap small{margin-top:.3rem;color:var(--muted,#5d707b);line-height:1.45}
+.scoring-respiratory-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin:.65rem 0 1rem}
+.scoring-respiratory-meta span{padding:.4rem .65rem;font-size:.86rem;color:var(--muted,#5d707b)}
+.scoring-respiratory-options,.scoring-respiratory-evidence{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin:.8rem 0}
+.scoring-respiratory-evidence .visual-choice{min-height:76px;text-align:left;line-height:1.35}
+.scoring-respiratory-proof{margin-top:1rem;padding:1rem;border:1px solid var(--line,#d8e2e8);border-radius:14px;background:#fbfdfe}
+.scoring-respiratory-proof h4{margin:0 0 .35rem}
+.scoring-respiratory-result{text-align:center;padding:1.25rem}
+.scoring-respiratory-result h2{margin:.3rem 0}
+@media(max-width:720px){
+ .scoring-respiratory-roadmap{grid-template-columns:1fr}
+ .scoring-respiratory-options,.scoring-respiratory-evidence{grid-template-columns:1fr}
+ .scoring-respiratory-visual .visual-question-actions .btn{width:100%}
+}
