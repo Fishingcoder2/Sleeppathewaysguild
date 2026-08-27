@@ -21,6 +21,7 @@ const papFamilies=JSON.parse(papFamilyText);
 if(trail.id!=='respiratory-pap-pathway'||trail.schemaVersion!==1) throw new Error('Respiratory Study Trail identity/schema changed unexpectedly.');
 if(!Array.isArray(trail.steps)||trail.steps.length!==9) throw new Error('Respiratory Study Trail must keep nine focused learner steps.');
 if(!String(trail.description||'').includes('Steps 1 through 9 in order')) throw new Error('Respiratory Study Trail no longer tells the learner to follow the sequence in order.');
+if(ppsm.fullTitle!=='Principles and Practice of Sleep Medicine'||ppsm.edition!=='7th ed.') throw new Error('Respiratory trail textbook identity changed unexpectedly.');
 
 const expectedIds=['osa-scoring','osa-pap-treatment','osa-manual-titration','pap-support','csa-distinction','csa-advanced-pap','hypoventilation-niv','oxygen-co2','respiratory-escalation'];
 if(trail.steps.map(step=>step.id).join('|')!==expectedIds.join('|')) throw new Error('Respiratory Study Trail pathway order changed.');
@@ -36,6 +37,9 @@ for(const step of trail.steps){
 }
 if(/driveFileId|sourceId|referenceKeys/.test(trailText)) throw new Error('Learner trail data must not expose private/internal source identifiers.');
 
+const chapter131=chapters.get(131);
+if(!chapter131||chapter131.label!=='Obstructive Sleep Apnea: Clinical Features, Evaluation, and Principles of Management'||Number(chapter131.printedStartPage)!==1245) throw new Error('Chapter 131 locator changed unexpectedly.');
+
 const requiredFamilies=['pap-osa-current','pap-osa-manual-titration-current','pap-csa-asv-current','pap-treatment-emergent-central-current','pap-hypoventilation-niv-current','pap-cross-modality-support','pap-device-facility-boundary'];
 const familyIds=new Set((papFamilies.topicFamilies||[]).map(item=>item.id));
 for(const id of requiredFamilies) if(!familyIds.has(id)) throw new Error(`Protected PAP modality family is missing: ${id}`);
@@ -47,7 +51,7 @@ for(const boundary of ['Do not generalize CPAP/APAP/BPAP','Do not respond to cen
 if(!String(trail.learnerBoundary||'').includes('physician orders')||!trail.learnerBoundary.includes('manufacturer instructions')) throw new Error('Respiratory learner boundary no longer preserves local/device execution rules.');
 
 for(const token of ['meta name="robots" content="noindex,nofollow"','id="respiratory-pap-trail"','data-respiratory-study-trail','assets/respiratory-study-trail.css','core/respiratory-study-trail.js']) if(!studyHtml.includes(token)) throw new Error(`Guided Study shell is missing ${token}.`);
-for(const token of ['data-respiratory-step','Do this step in order','Learn this first','Apply it','Check understanding','Then continue','Take 15-question badge checkpoint','data-respiratory-next','data-respiratory-prev','respiratoryStudyTrail','completedThroughStepId','Related reference materials','Extra practice questions','data-checkpoint-start','Ask Coach Bob from inside a question','sources-disclosures.html?','practice.html?task=','verifiedChapterLocators','data-respiratory-task-entry','Open Respiratory/PAP Study Trail']) if(!trailJs.includes(token)) throw new Error(`Respiratory trail controller is missing ${token}.`);
+for(const token of ['data-respiratory-step','Do this step in order','Learn this first','Apply it','Check understanding','Then continue','Take 15-question badge checkpoint','data-respiratory-next','data-respiratory-prev','respiratoryStudyTrail','completedThroughStepId','Related reference materials','Extra practice questions','data-checkpoint-start','Ask Coach Bob from inside a question','sources-disclosures.html?','practice.html?task=','verifiedChapterLocators','data-respiratory-task-entry','Open Respiratory/PAP Study Trail','Best textbook study support','Book: <em>','state.source=ppsm']) if(!trailJs.includes(token)) throw new Error(`Respiratory trail controller is missing ${token}.`);
 if(/open mapped references|five-question task checkpoint|Practice this concept|Coach Bob opens the existing 15-question badge checkpoint/i.test(trailJs)) throw new Error('Respiratory learner trail still exposes stale or menu-like learner wording.');
 new Function(trailJs);
 if(!trailCss.includes('@media(max-width:760px)')||!trailCss.includes('overflow-x:auto')||!trailCss.includes('grid-template-columns:1fr')) throw new Error('Respiratory trail CSS is missing mobile/compact behavior.');
@@ -58,4 +62,4 @@ for(const token of ['data-featured-respiratory-trail','study.html#respiratory-pa
 for(const token of ["new Set(['respiratory','pap','troubleshooting'])",'study.html#respiratory-pap-trail','Study respiratory/PAP trail first']) if(!labsJs.includes(token)) throw new Error(`Skills Lab respiratory trail entry point is missing ${token}.`);
 new Function(homeJs);new Function(labsJs);
 
-console.log('Respiratory/PAP Study Trail authority, nine-step order, guided Learn → Apply → Check → Continue flow, saved progression, locator, learner-facing reference wording, 15-question checkpoint, front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
+console.log('Respiratory/PAP Study Trail authority, nine-step order, guided Learn → Apply → Check → Continue flow, saved progression, textbook identity, chapter locator, learner-facing reference wording, 15-question checkpoint, front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
