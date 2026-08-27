@@ -8,7 +8,7 @@
   const engine=window.RPSGTGuidedTrailEngine;
   if(!host) return;
 
-  const CHECKPOINT_SIZE=10;
+  const CHECKPOINT_SIZE=15;
   const state={blueprint:null,saved:null,trail:null,checkpoint:null,returnFocus:null};
 
   function cleanText(value){
@@ -33,7 +33,7 @@
       <p class="task-focus">${esc(task.focus)}</p>
       <div class="task-next"><strong>Next study action</strong><span>${esc(task.nextAction||'')}</span></div>
       <details><summary>Show five study targets</summary><ol class="study-target-list">${targets}</ol></details>
-      <div class="trail-actions"><button class="btn secondary" type="button" data-trail-mark="${esc(task.code)}" ${row.studyMarked?'disabled':''}>${row.studyMarked?'Study completed':'Mark study complete'}</button><button class="btn primary" type="button" data-checkpoint-start="${esc(task.code)}">Take 10-question checkpoint</button><a class="btn secondary" href="sources-disclosures.html">Open related references</a></div>
+      <div class="trail-actions"><button class="btn secondary" type="button" data-trail-mark="${esc(task.code)}" ${row.studyMarked?'disabled':''}>${row.studyMarked?'Study completed':'Mark study complete'}</button><button class="btn primary" type="button" data-checkpoint-start="${esc(task.code)}">Take 15-question checkpoint</button><a class="btn secondary" href="sources-disclosures.html">Open related references</a></div>
     </article>`;
   }
 
@@ -50,7 +50,7 @@
 
   function renderMap(){
     const domains=state.blueprint.domains||[];const tasks=domains.flatMap(domain=>domain.tasks||[]);const questionCount=tasks.reduce((sum,task)=>sum+Number(task.questionCount||0),0);
-    if(summaryNode) summaryNode.innerHTML=`<span><strong>${domains.length}</strong> domains</span><span><strong>${tasks.length}</strong> tasks</span><span><strong>${questionCount.toLocaleString()}</strong> learner questions</span><span><strong>10</strong> questions per badge checkpoint</span>`;
+    if(summaryNode) summaryNode.innerHTML=`<span><strong>${domains.length}</strong> domains</span><span><strong>${tasks.length}</strong> tasks</span><span><strong>${questionCount.toLocaleString()}</strong> learner questions</span><span><strong>15</strong> questions per badge checkpoint</span>`;
     renderTrailSummary();host.innerHTML=domains.map(domainCard).join('');
   }
 
@@ -106,7 +106,7 @@
     const isFirst=checkpoint.currentIndex===0;
     const isLast=checkpoint.currentIndex===checkpoint.questions.length-1;
     const result=checkpoint.record;
-    const resultBanner=checkpoint.completed&&result?`<div class="checkpoint-result ${result.passed?'pass':'retry'}" aria-live="polite"><h3>${result.passed?'Task badge earned':'Checkpoint saved—review and retry'}</h3><strong>${result.correct}/${result.total} correct · ${result.score}%</strong><p>${result.passed?'You earned this task badge with at least 8 correct answers out of 10.':'A task badge requires at least 8 correct answers out of 10. Your attempt remains in checkpoint history.'}</p></div>`:'';
+    const resultBanner=checkpoint.completed&&result?`<div class="checkpoint-result ${result.passed?'pass':'retry'}" aria-live="polite"><h3>${result.passed?'Task badge earned':'Checkpoint saved—review and retry'}</h3><strong>${result.correct}/${result.total} correct · ${result.score}%</strong><p>${result.passed?'You earned this task badge with at least 12 correct answers out of 15.':'A task badge requires at least 12 correct answers out of 15. Your attempt remains in checkpoint history.'}</p></div>`:'';
     const options=(question.options||[]).map((option,index)=>{
       const chosen=selected===option;
       const correctClass=checked&&option===question.answer?' correct-option':'';
@@ -155,11 +155,11 @@
   async function startCheckpoint(taskCode){
     const task=engine.taskMap(state.blueprint).get(taskCode);
     openCheckpoint();
-    checkpointHost.innerHTML='<div class="checkpoint-loading"><p>Loading a 10-question learner checkpoint…</p></div>';
+    checkpointHost.innerHTML='<div class="checkpoint-loading"><p>Loading a 15-question learner checkpoint…</p></div>';
     try{
       const module=await loadJson(taskFile(taskCode));
       const questions=engine.selectQuestions(module.questions||[],taskCode,CHECKPOINT_SIZE,taskCode+'|'+new Date().toISOString());
-      if(questions.length<CHECKPOINT_SIZE) throw new Error('Fewer than 10 eligible learner-practice questions are available for this task.');
+      if(questions.length<CHECKPOINT_SIZE) throw new Error('Fewer than 15 eligible learner-practice questions are available for this task.');
       state.checkpoint={
         taskCode,
         taskTitle:task&&task.title||taskCode,
