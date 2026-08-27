@@ -6,13 +6,15 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.1.0';
+  const VERSION='1.2.0';
+  const XP_REWARDS={taskBadge:100,domainMedal:250};
   const DOMAIN_AWARD_NAMES={
     D1:'Clinical Guide',
     D2:'Study Signal Scout',
     D3:'Scoring Pathfinder',
     D4:'Therapy Trail Guide'
   };
+  let celebrationAudioContext=null;
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
   const text=value=>String(value==null?'':value).trim();
   const asArray=value=>Array.isArray(value)?value:[];
@@ -78,6 +80,33 @@
     return next;
   }
 
+  function soundEnabled(saved){return Boolean(saved&&saved.learner&&saved.learner.settings&&saved.learner.settings.soundEffects);}
+  function playFanfare(win,saved,kind){
+    if(!soundEnabled(saved)) return false;
+    try{
+      const Context=win.AudioContext||win.webkitAudioContext;
+      if(!Context) return false;
+      celebrationAudioContext=celebrationAudioContext||new Context();
+      if(celebrationAudioContext.state==='suspended') celebrationAudioContext.resume();
+      const now=celebrationAudioContext.currentTime+.01;
+      const notes=kind==='domain'
+        ?[[392,0,.11],[523.25,.10,.11],[659.25,.20,.12],[783.99,.31,.13],[1046.5,.43,.26]]
+        :[[392,0,.10],[523.25,.09,.11],[659.25,.19,.12],[783.99,.30,.22]];
+      notes.forEach(([frequency,offset,duration],index)=>{
+        const oscillator=celebrationAudioContext.createOscillator();
+        const gain=celebrationAudioContext.createGain();
+        oscillator.type=index===notes.length-1?'triangle':'sine';
+        oscillator.frequency.setValueAtTime(frequency,now+offset);
+        gain.gain.setValueAtTime(.0001,now+offset);
+        gain.gain.exponentialRampToValueAtTime(index===notes.length-1?.055:.036,now+offset+.018);
+        gain.gain.exponentialRampToValueAtTime(.0001,now+offset+duration);
+        oscillator.connect(gain);gain.connect(celebrationAudioContext.destination);
+        oscillator.start(now+offset);oscillator.stop(now+offset+duration+.03);
+      });
+      return true;
+    }catch(error){return false;}
+  }
+
   function nextTaskRoute(blueprint,taskCode){
     const tasks=(blueprint&&blueprint.domains||[]).flatMap(domain=>(domain.tasks||[]).map(task=>({
       code:text(task.code),
@@ -113,6 +142,8 @@
 
     const state={
       taskCode:null,
+      conceptId:null,
+      conceptLabel:null,
       blueprint:null,
       awardsBeforeSubmit:null,
       latestHandledId:null,
@@ -128,14 +159,14 @@
     };
 
     const originalSelect=engine.selectQuestions.bind(engine);
-    engine.selectQuestions=function(records,taskCode,count,seed){
+    engine.selectQuestions=function(records,taskCode,count,seed,filter){
       const code=text(taskCode);
       const excluded=state.retakeExclusions.get(code)||[];
       if(excluded.length){
         state.retakeExclusions.delete(code);
-        return originalSelect(filterRetakeRecords(records,excluded,count),taskCode,count,seed);
+        return originalSelect(filterRetakeRecords(records,excluded,count),taskCode,count,seed,filter);
       }
-      return originalSelect(records,taskCode,count,seed);
+      return originalSelect(records,taskCode,count,seed,filter);
     };
 
     function loadJson(path){
@@ -147,6 +178,10 @@
 
     function latestRecord(saved){
       const history=asArray(saved&&saved.guidedStudy&&saved.guidedStudy.checkpointHistory);
+      if(state.conceptId){
+        const concept=history.find(item=>item&&item.task===state.taskCode&&item.conceptId===state.conceptId);
+        if(concept) return concept;
+      }
       return history.find(item=>item&&item.task===state.taskCode)||history[0]||null;
     }
 
@@ -206,7 +241,7 @@
       overlay.className='guided-award-overlay';
       overlay.dataset.guidedAwardCeremony='true';
       overlay.hidden=true;
-      overlay.innerHTML='<section class="guided-award-dialog" role="dialog" aria-modal="true" aria-labelledby="guided-award-title" tabindex="-1"><button class="guided-award-close" type="button" data-guided-award-close aria-label="Close accomplishment celebration">×</button><div class="guided-award-medal" data-guided-award-symbol aria-hidden="true">✓</div><div class="eyebrow">Sleep Pathways Guild accomplishment</div><h2 id="guided-award-title" data-guided-award-title>Congratulations</h2><p class="guided-award-skill" data-guided-award-skill></p><div class="guided-award-domain-note" data-guided-award-domain hidden></div><aside class="guided-award-coach"><strong>Coach Bob</strong><p data-guided-award-coach></p></aside><section class="guided-award-next" aria-label="Recommended next activity"><strong>Recommended next</strong><p data-guided-award-next></p></section><div class="guided-award-actions"><button class="btn primary" type="button" data-guided-award-launch>Start next area</button><button class="btn secondary" type="button" data-guided-award-close>Not now</button><a class="btn secondary" href="reports.html#guided-trail-report">View accomplishments</a></div><p class="guided-award-boundary">Guild accomplishments are educational progress markers, not BRPT credentials or passing predictions.</p></section>';
+      overlay.innerHTML='<section class="guided-award-dialog" role="dialog" aria-modal="true" aria-labelledby="guided-award-title" tabindex="-1"><button class="guided-award-close" type="button" data-guided-award-close aria-label="Close accomplishment celebration">×</button><div class="guided-award-medal" data-guided-award-symbol aria-hidden="true">✓</div><div class="eyebrow">Sleep Pathways Guild accomplishment</div><h2 id="guided-award-title" data-guided-award-title>Congratulations</h2><p class="guided-award-skill" data-guided-award-skill></p><div class="guided-award-xp" data-guided-award-xp aria-live="polite"></div><div class="guided-award-domain-note" data-guided-award-domain hidden></div><aside class="guided-award-coach"><strong>Coach Bob</strong><p data-guided-award-coach></p></aside><section class="guided-award-next" aria-label="Recommended next activity"><strong>Recommended next</strong><p data-guided-award-next></p></section><div class="guided-award-actions"><button class="btn primary" type="button" data-guided-award-launch>Start next area</button><button class="btn secondary" type="button" data-guided-award-close>Not now</button><a class="btn secondary" href="reports.html#guided-trail-report">View accomplishments</a></div><p class="guided-award-boundary">Guild accomplishments and Explorer XP are educational progress markers, not BRPT credentials or passing predictions.</p></section>';
       doc.body.appendChild(overlay);
       overlay.addEventListener('click',event=>{if(event.target===overlay||event.target.closest('[data-guided-award-close]')) closeCeremony();});
       overlay.addEventListener('click',event=>{if(event.target.closest('[data-guided-award-launch]')) launchRecommendation();});
@@ -227,6 +262,7 @@
       const overlay=ensureCeremonyShell();
       const title=overlay.querySelector('[data-guided-award-title]');
       const skill=overlay.querySelector('[data-guided-award-skill]');
+      const xp=overlay.querySelector('[data-guided-award-xp]');
       const coach=overlay.querySelector('[data-guided-award-coach]');
       const symbol=overlay.querySelector('[data-guided-award-symbol]');
       const domainNote=overlay.querySelector('[data-guided-award-domain]');
@@ -235,6 +271,8 @@
       overlay.dataset.guidedAwardKind=item.kind;
       domainNote.hidden=true;
       domainNote.textContent='';
+      const xpEarned=(item.kind==='task'?XP_REWARDS.taskBadge:0)+(item.domainEarned?XP_REWARDS.domainMedal:0);
+      if(xp) xp.textContent=xpEarned?('+'+xpEarned+' Explorer XP'):'Achievement unlocked';
       if(item.kind==='domain'){
         const awardName=DOMAIN_AWARD_NAMES[item.domain]||item.domain+' Trail Award';
         if(symbol) symbol.textContent='★';
@@ -261,6 +299,7 @@
       state.ceremonyOpen=true;
       overlay.hidden=false;
       doc.body.classList.add('guided-award-open');
+      playFanfare(win,saved,item.domainEarned||item.kind==='domain'?'domain':'task');
       win.requestAnimationFrame(()=>overlay.querySelector('[role="dialog"]')?.focus({preventScroll:true}));
     }
 
@@ -419,7 +458,12 @@
 
     doc.addEventListener('click',event=>{
       const start=event.target.closest('[data-checkpoint-start]');
-      if(start){state.taskCode=text(start.getAttribute('data-checkpoint-start'));state.latestHandledId=null;}
+      if(start){
+        state.taskCode=text(start.getAttribute('data-checkpoint-start'));
+        state.conceptId=text(start.getAttribute('data-checkpoint-concept'))||null;
+        state.conceptLabel=text(start.getAttribute('data-checkpoint-concept-label'))||null;
+        state.latestHandledId=null;
+      }
 
       if(event.target.closest('[data-checkpoint-score]')&&state.taskCode){
         const saved=storage.load();
@@ -436,8 +480,12 @@
         const record=latestRecord(saved);
         state.retakeExclusions.set(state.taskCode,asArray(record&&record.questionIds));
         const code=state.taskCode;
+        const conceptId=state.conceptId;
         closeCheckpoint();
-        win.setTimeout(()=>doc.querySelector('[data-checkpoint-start="'+code+'"]')?.click(),0);
+        win.setTimeout(()=>{
+          const selector='[data-checkpoint-start="'+code+'"]'+(conceptId?'[data-checkpoint-concept="'+conceptId+'"]':'');
+          doc.querySelector(selector)?.click();
+        },0);
         return;
       }
 
@@ -469,12 +517,15 @@
 
   return {
     VERSION,
+    XP_REWARDS,
     DOMAIN_AWARD_NAMES,
     uniqueIds,
     updateMissedReview,
     awardCeremonies,
     unseenCeremonies,
     markCeremonySeen,
+    soundEnabled,
+    playFanfare,
     nextTaskRoute,
     filterRetakeRecords,
     mount
