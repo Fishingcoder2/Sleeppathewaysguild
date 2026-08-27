@@ -1,0 +1,42 @@
+name: Validate RPSGT v3 question navigation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/mentoring-diagnostic.html'
+      - 'rpsgt-v3/core/mentoring-diagnostic.js'
+      - 'rpsgt-v3/assets/mentoring-diagnostic.css'
+      - 'rpsgt-v3/math-coach.html'
+      - 'rpsgt-v3/core/math-question-navigation.js'
+      - 'rpsgt-v3/assets/math-question-modal.css'
+      - 'rpsgt-v3/memory-games.html'
+      - 'rpsgt-v3/core/memory-arcade-navigation.js'
+      - 'rpsgt-v3/assets/memory-arcade.css'
+      - 'rpsgt-v3/scripts/test-question-navigation-shell.mjs'
+      - '.github/workflows/rpsgt-v3-question-navigation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  question-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check navigation module syntax
+        run: |
+          set -euo pipefail
+          node --check rpsgt-v3/core/mentoring-diagnostic.js
+          node --check rpsgt-v3/core/math-question-navigation.js
+          node --check rpsgt-v3/core/memory-arcade-navigation.js
+      - name: Validate focused question navigation shell
+        run: node rpsgt-v3/scripts/test-question-navigation-shell.mjs
