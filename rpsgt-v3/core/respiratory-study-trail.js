@@ -91,7 +91,7 @@
       '<ol class="respiratory-guided-list">'+
         '<li><span>1</span><div><strong>Learn this first</strong><p>Read why this matters, the primary authority, the textbook study support, and the current-rule warning below.</p></div></li>'+
         '<li><span>2</span><div><strong>Apply it</strong><p>Use the related skills lab to see the concept in a practical sleep-tech workflow.</p>'+labLink+'</div></li>'+
-        '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question '+esc(step.taskCode)+' checkpoint matched to <strong>this respiratory concept</strong>. Unrelated questions from the broader task—such as sleep-stage questions in an OSA-scoring step—are excluded. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'" data-checkpoint-concept="'+esc(step.id)+'">Take 15-question concept checkpoint</button></div></li>'+
+        '<li><span>3</span><div><strong>Check understanding</strong><p>Take the 15-question checkpoint matched to <strong>this respiratory concept</strong>. If you need help, Ask Coach Bob from inside a question for a reasoning hint.</p><button class="btn primary" type="button" data-checkpoint-start="'+esc(step.taskCode)+'" data-checkpoint-concept="'+esc(step.id)+'">Take 15-question concept checkpoint</button></div></li>'+
         '<li><span>4</span><div><strong>Then continue</strong><p>'+(last?'When this step makes sense, mark the trail complete.':'When this step makes sense, continue to the next topic: '+esc(next.title)+'.')+'</p>'+continueButton+'</div></li>'+
       '</ol>'+
     '</section>';
