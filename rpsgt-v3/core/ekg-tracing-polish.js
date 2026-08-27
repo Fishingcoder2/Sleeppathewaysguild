@@ -9,7 +9,7 @@ function beatsForKind(kind){
   if(kind==='slow-48')return [80,185,290,395,500,605,710,815];
   if(kind==='p-before-qrs')return [90,205,320,435,550,665,780];
   if(kind==='isolated-ectopy')return [90,210,330,430,585,705,825];
-  if(kind==='concerning-run')return [90,210,350,415,480,545,610,735,845];
+  if(kind==='concerning-run')return [90,210,350,390,430,470,510,550,590,735,845];
   if(kind==='event-marker')return [90,210,330,450,555,670,790];
   return [90,190,290,390,490,590,690,790];
 }
@@ -45,12 +45,15 @@ function pvcBeatPath(x){
 
 function ventricularRunBeatPath(x){
   return [
-    `L ${x-20} ${BASELINE}`,
-    `C ${x-16} ${BASELINE} ${x-13} 104 ${x-9} 94`,
-    `C ${x-4} 80 ${x+1} 72 ${x+7} 78`,
-    `C ${x+13} 85 ${x+17} 111 ${x+22} 137`,
-    `C ${x+27} 154 ${x+33} 151 ${x+38} 132`,
-    `C ${x+41} 123 ${x+43} ${BASELINE} ${x+46} ${BASELINE}`
+    `L ${x-10} ${BASELINE}`,
+    `L ${x-6} 125`,
+    `L ${x-2} 95`,
+    `L ${x+2} 70`,
+    `L ${x+7} 73`,
+    `L ${x+12} 100`,
+    `L ${x+17} 148`,
+    `L ${x+23} ${BASELINE}`,
+    `L ${x+29} ${BASELINE}`
   ].join(' ');
 }
 
@@ -61,7 +64,7 @@ function stripPath(kind){
   if(kind==='isolated-ectopy')wideAt=3;
 
   beats.forEach((x,index)=>{
-    if(kind==='concerning-run'&&index>=2&&index<=6){
+    if(kind==='concerning-run'&&index>=2&&index<=8){
       path+=ventricularRunBeatPath(x);
     }else if(index===wideAt){
       path+=pvcBeatPath(x);
