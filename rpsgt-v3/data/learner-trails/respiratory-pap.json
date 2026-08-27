@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "respiratory-pap-pathway",
   "title": "Respiratory & PAP Study Trail",
-  "description": "Follow the respiratory pathway from recognition and scoring through PAP, advanced therapy distinctions, oxygen/CO2 monitoring, and escalation. Each step keeps current authority separate from textbook study support.",
+  "description": "Work through Steps 1 through 9 in order. Each step tells you what to learn first, where to apply it, when to take the 15-question checkpoint, and what topic comes next.",
   "learnerBoundary": "This trail supports RPSGT exam preparation. It does not replace physician orders, facility policy, scope requirements, manufacturer instructions, or current AASM/AAST authority.",
   "steps": [
     {
