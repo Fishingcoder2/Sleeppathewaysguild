@@ -89,10 +89,7 @@
     ctx.save();ctx.setTransform(ratio,0,0,ratio,0,0);ctx.lineWidth=1.15;ctx.strokeStyle='#132f3f';
     const eegIndexes=item.study.channels.map((channel,index)=>channel.type==='eeg'?index:-1).filter(index=>index>=0);
     eegIndexes.forEach((index,order)=>drawBurst(ctx,metrics,index,item.event.start,item.event.end,17.5,7.0,order*.41));
-    if(item.artifact){
-      ctx.lineWidth=.9;
-      eegIndexes.forEach((index,order)=>drawArtifact(ctx,metrics,index,item.artifact.start,item.artifact.end,order*.57));
-    }
+    if(item.artifact){ctx.lineWidth=.9;eegIndexes.forEach((index,order)=>drawArtifact(ctx,metrics,index,item.artifact.start,item.artifact.end,order*.57));}
     ctx.restore();
   }
 
@@ -112,8 +109,9 @@
   function renderInteractionLayer(item){
     const layer=host.querySelector('[data-arousal-layer]');if(!layer||!state.metrics)return;layer.innerHTML='';
     if(state.decisionLocked){
-      addTeachingRegion(layer,item.event,'scoring-arousal-target',state.intervalLocked||item.answer==='do-not-score');
-      if(item.artifact)addTeachingRegion(layer,item.artifact,'scoring-arousal-artifact-target',state.intervalLocked);
+      const revealTeaching=state.intervalLocked||item.answer==='do-not-score'||state.decision!==item.answer;
+      addTeachingRegion(layer,item.event,'scoring-arousal-target',revealTeaching);
+      if(item.artifact)addTeachingRegion(layer,item.artifact,'scoring-arousal-artifact-target',state.intervalLocked||state.decision!==item.answer);
     }
     if(state.interval)addSelection(layer,state.interval,state.intervalLocked?gradeInterval(item,state.interval).correct?'correct':'incorrect':'selected');
     if(state.decisionLocked&&item.answer==='score'&&state.decision==='score'&&!state.intervalLocked){
@@ -132,16 +130,20 @@
     const metrics=state.metrics,index=metrics.channels.indexOf(interval.channel);if(index<0)return;const box=document.createElement('span');box.className='visual-interval-selection '+status;box.style.left=timeX(metrics,interval.start)+'px';box.style.top=(metrics.topPad+index*metrics.rowHeight)+'px';box.style.width=Math.max(5,timeX(metrics,interval.end)-timeX(metrics,interval.start))+'px';box.style.height=metrics.rowHeight+'px';box.setAttribute('aria-hidden','true');layer.appendChild(box);
   }
 
+  function updateDragPreview(){
+    const layer=host.querySelector('[data-arousal-layer]');if(!layer||!state.interval)return;layer.querySelectorAll('.visual-interval-selection').forEach(node=>node.remove());addSelection(layer,state.interval,'selected');
+  }
+
   function pointFromEvent(event,surface,channelIndex){
     if(!state.metrics)return null;const rect=surface.getBoundingClientRect(),x=event.clientX-rect.left+state.metrics.labelWidth,y=channelIndex==null?event.clientY-rect.top+state.metrics.topPad:state.metrics.topPad+channelIndex*state.metrics.rowHeight+state.metrics.rowHeight/2;return renderer.hitTest(state.metrics,x,y);
   }
 
   function beginDrag(event,surface){
-    if(state.intervalLocked)return;const point=pointFromEvent(event,surface,null);if(!point)return;const channel=currentCase().study.channels[point.channelIndex];if(!channel||channel.type!=='eeg')return;event.preventDefault();if(surface.setPointerCapture)surface.setPointerCapture(event.pointerId);state.drag={pointerId:event.pointerId,surface,channel:point.channel,channelIndex:point.channelIndex,start:point.time,end:point.time};state.interval={channel:point.channel,start:point.time,end:point.time};renderInteractionLayer(currentCase());
+    if(state.intervalLocked)return;const point=pointFromEvent(event,surface,null);if(!point)return;const channel=currentCase().study.channels[point.channelIndex];if(!channel||channel.type!=='eeg')return;event.preventDefault();if(surface.setPointerCapture)surface.setPointerCapture(event.pointerId);state.drag={pointerId:event.pointerId,surface,channel:point.channel,channelIndex:point.channelIndex,start:point.time,end:point.time};state.interval={channel:point.channel,start:point.time,end:point.time};updateDragPreview();
   }
 
   function moveDrag(event){
-    if(!state.drag||event.pointerId!==state.drag.pointerId)return;const point=pointFromEvent(event,state.drag.surface,state.drag.channelIndex);if(!point)return;event.preventDefault();state.drag.end=point.time;state.interval={channel:state.drag.channel,start:Math.min(state.drag.start,state.drag.end),end:Math.max(state.drag.start,state.drag.end)};renderInteractionLayer(currentCase());
+    if(!state.drag||event.pointerId!==state.drag.pointerId)return;const point=pointFromEvent(event,state.drag.surface,state.drag.channelIndex);if(!point)return;event.preventDefault();state.drag.end=point.time;state.interval={channel:state.drag.channel,start:Math.min(state.drag.start,state.drag.end),end:Math.max(state.drag.start,state.drag.end)};updateDragPreview();
   }
 
   function endDrag(event){if(!state.drag||event.pointerId!==state.drag.pointerId)return;moveDrag(event);state.drag=null;renderCase();}
@@ -152,15 +154,9 @@
     return {correct:startOk&&endOk&&durationOk};
   }
 
-  function caseCorrect(item){
-    if(state.decision!==item.answer)return false;
-    if(item.answer==='do-not-score')return true;
-    return state.intervalLocked&&gradeInterval(item,state.interval).correct;
-  }
+  function caseCorrect(item){if(state.decision!==item.answer)return false;if(item.answer==='do-not-score')return true;return state.intervalLocked&&gradeInterval(item,state.interval).correct;}
 
-  function markStationComplete(){
-    const checkbox=document.querySelector('[data-scoring-station="arousal-context"]');if(checkbox&&!checkbox.checked&&!checkbox.disabled){checkbox.checked=true;checkbox.dispatchEvent(new Event('change',{bubbles:true}));}
-  }
+  function markStationComplete(){const checkbox=document.querySelector('[data-scoring-station="arousal-context"]');if(checkbox&&!checkbox.checked&&!checkbox.disabled){checkbox.checked=true;checkbox.dispatchEvent(new Event('change',{bubbles:true}));}}
 
   function finish(){
     if(caseCorrect(currentCase()))state.correct+=1;markStationComplete();host.innerHTML=`<div class="scoring-stage-result"><div class="eyebrow">Arousal Recognition visual review complete</div><h2>${state.correct}/${state.cases.length} first-pass cases fully correct</h2><p>You classified abrupt EEG frequency shifts, measured qualifying intervals, and separated a later muscle-artifact teaching pattern from the arousal itself. The Arousal Recognition station has been recorded as reviewed.</p><div class="actions"><button class="btn primary" type="button" data-arousal-restart>Practice the arousal cases again</button></div></div>`;
