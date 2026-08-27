@@ -19,25 +19,37 @@
     renderIntro();
   }
 
+  function prepareN2Background(study){
+    const copy=clone(study);
+    copy.channels.forEach(channel=>{
+      if(channel.type==='eeg'){
+        channel.amplitude=Math.min(Number(channel.amplitude||.6),.48);
+        if(Array.isArray(channel.features))channel.features=channel.features.filter(feature=>feature.type!=='k-complex');
+      }
+    });
+    return copy;
+  }
+
   function buildCases(){
+    const cleanN2=()=>prepareN2Background(state.base);
     return [
       {
         id:'arousal-clear',title:'Abrupt EEG frequency shift',
         prompt:'Does this schematic epoch contain an EEG arousal based on the duration of the abrupt frequency shift?',
-        study:clone(state.base),answer:'score',event:{start:7.0,end:11.2},artifact:null,
-        rationale:'The uploaded project reference describes an EEG arousal as an abrupt shift in EEG frequency lasting at least 3 seconds. This app-authored shift lasts a little more than 4 seconds.'
+        study:cleanN2(),answer:'score',event:{start:7.0,end:11.2},artifact:null,
+        rationale:'The uploaded project reference describes an EEG arousal as an abrupt shift in EEG frequency lasting at least 3 seconds. This app-authored shift lasts a little more than 4 seconds. The background K-complex has been removed from the event window so the frequency change can be judged on its own.'
       },
       {
         id:'arousal-short',title:'Short frequency shift',
         prompt:'Does this shorter schematic EEG frequency shift meet the duration described in the uploaded project reference?',
-        study:clone(state.base),answer:'do-not-score',event:{start:15.0,end:17.0},artifact:null,
+        study:cleanN2(),answer:'do-not-score',event:{start:15.0,end:17.0},artifact:null,
         rationale:'The visible frequency shift is approximately 2 seconds long. The uploaded project reference states that the abrupt EEG frequency shift must last at least 3 seconds, so this teaching example is intentionally too short.'
       },
       {
         id:'arousal-artifact',title:'Arousal followed by muscle artifact',
         prompt:'Separate the initial EEG frequency shift from the later high-frequency muscle artifact. Should the initial event be scored as an arousal?',
-        study:clone(state.base),answer:'score',event:{start:9.0,end:12.6},artifact:{start:12.6,end:16.2},
-        rationale:'The initial app-authored EEG frequency shift lasts more than 3 seconds. The uploaded project reference also warns that high-frequency activity superimposed on EEG channels during and following an arousal may be muscle artifact; the later dense activity is included to teach that distinction.'
+        study:cleanN2(),answer:'score',event:{start:9.0,end:12.6},artifact:{start:12.9,end:16.2},
+        rationale:'The initial app-authored EEG frequency shift lasts more than 3 seconds. The uploaded project reference also warns that high-frequency activity superimposed on EEG channels during and following an arousal may be muscle artifact; the later dense activity is intentionally separated from the cleaner arousal pattern.'
       }
     ];
   }
@@ -46,7 +58,7 @@
 
   function renderIntro(){
     host.hidden=false;
-    host.innerHTML=`<div class="section-head"><div><div class="eyebrow">Station 3 · Visual practicum</div><h2>Arousal Recognition — find the EEG change, then measure it</h2></div><span class="status">3 app-authored cases</span></div><p class="report-intro">First decide whether the epoch contains a qualifying arousal pattern using the uploaded project reference. When an arousal is present, mark its approximate interval directly on an EEG channel. Teaching highlights stay hidden until you commit.</p><div class="scoring-arousal-roadmap"><div><strong>Recognize</strong><small>Look for an abrupt change in EEG frequency rather than a single isolated deflection.</small></div><div><strong>Measure</strong><small>The uploaded reference describes a duration of at least 3 seconds for the abrupt frequency shift.</small></div><div><strong>Separate artifact</strong><small>Do not mistake later high-frequency muscle artifact superimposed on EEG channels for the arousal itself.</small></div></div><div class="actions"><button class="btn primary" type="button" data-arousal-start>Start arousal review</button></div>`;
+    host.innerHTML=`<div class="section-head"><div><div class="eyebrow">Station 3 · Visual practicum</div><h2>Arousal Recognition — find the EEG change, then measure it</h2></div><span class="status">3 app-authored cases</span></div><p class="report-intro">First decide whether the epoch contains a qualifying arousal pattern using the uploaded project reference. When an arousal is present, mark its approximate interval directly on an EEG channel. Teaching highlights stay hidden until you commit.</p><div class="scoring-arousal-roadmap"><div><strong>Recognize</strong><small>Look for an abrupt change in EEG frequency rather than a single isolated deflection.</small></div><div><strong>Measure</strong><small>The uploaded reference describes a duration of at least 3 seconds for the abrupt frequency shift.</small></div><div><strong>Separate artifact</strong><small>Do not mistake later dense high-frequency muscle artifact superimposed on EEG channels for the arousal itself.</small></div></div><div class="actions"><button class="btn primary" type="button" data-arousal-start>Start arousal review</button></div>`;
   }
 
   function renderCase(){
@@ -88,7 +100,7 @@
     const metrics=state.metrics,ratio=Math.max(1,canvas.width/metrics.width),ctx=canvas.getContext('2d');
     ctx.save();ctx.setTransform(ratio,0,0,ratio,0,0);ctx.lineWidth=1.15;ctx.strokeStyle='#132f3f';
     const eegIndexes=item.study.channels.map((channel,index)=>channel.type==='eeg'?index:-1).filter(index=>index>=0);
-    eegIndexes.forEach((index,order)=>drawBurst(ctx,metrics,index,item.event.start,item.event.end,17.5,7.0,order*.41));
+    eegIndexes.forEach((index,order)=>drawFrequencyShift(ctx,metrics,index,item.event.start,item.event.end,order*.41));
     if(item.artifact){ctx.lineWidth=.9;eegIndexes.forEach((index,order)=>drawArtifact(ctx,metrics,index,item.artifact.start,item.artifact.end,order*.57));}
     ctx.restore();
   }
@@ -96,9 +108,14 @@
   function timeX(metrics,time){return metrics.labelWidth+(time/metrics.duration)*(metrics.plotRight-metrics.labelWidth);}
   function rowY(metrics,index){return metrics.topPad+index*metrics.rowHeight+metrics.rowHeight/2;}
 
-  function drawBurst(ctx,metrics,index,start,end,frequency,amplitude,phase){
-    const steps=Math.max(20,Math.round((end-start)*120)),y0=rowY(metrics,index);ctx.beginPath();
-    for(let i=0;i<=steps;i+=1){const t=start+(end-start)*(i/steps),gate=Math.min(1,(t-start)/.12,(end-t)/.12),y=y0-gate*(Math.sin(Math.PI*2*frequency*t+phase)*amplitude+Math.sin(Math.PI*2*8.2*t+phase*.5)*2.2),x=timeX(metrics,t);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();
+  function drawFrequencyShift(ctx,metrics,index,start,end,phase){
+    const steps=Math.max(20,Math.round((end-start)*90)),y0=rowY(metrics,index),frequencyA=9.1+(index%3)*.32,frequencyB=6.2+(index%2)*.24;
+    ctx.beginPath();
+    for(let i=0;i<=steps;i+=1){
+      const t=start+(end-start)*(i/steps),gate=Math.min(1,(t-start)/.08,(end-t)/.10),envelope=.88+.10*Math.sin(Math.PI*2*.42*t+phase),signal=Math.sin(Math.PI*2*frequencyA*t+phase)*5.0+Math.sin(Math.PI*2*frequencyB*t+phase*.7)*2.0+Math.sin(Math.PI*2*12.4*t+1.1+phase)*.75,y=y0-gate*envelope*signal,x=timeX(metrics,t);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
   }
 
   function drawArtifact(ctx,metrics,index,start,end,phase){
