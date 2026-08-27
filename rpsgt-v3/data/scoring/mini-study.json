@@ -1,26 +1,26 @@
 {
   "meta": {
     "name": "RPSGT Scoring Lab Phase 3 mini-study",
-    "version": 1,
+    "version": 2,
     "appAuthored": true,
     "sourceType": "app-authored-schematic-sequence",
-    "sourceBasis": "The mini-study reuses original Sleep Pathways Guild schematic staging epochs and scoring-context cases to teach sequential review without embedding patient recordings, proprietary scoring-manual figures, or copied textbook figures.",
-    "clinicalBoundary": "The sequence is pedagogic rather than a model of mandatory sleep architecture. Real scoring requires the current official AASM Scoring Manual, the complete recording, facility procedures, and supervised scorer training.",
+    "sourceBasis": "The mini-study uses original Sleep Pathways Guild teaching signals. AASM Scoring Manual Version 3 governs scoring decisions; atlas sources are used only to validate physiologic appearance and context. No patient recording, proprietary scoring-manual figure, ISR item, or textbook figure is reproduced.",
+    "clinicalBoundary": "This sequence is pedagogic rather than a model of mandatory sleep architecture. Real scoring requires the current official AASM Scoring Manual, the complete recording, facility procedures, and supervised scorer training. AASM ISR interface behavior is not the authority for the scoring decision.",
     "stageDecisionCount": 12,
     "contextDecisionCount": 3,
     "passPercent": 80
   },
   "options": ["W", "N1", "N2", "N3", "R"],
   "epochs": [
-    {"id":"mini-e01","studyId":"schematic-w-001","answer":"W","rationale":"Wake-oriented posterior alpha, eye activity, and relatively higher chin tone support the intended teaching pattern."},
+    {"id":"mini-e01","studyId":"schematic-w-001","answer":"W","rationale":"Wake-oriented posterior alpha, eye activity, and relatively higher chin tone support the intended adult wake teaching pattern."},
     {"id":"mini-e02","studyId":"schematic-n1-001","answer":"N1","rationale":"Low-amplitude mixed/theta-oriented EEG, slow eye movements, and the absence of N2 teaching morphology support the intended N1 pattern."},
     {"id":"mini-e03","studyId":"schematic-n2-001","answer":"N2","rationale":"The schematic K-complex and spindle region support the intended N2 teaching pattern."},
     {"id":"mini-e04","studyId":"schematic-n2-001","answer":"N2","rationale":"Neighboring context does not replace the current epoch evidence; the N2 teaching morphology remains present."},
-    {"id":"mini-e05","studyId":"schematic-n3-001","answer":"N3","rationale":"Prominent frontal slow-wave teaching activity supports the intended N3 pattern."},
+    {"id":"mini-e05","studyId":"schematic-n3-001","answer":"N3","rationale":"Prominent frontal slow-wave teaching activity occupies enough of the epoch to support the intended N3 pattern."},
     {"id":"mini-e06","studyId":"schematic-n3-001","answer":"N3","rationale":"The current epoch continues the deep-NREM teaching pattern rather than being restaged only because a transition follows later."},
     {"id":"mini-e07","studyId":"schematic-n2-001","answer":"N2","rationale":"The displayed epoch returns to N2-oriented morphology with a lower-amplitude background and N2 teaching features."},
     {"id":"mini-e08","studyId":"schematic-n1-001","answer":"N1","rationale":"The schematic emphasizes an N1-oriented background and slow eye movements without an N2 teaching marker."},
-    {"id":"mini-e09","studyId":"schematic-r-001","answer":"R","rationale":"Low-amplitude mixed-frequency EEG, rapid eye movements, and low chin tone support the intended REM teaching pattern."},
+    {"id":"mini-e09","studyId":"schematic-r-001","answer":"R","rationale":"Low-amplitude mixed-frequency EEG, rapid eye movements, and low chin tone support the intended definite stage R teaching pattern."},
     {"id":"mini-e10","studyId":"schematic-r-001","answer":"R","rationale":"The current epoch retains the REM teaching relationship; a later transition does not change the evidence within this epoch."},
     {"id":"mini-e11","studyId":"schematic-n2-001","answer":"N2","rationale":"The schematic again shows N2 teaching morphology after the REM-oriented interval."},
     {"id":"mini-e12","studyId":"schematic-w-001","answer":"W","rationale":"Posterior alpha, eye activity, and higher chin tone support the intended wake teaching pattern at the end of the sequence."}
@@ -31,22 +31,22 @@
       "afterEpoch":3,
       "caseId":"context-arousal-n2-valid",
       "label":"Arousal context stop",
-      "focus":"Pause the stage sequence and judge a full-montage arousal pattern before continuing."
+      "focus":"Apply the Version 3 arousal rule to the full montage: confirm stable sleep before the abrupt EEG-frequency shift and distinguish the cerebral change from artifact."
     },
     {
       "id":"mini-context-limb",
       "afterEpoch":7,
       "caseId":"context-limb-series-valid",
       "label":"Limb-movement context stop",
-      "focus":"Use the longer montage to judge movement-series context rather than a single burst in isolation."
+      "focus":"Apply the Version 3 PLMS-series timing rules across the longer montage rather than judging one leg burst in isolation."
     },
     {
       "id":"mini-context-boundary",
       "afterEpoch":11,
       "caseId":"context-boundary-respiratory-spans",
       "label":"Respiratory boundary context stop",
-      "focus":"Follow one continuous respiratory event across the displayed epoch boundary before finishing the mini-study."
+      "focus":"Use the adult Version 3 apnea criteria: follow the near-flat thermal airflow and continued respiratory effort continuously across the 30-second epoch boundary."
     }
   ],
-  "reference": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Elsevier. American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events (Version 3). American Academy of Sleep Medicine."
+  "reference": "Troester, M. M., Quan, S. F., Berry, R. B., et al., for the American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine. Gupta, R., Pandi-Perumal, S. R., & BaHammam, A. S. (2018). Clinical atlas of polysomnography. Apple Academic Press. Geyer, J. D., Carney, P. R., & Payne, T. A. (2010). Atlas of polysomnography (2nd ed.). Lippincott Williams & Wilkins."
 }

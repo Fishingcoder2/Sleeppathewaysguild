@@ -73,10 +73,13 @@ jobs:
           node --check rpsgt-v3/scripts/test-scoring-checkpoint-modal.mjs
           node --check rpsgt-v3/scripts/test-scoring-visual-workflows.mjs
           node --check rpsgt-v3/scripts/test-scoring-mini-study.mjs
+          node --check rpsgt-v3/scripts/test-scoring-aasm-v3-authority.mjs
       - name: Validate Scoring Lab engine and completion boundary
         run: node rpsgt-v3/scripts/test-scoring-lab-system.mjs
       - name: Validate Scoring Lab learner shell
         run: node rpsgt-v3/scripts/test-scoring-lab-shell.mjs
+      - name: Validate AASM Version 3 authority and physiology
+        run: node rpsgt-v3/scripts/test-scoring-aasm-v3-authority.mjs
       - name: Validate fixed-order staging presentation
         run: node rpsgt-v3/scripts/test-scoring-stage-presentation.mjs
       - name: Validate Phase 3 event-boundary practice

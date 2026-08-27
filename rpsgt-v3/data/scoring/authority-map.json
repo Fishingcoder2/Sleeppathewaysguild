@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "name": "RPSGT Scoring Lab authority and visual-validation map",
+    "version": 1,
+    "purpose": "Keep every learner-facing Scoring Lab decision anchored to the current AASM Scoring Manual Version 3 while using atlases only to validate physiologic appearance and teaching context.",
+    "authorityOrder": [
+      "AASM Scoring Manual Version 3 and incorporated corrections",
+      "Current AASM FAQ only when Version 3 requires clarification",
+      "Sleep Pathways Guild original teaching schematic",
+      "Atlas/textbook visual corroboration",
+      "AASM ISR interface behavior only when the learning objective is explicitly interface practice"
+    ],
+    "copyrightBoundary": "Do not copy AASM figures, proprietary rule text, atlas tracings, tables, or review questions. Use original summaries and original Sleep Pathways Guild schematics.",
+    "learnerReferenceStyle": "Show APA-style references only; do not expose internal mapping labels or authority-map identifiers."
+  },
+  "sources": {
+    "aasmV3": {
+      "role": "governing scoring authority",
+      "citation": "Troester, M. M., Quan, S. F., Berry, R. B., et al., for the American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine."
+    },
+    "clinicalAtlas2018": {
+      "role": "visual and physiologic corroboration; never overrides current AASM rules",
+      "citation": "Gupta, R., Pandi-Perumal, S. R., & BaHammam, A. S. (2018). Clinical atlas of polysomnography. Apple Academic Press.",
+      "highValueChapters": [
+        "Chapter 11: The Concept of Epochs",
+        "Chapter 12: Artifacts",
+        "Chapter 13: Scoring of Data in Adults"
+      ]
+    },
+    "geyerAtlas2010": {
+      "role": "visual and physiologic corroboration; never overrides current AASM rules",
+      "citation": "Geyer, J. D., Carney, P. R., & Payne, T. A. (2010). Atlas of polysomnography (2nd ed.). Lippincott Williams & Wilkins.",
+      "highValueChapters": [
+        "Chapter 2: Staging",
+        "Chapter 4: Breathing Disorders",
+        "Chapter 8: Artifacts"
+      ]
+    }
+  },
+  "components": [
+    {
+      "id": "stage-skill",
+      "learnerSurface": "Five-stage skill check",
+      "governingSections": ["IV. Sleep Staging Rules, Part 1: Rules for Adults"],
+      "visualValidation": ["Clinical Atlas 2018, Chapter 13", "Geyer et al. 2010, Chapter 2"],
+      "auditRule": "Every schematic stage must visibly support the Version 3 criteria claimed in its rationale."
+    },
+    {
+      "id": "multi-epoch",
+      "learnerSurface": "Consecutive-epoch skill",
+      "governingSections": ["IV. Sleep Staging Rules, Part 1: Rules for Adults"],
+      "visualValidation": ["Clinical Atlas 2018, Chapters 11 and 13", "Geyer et al. 2010, Chapter 2"],
+      "auditRule": "Neighboring epochs provide context but do not replace Version 3 rules for assigning the current epoch."
+    },
+    {
+      "id": "boundary-annotation",
+      "learnerSurface": "Boundary-event annotation skill",
+      "governingSections": ["VIII. Respiratory Rules, Part 1: Rules for Adults, event-duration principles"],
+      "visualValidation": ["Clinical Atlas 2018, Chapter 13", "Geyer et al. 2010, Chapter 4"],
+      "auditRule": "An epoch divider must never be taught as a physiologic event boundary. Candidate reductions used only for placement practice must not be presented as fully classified apnea/hypopnea events unless the required Version 3 criteria are supplied."
+    },
+    {
+      "id": "mini-study",
+      "learnerSurface": "Scored mini-study",
+      "governingSections": ["IV. Adult Sleep Staging", "V. Arousal Rules", "VII. Movement Rules", "VIII. Adult Respiratory Rules"],
+      "visualValidation": ["Clinical Atlas 2018, Chapters 11-13", "Geyer et al. 2010, Chapters 2, 4, and 8"],
+      "auditRule": "Each context stop tests a scoring rule or physiologic relationship, not trivia about an external scoring interface."
+    },
+    {
+      "id": "event-evidence",
+      "learnerSurface": "Respiratory event-evidence skill",
+      "governingSections": ["VIII. Respiratory Rules, Part 1: Rules for Adults", "V. Arousal Rules when RERA/arousal evidence is used"],
+      "visualValidation": ["Clinical Atlas 2018, Chapter 13", "Geyer et al. 2010, Chapter 4"],
+      "auditRule": "Sensor choice, duration, amplitude reduction, effort pattern, desaturation/arousal requirement, and obstructive/central distinctions must agree with Version 3."
+    },
+    {
+      "id": "context-skill",
+      "learnerSurface": "Scoring-context skill",
+      "governingSections": ["V. Arousal Rules", "VII. Movement Rules", "VIII. Adult Respiratory Rules", "III. Technical and Digital Specifications where signal validity is relevant"],
+      "visualValidation": ["Clinical Atlas 2018, Chapters 12-13", "Geyer et al. 2010, Chapters 4 and 8"],
+      "auditRule": "Use Version 3 for the scoring decision and atlas material only to make the original schematic look physiologically believable."
+    },
+    {
+      "id": "review-checkpoint",
+      "learnerSurface": "Seven-station review and D3 checkpoint",
+      "governingSections": ["III-VIII as applicable to each item"],
+      "visualValidation": ["Atlas/textbook support only when the item depends on waveform appearance"],
+      "auditRule": "Any rule-sensitive checkpoint item must trace to current official authority; older references may support background but cannot override Version 3."
+    }
+  ]
+}

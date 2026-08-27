@@ -4,7 +4,7 @@
   root.RPSGTScoringEventRenderer=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.1.1';
+  const VERSION='1.2.0';
   const DURATION=150;
   const ROWS={eeg:72,nasal:140,thermal:208,thorax:276,abdomen:344,spo2:416};
   const LABELS={eeg:'EEG',nasal:'Nasal pressure',thermal:'Thermistor',thorax:'Thorax',abdomen:'Abdomen',spo2:'SpO₂'};
@@ -24,7 +24,7 @@
   }
   function absentSignal(t,channel){const seed=CHANNEL_SEED[channel]||0;return 0.022*Math.sin(t*2.7+seed)+0.013*Math.sin(t*5.3+1.1+seed);}
   function delayedDrop(t,event,depth){if(!event)return 0;const start=event.end+6,nadir=event.end+24,recovery=event.end+52;if(t<start||t>recovery)return 0;if(t<=nadir)return depth*(t-start)/(nadir-start);return depth*(1-(t-nadir)/(recovery-nadir));}
-  function spo2Percent(def,t){const depth=def.pattern==='rera'?1.1:(def.pattern==='obstructive-hypopnea'?3:4.2);return 97-delayedDrop(t,def.event,depth)+0.06*Math.sin(t*0.09);}
+  function spo2Percent(def,t){const depth=def.pattern==='rera'?1.1:(def.pattern==='obstructive-hypopnea'?3.4:4.2);return 97-delayedDrop(t,def.event,depth)+0.06*Math.sin(t*0.09);}
   function signal(def,channel,t){
     if(channel==='eeg'){
       const slowMod=0.92+0.08*Math.sin(t*0.31)+0.04*Math.sin(t*0.13+0.8);
@@ -57,9 +57,11 @@
     }
     if(def.pattern==='rera'){
       if(channel==='nasal'){
-        const ceiling=0.30+0.025*Math.sin(t*0.37);const flattened=wave>0?Math.min(wave,ceiling):wave*0.88;return flattened*(0.74-0.18*progress);
+        const ceiling=0.62+0.025*Math.sin(t*0.37);
+        const flattened=wave>0?Math.min(wave,ceiling):wave*0.98;
+        return flattened*(0.96-0.03*progress);
       }
-      if(channel==='thermal')return wave*0.88;
+      if(channel==='thermal')return wave*0.96;
       if(channel==='thorax')return respiratoryWave(t,channel,0.03)*(1.02+0.34*progress);
       if(channel==='abdomen')return respiratoryWave(t,channel,0.13)*(1.00+0.31*progress);
     }
@@ -81,5 +83,5 @@
   function hitTest(svg,clientX,clientY){
     if(!svg) return {channel:null,timeSeconds:null};const rect=svg.getBoundingClientRect();if(!rect.width||!rect.height)return {channel:null,timeSeconds:null};const x=(clientX-rect.left)/rect.width*1000,y=(clientY-rect.top)/rect.height*495;if(x<PLOT.left||x>PLOT.right)return {channel:null,timeSeconds:null};let channel=null,best=Infinity;for(const [name,row] of Object.entries(ROWS)){const distance=Math.abs(y-row);if(distance<best){best=distance;channel=name;}}if(best>32)return {channel:null,timeSeconds:null};return {channel,timeSeconds:clamp((x-PLOT.left)/(PLOT.right-PLOT.left)*DURATION,0,DURATION)};
   }
-  return {VERSION,DURATION,ROWS:{...ROWS},PLOT:{...PLOT},render,hitTest,spo2Percent,targetCenterX};
+  return {VERSION,DURATION,ROWS:{...ROWS},PLOT:{...PLOT},render,hitTest,spo2Percent,targetCenterX,signal};
 });

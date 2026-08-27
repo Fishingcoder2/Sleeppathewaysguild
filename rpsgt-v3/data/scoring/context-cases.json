@@ -1,18 +1,19 @@
 {
   "meta": {
     "name": "RPSGT Scoring Context Skill Cases",
-    "version": 2,
+    "version": 4,
     "developmentOnly": true,
     "appAuthored": true,
     "sourceType": "app-authored-schematic",
-    "copyrightBoundary": "Original Sleep Pathways Guild teaching cases only. No patient recording, AASM scoring-manual figure, BRPT examination item, or textbook figure is reproduced.",
-    "clinicalBoundary": "Rule-sensitive teaching points are intended for exam preparation and scorer reasoning. Clinical scoring must be checked against the current AASM Scoring Manual and facility procedures.",
+    "copyrightBoundary": "Original Sleep Pathways Guild teaching cases only. No patient recording, AASM scoring-manual figure, BRPT examination item, ISR item, or textbook figure is reproduced.",
+    "clinicalBoundary": "AASM Scoring Manual Version 3 is the governing scoring authority for rule-sensitive decisions in this pack. Atlas material is used only to validate physiologic appearance and context. AASM ISR interface behavior is not used as a substitute for the scoring rule itself.",
     "caseCount": 8,
     "evidenceTargetsPerCase": 2,
     "families": ["arousal", "limb-movement", "artifact-physiology", "transition-boundary"],
     "suggestedStudyMaterials": [
-      "American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events (Version 3). American Academy of Sleep Medicine.",
-      "American Academy of Sleep Medicine. (n.d.). Sleep ISR scoring instructions: Sleep stage, arousal, and limb-movement scoring. American Academy of Sleep Medicine."
+      "Troester, M. M., Quan, S. F., Berry, R. B., et al., for the American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). American Academy of Sleep Medicine.",
+      "Gupta, R., Pandi-Perumal, S. R., & BaHammam, A. S. (2018). Clinical atlas of polysomnography. Apple Academic Press.",
+      "Geyer, J. D., Carney, P. R., & Payne, T. A. (2010). Atlas of polysomnography (2nd ed.). Lippincott Williams & Wilkins."
     ]
   },
   "cases": [
@@ -20,47 +21,53 @@
       "id": "context-arousal-n2-valid",
       "family": "arousal",
       "title": "Abrupt EEG shift after stable N2 sleep",
+      "authority": "AASM Version 3, Section V: Arousal Rules",
+      "visualValidation": "Atlas-style arousal morphology used only as visual corroboration; original SPG schematic.",
       "prompt": "The schematic shows stable N2 sleep followed by an abrupt EEG frequency shift lasting about 4 seconds. What is the intended scoring decision?",
       "options": ["Score an arousal", "Do not score an arousal", "Score a limb movement", "Treat the EEG shift as artifact"],
       "answer": "Score an arousal",
-      "rationale": "The teaching trace shows stable N2 sleep followed by a clear, readable EEG frequency shift lasting about 4 seconds. A modest chin-EMG rise is shown as supportive physiologic context; it is not required for an NREM arousal score.",
+      "rationale": "Version 3 requires an abrupt qualifying EEG-frequency shift lasting at least 3 seconds with at least 10 seconds of stable sleep before the change. This teaching trace supplies that N2 context. A modest chin-EMG rise is shown as supportive physiology, but a chin rise is not required for an NREM arousal.",
       "study": {"kind":"arousal","durationSeconds":30,"stage":"N2","stableSleepSeconds":12,"arousalStart":17,"arousalDuration":4,"chinRise":"slight"},
       "evidence": [
         {"id":"abrupt-shift","label":"The EEG changes abruptly for at least 3 seconds.","correct":true,"hint":"Look for the clear change in EEG frequency near the end of the epoch. It should remain readable rather than looking like a dense artifact burst."},
         {"id":"stable-before","label":"At least 10 seconds of stable sleep precedes the EEG change.","correct":true,"hint":"Use the quiet N2 segment before the EEG shift as context."},
-        {"id":"chin-always","label":"A chin EMG increase is required for every arousal in every stage.","correct":false,"hint":"A modest chin rise can accompany an NREM arousal, but it is not required for the NREM arousal score."},
-        {"id":"resp-required","label":"A respiratory event must be present before any arousal can be scored.","correct":false,"hint":"Arousals can occur with or without a respiratory event."}
+        {"id":"chin-always","label":"A chin EMG increase is required for every arousal in every stage.","correct":false,"hint":"Version 3 adds the concurrent chin-EMG requirement for stage R arousals, not for NREM arousals."},
+        {"id":"resp-required","label":"A respiratory event must be present before any arousal can be scored.","correct":false,"hint":"The arousal rule does not require a preceding respiratory event."}
       ]
     },
     {
       "id": "context-arousal-rem-no-chin",
       "family": "arousal",
       "title": "REM EEG shift without a chin increase",
+      "authority": "AASM Version 3, Section V: Arousal Rules",
+      "visualValidation": "Low REM chin tone and REM-style EEG/EOG context are original SPG teaching signals visually corroborated with atlas examples.",
       "prompt": "During a schematic REM epoch, the EEG shifts abruptly for about 4 seconds but chin EMG does not increase. What is the intended decision?",
       "options": ["Do not score an arousal", "Score an arousal", "Score a periodic limb movement", "Score wake for the entire epoch"],
       "answer": "Do not score an arousal",
-      "rationale": "For an arousal during REM, the public AASM scoring instructions require the EEG change plus a concurrent chin-EMG increase. That supporting chin change is intentionally absent here.",
+      "rationale": "Under AASM Scoring Manual Version 3, an arousal during stage R requires the qualifying EEG change plus a concurrent increase in submental EMG lasting at least 1 second. The EEG shift is present here, but the required concurrent chin-EMG increase is intentionally absent.",
       "study": {"kind":"arousal","durationSeconds":30,"stage":"R","stableSleepSeconds":14,"arousalStart":19,"arousalDuration":4,"chinRise":false},
       "evidence": [
         {"id":"rem-context","label":"The surrounding epoch is REM sleep.","correct":true,"hint":"Use the low chin tone and REM-style background as stage context."},
-        {"id":"no-chin-rise","label":"There is no concurrent increase in chin EMG during the EEG shift.","correct":true,"hint":"Compare the chin row directly under the EEG burst."},
-        {"id":"eeg-alone","label":"Any 3-second EEG frequency change is sufficient in REM even without chin change.","correct":false,"hint":"REM has an additional arousal requirement in the public AASM scoring instructions."},
-        {"id":"eye-movement","label":"Rapid eye movements automatically make an EEG shift an arousal.","correct":false,"hint":"Eye movements identify context but do not replace the arousal requirements."}
+        {"id":"no-chin-rise","label":"There is no concurrent increase in chin EMG during the EEG shift.","correct":true,"hint":"Compare the chin row directly under the EEG shift."},
+        {"id":"eeg-alone","label":"Any qualifying EEG frequency change is sufficient in REM even without a concurrent chin change.","correct":false,"hint":"Version 3 requires a concurrent submental-EMG increase for an arousal in stage R."},
+        {"id":"eye-movement","label":"Rapid eye movements automatically make an EEG shift an arousal.","correct":false,"hint":"Eye movements help establish REM context but do not replace the arousal requirements."}
       ]
     },
     {
       "id": "context-limb-series-valid",
       "family": "limb-movement",
       "title": "Repeating leg-EMG bursts during sleep",
+      "authority": "AASM Version 3, Section VII: Movement Rules",
+      "visualValidation": "Original SPG bilateral leg-EMG teaching pattern; atlas material is used only for physiologic appearance.",
       "prompt": "The longer context view shows four discrete leg-EMG bursts during sleep, separated by roughly 20 seconds and not linked to respiratory events. What is the intended decision?",
       "options": ["Score the movements as part of a periodic limb-movement series", "Do not score any limb movements", "Score the bursts as respiratory events", "Treat every burst as electrical artifact"],
       "answer": "Score the movements as part of a periodic limb-movement series",
-      "rationale": "The teaching pattern supplies a series of at least four discrete movements with spacing inside the public AASM ISR interval range, during sleep and away from respiratory-event exclusions.",
+      "rationale": "Version 3 defines a PLMS series using at least four consecutive leg movements with onset-to-onset intervals of 5–90 seconds. This teaching pattern supplies four discrete movements about 20 seconds apart during sleep and keeps them away from respiratory-event association.",
       "study": {"kind":"limb","durationSeconds":90,"stage":"N2","legBursts":[10,30,50,70],"respEvents":[]},
       "evidence": [
         {"id":"four-series","label":"Four discrete limb movements are present in the series.","correct":true,"hint":"Count the separated leg-EMG bursts across the longer view."},
-        {"id":"spacing","label":"The movement-to-movement spacing stays within the accepted series interval range.","correct":true,"hint":"The bursts are about 20 seconds apart rather than clustered almost continuously or separated by several minutes."},
-        {"id":"wake","label":"The entire displayed interval is wake, so the movements should be excluded.","correct":false,"hint":"The schematic is explicitly presented as sleep context."},
+        {"id":"spacing","label":"The onset-to-onset spacing is about 20 seconds, within the Version 3 PLMS-series interval range.","correct":true,"hint":"Compare the burst onsets: the movements are neither less than 5 seconds apart nor more than 90 seconds apart."},
+        {"id":"wake","label":"The entire displayed interval is wake, so the movements should be excluded.","correct":false,"hint":"The schematic is explicitly presented as N2 sleep context."},
         {"id":"resp-overlap","label":"Each leg burst occurs during a respiratory event.","correct":false,"hint":"The airflow row remains stable around these movements."}
       ]
     },
@@ -68,15 +75,17 @@
       "id": "context-limb-respiratory-linked",
       "family": "limb-movement",
       "title": "Leg bursts tied to respiratory events",
+      "authority": "AASM Version 3, Section VII: Movement Rules",
+      "visualValidation": "Original SPG leg-EMG and airflow timing schematic; atlas material is used only for visual corroboration.",
       "prompt": "Several leg-EMG bursts occur during or immediately adjacent to the displayed respiratory events. How should those respiratory-linked movements be treated in this teaching case?",
       "options": ["Do not count the respiratory-linked movements as periodic limb movements", "Count every leg burst as a periodic limb movement", "Score all leg bursts as arousals", "Ignore the respiratory channels"],
       "answer": "Do not count the respiratory-linked movements as periodic limb movements",
-      "rationale": "The public AASM ISR instructions exclude limb movements that occur during a respiratory event or within the specified short window around it. The schematic intentionally aligns the leg bursts with those events.",
+      "rationale": "Version 3 movement scoring includes respiratory-event timing as an exclusion when deciding whether a candidate leg movement contributes to PLMS scoring. The teaching schematic intentionally places the leg bursts at the respiratory-event terminations, so the respiratory association must be considered before counting a PLMS series.",
       "study": {"kind":"limb","durationSeconds":90,"stage":"N2","legBursts":[19.7,39.8,59.9,80.1],"respEvents":[{"start":15,"end":20},{"start":35,"end":40},{"start":55,"end":60},{"start":75,"end":80}]},
       "evidence": [
-        {"id":"resp-overlap","label":"The leg-EMG bursts occur during or immediately next to respiratory events.","correct":true,"hint":"Compare the timing of each leg burst with the airflow reductions."},
-        {"id":"exclusion-context","label":"Respiratory-event association changes whether these movements count toward PLMS scoring.","correct":true,"hint":"The movement decision depends on timing context, not on leg amplitude alone."},
-        {"id":"series-enough","label":"Four visible leg bursts must always be counted as PLMS regardless of respiratory timing.","correct":false,"hint":"Series count alone does not override respiratory-event exclusions."},
+        {"id":"resp-overlap","label":"The leg-EMG bursts occur at the displayed respiratory-event terminations.","correct":true,"hint":"Compare the timing of each leg burst with the airflow reduction and recovery."},
+        {"id":"exclusion-context","label":"Respiratory-event timing changes whether these candidate leg movements count toward PLMS scoring.","correct":true,"hint":"Do not decide from leg amplitude or series count alone; use the respiratory timing context."},
+        {"id":"series-enough","label":"Four visible leg bursts must always be counted as PLMS regardless of respiratory timing.","correct":false,"hint":"Series count alone does not override the respiratory-event exclusion rule."},
         {"id":"chin-rule","label":"A chin EMG increase is the deciding requirement for periodic limb-movement scoring.","correct":false,"hint":"Chin EMG is not the key exclusion demonstrated in this case."}
       ]
     },
@@ -84,10 +93,12 @@
       "id": "context-artifact-electrode-pop",
       "family": "artifact-physiology",
       "title": "Single-channel abrupt transient",
+      "authority": "AASM Version 3 technical signal-validity principles; scoring decision remains conservative when signal origin is questionable.",
+      "visualValidation": "Clinical Atlas of Polysomnography, Chapter 12, and Geyer et al., artifact examples are used only to validate the original SPG artifact morphology.",
       "prompt": "A large abrupt transient is concentrated in F3-M2 while neighboring derivations remain comparatively stable. What is the safest scoring interpretation?",
       "options": ["Artifact / technical signal rather than a physiologic EEG event", "Definite cortical arousal", "Normal sleep spindle", "Periodic limb movement"],
       "answer": "Artifact / technical signal rather than a physiologic EEG event",
-      "rationale": "A nonphysiologic transient isolated mainly to one derivation should trigger signal-pathway and electrode-contact reasoning before it is used as cerebral scoring evidence.",
+      "rationale": "A highly localized, nonphysiologic transient that is not corroborated in neighboring cerebral derivations should trigger signal-pathway and electrode-contact reasoning before it is accepted as cerebral scoring evidence.",
       "artifactStudyId": "artifact-electrode-pop-001",
       "evidence": [
         {"id":"single-channel","label":"The largest transient is isolated mainly to one EEG derivation.","correct":true,"hint":"Compare F3-M2 with the neighboring EEG channels."},
@@ -100,10 +111,12 @@
       "id": "context-artifact-movement",
       "family": "artifact-physiology",
       "title": "Broad movement contamination",
+      "authority": "AASM Version 3 technical signal-validity principles; do not score obscured nonphysiologic activity as clean cerebral evidence.",
+      "visualValidation": "Clinical Atlas of Polysomnography, Chapter 12, and Geyer et al., artifact examples are used only to validate the original SPG movement-artifact morphology.",
       "prompt": "A large irregular burst appears across EEG and EOG channels with increased chin activity over the same interval. What is the best overall interpretation?",
       "options": ["Movement artifact affecting multiple channels", "Isolated cortical arousal only", "Single-electrode pop", "Normal sleep spindle"],
       "answer": "Movement artifact affecting multiple channels",
-      "rationale": "Broad simultaneous contamination across multiple channels with EMG change is a cross-channel movement pattern, not a single clean physiologic EEG feature.",
+      "rationale": "Broad simultaneous irregular contamination across multiple EEG/EOG channels with a concurrent EMG increase is a cross-channel movement pattern. It should not be presented to learners as a clean isolated cortical feature.",
       "artifactStudyId": "artifact-movement-001",
       "evidence": [
         {"id":"broad-correlation","label":"The irregular burst appears across several EEG/EOG channels at the same time.","correct":true,"hint":"Follow the timing vertically across the montage."},
@@ -116,32 +129,36 @@
       "id": "context-transition-awakening-arousal",
       "family": "transition-boundary",
       "title": "Arousal immediately before awakening",
+      "authority": "AASM Version 3, Section V: Arousal Rules",
+      "visualValidation": "Original SPG sleep-to-arousal-to-wake sequence; atlas material is used only for physiologic appearance.",
       "prompt": "An abrupt qualifying EEG arousal begins late in an N2 epoch and is immediately followed by a transition to wake. Does the subsequent awakening erase the arousal?",
       "options": ["No — score the arousal if its criteria are met", "Yes — any transition to wake cancels the arousal", "Score only a limb movement", "Ignore the late-epoch event"],
       "answer": "No — score the arousal if its criteria are met",
-      "rationale": "AASM FAQ guidance allows an arousal at the beginning of an awakening. The later wake transition does not by itself invalidate an arousal that otherwise meets the criteria.",
+      "rationale": "AASM Scoring Manual Version 3 explicitly states that an arousal is scored when it immediately precedes a transition to stage W; both the arousal and the transition to wake are scored. The later wake transition therefore does not erase an otherwise qualifying arousal.",
       "study": {"kind":"transition","durationSeconds":30,"stage":"N2","arousalStart":24,"arousalDuration":3.5,"wakeStart":27.5},
       "evidence": [
         {"id":"starts-in-sleep","label":"The qualifying EEG change begins while the preceding context is sleep.","correct":true,"hint":"Focus on where the arousal begins, not only on what follows it."},
         {"id":"wake-after","label":"Wake follows the arousal rather than replacing the preceding sleep context.","correct":true,"hint":"The sequence is stable sleep → arousal → awakening."},
-        {"id":"wake-cancels","label":"Any wake activity after an arousal automatically cancels the arousal score.","correct":false,"hint":"The AASM FAQ specifically addresses arousals at the beginning of awakenings."},
-        {"id":"boundary-delete","label":"Events near the end of an epoch should be ignored because another epoch follows.","correct":false,"hint":"Epoch boundaries organize scoring; they do not erase qualifying events."}
+        {"id":"wake-cancels","label":"Any wake activity after an arousal automatically cancels the arousal score.","correct":false,"hint":"Version 3 explicitly permits scoring an arousal that immediately precedes transition to stage W."},
+        {"id":"boundary-delete","label":"Events near the end of an epoch should be ignored because another epoch follows.","correct":false,"hint":"Epoch boundaries organize staging; they do not erase a qualifying arousal."}
       ]
     },
     {
       "id": "context-boundary-respiratory-spans",
       "family": "transition-boundary",
-      "title": "Respiratory event crossing an epoch boundary",
-      "prompt": "A respiratory event begins near the end of one sleep epoch and continues into the next sleep epoch. In the AASM ISR scoring interface, how is the event represented across the two epochs?",
-      "options": ["Score the respiratory event in both epochs it occupies", "Score it only in the epoch where it begins", "Score it only in the epoch where it ends", "Do not score events that cross an epoch boundary"],
-      "answer": "Score the respiratory event in both epochs it occupies",
-      "rationale": "The public AASM ISR instructions direct scorers to mark a respiratory event in each epoch where any portion of that event appears. The schematic keeps both epochs in sleep context.",
+      "title": "Obstructive apnea crossing an epoch boundary",
+      "authority": "AASM Version 3, Section VIII Part 1: Adult Respiratory Rules",
+      "visualValidation": "Original SPG obstructive-apnea schematic; respiratory continuity and effort relationships are visually corroborated against atlas examples without copying them.",
+      "prompt": "In this adult diagnostic PSG, airflow falls to less than 10% of baseline for about 13 seconds while thoracic and abdominal effort continue. The event begins near the end of one 30-second epoch and continues into the next. What should be scored?",
+      "options": ["One obstructive apnea spanning the epoch boundary", "Two obstructive apneas, one in each epoch", "One central apnea spanning the epoch boundary", "Do not score the event because it crosses an epoch boundary"],
+      "answer": "One obstructive apnea spanning the epoch boundary",
+      "rationale": "AASM Scoring Manual Version 3 defines an adult apnea by a drop of at least 90% in the recommended apnea signal for at least 10 seconds. Continued or increased inspiratory effort throughout the absent-airflow period identifies an obstructive apnea. The epoch boundary does not divide one continuous respiratory event into two events.",
       "study": {"kind":"boundary","durationSeconds":60,"stage":"N2","epochBoundary":30,"respEvent":{"start":25,"end":38}},
       "evidence": [
-        {"id":"crosses-boundary","label":"The airflow/effort event visibly extends across the 30-second epoch boundary.","correct":true,"hint":"Trace the reduced airflow from before the vertical boundary line to after it."},
-        {"id":"sleep-both","label":"Both displayed epochs remain sleep rather than wake.","correct":true,"hint":"Respiratory events are not entered for epochs scored as wake in the ISR instructions."},
-        {"id":"start-only","label":"Only the event start matters, so the second epoch can never carry the respiratory score.","correct":false,"hint":"The ISR instructions explicitly address events that span more than one epoch."},
-        {"id":"boundary-invalid","label":"Crossing an epoch boundary makes a respiratory event invalid.","correct":false,"hint":"The boundary changes where the score is recorded, not whether the event can exist."}
+        {"id":"apnea-amplitude","label":"The thermistor airflow signal falls by at least 90% from baseline during the event.","correct":true,"hint":"For an adult diagnostic apnea, judge the airflow reduction using the oronasal thermal signal. The tracing becomes nearly flat during the event."},
+        {"id":"duration-effort","label":"The reduction lasts about 13 seconds and inspiratory effort continues throughout it.","correct":true,"hint":"Follow the thorax and abdomen channels while timing the near-flat thermal airflow segment across the boundary."},
+        {"id":"split-event","label":"Crossing the 30-second boundary automatically turns one continuous event into two apneas.","correct":false,"hint":"Measure the respiratory event continuously from onset until breathing returns toward baseline; the epoch line does not restart the event."},
+        {"id":"central-effort","label":"Continued thoracic and abdominal effort makes this a central apnea.","correct":false,"hint":"A central apnea requires absent inspiratory effort; persistent effort supports obstruction."}
       ]
     }
   ]

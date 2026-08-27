@@ -1,106 +1,49 @@
 {
   "meta": {
     "name": "RPSGT Scoring Lab Phase 3 consecutive-epoch pack",
-    "version": 1,
+    "version": 2,
     "appAuthored": true,
     "sourceType": "app-authored-schematic-sequence",
-    "sourceBasis": "The runs reuse the existing original Sleep Pathways Guild 30-second W/N1/N2/N3/REM teaching epochs so learners can practice neighboring-epoch decisions without copying patient recordings or source figures.",
-    "clinicalBoundary": "Adjacent-epoch order is pedagogic and does not imply a mandatory sleep-stage progression. Real studies require the current official scoring criteria and full clinical context."
+    "sourceBasis": "Original Sleep Pathways Guild 30-second adult W/N1/N2/N3/R teaching epochs. AASM Scoring Manual Version 3 governs staging decisions; atlas sources are used only to validate the physiologic appearance of the teaching signals.",
+    "clinicalBoundary": "Adjacent-epoch order is pedagogic and does not imply a mandatory sleep-stage progression. Score the current epoch using Version 3 criteria and appropriate neighboring context; an adjacent label never substitutes for the evidence in the epoch being scored.",
+    "governingAuthority": "AASM Scoring Manual Version 3, Section IV Part 1: Rules for Adults",
+    "visualCorroboration": [
+      "Gupta, R., Pandi-Perumal, S. R., & BaHammam, A. S. (2018). Clinical atlas of polysomnography. Apple Academic Press.",
+      "Geyer, J. D., Carney, P. R., & Payne, T. A. (2010). Atlas of polysomnography (2nd ed.). Lippincott Williams & Wilkins."
+    ]
   },
-  "options": [
-    "W",
-    "N1",
-    "N2",
-    "N3",
-    "R"
-  ],
+  "options": ["W","N1","N2","N3","R"],
   "runs": [
     {
-      "id": "multi-onset-001",
-      "title": "Sleep-onset sequence",
-      "focus": "Compare neighboring epochs as wake-oriented activity gives way to N1 and then N2.",
-      "epochs": [
-        {
-          "studyId": "schematic-w-001",
-          "answer": "W",
-          "rationale": "Posterior alpha, eye activity, and relatively higher chin tone support the intended wake teaching pattern."
-        },
-        {
-          "studyId": "schematic-n1-001",
-          "answer": "N1",
-          "rationale": "Low-amplitude mixed/theta-oriented EEG with slow eye movements and a vertex teaching feature supports the intended N1 pattern."
-        },
-        {
-          "studyId": "schematic-n2-001",
-          "answer": "N2",
-          "rationale": "A low-amplitude mixed-frequency background with a K-complex and spindle teaching region supports the intended N2 pattern."
-        }
+      "id":"multi-onset-001","title":"Sleep-onset sequence","focus":"Compare neighboring epochs as wake-oriented activity gives way to N1 and then N2.",
+      "epochs":[
+        {"studyId":"schematic-w-001","answer":"W","rationale":"Posterior alpha, eye activity, and relatively higher chin tone support the intended adult wake teaching pattern."},
+        {"studyId":"schematic-n1-001","answer":"N1","rationale":"Low-amplitude mixed-frequency activity with slow eye movements and a vertex teaching feature supports the intended N1 pattern in the absence of another stage-defining feature."},
+        {"studyId":"schematic-n2-001","answer":"N2","rationale":"A low-amplitude mixed-frequency background with a K-complex and sleep-spindle teaching region supports the intended N2 pattern."}
       ]
     },
     {
-      "id": "multi-deepening-001",
-      "title": "NREM deepening sequence",
-      "focus": "Keep the neighboring epochs visible while the teaching sequence progresses from N1 through N2 into N3.",
-      "epochs": [
-        {
-          "studyId": "schematic-n1-001",
-          "answer": "N1",
-          "rationale": "The schematic emphasizes N1-oriented low-amplitude mixed/theta activity and slow eye movements without N2-defining teaching features."
-        },
-        {
-          "studyId": "schematic-n2-001",
-          "answer": "N2",
-          "rationale": "The spindle and K-complex teaching features distinguish this schematic N2 epoch from its neighbors."
-        },
-        {
-          "studyId": "schematic-n3-001",
-          "answer": "N3",
-          "rationale": "Large frontal slow-wave teaching activity dominates this schematic epoch, supporting the intended N3 pattern."
-        }
+      "id":"multi-deepening-001","title":"NREM deepening sequence","focus":"Keep the neighboring epochs visible while the teaching sequence progresses from N1 through N2 into N3.",
+      "epochs":[
+        {"studyId":"schematic-n1-001","answer":"N1","rationale":"The schematic emphasizes N1-oriented low-amplitude mixed-frequency activity and slow eye movements without N2-defining teaching features."},
+        {"studyId":"schematic-n2-001","answer":"N2","rationale":"The spindle and K-complex teaching features distinguish this schematic N2 epoch from its neighbors."},
+        {"studyId":"schematic-n3-001","answer":"N3","rationale":"Frontal slow-wave teaching activity occupies enough of the epoch to support the intended N3 pattern."}
       ]
     },
     {
-      "id": "multi-lightening-001",
-      "title": "Lightening NREM sequence",
-      "focus": "Practice adjacent-epoch decisions when deep NREM gives way to lighter NREM teaching patterns.",
-      "epochs": [
-        {
-          "studyId": "schematic-n3-001",
-          "answer": "N3",
-          "rationale": "Sustained high-amplitude frontal slow-wave teaching activity supports the intended N3 pattern."
-        },
-        {
-          "studyId": "schematic-n2-001",
-          "answer": "N2",
-          "rationale": "The schematic returns to a low-amplitude mixed-frequency background with N2 teaching morphology."
-        },
-        {
-          "studyId": "schematic-n1-001",
-          "answer": "N1",
-          "rationale": "The final epoch uses an N1-oriented mixed/theta background with slow eye movements and no N2 teaching marker."
-        }
+      "id":"multi-lightening-001","title":"Lightening NREM sequence","focus":"Practice adjacent-epoch decisions when deep NREM gives way to lighter NREM teaching patterns.",
+      "epochs":[
+        {"studyId":"schematic-n3-001","answer":"N3","rationale":"Sustained frontal slow-wave teaching activity supports the intended N3 pattern."},
+        {"studyId":"schematic-n2-001","answer":"N2","rationale":"The schematic returns to a low-amplitude mixed-frequency background with N2 teaching morphology."},
+        {"studyId":"schematic-n1-001","answer":"N1","rationale":"The final epoch uses an N1-oriented mixed-frequency background with slow eye movements and no N2 teaching marker."}
       ]
     },
     {
-      "id": "multi-rem-awakening-001",
-      "title": "REM-to-awakening context",
-      "focus": "Compare N2, REM, and wake teaching epochs without treating a neighboring stage as a substitute for the current epoch's evidence.",
-      "epochs": [
-        {
-          "studyId": "schematic-n2-001",
-          "answer": "N2",
-          "rationale": "The K-complex and spindle teaching regions support the intended N2 pattern before the REM teaching epoch."
-        },
-        {
-          "studyId": "schematic-r-001",
-          "answer": "R",
-          "rationale": "Low-amplitude mixed-frequency EEG, rapid eye movements, and low chin tone support the intended REM teaching pattern."
-        },
-        {
-          "studyId": "schematic-w-001",
-          "answer": "W",
-          "rationale": "Posterior alpha, eye activity, and higher chin tone support the intended wake teaching pattern after the REM teaching epoch."
-        }
+      "id":"multi-rem-awakening-001","title":"REM-to-awakening context","focus":"Compare N2, definite stage R, and wake teaching epochs without treating a neighboring stage as a substitute for the current epoch's evidence.",
+      "epochs":[
+        {"studyId":"schematic-n2-001","answer":"N2","rationale":"The K-complex and spindle teaching regions support the intended N2 pattern before the REM teaching epoch."},
+        {"studyId":"schematic-r-001","answer":"R","rationale":"Low-amplitude mixed-frequency EEG, REMs, and low chin tone support the intended definite stage R teaching pattern."},
+        {"studyId":"schematic-w-001","answer":"W","rationale":"Posterior alpha, eye activity, and higher chin tone support the intended wake teaching pattern after the REM teaching epoch."}
       ]
     }
   ]
