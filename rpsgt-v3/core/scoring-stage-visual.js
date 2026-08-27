@@ -40,7 +40,7 @@
     cancelAnimation();
     state.mode='idle';
     host.hidden=false;
-    host.innerHTML=`<div class="section-head"><div><div class="eyebrow">Station 1 · Visual practicum</div><h2>Stage Recognition — live PSG to frozen epoch</h2></div><span class="status">W · N1 · N2 · N3 · R</span></div><p class="report-intro">Watch an original schematic PSG move in real time, then pause the 30-second epoch and score it from the complete signal picture. Finish all five epochs to record the Stage Recognition review station.</p><div class="scoring-stage-roadmap"><div><strong>1 · Watch</strong><small>The PSG page moves right-to-left at one full page every 30 seconds.</small></div><div><strong>2 · Freeze</strong><small>Pause to view the complete 30-second epoch without movement.</small></div><div><strong>3 · Score</strong><small>Choose W, N1, N2, N3, or R, then review the evidence.</small></div></div><div class="actions"><button class="btn primary" type="button" data-stage-start>Start visual stage review</button></div>`;
+    host.innerHTML=`<div class="section-head"><div><div class="eyebrow">Station 1 · Visual practicum</div><h2>Stage Recognition — live PSG to frozen epoch</h2></div><span class="status">W · N1 · N2 · N3 · R</span></div><p class="report-intro">Watch an original schematic PSG move in real time, then pause the 30-second epoch and score it from the complete signal picture. Finishing all five epochs automatically records the Stage Recognition review station.</p><div class="scoring-stage-roadmap"><div><strong>1 · Watch</strong><small>The PSG page moves right-to-left at one full page every 30 seconds.</small></div><div><strong>2 · Freeze</strong><small>Pause to view the complete 30-second epoch without movement.</small></div><div><strong>3 · Score</strong><small>Choose W, N1, N2, N3, or R, then review the evidence.</small></div></div><div class="actions"><button class="btn primary" type="button" data-stage-start>Start visual stage review</button></div>`;
   }
 
   function fixedLabels(study){
@@ -50,8 +50,8 @@
 
   function renderLive(){
     const study=currentStudy();if(!study)return;
-    cancelAnimation();state.mode='live';state.selected=null;state.locked=false;
-    host.innerHTML=`<div class="section-head"><div><div class="eyebrow">Station 1 · Live review</div><h2>Epoch ${state.index+1} of ${state.order.length}</h2></div><span class="status green">30-second live page</span></div><div class="scoring-live-meta"><span>Original schematic PSG</span><span>Labels remain fixed</span><span>1 page = 30 seconds</span></div><div class="scoring-live-shell" data-live-shell>${fixedLabels(study)}<div class="scoring-live-viewport" data-live-viewport><div class="scoring-live-strip" data-live-strip><div class="scoring-live-page"><canvas data-live-canvas-a aria-label="Scrolling schematic PSG page"></canvas></div><div class="scoring-live-page"><canvas data-live-canvas-b aria-hidden="true"></canvas></div></div></div></div><div class="scoring-live-progress"><span data-live-time>0.0 s</span><progress max="30" value="0" data-live-progress></progress><span>30.0 s</span></div><div class="actions"><button class="btn primary" type="button" data-stage-freeze>Pause and score this epoch</button><button class="btn secondary" type="button" data-stage-close>Close visual review</button></div>`;
+    cancelAnimation();state.mode='live';
+    host.innerHTML=`<div class="section-head"><div><div class="eyebrow">Station 1 · Live review</div><h2>Epoch ${state.index+1} of ${state.order.length}</h2></div><span class="status green">30-second live page</span></div><div class="scoring-live-meta"><span>Original schematic PSG</span><span>Labels remain fixed</span><span>1 page = 30 seconds</span></div><div class="scoring-live-shell" data-live-shell>${fixedLabels(study)}<div class="scoring-live-viewport" data-live-viewport><div class="scoring-live-strip" data-live-strip><div class="scoring-live-page"><canvas data-live-canvas-a aria-label="Scrolling schematic PSG page"></canvas></div><div class="scoring-live-page"><canvas data-live-canvas-b aria-hidden="true"></canvas></div></div></div></div><div class="scoring-live-progress"><span data-live-time>0.0 s</span><progress max="30" value="0" data-live-progress></progress><span>30.0 s</span></div><div class="actions"><button class="btn primary" type="button" data-stage-freeze>${state.locked?'Return to frozen review':'Pause and score this epoch'}</button><button class="btn secondary" type="button" data-stage-close>Close visual review</button></div>`;
     requestAnimationFrame(()=>setupLive(study));
   }
 
@@ -101,7 +101,7 @@
   host.addEventListener('click',event=>{
     const answer=event.target.closest('[data-stage-answer]');
     if(answer&&!state.locked){state.selected=answer.dataset.stageAnswer;renderScore();return;}
-    if(event.target.closest('[data-stage-start]')){state.order=shuffle(state.studies.slice());state.index=0;state.correct=0;state.completed=0;renderLive();return;}
+    if(event.target.closest('[data-stage-start]')){state.order=shuffle(state.studies.slice());state.index=0;state.correct=0;state.completed=0;state.selected=null;state.locked=false;renderLive();return;}
     if(event.target.closest('[data-stage-freeze]')){renderScore();return;}
     if(event.target.closest('[data-stage-live]')){renderLive();return;}
     if(event.target.closest('[data-stage-check]')){
