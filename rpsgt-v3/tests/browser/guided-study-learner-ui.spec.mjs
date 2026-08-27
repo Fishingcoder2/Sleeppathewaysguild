@@ -4,7 +4,7 @@ test.beforeEach(async({page})=>{
   await page.addInitScript(()=>localStorage.clear());
 });
 
-test('Guided Study keeps internal mappings out of the learner view',async({page})=>{
+test('Guided Study keeps internal mappings out of the learner view and preserves 15-question checkpoints',async({page})=>{
   await page.goto('study.html');
 
   const cards=page.locator('.task-map-card');
@@ -12,8 +12,9 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   await expect(page.getByText('Show mapped resource keys',{exact:true})).toHaveCount(0);
   await expect(page.locator('.mapping-warning')).toHaveCount(0);
   await expect(page.locator('[data-blueprint-summary]')).not.toContainText('review-only cross-task records');
-  await expect(page.locator('[data-blueprint-summary]')).toContainText('10 questions per badge checkpoint');
-  await expect(page.locator('[data-blueprint-summary]')).toContainText('8 / 10 task-badge goal');
+  await expect(page.locator('[data-blueprint-summary]')).toContainText('15 questions per badge checkpoint');
+  await expect(page.locator('[data-blueprint-summary]')).toContainText('12 / 15 task-badge goal');
+  await expect(cards.first().locator('[data-checkpoint-start]')).toHaveText('Take 15-question checkpoint');
 
   const resources=cards.first().locator('details[data-resource-ready="true"]');
   await expect(resources).toBeVisible();
@@ -28,7 +29,8 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   await cards.first().locator('[data-checkpoint-start]').click();
   const checkpoint=page.locator('[data-checkpoint-workspace]');
   await expect(checkpoint).toBeVisible();
-  await expect(checkpoint).toContainText('Question 1 of 10');
+  await expect(checkpoint).toContainText('Question 1 of 15');
+  await expect(checkpoint).not.toContainText('Question 1 of 10');
   await expect(checkpoint).not.toContainText('Exact task mapping');
   await expect(checkpoint.locator('.checkpoint-modal-head .eyebrow')).toHaveText('Guided Study checkpoint');
   await expect(checkpoint.locator('.checkpoint-task-label')).not.toHaveText(/^D[1-4][A-C]\b/);
