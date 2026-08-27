@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "name": "RPSGT Population and Protocol Boundaries Pack 1",
+    "version": 1,
+    "stationId": "population-boundaries",
+    "appAuthored": true,
+    "sourceType": "app-authored-protocol-scenarios",
+    "sourceBasis": "Built from the uploaded 2024 AASM pediatric MSLT protocol paper and the uploaded Polysomnography for the Sleep Technologist reference. No proprietary scoring-manual rule table or figure is reproduced.",
+    "clinicalBoundary": "Educational protocol-boundary practice only. Current official AASM guidance, the interpreting clinician, facility policy, and supervised competency remain authoritative.",
+    "apaReferences": [
+      "Maski, K. P., Amos, L. B., Carter, J. C., Koch, E. E., Kazmi, U., & Rosen, C. L. (2024). Recommended protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in children: Guidance from the American Academy of Sleep Medicine. Journal of Clinical Sleep Medicine, 20(4), 631–641.",
+      "Robertson, B., Marshall, B., & Carno, M. A. (2014). Polysomnography for the sleep technologist. Elsevier."
+    ]
+  },
+  "cases": [
+    {
+      "id": "peds-mslt-inadequate-sleep",
+      "title": "Adolescent MSLT after an abbreviated PSG night",
+      "profile": {"age":"14 years","test":"PSG → MSLT","context":"8 h time in bed · 6 h 20 min total sleep time"},
+      "answer": "Protocol boundary — routine pediatric MSLT conditions are not met; notify the sleep clinician and consider rescheduling.",
+      "rationale": "The 2024 pediatric AASM protocol states that the MSLT should follow an attended PSG allowing at least 8 hours of time in bed with at least 7 hours of total sleep time, ideally while meeting age-based sleep needs. The preceding PSG here does not reach the minimum total sleep time.",
+      "evidence": {
+        "answer": "The preceding PSG provided less than 7 hours of total sleep time, so the minimum pediatric PSG–MSLT preparation condition was not met.",
+        "options": [
+          "The preceding PSG provided less than 7 hours of total sleep time, so the minimum pediatric PSG–MSLT preparation condition was not met.",
+          "Eight hours in bed automatically makes the MSLT valid regardless of actual sleep time.",
+          "The MSLT should always proceed because daytime sleepiness is the reason for testing.",
+          "Only adult MSLT protocols require review of prior-night sleep."
+        ]
+      }
+    },
+    {
+      "id": "peds-mslt-split-night",
+      "title": "MSLT scheduled after split-night PAP titration",
+      "profile": {"age":"15 years","test":"Split-night PSG → MSLT","context":"PAP pressures adjusted during the preceding night"},
+      "answer": "Protocol boundary — do not perform the MSLT as a routine next-day study after a split-night or initial PAP titration night.",
+      "rationale": "The 2024 pediatric AASM protocol says the MSLT should not be performed after a night during which PAP pressures were adjusted, including a split-night or initial PAP titration study.",
+      "evidence": {
+        "answer": "PAP pressures were adjusted during the preceding night, which the pediatric protocol identifies as an inappropriate lead-in night for routine MSLT testing.",
+        "options": [
+          "PAP pressures were adjusted during the preceding night, which the pediatric protocol identifies as an inappropriate lead-in night for routine MSLT testing.",
+          "A split-night study is preferred because it makes the patient more tired for the MSLT.",
+          "PAP titration has no potential effect on a next-day MSLT protocol.",
+          "The only requirement is that five nap opportunities can be scheduled."
+        ]
+      }
+    },
+    {
+      "id": "peds-mslt-under-five",
+      "title": "Very young child referred for MSLT",
+      "profile": {"age":"4 years","test":"PSG → MSLT","context":"Classic hypersomnolence symptoms; clinician evaluating narcolepsy"},
+      "answer": "Population boundary — routine normative interpretation is limited under age 5; proceed only through clinician-directed special-circumstance planning.",
+      "rationale": "The 2024 pediatric protocol notes that MSLT may not be appropriate in children younger than 5 because normative data are lacking, while allowing that special circumstances may justify testing. This is a clinician-level decision rather than a technologist applying routine age assumptions.",
+      "evidence": {
+        "answer": "Normative pediatric MSLT data are limited below age 5, so the case requires special clinician-directed consideration rather than routine interpretation.",
+        "options": [
+          "Normative pediatric MSLT data are limited below age 5, so the case requires special clinician-directed consideration rather than routine interpretation.",
+          "Adult MSLT normative assumptions should be applied because the recording montage is similar.",
+          "Any child younger than 5 is absolutely prohibited from undergoing MSLT under all circumstances.",
+          "Age does not affect MSLT planning or interpretation."
+        ]
+      }
+    },
+    {
+      "id": "peds-mwt-evidence-gap",
+      "title": "Maintenance of Wakefulness Test requested for a teenager",
+      "profile": {"age":"16 years","test":"MWT","context":"Treatment-response question; facility occasionally performs pediatric MWT"},
+      "answer": "Evidence boundary — do not present pediatric MWT as a standardized validated protocol; involve the sleep clinician and document the limitation.",
+      "rationale": "The 2024 AASM pediatric paper reports no normative MWT values for people younger than 18 and insufficient data to develop a recommended pediatric MWT protocol, although some centers use the test clinically.",
+      "evidence": {
+        "answer": "The current pediatric AASM paper identifies no normative MWT values for patients under 18 and does not provide a recommended pediatric MWT protocol.",
+        "options": [
+          "The current pediatric AASM paper identifies no normative MWT values for patients under 18 and does not provide a recommended pediatric MWT protocol.",
+          "The adult MWT protocol is automatically validated for every pediatric patient.",
+          "MWT is never used in any pediatric sleep center.",
+          "A pediatric MWT is interpreted only from the number of REM periods."
+        ]
+      }
+    },
+    {
+      "id": "developmental-instructions",
+      "title": "Neurodevelopmental needs change how instructions are delivered",
+      "profile": {"age":"10 years","test":"Pediatric MSLT","context":"Patient cannot reliably follow standard adult-style biocalibration wording"},
+      "answer": "Protocol modification — tailor instructions to developmental age and document clinician-approved accommodations rather than forcing adult wording.",
+      "rationale": "The pediatric protocol specifically says biocalibration instructions should be tailored to developmental age and supports shared decision-making about protocol modifications for children and adolescents with neurodevelopmental or neurologic disorders, young age, or delayed sleep phase.",
+      "evidence": {
+        "answer": "Developmental-age tailoring and documented protocol modifications are explicitly contemplated in the pediatric guidance.",
+        "options": [
+          "Developmental-age tailoring and documented protocol modifications are explicitly contemplated in the pediatric guidance.",
+          "Every instruction must be delivered word-for-word using adult phrasing or the entire study is automatically invalid.",
+          "The technologist should omit biocalibrations without documenting the change.",
+          "Parents or caregivers should independently change the protocol without clinician involvement."
+        ]
+      }
+    },
+    {
+      "id": "stale-local-protocol",
+      "title": "Old local worksheet conflicts with current guidance",
+      "profile": {"age":"Any population","test":"Scoring or protocol decision","context":"Facility worksheet is dated; current official guidance may have changed"},
+      "answer": "Source-hierarchy boundary — stop, verify current official guidance and the facility’s current approved protocol, then document the resolution.",
+      "rationale": "Sleep technologists are expected to apply professionally accepted guidance, follow center-specific protocols, and comply with applicable standards. A stale worksheet should not silently override current official guidance or an updated facility policy.",
+      "evidence": {
+        "answer": "The safe response is to verify the current authoritative rule and current facility protocol rather than relying on a dated local worksheet from memory.",
+        "options": [
+          "The safe response is to verify the current authoritative rule and current facility protocol rather than relying on a dated local worksheet from memory.",
+          "The oldest local worksheet always overrides newer professional guidance.",
+          "The technologist should invent a compromise rule between the two sources.",
+          "Protocol conflicts should be ignored if the waveform looks familiar."
+        ]
+      }
+    }
+  ]
+}
