@@ -7,6 +7,8 @@
   const INTERNAL_PAGE=/^(?:index|study|practice|review|review-queue|readiness|mock|labs|reports|study-summary|flashcards|math-coach|sources-disclosures|lab-[a-z-]+)\.html$/i;
   let hashObserver=null;
   let hashTimer=null;
+  let hashRestoreVersion=0;
+  let hashCancelCleanup=[];
   let studyObserver=null;
   let shellObserver=null;
   let locationBeforeHomeClick=null;
@@ -31,6 +33,12 @@
         body.rpsgt-menu-open .sidebar{top:var(${TOPBAR_VAR})!important;height:calc(100dvh - var(${TOPBAR_VAR}))!important}
         body.rpsgt-menu-open:after{inset:var(${TOPBAR_VAR}) 0 0!important}
         .guided-study-area-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      }
+      @media(max-width:800px){
+        body[data-module="practice"] .practice-session:not(.hidden)>.question-card{padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
+        body[data-module="practice"] .practice-session:not(.hidden) .practice-modal-footer{margin:18px -14px 0!important;padding:12px 14px calc(84px + env(safe-area-inset-bottom))!important}
+        body[data-module="practice"] .practice-session:not(.hidden) .practice-modal-footer .question-actions{position:fixed!important;left:0;right:0;bottom:0;z-index:1305;display:grid!important;grid-template-columns:minmax(104px,.55fr) minmax(0,1fr)!important;gap:8px!important;margin:0!important;padding:10px 14px calc(10px + env(safe-area-inset-bottom))!important;background:rgba(247,251,253,.99)!important;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(7,25,45,.12)}
+        body[data-module="practice"] .practice-session:not(.hidden) .practice-modal-footer .question-actions .btn{width:100%!important;min-height:52px!important;margin:0!important}
       }
       @media(max-width:760px){
         .top-actions>a{display:none!important}
@@ -126,30 +134,66 @@
     assignStudyAnchors();
     const target=currentHashTarget();
     if(!visibleTarget(target)) return false;
-    target.scrollIntoView({block:'start',behavior:'auto'});
+    const topbar=document.querySelector('.topbar');
+    const barBottom=topbar?topbar.getBoundingClientRect().bottom:0;
+    const targetTop=target.getBoundingClientRect().top;
+    const expectedTop=barBottom+16;
+    if(targetTop<barBottom-4||Math.abs(targetTop-expectedTop)>36){
+      target.scrollIntoView({block:'start',behavior:'auto'});
+    }
     return true;
   }
 
-  function scheduleHashRestore(){
-    if(!root.location||!root.location.hash) return;
+  function clearHashRestore(){
     if(hashObserver){hashObserver.disconnect();hashObserver=null;}
     if(hashTimer){root.clearTimeout(hashTimer);hashTimer=null;}
-    let done=false;
-    const finish=()=>{
-      if(done) return true;
-      done=scrollCurrentHash();
-      if(done&&hashObserver){hashObserver.disconnect();hashObserver=null;}
-      return done;
-    };
-    root.requestAnimationFrame(()=>root.requestAnimationFrame(finish));
-    if(done||typeof MutationObserver!=='function') return;
-    hashObserver=new MutationObserver(()=>finish());
-    hashObserver.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','id']});
-    hashTimer=root.setTimeout(()=>{
-      finish();
+    hashCancelCleanup.forEach(cleanup=>cleanup());
+    hashCancelCleanup=[];
+  }
+
+  function scheduleHashRestore(){
+    if(!root.location||!root.location.hash){clearHashRestore();return;}
+    clearHashRestore();
+    const version=++hashRestoreVersion;
+    const deadline=Date.now()+4200;
+    let framePending=false;
+    let cancelled=false;
+
+    const stop=()=>{
       if(hashObserver){hashObserver.disconnect();hashObserver=null;}
-      hashTimer=null;
-    },4000);
+      if(hashTimer){root.clearTimeout(hashTimer);hashTimer=null;}
+      hashCancelCleanup.forEach(cleanup=>cleanup());
+      hashCancelCleanup=[];
+    };
+    const settle=()=>{
+      if(cancelled||version!==hashRestoreVersion) return;
+      scrollCurrentHash();
+      if(Date.now()>=deadline){stop();return;}
+      hashTimer=root.setTimeout(settle,180);
+    };
+    const requestSettle=()=>{
+      if(framePending||cancelled||version!==hashRestoreVersion) return;
+      framePending=true;
+      root.requestAnimationFrame(()=>{
+        framePending=false;
+        settle();
+      });
+    };
+    const cancelForLearnerInput=event=>{
+      if(event.type==='keydown'&&!['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(event.key)) return;
+      cancelled=true;
+      stop();
+    };
+    [['wheel',{passive:true}],['touchstart',{passive:true}],['pointerdown',{passive:true}],['keydown',false]].forEach(([type,options])=>{
+      root.addEventListener(type,cancelForLearnerInput,options);
+      hashCancelCleanup.push(()=>root.removeEventListener(type,cancelForLearnerInput,options));
+    });
+
+    if(typeof MutationObserver==='function'){
+      hashObserver=new MutationObserver(requestSettle);
+      hashObserver.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','id']});
+    }
+    root.requestAnimationFrame(()=>root.requestAnimationFrame(requestSettle));
   }
 
   function destinationFor(anchor){
@@ -192,10 +236,7 @@
     const map=document.querySelector('[data-blueprint-map]');
     if(!map) return;
     if(studyObserver) studyObserver.disconnect();
-    studyObserver=new MutationObserver(()=>{
-      assignStudyAnchors();
-      if(root.location.hash) scheduleHashRestore();
-    });
+    studyObserver=new MutationObserver(()=>assignStudyAnchors());
     studyObserver.observe(map,{childList:true,subtree:true});
   }
 
