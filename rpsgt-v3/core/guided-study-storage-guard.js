@@ -6,7 +6,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.0';
+  const VERSION='1.1.0';
   const clone=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
 
   function reconcile(before,after){
@@ -24,7 +24,7 @@
     const defer=typeof win.queueMicrotask==='function'?win.queueMicrotask.bind(win):callback=>Promise.resolve().then(callback);
 
     doc.addEventListener('click',event=>{
-      if(!event.target.closest('[data-trail-mark],[data-checkpoint-score]')) return;
+      if(!event.target.closest('[data-checkpoint-score]')) return;
       before=storage.load();
       if(scheduled) return;
       scheduled=true;
