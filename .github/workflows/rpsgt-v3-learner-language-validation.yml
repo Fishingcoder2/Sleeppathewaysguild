@@ -1,0 +1,31 @@
+name: Validate RPSGT v3 learner language
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/**'
+      - '.github/workflows/rpsgt-v3-learner-language-validation.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/**'
+      - '.github/workflows/rpsgt-v3-learner-language-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  learner-language:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Audit learner-facing ISR and AASM-interface wording
+        run: node rpsgt-v3/scripts/test-learner-isr-language.mjs
