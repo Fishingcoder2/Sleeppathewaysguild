@@ -6,25 +6,25 @@ const DURATION=120,LABEL_WIDTH=116,TOP_PAD=34,BOTTOM_PAD=24,ROW_HEIGHT=56,TAU=Ma
 const CHANNELS=['C3-M2','L LEG','R LEG','Nasal Pressure','Thorax RIP','Abdomen RIP','SpO2'];
 const CLASS_OPTIONS=['Qualifying PLM series','Too few movements for a PLM series','Respiratory-associated movements — exclude from PLM scoring','Wake leg movements — do not score as PLMs'];
 const state={pack:null,cases:[],index:0,classification:null,classificationLocked:false,evidence:null,evidenceLocked:false,classCorrect:0,evidenceCorrect:0};
-const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
 const gauss=(x,c,w)=>Math.exp(-Math.pow((x-c)/Math.max(.001,w),2));
 const current=()=>state.cases[state.index]||null;
 function smoothGate(t,start,end,edge){if(t<start||t>end)return 0;const e=Math.max(.04,edge||.18);return Math.min(1,(t-start)/e,(end-t)/e);}
 function noise(t,phase){return Math.sin(TAU*17.3*t+phase)*.30+Math.sin(TAU*28.7*t+.7+phase)*.20+Math.sin(TAU*37.9*t+1.1+phase)*.12;}
 function movementSignal(item,leg,t){
- let value=.035*noise(t,leg==='L'?.2:.8);
+ let value=.035*noise(t,leg==='L' ? .2 : .8);
  (item.movements||[]).forEach((movement,index)=>{
   if(movement.leg!==leg)return;
   const start=Number(movement.start),end=start+Number(movement.duration||1),gate=smoothGate(t,start,end,.12);if(!gate)return;
-  const strength=Number(movement.strength||1),phase=index*.73+(leg==='L'?.1:.6);
+  const strength=Number(movement.strength||1),phase=index*.73+(leg==='L' ? .1 : .6);
   value+=gate*strength*(.62*Math.sin(TAU*24.5*t+phase)+.44*Math.sin(TAU*33.8*t+.7+phase)+.26*Math.sin(TAU*41.2*t+1.4));
  });
  return value;
 }
 function inArousal(item,t){return (item.arousals||[]).some(event=>t>=Number(event.start)&&t<=Number(event.end));}
 function eegSignal(item,t){
- const wake=item.stage==='W';let value=wake?.30*Math.sin(TAU*10.1*t)+.12*Math.sin(TAU*18.2*t+.4):.16*Math.sin(TAU*5.4*t)+.14*Math.sin(TAU*7.1*t+.8)+.055*Math.sin(TAU*10.0*t+1.2);
+ const wake=item.stage==='W';let value=wake ? .30*Math.sin(TAU*10.1*t)+.12*Math.sin(TAU*18.2*t+.4) : .16*Math.sin(TAU*5.4*t)+.14*Math.sin(TAU*7.1*t+.8)+.055*Math.sin(TAU*10.0*t+1.2);
  value+=.025*noise(t,.3);
  if(inArousal(item,t))value+=.13*Math.sin(TAU*15.6*t+.4)+.09*Math.sin(TAU*20.2*t+1.1);
  return value;
@@ -36,9 +36,9 @@ function airflowSignal(item,t){
  return value+.012*noise(t,.5);
 }
 function effortSignal(item,t,abdomen){
- const phase=abdomen?.25:.12;let value=Math.sin(TAU*.24*t+phase)+.08*Math.sin(TAU*.48*t+.7+phase),event=respiratoryEvent(item,t);
+ const phase=abdomen ? .25 : .12;let value=Math.sin(TAU*.24*t+phase)+.08*Math.sin(TAU*.48*t+.7+phase),event=respiratoryEvent(item,t);
  if(event){const progress=clamp((t-Number(event.start))/Math.max(.1,Number(event.end)-Number(event.start)),0,1);value*=1+.18*progress;}
- return value+.01*noise(t,abdomen?.9:.6);
+ return value+.01*noise(t,abdomen ? .9 : .6);
 }
 function spo2Signal(item,t){
  let value=.02*Math.sin(TAU*.025*t+.4)+.008*Math.sin(TAU*.10*t);
