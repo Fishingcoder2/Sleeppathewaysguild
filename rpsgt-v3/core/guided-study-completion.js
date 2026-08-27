@@ -6,7 +6,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='1.0.1';
+  const VERSION='1.1.0';
   const DOMAIN_AWARD_NAMES={
     D1:'Clinical Guide',
     D2:'Study Signal Scout',
@@ -41,22 +41,25 @@
     const code=text(taskCode);
     const domain=code.slice(0,2);
     const prior=before||{};
+    const taskEarned=Boolean(code&&tasks[code]&&!prior.task);
+    const domainEarned=Boolean(domain&&domains[domain]&&!prior.domain);
     const queue=[];
-    if(code&&tasks[code]&&!prior.task){
+    if(taskEarned){
       queue.push({
         id:'guided-task:'+code,
         kind:'task',
         code,
         domain,
+        domainEarned,
         earnedAt:tasks[code].earnedAt||null
       });
-    }
-    if(domain&&domains[domain]&&!prior.domain){
+    }else if(domainEarned){
       queue.push({
         id:'guided-domain:'+domain,
         kind:'domain',
         code:domain,
         domain,
+        domainEarned:true,
         earnedAt:domains[domain].earnedAt||null
       });
     }
@@ -92,8 +95,7 @@
 
   function filterRetakeRecords(records,excludedIds,count){
     const excluded=new Set(asArray(excludedIds).map(String));
-    const filtered=asArray(records).filter(record=>record&&!excluded.has(String(record.id)));
-    return filtered;
+    return asArray(records).filter(record=>record&&!excluded.has(String(record.id)));
   }
 
   function mount(win){
@@ -102,7 +104,12 @@
     const engine=win.RPSGTGuidedTrailEngine;
     const checkpointHost=doc.querySelector('[data-checkpoint-workspace]');
     const checkpointOverlay=doc.querySelector('[data-checkpoint-overlay]');
+    const blueprintHost=doc.querySelector('[data-blueprint-map]');
+    const trailHost=doc.querySelector('[data-guided-trail-dashboard]');
     if(!storage||!engine||!checkpointHost||!checkpointOverlay) return null;
+
+    const legacyAchievement=doc.querySelector('[data-achievement-overlay]');
+    if(legacyAchievement) legacyAchievement.remove();
 
     const state={
       taskCode:null,
@@ -112,9 +119,12 @@
       retakeExclusions:new Map(),
       ceremonyQueue:[],
       ceremonyOpen:false,
+      recommendation:null,
       returnFocus:null,
       observer:null,
-      scheduled:false
+      mapObserver:null,
+      scheduled:false,
+      presentationScheduled:false
     };
 
     const originalSelect=engine.selectQuestions.bind(engine);
@@ -145,6 +155,11 @@
       return route.current||{code:text(code),title:'RPSGT task',domain:text(code).slice(0,2),domainName:'RPSGT domain'};
     }
 
+    function domainDetails(domainCode){
+      const domain=asArray(state.blueprint&&state.blueprint.domains).find(item=>text(item.id)===text(domainCode));
+      return domain?{code:text(domain.id),title:text(domain.fullName),tasks:asArray(domain.tasks)}:{code:text(domainCode),title:'RPSGT domain',tasks:[]};
+    }
+
     function closeCheckpoint(){
       const close=checkpointHost.querySelector('[data-checkpoint-cancel]');
       if(close) close.click();
@@ -158,6 +173,32 @@
       if(focus){if(!focus.hasAttribute('tabindex')&&!/^(BUTTON|A|INPUT|SELECT|TEXTAREA)$/.test(focus.tagName)) focus.tabIndex=-1;focus.focus({preventScroll:true});}
     }
 
+    function recommendationFor(item){
+      let route=null;
+      if(item.kind==='task') route=nextTaskRoute(state.blueprint,item.code);
+      else{
+        const domain=domainDetails(item.domain);
+        const last=domain.tasks.length?domain.tasks[domain.tasks.length-1]:null;
+        if(last) route=nextTaskRoute(state.blueprint,last.code);
+      }
+      if(route&&route.next){
+        return {
+          kind:'task',
+          code:route.next.code,
+          title:route.next.title,
+          label:'Start '+route.next.code,
+          copy:'Recommended next: '+route.next.code+' · '+route.next.title+'. Would you like to open this area now?'
+        };
+      }
+      return {
+        kind:'href',
+        href:'readiness.html',
+        title:'Readiness Check',
+        label:'Start Readiness Check',
+        copy:'You completed the Guided Study map. Recommended next: run a Readiness Check to find the strongest next study target. Would you like to start it now?'
+      };
+    }
+
     function ensureCeremonyShell(){
       let overlay=doc.querySelector('[data-guided-award-ceremony]');
       if(overlay) return overlay;
@@ -165,9 +206,10 @@
       overlay.className='guided-award-overlay';
       overlay.dataset.guidedAwardCeremony='true';
       overlay.hidden=true;
-      overlay.innerHTML='<section class="guided-award-dialog" role="dialog" aria-modal="true" aria-labelledby="guided-award-title" tabindex="-1"><button class="guided-award-close" type="button" data-guided-award-close aria-label="Close achievement celebration">×</button><div class="guided-award-medal" data-guided-award-symbol aria-hidden="true">★</div><div class="eyebrow">Sleep Pathways Guild educational achievement</div><h2 id="guided-award-title" data-guided-award-title>Achievement earned</h2><p class="guided-award-skill" data-guided-award-skill></p><aside class="guided-award-coach"><strong>Coach Bob</strong><p data-guided-award-coach></p></aside><div class="guided-award-actions"><button class="btn primary" type="button" data-guided-award-continue>Continue</button><a class="btn secondary" href="reports.html#guided-trail-report">View achievements</a></div></section>';
+      overlay.innerHTML='<section class="guided-award-dialog" role="dialog" aria-modal="true" aria-labelledby="guided-award-title" tabindex="-1"><button class="guided-award-close" type="button" data-guided-award-close aria-label="Close accomplishment celebration">×</button><div class="guided-award-medal" data-guided-award-symbol aria-hidden="true">✓</div><div class="eyebrow">Sleep Pathways Guild accomplishment</div><h2 id="guided-award-title" data-guided-award-title>Congratulations</h2><p class="guided-award-skill" data-guided-award-skill></p><div class="guided-award-domain-note" data-guided-award-domain hidden></div><aside class="guided-award-coach"><strong>Coach Bob</strong><p data-guided-award-coach></p></aside><section class="guided-award-next" aria-label="Recommended next activity"><strong>Recommended next</strong><p data-guided-award-next></p></section><div class="guided-award-actions"><button class="btn primary" type="button" data-guided-award-launch>Start next area</button><button class="btn secondary" type="button" data-guided-award-close>Not now</button><a class="btn secondary" href="reports.html#guided-trail-report">View accomplishments</a></div><p class="guided-award-boundary">Guild accomplishments are educational progress markers, not BRPT credentials or passing predictions.</p></section>';
       doc.body.appendChild(overlay);
-      overlay.addEventListener('click',event=>{if(event.target===overlay||event.target.closest('[data-guided-award-close],[data-guided-award-continue]')) closeCeremony();});
+      overlay.addEventListener('click',event=>{if(event.target===overlay||event.target.closest('[data-guided-award-close]')) closeCeremony();});
+      overlay.addEventListener('click',event=>{if(event.target.closest('[data-guided-award-launch]')) launchRecommendation();});
       return overlay;
     }
 
@@ -178,25 +220,43 @@
       if(asArray(saved.awards&&saved.awards.seenCeremonyIds).some(id=>sameId(id,item.id))){openNextCeremony();return;}
       saved=markCeremonySeen(saved,item.id);
       storage.save(saved);
-      const task=taskDetails(item.kind==='task'?item.code:item.code+'A');
+      const task=item.kind==='task'?taskDetails(item.code):null;
+      const domain=domainDetails(item.domain);
+      const guided=saved.guidedStudy||{};
+      const taskAward=guided.trailAwards&&guided.trailAwards.tasks&&guided.trailAwards.tasks[item.code]||null;
       const overlay=ensureCeremonyShell();
       const title=overlay.querySelector('[data-guided-award-title]');
       const skill=overlay.querySelector('[data-guided-award-skill]');
       const coach=overlay.querySelector('[data-guided-award-coach]');
       const symbol=overlay.querySelector('[data-guided-award-symbol]');
+      const domainNote=overlay.querySelector('[data-guided-award-domain]');
+      const nextCopy=overlay.querySelector('[data-guided-award-next]');
+      const launch=overlay.querySelector('[data-guided-award-launch]');
       overlay.dataset.guidedAwardKind=item.kind;
+      domainNote.hidden=true;
+      domainNote.textContent='';
       if(item.kind==='domain'){
         const awardName=DOMAIN_AWARD_NAMES[item.domain]||item.domain+' Trail Award';
         if(symbol) symbol.textContent='★';
-        title.textContent=awardName+' domain medal';
-        skill.textContent='All three Guided Study task badges in this domain are complete.';
+        title.textContent='Congratulations — you completed '+domain.title;
+        skill.textContent='Every Guided Study area in '+item.domain+' is complete.';
+        domainNote.hidden=false;
+        domainNote.innerHTML='<strong>'+awardName+' domain medal earned</strong><span>'+item.domain+' · '+domain.title+'</span>';
         coach.textContent='That is a full domain of work behind you. Take the win, then keep the same steady method for the next section.';
       }else{
         if(symbol) symbol.textContent='✓';
-        title.textContent=(task.title||'RPSGT task')+' task badge';
-        skill.textContent='You met the 80% Guided Study checkpoint goal for this task.';
-        coach.textContent='You earned this badge by showing your reasoning holds up under questions. Keep the badge, and keep the habit that produced it.';
+        title.textContent='Congratulations — you completed '+(task&&task.title||item.code);
+        skill.textContent=item.code+' is now marked complete automatically'+(taskAward&&Number.isFinite(Number(taskAward.score))?' after a '+Number(taskAward.score)+'% checkpoint result.':'.');
+        if(item.domainEarned){
+          const awardName=DOMAIN_AWARD_NAMES[item.domain]||item.domain+' Trail Award';
+          domainNote.hidden=false;
+          domainNote.innerHTML='<strong>You also completed '+domain.title+'</strong><span>'+awardName+' domain medal earned.</span>';
+        }
+        coach.textContent='You do not need to check this off yourself. Your work earned the accomplishment, and your progress record now shows it.';
       }
+      state.recommendation=recommendationFor(item);
+      if(nextCopy) nextCopy.textContent=state.recommendation.copy;
+      if(launch) launch.textContent=state.recommendation.label;
       state.returnFocus=doc.activeElement;
       state.ceremonyOpen=true;
       overlay.hidden=false;
@@ -204,16 +264,74 @@
       win.requestAnimationFrame(()=>overlay.querySelector('[role="dialog"]')?.focus({preventScroll:true}));
     }
 
-    function closeCeremony(){
+    function closeCeremony(options){
       const overlay=doc.querySelector('[data-guided-award-ceremony]');
       if(!overlay||overlay.hidden) return;
+      const skipQueue=Boolean(options&&options.skipQueue);
       overlay.hidden=true;
       doc.body.classList.remove('guided-award-open');
       state.ceremonyOpen=false;
-      if(state.ceremonyQueue.length){openNextCeremony();return;}
+      state.recommendation=null;
+      if(!skipQueue&&state.ceremonyQueue.length){openNextCeremony();return;}
       const target=checkpointHost.querySelector('[data-checkpoint-routes]')||state.returnFocus;
       if(target&&typeof target.focus==='function') target.focus({preventScroll:true});
       state.returnFocus=null;
+    }
+
+    function launchRecommendation(){
+      const recommendation=state.recommendation&&clone(state.recommendation);
+      if(!recommendation) return;
+      state.ceremonyQueue=[];
+      closeCeremony({skipQueue:true});
+      closeCheckpoint();
+      if(recommendation.kind==='task'){
+        win.setTimeout(()=>focusTask(recommendation.code),0);
+        return;
+      }
+      if(recommendation.href) win.location.href=recommendation.href;
+    }
+
+    function updatePresentation(){
+      if(!state.blueprint) return;
+      const saved=storage.load();
+      const summary=engine.summary(saved&&saved.guidedStudy,state.blueprint);
+      doc.querySelectorAll('[data-trail-mark]').forEach(button=>button.remove());
+      summary.rows.forEach(row=>{
+        const card=doc.getElementById(row.code);
+        if(!card) return;
+        const status=card.querySelector('.trail-status-row .status');
+        if(status){
+          status.textContent=row.award?'Area completed':row.latestCheckpoint?'In progress':'Not started';
+          status.classList.toggle('green',Boolean(row.award));
+        }
+        const checkpoint=card.querySelector('[data-checkpoint-start]');
+        if(checkpoint) checkpoint.textContent=row.award?'Review checkpoint':'Complete '+String(engine.BADGE_QUESTION_COUNT||15)+'-question checkpoint';
+      });
+      summary.domains.forEach(domain=>{
+        const card=doc.querySelector('.domain-'+String(domain.id).toLowerCase());
+        const small=card&&card.querySelector('.domain-map-head small');
+        if(small) small.textContent=domain.taskAwards+'/'+domain.taskCount+' areas completed'+(domain.award?' · domain complete':'');
+      });
+      if(trailHost){
+        const cells=Array.from(trailHost.querySelectorAll('.trail-summary-grid > div'));
+        const values=[
+          ['Areas completed',summary.counts.taskAwards+'/12'],
+          ['Domains completed',summary.counts.domainAwards+'/4'],
+          ['Checkpoint attempts',String(summary.counts.checkpoints)],
+          ['Next area',summary.currentFocus&&summary.currentFocus.task||'Choose an area']
+        ];
+        cells.slice(0,4).forEach((cell,index)=>{
+          const label=cell.querySelector('span');const strong=cell.querySelector('strong');
+          if(label&&label.textContent!==values[index][0]) label.textContent=values[index][0];
+          if(strong&&strong.textContent!==values[index][1]) strong.textContent=values[index][1];
+        });
+      }
+    }
+
+    function schedulePresentation(){
+      if(state.presentationScheduled) return;
+      state.presentationScheduled=true;
+      win.requestAnimationFrame(()=>{state.presentationScheduled=false;updatePresentation();});
     }
 
     function injectRoutes(saved,record){
@@ -233,7 +351,7 @@
       const heading=doc.createElement('h3');
       heading.textContent='Choose your next step';
       const copy=doc.createElement('p');
-      copy.textContent='You reviewed all five answers. Continue with the study action that best fits this result.';
+      copy.textContent='You reviewed all '+String(record&&record.total||engine.BADGE_QUESTION_COUNT||15)+' answers. Continue with the study action that best fits this result.';
       const actions=doc.createElement('div');
       actions.className='checkpoint-route-actions';
 
@@ -249,7 +367,7 @@
       retake.type='button';
       retake.className='btn secondary';
       retake.dataset.checkpointRetake='true';
-      retake.textContent='Retake with five new questions';
+      retake.textContent='Retake with new questions';
 
       const practice=doc.createElement('a');
       practice.className='btn secondary';
@@ -287,6 +405,7 @@
         state.latestHandledId=record.id;
         state.ceremonyQueue.push(...ceremonies);
         state.awardsBeforeSubmit=null;
+        schedulePresentation();
         openNextCeremony();
       }
       if(state.blueprint) injectRoutes(saved,record);
@@ -339,7 +458,12 @@
 
     state.observer=new win.MutationObserver(scheduleProcess);
     state.observer.observe(checkpointHost,{childList:true,subtree:true});
-    loadJson('data/blueprint.json').then(value=>{state.blueprint=value;scheduleProcess();}).catch(error=>console.warn('Guided Study continuation map could not load.',error));
+    if(blueprintHost||trailHost){
+      state.mapObserver=new win.MutationObserver(schedulePresentation);
+      if(blueprintHost) state.mapObserver.observe(blueprintHost,{childList:true,subtree:true});
+      if(trailHost) state.mapObserver.observe(trailHost,{childList:true,subtree:true});
+    }
+    loadJson('data/blueprint.json').then(value=>{state.blueprint=value;schedulePresentation();scheduleProcess();}).catch(error=>console.warn('Guided Study continuation map could not load.',error));
     return state;
   }
 
