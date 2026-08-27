@@ -4,7 +4,7 @@
   const host=document.querySelector('[data-respiratory-study-trail]');
   if(!host) return;
 
-  const state={trail:null,chapters:new Map(),activeIndex:0,completedThrough:-1,taskEntryObserver:null};
+  const state={trail:null,source:null,chapters:new Map(),activeIndex:0,completedThrough:-1,taskEntryObserver:null};
   const text=value=>String(value==null?'':value).trim();
   const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -22,7 +22,10 @@
     const chapter=chapterRecord(step.studyChapter);
     if(!chapter) return '<span class="muted">Verified chapter locator unavailable.</span>';
     const section=chapter.sectionLabel?'<span>'+esc(chapter.sectionLabel)+'</span>':'';
-    return '<strong>Chapter '+esc(chapter.chapter)+' · '+esc(chapter.label)+'</strong>'+section+'<small>Printed start p. '+esc(chapter.printedStartPage)+' · study support</small>';
+    const sourceTitle=text(state.source&&state.source.fullTitle)||'Principles and Practice of Sleep Medicine';
+    const edition=text(state.source&&state.source.edition);
+    const sourceLabel=sourceTitle+(edition?', '+edition:'');
+    return '<strong class="respiratory-study-book">Book: <em>'+esc(sourceLabel)+'</em></strong><strong>Chapter '+esc(chapter.chapter)+' · '+esc(chapter.label)+'</strong>'+section+'<small>Printed start p. '+esc(chapter.printedStartPage)+' · study support</small>';
   }
 
   function referenceHref(step){
@@ -103,7 +106,7 @@
       '<div class="respiratory-trail-learning-grid">'+
         '<section><span>Why this matters</span><p>'+esc(step.whyThisMatters)+'</p></section>'+
         '<section><span>Primary authority</span><p>'+esc(step.primaryAuthority)+'</p></section>'+
-        '<section class="respiratory-study-chapter"><span>Best study chapter</span>'+chapterHtml(step)+'</section>'+
+        '<section class="respiratory-study-chapter"><span>Best textbook study support</span>'+chapterHtml(step)+'</section>'+
       '</div>'+
       '<aside class="respiratory-rule-warning"><strong>Current-rule warning</strong><p>'+esc(step.warning)+'</p></aside>'+
       '<details class="respiratory-extra-study"><summary>Need more study before the checkpoint?</summary><div class="respiratory-extra-study-links"><a class="respiratory-trail-link" href="'+esc(referenceHref(step))+'">Related reference materials</a><a class="respiratory-trail-link" href="practice.html?task='+encodeURIComponent(text(step.taskCode))+'">Extra practice questions</a></div></details>'+
@@ -191,6 +194,7 @@
         loadJson('data/study-sources/principles-practice-sleep-medicine-7e.json')
       ]);
       state.trail=trail;
+      state.source=ppsm;
       state.chapters=new Map((Array.isArray(ppsm&&ppsm.verifiedChapterLocators)?ppsm.verifiedChapterLocators:[]).map(chapter=>[Number(chapter.chapter),chapter]));
       loadProgress();
       render();
