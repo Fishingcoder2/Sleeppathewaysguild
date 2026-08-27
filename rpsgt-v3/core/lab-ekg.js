@@ -32,28 +32,38 @@ function closeWorkspace(){state.mode=null;state.confirming=null;state.questions=
 function stationNavMarkup(){const data=report();return (state.pack.stations||[]).map((station,index)=>{const complete=data.checklist[station.id]===true,current=index===state.stationIndex,recommended=!complete&&index===recommendedStationIndex();const cls=complete?'complete':current?'current':recommended?'recommended':'';return `<button type="button" class="${cls}" data-ekg-station-nav="${index}" aria-label="${esc(station.title)}" aria-current="${current?'step':'false'}">${complete?'✓':index+1}</button>`;}).join('');}
 function stepperMarkup(){return `<div class="ekg-stepper"><span class="${state.stationStep==='study'?'active':''}">1 · Study</span><span class="${state.stationStep==='apply'?'active':''}">2 · Apply</span><span class="${state.stationStep==='recap'?'active':''}">3 · Recap</span></div>`;}
 
-function normalBeatPath(x,wide){
-  if(wide)return `L ${x-34} 118 L ${x-22} 116 L ${x-12} 134 L ${x} 62 L ${x+18} 152 L ${x+30} 112 L ${x+46} 110 L ${x+62} 96 L ${x+78} 118`;
-  return `L ${x-34} 118 L ${x-28} 114 L ${x-22} 108 L ${x-15} 114 L ${x-8} 118 L ${x-4} 128 L ${x} 72 L ${x+7} 144 L ${x+12} 118 L ${x+30} 118 L ${x+38} 104 L ${x+49} 101 L ${x+61} 118`;
+function sinusBeatPath(x){
+  return `L ${x-30} 118 Q ${x-27} 118 ${x-24} 113 Q ${x-20} 106 ${x-16} 113 Q ${x-13} 118 ${x-10} 118 L ${x-6} 118 L ${x-3} 125 L ${x} 67 L ${x+5} 141 L ${x+9} 118 L ${x+18} 118 Q ${x+25} 118 ${x+30} 108 Q ${x+36} 99 ${x+42} 108 Q ${x+46} 118 ${x+50} 118`;
 }
+function wideComplexPath(x){
+  return `L ${x-20} 118 Q ${x-15} 113 ${x-10} 96 Q ${x-5} 78 ${x} 69 Q ${x+6} 78 ${x+11} 104 Q ${x+15} 128 ${x+18} 144 Q ${x+21} 130 ${x+24} 118`;
+}
+function normalBeatPath(x,wide){return wide?wideComplexPath(x):sinusBeatPath(x);}
 function stripPath(kind){
   let beats=[90,190,290,390,490,590,690,790];let wideAt=-1;let path='M 20 118';
-  if(kind==='regular-60')beats=[65,150,235,320,405,490,575,660,745,830];
+  if(kind==='regular-60')beats=[40,128,216,304,392,480,568,656,744,832];
   if(kind==='slow-48')beats=[80,185,290,395,500,605,710,815];
   if(kind==='p-before-qrs')beats=[90,205,320,435,550,665,780];
   if(kind==='isolated-ectopy'){beats=[90,210,330,430,585,705,825];wideAt=3;}
-  if(kind==='concerning-run')beats=[90,210,360,410,460,510,560,720,835];
+  if(kind==='concerning-run'){
+    const normalBeats=[80,170,260],runBeats=[370,418,466,514,562,610],recoveryBeats=[742,832];
+    normalBeats.forEach(x=>{path+=sinusBeatPath(x);});
+    runBeats.forEach(x=>{path+=wideComplexPath(x);});
+    recoveryBeats.forEach(x=>{path+=sinusBeatPath(x);});
+    return path+' L 890 118';
+  }
   if(kind==='event-marker')beats=[90,210,330,450,555,670,790];
-  beats.forEach((x,index)=>{const wide=index===wideAt||(kind==='concerning-run'&&index>=2&&index<=6);path+=normalBeatPath(x,wide);});
-  path+=' L 875 118';return path;
+  beats.forEach((x,index)=>{path+=normalBeatPath(x,index===wideAt);});
+  path+=' L 890 118';return path;
 }
 function artifactOverlay(){return `<path d="M 355 118 L 366 76 L 374 151 L 384 82 L 394 146 L 405 69 L 416 154 L 427 91 L 438 142 L 450 73 L 461 149 L 474 94 L 486 133 L 500 118" class="ekg-artifact-line"/>`;}
 function pulseRow(kind){if(kind!=='artifact-burst')return '';const xs=[90,190,290,390,490,590,690,790];return `<g class="ekg-pulse-row"><text x="24" y="205">Pulse trend</text><line x1="120" y1="200" x2="865" y2="200"/>${xs.map(x=>`<circle cx="${x}" cy="200" r="5"/>`).join('')}</g>`;}
+function timeScaleMarkup(){return `<g aria-hidden="true">${Array.from({length:11},(_,index)=>{const x=index*90,displayX=index===0?8:index===10?892:x,anchor=index===0?'start':index===10?'end':'middle';return `<text x="${displayX}" y="224" text-anchor="${anchor}" fill="#55666b" font-size="10" font-weight="700">${index} s</text>`;}).join('')}</g>`;}
 function stripMarkup(station){
   const kind=station.visual&&station.visual.kind||'regular-60';const pathKind=kind==='artifact-burst'?'regular-60':kind;
-  const pLabels=kind==='p-before-qrs'?`<g class="ekg-p-labels"><text x="60" y="99">P</text><text x="175" y="99">P</text><text x="290" y="99">P</text></g>`:'';
+  const pLabels=kind==='p-before-qrs'?`<g class="ekg-p-labels"><text x="70" y="99">P</text><text x="185" y="99">P</text><text x="300" y="99">P</text></g>`:'';
   const marker=kind==='event-marker'?`<g class="ekg-event-marker"><line x1="450" y1="24" x2="450" y2="170"/><text x="462" y="40">Event noted 02:14</text></g>`:'';
-  return `<div class="ekg-schematic"><div class="ekg-schematic-head"><div><strong>Sleep Pathways Guild ECG teaching strip</strong><span>${esc(station.visual&&station.visual.label||'Synthetic recognition practice')}</span></div><span class="ekg-timebase">10-second teaching view</span></div><svg viewBox="0 0 900 235" role="img" aria-label="${esc(station.visual&&station.visual.label||station.title)}"><defs><pattern id="ekg-grid-small" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M 18 0 L 0 0 0 18"/></pattern><pattern id="ekg-grid-large" width="90" height="90" patternUnits="userSpaceOnUse"><rect width="90" height="90" fill="url(#ekg-grid-small)"/><path d="M 90 0 L 0 0 0 90"/></pattern></defs><rect width="900" height="235" fill="url(#ekg-grid-large)"/><text x="24" y="28" class="ekg-channel-label">ECG</text><path d="${stripPath(pathKind)}" class="ekg-signal-line"/>${kind==='artifact-burst'?artifactOverlay():''}${pulseRow(kind)}${pLabels}${marker}</svg><p class="ekg-disclosure"><strong>AI-generated teaching schematic · Not a patient recording.</strong> Real PSG ECG morphology varies with patient, lead placement, equipment, filtering, movement, and clinical context.</p></div>`;
+  return `<div class="ekg-schematic"><div class="ekg-schematic-head"><div><strong>Sleep Pathways Guild ECG teaching strip</strong><span>${esc(station.visual&&station.visual.label||'Synthetic recognition practice')}</span></div><span class="ekg-timebase">10-second teaching view</span></div><svg viewBox="0 0 900 235" role="img" aria-label="${esc(station.visual&&station.visual.label||station.title)}"><defs><pattern id="ekg-grid-small" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M 9 0 L 0 0 0 9" style="stroke:#fde2e6;stroke-width:.55;fill:none"/></pattern><pattern id="ekg-grid-large" width="45" height="45" patternUnits="userSpaceOnUse"><rect width="45" height="45" style="fill:url(#ekg-grid-small);stroke:none"/><path d="M 45 0 L 0 0 0 45" style="stroke:#f7bdc5;stroke-width:.85;fill:none"/></pattern></defs><rect width="900" height="235" fill="#fffdfd"/><rect width="900" height="235" fill="url(#ekg-grid-large)"/><text x="24" y="28" class="ekg-channel-label">ECG</text><path d="${stripPath(pathKind)}" class="ekg-signal-line"/>${kind==='artifact-burst'?artifactOverlay():''}${pulseRow(kind)}${pLabels}${marker}${timeScaleMarkup()}</svg><p class="ekg-disclosure"><strong>AI-generated teaching schematic · Not a patient recording.</strong> Real PSG ECG morphology varies with patient, lead placement, equipment, filtering, movement, and clinical context.</p></div>`;
 }
 function studyMarkup(station){return `<div class="ekg-task-panel"><h3>${esc(station.title)}</h3><p>${esc(station.study.intro)}</p><ul class="ekg-points">${station.study.points.map(point=>`<li>${esc(point)}</li>`).join('')}</ul></div>`;}
 function applyMarkup(station){const selected=state.applySelected,feedback=state.applyFeedback;return `<div class="ekg-task-panel"><h3>Apply it</h3><p>${esc(station.apply.prompt)}</p><div class="ekg-options">${station.apply.options.map(option=>`<label class="ekg-option ${selected===option?'selected':''}"><input type="radio" name="ekg-station-answer" value="${esc(option)}" ${selected===option?'checked':''}><span>${esc(option)}</span></label>`).join('')}</div><div class="ekg-feedback" aria-live="polite">${state.showHint?`<div class="notice"><strong>Hint:</strong> ${esc(station.apply.hint)}</div>`:''}${feedback?`<div class="notice ${feedback.correct?'success':'error'}"><strong>${feedback.correct?'Correct.':'Review and try again.'}</strong> ${esc(feedback.correct?station.apply.rationale:'Use the hint, the strip, and the patient-first sequence before trying again.')}</div>`:''}</div></div>`;}
