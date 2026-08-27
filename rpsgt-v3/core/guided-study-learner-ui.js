@@ -76,6 +76,8 @@
     mapHost.querySelectorAll('.task-map-card').forEach(card=>{
       card.querySelectorAll('.mapping-warning').forEach(node=>node.remove());
       replaceResourceList(card);
+      const checkpoint=card.querySelector('[data-checkpoint-start]');
+      if(checkpoint&&checkpoint.textContent.trim()!=='Take 15-question checkpoint') checkpoint.textContent='Take 15-question checkpoint';
     });
   }
 
@@ -83,12 +85,12 @@
     if(!summaryHost) return;
     const items=[...summaryHost.children];
     if(items.length<4) return;
-    if(items[2].dataset.learnerMetric!=='checkpoint-size'){
-      items[2].innerHTML='<strong>10</strong> questions per badge checkpoint';
+    if(items[2].dataset.learnerMetric!=='checkpoint-size'||items[2].textContent.trim()!=='15 questions per badge checkpoint'){
+      items[2].innerHTML='<strong>15</strong> questions per badge checkpoint';
       items[2].dataset.learnerMetric='checkpoint-size';
     }
-    if(items[3].dataset.learnerMetric!=='award-goal'){
-      items[3].innerHTML='<strong>8 / 10</strong> task-badge goal';
+    if(items[3].dataset.learnerMetric!=='award-goal'||items[3].textContent.trim()!=='12 / 15 task-badge goal'){
+      items[3].innerHTML='<strong>12 / 15</strong> task-badge goal';
       items[3].dataset.learnerMetric='award-goal';
     }
   }
@@ -120,6 +122,16 @@
         label.dataset.learnerTitle='true';
       }
     }
+
+    checkpointHost.querySelectorAll('p').forEach(node=>{
+      const original=node.textContent||'';
+      const revised=original
+        .replace(/Loading a 10-question learner checkpoint/gi,'Loading a 15-question learner checkpoint')
+        .replace(/Fewer than 10 eligible learner-practice questions/gi,'Fewer than 15 eligible learner-practice questions')
+        .replace(/at least 8 correct answers out of 10/gi,'at least 12 correct answers out of 15')
+        .replace(/requires at least 8 correct answers out of 10/gi,'requires at least 12 correct answers out of 15');
+      if(revised!==original) node.textContent=revised;
+    });
 
     const meta=checkpointHost.querySelector('.checkpoint-question-meta');
     if(meta){
