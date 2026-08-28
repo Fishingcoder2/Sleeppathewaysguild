@@ -1,12 +1,13 @@
 import {test,expect} from '@playwright/test';
 
-test('PSG workstation inspector proxies stage scoring and measures teaching waveform time',async({page})=>{
+test('PSG workstation inspector proxies stage scoring, keyboard scoring, and waveform time measurement',async({page})=>{
   await page.goto('lab-scoring.html');
   const inspector=page.locator('[data-scoring-workstation-inspector]');
   await expect(inspector).toBeVisible();
   await expect(inspector).toContainText('Scoring Inspector');
   await expect(inspector.locator('[data-ws-queue]')).toHaveCount(7);
   await expect(inspector.locator('[data-ws-inspector-active]')).toContainText('Station 1');
+  await expect(inspector.locator('.ws-time-ruler')).toContainText('30 s');
 
   await page.locator('[data-workstation-open-first]').click();
   const stageHost=page.locator('[data-scoring-stage-visual]');
@@ -16,7 +17,7 @@ test('PSG workstation inspector proxies stage scoring and measures teaching wave
   const canvas=stageHost.locator('[data-stage-score-canvas]');
   await expect(canvas).toBeVisible();
 
-  await inspector.locator('[data-ws-stage="N2"]').click();
+  await page.keyboard.press('2');
   await expect(stageHost.locator('[data-stage-answer="N2"]')).toHaveClass(/selected/);
   await inspector.locator('[data-ws-stage-commit]').click();
   await expect(stageHost.locator('.visual-feedback')).toBeVisible();
@@ -31,10 +32,15 @@ test('PSG workstation inspector proxies stage scoring and measures teaching wave
   await expect(inspector.locator('[data-ws-cursor-toggle]')).toHaveText('Cursor OFF');
   await expect(stageHost.locator('.ws-measure-cursor')).toHaveCount(0);
 
-  await inspector.locator('[data-ws-open="artifact-physiology"]').click();
-  await expect(page.locator('[data-workstation-station="artifact-physiology"]')).toHaveClass(/active/);
-  await expect(inspector.locator('[data-ws-inspector-active]')).toContainText('Station 6');
+  await inspector.locator('[data-ws-open="limb-movement-context"]').click();
+  await expect(page.locator('[data-workstation-station="limb-movement-context"]')).toHaveClass(/active/);
+  await expect(inspector.locator('[data-ws-inspector-window]')).toContainText('120 s');
+  await expect(inspector.locator('.ws-time-ruler')).toContainText('120 s');
   await expect(inspector.locator('[data-ws-stage-pad]')).toBeHidden();
+
+  await inspector.locator('[data-ws-open="population-boundaries"]').click();
+  await expect(inspector.locator('[data-ws-inspector-active]')).toContainText('Station 7');
+  await expect(inspector.locator('.ws-time-ruler')).toBeHidden();
 });
 
 test('PSG workstation inspector docks into normal flow on tablet and phone widths',async({page})=>{
