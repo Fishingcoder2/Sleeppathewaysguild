@@ -1,6 +1,6 @@
 .study-tool-hero{align-items:stretch}
 .study-tool-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-.study-tool-shell{display:grid;gap:16px;max-width:1180px;margin-inline:auto}
+.study-tool-shell{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;max-width:1180px;min-width:0;margin-inline:auto}.study-tool-shell>*{min-width:0}
 
 .notes-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.34fr);gap:16px;align-items:start}
 .notes-editor{display:grid;gap:12px}
@@ -52,7 +52,7 @@
 .memory-mode-card:nth-child(2){border-top-color:#7658a5}
 .memory-mode-card:nth-child(3){border-top-color:#2b8a65}
 
-@media(max-width:960px){.notes-layout{grid-template-columns:1fr}.memory-board{grid-template-columns:repeat(3,minmax(0,1fr))}.memory-mode-cards{grid-template-columns:1fr}}
+@media(max-width:960px){.notes-layout{grid-template-columns:1fr}.memory-board{grid-template-columns:repeat(3,minmax(0,1fr))}.memory-mode-cards{grid-template-columns:minmax(0,1fr);min-width:0}.memory-mode-card{min-width:0;overflow-wrap:anywhere}}
 @media(max-width:650px){.notes-body-input{min-height:360px}.notes-actions{display:grid;grid-template-columns:1fr}.notes-actions>*{width:100%}.memory-stats{grid-template-columns:1fr 1fr}.memory-board{grid-template-columns:1fr 1fr}.memory-tile{min-height:112px}.recall-choices{grid-template-columns:1fr}.memory-control-row{display:grid;grid-template-columns:1fr}.memory-control-row>*{width:100%}}
 @media(max-width:370px){.memory-board{gap:8px}.memory-tile{min-height:102px}.memory-tile-back{font-size:.76rem}}
 @media(prefers-reduced-motion:reduce){.memory-tile-inner{transition:none}}
