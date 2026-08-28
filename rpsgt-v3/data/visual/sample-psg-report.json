@@ -5,7 +5,11 @@
     "appAuthored": true,
     "fictional": true,
     "clinicalBoundary": "Educational example only. All names, measurements, findings, impressions, and recommendations are synthetic and do not represent a real patient or a medical recommendation.",
-    "reportType": "Diagnostic polysomnogram"
+    "reportType": "Diagnostic polysomnogram",
+    "sourceNote": "The report structure is informed by the project's uploaded sleep-technologist reference describing polysomnographic monitoring, event documentation, scoring, and accurate report generation. Exact current scoring criteria and clinical interpretation must follow current official guidance, facility policy, and the interpreting clinician.",
+    "apaReferences": [
+      "Robertson, B., Marshall, B., & Carno, M. A. (2014). Polysomnography for the sleep technologist. Elsevier."
+    ]
   },
   "patient": {
     "name": "Jordan Taylor",
