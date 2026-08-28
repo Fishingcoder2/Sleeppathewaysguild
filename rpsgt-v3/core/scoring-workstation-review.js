@@ -11,6 +11,7 @@ const stations={
  'artifact-physiology':{number:6,label:'Artifact vs Physiology',window:'30 s epoch',mode:'Signal quality',selector:'[data-scoring-artifact-visual]'},
  'population-boundaries':{number:7,label:'Protocol Boundaries',window:'Scenario view',mode:'Protocol decision',selector:'[data-scoring-population-visual]'}
 };
+const stageKeys={w:'W','1':'N1','2':'N2','3':'N3',r:'R'};
 let cursorEnabled=true;
 let activeId='stage-recognition';
 let cursorNode=null;
@@ -32,10 +33,10 @@ panel.innerHTML=`<div class="ws-inspector-head"><span class="lamp"></span><div><
  <p>Move across a waveform to read approximate elapsed time within the displayed teaching window.</p>
 </div>
 <div class="ws-inspector-section" data-ws-stage-pad>
- <div class="ws-inspector-title"><strong>Stage keypad</strong><span>Station 1</span></div>
+ <div class="ws-inspector-title"><strong>Stage keypad</strong><span>W · 1 · 2 · 3 · R</span></div>
  <div class="ws-stage-pad">${['W','N1','N2','N3','R'].map(stage=>`<button type="button" data-ws-stage="${stage}">${stage}</button>`).join('')}</div>
- <button class="ws-inspector-commit" type="button" data-ws-stage-commit>Check stage</button>
- <p>These buttons mirror the Stage 1 scoring controls when the frozen scoring view is open.</p>
+ <button class="ws-inspector-commit" type="button" data-ws-stage-commit>Check / Next · Enter</button>
+ <p>Mirrors the frozen Stage 1 controls. Keyboard: W = Wake, 1 = N1, 2 = N2, 3 = N3, R = REM, Enter = check or advance.</p>
 </div>
 <div class="ws-inspector-section ws-review-queue">
  <div class="ws-inspector-title"><strong>Review queue</strong><span>7 stations</span></div>
@@ -73,8 +74,10 @@ function positionCursor(event){
  cursorNode.style.left=(rect.left-parentRect.left+ratio*rect.width)+'px';cursorNode.style.top=(rect.top-parentRect.top)+'px';cursorNode.style.height=rect.height+'px';cursorNode.querySelector('span').textContent=seconds.toFixed(1)+' s';
  const readout=panel.querySelector('[data-ws-cursor-time]');if(readout)readout.textContent=seconds.toFixed(1)+' s';
 }
-function proxyStage(stage){const host=document.querySelector('[data-scoring-stage-visual]');const button=host&&host.querySelector(`[data-stage-answer="${stage}"]`);if(button&&!button.disabled){button.click();return true;}return false;}
-function proxyStageCommit(){const host=document.querySelector('[data-scoring-stage-visual]');if(!host)return false;const button=host.querySelector('[data-stage-check], [data-stage-next], [data-stage-finish]');if(button&&!button.disabled){button.click();return true;}return false;}
+function stageHost(){return document.querySelector('[data-scoring-stage-visual]');}
+function proxyStage(stage){const host=stageHost();const button=host&&host.querySelector(`[data-stage-answer="${stage}"]`);if(button&&!button.disabled){button.click();return true;}return false;}
+function proxyStageCommit(){const host=stageHost();if(!host)return false;const button=host.querySelector('[data-stage-check], [data-stage-next], [data-stage-finish]');if(button&&!button.disabled){button.click();return true;}return false;}
+function keyboardStageAvailable(){const host=stageHost();return activeId==='stage-recognition'&&Boolean(host&&host.querySelector('[data-stage-answer]'));}
 
 panel.addEventListener('click',event=>{
  const open=event.target.closest('[data-ws-open]');if(open){openStation(open.dataset.wsOpen);return;}
@@ -85,6 +88,14 @@ panel.addEventListener('click',event=>{
 document.addEventListener('pointermove',positionCursor,{passive:true});
 document.addEventListener('pointerleave',clearCursor);
 document.addEventListener('change',event=>{if(event.target.closest('[data-scoring-station]'))setTimeout(sync,0);});
+document.addEventListener('keydown',event=>{
+ if(event.altKey||event.ctrlKey||event.metaKey||event.defaultPrevented)return;
+ const tag=(document.activeElement&&document.activeElement.tagName||'').toLowerCase();if(tag==='input'||tag==='textarea'||tag==='select')return;
+ if(!keyboardStageAvailable())return;
+ const key=String(event.key||'').toLowerCase();
+ if(stageKeys[key]){event.preventDefault();proxyStage(stageKeys[key]);return;}
+ if(event.key==='Enter'){event.preventDefault();proxyStageCommit();}
+});
 const observer=new MutationObserver(sync);observer.observe(dock,{subtree:true,attributes:true,attributeFilter:['class']});
 const stationList=document.querySelector('[data-scoring-stations]');if(stationList)new MutationObserver(sync).observe(stationList,{subtree:true,childList:true,attributes:true,attributeFilter:['checked','class']});
 sync();
