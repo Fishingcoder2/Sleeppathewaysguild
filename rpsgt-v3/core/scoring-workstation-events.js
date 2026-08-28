@@ -5,13 +5,13 @@ const inspector=document.querySelector('[data-scoring-workstation-inspector]');
 if(!dock||!inspector)return;
 
 const stationMeta={
- 'stage-recognition':{selector:'[data-scoring-stage-visual]',duration:30},
- 'stage-transitions':{selector:'[data-scoring-transition-visual]',duration:30},
- 'arousal-context':{selector:'[data-scoring-arousal-visual]',duration:30},
- 'respiratory-classification':{selector:'[data-scoring-respiratory-visual]',duration:30},
- 'limb-movement-context':{selector:'[data-scoring-limb-visual]',duration:120},
- 'artifact-physiology':{selector:'[data-scoring-artifact-visual]',duration:30},
- 'population-boundaries':{selector:'[data-scoring-population-visual]',duration:null}
+ 'stage-recognition':{selector:'[data-scoring-stage-visual]',duration:30,labelWidth:112,rightPad:12},
+ 'stage-transitions':{selector:'[data-scoring-transition-visual]',duration:30,labelWidth:112,rightPad:12},
+ 'arousal-context':{selector:'[data-scoring-arousal-visual]',duration:30,labelWidth:112,rightPad:12},
+ 'respiratory-classification':{selector:'[data-scoring-respiratory-visual]',duration:30,labelWidth:112,rightPad:12},
+ 'limb-movement-context':{selector:'[data-scoring-limb-visual]',duration:120,labelWidth:116,rightPad:12},
+ 'artifact-physiology':{selector:'[data-scoring-artifact-visual]',duration:30,labelWidth:116,rightPad:12},
+ 'population-boundaries':{selector:'[data-scoring-population-visual]',duration:null,labelWidth:0,rightPad:0}
 };
 const eventTypes=[
  {id:'arousal',label:'Arousal'},
@@ -52,12 +52,13 @@ function typeFor(id){return eventTypes.find(item=>item.id===id)||eventTypes[0];}
 function formatTime(value){const n=Math.max(0,Number(value)||0);return n.toFixed(1)+' s';}
 function stationEvents(){const id=activeStationId();return events.filter(item=>item.stationId===id).sort((a,b)=>a.start-b.start||a.end-b.end);}
 function visibleCanvasIndex(canvas){const host=activeHost();if(!host)return -1;return Array.from(host.querySelectorAll('canvas')).indexOf(canvas);}
-function canvasForEvent(item){const host=document.querySelector(stationMeta[item.stationId]&&stationMeta[item.stationId].selector||'');if(!host)return null;return host.querySelectorAll('canvas')[item.canvasIndex]||null;}
+function canvasForEvent(item){const meta=stationMeta[item.stationId];if(!meta)return null;const host=document.querySelector(meta.selector);if(!host)return null;return host.querySelectorAll('canvas')[item.canvasIndex]||null;}
 function isLiveCanvas(canvas){return Boolean(canvas.closest('.scoring-live-strip')||canvas.hasAttribute('data-live-canvas-a')||canvas.hasAttribute('data-live-canvas-b'));}
 function eligibleCanvas(canvas){const host=activeHost();const duration=activeDuration();return Boolean(canvas&&host&&host.contains(canvas)&&duration&&canvas.getClientRects().length&&!isLiveCanvas(canvas));}
 function setHelp(message){const node=section.querySelector('[data-ws-event-help]');if(node)node.innerHTML=message;}
 function clearDraft(){if(draftNode){draftNode.remove();draftNode=null;}draft=null;}
-function geometry(canvas,start,end,duration){const parent=canvas.parentElement;if(!parent)return null;parent.classList.add('ws-event-surface');const parentRect=parent.getBoundingClientRect(),canvasRect=canvas.getBoundingClientRect();const left=canvasRect.left-parentRect.left+(start/duration)*canvasRect.width;const width=Math.max(2,((end-start)/duration)*canvasRect.width);return {parent,left,width,top:canvasRect.top-parentRect.top,height:canvasRect.height};}
+function plotMetrics(canvas,meta){const rect=canvas.getBoundingClientRect();const gutter=Math.max(0,Math.min(rect.width*.28,Number(meta&&meta.labelWidth)||0));const right=Math.max(0,Math.min(rect.width*.08,Number(meta&&meta.rightPad)||0));return {rect,gutter,right,width:Math.max(1,rect.width-gutter-right)};}
+function geometry(canvas,start,end,duration){const parent=canvas.parentElement;if(!parent)return null;parent.classList.add('ws-event-surface');const meta=stationMeta[activeStationId()]||activeMeta(),parentRect=parent.getBoundingClientRect(),plot=plotMetrics(canvas,meta);const left=plot.rect.left-parentRect.left+plot.gutter+(start/duration)*plot.width;const width=Math.max(2,((end-start)/duration)*plot.width);return {parent,left,width,top:plot.rect.top-parentRect.top,height:plot.rect.height};}
 function drawDraft(){if(!draft||!draft.canvas)return;const duration=activeDuration();if(!duration)return;const start=Math.min(draft.start,draft.current)*duration,end=Math.max(draft.start,draft.current)*duration;const g=geometry(draft.canvas,start,end,duration);if(!g)return;if(!draftNode){draftNode=document.createElement('div');draftNode.className='ws-event-draft';g.parent.appendChild(draftNode);}draftNode.style.left=g.left+'px';draftNode.style.width=g.width+'px';draftNode.style.top=g.top+'px';draftNode.style.height=g.height+'px';}
 function removeRenderedMarkers(){document.querySelectorAll('.ws-event-marker').forEach(node=>node.remove());}
 function renderMarkers(){
@@ -89,7 +90,7 @@ function chooseEvent(id){const item=events.find(event=>event.id===id);if(!item)r
 function stepEvent(direction){const items=stationEvents();if(!items.length)return;let index=items.findIndex(item=>item.id===selectedId);if(index<0)index=direction>0?-1:0;index=(index+direction+items.length)%items.length;chooseEvent(items[index].id);}
 function deleteSelected(){const index=events.findIndex(item=>item.id===selectedId);if(index<0)return;events.splice(index,1);selectedId=null;render();}
 function clearStation(){const id=activeStationId();for(let i=events.length-1;i>=0;i-=1)if(events[i].stationId===id)events.splice(i,1);selectedId=null;render();}
-function ratioForPointer(canvas,event){const rect=canvas.getBoundingClientRect();if(!rect.width)return 0;return Math.max(0,Math.min(1,(event.clientX-rect.left)/rect.width));}
+function ratioForPointer(canvas,event){const plot=plotMetrics(canvas,activeMeta());if(!plot.width)return 0;return Math.max(0,Math.min(1,(event.clientX-(plot.rect.left+plot.gutter))/plot.width));}
 function beginMark(event){
  if(!markMode||event.button!==0)return;const canvas=event.target.closest('canvas');if(!canvas)return;const duration=activeDuration();if(!duration)return;
  if(isLiveCanvas(canvas)){setHelp('<strong>Freeze the live page before marking an event.</strong> Teaching marks are applied only to stable review views.');return;}
