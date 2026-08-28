@@ -14,8 +14,11 @@ for(const asset of ['assets/visual-navigation.css','core/visual-navigation.js'])
 for(const route of ['lab-scoring.html','lab-artifact.html','lab-respiratory.html']) if(!html.includes(route)||!js.includes(route)) throw new Error(`Visual navigation is missing the ${route} continuation route.`);
 if(html.includes('spg_rpsgt_v3.labs.visual')) throw new Error('Learners must not see the internal Visual Skills storage path.');
 if(!html.includes('Saved in this browser')) throw new Error('Visual Skills should use learner-facing browser-save language.');
-for(const token of ['Previous visual','Next visual →','Previous epoch','Next epoch →','Suggested next visual practice','Continue to Scoring Lab visuals','Practice Artifact Recognition','Practice Respiratory visuals','data-visual-flow-action','data-visual-prev','data-visual-next','data-visual-finish']) if(!js.includes(token)) throw new Error(`Visual guided navigation is missing ${token}.`);
-for(const selector of ['.visual-flow-nav','.visual-flow-main','.visual-flow-epochs','.visual-up-next','.visual-result-next']) if(!css.includes(selector)) throw new Error(`Visual navigation CSS is missing ${selector}.`);
-if(!js.includes('if(!workspace.querySelector(\'[data-visual-next]\'))return null')||!js.includes('workspace.querySelector(\'[data-visual-finish]\')')) throw new Error('Up-next guidance must follow the actual Visual Skills controller state.');
+for(const token of ['Previous visual','Next visual →','Previous epoch','Next epoch →','Suggested next visual practice','Continue to Scoring Lab visuals','Practice Artifact Recognition','Practice Respiratory visuals','data-visual-modal-action','data-visual-prev','data-visual-next','data-visual-finish']) if(!js.includes(token)) throw new Error(`Visual guided navigation is missing ${token}.`);
+for(const selector of ['.visual-workspace.visual-modal-active','.visual-modal-footer','.visual-modal-next-cue','.visual-modal-close','.visual-modal-rotate','.visual-result-next']) if(!css.includes(selector)) throw new Error(`Visual navigation CSS is missing ${selector}.`);
+for(const layout of ['orientation:landscape','orientation:portrait']) if(!css.includes(layout)) throw new Error(`Visual navigation CSS is missing the ${layout} layout.`);
+for(const stateCheck of ["existing('[data-visual-check]')","existing('[data-visual-next]')","existing('[data-visual-finish]')","const primaryLabel=hasCheck?"]){
+  if(!js.includes(stateCheck)) throw new Error(`Suggested-next guidance is missing the controller-state check ${stateCheck}.`);
+}
 
 console.log('Visual Skills guided navigation passed: previous/next visual, epoch shortcuts, up-next guidance, continuation routes, mobile layout, and learner-facing save language are present.');
