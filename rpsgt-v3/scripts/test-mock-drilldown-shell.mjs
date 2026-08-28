@@ -15,7 +15,7 @@ for(const selector of ["id=\"mock-detail\"","data-mock-drilldown"])assert.ok(rep
 for(const script of ["core/mock-drilldown-engine.js","core/mock-result-report.js"])assert.ok(reportsHtml.includes(script),`Reports page is missing ${script}.`);
 assert.ok(reportsHtml.indexOf("core/mock-drilldown-engine.js")<reportsHtml.indexOf("core/mock-result-report.js"),"Mock drill-down engine must load before its report controller.");
 for(const boundary of [
-  "Completed Mock review reconnects saved response evidence to the current validated question bank without copying full question content into the progress record.",
+  "Choose a completed attempt to review scored domains, all task families, unanswered and flagged items",
   "when question-level evidence is available",
   "summary-only history",
   "Read only"
