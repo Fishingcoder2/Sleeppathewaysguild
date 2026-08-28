@@ -28,7 +28,7 @@ panel.innerHTML=`<div class="ws-inspector-head"><span class="lamp"></span><div><
 <div class="ws-inspector-section">
  <div class="ws-inspector-title"><strong>Measurement cursor</strong><span data-ws-cursor-time>—</span></div>
  <button class="ws-inspector-toggle active" type="button" data-ws-cursor-toggle aria-pressed="true">Cursor ON</button>
- <div class="ws-time-ruler" aria-label="Teaching waveform time ruler"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30 s</span></div>
+ <div class="ws-time-ruler" aria-label="Teaching waveform time ruler"></div>
  <p>Move across a waveform to read approximate elapsed time within the displayed teaching window.</p>
 </div>
 <div class="ws-inspector-section" data-ws-stage-pad>
@@ -46,6 +46,13 @@ dock.insertAdjacentElement('afterend',panel);
 function activeStationId(){const button=dock.querySelector('[data-workstation-station].active');return button&&button.dataset.workstationStation||activeId;}
 function activeHost(){const item=stations[activeId];return item?document.querySelector(item.selector):null;}
 function isComplete(id){const box=document.querySelector(`[data-scoring-station="${id}"]`);return Boolean(box&&box.checked);}
+function durationForActive(){if(activeId==='limb-movement-context')return 120;if(activeId==='population-boundaries')return null;return 30;}
+function updateRuler(){
+ const ruler=panel.querySelector('.ws-time-ruler');if(!ruler)return;const duration=durationForActive();
+ if(!duration){ruler.hidden=true;ruler.innerHTML='';return;}
+ ruler.hidden=false;const step=duration===120?20:5;const labels=[];for(let value=0;value<=duration;value+=step)labels.push(value);
+ ruler.innerHTML=labels.map((value,index)=>`<span>${value}${index===labels.length-1?' s':''}</span>`).join('');
+}
 function sync(){
  activeId=activeStationId();const item=stations[activeId]||stations['stage-recognition'];
  panel.querySelector('[data-ws-inspector-active]').textContent=`Station ${item.number} · ${item.label}`;
@@ -54,11 +61,9 @@ function sync(){
  panel.querySelector('[data-ws-inspector-status]').textContent=isComplete(activeId)?'Reviewed':'Not reviewed';
  panel.querySelector('[data-ws-stage-pad]').hidden=activeId!=='stage-recognition';
  panel.querySelectorAll('[data-ws-queue]').forEach(row=>{const id=row.dataset.wsQueue;row.classList.toggle('active',id===activeId);row.classList.toggle('complete',isComplete(id));});
- const ruler=panel.querySelector('.ws-time-ruler');if(ruler)ruler.hidden=item.window.startsWith('Scenario');
- clearCursor();
+ updateRuler();clearCursor();
 }
 function openStation(id){const button=dock.querySelector(`[data-workstation-station="${id}"]`);if(button){button.click();return;}const item=stations[id],target=item&&document.querySelector(item.selector);if(target)target.scrollIntoView({behavior:'smooth',block:'start'});}
-function durationForActive(){if(activeId==='limb-movement-context')return 120;if(activeId==='population-boundaries')return null;return 30;}
 function clearCursor(){if(cursorNode){cursorNode.remove();cursorNode=null;}const readout=panel.querySelector('[data-ws-cursor-time]');if(readout)readout.textContent='—';}
 function positionCursor(event){
  if(!cursorEnabled)return;const canvas=event.target.closest('canvas');if(!canvas)return;const host=activeHost();if(!host||!host.contains(canvas))return;const duration=durationForActive();if(!duration)return;
