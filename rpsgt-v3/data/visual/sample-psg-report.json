@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "name": "SPG Fictional Diagnostic PSG Report Example",
+    "version": 1,
+    "appAuthored": true,
+    "fictional": true,
+    "clinicalBoundary": "Educational example only. All names, measurements, findings, impressions, and recommendations are synthetic and do not represent a real patient or a medical recommendation.",
+    "reportType": "Diagnostic polysomnogram"
+  },
+  "patient": {
+    "name": "Jordan Taylor",
+    "displayLabel": "Fictional patient",
+    "age": 47,
+    "sex": "Adult",
+    "height": "170 cm",
+    "weight": "91.3 kg",
+    "bmi": 31.6,
+    "studyDate": "Teaching example",
+    "indication": "Fictional referral for snoring, witnessed breathing pauses, and excessive daytime sleepiness."
+  },
+  "study": {
+    "recordingMinutes": 420.0,
+    "totalSleepMinutes": 358.0,
+    "sleepEfficiencyPercent": 85.2,
+    "sleepLatencyMinutes": 18.0,
+    "remLatencyMinutes": 104.5,
+    "wasoMinutes": 44.0,
+    "stages": [
+      {"stage":"N1","minutes":28.5,"percent":8.0},
+      {"stage":"N2","minutes":189.5,"percent":52.9},
+      {"stage":"N3","minutes":64.0,"percent":17.9},
+      {"stage":"REM","minutes":76.0,"percent":21.2}
+    ]
+  },
+  "respiratory": {
+    "obstructiveApneas": 49,
+    "centralApneas": 4,
+    "mixedApneas": 2,
+    "hypopneas": 53,
+    "reras": 21,
+    "ahi": 18.1,
+    "rdi": 21.6,
+    "oai": 8.2,
+    "cai": 0.7,
+    "mai": 0.3,
+    "hi": 8.9,
+    "supineMinutes": 143.0,
+    "supineAhi": 31.5,
+    "nonSupineMinutes": 215.0,
+    "nonSupineAhi": 9.2,
+    "remAhi": 26.8,
+    "nremAhi": 15.7,
+    "snoring": "Moderate intermittent snoring in this fictional example"
+  },
+  "oxygen": {
+    "baselinePercent": 95,
+    "meanPercent": 94,
+    "nadirPercent": 82,
+    "minutesBelow88": 6.2
+  },
+  "arousals": {
+    "total": 131,
+    "index": 22.0,
+    "respiratory": 68,
+    "plm": 6,
+    "spontaneous": 57
+  },
+  "limbs": {
+    "plmCount": 42,
+    "plmi": 7.0,
+    "plmArousalCount": 6,
+    "plmArousalIndex": 1.0
+  },
+  "cardiac": {
+    "rhythm": "Predominantly sinus rhythm in the fictional teaching summary",
+    "averageHeartRate": 64,
+    "minimumHeartRate": 54,
+    "maximumHeartRate": 91,
+    "note": "No sustained arrhythmia is described in this synthetic example."
+  },
+  "technologistSummary": [
+    "Sleep efficiency was 85.2% with 358.0 minutes of total sleep time.",
+    "The synthetic respiratory summary contains 108 apneas/hypopneas for an AHI of 18.1 events/hour and 21 additional RERAs for an RDI of 21.6 events/hour.",
+    "Respiratory disturbance is more prominent in the supine position and during REM in this fictional example.",
+    "Oxygen saturation averaged 94%, with a synthetic nadir of 82% and 6.2 minutes below 88%.",
+    "PLMI is 7.0 events/hour with a PLM-arousal index of 1.0 event/hour.",
+    "All measurements and event counts on this page are fabricated for report-reading practice."
+  ],
+  "physician": {
+    "name": "Avery Morgan, MD",
+    "role": "Fictional reading physician — educational example",
+    "interpretation": [
+      "This fictional diagnostic polysomnogram demonstrates an obstructive sleep-disordered breathing pattern. The overall respiratory disturbance is characterized in this teaching example as moderate obstructive sleep apnea, with greater event frequency while supine and during REM sleep.",
+      "Respiratory events are accompanied by oxygen desaturation, including a synthetic nadir of 82%. Central apneas are infrequent and do not dominate the respiratory disturbance in this example.",
+      "Periodic limb movements are present at a relatively low frequency and are associated with few arousals in this fictional study. No sustained cardiac arrhythmia is described in the synthetic report."
+    ],
+    "impressions": [
+      "Fictional example: Moderate obstructive sleep apnea pattern, worse supine and in REM sleep.",
+      "Fictional example: Sleep-related oxygen desaturation associated with respiratory events.",
+      "Fictional example: Periodic limb movements present without a prominent PLM-related arousal burden in this report."
+    ],
+    "recommendations": [
+      "Educational example: correlate the PSG findings with symptoms, medical history, physical examination, and treatment goals during a clinical sleep-medicine visit.",
+      "Educational example: discuss appropriate obstructive sleep apnea treatment options with the treating sleep clinician; the choice may depend on severity, anatomy, preferences, comorbidities, and other clinical factors.",
+      "Educational example: because the synthetic events are more frequent supine, positional information would be considered alongside the complete clinical picture rather than used in isolation.",
+      "Educational example: if therapy is started, follow-up should assess symptom response, treatment effectiveness, adherence when relevant, and any residual oxygenation or respiratory concerns."
+    ]
+  }
+}
