@@ -1,0 +1,110 @@
+/* Sleep Pathways Guild PSG Workstation
+   Original educational UI inspired by common PSG review-workstation conventions.
+   It does not reproduce vendor branding, proprietary icons, or an exact commercial layout. */
+body.scoring-workstation-page{--ws-bg:#d8dee3;--ws-panel:#f4f6f7;--ws-chrome:#162430;--ws-chrome-2:#203542;--ws-line:#8799a5;--ws-screen:#fffef7;--ws-cyan:#79d1de;--ws-green:#62ba91;--ws-amber:#e5b35c;--ws-red:#cc6f67;background:var(--ws-bg)}
+.scoring-workstation-page .topbar{background:linear-gradient(180deg,#1c303d,#12222c);border-bottom:1px solid #071119;color:#eef7fb;box-shadow:0 2px 8px rgba(7,17,25,.22)}
+.scoring-workstation-page .topbar .brand-copy strong,.scoring-workstation-page .topbar .brand-copy span,.scoring-workstation-page .top-actions a{color:#eef7fb}
+.scoring-workstation-page .brand-mark{background:#d7edf2;color:#11323f;border-radius:5px}
+.scoring-workstation-page .main{max-width:none;padding-top:16px}
+.scoring-workstation-page .hero{border-radius:7px;border:1px solid #9baab4;background:linear-gradient(180deg,#f9fbfc,#edf2f4);box-shadow:0 1px 3px rgba(22,36,48,.13);padding:18px}
+.scoring-workstation-page .hero h1{font-size:clamp(1.55rem,2vw,2.15rem);margin:.18rem 0}
+.scoring-workstation-page .hero .lead{max-width:920px;margin-bottom:.8rem}
+.scoring-workstation-page .coach-card{border-radius:6px;background:#fff;border-color:#9baab4}
+.scoring-workstation-page .section.card,.scoring-workstation-page .section.notice{border-radius:7px;box-shadow:none}
+
+/* Sticky ribbon */
+.scoring-workstation-dock{position:sticky;top:6px;z-index:18;margin:12px 0;border:1px solid #0d1a22;border-radius:6px;overflow:hidden;background:var(--ws-chrome);box-shadow:0 4px 14px rgba(7,17,25,.2)}
+.scoring-workstation-ribbon{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:stretch;min-height:56px}
+.scoring-workstation-brand{display:flex;align-items:center;gap:9px;padding:8px 12px;border-right:1px solid #3d515e;color:#ecf7fa;white-space:nowrap}
+.scoring-workstation-brand .lamp{width:9px;height:9px;border-radius:50%;background:var(--ws-green);box-shadow:0 0 0 3px rgba(98,186,145,.14)}
+.scoring-workstation-brand strong,.scoring-workstation-brand small{display:block}
+.scoring-workstation-brand small{margin-top:2px;color:#9fb5c0;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}
+.scoring-workstation-tools{display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:thin}
+.scoring-workstation-tool{appearance:none;border:0;border-right:1px solid #3d515e;border-radius:0;background:#203542;color:#d7e5eb;padding:7px 12px;min-width:88px;text-align:left;font:inherit;cursor:pointer}
+.scoring-workstation-tool strong,.scoring-workstation-tool small{display:block;white-space:nowrap}
+.scoring-workstation-tool strong{font-size:.8rem}.scoring-workstation-tool small{margin-top:2px;color:#9fb5c0;font-size:.66rem}
+.scoring-workstation-tool:hover,.scoring-workstation-tool:focus-visible{background:#294654;outline:2px solid var(--ws-cyan);outline-offset:-2px}
+.scoring-workstation-tool.active{background:#315463;color:white;box-shadow:inset 0 -3px 0 var(--ws-cyan)}
+.scoring-workstation-tool.complete{box-shadow:inset 0 -3px 0 var(--ws-green)}
+.scoring-workstation-tool.active.complete{box-shadow:inset 0 -3px 0 var(--ws-cyan),inset 4px 0 0 var(--ws-green)}
+.scoring-workstation-checkpoint{display:flex;align-items:center;padding:7px 10px;background:#13232d;border-left:1px solid #3d515e}
+.scoring-workstation-checkpoint .btn{min-height:36px;border-radius:4px;padding:8px 12px;background:#d8eef3;color:#123340;border-color:#d8eef3;font-size:.78rem;font-weight:900}
+
+/* Status strip */
+.scoring-workstation-status{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #3d515e;background:#101e27;color:#b9ccd5}
+.scoring-workstation-status span{padding:5px 9px;border-right:1px solid #314551;font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scoring-workstation-status strong{color:#edf7fa;font-weight:800}
+
+/* Make teaching stations feel like docked review windows */
+.scoring-workstation-page [data-scoring-stage-visual],
+.scoring-workstation-page [data-scoring-transition-visual],
+.scoring-workstation-page [data-scoring-arousal-visual],
+.scoring-workstation-page [data-scoring-respiratory-visual],
+.scoring-workstation-page [data-scoring-limb-visual],
+.scoring-workstation-page [data-scoring-artifact-visual],
+.scoring-workstation-page [data-scoring-population-visual],
+.scoring-workstation-page [data-scoring-workspace]{scroll-margin-top:132px;border:1px solid #8fa0aa;border-radius:6px;background:#eef2f4;padding:10px;box-shadow:0 2px 5px rgba(18,34,44,.1)}
+.scoring-workstation-page [data-scoring-stage-visual]>.section-head,
+.scoring-workstation-page [data-scoring-transition-visual]>.section-head,
+.scoring-workstation-page [data-scoring-arousal-visual]>.section-head,
+.scoring-workstation-page [data-scoring-respiratory-visual]>.section-head,
+.scoring-workstation-page [data-scoring-limb-visual]>.section-head,
+.scoring-workstation-page [data-scoring-artifact-visual]>.section-head,
+.scoring-workstation-page [data-scoring-population-visual]>.section-head{margin:-10px -10px 10px;padding:9px 11px;background:linear-gradient(180deg,#2a4655,#1c3441);color:#eff8fb;border-bottom:1px solid #10232e}
+.scoring-workstation-page [data-scoring-stage-visual]>.section-head h2,
+.scoring-workstation-page [data-scoring-transition-visual]>.section-head h2,
+.scoring-workstation-page [data-scoring-arousal-visual]>.section-head h2,
+.scoring-workstation-page [data-scoring-respiratory-visual]>.section-head h2,
+.scoring-workstation-page [data-scoring-limb-visual]>.section-head h2,
+.scoring-workstation-page [data-scoring-artifact-visual]>.section-head h2,
+.scoring-workstation-page [data-scoring-population-visual]>.section-head h2{color:#fff;font-size:1.05rem;margin:.1rem 0}
+.scoring-workstation-page [data-scoring-stage-visual]>.section-head .eyebrow,
+.scoring-workstation-page [data-scoring-transition-visual]>.section-head .eyebrow,
+.scoring-workstation-page [data-scoring-arousal-visual]>.section-head .eyebrow,
+.scoring-workstation-page [data-scoring-respiratory-visual]>.section-head .eyebrow,
+.scoring-workstation-page [data-scoring-limb-visual]>.section-head .eyebrow,
+.scoring-workstation-page [data-scoring-artifact-visual]>.section-head .eyebrow,
+.scoring-workstation-page [data-scoring-population-visual]>.section-head .eyebrow{color:#a9dbe3}
+.scoring-workstation-page .visual-viewer-shell,.scoring-workstation-page .scoring-live-shell{border-radius:3px;border:1px solid #61737e;background:#17252e;padding:4px}
+.scoring-workstation-page .visual-viewer-head{background:#17252e;color:#e5f0f4;padding:5px 7px;border-radius:2px 2px 0 0}
+.scoring-workstation-page .visual-viewer-head small{color:#a8bbc4}
+.scoring-workstation-page .visual-scroll,.scoring-workstation-page .scoring-live-viewport,.scoring-workstation-page .visual-canvas-stage{background:var(--ws-screen)}
+.scoring-workstation-page canvas{image-rendering:auto}
+.scoring-workstation-page .scoring-stage-question,.scoring-workstation-page .scoring-artifact-proof,.scoring-workstation-page .scoring-limb-proof,.scoring-workstation-page .scoring-population-proof{border-radius:5px;border-color:#9aaab3;background:#f9fbfc}
+.scoring-workstation-page .visual-choice,.scoring-workstation-page .scoring-transition-tab{border-radius:4px}
+.scoring-workstation-page .btn{border-radius:4px}
+
+/* Checklist becomes a compact study/event panel */
+.scoring-workstation-page .scoring-stations{gap:5px;grid-template-columns:1fr}
+.scoring-workstation-page .scoring-station{grid-template-columns:auto auto 1fr;gap:8px;padding:8px 10px;border-radius:4px;border-color:#aab7bf;background:#f7f9fa}
+.scoring-workstation-page .scoring-station-number{width:25px;height:25px;border-radius:4px;font-size:.74rem;background:#dce7ed;color:#183f52}
+.scoring-workstation-page .scoring-station input{width:16px;height:16px;margin-top:4px}
+.scoring-workstation-page .scoring-station small{font-size:.78rem}.scoring-workstation-page .scoring-station em{font-size:.68rem}
+.scoring-workstation-page .scoring-station.complete{background:#edf7f2;border-color:#8eb8a8}
+.scoring-workstation-page .scoring-summary{gap:5px}
+.scoring-workstation-page .scoring-summary>div{border-radius:4px;padding:9px 10px;border-color:#aab7bf;background:#f7f9fa}
+.scoring-workstation-page .scoring-summary span{font-size:.68rem}.scoring-workstation-page .scoring-summary strong{font-size:.92rem;margin-top:3px}
+
+@media(min-width:1100px){
+ .scoring-workstation-page .section:has([data-scoring-stations]){max-width:100%}
+}
+@media(max-width:900px){
+ .scoring-workstation-dock{top:4px}
+ .scoring-workstation-ribbon{grid-template-columns:auto minmax(0,1fr)}
+ .scoring-workstation-checkpoint{grid-column:1/-1;border-left:0;border-top:1px solid #3d515e;justify-content:flex-end}
+ .scoring-workstation-status{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .scoring-workstation-page [data-scoring-stage-visual],.scoring-workstation-page [data-scoring-transition-visual],.scoring-workstation-page [data-scoring-arousal-visual],.scoring-workstation-page [data-scoring-respiratory-visual],.scoring-workstation-page [data-scoring-limb-visual],.scoring-workstation-page [data-scoring-artifact-visual],.scoring-workstation-page [data-scoring-population-visual],.scoring-workstation-page [data-scoring-workspace]{scroll-margin-top:176px}
+}
+@media(max-width:620px){
+ .scoring-workstation-page .main{padding-left:8px;padding-right:8px}
+ .scoring-workstation-page .hero{padding:12px}
+ .scoring-workstation-brand{display:none}
+ .scoring-workstation-ribbon{display:block}
+ .scoring-workstation-tools{width:100%}
+ .scoring-workstation-tool{flex:0 0 93px;min-width:93px;padding:7px 8px}
+ .scoring-workstation-checkpoint{justify-content:stretch}.scoring-workstation-checkpoint .btn{width:100%}
+ .scoring-workstation-status{grid-template-columns:1fr 1fr}
+ .scoring-workstation-status span{font-size:.63rem}
+ .scoring-workstation-page [data-scoring-stage-visual],.scoring-workstation-page [data-scoring-transition-visual],.scoring-workstation-page [data-scoring-arousal-visual],.scoring-workstation-page [data-scoring-respiratory-visual],.scoring-workstation-page [data-scoring-limb-visual],.scoring-workstation-page [data-scoring-artifact-visual],.scoring-workstation-page [data-scoring-population-visual]{padding:7px}
+ .scoring-workstation-page [data-scoring-stage-visual]>.section-head,.scoring-workstation-page [data-scoring-transition-visual]>.section-head,.scoring-workstation-page [data-scoring-arousal-visual]>.section-head,.scoring-workstation-page [data-scoring-respiratory-visual]>.section-head,.scoring-workstation-page [data-scoring-limb-visual]>.section-head,.scoring-workstation-page [data-scoring-artifact-visual]>.section-head,.scoring-workstation-page [data-scoring-population-visual]>.section-head{margin:-7px -7px 8px}
+}
