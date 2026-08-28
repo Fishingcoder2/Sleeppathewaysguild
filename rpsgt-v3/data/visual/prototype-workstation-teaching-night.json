@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "name": "SPG PSG Workstation Teaching Night 1",
+    "version": 1,
+    "appAuthored": true,
+    "sourceType": "synthetic-teaching-summary",
+    "clinicalBoundary": "Synthetic navigation practice only. This is not a patient recording, diagnostic hypnogram, or scored clinical study.",
+    "epochSeconds": 30,
+    "compressedDisplay": true
+  },
+  "epochs": [
+    {"stage":"W","events":["artifact"]},
+    {"stage":"W","events":[]},
+    {"stage":"N1","events":["arousal"]},
+    {"stage":"N2","events":[]},
+    {"stage":"N2","events":["respiratory"]},
+    {"stage":"N3","events":[]},
+    {"stage":"N3","events":[]},
+    {"stage":"N2","events":["limb"]},
+    {"stage":"N2","events":["arousal"]},
+    {"stage":"R","events":["respiratory"]},
+    {"stage":"N2","events":[]},
+    {"stage":"N3","events":[]},
+    {"stage":"N2","events":["respiratory"]},
+    {"stage":"R","events":["arousal"]},
+    {"stage":"W","events":["artifact"]},
+    {"stage":"N1","events":[]},
+    {"stage":"N2","events":["limb"]},
+    {"stage":"N2","events":[]},
+    {"stage":"R","events":["respiratory"]},
+    {"stage":"N2","events":["arousal"]},
+    {"stage":"N2","events":[]},
+    {"stage":"N3","events":[]},
+    {"stage":"N2","events":["limb"]},
+    {"stage":"R","events":["respiratory","arousal"]},
+    {"stage":"W","events":[]},
+    {"stage":"N1","events":[]},
+    {"stage":"N2","events":["respiratory"]},
+    {"stage":"N3","events":[]},
+    {"stage":"N2","events":["limb"]},
+    {"stage":"R","events":["arousal"]}
+  ]
+}
