@@ -26,3 +26,23 @@
   .practice-modal-footer .practice-question-action-row{grid-template-columns:1fr 1fr}
   .practice-modal-footer .question-actions{grid-template-columns:1fr 1fr}
 }
+
+
+/* Keep the primary Practice action in the visible modal work area on larger screens. */
+@media(min-width:801px){
+  .practice-session:not(.hidden)>.question-card{
+    max-height:calc(100dvh - clamp(24px,6vw,64px));
+    overflow:auto;
+    overscroll-behavior:contain;
+  }
+  .practice-session:not(.hidden) .practice-modal-footer .question-actions{
+    position:sticky;
+    bottom:0;
+    z-index:7;
+    padding:10px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:rgba(247,251,253,.98);
+    box-shadow:0 -8px 24px rgba(7,25,45,.08);
+  }
+}
