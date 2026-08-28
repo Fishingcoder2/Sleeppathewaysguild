@@ -28,21 +28,36 @@
 }
 
 
-/* Keep the primary Practice action in the visible modal work area on larger screens. */
+/* Keep the complete Practice footer in the visible modal work area on larger screens. */
 @media(min-width:801px){
   .practice-session:not(.hidden)>.question-card{
     max-height:calc(100dvh - clamp(24px,6vw,64px));
     overflow:auto;
     overscroll-behavior:contain;
   }
-  .practice-session:not(.hidden) .practice-modal-footer .question-actions{
+  .practice-session:not(.hidden) .practice-modal-footer{
     position:sticky;
     bottom:0;
     z-index:7;
-    padding:10px;
-    border:1px solid var(--line);
-    border-radius:14px;
+    margin:18px -22px -22px;
+    padding:12px 22px 22px;
+    border-top:1px solid var(--line);
     background:rgba(247,251,253,.98);
     box-shadow:0 -8px 24px rgba(7,25,45,.08);
+  }
+  .practice-session:not(.hidden) .practice-modal-footer .question-actions{
+    position:static;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+  }
+}
+@media(min-width:801px) and (max-width:900px){
+  .practice-session:not(.hidden)>.session-rail{display:none}
+  .practice-session:not(.hidden) .practice-modal-footer{
+    margin:18px -17px -17px;
+    padding:12px 17px 17px;
   }
 }
