@@ -3,6 +3,7 @@
 const firstVisual=document.querySelector('[data-scoring-stage-visual]');
 const stationHost=document.querySelector('[data-scoring-stations]');
 const checkpointButton=document.querySelector('[data-scoring-start]');
+const firstButton=document.querySelector('[data-workstation-open-first]');
 if(!firstVisual||!stationHost||!checkpointButton)return;
 
 const stations=[
@@ -54,6 +55,7 @@ function syncCompletion(){
 }
 function openStation(id){const target=targetFor(id);if(!target)return;setActive(id);target.scrollIntoView({behavior:'smooth',block:'start'});}
 
+if(firstButton)firstButton.addEventListener('click',()=>openStation('stage-recognition'));
 dock.addEventListener('click',event=>{
  const stationButton=event.target.closest('[data-workstation-station]');
  if(stationButton){openStation(stationButton.dataset.workstationStation);return;}
