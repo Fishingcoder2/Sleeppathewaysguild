@@ -13,5 +13,7 @@ for(const internalTerm of ['stable identifiers','versioned progress keys','nativ
   const exposed=`${html}\n${js}`.toLowerCase();if(exposed.includes(internalTerm.toLowerCase()))throw new Error(`Skills Labs exposes engineering terminology: ${internalTerm}.`);
 }
 if(!engineSource.includes('CONTENT_STATUSES')||!engineSource.includes('reviewShells')||!engineSource.includes('interactiveLabs'))throw new Error('Lab catalog engine must distinguish route readiness from learner-content completeness.');
-if(catalog.labs.filter(lab=>lab.contentStatus==='review-shell').length!==7)throw new Error('The current audit must identify seven review-shell labs until their genuine skill interactions are rebuilt.');
-console.log('Skills Lab catalog passed thirteen-lab coverage, content-completeness labeling, learner-safe progress language, script order, read-only behavior, and mapping-language exclusion.');
+const expectedContentStatuses={'interactive-rich':10,'interactive-foundation':1,'assessment-tool':1,'interactive-tool':1};
+for(const [status,count] of Object.entries(expectedContentStatuses))if(catalog.labs.filter(lab=>lab.contentStatus===status).length!==count)throw new Error(`Skills Lab catalog must retain ${count} ${status} lab${count===1?'':'s'}.`);
+if(catalog.labs.some(lab=>lab.contentStatus==='review-shell'))throw new Error('No current Skills Lab should remain a review-only shell.');
+console.log('Skills Lab catalog passed thirteen-lab coverage, current content-status distribution, learner-safe progress language, script order, read-only behavior, and engineering-language exclusion.');
