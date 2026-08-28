@@ -1,0 +1,96 @@
+{
+  "id": "asa-adult-sleep-studies-2024",
+  "shortTitle": "ASA Adult Sleep Studies Guideline",
+  "fullTitle": "Australasian Sleep Association 2024 Guidelines for Sleep Studies in Adults",
+  "publisher": "Australasian Sleep Association",
+  "authors": [
+    "Claire M. Ellender",
+    "Warren R. Ruehland",
+    "Brett Duce",
+    "Rosemarie Joyce",
+    "Christopher Worsnop",
+    "Jeremy Mercer",
+    "Matthew Naughton",
+    "Craig A. Hukins",
+    "John Wheatley",
+    "David Cunnington"
+  ],
+  "sourceType": "international clinical and technical guideline",
+  "sourceRole": "studySupport",
+  "currentAuthority": false,
+  "publicationYear": 2024,
+  "journal": "Sleep",
+  "volumeIssuePages": "47(10), zsae107",
+  "doi": "10.1093/sleep/zsae107",
+  "officialUrl": "https://doi.org/10.1093/sleep/zsae107",
+  "verifiedAt": "2026-08-27",
+  "currencyNote": "Current international adult sleep-study guideline. It is strong supplemental support for technical workflow, reporting, quality systems, and data management, but it is not controlling U.S. AASM or AAST authority.",
+  "bestFor": "Adult Type 1-4 study capabilities and limitations, signal-quality documentation, report completeness, equipment verification, corrective action, data integrity, and consumer-device limitations.",
+  "mappedTaskCodes": [
+    "D1A",
+    "D1B",
+    "D1C",
+    "D2A",
+    "D2B",
+    "D2C",
+    "D3A",
+    "D3C",
+    "D4A",
+    "D4B"
+  ],
+  "intentionalZeroTaskCodes": [
+    "D3B",
+    "D4C"
+  ],
+  "mappingRationale": {
+    "D1A": "Supports matching adult study type and capability to the clinical question.",
+    "D1B": "Supports plain-language education about limited-channel and consumer-device limitations.",
+    "D1C": "Supports PAP and non-PAP follow-up context.",
+    "D2A": "Supports technical preparation, equipment verification, and Type 1-4 capability awareness.",
+    "D2B": "Supports controlled adult study procedures and study-type boundaries.",
+    "D2C": "Supports signal limitation, nonconformity, corrective action, and data-integrity documentation.",
+    "D3A": "Supports scoring-quality context while deferring exact rules to the AASM Scoring Manual.",
+    "D3C": "Supports report completeness, technical limitations, recording type, and data integrity.",
+    "D4A": "Supports PAP study workflow under current U.S. clinical and device authority.",
+    "D4B": "Supports non-PAP efficacy-study awareness."
+  },
+  "authorityBoundary": "For U.S. RPSGT learners, the current AASM Scoring Manual, AASM clinical guidance, AAST technical guidance, physician orders, manufacturer instructions, facility policy, and applicable law override where relevant. Australian Medicare, NATA, TGA, staffing, and privacy requirements are not universal U.S. requirements.",
+  "asvBoundary": "Current 2025 AASM adult CSA guidance and the actual device label or instructions override older ASV safety thresholds in this 2024 international source.",
+  "reportingBoundary": "Technical limitations should be stated clearly, especially for unattended and limited-channel studies. Report notes should identify recording type, usable signals, technical adequacy, limitations, and whether the ordered clinical question was answered.",
+  "consumerTechnologyBoundary": "Unvalidated wearables and apps are adjunctive at most and are not substitutes for validated diagnostic testing or PSG-equivalent scoring.",
+  "copyrightUse": "Article is CC BY-NC 4.0. Use citation and original paraphrase; do not copy tables or structured guideline content into commercial learner materials.",
+  "sections": [
+    {
+      "id": "asa-adult-2024-scope",
+      "label": "Adult sleep-study scope and clinical-question matching"
+    },
+    {
+      "id": "asa-adult-2024-type1-4",
+      "label": "Type 1-4 capabilities, suitability, and limitations"
+    },
+    {
+      "id": "asa-adult-2024-pap",
+      "label": "Adult PAP, bilevel, ASV, APAP, and non-PAP study context"
+    },
+    {
+      "id": "asa-adult-2024-vigilance",
+      "label": "MSLT, MWT, and actigraphy context with current AASM overlays"
+    },
+    {
+      "id": "asa-adult-2024-consumer",
+      "label": "Consumer sleep-technology limitations"
+    },
+    {
+      "id": "asa-adult-2024-quality",
+      "label": "Document control, equipment verification, proficiency, and corrective action"
+    },
+    {
+      "id": "asa-adult-2024-reporting",
+      "label": "Report completeness and technical limitation documentation"
+    },
+    {
+      "id": "asa-adult-2024-data",
+      "label": "Data security, integrity, traceability, and retention"
+    }
+  ]
+}
