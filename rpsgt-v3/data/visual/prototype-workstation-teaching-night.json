@@ -5,7 +5,8 @@
     "appAuthored": true,
     "sourceType": "synthetic-teaching-summary",
     "clinicalBoundary": "Synthetic navigation practice only. This is not a patient recording, diagnostic hypnogram, or scored clinical study.",
-    "epochSeconds": 30,
+    "displayBlockMinutes": 12,
+    "contextEpochSeconds": 30,
     "compressedDisplay": true
   },
   "epochs": [
