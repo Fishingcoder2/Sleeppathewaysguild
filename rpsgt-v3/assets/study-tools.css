@@ -57,3 +57,30 @@
 @media(max-width:370px){.memory-board{gap:8px}.memory-tile{min-height:102px}.memory-tile-back{font-size:.76rem}}
 @media(prefers-reduced-motion:reduce){.memory-tile-inner{transition:none}}
 @media print{.topbar,.sidebar,.mobile-nav,.notes-actions,.study-tool-links,.footer{display:none!important}.layout{display:block!important}.main{padding:0!important}.notes-layout{display:block}.notes-rail{display:none}.notes-body-input,.notes-title-input{border:0;padding:0;overflow:visible;min-height:0}.notes-body-input{height:auto;white-space:pre-wrap}}
+
+
+/* Prevent mobile form controls from imposing their intrinsic width on Memory Games. */
+@media(max-width:650px){
+  .memory-controls,
+  .memory-controls .section-head,
+  .memory-controls .section-head>*,
+  .memory-control-row,
+  .memory-control-row>*{
+    min-width:0;
+    max-width:100%;
+  }
+  .memory-control-row{
+    width:100%;
+    grid-template-columns:minmax(0,1fr);
+  }
+  .memory-control-row label,
+  .memory-select{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+  }
+  .memory-controls .status{
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+}
