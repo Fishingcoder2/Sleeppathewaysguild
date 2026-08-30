@@ -1,0 +1,48 @@
+name: Add Ahrefs Analytics to CPSGT
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-ahrefs-cpsgt.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-cpsgt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Add Ahrefs analytics tag
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('cpsgt-study-app.html')
+          text = path.read_text(encoding='utf-8')
+          tag = '<script src="https://analytics.ahrefs.com/analytics.js" data-key="/s9HvK+nlfPasBLtcJ6y3A" async></script>'
+
+          if tag not in text:
+              if '<head>' not in text:
+                  raise SystemExit('CPSGT app is missing <head>; refusing to modify it.')
+              text = text.replace('<head>', '<head>\n' + tag, 1)
+              path.write_text(text, encoding='utf-8')
+
+          count = path.read_text(encoding='utf-8').count(tag)
+          if count != 1:
+              raise SystemExit(f'Expected exactly one Ahrefs tag, found {count}.')
+          PY
+
+      - name: Commit app update and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/add-ahrefs-cpsgt.yml
+          git add cpsgt-study-app.html
+          git commit -m "Add Ahrefs analytics to CPSGT app"
+          git push
