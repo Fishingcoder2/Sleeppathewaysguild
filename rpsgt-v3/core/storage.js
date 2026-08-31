@@ -74,6 +74,17 @@
     return next;
   }
 
+  function resetLearningProgress(){
+    const current=load();
+    const fresh=defaultState();
+    fresh.learner=current.learner&&typeof current.learner==="object"?current.learner:fresh.learner;
+    fresh.flashcards=current.flashcards&&typeof current.flashcards==="object"?current.flashcards:fresh.flashcards;
+    fresh.notes=current.notes&&typeof current.notes==="object"?current.notes:fresh.notes;
+    fresh.migration=current.migration&&typeof current.migration==="object"?current.migration:fresh.migration;
+    fresh.lastLocation="index.html";
+    return save(fresh);
+  }
+
   function rememberLocation(path){
     const state=load();
     state.lastLocation=path||"index.html";
@@ -172,6 +183,36 @@
     });
   }
 
+  function injectResetControl(){
+    const body=document.querySelector("[data-rpsgt-settings-body]");
+    if(!body||body.querySelector("[data-reset-learning-progress]")) return;
+    const row=document.createElement("article");
+    row.className="rpsgt-settings-row";
+    row.innerHTML='<div><h3>Reset learning progress</h3><p>Start your RPSGT learning record over on this browser. This clears question history, scores, missed/mastered lists, Guided Study achievements, readiness and mock history, Math Coach progress, and lab progress. Your Settings, Notes, saved Flashcards, and migration record are kept.</p></div><button class="btn secondary" type="button" data-reset-learning-progress style="border-color:#b42318;color:#8f1f17;background:#fff7f6">Reset progress</button>';
+    const notices=body.querySelectorAll(".notice");
+    const finalNotice=notices.length?notices[notices.length-1]:null;
+    if(finalNotice) body.insertBefore(row,finalNotice); else body.appendChild(row);
+    row.querySelector("[data-reset-learning-progress]").addEventListener("click",function(){
+      const first=window.confirm("Reset your RPSGT V3 learning progress on this browser? Scores, question history, review lists, achievements, readiness/mock history, Math Coach progress, and lab progress will be cleared. Settings, Notes, saved Flashcards, and migration data will be kept.");
+      if(!first) return;
+      const second=window.confirm("This cannot be undone. Confirm that you want to reset your learning progress now.");
+      if(!second) return;
+      resetLearningProgress();
+      window.alert("RPSGT V3 learning progress has been reset. Your Settings, Notes, and saved Flashcards were kept.");
+      window.location.href="index.html";
+    });
+  }
+
+  function installSettingsResetBridge(){
+    if(typeof MutationObserver==="undefined") return;
+    const start=function(){
+      injectResetControl();
+      const observer=new MutationObserver(injectResetControl);
+      observer.observe(document.body,{childList:true,subtree:true});
+    };
+    if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",start,{once:true}); else start();
+  }
+
   window.RPSGTStorage={
     NEW_KEY:NEW_KEY,
     SCHEMA_VERSION:SCHEMA_VERSION,
@@ -181,10 +222,13 @@
     defaultState:defaultState,
     load:load,
     save:save,
+    resetLearningProgress:resetLearningProgress,
     rememberLocation:rememberLocation,
     getLegacySnapshot:getLegacySnapshot,
     previewLegacy:previewLegacy,
     createMigrationDraft:createMigrationDraft,
     buildLegacyMigrationDraft:createMigrationDraft
   };
+
+  installSettingsResetBridge();
 })();
