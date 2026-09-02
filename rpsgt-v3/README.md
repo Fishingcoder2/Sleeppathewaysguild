@@ -14,8 +14,8 @@ This directory is the non-destructive modular rebuild of the Sleep Pathways Guil
 - Migration validation covers Practice totals, domain/task statistics, missed/mastered/flagged IDs, Guided Trail state, awards, labs, notes, searches, readiness-like history, mock-style history, Math Coach records, malformed data, conflicts, duplicate fingerprints, rollback metadata, and source immutability.
 - Learner-practice, manual-review, unknown, malformed, duplicate, and ambiguous records remain separately classified. `D2A/D2C` data is never silently reassigned.
 - Practice, Review, Readiness, Mock, Guided Trail, and Skills Lab histories remain technically and visibly separate.
-- Complete 2,887-question bank extracted into 13 validated task modules.
-- Learner Practice uses 2,327 eligible records; 560 manual-review records remain in a separate Quality Review pool.
+- Complete 2,920-question bank extracted into 13 validated task modules: 2,915 direct-task records plus 5 isolated cross-task review records.
+- Learner Practice uses 2,360 eligible records; 560 manual-review records remain outside learner practice and Mock, including the 5 isolated cross-task records.
 - Full Practice Center, Missed Review, Mastered Review, weighted 25/50/100 Readiness Checks, and separate 175-question Mock-Style Practice are implemented.
 - The Mock preserves 150 scored-style and 25 mixed unscored-style questions, scored domain allocation D1 30, D2 41, D3 38, D4 41, all 12 task codes, navigation, flags, save/resume, and an optional study stopwatch.
 - Completed Mock attempts now use a compact result-version-2 evidence record for task and question drill-down. It stores question IDs, order, role, answer index, correctness, unanswered state, and flags without duplicating prompt, option, answer, or rationale text.
@@ -192,4 +192,4 @@ The existing `tests/fixtures/migration/source-derived-*.json` records remain exp
 1. Capture and validate representative real browser exports from the current application, review every generated summary, and resolve every malformed or ambiguous field. Tooling is ready; no real learner sample is committed or claimed as passed.
 2. Complete interactive desktop and mobile browser regression, including print/PDF layout and JSON/CSV download behavior, before considering the draft pull request ready for release.
 
-Existing public RPSGT and laboratory files remain unchanged. All development pages are marked `noindex,nofollow`. PR #35 must remain draft and unmerged until the release gates are satisfied.
+The public RPSGT entry point must remain on V2, and all V3 development pages must remain `noindex,nofollow`, until the release gates are satisfied.

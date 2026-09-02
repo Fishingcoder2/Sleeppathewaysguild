@@ -1,0 +1,43 @@
+name: Validate three-app quality audit
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - RPSGTv2.2026.html
+      - RPSGTv2.2026-app.html
+      - cpsgt-study-app.html
+      - rpsgt-v3/**
+      - .github/workflows/three-app-quality-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-quality-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Syntax-check application modules
+        run: find rpsgt-v3/core rpsgt-v3/scripts -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | sort -z | xargs -0 -n1 node --check
+      - name: Parse all modular data
+        run: find rpsgt-v3/data -type f -name '*.json' -print0 | sort -z | xargs -0 -n1 node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))"
+      - name: Run complete static regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          for test_file in rpsgt-v3/scripts/test-*.mjs; do
+            count=$((count+1))
+            echo "=== $test_file ==="
+            node "$test_file"
+          done
+          echo "Passed $count static regression tests."

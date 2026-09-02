@@ -6522,7 +6522,7 @@ function isVisualPlaceholderQuestion(q){
 }
 
 function examEligibleQuestions(pool){
-  return (pool||[]).filter(q=>q && q.mockEligible !== false && !(q.qa && q.qa.mockExclude === true) && q.mockExclude !== true && !q.stagingOnly && !isVisualPlaceholderQuestion(q));
+  return (pool||[]).filter(q=>q && q.mockEligible !== false && !(q.qa && q.qa.mockExclude === true) && !(q.qa && q.qa.manualReviewRecommended === true) && q.mockExclude !== true && !q.stagingOnly && !isVisualPlaceholderQuestion(q));
 }
 
 function domainObj(id){return domains.find(d=>d.id===id);}
@@ -9888,8 +9888,30 @@ function spgCreateExamSessionV1266(size){
         chosenFamilies.add(spgNormalizeQuestionFamilyV1328(q));
       });
   }
-  const remaining = spgDedupeByQuestionFamilyV1328(eligible.filter(q=>!chosenIds.has(String(q.id)) && !chosenFamilies.has(spgNormalizeQuestionFamilyV1328(q))), preferHardMock);
-  const pretest = pretestCount ? spgPickTaskBalancedQuestionsV1266(remaining, pretestCount, preferHardMock) : [];
+  const pretestBlueprintCounts = spgAllocateBlueprintCountsV1266(pretestCount);
+  const pretest = [];
+  if(pretestCount){
+    spgExamBlueprintV1266().forEach(def=>{
+      const domainPool = spgDedupeByQuestionFamilyV1328(eligible.filter(q=>q.domain===def.id && !chosenIds.has(String(q.id)) && !chosenFamilies.has(spgNormalizeQuestionFamilyV1328(q))), preferHardMock);
+      const picks = spgPickTaskBalancedQuestionsV1266(domainPool, pretestBlueprintCounts[def.id]||0, preferHardMock);
+      picks.forEach(q=>{
+        const id = String(q.id);
+        const family = spgNormalizeQuestionFamilyV1328(q);
+        if(chosenIds.has(id) || chosenFamilies.has(family)) return;
+        pretest.push(q);
+        chosenIds.add(id);
+        chosenFamilies.add(family);
+      });
+    });
+    if(pretest.length<pretestCount){
+      spgDedupeByQuestionFamilyV1328(eligible.filter(q=>!chosenIds.has(String(q.id)) && !chosenFamilies.has(spgNormalizeQuestionFamilyV1328(q))), preferHardMock)
+        .slice(0,pretestCount-pretest.length).forEach(q=>{
+          pretest.push(q);
+          chosenIds.add(String(q.id));
+          chosenFamilies.add(spgNormalizeQuestionFamilyV1328(q));
+        });
+    }
+  }
   const items = shuffle([
     ...scored.map(q=>({id:String(q.id),role:"scored"})),
     ...pretest.map(q=>({id:String(q.id),role:"pretest"}))
@@ -10033,7 +10055,7 @@ function renderMock(){
         <span class="reportSectionLabel">Readiness and mock-style study practice</span>
         <h2>Choose a study run.</h2>
         <p class="muted">Choose a practice length for studying and self-evaluation.</p>
-        <p class="muted"><strong>175-question mock-style practice:</strong> text-only, no visual questions currently, and weighted to the current BRPT domain mix: D1 30, D2 41, D3 38, D4 41, plus 25 unscored-style items.</p>
+        <p class="muted"><strong>175-question mock-style practice:</strong> text-only, no visual questions currently, with 150 scored-style items plus 25 unscored-style items. The complete run follows the current BRPT domain mix: D1 35, D2 48, D3 44, D4 48.</p>
         ${visualPracticeNote()}
       </div>
       <div class="mockSizeGrid">

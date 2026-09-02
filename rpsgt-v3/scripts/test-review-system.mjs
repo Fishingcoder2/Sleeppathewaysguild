@@ -11,13 +11,17 @@ const manifest=JSON.parse(await readFile(join(root,"data","question-bank","manif
 const requiredSelectors=[
   "data-review-load","data-review-shell","data-question-panel","data-question-number","data-question-task",
   "data-question-difficulty","data-question-prompt","data-question-choices","data-answer-feedback",
-  "data-submit-answer","data-next-question","data-review-complete","data-review-empty"
+  "data-previous-question","data-review-forward","data-review-close","data-review-complete","data-review-empty"
 ];
 for(const selector of requiredSelectors){
   if(!html.includes(selector)) throw new Error(`review.html is missing ${selector}`);
 }
 if(!html.includes("core/review.js")) throw new Error("review.html does not load core/review.js");
+if(!html.includes("assets/practice-navigation.css")) throw new Error("review.html does not load the unified practice-navigation styles");
 if(!js.includes('v3-review-missed')||!js.includes('v3-review-mastered')) throw new Error("review history sources are missing");
+for(const token of ["function previousQuestion","function forward","Check answer","Next question"]){
+  if(!js.includes(token)) throw new Error(`Unified review navigation is missing ${token}`);
+}
 if(!js.includes("manualReviewRecommended")) throw new Error("manual-review exclusion is missing");
 if(!js.includes("saved.review.missedIds=removeValue")||!js.includes("saved.review.masteredIds=addUnique")) throw new Error("missed-to-mastered transition is missing");
 if(!js.includes("saved.review.missedIds=addUnique")||!js.includes("saved.review.masteredIds=removeValue")) throw new Error("mastered-to-missed transition is missing");

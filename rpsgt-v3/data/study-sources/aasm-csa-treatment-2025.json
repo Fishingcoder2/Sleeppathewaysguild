@@ -1,28 +1,76 @@
 {
-  "id":"aasm-csa-treatment-2025",
-  "shortTitle":"AASM Adult Central Sleep Apnea Treatment Guideline",
-  "fullTitle":"Treatment of Central Sleep Apnea in Adults",
-  "publisher":"American Academy of Sleep Medicine",
-  "sourceType":"clinical practice guideline",
-  "sourceRole":"currentAuthority",
-  "currentAuthority":true,
-  "publicationYear":2025,
-  "verifiedAt":"2026-08-08",
-  "doi":"10.5664/jcsm.11858",
-  "officialUrl":"https://doi.org/10.5664/jcsm.11858",
-  "officialContextUrl":"https://aasm.org/wp-content/uploads/2026/02/central-sleep-apnea-guideline-AASM-2025.pdf",
-  "currencyNote":"2025 AASM clinical practice guideline, published in December 2025 and recorded in the 2026-08-08 current-authority audit as the current CSA treatment authority.",
-  "bestFor":"Current adult central sleep apnea treatment context, including PAP modalities, low-flow oxygen, acetazolamide, and transvenous phrenic nerve stimulation.",
-  "mappedTaskCodes":["D1A","D1C","D2C","D4A","D4B","D4C"],
-  "mappingRationale":{"D1A":"Supports current CSA treatment context during clinical assessment.","D1C":"Supports therapy-support awareness for current CSA treatment pathways.","D2C":"Supports recognition and documentation context when treatment-related respiratory patterns or device issues are present.","D4A":"Provides the current clinical overlay for PAP modalities used in adult CSA.","D4B":"Provides current treatment context for acetazolamide and transvenous phrenic nerve stimulation as non-PAP options.","D4C":"Provides current clinical context for low-flow oxygen in selected adult CSA pathways."},
-  "authorityBoundary":"This guideline controls current adult CSA treatment guidance. Use the current AASM Scoring Manual for scoring rules and technical specifications, facility protocols and physician orders for local treatment execution, and manufacturer instructions for device-specific operation. Transvenous phrenic nerve stimulation for adult CSA is distinct from diaphragm pacing used for ventilatory support.",
-  "copyrightUse":"Use citation, public guideline identity, high-level treatment categories, original summaries, and learning objectives. Do not reproduce substantial recommendation wording, evidence tables, or protected passages.",
-  "sections":[
-    {"id":"aasm-csa-2025-scope","label":"Scope of adult central sleep apnea treatment guidance"},
-    {"id":"aasm-csa-2025-pap","label":"PAP modality treatment context for adult central sleep apnea"},
-    {"id":"aasm-csa-2025-oxygen","label":"Low-flow oxygen treatment context"},
-    {"id":"aasm-csa-2025-medication","label":"Acetazolamide treatment context"},
-    {"id":"aasm-csa-2025-tpns","label":"Transvenous phrenic nerve stimulation treatment context"},
-    {"id":"aasm-csa-2025-boundaries","label":"Treatment-selection, follow-up, and modality-boundary review"}
+  "id": "aasm-csa-treatment-2025",
+  "shortTitle": "AASM Adult Central Sleep Apnea Treatment Guideline",
+  "fullTitle": "Treatment of Central Sleep Apnea in Adults",
+  "publisher": "American Academy of Sleep Medicine",
+  "sourceType": "clinical practice guideline",
+  "sourceRole": "currentAuthority",
+  "currentAuthority": true,
+  "publicationYear": 2025,
+  "verifiedAt": "2026-08-27",
+  "doi": "10.5664/jcsm.11858",
+  "officialUrl": "https://doi.org/10.5664/jcsm.11858",
+  "officialContextUrl": "https://aasm.org/wp-content/uploads/2026/02/central-sleep-apnea-guideline-AASM-2025.pdf",
+  "currencyNote": "2025 AASM clinical practice guideline, published in December 2025 and recorded in the 2026-08-08 current-authority audit as the current CSA treatment authority.",
+  "bestFor": "Current adult central sleep apnea treatment context, including PAP modalities, low-flow oxygen, acetazolamide, and transvenous phrenic nerve stimulation.",
+  "mappedTaskCodes": [
+    "D1A",
+    "D1C",
+    "D2C",
+    "D4A",
+    "D4B",
+    "D4C"
+  ],
+  "mappingRationale": {
+    "D1A": "Supports current CSA treatment context during clinical assessment.",
+    "D1C": "Supports therapy-support awareness for current CSA treatment pathways.",
+    "D2C": "Supports recognition and documentation context when treatment-related respiratory patterns or device issues are present.",
+    "D4A": "Provides the current clinical overlay for PAP modalities used in adult CSA.",
+    "D4B": "Provides current treatment context for acetazolamide and transvenous phrenic nerve stimulation as non-PAP options.",
+    "D4C": "Provides current clinical context for low-flow oxygen in selected adult CSA pathways."
+  },
+  "authorityBoundary": "This guideline controls current adult CSA treatment guidance. Use the current AASM Scoring Manual for scoring rules and technical specifications, facility protocols and physician orders for local treatment execution, and manufacturer instructions for device-specific operation. Transvenous phrenic nerve stimulation for adult CSA is distinct from diaphragm pacing used for ventilatory support.",
+  "copyrightUse": "Use citation, public guideline identity, high-level treatment categories, original summaries, and learning objectives. Do not reproduce substantial recommendation wording, evidence tables, or protected passages.",
+  "sections": [
+    {
+      "id": "aasm-csa-2025-scope",
+      "label": "Scope of adult central sleep apnea treatment guidance"
+    },
+    {
+      "id": "aasm-csa-2025-pap",
+      "label": "PAP modality treatment context for adult central sleep apnea"
+    },
+    {
+      "id": "aasm-csa-2025-oxygen",
+      "label": "Low-flow oxygen treatment context"
+    },
+    {
+      "id": "aasm-csa-2025-medication",
+      "label": "Acetazolamide treatment context"
+    },
+    {
+      "id": "aasm-csa-2025-tpns",
+      "label": "Transvenous phrenic nerve stimulation treatment context"
+    },
+    {
+      "id": "aasm-csa-2025-boundaries",
+      "label": "Treatment-selection, follow-up, and modality-boundary review"
+    }
+  ],
+  "recommendationSummary": {
+    "cpap": "Current modality awareness for selected adult CSA etiologies; response and persistent events still require follow-up and reassessment.",
+    "bpapWithBackup": "Differentiate BPAP with a backup rate from ordinary spontaneous bilevel; the backup-rate pathway may be considered for selected adult CSA etiologies.",
+    "bpapWithoutBackup": "Do not teach BPAP without a backup rate as equivalent to backup-rate BPAP for adult CSA; current guidance generally discourages the non-backup pathway.",
+    "asv": "ASV may be considered for selected adult CSA etiologies, subject to current clinical eligibility review, the actual device contraindications/instructions, experienced-care context when appropriate, and close follow-up.",
+    "lowFlowOxygen": "Current indication awareness includes selected CSA associated with heart failure and high altitude; the guideline does not provide a technologist oxygen-flow protocol.",
+    "acetazolamide": "Medication-treatment awareness only; selection and dosing are clinician directed.",
+    "transvenousPhrenicNerveStimulation": "Alternative-treatment awareness for selected primary CSA and heart-failure CSA; this is distinct from diaphragm pacing.",
+    "persistentCentralEvents": "Persistent central events should prompt documentation and clinician reassessment of contributing factors and treatment rather than an automatic pressure or modality change."
+  },
+  "learnerGuardrails": [
+    "Name whether bilevel has a backup rate whenever CSA is the teaching point.",
+    "Do not present a historical LVEF threshold as the complete current AASM ASV rule.",
+    "Document the persistent-event pattern, symptoms, tolerance, and need for clinician reevaluation.",
+    "Do not infer oxygen flow, acetazolamide dosing, TPNS procedure steps, or device-specific ASV settings from this guideline."
   ]
 }

@@ -27,16 +27,37 @@ jobs:
           from pathlib import Path
           import re
           html = Path('RPSGTv2.2026.html').read_text(encoding='utf-8')
-          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S | re.I)
-          assert scripts, 'No launcher script found'
+          script_blocks = re.findall(
+              r'<script(?P<attrs>\s[^>]*)?>(?P<body>.*?)</script>',
+              html,
+              flags=re.S | re.I,
+          )
+          scripts = []
+          executable_types = {
+              '',
+              'text/javascript',
+              'application/javascript',
+              'text/ecmascript',
+              'application/ecmascript',
+              'module',
+          }
+          for attrs, body in script_blocks:
+              type_match = re.search(r"""\btype\s*=\s*["']([^"']+)["']""", attrs or '', flags=re.I)
+              script_type = type_match.group(1).strip().lower() if type_match else ''
+              if script_type in executable_types:
+                  scripts.append(body)
+          assert scripts, 'No executable launcher script found'
           Path('/tmp/rpsgt-launcher.js').write_text('\n'.join(scripts), encoding='utf-8')
           PY
           node --check /tmp/rpsgt-launcher.js
-      - name: Verify preserved app and repair links
+      - name: Verify direct-render apps and learner-delivery guards
         run: |
-          test "$(git hash-object RPSGTv2.2026-app.html)" = "74f61ae203c3ca634cf9e58de5d7bbdae67eebed"
-          test "$(wc -c < RPSGTv2.2026-app.html)" -gt 10000000
-          grep -q 'id="app-data"' RPSGTv2.2026-app.html
-          grep -q 'RPSGTv2.2026-app.html' RPSGTv2.2026.html
-          grep -q 'assets/rpsgt-mobile-practice-fix.js' RPSGTv2.2026.html
+          test "$(git hash-object RPSGTv2.2026-app.html)" = "2f8c6d1fa33729d0267aa1dab8c881fca848d510"
+          for app in RPSGTv2.2026.html RPSGTv2.2026-app.html; do
+            test "$(wc -c < "$app")" -gt 10000000
+            grep -q 'id="app-data"' "$app"
+            grep -q 'manualReviewRecommended' "$app"
+            grep -q 'spgAllocateBlueprintCountsV1266' "$app"
+          done
+          grep -q 'SPG VERIFIED DIRECT-RENDER BUILD' RPSGTv2.2026.html
           grep -q '__spgMobilePracticeFix' assets/rpsgt-mobile-practice-fix.js

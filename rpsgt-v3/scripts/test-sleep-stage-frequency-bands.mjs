@@ -23,7 +23,7 @@ assert.ok(visual&&context);
 
 const expected={slowWave:[0.5,2],thetaLamf:[4,7],alpha:[8,13],spindle:[11,16],spindleCommon:[12,14],sawtooth:[2,6],betaMin:14};
 assert.deepEqual(JSON.parse(JSON.stringify(visual.FREQUENCY_BANDS)),expected);
-assert.deepEqual(JSON.parse(JSON.stringify(context.FREQUENCY_BANDS)),{...expected,arousalFast:[16,30]});
+assert.deepEqual(JSON.parse(JSON.stringify(context.FREQUENCY_BANDS)),{...expected,arousalFast:[6,20]});
 
 function samplesFrom(fn,start=0,duration=12,sampleRate=100){
   const count=Math.round(duration*sampleRate);
@@ -81,7 +81,9 @@ const aStart=Number(n2Arousal.arousalStart),aDuration=Number(n2Arousal.arousalDu
 const before=samplesFrom(t=>context.sample(n2Arousal,contextRow,t,0),baselineStart,insideDuration,120);
 const during=samplesFrom(t=>context.sample(n2Arousal,contextRow,t,0),insideStart,insideDuration,120);
 const fastBand=context.FREQUENCY_BANDS.arousalFast;
-assert.ok(ratio(bandPower(during,120,fastBand[0],fastBand[1]),bandPower(before,120,fastBand[0],fastBand[1]))>6,'Arousal fast-band energy must rise sharply above the surrounding stage EEG.');
-assert.ok(ratio(bandPower(during,120,fastBand[0],fastBand[1]),bandPower(during,120,expected.thetaLamf[0],expected.thetaLamf[1]))>2,'The teaching arousal burst must visibly favor fast EEG over the surrounding theta-range background.');
+assert.ok(ratio(bandPower(during,120,fastBand[0],fastBand[1]),bandPower(before,120,fastBand[0],fastBand[1]))>1.4,'Arousal 6-20 Hz energy must rise above the surrounding stage EEG.');
+assert.ok(ratio(bandPower(during,120,expected.alpha[0],expected.alpha[1]),bandPower(before,120,expected.alpha[0],expected.alpha[1]))>3,'The teaching arousal must add a clear alpha-range component.');
+assert.ok(ratio(bandPower(during,120,16,20),bandPower(before,120,16,20))>2,'The teaching arousal must add a clear greater-than-16-Hz component.');
+assert.ok(ratio(bandPower(before,120,expected.thetaLamf[0],expected.thetaLamf[1]),bandPower(during,120,expected.thetaLamf[0],expected.thetaLamf[1]))>2,'The teaching arousal must remain an abrupt frequency shift rather than an amplified theta background.');
 
 console.log('Rendered sleep-stage frequency bands passed: Wake alpha, N1/N2 theta-LAMF, N3 slow wave, REM LAMF, and fast arousal contrast.');

@@ -1,0 +1,94 @@
+{
+  "id": "aasm-inpatient-osa-2025",
+  "shortTitle": "AASM Inpatient OSA Clinical Practice Guideline",
+  "fullTitle": "Evaluation and Management of Obstructive Sleep Apnea in Adults Hospitalized for Medical Care",
+  "publisher": "American Academy of Sleep Medicine",
+  "authors": [
+    "Reena Mehra",
+    "Dennis H. Auckley",
+    "Karin G. Johnson",
+    "Martha E. Billings",
+    "Gerard Carandang",
+    "Yngve Falck-Ytter",
+    "Rami N. Khayat",
+    "Reem A. Mustafa",
+    "Cinthya Pena-Orbea",
+    "Ashima S. Sahni",
+    "Sunil Sharma",
+    "Susheel P. Patil"
+  ],
+  "sourceType": "clinical practice guideline",
+  "sourceRole": "currentAuthority",
+  "currentAuthority": true,
+  "publicationYear": 2025,
+  "journal": "Journal of Clinical Sleep Medicine",
+  "volumeIssuePages": "21(12), 2193-2203",
+  "doi": "10.5664/jcsm.11864",
+  "officialUrl": "https://doi.org/10.5664/jcsm.11864",
+  "verifiedAt": "2026-08-27",
+  "currencyNote": "Current AASM guideline for medically hospitalized nonsurgical adults. It contains one Good Practice Statement, four conditional recommendations, and an explicit no-recommendation area for physiologic monitoring.",
+  "bestFor": "Inpatient OSA screening pathways, continuity of established therapy, PAP support, sleep consultation, discharge planning, documentation, and the qualified sleep-technologist role.",
+  "mappedTaskCodes": [
+    "D1A",
+    "D1B",
+    "D1C",
+    "D2C",
+    "D4A",
+    "D4B"
+  ],
+  "intentionalZeroTaskCodes": [
+    "D2A",
+    "D2B",
+    "D3A",
+    "D3B",
+    "D3C",
+    "D4C"
+  ],
+  "mappingRationale": {
+    "D1A": "Supports inpatient OSA risk assessment while preserving the distinction between screening and diagnosis.",
+    "D1B": "Supports patient/caregiver education about inpatient therapy continuity and discharge follow-up.",
+    "D1C": "Supports therapy tolerance, consultation, and follow-up-plan elements under appropriate oversight.",
+    "D2C": "Supports documentation of active therapy, settings, interface, tolerance, and safety concerns.",
+    "D4A": "Supports clinician-directed continuation or initiation of inpatient PAP when appropriate.",
+    "D4B": "Supports continuity of established non-PAP therapy when feasible and not contraindicated."
+  },
+  "authorityBoundary": "Screening is not diagnosis. Diagnostic testing is ideally completed after medical stabilization or after discharge. Existing therapy is generally continued when feasible unless contraindicated, but orders, contraindication review, device instructions, hospital policy, and clinician direction control implementation. Qualified sleep technologists may provide education and follow-up-plan elements under appropriate oversight; the guideline does not authorize independent diagnosis, prescribing, test selection, or therapy-setting changes.",
+  "monitoringBoundary": "The guideline makes no recommendation for or against universal inpatient oximetry or capnography monitoring because evidence is insufficient. Clinical condition and hospital policy control monitoring.",
+  "oxygenBoundary": "The guideline does not establish an oxygen-administration recommendation or oxygen flow/titration protocol. D4C remains intentionally unmapped.",
+  "scopeBoundary": "Not intended for acute or chronic respiratory failure requiring NIV, perioperative surgical/procedural pathways, or sleep-related hypoventilation management.",
+  "copyrightUse": "Use citation, public guideline identity, original summaries, and learning objectives. Do not reproduce substantial recommendation wording, evidence tables, or protected passages.",
+  "sections": [
+    {
+      "id": "inpatient-osa-2025-scope",
+      "label": "Scope and hospitalized-adult pathway"
+    },
+    {
+      "id": "inpatient-osa-2025-continuity",
+      "label": "Continue established sleep-disordered-breathing therapy when feasible and safe"
+    },
+    {
+      "id": "inpatient-osa-2025-screening",
+      "label": "Screening within a complete diagnosis and PAP-management pathway"
+    },
+    {
+      "id": "inpatient-osa-2025-pap",
+      "label": "Clinician-directed inpatient PAP treatment context"
+    },
+    {
+      "id": "inpatient-osa-2025-consult",
+      "label": "Sleep consultation and qualified technologist support"
+    },
+    {
+      "id": "inpatient-osa-2025-discharge",
+      "label": "Discharge testing, follow-up, and care coordination"
+    },
+    {
+      "id": "inpatient-osa-2025-documentation",
+      "label": "Device, mode, interface, settings, tolerance, and safety documentation"
+    },
+    {
+      "id": "inpatient-osa-2025-monitoring-gap",
+      "label": "No universal physiologic-monitoring recommendation"
+    }
+  ]
+}

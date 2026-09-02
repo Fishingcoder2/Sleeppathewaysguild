@@ -253,8 +253,9 @@ def live_audit(site_url: str, sitemap_urls: list[str], hubs: list[str], external
         host = urllib.parse.urlparse(url).netloc.lower()
         if status is None:
             warnings.append(f"UNVERIFIED: {url} ({reason})")
-        elif status in {401, 403, 429}:
-            # These often reflect bot/rate protection. Surface them prominently
+        elif status in {401, 403, 429, 999}:
+            # These often reflect bot/rate protection. LinkedIn also uses the
+            # nonstandard 999 code for automated requests. Surface them prominently
             # without failing CI so a human can decide whether the visitor link works.
             warnings.append(f"ACCESS {status}: {url} -> {final_url}")
         elif status >= 400:
