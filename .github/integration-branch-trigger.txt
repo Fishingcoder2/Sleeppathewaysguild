@@ -1,0 +1,6 @@
+Integration branch CI trigger
+
+This file was added to trigger the repository's CI on the integration branch so we can collect baseline validation results before any code is ported.
+
+Timestamp: 2026-09-02
+Initiated by: Copilot
