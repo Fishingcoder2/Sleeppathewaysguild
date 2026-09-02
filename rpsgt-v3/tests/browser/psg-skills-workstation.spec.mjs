@@ -9,13 +9,23 @@ test('Skills Labs routes scoring learners through the PSG Skills Workstation',as
   await expect(link).toContainText('PSG Workstation');
 });
 
-test('PSG Skills Workstation exposes a clear visual-practice progression',async({page})=>{
+test('PSG Skills Workstation separates task choice, practice, and help',async({page})=>{
   await page.goto('scoring-workstation.html');
-  await expect(page.getByRole('heading',{name:'One workstation. One scoring task at a time.'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Choose one PSG task.'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'PSG practice sections'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Live Sleep Staging'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Mini PSG Viewer'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Respiratory Signals'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Full Scoring Lab'})).toBeVisible();
+  await expect(page.getByRole('link',{name:/Learn how to use these visuals/})).toHaveAttribute('href','learner-guide.html#visuals');
+});
+
+test('learner guide centralizes explanations instead of repeating developer-facing details',async({page})=>{
+  await page.goto('learner-guide.html');
+  await expect(page.getByRole('heading',{name:'How to use the visuals and compare them with real examples'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'What scores and progress records mean'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'How references are shown'})).toBeVisible();
+  await expect(page.getByText(/Internal mapping labels, file names, data paths, branch names, and development notes are intentionally kept out/)).toBeVisible();
 });
 
 test('live staging keeps 30-second timing and scoring controls usable',async({page})=>{
