@@ -91,14 +91,38 @@ def load_sitemap(path: Path) -> list[str]:
 
 
 def url_to_file(root: Path, url: str) -> Path | None:
+    """Resolve sitemap URLs the same way Cloudflare Workers static assets do.
+
+    The deployed Worker uses the default ``assets.html_handling`` value of
+    ``auto-trailing-slash``. Under that mode an extensionless URL such as
+    ``/rpsgt-exam-prep-books`` is served from ``rpsgt-exam-prep-books.html``.
+    Folder URLs continue to resolve to ``folder/index.html``.
+    """
     path = unquote(urlparse(url).path)
-    if path.endswith("/"):
-        path += "index.html"
-    elif not Path(path).suffix:
-        path += "/index.html"
-    if Path(path).suffix.lower() not in {".html", ".htm"}:
-        return None
-    return root / path.lstrip("/")
+    rel = path.lstrip("/")
+
+    candidates: list[Path] = []
+    if not rel:
+        candidates.append(root / "index.html")
+    elif path.endswith("/"):
+        candidates.append(root / rel / "index.html")
+    elif Path(rel).suffix:
+        candidates.append(root / rel)
+    else:
+        candidates.extend([
+            root / f"{rel}.html",
+            root / rel / "index.html",
+        ])
+
+    for candidate in candidates:
+        if candidate.exists() and candidate.is_file():
+            return candidate
+
+    # Return the expected primary location so the caller can report a useful
+    # missing-file path instead of silently skipping an HTML sitemap entry.
+    if candidates:
+        return candidates[0]
+    return None
 
 
 def normalized_url(url: str) -> str:
