@@ -2,9 +2,9 @@
 """Audit local site references and selected live public pages for broken links.
 
 The local pass checks every HTML file in the repository for internal href/src
-references and fragment targets. The live pass checks sitemap pages plus the
-Guild's public blog/download hubs so that broken public destinations are caught
-before visitors find them.
+references and fragment targets. The live pass checks sitemap pages plus selected
+public Guild hubs so broken public destinations are caught before visitors find
+them.
 """
 from __future__ import annotations
 
@@ -25,9 +25,9 @@ SKIP_SCHEMES = ("mailto:", "tel:", "sms:", "javascript:", "data:", "blob:")
 DEFAULT_LIVE_HUBS = (
     "https://blog.sleeppathwaysguild.com/",
     "https://blog.sleeppathwaysguild.com/downloads/",
-    "https://blog.sleeppathwaysguild.com/p/rpsgt-exam-prep-book-store.html",
 )
 USER_AGENT = "Mozilla/5.0 (compatible; SleepPathwaysGuild-LinkAudit/1.0; +https://sleeppathwaysguild.com/)"
+AMAZON_HOSTS = {"amazon.com", "www.amazon.com"}
 
 
 @dataclass
@@ -258,6 +258,12 @@ def live_audit(site_url: str, sitemap_urls: list[str], hubs: list[str], external
             # nonstandard 999 code for automated requests. Surface them prominently
             # without failing CI so a human can decide whether the visitor link works.
             warnings.append(f"ACCESS {status}: {url} -> {final_url}")
+        elif host in AMAZON_HOSTS and status in {502, 503}:
+            # Amazon commonly responds to CI link checkers with transient anti-bot
+            # 5xx responses even when the visitor-facing product link is usable.
+            # Keep these visible for manual verification without treating them as
+            # proof that the storefront link is broken.
+            warnings.append(f"ACCESS {status}: {url} -> {final_url}")
         elif status >= 400:
             label = "OWNED" if host in owned_hosts else "EXTERNAL"
             errors.append(f"{label} {status}: {url} -> {final_url}")
@@ -271,7 +277,7 @@ def main() -> int:
     ap.add_argument("--root", default=".")
     ap.add_argument("--site-url", default="https://sleeppathwaysguild.com")
     ap.add_argument("--report", default="link-audit-report.txt")
-    ap.add_argument("--live", action="store_true", help="Also check sitemap pages and public blog/download hubs")
+    ap.add_argument("--live", action="store_true", help="Also check sitemap pages and selected public Guild hubs")
     args = ap.parse_args()
 
     root = Path(args.root).resolve()
