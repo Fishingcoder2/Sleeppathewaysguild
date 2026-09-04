@@ -123,9 +123,10 @@ function drawReviewCursor(grid){
 function updateReview(elapsed){
  const windowNode=host.querySelector('[data-live-psg-review-window]'),cursorNode=host.querySelector('[data-live-psg-review-cursor]'),cursorButton=host.querySelector('[data-live-psg-cursor-toggle]');
  if(state.running){if(windowNode)windowNode.textContent='Live 30.0-second page is moving right-to-left.';if(cursorNode)cursorNode.textContent='Pause / Freeze to inspect a point in this page.';if(cursorButton)cursorButton.disabled=true;return;}
- if(windowNode)windowNode.textContent=state.elapsedBase>0?`Frozen review · NOW = ${elapsed.toFixed(1)} s session time · page span = 30.0 s`:'Paused at start · page span = 30.0 s';
- if(cursorButton)cursorButton.disabled=false;
- if(cursorNode){if(state.cursorEnabled&&state.cursorRatio!=null){const into=state.cursorRatio*WINDOW_SECONDS,before=WINDOW_SECONDS-into;cursorNode.textContent=`Cursor: ${into.toFixed(1)} s into page · ${before.toFixed(1)} s before NOW`;}else cursorNode.textContent='Turn on Review cursor, then point anywhere over the frozen waveform.';}
+ const canReview=state.elapsedBase>0;
+ if(windowNode)windowNode.textContent=canReview?`Frozen review · NOW = ${elapsed.toFixed(1)} s session time · page span = 30.0 s`:'Paused at start · page span = 30.0 s';
+ if(cursorButton)cursorButton.disabled=!canReview;
+ if(cursorNode){if(!canReview)cursorNode.textContent='Start the live page, then Pause / Freeze to inspect a point in the 30-second window.';else if(state.cursorEnabled&&state.cursorRatio!=null){const into=state.cursorRatio*WINDOW_SECONDS,before=WINDOW_SECONDS-into;cursorNode.textContent=`Cursor: ${into.toFixed(1)} s into page · ${before.toFixed(1)} s before NOW`;}else cursorNode.textContent='Turn on Review cursor, then point anywhere over the frozen waveform.';}
 }
 function updateStatus(elapsed){
  const epoch=Math.floor(elapsed/WINDOW_SECONDS)+1;const frozen=!state.running&&state.elapsedBase>0;
@@ -138,8 +139,8 @@ function frame(now){if(!state.running)return;if(!state.lastPaint||now-state.last
 function start(){if(state.running)return;state.running=true;state.runStartedAt=performance.now();state.lastPaint=0;paint();state.raf=requestAnimationFrame(frame);}
 function pause(){if(!state.running)return;state.elapsedBase=elapsedNow();state.running=false;cancelAnimationFrame(state.raf);state.raf=0;if(state.cursorEnabled&&state.cursorRatio==null)state.cursorRatio=.5;paint();}
 function restart(){state.elapsedBase=0;state.runStartedAt=performance.now();state.cursorEnabled=false;state.cursorRatio=null;delete canvas.dataset.reviewCursorSeconds;const cursorButton=host.querySelector('[data-live-psg-cursor-toggle]');if(cursorButton){cursorButton.setAttribute('aria-pressed','false');cursorButton.textContent='Review cursor OFF';}paint();}
-function toggleCursor(){if(state.running)return;state.cursorEnabled=!state.cursorEnabled;if(state.cursorEnabled&&state.cursorRatio==null)state.cursorRatio=.5;const button=host.querySelector('[data-live-psg-cursor-toggle]');if(button){button.setAttribute('aria-pressed',String(state.cursorEnabled));button.textContent=state.cursorEnabled?'Review cursor ON':'Review cursor OFF';}paint();}
-function setCursorFromPointer(event){if(state.running||!state.cursorEnabled)return;const rect=canvas.getBoundingClientRect(),scaleX=state.width/Math.max(1,rect.width),localX=(event.clientX-rect.left)*scaleX,plotLeft=state.labelWidth,plotRight=state.width-10;state.cursorRatio=clamp((localX-plotLeft)/Math.max(1,plotRight-plotLeft),0,1);paint();}
+function toggleCursor(){if(state.running||state.elapsedBase<=0)return;state.cursorEnabled=!state.cursorEnabled;if(state.cursorEnabled&&state.cursorRatio==null)state.cursorRatio=.5;const button=host.querySelector('[data-live-psg-cursor-toggle]');if(button){button.setAttribute('aria-pressed',String(state.cursorEnabled));button.textContent=state.cursorEnabled?'Review cursor ON':'Review cursor OFF';}paint();}
+function setCursorFromPointer(event){if(state.running||!state.cursorEnabled||state.elapsedBase<=0)return;const rect=canvas.getBoundingClientRect(),scaleX=state.width/Math.max(1,rect.width),localX=(event.clientX-rect.left)*scaleX,plotLeft=state.labelWidth,plotRight=state.width-10;state.cursorRatio=clamp((localX-plotLeft)/Math.max(1,plotRight-plotLeft),0,1);paint();}
 function requestFullscreen(){const target=screen||host;const request=target.requestFullscreen||target.webkitRequestFullscreen||target.msRequestFullscreen;if(typeof request==='function'){try{const result=request.call(target);if(result&&typeof result.catch==='function')result.catch(()=>{});}catch(error){}}}
 ensureReviewControls();
 startButton.addEventListener('click',start);pauseButton.addEventListener('click',pause);restartButton.addEventListener('click',restart);
