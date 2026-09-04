@@ -3,16 +3,26 @@
 
   const covers={
     'fundamentals of sleep technology':'https://covers.openlibrary.org/b/isbn/9781975111625-L.jpg?default=false',
-    'pediatric sleep pearls':'https://covers.openlibrary.org/b/isbn/9780323392778-L.jpg?default=false',
-    'sleep medicine pearls':'https://covers.openlibrary.org/b/isbn/9781455770519-L.jpg?default=false'
+    'pediatric sleep pearls':'https://covers.openlibrary.org/b/isbn/9780323392778-L.jpg?default=false'
   };
+  const sleepMedicinePearls3e='https://covers.openlibrary.org/b/isbn/9781455770519-L.jpg?default=false';
 
   function normalize(value){
     return String(value||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
   }
 
-  function coverFor(title){
+  function editionText(card){
+    const rows=[...card.querySelectorAll('.reference-meta > div')];
+    const row=rows.find(item=>normalize(item.querySelector('span')&&item.querySelector('span').textContent).includes('edition'));
+    return normalize(row&&row.querySelector('strong')&&row.querySelector('strong').textContent);
+  }
+
+  function coverFor(title,card){
     const key=normalize(title);
+    if(key.includes('sleep medicine pearls')){
+      const edition=editionText(card);
+      return /(^| )3rd( |$)|third edition/.test(edition)?sleepMedicinePearls3e:'';
+    }
     if(covers[key]) return covers[key];
     for(const name of Object.keys(covers)){
       if(key.includes(name)) return covers[name];
@@ -27,7 +37,7 @@
       if(card.dataset.coverResolved==='1') return;
       const titleNode=card.querySelector('h2');
       const title=titleNode?titleNode.textContent.trim():'';
-      const src=coverFor(title);
+      const src=coverFor(title,card);
       if(!src){card.dataset.coverResolved='1';return;}
       const head=card.querySelector('.reference-card-head');
       if(!head){card.dataset.coverResolved='1';return;}
