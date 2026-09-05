@@ -27,7 +27,7 @@ async function expectBoxInsideViewport(page,selector){
   expect(box.y).toBeLessThan(viewport.height);
 }
 
-test('labeled study, report, and Guild-resource deep links land on their visible destination',async({page})=>{
+test('labeled study, report, and reference deep links land on their visible destination',async({page})=>{
   for(const code of ['D1','D2','D3','D4']){
     await page.goto(`study.html#${code}`);
     await expectTargetNearTop(page,`#${code}`);
@@ -36,8 +36,8 @@ test('labeled study, report, and Guild-resource deep links land on their visible
   await page.goto('reports.html#guided-trail-report');
   await expectTargetNearTop(page,'#guided-trail-report');
 
-  await page.goto('index.html#guild-resources');
-  await expectTargetNearTop(page,'#guild-resources');
+  await page.goto('sources-disclosures.html#reference-filters');
+  await expectTargetNearTop(page,'#reference-filters');
 });
 
 test('Guided Study exposes direct area choices instead of making learners scroll through unrelated sections',async({page})=>{
