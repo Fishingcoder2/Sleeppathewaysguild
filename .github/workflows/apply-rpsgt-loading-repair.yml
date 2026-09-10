@@ -1,105 +1,14 @@
 name: Apply RPSGT loading repair
 
 on:
-  push:
-    branches:
-      - build/affiliate-link-wording-20260910
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  patch-affiliate-disclosure:
+  disabled:
+    if: false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: build/affiliate-link-wording-20260910
-          fetch-depth: 0
-      - name: Apply clear and conspicuous affiliate disclosure pattern
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          disclosure = 'We may earn a commission from qualifying purchases through this link.'
-
-          registry_path = Path('assets/guild-resource-commerce-registry.js')
-          registry = registry_path.read_text(encoding='utf-8')
-          registry = registry.replace("disclosure_label:'Paid link'", f"disclosure_label:'{disclosure}'")
-          assert registry.count(f"disclosure_label:'{disclosure}'") == 6
-          registry_path.write_text(registry, encoding='utf-8')
-
-          v3_path = Path('rpsgt-v3/core/reference-center.js')
-          v3 = v3_path.read_text(encoding='utf-8')
-          old_disclosure = "    const disclosure=text(record.disclosure_label)||'Paid link';"
-          new_disclosure = f"    const disclosure=text(record.disclosure_label)||'{disclosure}';"
-          assert old_disclosure in v3
-          v3 = v3.replace(old_disclosure, new_disclosure, 1)
-          old_return = "    return '<a class=\"btn secondary reference-affiliate-action\" data-affiliate-source-id=\"'+escapeHtml(sourceId)+'\" href=\"'+escapeHtml(url)+'\" target=\"_blank\" rel=\"sponsored noopener noreferrer\">Find on Amazon · '+escapeHtml(disclosure)+'</a>';"
-          new_return = "    return '<span class=\"reference-affiliate-group\" style=\"display:inline-flex;flex-direction:column;align-items:flex-start;gap:.3rem\"><a class=\"btn secondary reference-affiliate-action\" data-affiliate-source-id=\"'+escapeHtml(sourceId)+'\" href=\"'+escapeHtml(url)+'\" target=\"_blank\" rel=\"sponsored noopener noreferrer\">View on Amazon</a><small class=\"reference-affiliate-disclosure\" style=\"font-size:.78rem;line-height:1.3;opacity:.82\">'+escapeHtml(disclosure)+'</small></span>';"
-          assert old_return in v3
-          v3 = v3.replace(old_return, new_return, 1)
-          assert '>View on Amazon</a>' in v3
-          assert disclosure in v3
-          v3_path.write_text(v3, encoding='utf-8')
-
-          cpsgt_path = Path('cpsgt-study-app.html')
-          cpsgt = cpsgt_path.read_text(encoding='utf-8')
-          old_helper = '''function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="View on Amazon · Affiliate link"){
-            const commerce=cpsgtCommerceRecord(localId);
-            if(!commerce)return"";
-            return `<a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a>`;
-          }'''
-          new_helper = '''function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="View on Amazon"){
-            const commerce=cpsgtCommerceRecord(localId);
-            if(!commerce)return"";
-            return `<span class="affiliate-link-group" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.3rem"><a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a><small class="affiliate-link-disclosure" style="font-size:.78rem;line-height:1.3;opacity:.82">''' + disclosure + '''</small></span>`;
-          }'''
-          assert old_helper in cpsgt
-          cpsgt = cpsgt.replace(old_helper, new_helper, 1)
-          assert 'label="View on Amazon"' in cpsgt
-          assert 'View on Amazon · Affiliate link' not in cpsgt
-          assert 'Find on Amazon · Paid link' not in cpsgt
-          assert disclosure in cpsgt
-          cpsgt_path.write_text(cpsgt, encoding='utf-8')
-
-          guard_path = Path('rpsgt-v3/scripts/test-three-app-quality-guards.mjs')
-          guard = guard_path.read_text(encoding='utf-8')
-          old_guard = "assert.ok(cpsgt.includes('Find on Amazon · Paid link'),'CPSGT paid action label drifted.');"
-          new_guard = "assert.ok(cpsgt.includes('label=\"View on Amazon\"'),'CPSGT Amazon action label drifted.');\nassert.ok(cpsgt.includes('We may earn a commission from qualifying purchases through this link.'),'CPSGT link-level commission disclosure is missing.');\nassert.ok(!cpsgt.includes('View on Amazon · Affiliate link')&&!cpsgt.includes('Find on Amazon · Paid link'),'CPSGT returned to confusing affiliate wording inside the button.');"
-          assert old_guard in guard
-          guard = guard.replace(old_guard, new_guard, 1)
-          insertion = "const cpsgt=await readFile(join(repoRoot,'cpsgt-study-app.html'),'utf8');\n"
-          expanded = insertion + "const v3ReferenceCenter=await readFile(join(v3,'core','reference-center.js'),'utf8');\nconst commerceRegistry=await readFile(join(repoRoot,'assets','guild-resource-commerce-registry.js'),'utf8');\nassert.ok(v3ReferenceCenter.includes('>View on Amazon</a>'),'RPSGT V3 Amazon action label drifted.');\nassert.ok(v3ReferenceCenter.includes('We may earn a commission from qualifying purchases through this link.'),'RPSGT V3 link-level commission disclosure is missing.');\nassert.ok(commerceRegistry.includes(\"disclosure_label:'We may earn a commission from qualifying purchases through this link.'\"),'Shared commerce registry disclosure copy drifted.');\n"
-          assert insertion in guard
-          guard = guard.replace(insertion, expanded, 1)
-          guard_path.write_text(guard, encoding='utf-8')
-          PY
-      - name: Validate patched affiliate presentation
-        run: |
-          node --check assets/guild-resource-commerce-registry.js
-          node --check rpsgt-v3/core/reference-center.js
-          node rpsgt-v3/scripts/test-three-app-quality-guards.mjs
-          python - <<'PY'
-          from pathlib import Path
-          text = Path('cpsgt-study-app.html').read_text(encoding='utf-8')
-          marker = 'function cpsgtAffiliateActionHtml('
-          pos = text.index(marker)
-          start = text.rfind('<script', 0, pos)
-          start = text.index('>', start) + 1
-          end = text.index('</script>', pos)
-          Path('/tmp/cpsgt-main.js').write_text(text[start:end], encoding='utf-8')
-          PY
-          node --check /tmp/cpsgt-main.js
-          git diff --check
-      - name: Commit compliant affiliate presentation
-        run: |
-          if git diff --quiet -- cpsgt-study-app.html rpsgt-v3/core/reference-center.js assets/guild-resource-commerce-registry.js rpsgt-v3/scripts/test-three-app-quality-guards.mjs; then
-            echo 'No affiliate presentation changes to commit.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add cpsgt-study-app.html rpsgt-v3/core/reference-center.js assets/guild-resource-commerce-registry.js rpsgt-v3/scripts/test-three-app-quality-guards.mjs
-          git commit -m 'copy: clarify Amazon affiliate disclosure without purchase-pressure wording'
-          git push origin HEAD:build/affiliate-link-wording-20260910
+      - run: echo 'Superseded by the verified browser loader deployment.'
