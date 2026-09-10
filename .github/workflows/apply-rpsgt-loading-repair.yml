@@ -6,30 +6,104 @@ on:
       - build/affiliate-link-wording-20260910
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  inspect-cpsgt-book-actions:
+  patch-affiliate-priority:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: build/affiliate-link-wording-20260910
-      - name: Inspect CPSGT shelf action helpers
+          fetch-depth: 0
+      - name: Make verified Amazon affiliate links the exclusive primary action
         run: |
           python - <<'PY'
           from pathlib import Path
-          text = Path('cpsgt-study-app.html').read_text(encoding='utf-8')
-          for needle in ['function bookPublicUrl','function bookCommerce','bookPublicUrl(book)','bookCommerce(book)','Official publisher','View exact publisher listing']:
-              print('\n###', needle)
-              pos = 0
-              found = 0
-              while True:
-                  pos = text.find(needle,pos)
-                  if pos < 0: break
-                  found += 1
-                  print(text[max(0,pos-900):min(len(text),pos+2200)])
-                  pos += len(needle)
-                  if found >= 5: break
-              if not found: print('NOT FOUND')
+
+          cpsgt_path=Path('cpsgt-study-app.html')
+          cpsgt=cpsgt_path.read_text(encoding='utf-8')
+          replacements=[
+            (
+              'const publicAction=(!legacyAffiliate&&r.url)?`<a class="reference-direct-button" href="${r.url}" target="_blank" rel="${sourceRel(r)}">${escapeHtml(directActionLabel(r))}</a>`:"";',
+              'const publicAction=(!commerceAction&&!legacyAffiliate&&r.url)?`<a class="reference-direct-button" href="${r.url}" target="_blank" rel="${sourceRel(r)}">${escapeHtml(directActionLabel(r))}</a>`:"";'
+            ),
+            (
+              'const publicAction=source.url&&!legacyAffiliate?`<a class="xref-direct-link" href="${source.url}" target="_blank" rel="${xrefSourceRel(source)}">${escapeHtml(source.actionLabel||"Open source")}</a>`:"";',
+              'const publicAction=source.url&&!legacyAffiliate&&!commerceAction?`<a class="xref-direct-link" href="${source.url}" target="_blank" rel="${xrefSourceRel(source)}">${escapeHtml(source.actionLabel||"Open source")}</a>`:"";'
+            ),
+            (
+              '  if(publicUrl&&commerce)return"Official publisher listing · optional paid Amazon link";\n  if(publicUrl)return"Official publisher listing";\n  if(commerce)return"Optional paid Amazon link";',
+              '  if(commerce)return"We may earn a commission from qualifying purchases through this link.";\n  if(publicUrl)return"Official publisher listing";'
+            ),
+            (
+              '  return `${publicUrl?`<a class="${publicClass}" href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener noreferrer">View exact publisher listing ↗</a>`:""}${commerce?cpsgtAffiliateActionHtml(book.id,commerceClass):""}`;',
+              '  if(commerce)return cpsgtAffiliateActionHtml(book.id,commerceClass);\n  return publicUrl?`<a class="${publicClass}" href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener noreferrer">View exact publisher listing ↗</a>`:"";'
+            )
+          ]
+          for old,new in replacements:
+            assert old in cpsgt, 'Expected CPSGT commerce/public pattern was not found.'
+            cpsgt=cpsgt.replace(old,new,1)
+          assert 'const publicAction=(!commerceAction&&!legacyAffiliate&&r.url)?' in cpsgt
+          assert 'const publicAction=source.url&&!legacyAffiliate&&!commerceAction?' in cpsgt
+          assert 'if(commerce)return cpsgtAffiliateActionHtml(book.id,commerceClass);' in cpsgt
+          assert 'Official publisher listing · optional paid Amazon link' not in cpsgt
+          cpsgt_path.write_text(cpsgt,encoding='utf-8')
+
+          v3_path=Path('rpsgt-v3/core/reference-center.js')
+          v3=v3_path.read_text(encoding='utf-8')
+          old='    const actions=(url?\'<a class="btn secondary" href="\'+escapeHtml(url)+\'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>\':\'\')+affiliate;'
+          new='    const actions=affiliate||(url?\'<a class="btn secondary" href="\'+escapeHtml(url)+\'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>\':\'\');'
+          assert old in v3, 'Expected RPSGT V3 public+affiliate action pattern was not found.'
+          v3=v3.replace(old,new,1)
+          assert 'const actions=affiliate||(url?' in v3
+          v3_path.write_text(v3,encoding='utf-8')
+
+          guard_path=Path('rpsgt-v3/scripts/test-three-app-quality-guards.mjs')
+          guard=guard_path.read_text(encoding='utf-8')
+          guard=guard.replace(
+            "assert.ok(v3ReferenceCenter.includes('We may earn a commission from qualifying purchases through this link.'),'RPSGT V3 link-level commission disclosure is missing.');",
+            "assert.ok(v3ReferenceCenter.includes('We may earn a commission from qualifying purchases through this link.'),'RPSGT V3 link-level commission disclosure is missing.');\nassert.ok(v3ReferenceCenter.includes('const actions=affiliate||(url?'),'RPSGT V3 must suppress public/publisher actions when verified Amazon commerce exists.');"
+          )
+          guard=guard.replace(
+            "assert.ok(citationRenderer.includes('const publicAction=(!legacyAffiliate&&r.url)?'),'CPSGT reference renderer can still expose a legacy affiliate URL directly.');",
+            "assert.ok(citationRenderer.includes('const publicAction=(!commerceAction&&!legacyAffiliate&&r.url)?'),'CPSGT reference renderer must show a public/publisher action only when verified Amazon commerce is unavailable.');"
+          )
+          guard=guard.replace(
+            "assert.ok(xrefRenderer.includes('const publicAction=source.url&&!legacyAffiliate?'),'CPSGT cross-reference renderer can still expose a legacy affiliate URL directly.');",
+            "assert.ok(xrefRenderer.includes('const publicAction=source.url&&!legacyAffiliate&&!commerceAction?'),'CPSGT cross-reference renderer must show a public/publisher action only when verified Amazon commerce is unavailable.');"
+          )
+          anchor="assert.ok(cpsgt.includes('function bookCitationHtml(book){return `<div class=\"book-apa-link\">'),'CPSGT book APA citations became purchase links again.');"
+          addition=anchor+"\nassert.ok(cpsgt.includes('if(commerce)return cpsgtAffiliateActionHtml(book.id,commerceClass);'),'CPSGT shelf must prefer verified Amazon commerce over a publisher action.');\nassert.ok(!cpsgt.includes('Official publisher listing · optional paid Amazon link'),'CPSGT shelf still advertises simultaneous publisher and Amazon purchase actions.');"
+          assert anchor in guard
+          guard=guard.replace(anchor,addition,1)
+          guard_path.write_text(guard,encoding='utf-8')
           PY
+      - name: Validate exclusive Amazon-first behavior
+        run: |
+          node --check assets/guild-resource-commerce-registry.js
+          node --check rpsgt-v3/core/reference-center.js
+          node rpsgt-v3/scripts/test-three-app-quality-guards.mjs
+          python - <<'PY'
+          from pathlib import Path
+          text=Path('cpsgt-study-app.html').read_text(encoding='utf-8')
+          marker='function cpsgtAffiliateActionHtml('
+          pos=text.index(marker)
+          start=text.rfind('<script',0,pos)
+          start=text.index('>',start)+1
+          end=text.index('</script>',pos)
+          Path('/tmp/cpsgt-main.js').write_text(text[start:end],encoding='utf-8')
+          PY
+          node --check /tmp/cpsgt-main.js
+          git diff --check
+      - name: Commit Amazon-first action priority
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cpsgt-study-app.html rpsgt-v3/core/reference-center.js rpsgt-v3/scripts/test-three-app-quality-guards.mjs
+          if git diff --cached --quiet; then
+            echo 'No app changes to commit.'
+            exit 0
+          fi
+          git commit -m 'ux: prefer verified Amazon affiliate action over publisher links'
+          git push origin HEAD:build/affiliate-link-wording-20260910
