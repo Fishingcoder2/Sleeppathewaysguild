@@ -1,14 +1,45 @@
 name: Apply RPSGT loading repair
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - build/affiliate-link-wording-20260910
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  disabled:
-    if: false
+  patch-affiliate-wording:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Superseded by the verified browser loader deployment.'
+      - uses: actions/checkout@v4
+        with:
+          ref: build/affiliate-link-wording-20260910
+          fetch-depth: 0
+      - name: Update CPSGT affiliate wording
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('cpsgt-study-app.html')
+          text = path.read_text(encoding='utf-8')
+          before = text
+          text = text.replace('Paid link', 'Affiliate link')
+          text = text.replace('Find on Amazon · Affiliate link', 'View on Amazon · Affiliate link')
+          if text == before:
+              print('No CPSGT affiliate wording changes needed.')
+          else:
+              path.write_text(text, encoding='utf-8')
+          assert 'Find on Amazon · Paid link' not in text
+          assert 'View on Amazon · Affiliate link' in text
+          PY
+      - name: Commit CPSGT wording update
+        run: |
+          if git diff --quiet -- cpsgt-study-app.html; then
+            echo 'No CPSGT changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cpsgt-study-app.html
+          git commit -m 'copy: clarify CPSGT Amazon affiliate action'
+          git push origin HEAD:build/affiliate-link-wording-20260910
