@@ -1,0 +1,10 @@
+Sleep Pathways Guild link audit
+Site: https://sleeppathwaysguild.com
+Local HTML files checked: 51
+Sitemap URLs: 10
+Errors: 0
+Warnings / access-blocked links: 0
+
+ERRORS
+
+WARNINGS / MANUAL VERIFICATION

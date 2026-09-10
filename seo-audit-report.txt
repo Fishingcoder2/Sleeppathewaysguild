@@ -1,0 +1,8 @@
+SEO audit
+Site: https://sleeppathwaysguild.com
+Errors: 0
+Warnings: 0
+
+ERRORS
+
+WARNINGS
