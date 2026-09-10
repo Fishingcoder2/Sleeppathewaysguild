@@ -1,0 +1,103 @@
+/* Sleep Pathways Guild — RPSGT V3 visual polish
+   CPSGT-inspired presentation layer. No question-bank, scoring, storage, or blueprint logic. */
+:root{
+  --spg-navy:#12324d;--spg-blue:#1f6f9f;--spg-blue2:#15547b;--spg-sky:#eaf6fb;
+  --spg-teal:#137a74;--spg-green:#257653;--spg-gold:#b78319;--spg-red:#a63d40;
+  --spg-ink:#19262f;--spg-muted:#62727e;--spg-line:#d8e2e8;--spg-panel:#fff;
+  --spg-bg:#f4f8fa;--spg-shadow:0 12px 30px rgba(18,50,77,.10);--spg-shadow-lg:0 24px 64px rgba(6,30,49,.22)
+}
+html{background:var(--spg-bg);scroll-padding-top:76px}
+body{background:linear-gradient(180deg,#f7fafb 0,#f1f6f8 52%,#f7fafb 100%);color:var(--spg-ink);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button,a,input,select,textarea{touch-action:manipulation}
+:focus-visible{outline:3px solid rgba(31,111,159,.30);outline-offset:3px}
+
+/* Shell: calmer, smaller, more like CPSGT. */
+.topbar{min-height:66px;padding:10px 18px;background:linear-gradient(120deg,var(--spg-navy),var(--spg-blue));box-shadow:0 4px 18px rgba(0,0,0,.14)}
+.brand-mark{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.26);font-size:.78rem;letter-spacing:.07em}
+.brand-copy strong{font-size:1rem}.brand-copy span{font-size:.75rem}
+.top-actions{gap:7px}.top-actions a,.top-actions button{min-height:38px;padding:7px 11px;font-size:.78rem;background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.24)}
+.layout{grid-template-columns:248px minmax(0,1fr);min-height:calc(100vh - 66px)}
+.sidebar{top:66px;height:calc(100vh - 66px);padding:17px 12px;background:#fff;border-right:1px solid var(--spg-line)}
+.nav-label{font-size:.66rem;letter-spacing:.11em;padding:10px 12px 6px}
+.nav-link{min-height:44px;padding:9px 11px;border-radius:12px;font-size:.88rem;font-weight:740}
+.nav-link span{display:grid;place-items:center;width:26px;height:26px;flex:0 0 26px;border-radius:8px;background:#f0f6f8;font-size:.95rem;filter:saturate(.45)}
+.nav-link:hover,.nav-link.active{background:var(--spg-sky);color:var(--spg-blue)}
+.nav-link.active span{background:#d9edf5;filter:none}
+.main{width:100%;max-width:1500px;margin:0 auto;padding:22px clamp(18px,2.2vw,32px) 42px}
+
+/* Typography and surfaces. */
+h1,h2,h3{letter-spacing:-.022em}h1{font-size:clamp(2rem,4vw,3.25rem);line-height:1.04}h2{font-size:clamp(1.35rem,2.5vw,1.95rem)}
+.lead{font-size:1rem;line-height:1.62;color:#405562}.eyebrow{font-size:.72rem;letter-spacing:.10em;color:var(--spg-teal)}
+.section{margin-top:20px}.section-head{gap:12px;margin-bottom:12px;align-items:end}.section-head h2{margin-bottom:0}.section-head p{font-size:.88rem}
+.card{border:1px solid var(--spg-line);border-radius:18px;background:var(--spg-panel);padding:17px;box-shadow:0 6px 20px rgba(20,50,74,.055)}
+.notice{border-left:5px solid var(--spg-gold);background:#fff9eb;border-radius:12px;padding:12px 14px;box-shadow:none}
+.btn{min-height:42px;border-radius:12px;padding:8px 13px;font-size:.86rem;font-weight:800}.btn.primary{background:var(--spg-blue);box-shadow:0 6px 15px rgba(31,111,159,.12)}.btn.primary:hover{background:var(--spg-blue2)}.btn.secondary{border-color:#a9cada}
+.status{font-size:.72rem;padding:5px 9px}
+
+/* Home: inviting, compact, one dominant next action. */
+body[data-module="home"] .main{padding-top:16px}
+body[data-module="home"] .brpt-hero{grid-template-columns:minmax(0,1.35fr) minmax(270px,.65fr);gap:18px;min-height:0;padding:26px;border-radius:24px;background:linear-gradient(135deg,#fff 0%,#eaf7fb 58%,#e8f1ff 100%);border:1px solid #d8e9ef;box-shadow:var(--spg-shadow)}
+body[data-module="home"] .home-hero-copy{gap:8px}body[data-module="home"] .home-hero-copy h1{font-size:clamp(2rem,4vw,3.35rem);max-width:18ch;margin:6px 0 8px}body[data-module="home"] .home-hero-copy .lead{font-size:.98rem;max-width:70ch}
+body[data-module="home"] .home-hero-actions{gap:8px;margin-top:8px}body[data-module="home"] .home-hero-actions .btn{min-height:42px;padding:8px 13px}
+body[data-module="home"] .home-hero-actions .btn.primary{min-height:48px;padding-inline:18px;font-size:.92rem;background:linear-gradient(120deg,var(--spg-blue),#157f96)}
+body[data-module="home"] .coach-bob-home{grid-template-columns:76px minmax(0,1fr);gap:12px;padding:14px;border-left:6px solid var(--spg-gold);background:linear-gradient(180deg,#fff8e7,#f5e6bd);box-shadow:0 8px 22px rgba(79,56,16,.10)}
+body[data-module="home"] .coach-bob-home img{width:76px;height:76px;border-radius:18px}body[data-module="home"] .coach-bob-home h2{font-size:1.1rem;margin:5px 0}body[data-module="home"] .coach-bob-home p{font-size:.84rem;line-height:1.45}
+body[data-module="home"] .front-door-primary{margin-top:14px;padding:14px 15px;border-top-width:4px}body[data-module="home"] .front-door-primary h2{font-size:1.28rem}
+body[data-module="home"] .learning-journey{gap:7px}.learning-step{min-height:96px;padding:10px}.learning-step:before{width:25px;height:25px;margin-bottom:6px}.learning-step strong{font-size:.84rem}.learning-step span{font-size:.73rem;line-height:1.3}
+body[data-module="home"] .brpt-exam-card,body[data-module="home"] .official-board-card,body[data-module="home"] .compass-card,body[data-module="home"] .disclosure-preview{border-top-width:4px}
+body[data-module="home"] .brpt-domain{min-height:174px;padding:14px}.brpt-domain h3{font-size:.98rem}.brpt-domain p,.brpt-domain small{font-size:.8rem}.brpt-weight{font-size:1.05rem}.brpt-exam-facts>div{padding:11px}
+body[data-module="home"] .reasoning-compass{gap:9px}.compass-step{padding:13px}.compass-step .compass-icon{width:36px;height:36px;border-radius:11px}.compass-step p{font-size:.82rem}
+body[data-module="home"] .official-resource-card{min-height:142px;padding:13px}.official-resource-description{font-size:.8rem}
+body[data-module="home"] .stat-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.stat{padding:12px 13px}.stat strong{font-size:1.55rem}
+body[data-module="home"] .module-card{min-height:165px;padding:15px}.module-card p{font-size:.84rem;line-height:1.45}
+
+/* Compact destination cards across hub pages. */
+.grid{gap:12px}.grid-3{gap:12px}.grid-4{gap:12px}.module-card{border-radius:17px}.module-card:before{width:5px}
+
+/* Forms should not feel oversized. */
+input,select,textarea{border-radius:11px!important}.practice-controls select{min-height:42px}.practice-setup{gap:13px}.bank-summary>div{padding:11px}.bank-summary strong{font-size:1.3rem}
+
+/* TRUE FIT-TO-WINDOW PRACTICE WORKSPACE. Desktop never requires page dragging. */
+body.practice-focus-open{overflow:hidden}
+.practice-session:not(.hidden){inset:0;display:grid;grid-template-columns:minmax(0,800px) 240px;align-items:stretch;align-content:center;justify-content:center;gap:12px;padding:16px;overflow:hidden;background:rgba(1,15,31,.66);backdrop-filter:blur(6px)}
+.practice-session:not(.hidden)>.question-card{display:flex;flex-direction:column;width:100%;height:min(860px,calc(100dvh - 32px));max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:18px;border-radius:22px;box-shadow:var(--spg-shadow-lg)}
+.practice-session:not(.hidden)>.session-rail{position:static;max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;align-self:center}
+.practice-session:not(.hidden)>.session-rail>.card{padding:13px}.practice-session:not(.hidden)>.session-rail h3{font-size:.95rem;margin-bottom:8px}.practice-session:not(.hidden) .session-stat{padding:8px}.practice-session:not(.hidden) .session-stat strong{font-size:1.15rem}
+.practice-session:not(.hidden) .question-meta{position:sticky;top:-18px;z-index:6;margin:-18px -18px 8px;padding:14px 18px 11px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--spg-line);backdrop-filter:blur(8px)}
+.practice-session:not(.hidden) .question-prompt{font-size:clamp(1.08rem,1.7vw,1.35rem);line-height:1.42;margin:12px 0}.practice-session:not(.hidden) .practice-choices{gap:8px}.practice-session:not(.hidden) .practice-choice{min-height:48px;padding:10px 11px;border-width:1px}
+.practice-session:not(.hidden) .answer-feedback{margin-top:10px;padding:12px}.practice-session:not(.hidden) .practice-coach{margin-top:8px}
+.practice-modal-footer{position:sticky;bottom:-18px;z-index:7;margin:auto -18px -18px;padding:10px 18px 12px;background:rgba(255,255,255,.97);border-top:1px solid var(--spg-line);box-shadow:0 -10px 22px rgba(18,50,77,.07);backdrop-filter:blur(8px)}
+.practice-modal-footer .practice-question-tools{margin-top:0}.practice-modal-footer .practice-question-action-row{padding-top:0;border-top:0}.practice-modal-footer .question-actions{margin-top:8px}
+.practice-session:not(.hidden).is-complete{grid-template-columns:minmax(0,700px)}.practice-session:not(.hidden).is-complete>.session-rail,.practice-session:not(.hidden).is-complete>[data-question-panel]{display:none!important}.practice-session:not(.hidden)>.session-complete:not(.hidden){grid-column:1;width:min(700px,100%);max-height:calc(100dvh - 32px);overflow:auto;align-self:center;padding:24px;border-radius:22px;box-shadow:var(--spg-shadow-lg)}
+.completion-next-actions{gap:8px}.completion-next-actions .btn.primary{font-size:.92rem}
+
+/* Guided Study checkpoint follows the CPSGT modal-sheet behavior. */
+.checkpoint-overlay{padding:16px;overflow:hidden;background:rgba(1,15,31,.66);backdrop-filter:blur(6px)}
+.checkpoint-modal{display:flex;flex-direction:column;width:min(940px,100%);height:min(820px,calc(100dvh - 32px));max-height:calc(100dvh - 32px);overflow:hidden;border-radius:22px;background:#f7fbfd;box-shadow:var(--spg-shadow-lg)}
+.checkpoint-modal-head{position:relative;flex:0 0 auto;padding:14px 17px}.checkpoint-progress-wrap{flex:0 0 auto;padding:11px 17px 0}.checkpoint-progress-copy{font-size:.8rem}.checkpoint-content,.checkpoint-content.coach-visible{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:13px 17px;grid-template-columns:minmax(0,1fr)}
+.checkpoint-content.coach-visible{grid-template-columns:minmax(0,1fr) minmax(230px,290px)}.checkpoint-question{padding:15px}.checkpoint-question h2{font-size:clamp(1.08rem,1.8vw,1.42rem);margin:10px 0 13px;line-height:1.4}.checkpoint-options{gap:8px}.checkpoint-option{padding:10px 11px}.coach-question-panel{padding:13px;border-radius:15px}.coach-question-panel p,.coach-review-list{font-size:.83rem}
+.checkpoint-result{flex:0 0 auto;margin:10px 17px 0;padding:11px 13px}.checkpoint-route-panel{margin:0!important}
+.checkpoint-actions{position:relative;flex:0 0 auto;bottom:auto;padding:10px 17px;box-shadow:0 -8px 20px rgba(18,50,77,.05)}
+
+/* Badge/checkpoint next-step sheet. */
+.guided-route-overlay{position:fixed;inset:0;z-index:1400;display:grid;place-items:center;padding:18px;background:rgba(1,15,31,.62);backdrop-filter:blur(7px)}
+.guided-route-overlay[hidden]{display:none}.guided-route-overlay .checkpoint-route-panel{width:min(620px,100%);max-height:calc(100dvh - 36px);overflow:auto;padding:22px;border:1px solid #c3dbe4;border-radius:22px;background:linear-gradient(145deg,#fff,#eef8fb);box-shadow:var(--spg-shadow-lg)}
+.guided-route-overlay .checkpoint-route-panel h3{font-size:1.45rem}.guided-route-overlay .checkpoint-route-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}.guided-route-overlay .checkpoint-route-actions .btn.primary{grid-column:1/-1;min-height:48px}.guided-route-overlay .checkpoint-route-actions .btn{width:100%;justify-content:center;text-align:center}
+body.guided-route-open{overflow:hidden}
+
+/* Achievement pop-up also fits the viewport with a visible action area. */
+.guided-award-overlay{padding:16px;background:rgba(1,15,31,.66);backdrop-filter:blur(7px)}.guided-award-dialog{display:flex;flex-direction:column;width:min(580px,100%);max-height:calc(100dvh - 32px);overflow:auto;padding:22px 24px 20px}.guided-award-medal{width:104px;height:104px;font-size:3.1rem;margin-bottom:14px}.guided-award-dialog .eyebrow{margin-top:20px}.guided-award-coach,.guided-award-next{padding:12px 13px;margin-top:12px}.guided-award-actions{position:sticky;bottom:-20px;z-index:3;margin:14px -24px -20px;padding:11px 24px 14px;background:rgba(255,255,255,.97);border-top:1px solid var(--spg-line);box-shadow:0 -8px 18px rgba(18,50,77,.06)}
+
+/* Guided Study map: less scrolling and less visual bulk. */
+body[data-module="study"] .hero{padding:21px}.blueprint-summary{gap:8px}.blueprint-summary span{padding:9px;font-size:.8rem}.blueprint-summary strong{font-size:1.25rem}.domain-map-card{padding:14px;border-radius:18px;border-top-width:5px}.domain-map-head{margin-bottom:10px}.domain-weight strong{font-size:1.5rem}.domain-task-grid{gap:9px}.task-map-card{gap:8px;padding:12px;border-radius:14px}.task-map-head h3{font-size:.97rem;margin:5px 0 0}.task-focus{font-size:.84rem;line-height:1.42}.task-next{padding:8px 9px}.task-next span{font-size:.8rem}.task-map-card details{padding:8px 9px}.task-map-card summary{font-size:.82rem}.trail-actions{gap:6px}.trail-actions .btn{min-height:40px;font-size:.8rem}
+
+/* Keep secondary information available without letting it dominate. */
+.official-resource-card,.disclosure-grid>div,.compass-step,.brpt-domain{box-shadow:none}
+.footer{margin-top:24px;padding-top:18px;border-top:1px solid rgba(18,50,77,.08)}
+
+@media(min-width:1001px) and (max-width:1240px){.layout{grid-template-columns:220px minmax(0,1fr)}.main{padding:18px}.top-actions a:nth-child(n+4){display:none}.practice-session:not(.hidden){grid-template-columns:minmax(0,760px) 220px}.checkpoint-content.coach-visible{grid-template-columns:minmax(0,1fr) 250px}}
+@media(max-width:1050px){body{padding-bottom:76px}.layout{display:block}.main{padding-bottom:96px}.sidebar{display:none}.mobile-nav{display:grid}.practice-session:not(.hidden){grid-template-columns:minmax(0,820px);padding:12px}.practice-session:not(.hidden)>.session-rail{display:none}.practice-session:not(.hidden)>.question-card{height:calc(100dvh - 24px);max-height:calc(100dvh - 24px)}}
+@media(max-width:820px){body[data-module="home"] .brpt-hero{grid-template-columns:1fr;padding:18px}.home-hero-actions{display:grid!important;grid-template-columns:1fr}.home-hero-actions .btn{width:100%}.learning-journey{grid-template-columns:repeat(2,minmax(0,1fr))!important}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.checkpoint-content.coach-visible{grid-template-columns:1fr}}
+@media(max-width:760px){.main{padding:11px 10px 94px}.topbar{padding:9px 10px}.top-actions a:not(:last-child){display:none}.card{padding:14px;border-radius:15px}.section{margin-top:14px}.section-head{display:block}.hero{padding:16px;border-radius:18px}h1{font-size:1.9rem}.grid-2,.grid-3,.grid-4,.brpt-domain-grid,.brpt-exam-facts{grid-template-columns:1fr}.learning-journey,.stat-grid{grid-template-columns:1fr!important}.practice-session:not(.hidden){display:block;padding:0;background:#f7fbfd;backdrop-filter:none}.practice-session:not(.hidden)>.question-card{height:100dvh;max-height:100dvh;min-height:100dvh;border:0;border-radius:0;padding:14px 12px calc(74px + env(safe-area-inset-bottom));box-shadow:none}.practice-session:not(.hidden) .question-meta{top:-14px;margin:-14px -12px 8px;padding:calc(10px + env(safe-area-inset-top)) 12px 9px}.practice-modal-footer{bottom:calc(-74px - env(safe-area-inset-bottom));margin:auto -12px calc(-74px - env(safe-area-inset-bottom));padding:9px 12px calc(10px + env(safe-area-inset-bottom))}.practice-session:not(.hidden)>.session-complete:not(.hidden){min-height:100dvh;max-height:100dvh;border:0;border-radius:0;padding:calc(24px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));box-shadow:none}.checkpoint-overlay{padding:0;place-items:stretch}.checkpoint-modal{width:100%;height:100dvh;max-height:100dvh;border:0;border-radius:0}.checkpoint-modal-head{padding:calc(11px + env(safe-area-inset-top)) 13px 10px}.checkpoint-progress-wrap{padding:9px 13px 0}.checkpoint-content,.checkpoint-content.coach-visible{padding:10px 12px}.checkpoint-question{padding:12px}.checkpoint-actions{grid-template-columns:1fr 1fr;padding:9px 12px calc(9px + env(safe-area-inset-bottom))}.checkpoint-save-note{grid-column:1/-1;grid-row:1}.guided-route-overlay{align-items:end;padding:0}.guided-route-overlay .checkpoint-route-panel{width:100%;max-height:86dvh;border-radius:22px 22px 0 0;padding:20px 16px calc(18px + env(safe-area-inset-bottom))}.guided-route-overlay .checkpoint-route-actions{grid-template-columns:1fr}.guided-route-overlay .checkpoint-route-actions .btn.primary{grid-column:1}.guided-award-overlay{align-items:end;padding:0}.guided-award-dialog{width:100%;max-height:92dvh;border-radius:22px 22px 0 0;padding:20px 16px calc(18px + env(safe-area-inset-bottom))}.guided-award-actions{margin:13px -16px calc(-18px - env(safe-area-inset-bottom));padding:10px 16px calc(12px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr}.guided-award-actions .btn{width:100%}}
+@media(max-width:390px){.brand-mark{width:40px;height:40px}.brand-copy strong{font-size:.9rem}.mobile-nav a small{font-size:.61rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
