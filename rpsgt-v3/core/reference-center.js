@@ -53,6 +53,17 @@
     return doi?'https://doi.org/'+encodeURIComponent(doi).replace(/%2F/gi,'/'):'';
   }
 
+  function affiliateAction(source){
+    const registry=window.SPGResourceCommerceRegistry;
+    if(!registry||typeof registry.affiliateUrl!=='function'||typeof registry.get!=='function') return '';
+    const sourceId=text(source&&source.id);
+    const record=registry.get(sourceId);
+    const url=registry.affiliateUrl(sourceId);
+    if(!record||record.eligible_for_affiliate!==true||record.resource_type!=='book'||!url) return '';
+    const disclosure=text(record.disclosure_label)||'Paid link';
+    return '<a class="btn secondary reference-affiliate-action" data-affiliate-source-id="'+escapeHtml(sourceId)+'" href="'+escapeHtml(url)+'" target="_blank" rel="sponsored noopener noreferrer">Find on Amazon · '+escapeHtml(disclosure)+'</a>';
+  }
+
   function registerTaskPlanMappings(){
     state.sourceTasks.clear();
     state.sourceSectionsByTask.clear();
@@ -160,14 +171,16 @@
     const tasks=taskCodesFor(source);
     const sections=relevantSections(source,filters.task,filters.topic);
     const url=externalUrl(source);
+    const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
+    const actions=(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'')+affiliate;
     return '<article class="card reference-card">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
       '<div class="reference-citation"><span class="reference-citation-label">APA-style reference</span><em>'+escapeHtml(citation)+'</em></div>'+
       (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
       (tasks.length?'<div class="reference-task-list" aria-label="RPSGT tasks"><span class="sr-only">RPSGT tasks: </span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
       (sections.length?'<details class="reference-sections"><summary>Relevant sections / chapters</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(section.label)+'</li>').join('')+'</ul></details>':'')+
-      (url?'<div class="reference-actions"><a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a></div>':'')+
+      (actions?'<div class="reference-actions">'+actions+'</div>':'')+
       '</article>';
   }
 
@@ -199,6 +212,18 @@
     if(topic) $('[data-reference-topic]').value=topic;
   }
 
+  function trackAffiliateClick(event){
+    const link=event.target.closest('[data-affiliate-source-id]');
+    if(!link) return;
+    const registry=window.SPGResourceCommerceRegistry;
+    if(!registry||typeof registry.trackAffiliateClick!=='function') return;
+    registry.trackAffiliateClick({
+      sourceId:text(link.getAttribute('data-affiliate-source-id')),
+      resourceContext:'rpsgt_v3_reference_center',
+      credentialArea:'rpsgt'
+    });
+  }
+
   function wireControls(){
     $('[data-reference-domain]').addEventListener('change',()=>{populateTasks();render();});
     $('[data-reference-task]').addEventListener('change',render);
@@ -212,6 +237,7 @@
       render();
       $('[data-reference-topic]').focus();
     });
+    $('[data-reference-results]').addEventListener('click',trackAffiliateClick);
   }
 
   async function init(){
