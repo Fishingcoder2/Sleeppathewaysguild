@@ -28,24 +28,7 @@ jobs:
       - name: Restore helper and remove one-time script
         shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          Path('.github/workflows/apply-rpsgt-loading-repair.yml').write_text("""name: Apply RPSGT loading repair
-
-on:
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-jobs:
-  disabled:
-    if: false
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Superseded by the verified browser loader deployment.'
-""", encoding='utf-8')
-          PY
+          git show 39e5b89cf2c598b7ab29d104dead82f38be41d7e:.github/workflows/apply-rpsgt-loading-repair.yml > .github/workflows/apply-rpsgt-loading-repair.yml
           rm -f scripts/one_time_shop_gear.py
 
       - name: Commit verified shop and gear expansion
