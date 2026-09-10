@@ -23,6 +23,7 @@ const v3ReferenceCenter=await readFile(join(v3,'core','reference-center.js'),'ut
 const commerceRegistry=await readFile(join(repoRoot,'assets','guild-resource-commerce-registry.js'),'utf8');
 assert.ok(v3ReferenceCenter.includes('>View on Amazon</a>'),'RPSGT V3 Amazon action label drifted.');
 assert.ok(v3ReferenceCenter.includes('We may earn a commission from qualifying purchases through this link.'),'RPSGT V3 link-level commission disclosure is missing.');
+assert.ok(v3ReferenceCenter.includes('const actions=affiliate||(url?'),'RPSGT V3 must suppress public/publisher actions when verified Amazon commerce exists.');
 assert.ok(commerceRegistry.includes("disclosure_label:'We may earn a commission from qualifying purchases through this link.'"),'Shared commerce registry disclosure copy drifted.');
 function referenceBlock(id){
   const start=cpsgt.indexOf(`"id":"${id}"`);
@@ -57,19 +58,21 @@ assert.ok(cpsgt.includes('credentialArea:"cpsgt"'),'CPSGT affiliate analytics cr
 assert.ok(cpsgt.includes('As an Amazon Associate I earn from qualifying purchases.'),'CPSGT exact affiliate disclosure is missing.');
 assert.ok(cpsgt.includes('No verified purchase link is available for this cited edition.'),'CPSGT safe-failure copy is missing.');
 assert.ok(cpsgt.includes('function bookCitationHtml(book){return `<div class="book-apa-link">'),'CPSGT book APA citations became purchase links again.');
+assert.ok(cpsgt.includes('if(commerce)return cpsgtAffiliateActionHtml(book.id,commerceClass);'),'CPSGT shelf must prefer verified Amazon commerce over a publisher action.');
+assert.ok(!cpsgt.includes('Official publisher listing · optional paid Amazon link'),'CPSGT shelf still advertises simultaneous publisher and Amazon purchase actions.');
 assert.ok(cpsgt.includes('function availableBookRecommendations(){return BOOK_RECOMMENDATIONS.filter(book=>bookHasVerifiedAction(book)'), 'CPSGT timed shelf does not fail closed on unverified destinations.');
 for(const forbidden of ['BRPT-listed','RPSGT-listed','CPSGT-listed']) assert.ok(!cpsgt.includes(forbidden),`CPSGT learner-facing legacy terminology remains: ${forbidden}.`);
 
 const citationRenderer=functionBlock('function citationLinkHtml(r){','function referenceChips(q){');
 assert.ok(citationRenderer.includes('const legacyAffiliate=isAffiliateReference(r);'));
 assert.ok(citationRenderer.includes('const commerceAction=cpsgtAffiliateActionHtml(r.id'));
-assert.ok(citationRenderer.includes('const publicAction=(!legacyAffiliate&&r.url)?'),'CPSGT reference renderer can still expose a legacy affiliate URL directly.');
+assert.ok(citationRenderer.includes('const publicAction=(!commerceAction&&!legacyAffiliate&&r.url)?'),'CPSGT reference renderer must show a public/publisher action only when verified Amazon commerce is unavailable.');
 assert.ok(citationRenderer.includes('<div class="apa-reference-text">${escapeHtml(r.apa||r.title)}</div>'),'CPSGT reference APA text rendering drifted.');
 
 const xrefRenderer=functionBlock('function xrefSourceCardHtml(item,kind="support"){','function blueprintCrossReferenceHtml(q){');
 assert.ok(xrefRenderer.includes('const legacyAffiliate=source.linkType==="amazon-affiliate";'));
 assert.ok(xrefRenderer.includes('const commerceAction=cpsgtAffiliateActionHtml(source.id||item.sourceId'));
-assert.ok(xrefRenderer.includes('const publicAction=source.url&&!legacyAffiliate?'),'CPSGT cross-reference renderer can still expose a legacy affiliate URL directly.');
+assert.ok(xrefRenderer.includes('const publicAction=source.url&&!legacyAffiliate&&!commerceAction?'),'CPSGT cross-reference renderer must show a public/publisher action only when verified Amazon commerce is unavailable.');
 
 const sleepTechnology=referenceBlock('fundamentals-tech');
 assert.ok(sleepTechnology.includes('shop.lww.com/Fundamentals-of-Sleep-Technology'));

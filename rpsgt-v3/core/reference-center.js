@@ -173,7 +173,7 @@
     const url=externalUrl(source);
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
-    const actions=(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'')+affiliate;
+    const actions=affiliate||(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'');
     return '<article class="card reference-card">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
       '<div class="reference-citation"><span class="reference-citation-label">APA-style reference</span><em>'+escapeHtml(citation)+'</em></div>'+
