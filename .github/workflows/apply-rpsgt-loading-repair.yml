@@ -1,14 +1,50 @@
-name: Apply RPSGT loading repair
+name: CPSGT branch inspection
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - build/cpsgt-shared-affiliate-links-20260910
 
 permissions:
   contents: read
 
 jobs:
-  disabled:
-    if: false
+  inspect:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Superseded by the verified browser loader deployment.'
+      - uses: actions/checkout@v4
+      - name: Inspect CPSGT reference implementation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('cpsgt-study-app.html')
+          s=p.read_text(encoding='utf-8')
+          print('SIZE', len(s), 'LINES', s.count('\n')+1)
+          terms=[
+            '"id":"fundamentals-sleep-medicine"',
+            '"id":"fundamentals-tech"',
+            'actionLabel',
+            'linkType',
+            'paid Amazon affiliate link',
+            'Guild Resource Shelf',
+            'References',
+            'referenceBooks',
+            'renderReference',
+            'renderReferences',
+            'REFERENCE',
+            'SPG'
+          ]
+          for term in terms:
+            print('\n===== TERM:', term, '=====')
+            start=0
+            found=0
+            while found<4:
+              i=s.find(term,start)
+              if i<0: break
+              found+=1
+              a=max(0,i-900); b=min(len(s),i+1800)
+              print(f'--- match {found} at {i} ---')
+              print(s[a:b].replace('\x00',''))
+              start=i+len(term)
+            if not found: print('NO MATCH')
+          PY
