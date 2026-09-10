@@ -13,49 +13,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect CPSGT commerce renderers
+      - name: Inventory CPSGT commerce records
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
+          import json
           s=Path('cpsgt-study-app.html').read_text(encoding='utf-8')
-          terms=[
-            'function citationLinkHtml',
-            'const REF_CATALOG',
-            'function xrefSourceCardHtml',
-            'function xrefSourceRel',
-            'function bookIsAffiliate',
-            'function bookLinkRel',
-            'function bookById',
-            'affiliate_click',
-            'gtag(',
-            'const BOOK',
-            'bookCatalog',
-            'sourceReferenceLibrary'
-          ]
-          for term in terms:
-            print('\n===== TERM:',term,'=====')
-            start=0; found=0
-            while found<5:
-              i=s.find(term,start)
-              if i<0: break
-              found+=1
-              a=max(0,i-1300); b=min(len(s),i+3000)
-              print(f'--- match {found} at {i} ---')
-              print(s[a:b].replace('\x00',''))
-              start=i+len(term)
-            if not found: print('NO MATCH')
-          print('\n===== REFERENCE CATALOG RECORDS =====')
-          marker='"referenceCatalog":['
+
+          def extract_json_after(marker, close_marker):
+            i=s.find(marker)
+            if i<0:
+              print('MISSING',marker); return None
+            start=i+len(marker)
+            end=s.find(close_marker,start)
+            if end<0:
+              print('MISSING CLOSE',close_marker); return None
+            raw=s[start:end+1]
+            return json.loads(raw)
+
+          books=extract_json_after('const BOOK_RECOMMENDATIONS=','];')
+          print('===== BOOK RECOMMENDATIONS =====')
+          for b in books or []:
+            print(json.dumps({k:b.get(k) for k in ['id','title','edition','year','isbn13','asin','url','linkType','sourceType','sourceLabel','status']},ensure_ascii=False))
+
+          marker='"crossReferenceCatalog":'
           i=s.find(marker)
-          j=s.find('],"referenceCoverage"',i)
-          block=s[i:j]
-          for m in re.finditer(r'\{"id":"([^"]+)"',block):
-            start=m.start(); end=block.find('},{"id":',start+1)
-            if end<0: end=len(block)
-            rec=block[start:min(end,start+1800)]
-            print(rec)
-          print('\n===== MAIN SCRIPT ANCHOR =====')
-          anchor='\n<script>\nconst APP_DATA='
-          print('anchor_count',s.count(anchor),'anchor_index',s.find(anchor))
+          if i>=0:
+            start=i+len(marker)
+            decoder=json.JSONDecoder()
+            obj,end=decoder.raw_decode(s[start:])
+            print('===== CROSS REFERENCE CATALOG =====')
+            for key,v in obj.items():
+              print(json.dumps({'key':key,**{k:v.get(k) for k in ['id','title','type','organization','apa','url','linkType','actionLabel']}},ensure_ascii=False))
+          else:
+            print('MISSING crossReferenceCatalog')
           PY
