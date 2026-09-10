@@ -9,30 +9,27 @@ permissions:
   contents: read
 
 jobs:
-  inspect-cpsgt-commerce-priority:
+  inspect-cpsgt-book-actions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: build/affiliate-link-wording-20260910
-      - name: Inspect CPSGT commerce/public fallback renderers
+      - name: Inspect CPSGT shelf action helpers
         run: |
           python - <<'PY'
           from pathlib import Path
           text = Path('cpsgt-study-app.html').read_text(encoding='utf-8')
-          markers = [
-              ('function citationLinkHtml(r){','function referenceChips(q){'),
-              ('function xrefSourceCardHtml(item,kind="support"){','function blueprintCrossReferenceHtml(q){'),
-              ('function bookActionLinksHtml(book){','function showBookRecommendation'),
-          ]
-          for start_marker,end_marker in markers:
-              start = text.find(start_marker)
-              if start < 0:
-                  print('\nMISSING', start_marker)
-                  continue
-              end = text.find(end_marker,start)
-              if end < 0:
-                  end = min(len(text), start+7000)
-              print('\n===', start_marker, '===')
-              print(text[start:end])
+          for needle in ['function bookPublicUrl','function bookCommerce','bookPublicUrl(book)','bookCommerce(book)','Official publisher','View exact publisher listing']:
+              print('\n###', needle)
+              pos = 0
+              found = 0
+              while True:
+                  pos = text.find(needle,pos)
+                  if pos < 0: break
+                  found += 1
+                  print(text[max(0,pos-900):min(len(text),pos+2200)])
+                  pos += len(needle)
+                  if found >= 5: break
+              if not found: print('NOT FOUND')
           PY
