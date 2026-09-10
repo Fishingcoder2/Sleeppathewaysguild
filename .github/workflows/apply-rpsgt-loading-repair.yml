@@ -1,4 +1,4 @@
-name: CPSGT branch inspection
+name: Apply CPSGT shared commerce integration
 
 on:
   push:
@@ -6,26 +6,243 @@ on:
       - build/cpsgt-shared-affiliate-links-20260910
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  inspect:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Locate CPSGT book URL rendering
+      - name: Patch CPSGT shared commerce integration
         run: |
           python - <<'PY'
           from pathlib import Path
-          s=Path('cpsgt-study-app.html').read_text(encoding='utf-8')
-          for term in ['book.url','bookIsAffiliate(','BOOK_RECOMMENDATIONS.filter','bookLinkDisclosure(','bookLinkAria(']:
-            print('\n===== TERM:',term,'COUNT',s.count(term),'=====')
-            start=0; found=0
-            while True:
-              i=s.find(term,start)
-              if i<0: break
-              found+=1
-              print(f'--- match {found} at {i} ---')
-              print(s[max(0,i-850):min(len(s),i+1500)])
-              start=i+len(term)
+
+          path=Path('cpsgt-study-app.html')
+          s=path.read_text(encoding='utf-8')
+
+          def require_count(text,count=1):
+            actual=s.count(text)
+            if actual!=count:
+              raise SystemExit(f'Expected {count} occurrences of {text!r}; found {actual}')
+
+          def replace_block(start_marker,end_marker,new_block):
+            global s
+            require_count(start_marker,1)
+            start=s.index(start_marker)
+            end=s.index(end_marker,start)
+            s=s[:start]+new_block+s[end:]
+
+          # Load analytics only if this standalone app does not already define the Guild measurement ID,
+          # then load the shared registry before the large application data/script.
+          main_anchor='\n<script>\nconst APP_DATA='
+          require_count(main_anchor,1)
+          prelude=''
+          if 'G-MZTRYT67VG' not in s:
+            prelude+='''\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-MZTRYT67VG"></script>
+          <script>
+          window.dataLayer=window.dataLayer||[];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js',new Date());
+          gtag('config','G-MZTRYT67VG');
+          </script>'''
+          prelude+='''\n<script src="assets/guild-resource-commerce-registry.js"></script>'''
+          s=s.replace(main_anchor,prelude+'\n<script>\nconst APP_DATA=',1)
+
+          ref_anchor='const REF_CATALOG=Object.fromEntries((APP_DATA.manifest.referenceCatalog||[]).map(r=>[r.id,r]));'
+          require_count(ref_anchor,1)
+          helpers=r'''const REF_CATALOG=Object.fromEntries((APP_DATA.manifest.referenceCatalog||[]).map(r=>[r.id,r]));
+          // Shared commerce IDs are intentionally explicit. Do not infer purchase links from learner text,
+          // titles, ISBNs, raw search text, or legacy URLs embedded in APP_DATA.
+          const CPSGT_COMMERCE_SOURCE_IDS=Object.freeze({
+            "fundamentals-tech":"fundamentals-sleep-technology-3e",
+            "fst3":"fundamentals-sleep-technology-3e",
+            "pst2014":"polysomnography-sleep-technologist-2014",
+            "pediatric-guide":"clinical-guide-pediatric-sleep-3e",
+            "sleep-medicine-pearls":"sleep-medicine-pearls-3e",
+            "pediatric-sleep-pearls":"pediatric-sleep-pearls-1e"
+          });
+          function cpsgtCommerceRecord(localId){
+            const registry=window.SPGResourceCommerceRegistry;
+            const sourceId=CPSGT_COMMERCE_SOURCE_IDS[String(localId||"")];
+            if(!sourceId||!registry||typeof registry.get!=="function"||typeof registry.affiliateUrl!=="function")return null;
+            const record=registry.get(sourceId),url=registry.affiliateUrl(sourceId);
+            if(!record||record.eligible_for_affiliate!==true||record.resource_type!=="book"||!url)return null;
+            return {sourceId,record,url};
+          }
+          function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="Find on Amazon · Paid link"){
+            const commerce=cpsgtCommerceRecord(localId);
+            if(!commerce)return"";
+            return `<a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a>`;
+          }
+          function trackCpsgtAffiliateClick(event){
+            const link=event.target?.closest?.("[data-affiliate-source-id]");
+            if(!link)return;
+            const registry=window.SPGResourceCommerceRegistry;
+            if(!registry||typeof registry.trackAffiliateClick!=="function")return;
+            registry.trackAffiliateClick({
+              sourceId:String(link.getAttribute("data-affiliate-source-id")||""),
+              resourceContext:"cpsgt_reference",
+              credentialArea:"cpsgt"
+            });
+          }
+          document.addEventListener("click",trackCpsgtAffiliateClick);'''
+          s=s.replace(ref_anchor,helpers,1)
+
+          citation=r'''function citationLinkHtml(r){
+            if(!r)return"";
+            const legacyAffiliate=isAffiliateReference(r);
+            const commerceAction=cpsgtAffiliateActionHtml(r.id,"reference-direct-button reference-commerce-link");
+            const publicAction=(!legacyAffiliate&&r.url)?`<a class="reference-direct-button" href="${r.url}" target="_blank" rel="${sourceRel(r)}">${escapeHtml(directActionLabel(r))}</a>`:"";
+            const badgeClass=(legacyAffiliate||commerceAction)?"reference-resource-badge book":"reference-resource-badge";
+            const unavailable=legacyAffiliate&&!commerceAction?`<div class="reference-access-note">No verified purchase link is available for this cited edition.</div>`:"";
+            return `<span class="${badgeClass}">${escapeHtml(resourceBadgeLabel(r))}</span>
+              <div class="apa-reference-text">${escapeHtml(r.apa||r.title)}</div>
+              ${r.linkType==="open-access"?`<div class="reference-free-message">This resource is available free online. The blue link opens the actual guideline, article, protocol, or source.</div>`:""}
+              ${publicAction}${commerceAction}
+              ${r.accessNote&&!legacyAffiliate?`<div class="reference-access-note">${escapeHtml(r.accessNote)}</div>`:""}
+              ${commerceAction?`<div class="reference-buy-note">As an Amazon Associate I earn from qualifying purchases.</div>`:unavailable}`;
+          }
+          '''
+          replace_block('function citationLinkHtml(r){','function referenceChips(q){',citation)
+
+          xref=r'''function xrefSourceCardHtml(item,kind="support"){
+            const source=CPSGT_XREF_SOURCES[item.sourceId]||{};
+            const legacyAffiliate=source.linkType==="amazon-affiliate";
+            const commerceAction=cpsgtAffiliateActionHtml(source.id||item.sourceId,"xref-direct-link");
+            const publicAction=source.url&&!legacyAffiliate?`<a class="xref-direct-link" href="${source.url}" target="_blank" rel="${xrefSourceRel(source)}">${escapeHtml(source.actionLabel||"Open source")}</a>`:"";
+            const unavailable=!publicAction&&!commerceAction?`<span class="xref-unlinked">${legacyAffiliate?"No verified purchase link is available for this cited edition.":"No public link is available for this source"}</span>`:"";
+            return `<article class="xref-source-card ${kind}">
+              <div class="xref-source-top">
+                <div><span class="xref-source-role">${escapeHtml(learnerSourceRole(item.role||kind))}</span><div class="xref-source-title">${escapeHtml(source.title||item.sourceId)}</div></div>
+                <span class="xref-status">${escapeHtml(learnerLocatorStatus(item.locatorStatus))}</span>
+              </div>
+              <div class="xref-apa">${escapeHtml(source.apa||source.title||item.sourceId)}</div>
+              <div class="xref-locator-grid">
+                <div class="xref-locator-cell"><strong>Book or chapter</strong><span>${escapeHtml(item.chapter||"Not specified")}</span></div>
+                <div class="xref-locator-cell"><strong>Section or study area</strong><span>${escapeHtml(item.section||"Not specified")}</span></div>
+                <div class="xref-locator-cell"><strong>Page or location</strong><span>${escapeHtml(item.pages||"Not specified")}</span></div>
+              </div>
+              ${item.note?`<div class="xref-note">${escapeHtml(item.note)}</div>`:""}
+              ${publicAction}${commerceAction}${unavailable}
+              ${commerceAction?`<div class="xref-affiliate-note">As an Amazon Associate I earn from qualifying purchases.</div>`:""}
+            </article>`;
+          }
+          '''
+          replace_block('function xrefSourceCardHtml(item,kind="support"){','function blueprintCrossReferenceHtml(q){',xref)
+
+          book_helpers=r'''function bookById(id){return BOOK_RECOMMENDATIONS.find(book=>book.id===id)||null}
+          function bookPublicUrl(book){return book?.linkType==="publisher"&&/^https:\/\//i.test(String(book.url||""))?String(book.url):""}
+          function bookCommerce(book){return cpsgtCommerceRecord(book?.id)}
+          function bookIsAffiliate(book){return !!bookCommerce(book)}
+          function bookHasVerifiedAction(book){return !!(bookPublicUrl(book)||bookCommerce(book))}
+          function bookLinkRel(book){return bookIsAffiliate(book)?"sponsored noopener noreferrer":"noopener noreferrer"}
+          function bookLinkDisclosure(book){
+            const publicUrl=bookPublicUrl(book),commerce=bookCommerce(book);
+            if(publicUrl&&commerce)return"Official publisher listing · optional paid Amazon link";
+            if(publicUrl)return"Official publisher listing";
+            if(commerce)return"Optional paid Amazon link";
+            return"No verified purchase link";
+          }
+          function bookCitationHtml(book){return `<div class="book-apa-link">${escapeHtml(book.apaCitation)}</div>`}
+          function bookActionLinksHtml(book,publicClass="primary link-button wide",commerceClass="secondary link-button wide"){
+            const publicUrl=bookPublicUrl(book),commerce=bookCommerce(book);
+            return `${publicUrl?`<a class="${publicClass}" href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener noreferrer">View exact publisher listing ↗</a>`:""}${commerce?cpsgtAffiliateActionHtml(book.id,commerceClass):""}`;
+          }
+          function bookMarkedOwned(id){return state.bookShelf.ownedIds.includes(id)}
+          function bookHidden(id){return state.bookShelf.hiddenIds.includes(id)}
+          function availableBookRecommendations(){return BOOK_RECOMMENDATIONS.filter(book=>bookHasVerifiedAction(book)&&!bookMarkedOwned(book.id)&&!bookHidden(book.id))}
+          function currentStudyPageId(){return document.querySelector(".page.active")?.id||""}
+          '''
+          replace_block('function bookById(id){','function currentWeakTaskCode(){',book_helpers)
+
+          show_book=r'''function showBookRecommendation(book=null,{force=false}={}){
+            if(!state.settings.bookSuggestions&&!force)return false;
+            const dock=document.getElementById("bookRecommendationDock");
+            if(!dock)return false;
+            book=book||selectBookRecommendation();
+            if(!book||!bookHasVerifiedAction(book))return false;
+            state.bookShelf.lastShownId=book.id;
+            state.bookShelf.lastShownAt=Date.now();
+            state.bookShelf.impressions++;
+            state.bookShelf.activeStudySeconds=0;
+            save();
+            const actions=bookActionLinksHtml(book,"primary link-button wide","secondary link-button wide");
+            dock.innerHTML=`<div class="book-dock-top"><strong>Optional study shelf · no purchase required</strong><button class="book-dock-close" data-book-not-now aria-label="Close recommendation">×</button></div>
+              <div class="book-dock-body"><div class="book-dock-main">${bookCoverArtHtml(book)}<div class="book-dock-copy"><span class="book-source-label ${book.sourceType==="spg"?"spg":""}">${escapeHtml(book.sourceLabel)}</span><h2>${escapeHtml(book.title)}</h2>${bookCitationHtml(book)}<p class="book-meta-line">${escapeHtml(book.edition)} · ISBN ${escapeHtml(book.isbn13)} · ${bookLinkDisclosure(book)}</p><p>${escapeHtml(book.description)}</p><p><b>May be useful for:</b> ${escapeHtml(book.bestFor)}</p></div></div>
+              <div class="book-dock-reason"><b>Why this appeared:</b> ${escapeHtml(recommendationReason(book))}</div>
+              <div class="book-dock-actions">${actions}<a class="secondary link-button wide" href="SPG_Guild_Resource_Shelf_v1_APA_Affiliate.html" target="_blank" rel="noopener noreferrer">Open full Guild Resource Shelf ↗</a><button class="secondary" data-book-owned="${escapeHtml(book.id)}">I already own it</button><button class="secondary" data-book-not-now>Not now</button><button class="secondary wide" data-book-hide="${escapeHtml(book.id)}">Do not suggest this title again</button></div>
+              ${bookCommerce(book)?`<div class="book-affiliate-note">Optional resource only. No book is required to use this app. As an Amazon Associate I earn from qualifying purchases. Book suggestions do not replace the current blueprint, official standards, formal education, clinical training, or professional judgment.</div>`:""}</div>`;
+            dock.classList.add("open");
+            return true;
+          }
+          '''
+          replace_block('function showBookRecommendation(book=null,{force=false}={}){','function markBookOwned(id){',show_book)
+
+          manager=r'''function openBookShelfManager(){
+            openModal("Optional Study Shelf",`<div class="book-shelf-manager"><article class="badge-policy-card"><span class="badge-threshold-chip">📚 Every 6 active study minutes</span><h3>Book suggestions are optional</h3><p>Suggestions pause during an active mock-style exam and do not count idle or hidden-tab time. Timed suggestions use only verified Guild-registry destinations or official publisher links.</p></article>
+              ${BOOK_RECOMMENDATIONS.map(book=>{const owned=bookMarkedOwned(book.id),hidden=bookHidden(book.id),verified=bookHasVerifiedAction(book);return `<article class="book-manager-row"><div><h3>${escapeHtml(book.title)}</h3><p>${escapeHtml(book.sourceLabel)} · ${owned?"Marked as owned":hidden?"Hidden from suggestions":verified?"Eligible for suggestions":"Reference only — no verified purchase link"}</p>${bookCitationHtml(book)}<p class="book-meta-line">${bookLinkDisclosure(book)}</p>${bookActionLinksHtml(book,"secondary compact link-button","secondary compact link-button")}</div><div class="book-manager-actions">${owned||hidden?`<button class="secondary compact" data-book-allow="${escapeHtml(book.id)}">Allow again</button>`:verified?`<button class="secondary compact" data-book-owned="${escapeHtml(book.id)}">I own it</button><button class="secondary compact" data-book-hide="${escapeHtml(book.id)}">Hide title</button>`:""}</div></article>`}).join("")}</div>`,"Manage book suggestions");
+          }
+          '''
+          replace_block('function openBookShelfManager(){','function allowBookRecommendation(id){',manager)
+
+          report=r'''function reportBookCardHtml(book,taskCode=""){
+            const owned=bookMarkedOwned(book.id);
+            const actions=bookActionLinksHtml(book,"secondary compact link-button","secondary compact link-button");
+            return `<article class="report-book-card">${bookCoverArtHtml(book)}<div><span class="book-source-label ${book.sourceType==="spg"?"spg":""}">${escapeHtml(book.sourceLabel)}</span><h3>${escapeHtml(book.title)}</h3>${bookCitationHtml(book)}<p class="book-meta-line">${escapeHtml(book.edition)} · ISBN ${escapeHtml(book.isbn13)} · ${bookLinkDisclosure(book)}</p><p>${escapeHtml(book.description)}</p>${taskCode?`<p><b>Why it may help here:</b> supports ${escapeHtml(taskCode)} and related study targets.</p>`:""}<p><b>How SPG uses it:</b> ${escapeHtml(book.questionRole)}</p>${owned?`<span class="book-owned-note">✓ You marked this as owned</span>`:""}</div><div class="custom-plan-actions">${actions}${owned?"":`<button class="secondary compact" data-book-owned="${escapeHtml(book.id)}">I already own it</button>`}</div></article>`;
+          }
+          '''
+          replace_block('function reportBookCardHtml(book,taskCode=""){','function reportBookRecommendationsHtml(){',report)
+
+          # Remove outdated learner-facing list terminology without changing the underlying citation text.
+          s=s.replace('BRPT RPSGT-listed','BRPT Recommended Reading for RPSGT')
+          s=s.replace('BRPT CPSGT-listed','BRPT Recommended Reading for CPSGT')
+          s=s.replace('BRPT-listed','BRPT Recommended Reading')
+          s=s.replace('RPSGT-listed','Recommended Reading for RPSGT')
+          s=s.replace('CPSGT-listed','Recommended Reading for CPSGT')
+          s=s.replace('Used in SPG question mapping','Independent supplemental study resource')
+          s=s.replace('SPG-mapped companion workbook','Independent supplemental study workbook')
+          s=s.replace('SPG-mapped for CPSGT technical study','independent supplemental study resource for CPSGT')
+          s=s.replace('including BRPT Recommended Reading titles, SPG supplements','including BRPT Recommended Reading titles and independent supplemental study resources')
+
+          path.write_text(s,encoding='utf-8')
+
+          # Static integrity checks for the migration.
+          checks={
+            'shared registry script':'<script src="assets/guild-resource-commerce-registry.js"></script>',
+            'canonical fst3':'"fst3":"fundamentals-sleep-technology-3e"',
+            'canonical pst2014':'"pst2014":"polysomnography-sleep-technologist-2014"',
+            'canonical pediatric':'"pediatric-guide":"clinical-guide-pediatric-sleep-3e"',
+            'canonical sleep pearls':'"sleep-medicine-pearls":"sleep-medicine-pearls-3e"',
+            'canonical pediatric pearls':'"pediatric-sleep-pearls":"pediatric-sleep-pearls-1e"',
+            'paid action label':'Find on Amazon · Paid link',
+            'paid rel':'rel="sponsored noopener noreferrer"',
+            'analytics context':'resourceContext:"cpsgt_reference"',
+            'analytics credential':'credentialArea:"cpsgt"',
+            'exact disclosure':'As an Amazon Associate I earn from qualifying purchases.',
+            'safe fail copy':'No verified purchase link is available for this cited edition.',
+            'plain APA shelf citation':'function bookCitationHtml(book){return `<div class="book-apa-link">'
+          }
+          for label,needle in checks.items():
+            if needle not in s: raise SystemExit(f'Missing validation marker: {label}')
+          if 'BRPT-listed' in s or 'RPSGT-listed' in s or 'CPSGT-listed' in s:
+            raise SystemExit('Forbidden learner-facing listed terminology remains')
+          if s.count('<script src="assets/guild-resource-commerce-registry.js"></script>')!=1:
+            raise SystemExit('Shared registry script must load exactly once')
+
+          # Verify the primary application script remains syntactically extractable for node --check.
+          start=s.index('<script>\nconst APP_DATA=')+len('<script>\n')
+          end=s.index('</script>',start)
+          Path('/tmp/cpsgt-main.js').write_text(s[start:end],encoding='utf-8')
+          print('CPSGT patch static checks passed')
           PY
+          node --check /tmp/cpsgt-main.js
+          node --check assets/guild-resource-commerce-registry.js
+          git diff --check
+      - name: Commit CPSGT integration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cpsgt-study-app.html
+          git commit -m "feat: wire CPSGT resources to shared commerce registry"
+          git push
