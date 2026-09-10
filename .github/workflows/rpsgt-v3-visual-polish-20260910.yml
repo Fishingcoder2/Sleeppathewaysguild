@@ -1,0 +1,78 @@
+name: RPSGT V3 visual polish
+
+on:
+  push:
+    branches:
+      - build/rpsgt-v3-visual-polish-20260910
+    paths:
+      - 'rpsgt-v3/**'
+      - 'scripts/apply_rpsgt_v3_visual_polish.py'
+      - '.github/workflows/rpsgt-v3-visual-polish-20260910.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  polish-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out visual-polish branch
+        uses: actions/checkout@v4
+        with:
+          ref: build/rpsgt-v3-visual-polish-20260910
+      - name: Apply visual polish wiring
+        run: python scripts/apply_rpsgt_v3_visual_polish.py
+      - name: Validate wiring and next-step surfaces
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          pages=[]
+          for p in Path('rpsgt-v3').glob('*.html'):
+              t=p.read_text(encoding='utf-8')
+              if 'assets/rpsgt-v3.css' in t:
+                  pages.append(p)
+                  assert t.count('assets/v3-polish.css') == 1, p
+                  assert t.count('assets/focus-flow.css') == 1, p
+                  assert t.count('core/focus-flow.js') == 1, p
+          assert len(pages) >= 10, len(pages)
+          home=Path('rpsgt-v3/index.html').read_text(encoding='utf-8')
+          order=[home.index('Choose your next move'),home.index('Progress snapshot'),home.index('Your learning pathway')]
+          assert order == sorted(order), order
+          assert 'front-door-destinations' in home
+          assert 'progress-snapshot' in home
+          css=Path('rpsgt-v3/assets/v3-polish.css').read_text(encoding='utf-8')
+          for token in ['100dvh','practice-modal-footer','guided-route-overlay','checkpoint-modal']:
+              assert token in css, token
+          js=Path('rpsgt-v3/core/focus-flow.js').read_text(encoding='utf-8')
+          for token in ['is-complete','guided-route-overlay','Explorer level','Review my answers']:
+              assert token in js, token
+          print('Visual polish wiring validated across',len(pages),'pages')
+          PY
+          node --check rpsgt-v3/core/focus-flow.js
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install browser regression dependencies
+        working-directory: rpsgt-v3
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        working-directory: rpsgt-v3
+        run: npx playwright install --with-deps chromium
+      - name: Run desktop tablet and mobile browser regression
+        working-directory: rpsgt-v3
+        run: npm run test:browser
+      - name: Remove one-time patch machinery
+        run: rm -f scripts/apply_rpsgt_v3_visual_polish.py .github/workflows/rpsgt-v3-visual-polish-20260910.yml
+      - name: Commit validated visual polish
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add rpsgt-v3 scripts .github/workflows
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'style: make RPSGT V3 cleaner and modal-first'
+          git push origin HEAD:build/rpsgt-v3-visual-polish-20260910
