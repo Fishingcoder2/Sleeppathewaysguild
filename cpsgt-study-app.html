@@ -2121,7 +2121,7 @@ function cpsgtCommerceRecord(localId){
   if(!record||record.eligible_for_affiliate!==true||record.resource_type!=="book"||!url)return null;
   return {sourceId,record,url};
 }
-function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="Find on Amazon · Paid link"){
+function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="View on Amazon · Affiliate link"){
   const commerce=cpsgtCommerceRecord(localId);
   if(!commerce)return"";
   return `<a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a>`;
