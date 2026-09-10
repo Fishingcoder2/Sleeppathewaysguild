@@ -24,11 +24,46 @@ function referenceBlock(id){
   assert.ok(start>=0,`CPSGT reference record is missing ${id}.`);
   return cpsgt.slice(start,start+1800);
 }
-const sleepMedicine=referenceBlock('fundamentals-sleep-medicine');
-assert.ok(sleepMedicine.includes('amazon.com/dp/1437703267?tag=spg_rpsgt-20'));
-assert.ok(sleepMedicine.includes('"linkType":"amazon-affiliate"'));
-assert.ok(sleepMedicine.includes('paid Amazon affiliate link'));
-assert.ok(sleepMedicine.includes('"actionLabel":"Click to view on Amazon"'));
+function functionBlock(startMarker,endMarker){
+  const start=cpsgt.indexOf(startMarker);
+  assert.ok(start>=0,`CPSGT function is missing ${startMarker}.`);
+  const end=cpsgt.indexOf(endMarker,start);
+  assert.ok(end>start,`CPSGT function boundary is missing ${endMarker}.`);
+  return cpsgt.slice(start,end);
+}
+
+// CPSGT commerce must be source-ID driven through the shared registry. Legacy raw Amazon
+// URLs may remain in APP_DATA as historical metadata, but renderers must never trust them.
+assert.ok(cpsgt.includes('<script src="assets/guild-resource-commerce-registry.js"></script>'),'CPSGT does not load the shared commerce registry.');
+for(const [localId,sourceId] of Object.entries({
+  'fundamentals-tech':'fundamentals-sleep-technology-3e',
+  'fst3':'fundamentals-sleep-technology-3e',
+  'pst2014':'polysomnography-sleep-technologist-2014',
+  'pediatric-guide':'clinical-guide-pediatric-sleep-3e',
+  'sleep-medicine-pearls':'sleep-medicine-pearls-3e',
+  'pediatric-sleep-pearls':'pediatric-sleep-pearls-1e'
+})) assert.ok(cpsgt.includes(`"${localId}":"${sourceId}"`),`CPSGT is missing canonical commerce mapping ${localId} -> ${sourceId}.`);
+assert.ok(cpsgt.includes('Find on Amazon · Paid link'),'CPSGT paid action label drifted.');
+assert.ok(cpsgt.includes('rel="sponsored noopener noreferrer"'),'CPSGT affiliate rel protections drifted.');
+assert.ok(cpsgt.includes('resourceContext:"cpsgt_reference"'),'CPSGT affiliate analytics context drifted.');
+assert.ok(cpsgt.includes('credentialArea:"cpsgt"'),'CPSGT affiliate analytics credential area drifted.');
+assert.ok(cpsgt.includes('As an Amazon Associate I earn from qualifying purchases.'),'CPSGT exact affiliate disclosure is missing.');
+assert.ok(cpsgt.includes('No verified purchase link is available for this cited edition.'),'CPSGT safe-failure copy is missing.');
+assert.ok(cpsgt.includes('function bookCitationHtml(book){return `<div class="book-apa-link">'),'CPSGT book APA citations became purchase links again.');
+assert.ok(cpsgt.includes('function availableBookRecommendations(){return BOOK_RECOMMENDATIONS.filter(book=>bookHasVerifiedAction(book)'), 'CPSGT timed shelf does not fail closed on unverified destinations.');
+for(const forbidden of ['BRPT-listed','RPSGT-listed','CPSGT-listed']) assert.ok(!cpsgt.includes(forbidden),`CPSGT learner-facing legacy terminology remains: ${forbidden}.`);
+
+const citationRenderer=functionBlock('function citationLinkHtml(r){','function referenceChips(q){');
+assert.ok(citationRenderer.includes('const legacyAffiliate=isAffiliateReference(r);'));
+assert.ok(citationRenderer.includes('const commerceAction=cpsgtAffiliateActionHtml(r.id'));
+assert.ok(citationRenderer.includes('const publicAction=(!legacyAffiliate&&r.url)?'),'CPSGT reference renderer can still expose a legacy affiliate URL directly.');
+assert.ok(citationRenderer.includes('<div class="apa-reference-text">${escapeHtml(r.apa||r.title)}</div>'),'CPSGT reference APA text rendering drifted.');
+
+const xrefRenderer=functionBlock('function xrefSourceCardHtml(item,kind="support"){','function blueprintCrossReferenceHtml(q){');
+assert.ok(xrefRenderer.includes('const legacyAffiliate=source.linkType==="amazon-affiliate";'));
+assert.ok(xrefRenderer.includes('const commerceAction=cpsgtAffiliateActionHtml(source.id||item.sourceId'));
+assert.ok(xrefRenderer.includes('const publicAction=source.url&&!legacyAffiliate?'),'CPSGT cross-reference renderer can still expose a legacy affiliate URL directly.');
+
 const sleepTechnology=referenceBlock('fundamentals-tech');
 assert.ok(sleepTechnology.includes('shop.lww.com/Fundamentals-of-Sleep-Technology'));
 assert.ok(sleepTechnology.includes('"linkType":"official-store"'));
@@ -83,4 +118,4 @@ assert.match(targetText.D4A,/BPAP without backup/i);
 assert.match(targetText.D4B,/augmentation risk/i);
 assert.match(targetText.D4C,/heart-failure and high-altitude CSA/i);
 
-console.log('Three-app quality guards passed: V2 eligibility and mock allocation, CPSGT link disclosures, V3 bank counts, and current guideline routing.');
+console.log('Three-app quality guards passed: V2 eligibility and mock allocation, CPSGT shared-commerce safeguards, V3 bank counts, and current guideline routing.');
