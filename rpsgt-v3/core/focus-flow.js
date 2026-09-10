@@ -7,9 +7,7 @@
   let routeOverlay=null;
   let feedbackWasVisible=false;
 
-  function isVisible(node){
-    return Boolean(node&&!node.hidden&&!node.classList.contains('hidden'));
-  }
+  function isVisible(node){return Boolean(node&&!node.hidden&&!node.classList.contains('hidden'));}
 
   function syncPracticeFocus(){
     const shell=doc.querySelector('[data-practice-shell]');
@@ -22,11 +20,48 @@
     const feedback=shell.querySelector('[data-answer-feedback]');
     const feedbackVisible=open&&isVisible(feedback)&&String(feedback.textContent||'').trim().length>0;
     if(feedbackVisible&&!feedbackWasVisible){
-      window.requestAnimationFrame(()=>{
-        feedback.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'nearest'});
-      });
+      window.requestAnimationFrame(()=>feedback.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'nearest'}));
     }
     feedbackWasVisible=feedbackVisible;
+  }
+
+  function explorerUnlocks(){
+    const explorer=window.RPSGTGuidedTrailExplorer;
+    if(!explorer||typeof explorer.progress!=='function') return [];
+    try{
+      const p=explorer.progress();
+      const latest=Array.isArray(p.history)?p.history[0]:null;
+      if(!latest||!latest.passed) return [];
+      const prior=Array.isArray(p.history)?p.history.slice(1):[];
+      const taskAward=p.taskAwards&&p.taskAwards[latest.task];
+      const newlyEarnedTask=Boolean(taskAward&&taskAward.checkpointId===latest.id);
+      const unlocks=[];
+      if(newlyEarnedTask&&p.rank&&Number(p.rank.minimum)===Number(p.taskBadgeCount)&&Number(p.rank.minimum)>0){
+        unlocks.push({icon:p.rank.icon||'★',name:'New Explorer level: '+p.rank.name,detail:p.rank.upgrade?'Field-kit upgrade: '+p.rank.upgrade:''});
+      }
+      if(prior.filter(item=>Number(item&&item.total)>=15).length===0) unlocks.push({icon:'🎗️',name:'Trailhead Ribbon',detail:'First full Guided Trail checkpoint completed.'});
+      if(newlyEarnedTask&&Number(p.taskBadgeCount)===1) unlocks.push({icon:'🌙',name:'Night Navigator Ribbon',detail:'First task badge earned.'});
+      if(newlyEarnedTask&&prior.some(item=>item&&item.task===latest.task&&!item.passed)) unlocks.push({icon:'↗️',name:'Comeback Ribbon',detail:'You returned to this task and earned the badge.'});
+      if(Number(latest.score)===100&&!prior.some(item=>Number(item&&item.total)>=15&&Number(item.score)===100)) unlocks.push({icon:'✨',name:'Perfect Signal Ribbon',detail:'First perfect full checkpoint.'});
+      if(newlyEarnedTask&&Number(p.taskBadgeCount)===12) unlocks.push({icon:'🏕️',name:'Full Expedition Ribbon',detail:'All 12 Guided Trail task badges earned.'});
+      return unlocks.slice(0,4);
+    }catch(error){return [];}
+  }
+
+  function decorateAwardCeremony(){
+    const overlay=doc.querySelector('[data-guided-award-ceremony]');
+    if(!overlay||overlay.hidden) return;
+    const dialog=overlay.querySelector('.guided-award-dialog');
+    if(!dialog||dialog.dataset.focusFlowDecorated==='true') return;
+    dialog.dataset.focusFlowDecorated='true';
+    const unlocks=explorerUnlocks();
+    if(!unlocks.length) return;
+    const panel=doc.createElement('section');
+    panel.className='guided-explorer-unlocks';
+    panel.setAttribute('aria-label','Explorer level and ribbon upgrades');
+    panel.innerHTML='<strong>Explorer progress unlocked</strong>'+unlocks.map(item=>'<div><span aria-hidden="true">'+item.icon+'</span><p><b>'+item.name+'</b><small>'+item.detail+'</small></p></div>').join('');
+    const next=dialog.querySelector('.guided-award-next');
+    if(next) next.insertAdjacentElement('beforebegin',panel); else dialog.appendChild(panel);
   }
 
   function removeRouteOverlay(){
@@ -73,7 +108,7 @@
         retakeButton.classList.remove('secondary');
         retakeButton.classList.add('primary');
       }
-      const review=document.createElement('button');
+      const review=doc.createElement('button');
       review.type='button';
       review.className='btn secondary';
       review.dataset.guidedRouteDismiss='true';
@@ -93,6 +128,7 @@
   function scheduleSync(){
     window.requestAnimationFrame(()=>{
       syncPracticeFocus();
+      decorateAwardCeremony();
       promoteCheckpointRoute();
     });
   }
@@ -105,13 +141,8 @@
       if(checkpoint) checkpoint.focus({preventScroll:true});
       return;
     }
-    if(routeOverlay&&event.target===routeOverlay){
-      removeRouteOverlay();
-      return;
-    }
-    if(event.target.closest('[data-checkpoint-retake],[data-checkpoint-continue],[data-checkpoint-return-map],[data-checkpoint-cancel]')){
-      window.setTimeout(removeRouteOverlay,0);
-    }
+    if(routeOverlay&&event.target===routeOverlay){removeRouteOverlay();return;}
+    if(event.target.closest('[data-checkpoint-retake],[data-checkpoint-continue],[data-checkpoint-return-map],[data-checkpoint-cancel]')) window.setTimeout(removeRouteOverlay,0);
   });
 
   doc.addEventListener('keydown',event=>{
