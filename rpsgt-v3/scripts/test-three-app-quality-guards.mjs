@@ -19,6 +19,11 @@ for(const file of ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']){
 }
 
 const cpsgt=await readFile(join(repoRoot,'cpsgt-study-app.html'),'utf8');
+const v3ReferenceCenter=await readFile(join(v3,'core','reference-center.js'),'utf8');
+const commerceRegistry=await readFile(join(repoRoot,'assets','guild-resource-commerce-registry.js'),'utf8');
+assert.ok(v3ReferenceCenter.includes('>View on Amazon</a>'),'RPSGT V3 Amazon action label drifted.');
+assert.ok(v3ReferenceCenter.includes('We may earn a commission from qualifying purchases through this link.'),'RPSGT V3 link-level commission disclosure is missing.');
+assert.ok(commerceRegistry.includes("disclosure_label:'We may earn a commission from qualifying purchases through this link.'"),'Shared commerce registry disclosure copy drifted.');
 function referenceBlock(id){
   const start=cpsgt.indexOf(`"id":"${id}"`);
   assert.ok(start>=0,`CPSGT reference record is missing ${id}.`);
@@ -43,7 +48,9 @@ for(const [localId,sourceId] of Object.entries({
   'sleep-medicine-pearls':'sleep-medicine-pearls-3e',
   'pediatric-sleep-pearls':'pediatric-sleep-pearls-1e'
 })) assert.ok(cpsgt.includes(`"${localId}":"${sourceId}"`),`CPSGT is missing canonical commerce mapping ${localId} -> ${sourceId}.`);
-assert.ok(cpsgt.includes('Find on Amazon · Paid link'),'CPSGT paid action label drifted.');
+assert.ok(cpsgt.includes('label="View on Amazon"'),'CPSGT Amazon action label drifted.');
+assert.ok(cpsgt.includes('We may earn a commission from qualifying purchases through this link.'),'CPSGT link-level commission disclosure is missing.');
+assert.ok(!cpsgt.includes('View on Amazon · Affiliate link')&&!cpsgt.includes('Find on Amazon · Paid link'),'CPSGT returned to confusing affiliate wording inside the button.');
 assert.ok(cpsgt.includes('rel="sponsored noopener noreferrer"'),'CPSGT affiliate rel protections drifted.');
 assert.ok(cpsgt.includes('resourceContext:"cpsgt_reference"'),'CPSGT affiliate analytics context drifted.');
 assert.ok(cpsgt.includes('credentialArea:"cpsgt"'),'CPSGT affiliate analytics credential area drifted.');

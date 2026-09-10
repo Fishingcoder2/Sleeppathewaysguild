@@ -60,8 +60,8 @@
     const record=registry.get(sourceId);
     const url=registry.affiliateUrl(sourceId);
     if(!record||record.eligible_for_affiliate!==true||record.resource_type!=='book'||!url) return '';
-    const disclosure=text(record.disclosure_label)||'Paid link';
-    return '<a class="btn secondary reference-affiliate-action" data-affiliate-source-id="'+escapeHtml(sourceId)+'" href="'+escapeHtml(url)+'" target="_blank" rel="sponsored noopener noreferrer">Find on Amazon · '+escapeHtml(disclosure)+'</a>';
+    const disclosure=text(record.disclosure_label)||'We may earn a commission from qualifying purchases through this link.';
+    return '<span class="reference-affiliate-group" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.3rem"><a class="btn secondary reference-affiliate-action" data-affiliate-source-id="'+escapeHtml(sourceId)+'" href="'+escapeHtml(url)+'" target="_blank" rel="sponsored noopener noreferrer">View on Amazon</a><small class="reference-affiliate-disclosure" style="font-size:.78rem;line-height:1.3;opacity:.82">'+escapeHtml(disclosure)+'</small></span>';
   }
 
   function registerTaskPlanMappings(){

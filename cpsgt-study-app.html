@@ -2121,10 +2121,10 @@ function cpsgtCommerceRecord(localId){
   if(!record||record.eligible_for_affiliate!==true||record.resource_type!=="book"||!url)return null;
   return {sourceId,record,url};
 }
-function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="View on Amazon · Affiliate link"){
+function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="View on Amazon"){
   const commerce=cpsgtCommerceRecord(localId);
   if(!commerce)return"";
-  return `<a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a>`;
+  return `<span class="affiliate-link-group" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.3rem"><a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a><small class="affiliate-link-disclosure" style="font-size:.78rem;line-height:1.3;opacity:.82">We may earn a commission from qualifying purchases through this link.</small></span>`;
 }
 function trackCpsgtAffiliateClick(event){
   const link=event.target?.closest?.("[data-affiliate-source-id]");

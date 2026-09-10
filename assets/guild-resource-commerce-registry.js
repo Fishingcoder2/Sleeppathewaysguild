@@ -15,7 +15,7 @@
       affiliate_program:'amazon',
       affiliate_tag:AMAZON_TAG,
       eligible_for_affiliate:true,
-      disclosure_label:'Paid link',
+      disclosure_label:'We may earn a commission from qualifying purchases through this link.',
       notes:'Verified against the Guild storefront destination on 2026-09-10.',
       aliases:['Fundamentals of Sleep Technology']
     }),
@@ -29,7 +29,7 @@
       affiliate_program:'amazon',
       affiliate_tag:AMAZON_TAG,
       eligible_for_affiliate:true,
-      disclosure_label:'Paid link',
+      disclosure_label:'We may earn a commission from qualifying purchases through this link.',
       notes:'Verified against the Guild storefront destination on 2026-09-10.',
       aliases:['Polysomnography for the Sleep Technologist: Instrumentation, Monitoring, and Related Procedures']
     }),
@@ -43,7 +43,7 @@
       affiliate_program:'amazon',
       affiliate_tag:AMAZON_TAG,
       eligible_for_affiliate:true,
-      disclosure_label:'Paid link',
+      disclosure_label:'We may earn a commission from qualifying purchases through this link.',
       notes:'Verified against the Guild storefront destination on 2026-09-10.',
       aliases:['A Clinical Guide to Pediatric Sleep']
     }),
@@ -57,7 +57,7 @@
       affiliate_program:'amazon',
       affiliate_tag:AMAZON_TAG,
       eligible_for_affiliate:true,
-      disclosure_label:'Paid link',
+      disclosure_label:'We may earn a commission from qualifying purchases through this link.',
       notes:'Verified against the Guild storefront destination on 2026-09-10.',
       aliases:['Sleep Medicine Pearls']
     }),
@@ -71,7 +71,7 @@
       affiliate_program:'amazon',
       affiliate_tag:AMAZON_TAG,
       eligible_for_affiliate:true,
-      disclosure_label:'Paid link',
+      disclosure_label:'We may earn a commission from qualifying purchases through this link.',
       notes:'Verified against the Guild storefront destination on 2026-09-10.',
       aliases:['Pediatric Sleep Pearls']
     }),
@@ -85,7 +85,7 @@
       affiliate_program:'amazon',
       affiliate_tag:AMAZON_TAG,
       eligible_for_affiliate:true,
-      disclosure_label:'Paid link',
+      disclosure_label:'We may earn a commission from qualifying purchases through this link.',
       notes:'Verified against the Guild storefront destination on 2026-09-10.',
       aliases:['Principles and Practice of Pediatric Sleep Medicine']
     })
