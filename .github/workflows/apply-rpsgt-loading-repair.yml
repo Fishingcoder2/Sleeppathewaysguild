@@ -6,40 +6,24 @@ on:
       - build/affiliate-link-wording-20260910
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  patch-affiliate-wording:
+  inspect-affiliate-helper:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: build/affiliate-link-wording-20260910
-          fetch-depth: 0
-      - name: Update CPSGT affiliate wording
+      - name: Inspect CPSGT affiliate helper
         run: |
           python - <<'PY'
           from pathlib import Path
-          path = Path('cpsgt-study-app.html')
-          text = path.read_text(encoding='utf-8')
-          before = text
-          text = text.replace('Paid link', 'Affiliate link')
-          text = text.replace('Find on Amazon · Affiliate link', 'View on Amazon · Affiliate link')
-          if text == before:
-              print('No CPSGT affiliate wording changes needed.')
-          else:
-              path.write_text(text, encoding='utf-8')
-          assert 'Find on Amazon · Paid link' not in text
-          assert 'View on Amazon · Affiliate link' in text
+          text = Path('cpsgt-study-app.html').read_text(encoding='utf-8')
+          marker = 'function cpsgtAffiliateActionHtml('
+          start = text.index(marker)
+          end = text.find('\nfunction ', start + len(marker))
+          if end < 0:
+              end = min(len(text), start + 5000)
+          print(text[start:end])
           PY
-      - name: Commit CPSGT wording update
-        run: |
-          if git diff --quiet -- cpsgt-study-app.html; then
-            echo 'No CPSGT changes to commit.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add cpsgt-study-app.html
-          git commit -m 'copy: clarify CPSGT Amazon affiliate action'
-          git push origin HEAD:build/affiliate-link-wording-20260910
