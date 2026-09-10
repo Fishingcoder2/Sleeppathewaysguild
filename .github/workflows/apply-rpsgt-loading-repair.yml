@@ -13,38 +13,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect CPSGT reference implementation
+      - name: Inspect CPSGT commerce renderers
         run: |
           python - <<'PY'
           from pathlib import Path
-          p=Path('cpsgt-study-app.html')
-          s=p.read_text(encoding='utf-8')
-          print('SIZE', len(s), 'LINES', s.count('\n')+1)
+          import re
+          s=Path('cpsgt-study-app.html').read_text(encoding='utf-8')
           terms=[
-            '"id":"fundamentals-sleep-medicine"',
-            '"id":"fundamentals-tech"',
-            'actionLabel',
-            'linkType',
-            'paid Amazon affiliate link',
-            'Guild Resource Shelf',
-            'References',
-            'referenceBooks',
-            'renderReference',
-            'renderReferences',
-            'REFERENCE',
-            'SPG'
+            'function citationLinkHtml',
+            'const REF_CATALOG',
+            'function xrefSourceCardHtml',
+            'function xrefSourceRel',
+            'function bookIsAffiliate',
+            'function bookLinkRel',
+            'function bookById',
+            'affiliate_click',
+            'gtag(',
+            'const BOOK',
+            'bookCatalog',
+            'sourceReferenceLibrary'
           ]
           for term in terms:
-            print('\n===== TERM:', term, '=====')
-            start=0
-            found=0
-            while found<4:
+            print('\n===== TERM:',term,'=====')
+            start=0; found=0
+            while found<5:
               i=s.find(term,start)
               if i<0: break
               found+=1
-              a=max(0,i-900); b=min(len(s),i+1800)
+              a=max(0,i-1300); b=min(len(s),i+3000)
               print(f'--- match {found} at {i} ---')
               print(s[a:b].replace('\x00',''))
               start=i+len(term)
             if not found: print('NO MATCH')
+          print('\n===== REFERENCE CATALOG RECORDS =====')
+          marker='"referenceCatalog":['
+          i=s.find(marker)
+          j=s.find('],"referenceCoverage"',i)
+          block=s[i:j]
+          for m in re.finditer(r'\{"id":"([^"]+)"',block):
+            start=m.start(); end=block.find('},{"id":',start+1)
+            if end<0: end=len(block)
+            rec=block[start:min(end,start+1800)]
+            print(rec)
+          print('\n===== MAIN SCRIPT ANCHOR =====')
+          anchor='\n<script>\nconst APP_DATA='
+          print('anchor_count',s.count(anchor),'anchor_index',s.find(anchor))
           PY
