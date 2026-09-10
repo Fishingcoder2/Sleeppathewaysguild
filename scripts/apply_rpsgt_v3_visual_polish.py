@@ -11,10 +11,21 @@ def wire_page(path: Path):
     original = text
     if 'assets/rpsgt-v3.css' not in text:
         return False
-    if 'assets/v3-polish.css' not in text:
-        text = text.replace('<link rel="stylesheet" href="assets/rpsgt-v3.css">', '<link rel="stylesheet" href="assets/rpsgt-v3.css">\n' + STYLE, 1)
-    if 'core/focus-flow.js' not in text:
-        text = text.replace('</body>', SCRIPT + '\n</body>', 1)
+
+    # The polish layer must load LAST so module-specific styles cannot make
+    # modal sheets oversized again. Normalize any earlier staging position.
+    text = re.sub(r'\s*<link rel="stylesheet" href="assets/v3-polish\.css">', '', text)
+    text = re.sub(r'\s*<link rel="stylesheet" href="assets/focus-flow\.css">', '', text)
+    if '</head>' not in text:
+        raise RuntimeError(f'Missing </head>: {path}')
+    text = text.replace('</head>', STYLE + '\n</head>', 1)
+
+    # focus-flow is presentation-only and intentionally loads after page engines.
+    text = text.replace(SCRIPT, '')
+    if '</body>' not in text:
+        raise RuntimeError(f'Missing </body>: {path}')
+    text = text.replace('</body>', SCRIPT + '\n</body>', 1)
+
     if text != original:
         path.write_text(text, encoding='utf-8')
         return True
@@ -31,7 +42,12 @@ def take_section(text: str, marker: str, extra_class: str):
         raise RuntimeError(f'Could not isolate section: {marker}')
     end += len('</section>')
     block = text[start:end]
-    block = re.sub(r'<section class="section(?![^\"]*\b' + re.escape(extra_class) + r'\b)([^\"]*)">', r'<section class="section ' + extra_class + r'\1">', block, count=1)
+    block = re.sub(
+        r'<section class="section(?![^\"]*\b' + re.escape(extra_class) + r'\b)([^\"]*)">',
+        r'<section class="section ' + extra_class + r'\1">',
+        block,
+        count=1,
+    )
     return text[:start] + text[end:], block
 
 
@@ -47,8 +63,7 @@ def reorder_home(path: Path):
     if hero_at < 0 or hero_end < 0:
         raise RuntimeError('Home hero was not found')
     hero_end += len('</section>')
-    insert = '\n\n' + destinations + '\n\n' + progress
-    text = text[:hero_end] + insert + text[hero_end:]
+    text = text[:hero_end] + '\n\n' + destinations + '\n\n' + progress + text[hero_end:]
     if text != original:
         path.write_text(text, encoding='utf-8')
 
