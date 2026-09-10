@@ -1,65 +1,14 @@
-name: Apply storefront analytics
+name: Apply RPSGT loading repair
 
 on:
-  push:
-    paths:
-      - '.github/workflows/apply-rpsgt-loading-repair.yml'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  storefront-analytics:
+  disabled:
+    if: false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Add privacy-safe GA4 storefront events
-        run: python scripts/one_time_store_analytics.py
-
-      - name: Verify analytics instrumentation
-        shell: bash
-        run: |
-          grep -q "affiliate_click" rpsgt-exam-prep-books.html
-          grep -q "store_search" rpsgt-exam-prep-books.html
-          grep -q "affiliate_program: 'amazon'" rpsgt-exam-prep-books.html
-          ! grep -q "search_term: value" rpsgt-exam-prep-books.html
-
-      - name: Run SEO audit
-        run: python scripts/seo_audit.py --site-url https://sleeppathwaysguild.com
-
-      - name: Run link audit
-        run: python scripts/link_audit.py --site-url https://sleeppathwaysguild.com
-
-      - name: Restore helper and remove one-time script
-        shell: bash
-        run: |
-          cat > .github/workflows/apply-rpsgt-loading-repair.yml <<'EOF'
-          name: Apply RPSGT loading repair
-
-          on:
-            workflow_dispatch:
-
-          permissions:
-            contents: read
-
-          jobs:
-            disabled:
-              if: false
-              runs-on: ubuntu-latest
-              steps:
-                - run: echo 'Superseded by the verified browser loader deployment.'
-          EOF
-          rm -f scripts/one_time_store_analytics.py
-
-      - name: Commit verified storefront analytics
-        shell: bash
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git diff --cached --quiet && exit 0
-          git commit -m 'feat: add privacy-safe GA4 affiliate storefront analytics'
-          git push
+      - run: echo 'Superseded by the verified browser loader deployment.'
