@@ -1,14 +1,38 @@
 name: Apply RPSGT loading repair
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - build/affiliate-link-wording-20260910
 
 permissions:
   contents: read
 
 jobs:
-  disabled:
-    if: false
+  inspect-cpsgt-commerce-priority:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Superseded by the verified browser loader deployment.'
+      - uses: actions/checkout@v4
+        with:
+          ref: build/affiliate-link-wording-20260910
+      - name: Inspect CPSGT commerce/public fallback renderers
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('cpsgt-study-app.html').read_text(encoding='utf-8')
+          markers = [
+              ('function citationLinkHtml(r){','function referenceChips(q){'),
+              ('function xrefSourceCardHtml(item,kind="support"){','function blueprintCrossReferenceHtml(q){'),
+              ('function bookActionLinksHtml(book){','function showBookRecommendation'),
+          ]
+          for start_marker,end_marker in markers:
+              start = text.find(start_marker)
+              if start < 0:
+                  print('\nMISSING', start_marker)
+                  continue
+              end = text.find(end_marker,start)
+              if end < 0:
+                  end = min(len(text), start+7000)
+              print('\n===', start_marker, '===')
+              print(text[start:end])
+          PY
