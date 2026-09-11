@@ -62,19 +62,6 @@ jobs:
             const disclosure=String(record.disclosure_label||"We may earn a commission from qualifying purchases through this link.");
             return `<span class="legacyRpsgtAffiliateGroup" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.28rem;margin-top:.55rem"><a class="${esc(className)}" href="${esc(url)}" target="_blank" rel="sponsored noopener noreferrer" data-legacy-rpsgt-affiliate-source-id="${esc(sourceId)}">View on Amazon</a><small style="font-size:.76rem;line-height:1.3;opacity:.82">${esc(disclosure)}</small></span>`;
           }
-          function legacyRpsgtReferenceCommerceShelfHtml(){
-            const registry=window.SPGResourceCommerceRegistry;
-            if(!registry||typeof registry.get!=="function")return"";
-            const ids=[...new Set(Object.values(LEGACY_RPSGT_COMMERCE_SOURCE_IDS))];
-            const cards=ids.map(sourceId=>{
-              const record=registry.get(sourceId);
-              const action=legacyRpsgtAffiliateActionHtml(sourceId,"btn secondary");
-              if(!record||!action)return"";
-              return `<div class="card flat"><strong>${esc(record.canonical_title||"Book reference")}</strong>${action}</div>`;
-            }).filter(Boolean);
-            if(!cards.length)return"";
-            return `<section class="card legacyRpsgtAffiliateShelf"><span class="reportSectionLabel">Optional book access</span><h2>Verified book reference purchase options</h2><p class="muted">Buying a book is optional. When an exact verified Amazon edition is available, the Guild shows Amazon as the single purchase option rather than a competing publisher-store link.</p><div class="grid cols2" style="margin-top:12px">${cards.join("")}</div><p class="tiny" style="margin-top:10px"><strong>Affiliate disclosure:</strong> As an Amazon Associate I earn from qualifying purchases.</p></section>`;
-          }
           document.addEventListener("click",function(event){
             const link=event.target&&event.target.closest?event.target.closest("[data-legacy-rpsgt-affiliate-source-id]"):null;
             if(!link)return;
@@ -120,16 +107,8 @@ jobs:
           }'''
           old_table='<thead><tr><th>Title</th><th>Author / organization</th><th>Year</th></tr></thead><tbody id="refsBody">${refsRows(referenceRows)}</tbody>'
           new_table='<thead><tr><th>Title</th><th>Author / organization</th><th>Year</th><th>Purchase option</th></tr></thead><tbody id="refsBody">${refsRows(referenceRows)}</tbody>'
-          shelf_anchor='''    <div class="referenceResourceHint"><strong>Best study habit:</strong> use this lookup to find the topic, then return to Practice or Guided Trail for active recall.</div>
-          </div>
-
-          <section class="card">'''
-          shelf_replacement='''    <div class="referenceResourceHint"><strong>Best study habit:</strong> use this lookup to find the topic, then return to Practice or Guided Trail for active recall.</div>
-          </div>
-
-          ${legacyRpsgtReferenceCommerceShelfHtml()}
-
-          <section class="card">'''
+          disclosure_anchor='<h2>Reference Resources</h2>'
+          disclosure_replacement='<h2>Reference Resources</h2><p class="tiny"><strong>Affiliate disclosure:</strong> As an Amazon Associate I earn from qualifying purchases.</p>'
 
           for filename in files:
             path=Path(filename)
@@ -147,8 +126,8 @@ jobs:
             text=text.replace(old_rows,new_rows,1)
             assert old_table in text, f'{filename}: reference table header drifted'
             text=text.replace(old_table,new_table,1)
-            assert shelf_anchor in text, f'{filename}: Reference Center shelf anchor drifted'
-            text=text.replace(shelf_anchor,shelf_replacement,1)
+            assert disclosure_anchor in text, f'{filename}: Reference Center heading missing'
+            text=text.replace(disclosure_anchor,disclosure_replacement,1)
             text=text.replace('BRPT-listed content-master anchors','BRPT Recommended Reading and content anchors')
             for required in [
               registry_script,
@@ -163,17 +142,16 @@ jobs:
               'rel="sponsored noopener noreferrer"',
               'resourceContext:"legacy_rpsgt_reference"',
               'credentialArea:"rpsgt"',
-              '${legacyRpsgtReferenceCommerceShelfHtml()}'
+              '<th>Purchase option</th>'
             ]:
               assert required in text, f'{filename}: missing {required}'
             path.write_text(text,encoding='utf-8')
 
           guard_path=Path('rpsgt-v3/scripts/test-three-app-quality-guards.mjs')
           guard=guard_path.read_text(encoding='utf-8')
-          old='''  assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
-          }'''
-          new='''  assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
-            assert.ok(html.includes('<script src="assets/guild-resource-commerce-registry.js"></script>'),`${file} does not load the shared commerce registry.`);
+          old="  assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);\n}"
+          new="""  assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
+            assert.ok(html.includes('<script src=\"assets/guild-resource-commerce-registry.js\"></script>'),`${file} does not load the shared commerce registry.`);
             assert.ok(html.includes('const LEGACY_RPSGT_COMMERCE_SOURCE_IDS=Object.freeze({'),`${file} is missing the explicit legacy commerce map.`);
             for(const [localKey,sourceId] of Object.entries({
               'polysomnography-sleep-technologist':'polysomnography-sleep-technologist-2014',
@@ -181,14 +159,14 @@ jobs:
               'pediatric-sleep-pearls':'pediatric-sleep-pearls-1e',
               'sleep-medicine-pearls':'sleep-medicine-pearls-3e',
               'principles-practice-pediatric-sleep':'principles-practice-pediatric-sleep-2e'
-            }))assert.ok(html.includes(`"${localKey}":"${sourceId}"`),`${file} is missing legacy commerce mapping ${localKey} -> ${sourceId}.`);
+            }))assert.ok(html.includes(`\"${localKey}\":\"${sourceId}\"`),`${file} is missing legacy commerce mapping ${localKey} -> ${sourceId}.`);
             assert.ok(html.includes('>View on Amazon</a>'),`${file} Amazon action label drifted.`);
             assert.ok(html.includes('We may earn a commission from qualifying purchases through this link.'),`${file} link-level commission disclosure is missing.`);
             assert.ok(html.includes('As an Amazon Associate I earn from qualifying purchases.'),`${file} exact Amazon Associate statement is missing.`);
-            assert.ok(html.includes('rel="sponsored noopener noreferrer"'),`${file} affiliate rel protections drifted.`);
-            assert.ok(html.includes('resourceContext:"legacy_rpsgt_reference"')&&html.includes('credentialArea:"rpsgt"'),`${file} affiliate analytics context drifted.`);
-            assert.ok(html.includes('${legacyRpsgtReferenceCommerceShelfHtml()}'),`${file} Reference Center is missing the verified commerce shelf.`);
-          }'''
+            assert.ok(html.includes('rel=\"sponsored noopener noreferrer\"'),`${file} affiliate rel protections drifted.`);
+            assert.ok(html.includes('resourceContext:\"legacy_rpsgt_reference\"')&&html.includes('credentialArea:\"rpsgt\"'),`${file} affiliate analytics context drifted.`);
+            assert.ok(html.includes('<th>Purchase option</th>'),`${file} full reference catalog is missing verified purchase actions.`);
+          }"""
           assert old in guard, 'Legacy V2 guard insertion point drifted.'
           guard=guard.replace(old,new,1)
           guard_path.write_text(guard,encoding='utf-8')
@@ -208,7 +186,6 @@ jobs:
               end=text.index('</script>',pos)
               out=Path('/tmp/'+filename.replace('.html','.js'))
               out.write_text(text[start:end],encoding='utf-8')
-              print(out)
           PY
           node --check /tmp/RPSGTv2.2026.js
           node --check /tmp/RPSGTv2.2026-app.js
