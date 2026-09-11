@@ -5885,6 +5885,7 @@ body:not(.focusMode) .statGrid{
 <style id="spg-v13-0-29-wording-wrap-safety">
 #mock h2,#mock .question,#mock .option,#practice .question,#practice .option{overflow-wrap:anywhere;white-space:normal;}
 </style>
+<script src="assets/guild-resource-commerce-registry.js"></script>
 </head>
 <body>
 <div class="app">
@@ -7771,7 +7772,7 @@ function brptOfficialResourcesHtml(){
       ${links.map(([title,url,desc])=>`<a class="brptOfficialLink" href="${esc(url)}" target="_blank" rel="noopener"><strong>${esc(title)}</strong><span>${esc(desc)}</span></a>`).join("")}
     </div>
     <div class="brptTextAnchorBoard">
-      <h4>BRPT-listed content-master anchors</h4>
+      <h4>BRPT Recommended Reading and content anchors</h4>
       <div class="brptTextAnchorGrid">
         ${textAnchors.map(([title,desc])=>`<div class="brptTextAnchor"><strong>${esc(title)}</strong><span>${esc(desc)}</span></div>`).join("")}
       </div>
@@ -11925,12 +11926,68 @@ function referenceContentCards(rows){
   </article>`).join("") || `<div class="empty">No study content matches.</div>`;
 }
 
+const LEGACY_RPSGT_COMMERCE_SOURCE_IDS=Object.freeze({
+  "fundamentals":"fundamentals-sleep-technology-3e",
+  "fundamentals-patient-care":"fundamentals-sleep-technology-3e",
+  "fundamentals-signal-acquisition":"fundamentals-sleep-technology-3e",
+  "fundamentals-scoring":"fundamentals-sleep-technology-3e",
+  "fundamentals-reporting":"fundamentals-sleep-technology-3e",
+  "fundamentals-pap":"fundamentals-sleep-technology-3e",
+  "polysomnography-sleep-technologist":"polysomnography-sleep-technologist-2014",
+  "clinical-guide-pediatric-sleep":"clinical-guide-pediatric-sleep-3e",
+  "pediatric-sleep-pearls":"pediatric-sleep-pearls-1e",
+  "sleep-medicine-pearls":"sleep-medicine-pearls-3e",
+  "pediatric-sleep-medicine":"principles-practice-pediatric-sleep-2e",
+  "principles-practice-pediatric-sleep":"principles-practice-pediatric-sleep-2e"
+});
+const LEGACY_RPSGT_REFERENCE_COMMERCE_TITLES=Object.freeze({
+  "Fundamentals of Sleep Technology":"fundamentals-sleep-technology-3e",
+  "Polysomnography for the Sleep Technologist":"polysomnography-sleep-technologist-2014",
+  "Polysomnography for the Sleep Technologist: Instrumentation, Monitoring, and Related Procedures":"polysomnography-sleep-technologist-2014",
+  "A Clinical Guide to Pediatric Sleep: Diagnosis and Management of Sleep Problems, Third Edition":"clinical-guide-pediatric-sleep-3e",
+  "Sleep Medicine Pearls":"sleep-medicine-pearls-3e",
+  "Pediatric Sleep Pearls":"pediatric-sleep-pearls-1e",
+  "Principles and Practice of Pediatric Sleep Medicine":"principles-practice-pediatric-sleep-2e"
+});
+function legacyRpsgtCommerceSourceId(reference){
+  const item=reference||{};
+  const key=String(item.key||item.id||"").trim();
+  if(key&&LEGACY_RPSGT_COMMERCE_SOURCE_IDS[key])return LEGACY_RPSGT_COMMERCE_SOURCE_IDS[key];
+  const title=String(item.title||"").trim();
+  return LEGACY_RPSGT_REFERENCE_COMMERCE_TITLES[title]||"";
+}
+function legacyRpsgtAffiliateActionHtml(sourceId,className="btn secondary"){
+  const registry=window.SPGResourceCommerceRegistry;
+  if(!sourceId||!registry||typeof registry.get!=="function"||typeof registry.affiliateUrl!=="function")return"";
+  const record=registry.get(sourceId);
+  const url=registry.affiliateUrl(sourceId);
+  if(!record||record.eligible_for_affiliate!==true||record.resource_type!=="book"||!url)return"";
+  const disclosure=String(record.disclosure_label||"We may earn a commission from qualifying purchases through this link.");
+  return `<span class="legacyRpsgtAffiliateGroup" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.28rem;margin-top:.55rem"><a class="${esc(className)}" href="${esc(url)}" target="_blank" rel="sponsored noopener noreferrer" data-legacy-rpsgt-affiliate-source-id="${esc(sourceId)}">View on Amazon</a><small style="font-size:.76rem;line-height:1.3;opacity:.82">${esc(disclosure)}</small></span>`;
+}
+document.addEventListener("click",function(event){
+  const link=event.target&&event.target.closest?event.target.closest("[data-legacy-rpsgt-affiliate-source-id]"):null;
+  if(!link)return;
+  const registry=window.SPGResourceCommerceRegistry;
+  if(!registry||typeof registry.trackAffiliateClick!=="function")return;
+  registry.trackAffiliateClick({
+    sourceId:String(link.getAttribute("data-legacy-rpsgt-affiliate-source-id")||""),
+    resourceContext:"legacy_rpsgt_reference",
+    credentialArea:"rpsgt"
+  });
+});
+
 function referenceResourceCards(rows){
-  return rows.map(r=>`<article class="referenceResultCard">
-    <div class="referenceMiniPillRow"><span class="pill">Reference</span>${r.year?`<span class="pill gold">${esc(r.year)}</span>`:""}</div>
-    <h3>${esc(r.title)}</h3>
-    <p class="muted">${esc(r.author||"Reference resource")}</p>
-  </article>`).join("") || `<div class="empty">No reference matches.</div>`;
+  return rows.map(r=>{
+    const sourceId=legacyRpsgtCommerceSourceId(r);
+    const commerceAction=legacyRpsgtAffiliateActionHtml(sourceId,"btn secondary");
+    return `<article class="referenceResultCard">
+      <div class="referenceMiniPillRow"><span class="pill">Reference</span>${r.year?`<span class="pill gold">${esc(r.year)}</span>`:""}</div>
+      <h3>${esc(r.title)}</h3>
+      <p class="muted">${esc(r.author||"Reference resource")}</p>
+      ${commerceAction}
+    </article>`;
+  }).join("") || `<div class="empty">No reference matches.</div>`;
 }
 
 function renderRefs(){
@@ -11969,7 +12026,7 @@ function renderRefs(){
   const studyStarter = resourcesFromKeys(["aasm-scoring-current","fundamentals-scoring","polysomnography-sleep-technologist"]);
 
   $("refs").innerHTML=`<div class="card">
-    <h2>Reference Resources</h2>
+    <h2>Reference Resources</h2><p class="tiny"><strong>Affiliate disclosure:</strong> As an Amazon Associate I earn from qualifying purchases.</p>
     <p class="muted">Search the app's reference catalog, question bank, glossary, and study cards. Use this when you want to look up a topic, see which questions mention it, or find the likely resource family behind a question.</p>
     <div class="referenceSearchToolbar">
       <label>Search
@@ -12036,7 +12093,7 @@ function renderRefs(){
   <div class="card" style="margin-top:14px">
     <h3>Full searchable source catalog</h3>
     <p class="muted">${referenceRows.length} of ${refs.length} reference entries shown.</p>
-    <div class="tableWrap"><table class="referenceCompactTable"><thead><tr><th>Title</th><th>Author / organization</th><th>Year</th></tr></thead><tbody id="refsBody">${refsRows(referenceRows)}</tbody></table></div>
+    <div class="tableWrap"><table class="referenceCompactTable"><thead><tr><th>Title</th><th>Author / organization</th><th>Year</th><th>Purchase option</th></tr></thead><tbody id="refsBody">${refsRows(referenceRows)}</tbody></table></div>
   </div>`;
 
   $("refsSearch").oninput=e=>{state.searches.refs=e.target.value;save();clearTimeout(renderTimer);renderTimer=setTimeout(renderRefs,120);};
@@ -12046,7 +12103,11 @@ function renderRefs(){
 }
 
 function refsRows(rows){
-  return rows.map(r=>`<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(r.author)}</td><td>${esc(r.year)}</td></tr>`).join("") || `<tr><td colspan="3">No references matched.</td></tr>`;
+  return rows.map(r=>{
+    const sourceId=legacyRpsgtCommerceSourceId(r);
+    const commerceAction=legacyRpsgtAffiliateActionHtml(sourceId,"btn secondary");
+    return `<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(r.author)}</td><td>${esc(r.year)}</td><td>${commerceAction}</td></tr>`;
+  }).join("") || `<tr><td colspan="4">No references matched.</td></tr>`;
 }
 function resetProgressApp(){
   const ok = confirm("Reset all saved progress for this RPSGT Study Trail app on this device? This clears answered history, accuracy, missed review, flags, readiness check state, and trail progress. The question bank and app content will stay.");

@@ -2121,10 +2121,10 @@ function cpsgtCommerceRecord(localId){
   if(!record||record.eligible_for_affiliate!==true||record.resource_type!=="book"||!url)return null;
   return {sourceId,record,url};
 }
-function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="Find on Amazon · Paid link"){
+function cpsgtAffiliateActionHtml(localId,className="reference-direct-button",label="View on Amazon"){
   const commerce=cpsgtCommerceRecord(localId);
   if(!commerce)return"";
-  return `<a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a>`;
+  return `<span class="affiliate-link-group" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.3rem"><a class="${className}" href="${escapeHtml(commerce.url)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate-source-id="${escapeHtml(commerce.sourceId)}">${escapeHtml(label)}</a><small class="affiliate-link-disclosure" style="font-size:.78rem;line-height:1.3;opacity:.82">We may earn a commission from qualifying purchases through this link.</small></span>`;
 }
 function trackCpsgtAffiliateClick(event){
   const link=event.target?.closest?.("[data-affiliate-source-id]");
@@ -2198,7 +2198,7 @@ function citationLinkHtml(r){
   if(!r)return"";
   const legacyAffiliate=isAffiliateReference(r);
   const commerceAction=cpsgtAffiliateActionHtml(r.id,"reference-direct-button reference-commerce-link");
-  const publicAction=(!legacyAffiliate&&r.url)?`<a class="reference-direct-button" href="${r.url}" target="_blank" rel="${sourceRel(r)}">${escapeHtml(directActionLabel(r))}</a>`:"";
+  const publicAction=(!commerceAction&&!legacyAffiliate&&r.url)?`<a class="reference-direct-button" href="${r.url}" target="_blank" rel="${sourceRel(r)}">${escapeHtml(directActionLabel(r))}</a>`:"";
   const badgeClass=(legacyAffiliate||commerceAction)?"reference-resource-badge book":"reference-resource-badge";
   const unavailable=legacyAffiliate&&!commerceAction?`<div class="reference-access-note">No verified purchase link is available for this cited edition.</div>`:"";
   return `<span class="${badgeClass}">${escapeHtml(resourceBadgeLabel(r))}</span>
@@ -2865,7 +2865,7 @@ function xrefSourceCardHtml(item,kind="support"){
   const source=CPSGT_XREF_SOURCES[item.sourceId]||{};
   const legacyAffiliate=source.linkType==="amazon-affiliate";
   const commerceAction=cpsgtAffiliateActionHtml(source.id||item.sourceId,"xref-direct-link");
-  const publicAction=source.url&&!legacyAffiliate?`<a class="xref-direct-link" href="${source.url}" target="_blank" rel="${xrefSourceRel(source)}">${escapeHtml(source.actionLabel||"Open source")}</a>`:"";
+  const publicAction=source.url&&!legacyAffiliate&&!commerceAction?`<a class="xref-direct-link" href="${source.url}" target="_blank" rel="${xrefSourceRel(source)}">${escapeHtml(source.actionLabel||"Open source")}</a>`:"";
   const unavailable=!publicAction&&!commerceAction?`<span class="xref-unlinked">${legacyAffiliate?"No verified purchase link is available for this cited edition.":"No public link is available for this source"}</span>`:"";
   return `<article class="xref-source-card ${kind}">
     <div class="xref-source-top">
@@ -3191,15 +3191,15 @@ function bookHasVerifiedAction(book){return !!(bookPublicUrl(book)||bookCommerce
 function bookLinkRel(book){return bookIsAffiliate(book)?"sponsored noopener noreferrer":"noopener noreferrer"}
 function bookLinkDisclosure(book){
   const publicUrl=bookPublicUrl(book),commerce=bookCommerce(book);
-  if(publicUrl&&commerce)return"Official publisher listing · optional paid Amazon link";
+  if(commerce)return"We may earn a commission from qualifying purchases through this link.";
   if(publicUrl)return"Official publisher listing";
-  if(commerce)return"Optional paid Amazon link";
   return"No verified purchase link";
 }
 function bookCitationHtml(book){return `<div class="book-apa-link">${escapeHtml(book.apaCitation)}</div>`}
 function bookActionLinksHtml(book,publicClass="primary link-button wide",commerceClass="secondary link-button wide"){
   const publicUrl=bookPublicUrl(book),commerce=bookCommerce(book);
-  return `${publicUrl?`<a class="${publicClass}" href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener noreferrer">View exact publisher listing ↗</a>`:""}${commerce?cpsgtAffiliateActionHtml(book.id,commerceClass):""}`;
+  if(commerce)return cpsgtAffiliateActionHtml(book.id,commerceClass);
+  return publicUrl?`<a class="${publicClass}" href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener noreferrer">View exact publisher listing ↗</a>`:"";
 }
 function bookMarkedOwned(id){return state.bookShelf.ownedIds.includes(id)}
 function bookHidden(id){return state.bookShelf.hiddenIds.includes(id)}

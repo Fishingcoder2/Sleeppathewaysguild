@@ -16,9 +16,30 @@ for(const file of ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']){
   assert.ok(guard.includes('q.qa.manualReviewRecommended === true'),`${file} allows manual-review records into learner sessions.`);
   assert.ok(html.includes('const pretestBlueprintCounts = spgAllocateBlueprintCountsV1266(pretestCount);'),`${file} does not allocate the 25 pretest-style items by domain.`);
   assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
+  assert.ok(html.includes('<script src="assets/guild-resource-commerce-registry.js"></script>'),`${file} does not load the shared commerce registry.`);
+  assert.ok(html.includes('const LEGACY_RPSGT_COMMERCE_SOURCE_IDS=Object.freeze({'),`${file} is missing the explicit legacy commerce map.`);
+  for(const [localKey,sourceId] of Object.entries({
+    'polysomnography-sleep-technologist':'polysomnography-sleep-technologist-2014',
+    'clinical-guide-pediatric-sleep':'clinical-guide-pediatric-sleep-3e',
+    'pediatric-sleep-pearls':'pediatric-sleep-pearls-1e',
+    'sleep-medicine-pearls':'sleep-medicine-pearls-3e',
+    'principles-practice-pediatric-sleep':'principles-practice-pediatric-sleep-2e'
+  }))assert.ok(html.includes(`"${localKey}":"${sourceId}"`),`${file} is missing legacy commerce mapping ${localKey} -> ${sourceId}.`);
+  assert.ok(html.includes('>View on Amazon</a>'),`${file} Amazon action label drifted.`);
+  assert.ok(html.includes('We may earn a commission from qualifying purchases through this link.'),`${file} link-level commission disclosure is missing.`);
+  assert.ok(html.includes('As an Amazon Associate I earn from qualifying purchases.'),`${file} exact Amazon Associate statement is missing.`);
+  assert.ok(html.includes('rel="sponsored noopener noreferrer"'),`${file} affiliate rel protections drifted.`);
+  assert.ok(html.includes('resourceContext:"legacy_rpsgt_reference"')&&html.includes('credentialArea:"rpsgt"'),`${file} affiliate analytics context drifted.`);
+  assert.ok(html.includes('<th>Purchase option</th>'),`${file} full reference catalog is missing verified purchase actions.`);
 }
 
 const cpsgt=await readFile(join(repoRoot,'cpsgt-study-app.html'),'utf8');
+const v3ReferenceCenter=await readFile(join(v3,'core','reference-center.js'),'utf8');
+const commerceRegistry=await readFile(join(repoRoot,'assets','guild-resource-commerce-registry.js'),'utf8');
+assert.ok(v3ReferenceCenter.includes('>View on Amazon</a>'),'RPSGT V3 Amazon action label drifted.');
+assert.ok(v3ReferenceCenter.includes('We may earn a commission from qualifying purchases through this link.'),'RPSGT V3 link-level commission disclosure is missing.');
+assert.ok(v3ReferenceCenter.includes('const actions=affiliate||(url?'),'RPSGT V3 must suppress public/publisher actions when verified Amazon commerce exists.');
+assert.ok(commerceRegistry.includes("disclosure_label:'We may earn a commission from qualifying purchases through this link.'"),'Shared commerce registry disclosure copy drifted.');
 function referenceBlock(id){
   const start=cpsgt.indexOf(`"id":"${id}"`);
   assert.ok(start>=0,`CPSGT reference record is missing ${id}.`);
@@ -43,26 +64,30 @@ for(const [localId,sourceId] of Object.entries({
   'sleep-medicine-pearls':'sleep-medicine-pearls-3e',
   'pediatric-sleep-pearls':'pediatric-sleep-pearls-1e'
 })) assert.ok(cpsgt.includes(`"${localId}":"${sourceId}"`),`CPSGT is missing canonical commerce mapping ${localId} -> ${sourceId}.`);
-assert.ok(cpsgt.includes('Find on Amazon · Paid link'),'CPSGT paid action label drifted.');
+assert.ok(cpsgt.includes('label="View on Amazon"'),'CPSGT Amazon action label drifted.');
+assert.ok(cpsgt.includes('We may earn a commission from qualifying purchases through this link.'),'CPSGT link-level commission disclosure is missing.');
+assert.ok(!cpsgt.includes('View on Amazon · Affiliate link')&&!cpsgt.includes('Find on Amazon · Paid link'),'CPSGT returned to confusing affiliate wording inside the button.');
 assert.ok(cpsgt.includes('rel="sponsored noopener noreferrer"'),'CPSGT affiliate rel protections drifted.');
 assert.ok(cpsgt.includes('resourceContext:"cpsgt_reference"'),'CPSGT affiliate analytics context drifted.');
 assert.ok(cpsgt.includes('credentialArea:"cpsgt"'),'CPSGT affiliate analytics credential area drifted.');
 assert.ok(cpsgt.includes('As an Amazon Associate I earn from qualifying purchases.'),'CPSGT exact affiliate disclosure is missing.');
 assert.ok(cpsgt.includes('No verified purchase link is available for this cited edition.'),'CPSGT safe-failure copy is missing.');
 assert.ok(cpsgt.includes('function bookCitationHtml(book){return `<div class="book-apa-link">'),'CPSGT book APA citations became purchase links again.');
+assert.ok(cpsgt.includes('if(commerce)return cpsgtAffiliateActionHtml(book.id,commerceClass);'),'CPSGT shelf must prefer verified Amazon commerce over a publisher action.');
+assert.ok(!cpsgt.includes('Official publisher listing · optional paid Amazon link'),'CPSGT shelf still advertises simultaneous publisher and Amazon purchase actions.');
 assert.ok(cpsgt.includes('function availableBookRecommendations(){return BOOK_RECOMMENDATIONS.filter(book=>bookHasVerifiedAction(book)'), 'CPSGT timed shelf does not fail closed on unverified destinations.');
 for(const forbidden of ['BRPT-listed','RPSGT-listed','CPSGT-listed']) assert.ok(!cpsgt.includes(forbidden),`CPSGT learner-facing legacy terminology remains: ${forbidden}.`);
 
 const citationRenderer=functionBlock('function citationLinkHtml(r){','function referenceChips(q){');
 assert.ok(citationRenderer.includes('const legacyAffiliate=isAffiliateReference(r);'));
 assert.ok(citationRenderer.includes('const commerceAction=cpsgtAffiliateActionHtml(r.id'));
-assert.ok(citationRenderer.includes('const publicAction=(!legacyAffiliate&&r.url)?'),'CPSGT reference renderer can still expose a legacy affiliate URL directly.');
+assert.ok(citationRenderer.includes('const publicAction=(!commerceAction&&!legacyAffiliate&&r.url)?'),'CPSGT reference renderer must show a public/publisher action only when verified Amazon commerce is unavailable.');
 assert.ok(citationRenderer.includes('<div class="apa-reference-text">${escapeHtml(r.apa||r.title)}</div>'),'CPSGT reference APA text rendering drifted.');
 
 const xrefRenderer=functionBlock('function xrefSourceCardHtml(item,kind="support"){','function blueprintCrossReferenceHtml(q){');
 assert.ok(xrefRenderer.includes('const legacyAffiliate=source.linkType==="amazon-affiliate";'));
 assert.ok(xrefRenderer.includes('const commerceAction=cpsgtAffiliateActionHtml(source.id||item.sourceId'));
-assert.ok(xrefRenderer.includes('const publicAction=source.url&&!legacyAffiliate?'),'CPSGT cross-reference renderer can still expose a legacy affiliate URL directly.');
+assert.ok(xrefRenderer.includes('const publicAction=source.url&&!legacyAffiliate&&!commerceAction?'),'CPSGT cross-reference renderer must show a public/publisher action only when verified Amazon commerce is unavailable.');
 
 const sleepTechnology=referenceBlock('fundamentals-tech');
 assert.ok(sleepTechnology.includes('shop.lww.com/Fundamentals-of-Sleep-Technology'));
