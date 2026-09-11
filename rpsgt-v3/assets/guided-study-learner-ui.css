@@ -3,6 +3,12 @@
 .task-map-card details[data-resource-panel="true"][data-resource-ready="true"]{display:block}
 .resource-title-chip{display:inline-flex;align-items:center;border:1px solid #bdd4df;border-radius:999px;background:#edf6fa;color:#245a70;padding:7px 10px;font-size:.78rem;font-weight:850;line-height:1.25}
 
+/* Keep the learning prompt visually dominant. Progress and item metadata are orientation aids, not headings. */
+.checkpoint-progress-copy,.checkpoint-question-meta{color:var(--muted,#62727e);font-size:.76rem;line-height:1.25}
+.checkpoint-progress-copy strong{color:inherit;font-size:inherit;font-weight:750;letter-spacing:.01em}
+.checkpoint-question-meta{justify-content:flex-start;gap:6px;opacity:.88}
+.checkpoint-question-meta .status,.checkpoint-question-meta .pill,.checkpoint-question-meta [class*="chip"]{padding:3px 7px;font-size:.7rem;font-weight:750}
+
 .checkpoint-question h2,
 #checkpoint-title{
   display:block!important;
@@ -17,9 +23,12 @@
   -webkit-box-orient:initial!important;
   -webkit-line-clamp:unset!important;
   line-clamp:unset!important;
+  color:var(--navy,#12324d);
+  font-size:clamp(1.15rem,2.2vw,1.42rem);
+  line-height:1.45;
+  font-weight:850;
 }
 
-.checkpoint-question-meta{justify-content:flex-start}
 .checkpoint-modal,.checkpoint-question-pane,.checkpoint-question{min-width:0}
 .guided-question-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid #d5e2e9}
 .guided-question-actions .btn.active{background:#1f6d88;color:#fff;border-color:#1f6d88}
@@ -27,6 +36,7 @@
 
 @media(max-width:700px){
   .resource-title-chip{width:100%;border-radius:12px}
+  .checkpoint-progress-copy,.checkpoint-question-meta{font-size:.72rem}
   .guided-question-actions{display:grid;grid-template-columns:1fr}
   .guided-question-actions .btn{width:100%}
 }

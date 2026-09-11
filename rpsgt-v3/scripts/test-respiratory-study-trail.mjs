@@ -5,13 +5,14 @@ import {fileURLToPath} from 'node:url';
 
 const here=dirname(fileURLToPath(import.meta.url));
 const root=join(here,'..');
-const [trailText,ppsmText,papFamilyText,studyHtml,trailJs,trailCss,homeJs,labsJs,engineJs,explorerJs,completionJs,studyJs]=await Promise.all([
+const [trailText,ppsmText,papFamilyText,studyHtml,trailJs,trailCss,homeHtml,homeJs,labsJs,engineJs,explorerJs,completionJs,studyJs]=await Promise.all([
   readFile(join(root,'data','learner-trails','respiratory-pap.json'),'utf8'),
   readFile(join(root,'data','study-sources','principles-practice-sleep-medicine-7e.json'),'utf8'),
   readFile(join(root,'data','study-sources','topic-families-pap-modalities.json'),'utf8'),
   readFile(join(root,'study.html'),'utf8'),
   readFile(join(root,'core','respiratory-study-trail.js'),'utf8'),
   readFile(join(root,'assets','respiratory-study-trail.css'),'utf8'),
+  readFile(join(root,'index.html'),'utf8'),
   readFile(join(root,'core','home-dashboard.js'),'utf8'),
   readFile(join(root,'core','labs.js'),'utf8'),
   readFile(join(root,'core','guided-trail-engine.js'),'utf8'),
@@ -87,8 +88,9 @@ if(!trailCss.includes('@media(max-width:760px)')||!trailCss.includes('grid-templ
 if(/var\(--(?:card|soft)\)/.test(trailCss)) throw new Error('Respiratory trail CSS references undefined legacy surface variables.');
 for(const token of ['var(--panel)','var(--sky)',':focus-visible','respiratory-route-overview','respiratory-guided-list','is-locked','is-current','respiratory-path-orb','respiratory-path-callout','respiratory-study-book','respiratory-mastery-stars','--lesson-accent']) if(!trailCss.includes(token)) throw new Error(`Respiratory trail CSS polish/gamification is missing ${token}.`);
 
-for(const token of ['data-featured-respiratory-trail','study.html#respiratory-pap-trail','Start Respiratory/PAP Study Trail']) if(!homeJs.includes(token)) throw new Error(`Dashboard respiratory trail entry point is missing ${token}.`);
+for(const token of ['study.html#respiratory-pap-trail','Respiratory/PAP Study Trail']) if(!homeHtml.includes(token)) throw new Error(`Compact dashboard respiratory trail shortcut is missing ${token}.`);
+if(/data-featured-respiratory-trail|insertFeaturedRespiratoryTrail/.test(homeJs)) throw new Error('Dashboard should not inject a separate Respiratory/PAP promo section after load.');
 for(const token of ["new Set(['respiratory','pap','troubleshooting'])",'study.html#respiratory-pap-trail','Study respiratory/PAP trail first']) if(!labsJs.includes(token)) throw new Error(`Skills Lab respiratory trail entry point is missing ${token}.`);
 new Function(homeJs);new Function(labsJs);
 
-console.log('Respiratory/PAP Study Trail authority, nine-step stepping-stone path, mastery-gated Learn → Apply → Check flow, concept-safe wrapper rotation/retakes, mastery stars, concept-matched 15-question checkpoints, Sleep Staging exclusion from OSA scoring, saved progression, textbook identity, chapter locator, learner-facing reference wording, front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
+console.log('Respiratory/PAP Study Trail authority, nine-step stepping-stone path, mastery-gated Learn → Apply → Check flow, concept-safe wrapper rotation/retakes, mastery stars, concept-matched 15-question checkpoints, Sleep Staging exclusion from OSA scoring, saved progression, textbook identity, chapter locator, learner-facing reference wording, compact front-door routes, theme variables, noindex, Coach Bob, and mobile contracts passed.');
