@@ -9,35 +9,43 @@ permissions:
   contents: read
 
 jobs:
-  inspect-legacy-affiliate-renderers:
+  inspect-legacy-reference-keys:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: build/affiliate-link-wording-20260910
-      - name: Inspect legacy RPSGT reference and commerce paths
+      - name: Inspect legacy reference renderers and canonical book keys
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          for filename in ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']:
-              text=Path(filename).read_text(encoding='utf-8')
-              print('\n===== FILE',filename,'=====')
-              for needle in ['amazon.com','affiliate','publisher','citation','reference','book','resource']:
-                  print('COUNT',needle,text.lower().count(needle.lower()))
-              funcs=re.findall(r'function\s+([A-Za-z_$][\w$]*)\s*\(',text)
-              interesting=[f for f in funcs if re.search(r'ref|book|resource|citation|source|shelf|shop',f,re.I)]
-              print('FUNCTIONS',interesting[:200])
-              needles=['amazon.com','affiliate','publisher','bookShelf','resourceShelf','referenceShelf','renderReferences','renderResources','citationHtml','referenceHtml','bookHtml']
-              shown=0
-              for needle in needles:
-                  pos=0
-                  while shown<40:
-                      pos=text.lower().find(needle.lower(),pos)
-                      if pos<0: break
-                      print('\n---',needle,'@',pos,'---')
-                      print(text[max(0,pos-1000):min(len(text),pos+2200)])
-                      pos += len(needle)
-                      shown += 1
-                  if shown>=40: break
+          text=Path('RPSGTv2.2026.html').read_text(encoding='utf-8')
+          markers=['function renderRefs','function referenceResourceCards','function referencePreviewCards','function refsRows','function resourcesFromKeys','function resourcesForDomainTask','function resourceChipHtml','function brptOfficialResourcesHtml']
+          funcs=list(re.finditer(r'function\s+([A-Za-z_$][\w$]*)\s*\(',text))
+          starts={m.group(1):m.start() for m in funcs}
+          sorted_starts=sorted((m.start(),m.group(1)) for m in funcs)
+          for marker in markers:
+              name=marker.replace('function ','')
+              start=starts.get(name,-1)
+              print('\n===== ',name,' =====')
+              if start<0:
+                  print('MISSING')
+                  continue
+              end=len(text)
+              for pos,fn in sorted_starts:
+                  if pos>start:
+                      end=pos
+                      break
+              print(text[start:min(end,start+12000)])
+          titles=['Fundamentals of Sleep Technology','Polysomnography for the Sleep Technologist','A Clinical Guide to Pediatric Sleep','Sleep Medicine Pearls','Pediatric Sleep Pearls','Principles and Practice of Pediatric Sleep Medicine']
+          for title in titles:
+              print('\n===== TITLE',title,'=====')
+              pos=0; count=0
+              while count<8:
+                  pos=text.find(title,pos)
+                  if pos<0: break
+                  print(text[max(0,pos-700):min(len(text),pos+1300)])
+                  pos += len(title); count += 1
+              print('occurrences shown',count)
           PY
