@@ -52,7 +52,7 @@ jobs:
           node --check /tmp/rpsgt-launcher.js
       - name: Verify direct-render apps and learner-delivery guards
         run: |
-          test "$(git hash-object RPSGTv2.2026-app.html)" = "2f8c6d1fa33729d0267aa1dab8c881fca848d510"
+          test "$(git hash-object RPSGTv2.2026-app.html)" = "4ae96667fbc0994a03d6f18ebff43d2f99ea7dbd"
           for app in RPSGTv2.2026.html RPSGTv2.2026-app.html; do
             test "$(wc -c < "$app")" -gt 10000000
             grep -q 'id="app-data"' "$app"
