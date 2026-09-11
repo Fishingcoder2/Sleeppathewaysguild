@@ -1,14 +1,43 @@
 name: Apply RPSGT loading repair
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - build/affiliate-link-wording-20260910
 
 permissions:
   contents: read
 
 jobs:
-  disabled:
-    if: false
+  inspect-legacy-affiliate-renderers:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Superseded by the verified browser loader deployment.'
+      - uses: actions/checkout@v4
+        with:
+          ref: build/affiliate-link-wording-20260910
+      - name: Inspect legacy RPSGT reference and commerce paths
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          for filename in ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']:
+              text=Path(filename).read_text(encoding='utf-8')
+              print('\n===== FILE',filename,'=====')
+              for needle in ['amazon.com','affiliate','publisher','citation','reference','book','resource']:
+                  print('COUNT',needle,text.lower().count(needle.lower()))
+              funcs=re.findall(r'function\s+([A-Za-z_$][\w$]*)\s*\(',text)
+              interesting=[f for f in funcs if re.search(r'ref|book|resource|citation|source|shelf|shop',f,re.I)]
+              print('FUNCTIONS',interesting[:200])
+              needles=['amazon.com','affiliate','publisher','bookShelf','resourceShelf','referenceShelf','renderReferences','renderResources','citationHtml','referenceHtml','bookHtml']
+              shown=0
+              for needle in needles:
+                  pos=0
+                  while shown<40:
+                      pos=text.lower().find(needle.lower(),pos)
+                      if pos<0: break
+                      print('\n---',needle,'@',pos,'---')
+                      print(text[max(0,pos-1000):min(len(text),pos+2200)])
+                      pos += len(needle)
+                      shown += 1
+                  if shown>=40: break
+          PY
