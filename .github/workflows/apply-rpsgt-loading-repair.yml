@@ -6,46 +6,221 @@ on:
       - build/affiliate-link-wording-20260910
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  inspect-legacy-reference-keys:
+  patch-legacy-rpsgt-commerce:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: build/affiliate-link-wording-20260910
-      - name: Inspect legacy reference renderers and canonical book keys
+          fetch-depth: 0
+      - name: Add verified shared-commerce actions to RPSGT V2 references
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
-          text=Path('RPSGTv2.2026.html').read_text(encoding='utf-8')
-          markers=['function renderRefs','function referenceResourceCards','function referencePreviewCards','function refsRows','function resourcesFromKeys','function resourcesForDomainTask','function resourceChipHtml','function brptOfficialResourcesHtml']
-          funcs=list(re.finditer(r'function\s+([A-Za-z_$][\w$]*)\s*\(',text))
-          starts={m.group(1):m.start() for m in funcs}
-          sorted_starts=sorted((m.start(),m.group(1)) for m in funcs)
-          for marker in markers:
-              name=marker.replace('function ','')
-              start=starts.get(name,-1)
-              print('\n===== ',name,' =====')
-              if start<0:
-                  print('MISSING')
-                  continue
-              end=len(text)
-              for pos,fn in sorted_starts:
-                  if pos>start:
-                      end=pos
-                      break
-              print(text[start:min(end,start+12000)])
-          titles=['Fundamentals of Sleep Technology','Polysomnography for the Sleep Technologist','A Clinical Guide to Pediatric Sleep','Sleep Medicine Pearls','Pediatric Sleep Pearls','Principles and Practice of Pediatric Sleep Medicine']
-          for title in titles:
-              print('\n===== TITLE',title,'=====')
-              pos=0; count=0
-              while count<8:
-                  pos=text.find(title,pos)
-                  if pos<0: break
-                  print(text[max(0,pos-700):min(len(text),pos+1300)])
-                  pos += len(title); count += 1
-              print('occurrences shown',count)
+
+          files=['RPSGTv2.2026.html','RPSGTv2.2026-app.html']
+          registry_script='<script src="assets/guild-resource-commerce-registry.js"></script>'
+          helper=r'''const LEGACY_RPSGT_COMMERCE_SOURCE_IDS=Object.freeze({
+            "fundamentals":"fundamentals-sleep-technology-3e",
+            "fundamentals-patient-care":"fundamentals-sleep-technology-3e",
+            "fundamentals-signal-acquisition":"fundamentals-sleep-technology-3e",
+            "fundamentals-scoring":"fundamentals-sleep-technology-3e",
+            "fundamentals-reporting":"fundamentals-sleep-technology-3e",
+            "fundamentals-pap":"fundamentals-sleep-technology-3e",
+            "polysomnography-sleep-technologist":"polysomnography-sleep-technologist-2014",
+            "clinical-guide-pediatric-sleep":"clinical-guide-pediatric-sleep-3e",
+            "pediatric-sleep-pearls":"pediatric-sleep-pearls-1e",
+            "sleep-medicine-pearls":"sleep-medicine-pearls-3e",
+            "pediatric-sleep-medicine":"principles-practice-pediatric-sleep-2e",
+            "principles-practice-pediatric-sleep":"principles-practice-pediatric-sleep-2e"
+          });
+          const LEGACY_RPSGT_REFERENCE_COMMERCE_TITLES=Object.freeze({
+            "Fundamentals of Sleep Technology":"fundamentals-sleep-technology-3e",
+            "Polysomnography for the Sleep Technologist":"polysomnography-sleep-technologist-2014",
+            "Polysomnography for the Sleep Technologist: Instrumentation, Monitoring, and Related Procedures":"polysomnography-sleep-technologist-2014",
+            "A Clinical Guide to Pediatric Sleep: Diagnosis and Management of Sleep Problems, Third Edition":"clinical-guide-pediatric-sleep-3e",
+            "Sleep Medicine Pearls":"sleep-medicine-pearls-3e",
+            "Pediatric Sleep Pearls":"pediatric-sleep-pearls-1e",
+            "Principles and Practice of Pediatric Sleep Medicine":"principles-practice-pediatric-sleep-2e"
+          });
+          function legacyRpsgtCommerceSourceId(reference){
+            const item=reference||{};
+            const key=String(item.key||item.id||"").trim();
+            if(key&&LEGACY_RPSGT_COMMERCE_SOURCE_IDS[key])return LEGACY_RPSGT_COMMERCE_SOURCE_IDS[key];
+            const title=String(item.title||"").trim();
+            return LEGACY_RPSGT_REFERENCE_COMMERCE_TITLES[title]||"";
+          }
+          function legacyRpsgtAffiliateActionHtml(sourceId,className="btn secondary"){
+            const registry=window.SPGResourceCommerceRegistry;
+            if(!sourceId||!registry||typeof registry.get!=="function"||typeof registry.affiliateUrl!=="function")return"";
+            const record=registry.get(sourceId);
+            const url=registry.affiliateUrl(sourceId);
+            if(!record||record.eligible_for_affiliate!==true||record.resource_type!=="book"||!url)return"";
+            const disclosure=String(record.disclosure_label||"We may earn a commission from qualifying purchases through this link.");
+            return `<span class="legacyRpsgtAffiliateGroup" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.28rem;margin-top:.55rem"><a class="${esc(className)}" href="${esc(url)}" target="_blank" rel="sponsored noopener noreferrer" data-legacy-rpsgt-affiliate-source-id="${esc(sourceId)}">View on Amazon</a><small style="font-size:.76rem;line-height:1.3;opacity:.82">${esc(disclosure)}</small></span>`;
+          }
+          function legacyRpsgtReferenceCommerceShelfHtml(){
+            const registry=window.SPGResourceCommerceRegistry;
+            if(!registry||typeof registry.get!=="function")return"";
+            const ids=[...new Set(Object.values(LEGACY_RPSGT_COMMERCE_SOURCE_IDS))];
+            const cards=ids.map(sourceId=>{
+              const record=registry.get(sourceId);
+              const action=legacyRpsgtAffiliateActionHtml(sourceId,"btn secondary");
+              if(!record||!action)return"";
+              return `<div class="card flat"><strong>${esc(record.canonical_title||"Book reference")}</strong>${action}</div>`;
+            }).filter(Boolean);
+            if(!cards.length)return"";
+            return `<section class="card legacyRpsgtAffiliateShelf"><span class="reportSectionLabel">Optional book access</span><h2>Verified book reference purchase options</h2><p class="muted">Buying a book is optional. When an exact verified Amazon edition is available, the Guild shows Amazon as the single purchase option rather than a competing publisher-store link.</p><div class="grid cols2" style="margin-top:12px">${cards.join("")}</div><p class="tiny" style="margin-top:10px"><strong>Affiliate disclosure:</strong> As an Amazon Associate I earn from qualifying purchases.</p></section>`;
+          }
+          document.addEventListener("click",function(event){
+            const link=event.target&&event.target.closest?event.target.closest("[data-legacy-rpsgt-affiliate-source-id]"):null;
+            if(!link)return;
+            const registry=window.SPGResourceCommerceRegistry;
+            if(!registry||typeof registry.trackAffiliateClick!=="function")return;
+            registry.trackAffiliateClick({
+              sourceId:String(link.getAttribute("data-legacy-rpsgt-affiliate-source-id")||""),
+              resourceContext:"legacy_rpsgt_reference",
+              credentialArea:"rpsgt"
+            });
+          });
+
+          '''
+
+          old_cards='''function referenceResourceCards(rows){
+            return rows.map(r=>`<article class="referenceResultCard">
+              <div class="referenceMiniPillRow"><span class="pill">Reference</span>${r.year?`<span class="pill gold">${esc(r.year)}</span>`:""}</div>
+              <h3>${esc(r.title)}</h3>
+              <p class="muted">${esc(r.author||"Reference resource")}</p>
+            </article>`).join("") || `<div class="empty">No reference matches.</div>`;
+          }'''
+          new_cards='''function referenceResourceCards(rows){
+            return rows.map(r=>{
+              const sourceId=legacyRpsgtCommerceSourceId(r);
+              const commerceAction=legacyRpsgtAffiliateActionHtml(sourceId,"btn secondary");
+              return `<article class="referenceResultCard">
+                <div class="referenceMiniPillRow"><span class="pill">Reference</span>${r.year?`<span class="pill gold">${esc(r.year)}</span>`:""}</div>
+                <h3>${esc(r.title)}</h3>
+                <p class="muted">${esc(r.author||"Reference resource")}</p>
+                ${commerceAction}
+              </article>`;
+            }).join("") || `<div class="empty">No reference matches.</div>`;
+          }'''
+          old_rows='''function refsRows(rows){
+            return rows.map(r=>`<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(r.author)}</td><td>${esc(r.year)}</td></tr>`).join("") || `<tr><td colspan="3">No references matched.</td></tr>`;
+          }'''
+          new_rows='''function refsRows(rows){
+            return rows.map(r=>{
+              const sourceId=legacyRpsgtCommerceSourceId(r);
+              const commerceAction=legacyRpsgtAffiliateActionHtml(sourceId,"btn secondary");
+              return `<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(r.author)}</td><td>${esc(r.year)}</td><td>${commerceAction}</td></tr>`;
+            }).join("") || `<tr><td colspan="4">No references matched.</td></tr>`;
+          }'''
+          old_table='<thead><tr><th>Title</th><th>Author / organization</th><th>Year</th></tr></thead><tbody id="refsBody">${refsRows(referenceRows)}</tbody>'
+          new_table='<thead><tr><th>Title</th><th>Author / organization</th><th>Year</th><th>Purchase option</th></tr></thead><tbody id="refsBody">${refsRows(referenceRows)}</tbody>'
+          shelf_anchor='''    <div class="referenceResourceHint"><strong>Best study habit:</strong> use this lookup to find the topic, then return to Practice or Guided Trail for active recall.</div>
+          </div>
+
+          <section class="card">'''
+          shelf_replacement='''    <div class="referenceResourceHint"><strong>Best study habit:</strong> use this lookup to find the topic, then return to Practice or Guided Trail for active recall.</div>
+          </div>
+
+          ${legacyRpsgtReferenceCommerceShelfHtml()}
+
+          <section class="card">'''
+
+          for filename in files:
+            path=Path(filename)
+            text=path.read_text(encoding='utf-8')
+            if registry_script not in text:
+              assert '</head>' in text, f'{filename}: missing head close'
+              text=text.replace('</head>',registry_script+'\n</head>',1)
+            assert 'const LEGACY_RPSGT_COMMERCE_SOURCE_IDS=' not in text, f'{filename}: helper already exists unexpectedly'
+            marker='function referenceResourceCards(rows){'
+            assert marker in text, f'{filename}: referenceResourceCards missing'
+            text=text.replace(marker,helper+marker,1)
+            assert old_cards in text, f'{filename}: referenceResourceCards block drifted'
+            text=text.replace(old_cards,new_cards,1)
+            assert old_rows in text, f'{filename}: refsRows block drifted'
+            text=text.replace(old_rows,new_rows,1)
+            assert old_table in text, f'{filename}: reference table header drifted'
+            text=text.replace(old_table,new_table,1)
+            assert shelf_anchor in text, f'{filename}: Reference Center shelf anchor drifted'
+            text=text.replace(shelf_anchor,shelf_replacement,1)
+            text=text.replace('BRPT-listed content-master anchors','BRPT Recommended Reading and content anchors')
+            for required in [
+              registry_script,
+              '"polysomnography-sleep-technologist":"polysomnography-sleep-technologist-2014"',
+              '"clinical-guide-pediatric-sleep":"clinical-guide-pediatric-sleep-3e"',
+              '"pediatric-sleep-pearls":"pediatric-sleep-pearls-1e"',
+              '"sleep-medicine-pearls":"sleep-medicine-pearls-3e"',
+              '"principles-practice-pediatric-sleep":"principles-practice-pediatric-sleep-2e"',
+              '>View on Amazon</a>',
+              'We may earn a commission from qualifying purchases through this link.',
+              'As an Amazon Associate I earn from qualifying purchases.',
+              'rel="sponsored noopener noreferrer"',
+              'resourceContext:"legacy_rpsgt_reference"',
+              'credentialArea:"rpsgt"',
+              '${legacyRpsgtReferenceCommerceShelfHtml()}'
+            ]:
+              assert required in text, f'{filename}: missing {required}'
+            path.write_text(text,encoding='utf-8')
+
+          guard_path=Path('rpsgt-v3/scripts/test-three-app-quality-guards.mjs')
+          guard=guard_path.read_text(encoding='utf-8')
+          old='''  assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
+          }'''
+          new='''  assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
+            assert.ok(html.includes('<script src="assets/guild-resource-commerce-registry.js"></script>'),`${file} does not load the shared commerce registry.`);
+            assert.ok(html.includes('const LEGACY_RPSGT_COMMERCE_SOURCE_IDS=Object.freeze({'),`${file} is missing the explicit legacy commerce map.`);
+            for(const [localKey,sourceId] of Object.entries({
+              'polysomnography-sleep-technologist':'polysomnography-sleep-technologist-2014',
+              'clinical-guide-pediatric-sleep':'clinical-guide-pediatric-sleep-3e',
+              'pediatric-sleep-pearls':'pediatric-sleep-pearls-1e',
+              'sleep-medicine-pearls':'sleep-medicine-pearls-3e',
+              'principles-practice-pediatric-sleep':'principles-practice-pediatric-sleep-2e'
+            }))assert.ok(html.includes(`"${localKey}":"${sourceId}"`),`${file} is missing legacy commerce mapping ${localKey} -> ${sourceId}.`);
+            assert.ok(html.includes('>View on Amazon</a>'),`${file} Amazon action label drifted.`);
+            assert.ok(html.includes('We may earn a commission from qualifying purchases through this link.'),`${file} link-level commission disclosure is missing.`);
+            assert.ok(html.includes('As an Amazon Associate I earn from qualifying purchases.'),`${file} exact Amazon Associate statement is missing.`);
+            assert.ok(html.includes('rel="sponsored noopener noreferrer"'),`${file} affiliate rel protections drifted.`);
+            assert.ok(html.includes('resourceContext:"legacy_rpsgt_reference"')&&html.includes('credentialArea:"rpsgt"'),`${file} affiliate analytics context drifted.`);
+            assert.ok(html.includes('${legacyRpsgtReferenceCommerceShelfHtml()}'),`${file} Reference Center is missing the verified commerce shelf.`);
+          }'''
+          assert old in guard, 'Legacy V2 guard insertion point drifted.'
+          guard=guard.replace(old,new,1)
+          guard_path.write_text(guard,encoding='utf-8')
           PY
+      - name: Validate RPSGT V2 shared-commerce integration
+        run: |
+          node --check assets/guild-resource-commerce-registry.js
+          node rpsgt-v3/scripts/test-three-app-quality-guards.mjs
+          python - <<'PY'
+          from pathlib import Path
+          for filename in ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']:
+              text=Path(filename).read_text(encoding='utf-8')
+              marker='const LEGACY_RPSGT_COMMERCE_SOURCE_IDS='
+              pos=text.index(marker)
+              start=text.rfind('<script',0,pos)
+              start=text.index('>',start)+1
+              end=text.index('</script>',pos)
+              out=Path('/tmp/'+filename.replace('.html','.js'))
+              out.write_text(text[start:end],encoding='utf-8')
+              print(out)
+          PY
+          node --check /tmp/RPSGTv2.2026.js
+          node --check /tmp/RPSGTv2.2026-app.js
+          git diff --check
+      - name: Commit RPSGT V2 shared-commerce integration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add RPSGTv2.2026.html RPSGTv2.2026-app.html rpsgt-v3/scripts/test-three-app-quality-guards.mjs
+          if git diff --cached --quiet; then
+            echo 'No legacy RPSGT commerce changes to commit.'
+            exit 0
+          fi
+          git commit -m 'feat: add verified Amazon commerce to RPSGT V2 references'
+          git push origin HEAD:build/affiliate-link-wording-20260910
