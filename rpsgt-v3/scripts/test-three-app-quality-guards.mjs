@@ -16,6 +16,21 @@ for(const file of ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']){
   assert.ok(guard.includes('q.qa.manualReviewRecommended === true'),`${file} allows manual-review records into learner sessions.`);
   assert.ok(html.includes('const pretestBlueprintCounts = spgAllocateBlueprintCountsV1266(pretestCount);'),`${file} does not allocate the 25 pretest-style items by domain.`);
   assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
+  assert.ok(html.includes('<script src="assets/guild-resource-commerce-registry.js"></script>'),`${file} does not load the shared commerce registry.`);
+  assert.ok(html.includes('const LEGACY_RPSGT_COMMERCE_SOURCE_IDS=Object.freeze({'),`${file} is missing the explicit legacy commerce map.`);
+  for(const [localKey,sourceId] of Object.entries({
+    'polysomnography-sleep-technologist':'polysomnography-sleep-technologist-2014',
+    'clinical-guide-pediatric-sleep':'clinical-guide-pediatric-sleep-3e',
+    'pediatric-sleep-pearls':'pediatric-sleep-pearls-1e',
+    'sleep-medicine-pearls':'sleep-medicine-pearls-3e',
+    'principles-practice-pediatric-sleep':'principles-practice-pediatric-sleep-2e'
+  }))assert.ok(html.includes(`"${localKey}":"${sourceId}"`),`${file} is missing legacy commerce mapping ${localKey} -> ${sourceId}.`);
+  assert.ok(html.includes('>View on Amazon</a>'),`${file} Amazon action label drifted.`);
+  assert.ok(html.includes('We may earn a commission from qualifying purchases through this link.'),`${file} link-level commission disclosure is missing.`);
+  assert.ok(html.includes('As an Amazon Associate I earn from qualifying purchases.'),`${file} exact Amazon Associate statement is missing.`);
+  assert.ok(html.includes('rel="sponsored noopener noreferrer"'),`${file} affiliate rel protections drifted.`);
+  assert.ok(html.includes('resourceContext:"legacy_rpsgt_reference"')&&html.includes('credentialArea:"rpsgt"'),`${file} affiliate analytics context drifted.`);
+  assert.ok(html.includes('<th>Purchase option</th>'),`${file} full reference catalog is missing verified purchase actions.`);
 }
 
 const cpsgt=await readFile(join(repoRoot,'cpsgt-study-app.html'),'utf8');
