@@ -56,6 +56,69 @@
   function percent(correct,answered){return answered?Math.round((correct/answered)*100):0;}
   function escapeHtml(value){return String(value==null?"":value).replace(/[&<>"']/g,function(char){return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[char];});}
 
+  const LEARNER_ROUTES={
+    home:{
+      eyebrow:"Learning route",
+      title:"Start with the next useful task",
+      summary:"Move through the app in a simple loop: learn the task, practice it, apply it in a lab, then check the report before choosing the next focus.",
+      primary:{href:"study.html",label:"Begin Guided Study"},
+      steps:[
+        {module:"study",href:"study.html",label:"Study",detail:"Choose a domain or continue the guided trail."},
+        {module:"practice",href:"practice.html",label:"Practice",detail:"Answer focused questions while the topic is fresh."},
+        {module:"labs",href:"labs.html",label:"Apply",detail:"Use scoring, equipment, respiratory, and math labs."},
+        {module:"reports",href:"reports.html",label:"Review",detail:"Turn results into the next study target."}
+      ]
+    },
+    study:{
+      eyebrow:"Guided Study route",
+      title:"Learn, check, then practice",
+      summary:"Use Guided Study for the explanation and task map, then carry that same task into practice or readiness review.",
+      primary:{href:"practice.html",label:"Practice What You Studied"},
+      steps:[
+        {module:"study",href:"study.html#guided-study-area-chooser",label:"Choose area",detail:"Jump to the exact study area you need."},
+        {module:"study",href:"study.html#respiratory-pap-trail",label:"Work trail",detail:"Complete the ordered respiratory and PAP path."},
+        {module:"practice",href:"practice.html",label:"Practice",detail:"Build recall with question sets."},
+        {module:"reports",href:"reports.html",label:"Check report",detail:"See the next priority after practice."}
+      ]
+    },
+    practice:{
+      eyebrow:"Practice route",
+      title:"Answer, review, then adjust",
+      summary:"Practice works best as a short cycle: pick a set, review missed items, then use reports or Guided Study for the weakest task.",
+      primary:{href:"review.html?list=missed",label:"Review Missed Questions"},
+      steps:[
+        {module:"practice",href:"practice.html",label:"Choose set",detail:"Select task, domain, or mixed practice."},
+        {module:"practice",href:"review.html?list=missed",label:"Review misses",detail:"Return to the reasoning behind each miss."},
+        {module:"reports",href:"reports.html",label:"Find weakness",detail:"See which task family needs work."},
+        {module:"study",href:"study.html",label:"Study target",detail:"Go back to the learning map with purpose."}
+      ]
+    },
+    labs:{
+      eyebrow:"Skills Lab route",
+      title:"Practice applied skills without losing the study path",
+      summary:"Use labs for concrete skill work, then move back into practice or reports so hands-on review feeds the larger study plan.",
+      primary:{href:"lab-scoring.html",label:"Open Scoring Lab"},
+      steps:[
+        {module:"labs",href:"labs.html",label:"Pick lab",detail:"Choose the skill area that matches the task."},
+        {module:"labs",href:"lab-scoring.html",label:"Apply skill",detail:"Practice recognition, scoring, or calculations."},
+        {module:"practice",href:"practice.html",label:"Question set",detail:"Reinforce the same topic in practice."},
+        {module:"reports",href:"reports.html",label:"Review",detail:"Check whether the work moved the needle."}
+      ]
+    },
+    reports:{
+      eyebrow:"Reports route",
+      title:"Use the data to choose the next task",
+      summary:"Reports should end with an action: study the weakest task, practice it again, or print a compact summary for review.",
+      primary:{href:"study.html",label:"Open Study Plan"},
+      steps:[
+        {module:"reports",href:"reports.html",label:"Scan results",detail:"Find the task family that needs attention."},
+        {module:"study",href:"study.html",label:"Study plan",detail:"Return to the matching guided study area."},
+        {module:"practice",href:"practice.html",label:"Practice weak area",detail:"Run a focused set against the gap."},
+        {module:"reports",href:"reports.html#print",label:"Summarize",detail:"Use the report as a review checklist."}
+      ]
+    }
+  };
+
   function settingsState(){
     if(!window.RPSGTStorage) return {state:null,settings:{soundEffects:false,bookSuggestions:true},bookShelf:{ownedIds:[],hiddenIds:[]}};
     const state=window.RPSGTStorage.load();
@@ -85,6 +148,27 @@
     style.textContent=`
       .brand-mark{overflow:hidden;background:linear-gradient(145deg,#0a356a,#0d8298);font-size:1.32rem;text-shadow:0 1px 2px rgba(0,0,0,.25)}
       .brand-copy strong{font-size:.98rem}.brand-copy span{max-width:36ch}
+      .learner-route-strip{border:1px solid #c9dce6;border-top:6px solid var(--teal);border-radius:18px;background:linear-gradient(135deg,#fff,#f5fbfd);box-shadow:0 8px 24px rgba(8,43,87,.07);padding:16px}
+      .learner-route-copy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;margin-bottom:12px}
+      .learner-route-copy h2{margin:0 0 5px;font-size:clamp(1.2rem,2.2vw,1.65rem)}
+      .learner-route-copy p{margin:0;color:var(--muted);max-width:82ch;font-size:.92rem}
+      .learner-route-next{min-width:250px;border:1px solid #bdd8e3;border-radius:14px;background:#fff;padding:12px}
+      .learner-route-next strong,.learner-route-next span{display:block}
+      .learner-route-next strong{margin:5px 0 4px;color:var(--navy);line-height:1.2}
+      .learner-route-next p{font-size:.8rem;line-height:1.36}
+      .learner-route-cta{width:100%;min-height:38px;margin-top:9px;white-space:normal}
+      .learner-route-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;counter-reset:route}
+      .learner-route-step{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start;min-height:92px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);text-decoration:none}
+      .learner-route-step:before{counter-increment:route;content:counter(route);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#e7f4f8;color:var(--blue);font-size:.78rem;font-weight:950}
+      .learner-route-step strong,.learner-route-step span{display:block}
+      .learner-route-step strong{color:var(--navy);font-size:.92rem}
+      .learner-route-step span{margin-top:3px;color:var(--muted);font-size:.79rem;line-height:1.36}
+      .learner-route-step.current{border-color:#74adbf;background:#eef8fb;box-shadow:inset 0 0 0 1px rgba(15,138,155,.16)}
+      .learner-route-step.current:before{background:var(--teal);color:#fff}
+      .learner-route-step:hover,.learner-route-step:focus-visible{border-color:#7fb6c8;background:var(--sky);outline:3px solid rgba(7,95,168,.12);outline-offset:2px}
+      .sidebar-next{margin:8px 0 12px;padding:10px;border:1px solid #cddfe7;border-radius:12px;background:#f8fbfd}
+      .learner-route-strip .eyebrow,.sidebar-next .eyebrow{letter-spacing:0}
+      .sidebar-next .eyebrow{font-size:.62rem}.sidebar-next strong{display:block;margin:4px 0;color:var(--navy);font-size:.9rem;line-height:1.2}.sidebar-next p{margin:0 0 8px;color:var(--muted);font-size:.74rem;line-height:1.35}.sidebar-next .btn{width:100%;min-height:34px;padding:6px 8px;border-radius:9px;font-size:.74rem}
       .sidebar .nav-external-link{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;margin:2px 0;border-radius:12px;color:var(--ink);text-decoration:none;font-weight:780}
       .sidebar .nav-external-link:hover{background:var(--sky);color:var(--blue)}
       .sidebar-site-link{display:block;padding:14px 11px 4px;color:var(--blue);font-size:.78rem;font-weight:900;text-decoration:none}
@@ -102,8 +186,8 @@
       .book-ad-cover{width:72px;height:96px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(145deg,#0b386c,#0e899a);color:#fff;font-size:2rem;box-shadow:0 8px 18px rgba(8,43,87,.18);margin-bottom:10px}.book-ad-card h3{margin:0 0 6px;font-size:1rem}.book-source-label{align-self:flex-start;border-radius:999px;padding:4px 7px;background:#eef7fb;border:1px solid #b9d7e2;color:#17536c;font-size:.68rem;font-weight:900}.book-ad-card p{font-size:.8rem;color:var(--muted);line-height:1.42}.book-apa{font-size:.73rem!important}.book-ad-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto}.book-ad-actions a,.book-ad-actions button{min-height:36px;border-radius:9px;padding:6px 9px;font-size:.76rem;font-weight:850}.book-affiliate-note{margin-top:12px;padding:11px 12px;border-radius:12px;background:#fff7df;border:1px solid #e0c47c;color:#675017;font-size:.76rem}
       .coach-bob-home{grid-template-columns:96px minmax(0,1fr)!important}.coach-bob-home img{width:96px!important;height:118px!important;object-fit:contain!important;object-position:center bottom!important;border-radius:18px!important;background:linear-gradient(180deg,#fff,#fff8e5)!important;image-rendering:auto!important}
       @media(max-width:1200px){.guild-achievement-grid,.book-shelf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:1050px){body.rpsgt-menu-open .sidebar{display:block;position:fixed;z-index:2100;left:0;top:64px;bottom:0;width:min(330px,88vw);height:auto;box-shadow:18px 0 50px rgba(0,0,0,.25)}body.rpsgt-menu-open:after{content:"";position:fixed;z-index:2050;inset:64px 0 0;background:rgba(4,26,53,.55)}.guild-resource-grid{grid-template-columns:1fr 1fr}}
-      @media(max-width:760px){.guild-achievement-grid,.guild-resource-grid,.book-shelf-grid{grid-template-columns:1fr}.rpsgt-settings-row{grid-template-columns:1fr}.coach-bob-home{grid-template-columns:82px minmax(0,1fr)!important}.coach-bob-home img{width:82px!important;height:102px!important}.top-actions a:nth-child(3){display:none}}
+      @media(max-width:1050px){body.rpsgt-menu-open .sidebar{display:block;position:fixed;z-index:2100;left:0;top:64px;bottom:0;width:min(330px,88vw);height:auto;box-shadow:18px 0 50px rgba(0,0,0,.25)}body.rpsgt-menu-open:after{content:"";position:fixed;z-index:2050;inset:64px 0 0;background:rgba(4,26,53,.55)}body[data-module="study"] [data-checkpoint-start]{scroll-margin:92px 0 124px}.guild-resource-grid{grid-template-columns:1fr 1fr}.learner-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:760px){body:not([data-module="home"]) .hero>.coach-card{display:none!important}.guild-achievement-grid,.guild-resource-grid,.book-shelf-grid{grid-template-columns:1fr}.rpsgt-settings-row{grid-template-columns:1fr}.coach-bob-home{grid-template-columns:82px minmax(0,1fr)!important}.coach-bob-home img{width:82px!important;height:102px!important}.top-actions a:nth-child(3){display:none}.learner-route-strip{margin-top:12px;padding:13px;border-radius:14px}.learner-route-copy{grid-template-columns:1fr;gap:10px}.learner-route-cta{width:100%;min-height:40px}.learner-route-grid{grid-template-columns:1fr}.learner-route-step{min-height:0;padding:11px}}
     `;
     document.head.appendChild(style);
   }
@@ -147,7 +231,7 @@
         <a class="nav-link" href="lab-respiratory.html"><span>🫁</span>Respiratory Lab</a>\
         <div class="nav-label">Candidate Center</div>\
         <a class="nav-link" href="index.html#how-v3-works"><span>❓</span>How to Use This App</a>\
-        <a class="nav-link" href="readiness.html"><span>🎯</span>Targeted Review</a>\
+        <a class="nav-link" href="readiness.html"><span>🎯</span>Readiness Check</a>\
         <a class="nav-link" href="sources-disclosures.html"><span>📚</span>References &amp; Scope</a>\
         <div class="nav-label">Guild Resources</div>\
         <a class="nav-external-link" href="https://sleeppathwaysguild.com/ekg.2026.html" target="_blank" rel="noopener"><span>❤️</span><span>EKG Skills Lab</span><b>↗</b></a>\
@@ -159,12 +243,26 @@
       button.addEventListener("click",function(){
         if(window.matchMedia("(max-width:1050px)").matches) document.body.classList.toggle("rpsgt-menu-open");
         else sidebar?.scrollTo({top:0,behavior:"smooth"});
+        syncMenuButtons();
       });
     });
     document.addEventListener("click",function(event){
       if(!document.body.classList.contains("rpsgt-menu-open")) return;
       if(event.target.closest(".sidebar")||event.target.closest("[data-toggle-menu]")) return;
       document.body.classList.remove("rpsgt-menu-open");
+      syncMenuButtons();
+    });
+    syncMenuButtons();
+  }
+
+  function syncMenuButtons(){
+    const sidebar=document.querySelector(".sidebar");
+    if(sidebar&&!sidebar.id) sidebar.id="rpsgt-primary-navigation";
+    const open=document.body.classList.contains("rpsgt-menu-open");
+    document.querySelectorAll("[data-toggle-menu]").forEach(function(button){
+      button.setAttribute("aria-expanded",open?"true":"false");
+      button.setAttribute("aria-label",open?"Close navigation menu":"Open navigation menu");
+      if(sidebar) button.setAttribute("aria-controls",sidebar.id);
     });
   }
 
@@ -175,6 +273,48 @@
       link.classList.toggle("active",isActive);
       if(isActive) link.setAttribute("aria-current","page"); else link.removeAttribute("aria-current");
     });
+  }
+
+  function listCount(value){return Array.isArray(value)?value.length:0;}
+  function objectCount(value){return value&&typeof value==="object"?Object.keys(value).length:0;}
+  function displayDestination(value){
+    const raw=String(value||"").trim();
+    const destination=normalizedInternalDestination(raw);
+    if(!destination||destination==="index.html") return null;
+    if(/^study\.html#/.test(destination)) return {href:destination,label:"Resume Guided Study",title:"Resume your exact study spot",detail:"The app saved your last study section, so you can continue without hunting through the map."};
+    if(/^practice\.html/.test(destination)) return {href:destination,label:"Resume Practice",title:"Resume the Practice Center",detail:"Pick up from your last practice workflow, then review misses or check reports."};
+    if(/^review/.test(destination)) return {href:destination,label:"Resume Review",title:"Resume your review queue",detail:"Return to the question list you were working through."};
+    if(/^(?:labs\.html|lab-)/.test(destination)) return {href:destination,label:"Resume Lab",title:"Resume applied lab work",detail:"Continue the technical skill path you opened last."};
+    if(/^reports\.html/.test(destination)) return {href:destination,label:"Open Reports",title:"Return to your reports",detail:"Use your learner evidence to decide the next task."};
+    return {href:destination,label:"Resume",title:"Resume where you left off",detail:"Continue from the last learning screen saved in this browser."};
+  }
+
+  function recommendationForState(module,route){
+    const fallback={href:route.primary.href,label:route.primary.label,title:"Recommended next",detail:route.summary};
+    if(!window.RPSGTStorage||typeof window.RPSGTStorage.load!=="function") return fallback;
+    const state=window.RPSGTStorage.load();
+    const review=state.review||{};
+    const progress=state.progress||{};
+    const answered=Number(progress.answered||0);
+    const accuracy=percent(Number(progress.correct||0),answered);
+    const missed=listCount(review.missedIds);
+    const flagged=listCount(review.flaggedIds);
+    const reviewLater=listCount(review.reviewLaterIds);
+    const guided=state.guidedStudy||{};
+    const taskAwards=objectCount(guided.trailAwards&&guided.trailAwards.tasks);
+    const domainAwards=objectCount(guided.trailAwards&&guided.trailAwards.domains);
+    const resume=displayDestination(state.lastLocation);
+
+    if(resume&&module==="home") return resume;
+    if(missed>0) return {href:"review.html?list=missed",label:"Review Missed",title:missed+" missed question"+(missed===1?"":"s")+" waiting",detail:"Start with misses before adding new practice so weak spots become useful next tasks."};
+    if(flagged>0) return {href:"review-queue.html?list=flagged",label:"Open Flagged",title:flagged+" flagged question"+(flagged===1?"":"s")+" saved",detail:"Review flagged questions while the reason you saved them is still fresh."};
+    if(reviewLater>0) return {href:"review-queue.html?list=review-later",label:"Review Later",title:reviewLater+" saved review item"+(reviewLater===1?"":"s"),detail:"Use your saved review queue as the next small study session."};
+    if(answered>=20&&accuracy<75) return {href:"reports.html",label:"Find Weak Task",title:"Accuracy is "+accuracy+"%",detail:"Open Reports to find the task family dragging the score down, then study that target."};
+    if(module==="study"&&taskAwards>0) return {href:"practice.html",label:"Practice Your Badges",title:taskAwards+" Guided Study badge"+(taskAwards===1?"":"s")+" earned",detail:"Carry the tasks you studied into practice while the reasoning is warm."};
+    if(module==="labs"&&answered>0) return {href:"practice.html",label:"Practice Related Items",title:"Turn lab work into recall",detail:"After an applied lab, reinforce the same topic with a focused question set."};
+    if(module==="reports"&&(taskAwards||domainAwards||answered)) return {href:"study.html",label:"Open Study Target",title:"Choose the next weakest task",detail:"Use report evidence to return to the study map with a specific target."};
+    if(resume) return resume;
+    return fallback;
   }
 
   function renderSnapshot(){
@@ -195,15 +335,89 @@
       const destination=state.lastLocation&&state.lastLocation!=="index.html"?state.lastLocation:"study.html";
       link.setAttribute("href",destination);
     });
+    renderLearnerRouteRecommendation();
+    renderSidebarNextLinks();
     renderGuildAchievements();
+  }
+
+  function renderLearnerRouteStrip(){
+    const module=currentModule();
+    const route=LEARNER_ROUTES[module];
+    const main=document.querySelector(".main");
+    if(!route||!main||main.querySelector("[data-learner-route-strip]")) return;
+    const section=document.createElement("section");
+    section.className="section learner-route-strip";
+    section.dataset.learnerRouteStrip="true";
+    section.setAttribute("aria-labelledby","learner-route-title");
+    section.innerHTML='\
+      <div class="learner-route-copy">\
+        <div><div class="eyebrow">'+escapeHtml(route.eyebrow)+'</div><h2 id="learner-route-title">'+escapeHtml(route.title)+'</h2><p>'+escapeHtml(route.summary)+'</p></div>\
+        <aside class="learner-route-next" data-route-recommendation></aside>\
+      </div>\
+      <nav class="learner-route-grid" aria-label="Recommended learning route">\
+        '+route.steps.map(function(step){
+          const current=step.module===module;
+          return '<a class="learner-route-step '+(current?'current':'')+'" href="'+escapeHtml(step.href)+'" '+(current?'aria-current="step"':'')+'><span><strong>'+escapeHtml(step.label)+'</strong><span>'+escapeHtml(step.detail)+'</span></span></a>';
+        }).join('')+'\
+      </nav>';
+    const hero=main.querySelector(".hero");
+    if(hero) hero.insertAdjacentElement("afterend",section);
+    else main.insertAdjacentElement("afterbegin",section);
+    renderLearnerRouteRecommendation();
+  }
+
+  function renderLearnerRouteRecommendation(){
+    const route=LEARNER_ROUTES[currentModule()];
+    const host=document.querySelector("[data-route-recommendation]");
+    if(!route||!host) return;
+    const action=recommendationForState(currentModule(),route);
+    host.innerHTML='<div class="eyebrow">Next best action</div><strong>'+escapeHtml(action.title)+'</strong><p>'+escapeHtml(action.detail)+'</p><a class="btn primary learner-route-cta" href="'+escapeHtml(action.href)+'">'+escapeHtml(action.label)+'</a>';
+  }
+
+  function renderSidebarNextLinks(){
+    const sidebar=document.querySelector(".sidebar");
+    const route=LEARNER_ROUTES[currentModule()];
+    if(!sidebar||!route) return;
+    let host=sidebar.querySelector("[data-sidebar-next]");
+    if(!host){
+      host=document.createElement("section");
+      host.className="sidebar-next";
+      host.dataset.sidebarNext="true";
+      const firstLabel=sidebar.querySelector(".nav-label");
+      if(firstLabel) firstLabel.insertAdjacentElement("afterend",host); else sidebar.insertAdjacentElement("afterbegin",host);
+    }
+    const action=recommendationForState(currentModule(),route);
+    host.innerHTML='<div class="eyebrow">Next</div><strong>'+escapeHtml(action.title)+'</strong><p>'+escapeHtml(action.detail)+'</p><a class="btn primary" href="'+escapeHtml(action.href)+'">'+escapeHtml(action.label)+'</a>';
+  }
+
+  function normalizedInternalDestination(raw){
+    if(!/^(index|study|practice|review|review-queue|readiness|mock|labs|reports|flashcards|math-coach|lab-[a-z-]+)\.html(?:[?#]|$)/.test(raw)) return null;
+    try{
+      const url=new URL(raw,window.location.href);
+      const file=url.pathname.split("/").filter(Boolean).pop()||"index.html";
+      if(file.toLowerCase()==="index.html") return "index.html";
+      return file+url.search+url.hash;
+    }catch(error){
+      return raw.split("#")[0];
+    }
   }
 
   function rememberClicks(){
     document.querySelectorAll("a[href]").forEach(function(link){
       const href=link.getAttribute("href")||"";
-      if(!/^(index|study|practice|review|review-queue|readiness|mock|labs|reports|flashcards|math-coach|lab-[a-z-]+)\.html(?:[?#]|$)/.test(href)) return;
-      link.addEventListener("click",function(){window.RPSGTStorage&&window.RPSGTStorage.rememberLocation(href.split("#")[0]);});
+      const destination=normalizedInternalDestination(href);
+      if(!destination) return;
+      link.addEventListener("click",function(){window.RPSGTStorage&&window.RPSGTStorage.rememberLocation(destination);});
     });
+  }
+
+  function loadLearnerFlowNavigation(){
+    if(window.RPSGTLearnerFlowNavigation||document.querySelector("script[data-rpsgt-learner-flow-navigation]")) return;
+    const script=document.createElement("script");
+    script.src="core/learner-flow-navigation.js";
+    script.defer=true;
+    script.dataset.rpsgtLearnerFlowNavigation="true";
+    document.head.appendChild(script);
   }
 
   function ensureDisclosureLinks(){
@@ -390,8 +604,10 @@
     upgradeBranding();
     upgradeNavigation();
     setActiveNav();
+    renderLearnerRouteStrip();
     renderSnapshot();
     rememberClicks();
+    loadLearnerFlowNavigation();
     ensureDisclosureLinks();
     refreshCoachBobImage();
     renderHomeEnhancements();

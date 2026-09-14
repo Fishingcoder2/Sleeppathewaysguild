@@ -102,7 +102,9 @@
     const destinationSection=firstModule&&firstModule.closest('.section');
     if(!hero||!destinationSection) return;
     destinationSection.classList.add('front-door-destinations');
-    hero.insertAdjacentElement('afterend',destinationSection);
+    const route=$('[data-learner-route-strip]');
+    if(route) route.insertAdjacentElement('afterend',destinationSection);
+    else hero.insertAdjacentElement('afterend',destinationSection);
   }
 
   function insertFeaturedRespiratoryTrail(){
