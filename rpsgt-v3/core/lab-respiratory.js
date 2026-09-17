@@ -1,16 +1,33 @@
 (function(){
   'use strict';
   const engine=window.RPSGTRespiratoryLabEngine;
+  const overlay=document.querySelector('[data-respiratory-overlay]');
   const workspace=document.querySelector('[data-respiratory-workspace]');
   const summaryHost=document.querySelector('[data-respiratory-summary]');
   const stationHost=document.querySelector('[data-respiratory-stations]');
   const startButton=document.querySelector('[data-respiratory-start]');
-  if(!workspace||!summaryHost||!stationHost||!startButton) return;
-  const state={saved:null,questions:[],bank:[]};
+  if(!overlay||!workspace||!summaryHost||!stationHost||!startButton) return;
+  const state={saved:null,questions:[],bank:[],returnFocus:null};
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
   async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok) throw new Error(path+' HTTP '+response.status);return response.json();}
   function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=window.RPSGTStorage.save(state.saved);}
+  function openWorkspace(){
+    state.returnFocus=document.activeElement;
+    overlay.hidden=false;
+    workspace.hidden=false;
+    document.body.classList.add('respiratory-modal-open');
+    requestAnimationFrame(()=>workspace.focus({preventScroll:true}));
+  }
+  function closeWorkspace(){
+    state.questions=[];
+    workspace.innerHTML='';
+    workspace.hidden=true;
+    overlay.hidden=true;
+    document.body.classList.remove('respiratory-modal-open');
+    if(state.returnFocus&&typeof state.returnFocus.focus==='function') state.returnFocus.focus({preventScroll:true});
+    state.returnFocus=null;
+  }
   function renderSummary(){
     const report=engine.summary(state.saved.labs);
     summaryHost.innerHTML=`<div><span>Status</span><strong>${report.completed?'Completed':report.status==='in-progress'?'In progress':'Not started'}</strong></div><div><span>Signal stations</span><strong>${report.stationsComplete}/${report.stationCount}</strong></div><div><span>Best checkpoint</span><strong>${report.attempts?report.bestPercent+'%':'—'}</strong></div><div><span>Attempts</span><strong>${report.attempts}</strong></div><div><span>Last checkpoint</span><strong>${report.latestSession?formatDate(report.latestSession.completedAt):'—'}</strong></div>`;
@@ -22,20 +39,24 @@
     stationHost.innerHTML=engine.STATIONS.map((station,index)=>`<label class="respiratory-station ${report.checklist[station.id]?'complete':''}"><input type="checkbox" data-respiratory-station="${esc(station.id)}" ${report.checklist[station.id]?'checked':''} ${report.completed?'disabled':''}><span class="respiratory-station-number">${index+1}</span><span><strong>${esc(station.title)}</strong><small>${esc(station.focus)}</small></span></label>`).join('');
   }
   function renderSession(){
-    workspace.hidden=false;
-    workspace.innerHTML=`<div class="section-head"><div><div class="eyebrow">D2A · D2B · D3B respiratory checkpoint</div><h2>Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-respiratory-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint draws respiratory-relevant learner questions from the validated setup, troubleshooting, and event-scoring banks.</p><form data-respiratory-form>${state.questions.map((question,index)=>`<fieldset class="respiratory-question"><legend><span>${index+1}</span>${esc(question.prompt)}</legend>${question.options.map(option=>`<label><input type="radio" name="respiratory-${esc(question.id)}" value="${esc(option)}"> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions"><button class="btn primary" type="submit">Score respiratory checkpoint</button></div></form><div data-respiratory-result></div>`;
-    workspace.scrollIntoView({behavior:'smooth',block:'start'});
+    workspace.innerHTML=`<div class="section-head respiratory-modal-head"><div><div class="eyebrow">D2A · D2B · D3B respiratory checkpoint</div><h2 id="respiratory-checkpoint-title">Ten learner-practice questions</h2></div><button class="btn secondary" type="button" data-respiratory-cancel>Close checkpoint</button></div><p class="report-intro">This checkpoint draws respiratory-relevant learner questions from the validated setup, troubleshooting, and event-scoring banks.</p><form data-respiratory-form>${state.questions.map((question,index)=>`<fieldset class="respiratory-question"><legend><span>${index+1}</span>${esc(question.prompt)}</legend>${question.options.map(option=>`<label><input type="radio" name="respiratory-${esc(question.id)}" value="${esc(option)}"> <span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('')}<div class="actions respiratory-submit-actions"><button class="btn primary" type="submit">Score respiratory checkpoint</button></div></form><div data-respiratory-result></div>`;
+    openWorkspace();
   }
   function renderResult(record){
     const host=workspace.querySelector('[data-respiratory-result]');const byId=new Map(state.questions.map(question=>[String(question.id),question]));
     const review=record.responses.map((response,index)=>{const question=byId.get(String(response.id));return `<details class="respiratory-review ${response.correct?'correct':'retry'}"><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${esc(question&&question.topic||response.taskCode||'Respiratory')}</summary><p><strong>Answer:</strong> ${esc(question&&question.answer)}</p><p>${esc(question&&question.rationale||'Review the respiratory signal pathway and try another checkpoint.')}</p></details>`;}).join('');
     const report=engine.summary(state.saved.labs);
-    host.innerHTML=`<div class="respiratory-result ${record.passed?'pass':'retry'}"><h3>${report.completed?'Respiratory lab completed':record.passed?'Checkpoint passed—finish the signal stations':'Checkpoint saved—review and retry'}</h3><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${report.completed?'All seven signal stations and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish every signal station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}`;
+    host.innerHTML=`<div class="respiratory-result ${record.passed?'pass':'retry'}"><h3>${report.completed?'Respiratory lab completed':record.passed?'Checkpoint passed—finish the signal stations':'Checkpoint saved—review and retry'}</h3><strong>${record.correct}/${record.total} correct · ${record.percent}%</strong><p>${report.completed?'All seven signal stations and the checkpoint requirement are complete.':record.passed?'The 80% checkpoint requirement is complete. Finish every signal station to complete the lab.':'An 80% score is required. Your best score and attempt history remain preserved.'}</p></div><h3>Answer review</h3>${review}<div class="actions respiratory-result-actions"><button class="btn secondary" type="button" data-respiratory-cancel>Close checkpoint</button></div>`;
+    host.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function showSessionError(message){
+    workspace.innerHTML=`<div class="section-head respiratory-modal-head"><div><div class="eyebrow">Respiratory checkpoint</div><h2 id="respiratory-checkpoint-title">Checkpoint unavailable</h2></div><button class="btn secondary" type="button" data-respiratory-cancel>Close</button></div><div class="notice error"><strong>Respiratory checkpoint unavailable.</strong> ${esc(message)}</div>`;
+    openWorkspace();
   }
   function startSession(){
     saveLabs(engine.start(state.saved.labs,new Date().toISOString()));
     state.questions=engine.selectQuestions(state.bank,engine.SESSION_SIZE,'respiratory|'+new Date().toISOString());
-    if(state.questions.length<engine.SESSION_SIZE){workspace.hidden=false;workspace.innerHTML='<div class="notice error"><strong>Respiratory checkpoint unavailable.</strong> Fewer than ten eligible respiratory learner-practice questions were found.</div>';return;}
+    if(state.questions.length<engine.SESSION_SIZE){showSessionError('Fewer than ten eligible respiratory learner-practice questions were found.');return;}
     renderSummary();renderStations();renderSession();
   }
   function submit(form){
@@ -48,11 +69,12 @@
       state.saved=window.RPSGTStorage.load();const modules=await Promise.all(['data/question-bank/d2a.json','data/question-bank/d2b.json','data/question-bank/d3b.json'].map(loadJson));state.bank=modules.flatMap(module=>module.questions||[]);
       if(engine.eligibleQuestions(state.bank).length<engine.SESSION_SIZE) throw new Error('The validated D2A/D2B/D3B banks do not contain enough eligible respiratory questions.');
       renderSummary();renderStations();
-    }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Respiratory lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;}
+    }catch(error){summaryHost.innerHTML=`<div class="notice error"><strong>Respiratory lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;}
   }
   startButton.addEventListener('click',startSession);
   document.addEventListener('change',event=>{const station=event.target.closest('[data-respiratory-station]');if(!station)return;saveLabs(engine.setStation(state.saved.labs,station.dataset.respiratoryStation,station.checked,new Date().toISOString()));renderSummary();renderStations();});
-  document.addEventListener('click',event=>{if(event.target.closest('[data-respiratory-cancel]')){state.questions=[];workspace.hidden=true;workspace.innerHTML='';}});
+  document.addEventListener('click',event=>{if(event.target.closest('[data-respiratory-cancel]')||event.target===overlay) closeWorkspace();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden){event.preventDefault();closeWorkspace();}});
   document.addEventListener('submit',event=>{if(event.target.matches('[data-respiratory-form]')){event.preventDefault();submit(event.target);}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
