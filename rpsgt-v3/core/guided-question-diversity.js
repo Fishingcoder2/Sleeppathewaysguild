@@ -121,9 +121,13 @@
       }
     }
 
+    // Exhaust genuinely fresh semantic families before allowing anything that resembles a recent checkpoint.
     addPass({avoidRecent:true,recentThreshold:STRICT_SIMILARITY,topicLimit,similarityThreshold:STRICT_SIMILARITY});
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:topicLimit+2,similarityThreshold:RELAXED_SIMILARITY});
-    addPass({avoidRecent:false,topicLimit:topicLimit+2,similarityThreshold:STRICT_SIMILARITY});
+    addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
+    addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:null});
+    // Only if the concept pool cannot supply the full checkpoint do we relax recent-history protection.
+    addPass({avoidRecent:false,topicLimit:null,similarityThreshold:STRICT_SIMILARITY});
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:null});
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:null,uniqueFamily:false});
