@@ -7,6 +7,7 @@ on:
       - 'rpsgt-v3/core/respiratory-study-trail.js'
       - 'rpsgt-v3/core/guided-trail-engine.js'
       - 'rpsgt-v3/core/guided-trail-explorer.js'
+      - 'rpsgt-v3/core/guided-question-diversity.js'
       - 'rpsgt-v3/core/guided-study-completion.js'
       - 'rpsgt-v3/core/study.js'
       - 'rpsgt-v3/assets/respiratory-study-trail.css'
@@ -21,6 +22,7 @@ on:
       - 'rpsgt-v3/data/study-sources/principles-practice-sleep-medicine-7e.json'
       - 'rpsgt-v3/data/study-sources/topic-families-pap-modalities.json'
       - 'rpsgt-v3/scripts/test-guided-trail-system.mjs'
+      - 'rpsgt-v3/scripts/test-guided-question-diversity.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-study-trail.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-study-trail-validation.yml'
   push:
@@ -31,6 +33,7 @@ on:
       - 'rpsgt-v3/core/respiratory-study-trail.js'
       - 'rpsgt-v3/core/guided-trail-engine.js'
       - 'rpsgt-v3/core/guided-trail-explorer.js'
+      - 'rpsgt-v3/core/guided-question-diversity.js'
       - 'rpsgt-v3/core/guided-study-completion.js'
       - 'rpsgt-v3/core/study.js'
       - 'rpsgt-v3/assets/respiratory-study-trail.css'
@@ -45,6 +48,7 @@ on:
       - 'rpsgt-v3/data/study-sources/principles-practice-sleep-medicine-7e.json'
       - 'rpsgt-v3/data/study-sources/topic-families-pap-modalities.json'
       - 'rpsgt-v3/scripts/test-guided-trail-system.mjs'
+      - 'rpsgt-v3/scripts/test-guided-question-diversity.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-study-trail.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-study-trail-validation.yml'
 
@@ -61,7 +65,13 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+      - name: Check Guided question diversity syntax
+        run: |
+          node --check rpsgt-v3/core/guided-question-diversity.js
+          node --check rpsgt-v3/scripts/test-guided-question-diversity.mjs
       - name: Validate Guided Trail selection engine
         run: node rpsgt-v3/scripts/test-guided-trail-system.mjs
+      - name: Validate Guided Study semantic question diversity
+        run: node rpsgt-v3/scripts/test-guided-question-diversity.mjs
       - name: Validate Respiratory/PAP Study Trail
         run: node rpsgt-v3/scripts/test-respiratory-study-trail.mjs
