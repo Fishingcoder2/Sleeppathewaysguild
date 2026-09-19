@@ -38,6 +38,10 @@ function sinusBeatPath(x){
 function wideComplexPath(x){
   return `L ${x-20} 118 Q ${x-15} 113 ${x-10} 96 Q ${x-5} 78 ${x} 69 Q ${x+6} 78 ${x+11} 104 Q ${x+15} 128 ${x+18} 144 Q ${x+21} 130 ${x+24} 118`;
 }
+function irregularEventBeatPath(x,index){
+  const rTop=index%2===0?74:82,sBottom=index%3===0?140:134;
+  return `L ${x-22} 118 Q ${x-18} 114 ${x-14} 118 Q ${x-10} 121 ${x-6} 117 L ${x-3} 118 L ${x-1} 123 L ${x} ${rTop} L ${x+4} ${sBottom} L ${x+8} 118 L ${x+16} 118 Q ${x+22} 118 ${x+27} 110 Q ${x+31} 104 ${x+35} 111 Q ${x+38} 118 ${x+42} 118`;
+}
 function normalBeatPath(x,wide){return wide?wideComplexPath(x):sinusBeatPath(x);}
 function stripPath(kind){
   let beats=[90,190,290,390,490,590,690,790];let wideAt=-1;let path='M 20 118';
@@ -52,7 +56,12 @@ function stripPath(kind){
     recoveryBeats.forEach(x=>{path+=sinusBeatPath(x);});
     return path+' L 890 118';
   }
-  if(kind==='event-marker')beats=[90,210,330,450,555,670,790];
+  if(kind==='event-marker'){
+    const baselineBeats=[90,210,330],eventBeats=[470,540,660,740,850];
+    baselineBeats.forEach(x=>{path+=sinusBeatPath(x);});
+    eventBeats.forEach((x,index)=>{path+=irregularEventBeatPath(x,index);});
+    return path+' L 890 118';
+  }
   beats.forEach((x,index)=>{path+=normalBeatPath(x,index===wideAt);});
   path+=' L 890 118';return path;
 }
@@ -62,7 +71,7 @@ function timeScaleMarkup(){return `<g aria-hidden="true">${Array.from({length:11
 function stripMarkup(station){
   const kind=station.visual&&station.visual.kind||'regular-60';const pathKind=kind==='artifact-burst'?'regular-60':kind;
   const pLabels=kind==='p-before-qrs'?`<g class="ekg-p-labels"><text x="70" y="99">P</text><text x="185" y="99">P</text><text x="300" y="99">P</text></g>`:'';
-  const marker=kind==='event-marker'?`<g class="ekg-event-marker"><line x1="450" y1="24" x2="450" y2="170"/><text x="462" y="40">Event noted 02:14</text></g>`:'';
+  const marker=kind==='event-marker'?`<g class="ekg-event-marker"><line x1="450" y1="24" x2="450" y2="170"/><text x="462" y="40">Event marker — 02:14</text><text x="462" y="58">Abrupt irregular pattern begins</text></g>`:'';
   return `<div class="ekg-schematic"><div class="ekg-schematic-head"><div><strong>Sleep Pathways Guild ECG teaching strip</strong><span>${esc(station.visual&&station.visual.label||'Synthetic recognition practice')}</span></div><span class="ekg-timebase">10-second teaching view</span></div><svg viewBox="0 0 900 235" role="img" aria-label="${esc(station.visual&&station.visual.label||station.title)}"><defs><pattern id="ekg-grid-small" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M 9 0 L 0 0 0 9" style="stroke:#fde2e6;stroke-width:.55;fill:none"/></pattern><pattern id="ekg-grid-large" width="45" height="45" patternUnits="userSpaceOnUse"><rect width="45" height="45" style="fill:url(#ekg-grid-small);stroke:none"/><path d="M 45 0 L 0 0 0 45" style="stroke:#f7bdc5;stroke-width:.85;fill:none"/></pattern></defs><rect width="900" height="235" fill="#fffdfd"/><rect width="900" height="235" fill="url(#ekg-grid-large)"/><text x="24" y="28" class="ekg-channel-label">ECG</text><path d="${stripPath(pathKind)}" class="ekg-signal-line"/>${kind==='artifact-burst'?artifactOverlay():''}${pulseRow(kind)}${pLabels}${marker}${timeScaleMarkup()}</svg><p class="ekg-disclosure"><strong>AI-generated teaching schematic · Not a patient recording.</strong> Real PSG ECG morphology varies with patient, lead placement, equipment, filtering, movement, and clinical context.</p></div>`;
 }
 function studyMarkup(station){return `<div class="ekg-task-panel"><h3>${esc(station.title)}</h3><p>${esc(station.study.intro)}</p><ul class="ekg-points">${station.study.points.map(point=>`<li>${esc(point)}</li>`).join('')}</ul></div>`;}
