@@ -32,6 +32,7 @@ on:
       - 'rpsgt-v3/core/report-insights-engine.js'
       - 'rpsgt-v3/core/improvement-plan-engine.js'
       - 'rpsgt-v3/core/report-action-plan.js'
+      - 'rpsgt-v3/core/practice-subjects.js'
       - 'rpsgt-v3/core/study-summary*.js'
       - 'rpsgt-v3/core/guided-trail-report.js'
       - 'rpsgt-v3/core/mock-result-report.js'
@@ -64,6 +65,8 @@ jobs:
           node --check rpsgt-v3/core/improvement-plan-engine.js
           node --check rpsgt-v3/core/report-action-plan.js
           node --check rpsgt-v3/core/practice-subjects.js
+          node --check rpsgt-v3/core/practice.js
+          node --check rpsgt-v3/core/practice-prefill.js
           node --check rpsgt-v3/core/reports.js
           node --check rpsgt-v3/core/study-summary.js
           node --check rpsgt-v3/core/study-summary-action-plan.js
@@ -73,6 +76,8 @@ jobs:
         run: node rpsgt-v3/scripts/test-improvement-plan.mjs
       - name: Validate actionable report shell
         run: node rpsgt-v3/scripts/test-actionable-reports-shell.mjs
+      - name: Validate targeted Practice handoff
+        run: node rpsgt-v3/scripts/test-practice-shell.mjs
       - name: Validate Reports Center system
         run: node rpsgt-v3/scripts/test-reports-system.mjs
       - name: Validate Reports Center shell
