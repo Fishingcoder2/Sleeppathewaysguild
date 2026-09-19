@@ -60,8 +60,8 @@ function eogValue(t,phase,sign){const r=respiratoryState(t);let v=.045*Math.sin(
 function emgValue(t,phase){const r=respiratoryState(t);const tone=r.arousal?1.9:1;return tone*(.13*Math.sin(TAU*29*t+phase)+.11*Math.sin(TAU*37*t+.7+phase)+.07*noise(t,phase));}
 function breath(t,phase){return Math.sin(TAU*.255*t+phase)+.06*Math.sin(TAU*.51*t+.4+phase);}
 function airflowValue(t){const r=respiratoryState(t);let amp=1;if(r.obstructive)amp=.055;if(r.hypopnea)amp=.44;return amp*breath(t,0);}
-function thoraxValue(t){const r=respiratoryState(t);const amp=r.hypopnea?.72:1;return amp*breath(t,.08);}
-function abdomenValue(t){const r=respiratoryState(t);const amp=r.hypopnea?.70:1;return amp*breath(t,r.obstructive?Math.PI+.08:.17);}
+function thoraxValue(t){const r=respiratoryState(t);const amp=r.hypopnea?.72:1;return amp*breath(t,0);}
+function abdomenValue(t){const r=respiratoryState(t);const amp=r.hypopnea?.70:1;return amp*breath(t,r.obstructive?Math.PI:0);}
 function spo2Percent(t){const p=teachingPhase(t);let value=96+.18*Math.sin(TAU*.028*t);if(p>=31&&p<=54){const down=smoothStep((p-31)/8),up=smoothStep((54-p)/10);value-=10*Math.min(down,up);}if(p>=73&&p<=91){const down=smoothStep((p-73)/7),up=smoothStep((91-p)/8);value-=5*Math.min(down,up);}return value;}
 function legValue(t,phase,right){const r=respiratoryState(t);let v=.06*noise(t,phase);if(r.plm){const center=right?94.2:93.3;v+=1.1*gauss(r.p,center,.16)*Math.sin(TAU*8.5*t+phase)+.72*gauss(r.p,center+.25,.22);}return v;}
 function sample(channel,t){
@@ -90,9 +90,26 @@ function ensureReviewControls(){
   screen.insertAdjacentElement('afterend',review);
  }
 }
+function viewportHeight(){return Math.max(480,Math.floor((window.visualViewport&&window.visualViewport.height)||window.innerHeight||document.documentElement.clientHeight||800));}
 function sizeCanvas(){
- const width=Math.max(340,Math.floor(screen.clientWidth||host.clientWidth||900));state.labelWidth=width<520?74:104;state.rowHeight=width<520?36:39;state.width=width;state.height=state.top+state.bottom+channels.length*state.rowHeight;
- const ratio=Math.min(2,Math.max(1,window.devicePixelRatio||1));canvas.style.width=width+'px';canvas.style.height=state.height+'px';canvas.width=Math.round(width*ratio);canvas.height=Math.round(state.height*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);
+ const width=Math.max(340,Math.floor(screen.clientWidth||host.clientWidth||900));
+ const vh=viewportHeight();
+ const fullscreen=Boolean(document.fullscreenElement&&(document.fullscreenElement===host||host.contains(document.fullscreenElement)));
+ const targetHeight=fullscreen
+  ?clamp(vh-190,360,720)
+  :clamp(Math.floor(vh*.40),300,430);
+ state.labelWidth=width<520?74:104;
+ state.rowHeight=clamp(Math.floor((targetHeight-state.top-state.bottom)/channels.length),width<520?22:24,fullscreen?48:32);
+ state.width=width;
+ state.height=state.top+state.bottom+channels.length*state.rowHeight;
+ const ratio=Math.min(2,Math.max(1,window.devicePixelRatio||1));
+ canvas.style.width=width+'px';
+ canvas.style.height=state.height+'px';
+ canvas.width=Math.round(width*ratio);
+ canvas.height=Math.round(state.height*ratio);
+ ctx.setTransform(ratio,0,0,ratio,0,0);
+ canvas.dataset.viewportFit='true';
+ canvas.dataset.cssHeight=String(state.height);
 }
 function xForTime(t,windowStart,plotLeft,plotWidth){return plotLeft+((t-windowStart)/WINDOW_SECONDS)*plotWidth;}
 function drawEventBands(windowStart,windowEnd,plotLeft,plotWidth){
@@ -109,9 +126,39 @@ function drawGrid(elapsed){
  ctx.beginPath();ctx.strokeStyle='#1d7396';ctx.lineWidth=1.5;ctx.moveTo(plotRight,state.top-16);ctx.lineTo(plotRight,height-state.bottom);ctx.stroke();ctx.fillStyle='#1d7396';ctx.textAlign='right';ctx.font='800 9px system-ui,-apple-system,Segoe UI,sans-serif';ctx.fillText('NOW',plotRight-2,height-7);
  return {plotLeft,plotRight,plotWidth,windowStart};
 }
+function buildSharedTimeline(grid){
+ const step=state.width<520?2.4:1.8;
+ const points=Math.max(120,Math.ceil(grid.plotWidth/step));
+ const times=new Float64Array(points+1);
+ const xs=new Float32Array(points+1);
+ for(let i=0;i<=points;i+=1){
+  const ratio=i/points;
+  times[i]=grid.windowStart+ratio*WINDOW_SECONDS;
+  xs[i]=grid.plotLeft+ratio*grid.plotWidth;
+ }
+ return {points,times,xs};
+}
 function drawSignals(elapsed,grid){
- const step=state.width<520?2.4:1.8;const points=Math.max(120,Math.ceil(grid.plotWidth/step));
- channels.forEach((channel,index)=>{const y0=state.top+index*state.rowHeight+state.rowHeight/2,scale=amplitudeScale(channel);ctx.beginPath();ctx.strokeStyle=channel.kind==='spo2'?'#274f65':'#112f40';ctx.lineWidth=channel.kind==='eeg'||channel.kind==='eog'?1.05:1;for(let i=0;i<=points;i+=1){const ratio=i/points,t=grid.windowStart+ratio*WINDOW_SECONDS,x=grid.plotLeft+ratio*grid.plotWidth,y=y0-clamp(sample(channel,t)*scale,-state.rowHeight*.42,state.rowHeight*.42);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();});
+ const timeline=buildSharedTimeline(grid);
+ canvas.dataset.sharedTimebase='true';
+ canvas.dataset.syncSampleCount=String(timeline.points+1);
+ canvas.dataset.pixelsPerSecond=(grid.plotWidth/WINDOW_SECONDS).toFixed(4);
+ ctx.save();
+ ctx.beginPath();
+ ctx.rect(grid.plotLeft,state.top-16,grid.plotWidth,state.height-state.top-state.bottom+16);
+ ctx.clip();
+ channels.forEach((channel,index)=>{
+  const y0=state.top+index*state.rowHeight+state.rowHeight/2,scale=amplitudeScale(channel);
+  ctx.beginPath();
+  ctx.strokeStyle=channel.kind==='spo2'?'#274f65':'#112f40';
+  ctx.lineWidth=channel.kind==='eeg'||channel.kind==='eog'?1.05:1;
+  for(let i=0;i<=timeline.points;i+=1){
+   const y=y0-clamp(sample(channel,timeline.times[i])*scale,-state.rowHeight*.42,state.rowHeight*.42);
+   if(i===0)ctx.moveTo(timeline.xs[i],y);else ctx.lineTo(timeline.xs[i],y);
+  }
+  ctx.stroke();
+ });
+ ctx.restore();
 }
 function drawReviewCursor(grid){
  if(state.running||!state.cursorEnabled||state.cursorRatio==null)return;
@@ -141,15 +188,17 @@ function pause(){if(!state.running)return;state.elapsedBase=elapsedNow();state.r
 function restart(){state.elapsedBase=0;state.runStartedAt=performance.now();state.cursorEnabled=false;state.cursorRatio=null;delete canvas.dataset.reviewCursorSeconds;const cursorButton=host.querySelector('[data-live-psg-cursor-toggle]');if(cursorButton){cursorButton.setAttribute('aria-pressed','false');cursorButton.textContent='Review cursor OFF';}paint();}
 function toggleCursor(){if(state.running||state.elapsedBase<=0)return;state.cursorEnabled=!state.cursorEnabled;if(state.cursorEnabled&&state.cursorRatio==null)state.cursorRatio=.5;const button=host.querySelector('[data-live-psg-cursor-toggle]');if(button){button.setAttribute('aria-pressed',String(state.cursorEnabled));button.textContent=state.cursorEnabled?'Review cursor ON':'Review cursor OFF';}paint();}
 function setCursorFromPointer(event){if(state.running||!state.cursorEnabled||state.elapsedBase<=0)return;const rect=canvas.getBoundingClientRect(),scaleX=state.width/Math.max(1,rect.width),localX=(event.clientX-rect.left)*scaleX,plotLeft=state.labelWidth,plotRight=state.width-10;state.cursorRatio=clamp((localX-plotLeft)/Math.max(1,plotRight-plotLeft),0,1);paint();}
-function requestFullscreen(){const target=screen||host;const request=target.requestFullscreen||target.webkitRequestFullscreen||target.msRequestFullscreen;if(typeof request==='function'){try{const result=request.call(target);if(result&&typeof result.catch==='function')result.catch(()=>{});}catch(error){}}}
+function requestFullscreen(){const target=host;const request=target.requestFullscreen||target.webkitRequestFullscreen||target.msRequestFullscreen;if(typeof request==='function'){try{const result=request.call(target);if(result&&typeof result.catch==='function')result.catch(()=>{});}catch(error){}}}
 ensureReviewControls();
 startButton.addEventListener('click',start);pauseButton.addEventListener('click',pause);restartButton.addEventListener('click',restart);
 const cursorButton=host.querySelector('[data-live-psg-cursor-toggle]');if(cursorButton)cursorButton.addEventListener('click',toggleCursor);
 const fullscreenButton=host.querySelector('[data-live-psg-fullscreen]');if(fullscreenButton)fullscreenButton.addEventListener('click',requestFullscreen);
 canvas.addEventListener('pointermove',setCursorFromPointer);canvas.addEventListener('pointerdown',setCursorFromPointer);
 if(key)key.innerHTML=channels.map(channel=>'<span>'+channel.label+'</span>').join('');
-host.dataset.secondsPerScreen=String(WINDOW_SECONDS);canvas.dataset.secondsPerScreen=String(WINDOW_SECONDS);canvas.dataset.scrollDirection='right-to-left';canvas.dataset.boundaryCycleSeconds=String(WINDOW_SECONDS);canvas.setAttribute('aria-label','Synthetic live polysomnogram with 12 synchronized channels. One full signal window equals 30 seconds of real time. Pause to use the review cursor.');
+host.dataset.secondsPerScreen=String(WINDOW_SECONDS);host.dataset.sharedTimebase='true';canvas.dataset.secondsPerScreen=String(WINDOW_SECONDS);canvas.dataset.scrollDirection='right-to-left';canvas.dataset.boundaryCycleSeconds=String(WINDOW_SECONDS);canvas.dataset.channelCount=String(channels.length);canvas.setAttribute('aria-label','Synthetic live polysomnogram with 12 synchronized channels using one shared 30-second timebase. One full signal window equals 30 seconds of real time. Pause to use the review cursor.');
 sizeCanvas();paint();
 if(window.ResizeObserver){new ResizeObserver(()=>{sizeCanvas();paint();}).observe(screen);}else window.addEventListener('resize',()=>{sizeCanvas();paint();});
+window.addEventListener('resize',()=>{sizeCanvas();paint();},{passive:true});
+document.addEventListener('fullscreenchange',()=>{requestAnimationFrame(()=>{sizeCanvas();paint();});});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.running)pause();});
 })();
