@@ -22,7 +22,7 @@ const requiredAttributes=[
   'data-practice-shell','data-question-panel','data-question-number','data-question-task',
   'data-question-difficulty','data-question-review','data-question-prompt','data-question-choices','data-practice-question-actions',
   'data-practice-coach','data-answer-feedback','data-submit-answer','data-previous-question','data-next-question','data-session-answered',
-  'data-session-correct','data-session-accuracy','data-session-pool','data-active-mode',
+  'data-session-correct','data-session-accuracy','data-session-pool','data-session-subject','data-active-mode',
   'data-progress-policy','data-session-complete','data-complete-score','data-complete-percent',
   'data-complete-policy','data-bank-total','data-module-total'
 ];
@@ -34,7 +34,7 @@ for(const term of ['Quality-review pool','Manual review record','QA status','Rev
 for(const developerTerm of ['Development boundary','complete question-bank manifest','Total preserved records','Overall v3 learner record','Development branch only']){
   if(html.includes(developerTerm)) throw new Error(`Practice Center exposes development-era wording: ${developerTerm}`);
 }
-for(const learnerMarker of ['Practice Center · Focused sessions','Practice boundary:','Available bank records','Overall learner record']){
+for(const learnerMarker of ['Practice Center · Focused sessions','Practice boundary:','Available bank records','Overall learner record','Full-length Mock-Style Exam practice remains in the Candidate Center']){
   if(!html.includes(learnerMarker)) throw new Error(`Practice Center learner presentation is missing ${learnerMarker}.`);
 }
 for(const difficulty of ['Easy','Intermediate','Hard']){
@@ -42,7 +42,9 @@ for(const difficulty of ['Easy','Intermediate','Hard']){
 }
 if(!js.includes('selectedDifficulty()')||!js.includes('matchesDifficulty(question,difficulty)')) throw new Error('Practice difficulty filtering is not wired into the learner pool.');
 if(!html.includes('core/practice-subjects.js')||!js.includes('selectedSubject()')||!js.includes('matchesSubject(question,subject)')) throw new Error('Practice subject filtering is not wired into the learner pool.');
-for(const subjectToken of ["id:'ekg'","ECG / cardiac rhythm","id:'respiratory'","id:'staging'","id:'pap'"]){if(!practiceSubjects.includes(subjectToken)) throw new Error('Practice subject taxonomy is missing '+subjectToken);}
+for(const token of ['sessionSubject:"all"','dataset.practiceSubjectLock','questionSubjectMatch','subject filter integrity check failed']){if(!js.includes(token)) throw new Error('Practice session subject lock is missing '+token+'.');}
+for(const subjectToken of ["id:'ekg'","ECG / cardiac rhythm","id:'respiratory'","id:'staging'","id:'pap'","primaryQuestionText","questionMatch(question)"]){if(!practiceSubjects.includes(subjectToken)) throw new Error('Practice subject taxonomy is missing '+subjectToken);}
+if(practiceSubjects.includes('question&&question.rationale')||practiceSubjects.includes('sourceCredit.sectionHint')) throw new Error('Practice subject matching must not classify questions from rationale/source metadata.');
 if(!practicePrefill.includes("params.get('subject')")||!practicePrefill.includes("params.get('start')==='1'")||!practicePrefill.includes('start.click()')) throw new Error('Practice deep links do not support subject prefill and direct start.');
 if(!html.includes('role="dialog"')||!html.includes('aria-modal="true"')) throw new Error('Practice session is missing dialog semantics.');
 if(!html.includes('class="practice-close"')||!html.includes('aria-label="Close practice session"')) throw new Error('Practice modal close control is missing.');
@@ -84,7 +86,9 @@ for(const destination of ['review.html?list=missed','study.html','index.html']){
   if(!html.includes(`href="${destination}"`)) throw new Error(`Practice completion is missing next-action destination ${destination}.`);
 }
 if(!html.includes('not an official BRPT score')) throw new Error('Practice completion score disclaimer is missing.');
+if(html.includes('<h2>175-Question Mock-Style Practice</h2>')||html.includes('href="mock.html">Open the 175-question mock')) throw new Error('Mock exam launch content must not appear inside the Practice Center.');
+const candidateCenter=shell.indexOf('<div class="nav-label">Candidate Center</div>');const mockLink=shell.indexOf('href="mock.html"');if(candidateCenter<0||mockLink<candidateCenter) throw new Error('Mock-Style Exam must live under Candidate Center navigation, not the Practice launch area.');
 if(!navigationCss.includes('grid-template-columns:minmax(0,1fr) minmax(0,1fr)')) throw new Error('Practice Previous/Next controls do not share the modal footer.');
 if(!navigationCss.includes('[data-submit-answer]{display:none!important}')) throw new Error('Visible Check answer styling returned.');
 
-console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,subjectFilter:true,subjectDeepLinks:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,nextChecksAnswer:true,previousNavigation:true,reasoningPanel:true,focusedCompletion:true,nextActions:true},null,2));
+console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,subjectFilter:true,subjectLocked:true,subjectDeepLinks:true,mockIsolated:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,nextChecksAnswer:true,previousNavigation:true,reasoningPanel:true,focusedCompletion:true,nextActions:true},null,2));

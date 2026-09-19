@@ -51,3 +51,28 @@ test('Learner Practice hides internal metadata, uses Next to check, and preserve
   const revisitedHistoryCount=await page.evaluate(()=>JSON.parse(localStorage.getItem('spg_rpsgt_v3')).progress.history.length);
   expect(revisitedHistoryCount).toBe(1);
 });
+
+
+test('ECG subject stays locked for the full focused Practice session', async ({ page }) => {
+  await page.goto('practice.html');
+  await expect(page.locator('[data-practice-setup]')).toBeVisible();
+  await expect(page.locator('main')).not.toContainText('175-Question Mock-Style Practice');
+
+  await page.locator('[data-practice-subject]').selectOption('ekg');
+  await page.locator('[data-practice-size]').selectOption('5');
+  await page.locator('[data-start-practice]').click();
+
+  const shell=page.locator('[data-practice-shell]');
+  await expect(shell).toHaveAttribute('data-practice-subject-lock','ekg');
+  await expect(shell).toHaveAttribute('data-question-subject-match','true');
+  await expect(page.locator('[data-session-subject]')).toHaveText('ECG / cardiac rhythm');
+
+  for(let index=0;index<4;index+=1){
+    await expect(shell).toHaveAttribute('data-question-subject-match','true');
+    await page.locator('[data-choice-index]').first().click();
+    await page.locator('[data-next-question]').click();
+    await page.locator('[data-next-question]').click();
+  }
+  await expect(page.locator('[data-question-number]')).toContainText('Question 5 of 5');
+  await expect(shell).toHaveAttribute('data-question-subject-match','true');
+});

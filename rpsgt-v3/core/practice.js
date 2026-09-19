@@ -15,6 +15,8 @@
     responses:new Map(),
     mode:"learner",
     activePoolSize:0,
+    sessionSubject:"all",
+    sessionDifficulty:"all",
     loading:false
   };
   const taskOrder=["D1A","D1B","D1C","D2A","D2B","D2C","D2A/D2C","D3A","D3B","D3C","D4A","D4B","D4C"];
@@ -163,7 +165,7 @@
       return eligible&&matchesSubject(question,subject)&&matchesDifficulty(question,difficulty);
     });
     state.activePoolSize=pool.length;
-    return pool;
+    return {pool,subject,difficulty};
   }
 
   function setSetupBusy(busy){
@@ -177,11 +179,17 @@
     if(state.loading) return;
     setSetupBusy(true);
     try{
-      const pool=await selectedPool();
+      const selection=await selectedPool();
+      const pool=selection.pool;
       if(!pool.length) throw new Error("No learner-ready questions match the selected domain, task, subject, and difficulty filters.");
       const requested=$("[data-practice-size]").value;
       const size=requested==="all"?pool.length:Math.min(Number(requested)||10,pool.length);
+      state.sessionSubject=selection.subject;
+      state.sessionDifficulty=selection.difficulty;
       state.session=shuffle(pool).slice(0,size);
+      if(state.sessionSubject!=="all"&&state.session.some(function(question){return !matchesSubject(question,state.sessionSubject);})){
+        throw new Error("The subject filter integrity check failed. No mixed-topic session was started.");
+      }
       state.index=0;
       state.selected=null;
       state.answered=false;
@@ -190,6 +198,12 @@
       state.selections=new Map();
       state.responses=new Map();
       setText("[data-session-pool]",pool.length.toLocaleString());
+      setText("[data-session-subject]",state.sessionSubject==="all"?"All subjects":subjectEngine?.label(state.sessionSubject)||state.sessionSubject);
+      const shell=$("[data-practice-shell]");
+      if(shell){
+        shell.dataset.practiceSubjectLock=state.sessionSubject;
+        shell.dataset.practiceDifficultyLock=state.sessionDifficulty;
+      }
       $("[data-practice-load]").classList.add("hidden");
       $("[data-practice-setup]").classList.add("hidden");
       $("[data-practice-shell]").classList.remove("hidden");
@@ -279,6 +293,13 @@
   function renderQuestion(){
     const question=state.session[state.index];
     if(!question){renderComplete();return;}
+    const subjectMatch=state.sessionSubject==="all"||matchesSubject(question,state.sessionSubject);
+    const shell=$("[data-practice-shell]");
+    if(shell) shell.dataset.questionSubjectMatch=String(subjectMatch);
+    if(!subjectMatch){
+      showLoadError(new Error("A question outside the locked subject filter was blocked."));
+      return;
+    }
     const key=questionKey(question);
     const response=state.responses.get(key)||null;
     state.selected=state.selections.has(key)?state.selections.get(key):null;
@@ -451,6 +472,10 @@
   }
 
   function changeFilters(){
+    state.sessionSubject="all";
+    state.sessionDifficulty="all";
+    const shell=$("[data-practice-shell]");
+    if(shell){delete shell.dataset.practiceSubjectLock;delete shell.dataset.practiceDifficultyLock;delete shell.dataset.questionSubjectMatch;}
     $("[data-practice-shell]").classList.add("hidden");
     $("[data-practice-setup]").classList.remove("hidden");
     $("[data-practice-load]").classList.add("hidden");

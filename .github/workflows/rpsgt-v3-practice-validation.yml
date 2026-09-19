@@ -1,0 +1,52 @@
+name: Validate RPSGT v3 Practice Center
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/practice.html'
+      - 'rpsgt-v3/assets/practice*.css'
+      - 'rpsgt-v3/core/practice*.js'
+      - 'rpsgt-v3/core/app-shell.js'
+      - 'rpsgt-v3/scripts/test-practice*.mjs'
+      - 'rpsgt-v3/tests/browser/practice-*.spec.mjs'
+      - '.github/workflows/rpsgt-v3-practice-validation.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/practice.html'
+      - 'rpsgt-v3/assets/practice*.css'
+      - 'rpsgt-v3/core/practice*.js'
+      - 'rpsgt-v3/core/app-shell.js'
+      - 'rpsgt-v3/scripts/test-practice*.mjs'
+      - '.github/workflows/rpsgt-v3-practice-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  practice-center:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check Practice JavaScript syntax
+        run: |
+          node --check rpsgt-v3/core/practice-subjects.js
+          node --check rpsgt-v3/core/practice.js
+          node --check rpsgt-v3/core/practice-prefill.js
+          node --check rpsgt-v3/core/app-shell.js
+          node --check rpsgt-v3/scripts/test-practice-shell.mjs
+          node --check rpsgt-v3/scripts/test-practice-subject-filter.mjs
+      - name: Validate Practice shell and isolation
+        run: node rpsgt-v3/scripts/test-practice-shell.mjs
+      - name: Validate subject-filter integrity
+        run: node rpsgt-v3/scripts/test-practice-subject-filter.mjs

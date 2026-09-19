@@ -214,7 +214,6 @@
         <a class="nav-link" data-nav="home" href="index.html"><span>🏠</span>Dashboard</a>\
         <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>\
         <a class="nav-link" data-nav="practice" href="practice.html"><span>📝</span>Practice Modes</a>\
-        <a class="nav-link" href="mock.html"><span>🎯</span>Mock-Style Exam</a>\
         <a class="nav-link" href="review.html?list=missed"><span>🔁</span>Missed Questions</a>\
         <a class="nav-link" data-nav="reports" href="reports.html"><span>📊</span>Reports</a>\
         <div class="nav-label">RPSGT Blueprint</div>\
@@ -232,6 +231,7 @@
         <div class="nav-label">Candidate Center</div>\
         <a class="nav-link" href="index.html#how-v3-works"><span>❓</span>How to Use This App</a>\
         <a class="nav-link" href="readiness.html"><span>🎯</span>Readiness Check</a>\
+        <a class="nav-link" href="mock.html"><span>🧭</span>Mock-Style Exam</a>\
         <a class="nav-link" href="sources-disclosures.html"><span>📚</span>References &amp; Scope</a>\
         <div class="nav-label">Guild Resources</div>\
         <a class="nav-external-link" href="https://sleeppathwaysguild.com/ekg.2026.html" target="_blank" rel="noopener"><span>❤️</span><span>EKG Skills Lab</span><b>↗</b></a>\
