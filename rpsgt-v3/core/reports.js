@@ -3,6 +3,7 @@
   const reportEngine=window.RPSGTReportsEngine;
   const feedbackEngine=window.RPSGTStudyFeedback;
   const insightsEngine=window.RPSGTReportInsights;
+  const subjectEngine=window.RPSGTPracticeSubjects||null;
   const state={saved:null,blueprint:null,outlines:null,index:null,indexMap:null,taskMap:new Map(),sourceMap:new Map(),sectionMap:new Map(),insights:null};
   const $=selector=>document.querySelector(selector);
   const $all=selector=>Array.from(document.querySelectorAll(selector));
@@ -96,12 +97,21 @@
     const groups=feedbackEngine.groupBySource(route);
     return '<div class="study-route">'+groups.map(group=>`<div class="study-route-group"><strong>${esc(group.sourceTitle)}</strong><div class="study-section-row">${group.sections.map(section=>`<span class="study-section">${esc(section.label)}</span>`).join("")}</div>${group.sections[0]&&group.sections[0].reason?`<small>${esc(group.sections[0].reason)}</small>`:""}</div>`).join("")+'</div>';
   }
+  function focusedPracticeHref(plan){
+    const candidate={...plan,taskCode:plan&&plan.code};
+    const subject=subjectEngine&&subjectEngine.inferItem(candidate);
+    const params=new URLSearchParams();
+    if(plan&&plan.code) params.set("task",plan.code);
+    if(subject) params.set("subject",subject.id);
+    params.set("start","1");
+    return "practice.html?"+params.toString();
+  }
   function renderCoachPlan(){
     const plans=reportEngine.studyPlan(state.saved,state.blueprint,state.indexMap,3);const host=$("[data-coach-plan]");
     if(!plans.length){host.innerHTML='<div class="empty-report">No weak-area evidence is available yet. Complete focused practice or a Readiness Check to create a personalized plan.</div>';return;}
     host.innerHTML='<div class="coach-plan-list">'+plans.map((plan,index)=>{
       const topics=plan.topics.map(item=>item.label);const route=feedbackEngine.taskRoute(plan.code,topics,state.outlines,7);
-      return `<article class="coach-plan-item"><div class="coach-plan-heading"><div class="coach-plan-rank">${index+1}</div><div><h3>${esc(plan.code)} · ${esc(plan.title)}</h3><p>${plan.answered?`${plan.correct}/${plan.answered} practice correct · ${plan.percent}%`:"No ordinary practice attempts yet"} · ${plan.missed} currently missed</p></div><span class="status ${index===0?"gold":""}">${index===0?"Start here":"Then study"}</span></div>${topics.length?`<div class="topic-chip-row">${plan.topics.map(topic=>`<span class="topic-chip">${esc(topic.label)} · ${topic.count}</span>`).join("")}</div>`:""}<p><strong>After reading:</strong> ${esc(plan.nextAction||"Return to focused practice and confirm the weak concept with a new question set.")}</p>${routeHtml(route)}<div class="actions compact"><a class="btn secondary" href="study.html#${esc(plan.code)}">Open Guided Study</a><a class="btn primary" href="practice.html">Run focused practice</a></div></article>`;
+      return `<article class="coach-plan-item"><div class="coach-plan-heading"><div class="coach-plan-rank">${index+1}</div><div><h3>${esc(plan.code)} · ${esc(plan.title)}</h3><p>${plan.answered?`${plan.correct}/${plan.answered} practice correct · ${plan.percent}%`:"No ordinary practice attempts yet"} · ${plan.missed} currently missed</p></div><span class="status ${index===0?"gold":""}">${index===0?"Start here":"Then study"}</span></div>${topics.length?`<div class="topic-chip-row">${plan.topics.map(topic=>`<span class="topic-chip">${esc(topic.label)} · ${topic.count}</span>`).join("")}</div>`:""}<p><strong>After reading:</strong> ${esc(plan.nextAction||"Return to focused practice and confirm the weak concept with a new question set.")}</p>${routeHtml(route)}<div class="actions compact"><a class="btn secondary" href="study.html#${esc(plan.code)}">Open Guided Study</a><a class="btn primary" href="${esc(focusedPracticeHref(plan))}">Run focused practice</a></div></article>`;
     }).join("")+'</div>';
   }
   function renderSources(){
