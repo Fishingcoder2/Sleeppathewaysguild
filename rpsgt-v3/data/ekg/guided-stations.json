@@ -194,7 +194,7 @@
           "Use descriptive language that another clinician can reconstruct rather than vague entries such as 'bad ECG' or unsupported diagnostic labels."
         ]
       },
-      "visual": {"kind":"event-marker","label":"Synthetic ECG event timeline with an observation marker for documentation practice."},
+      "visual": {"kind":"event-marker","label":"Synthetic ECG onset view: regular baseline followed by an abrupt irregular pattern at the observation marker for documentation practice."},
       "apply": {
         "prompt": "Which technologist note best supports clinical review after a new ECG event?",
         "options": [
