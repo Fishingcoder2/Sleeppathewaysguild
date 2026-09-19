@@ -4,7 +4,7 @@
   root.RPSGTScoringLabEngine=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='1.2.0';
+  const VERSION='1.3.0';
   const LAB_ID='scoring';
   const SESSION_SIZE=10;
   const PASS_PERCENT=80;
@@ -23,13 +23,13 @@
     {id:'event-rera',evidenceCaseId:'rera-evidence',answer:'RERA / flow limitation ending in arousal',options:EVENT_OPTIONS.slice(),evidenceTasks:2,rationale:'Sustained inspiratory flow limitation is followed by a visible terminating EEG arousal; the arousal context is essential to this teaching pattern.'}
   ];
   const STATIONS=[
-    {id:'stage-recognition',title:'Wake, N1, N2, N3, and REM recognition',focus:'Review the signal features used to distinguish the major sleep stages.'},
-    {id:'stage-transitions',title:'Stage transitions and epoch decisions',focus:'Review how changing signals and epoch context affect a staging decision.'},
-    {id:'arousal-context',title:'Arousal recognition and sleep-stage context',focus:'Separate arousal recognition from the surrounding stage and event context.'},
-    {id:'respiratory-classification',title:'Apnea, hypopnea, and respiratory-event classification',focus:'Review airflow, effort, oxygen, arousal, and event-context evidence before classifying an event.'},
-    {id:'limb-movement-context',title:'Limb-movement context and association',focus:'Review movement timing, series context, and relationships to respiratory events or arousals.'},
-    {id:'artifact-physiology',title:'Artifact versus physiologic event',focus:'Trace questionable findings back through the signal pathway before scoring a physiologic event.'},
-    {id:'population-boundaries',title:'Population and protocol boundaries',focus:'Use age-specific or protocol-specific distinctions only when supported by the validated study material and current official guidance.'}
+    {id:'stage-recognition',title:'Wake, N1, N2, N3, and REM recognition',focus:'Review the signal features used to distinguish the major sleep stages.',walkthrough:'Compare EEG background, eye movements, chin tone, and stage-defining morphology as one channel set. Name the evidence you would use before choosing the stage.'},
+    {id:'stage-transitions',title:'Stage transitions and epoch decisions',focus:'Review how changing signals and epoch context affect a staging decision.',walkthrough:'Look across the current epoch and its neighboring context. Identify what changed, which feature carries the most weight, and why an epoch boundary does not erase the surrounding sequence.'},
+    {id:'arousal-context',title:'Arousal recognition and sleep-stage context',focus:'Separate arousal recognition from the surrounding stage and event context.',walkthrough:'Find the abrupt EEG change, then check the surrounding sleep stage and related respiratory or movement activity before deciding what the arousal means in context.'},
+    {id:'respiratory-classification',title:'Apnea, hypopnea, and respiratory-event classification',focus:'Review airflow, effort, oxygen, arousal, and event-context evidence before classifying an event.',walkthrough:'Follow the event from airflow change through effort, oxygen response, arousal context, and recovery. Classify only after the complete channel relationship is clear.'},
+    {id:'limb-movement-context',title:'Limb-movement context and association',focus:'Review movement timing, series context, and relationships to respiratory events or arousals.',walkthrough:'Trace the leg-channel burst in time, compare nearby movements, and check whether respiratory events or arousals change how the movement should be interpreted.'},
+    {id:'artifact-physiology',title:'Artifact versus physiologic event',focus:'Trace questionable findings back through the signal pathway before scoring a physiologic event.',walkthrough:'Compare the questionable change across channels and references. Ask whether the pattern follows physiology, a shared reference, movement, or another signal-pathway problem before scoring it.'},
+    {id:'population-boundaries',title:'Population and protocol boundaries',focus:'Use age-specific or protocol-specific distinctions only when supported by the validated study material and current official guidance.',walkthrough:'Confirm the patient population, test type, and protocol context before applying an age-specific or protocol-specific distinction. Use current validated guidance for any rule-sensitive edge case.'}
   ];
   const STATION_IDS=new Set(STATIONS.map(item=>item.id));
   const FAMILY_ORDER=['stage-transition','sleep-stage','arousal','respiratory-event','limb-movement','artifact','pediatric','other'];
