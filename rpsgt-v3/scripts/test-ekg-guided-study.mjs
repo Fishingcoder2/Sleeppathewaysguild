@@ -45,6 +45,7 @@ for(const token of [
 for(const token of [
   'function sinusBeatPath',
   'function wideComplexPath',
+  'function irregularEventBeatPath',
   'function timeScaleMarkup',
   'width="9" height="9"',
   'width="45" height="45"',
@@ -68,6 +69,19 @@ assert.equal(wideRun.length,6,'The concerning-run schematic should show a short,
 assert.equal(recovery.length,2,'The concerning-run schematic should return to organized sinus morphology afterward.');
 assert.ok(wideRun.every((value,index)=>index===0||value-wideRun[index-1]>=45),'Wide complexes must remain separated enough to avoid tangled overlap.');
 assert.equal(controller.includes("kind==='concerning-run'&&index>=2&&index<=6"),false,'The old overlapping wide-beat loop must not return.');
+
+const eventMatch=controller.match(/const baselineBeats=\[([^\]]+)\],eventBeats=\[([^\]]+)\]/);
+assert.ok(eventMatch,'Could not inspect the documentation event teaching strip.');
+const eventBaseline=eventMatch[1].split(',').map(Number),eventBeats=eventMatch[2].split(',').map(Number);
+assert.equal(eventBaseline.length,3,'The documentation event schematic should establish a regular baseline before the marker.');
+assert.equal(eventBeats.length,5,'The documentation event schematic should show a sustained visible irregular segment after the marker.');
+assert.ok(eventBeats[0]>450,'The irregular segment must begin after the 5-second event marker.');
+const eventSpacing=eventBeats.slice(1).map((value,index)=>value-eventBeats[index]);
+assert.ok(new Set(eventSpacing).size>1,'The documentation event segment must have visibly irregular R-R spacing.');
+assert.ok(controller.includes('Event marker — 02:14'),'The documentation marker label must identify itself as a marker.');
+assert.ok(controller.includes('Abrupt irregular pattern begins'),'The strip must explicitly identify the onset of the visible event.');
+assert.equal(controller.includes('Event noted 02:14'),false,'The old marker-only wording must not return.');
+assert.match(pack.stations.find(item=>item.id==='documentation-handoff').visual.label,/abrupt irregular pattern/i,'Documentation station visual label must describe the visible event.');
 
 assert.equal(controller.includes('type="checkbox"'),false,'Guided EKG stations must not use learner self-attestation checkboxes.');
 assert.equal(controller.includes("type='checkbox'"),false,'Guided EKG stations must not use learner self-attestation checkboxes.');
@@ -107,4 +121,4 @@ assert.ok(css.includes('.ekg-workspace:fullscreen'));
 assert.equal(engine.SESSION_SIZE,10);
 assert.equal(engine.PASS_PERCENT,80);
 assert.equal(engine.STATIONS.length,7);
-console.log('EKG guided-study regression passed: seven Study → Apply → Recap stations, polished sinus and rapid wide-complex schematics, earned completion, focused 10-question checkpoint, APA reference, fullscreen/phone guidance, and event-driven safety boundaries are present.');
+console.log('EKG guided-study regression passed: seven Study → Apply → Recap stations, polished sinus, rapid wide-complex, and visible irregular documentation-event schematics, earned completion, focused 10-question checkpoint, APA reference, fullscreen/phone guidance, and event-driven safety boundaries are present.');
