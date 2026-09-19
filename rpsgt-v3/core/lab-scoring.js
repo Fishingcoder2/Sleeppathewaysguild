@@ -13,7 +13,7 @@
   const eventStartButtons=[...document.querySelectorAll('[data-scoring-event-start]')];
   const eventWorkspace=document.querySelector('[data-scoring-event-workspace]');
   if(!workspace||!summaryHost||!stationHost||!startButton||!stageStartButtons.length||!stageWorkspace||!eventStartButtons.length||!eventWorkspace) return;
-  const state={saved:null,questions:[],bank:[],stageItems:[],stageRun:null,eventItems:[],eventRun:null};
+  const state={saved:null,questions:[],bank:[],stageItems:[],stageRun:null,eventItems:[],eventRun:null,stationIndex:null};
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
   const familyLabel=value=>({'stage-transition':'Stage transition','sleep-stage':'Sleep stage','arousal':'Arousal','respiratory-event':'Respiratory event','limb-movement':'Limb movement','artifact':'Artifact review','pediatric':'Age-specific context','other':'Scoring context'}[value]||'Scoring context');
@@ -27,10 +27,51 @@
     eventStartButtons.forEach(button=>{button.textContent=report.eventSkillPassed?'Practice event-evidence drill again':'Start event-evidence drill';});
     startButton.textContent=report.attempts?'Start another 10-question checkpoint':'Start 10-question checkpoint';if(report.completed) startButton.textContent='Practice another 10-question checkpoint';
   }
+  function currentStationIndex(report){
+    if(Number.isInteger(state.stationIndex)&&state.stationIndex>=0&&state.stationIndex<engine.STATIONS.length) return state.stationIndex;
+    const firstIncomplete=engine.STATIONS.findIndex(station=>!report.checklist[station.id]);
+    state.stationIndex=firstIncomplete>=0?firstIncomplete:engine.STATIONS.length-1;
+    return state.stationIndex;
+  }
   function renderStations(){
     const report=engine.summary(state.saved.labs);
-    stationHost.innerHTML=engine.STATIONS.map((station,index)=>`<label class="scoring-station ${report.checklist[station.id]?'complete':''}"><input type="checkbox" data-scoring-station="${esc(station.id)}" ${report.checklist[station.id]?'checked':''} ${report.completed?'disabled':''}><span class="scoring-station-number">${index+1}</span><span><strong>${esc(station.title)}</strong><small>${esc(station.focus)}</small><em>${report.checklist[station.id]?'Reviewed and recorded':'Mark after completing this review station'}</em></span></label>`).join('');
+    const index=currentStationIndex(report);
+    const station=engine.STATIONS[index];
+    const completed=Boolean(report.checklist[station.id]);
+    const allComplete=report.stationsComplete===report.stationCount;
+    const progress=Math.round((report.stationsComplete/report.stationCount)*100);
+    const steps=engine.STATIONS.map((item,stepIndex)=>{
+      const done=Boolean(report.checklist[item.id]);
+      const active=stepIndex===index;
+      const available=done||active||stepIndex===engine.STATIONS.findIndex(entry=>!report.checklist[entry.id]);
+      return `<button class="scoring-walkthrough-step ${done?'complete':''} ${active?'current':''}" type="button" data-scoring-station-open="${stepIndex}" ${available?'':'disabled'} aria-label="Station ${stepIndex+1}: ${esc(item.title)}${done?', completed':''}" ${active?'aria-current="step"':''}><span>${done?'✓':stepIndex+1}</span><small>${done?'Done':active?'Now':'Next'}</small></button>`;
+    }).join('');
+    const primary=allComplete
+      ?'<button class="btn primary" type="button" data-scoring-station-restart>Review stations again</button>'
+      :completed
+        ?'<button class="btn primary" type="button" data-scoring-station-next>Continue to next station</button>'
+        :'<button class="btn primary" type="button" data-scoring-station-complete>Complete station &amp; continue</button>';
+    const previous=index>0?'<button class="btn secondary" type="button" data-scoring-station-previous>Previous station</button>':'';
+    stationHost.innerHTML=`<div class="scoring-walkthrough"><div class="scoring-walkthrough-top"><div><div class="eyebrow">Guided review · Station ${index+1} of ${report.stationCount}</div><h3>${allComplete?'Seven-station review complete':esc(station.title)}</h3><p>${allComplete?'All seven review stations are recorded. You can revisit them without erasing completion.':esc(station.focus)}</p></div><strong class="scoring-walkthrough-count">${report.stationsComplete}/${report.stationCount} complete</strong></div><div class="scoring-walkthrough-progress" role="progressbar" aria-label="Seven-station review progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress}"><span style="width:${progress}%"></span></div><div class="scoring-walkthrough-steps" aria-label="Review station progress">${steps}</div><article class="scoring-walkthrough-card ${completed?'complete':''}"><span class="scoring-station-number">${completed?'✓':index+1}</span><div><div class="eyebrow">${completed?'Recorded station':'Work this station now'}</div><h3>${esc(station.title)}</h3><p><strong>Review focus:</strong> ${esc(station.focus)}</p><div class="scoring-walkthrough-task"><strong>Walk-through:</strong><p>${esc(station.walkthrough||station.focus)}</p></div><p class="scoring-walkthrough-status">${completed?'✓ This station is already recorded. Continue when you are ready.':'When you finish this short review, Continue records the station automatically.'}</p><div class="actions compact">${previous}${primary}</div></div></article></div>`;
   }
+  function openStation(index){
+    const report=engine.summary(state.saved.labs);
+    const firstIncomplete=engine.STATIONS.findIndex(station=>!report.checklist[station.id]);
+    const maxAllowed=firstIncomplete<0?engine.STATIONS.length-1:firstIncomplete;
+    const next=Math.max(0,Math.min(Number(index)||0,maxAllowed));
+    state.stationIndex=next;renderStations();
+  }
+  function completeStation(){
+    const report=engine.summary(state.saved.labs),index=currentStationIndex(report),station=engine.STATIONS[index];
+    if(!report.checklist[station.id]) saveLabs(engine.setStation(state.saved.labs,station.id,true,new Date().toISOString()));
+    const updated=engine.summary(state.saved.labs);
+    state.stationIndex=Math.min(index+1,engine.STATIONS.length-1);
+    if(updated.stationsComplete===updated.stationCount) state.stationIndex=engine.STATIONS.length-1;
+    renderSummary();renderStations();
+  }
+  function nextStation(){openStation(Math.min((state.stationIndex??0)+1,engine.STATIONS.length-1));}
+  function previousStation(){state.stationIndex=Math.max(0,(state.stationIndex??0)-1);renderStations();}
+  function restartStationWalkthrough(){state.stationIndex=0;renderStations();}
   function renderStageQuestion(){
     if(!state.stageRun) return;if(state.stageRun.index>=state.stageRun.items.length){finishStageSkill();return;}
     const item=state.stageRun.items[state.stageRun.index],question=item.question,study=item.study;state.stageRun.locked=false;stageWorkspace.hidden=false;
@@ -83,8 +124,12 @@
     }catch(error){workspace.hidden=false;workspace.innerHTML=`<div class="notice error"><strong>Scoring lab could not load.</strong> ${esc(error.message)} No learner progress was changed.</div>`;startButton.disabled=true;stageStartButtons.forEach(button=>{button.disabled=true;});eventStartButtons.forEach(button=>{button.disabled=true;});}
   }
   startButton.addEventListener('click',startSession);
-  document.addEventListener('change',event=>{const station=event.target.closest('[data-scoring-station]');if(!station)return;saveLabs(engine.setStation(state.saved.labs,station.dataset.scoringStation,station.checked,new Date().toISOString()));renderSummary();renderStations();});
   document.addEventListener('click',event=>{
+    const stationOpen=event.target.closest('[data-scoring-station-open]');if(stationOpen){openStation(Number(stationOpen.dataset.scoringStationOpen));return;}
+    if(event.target.closest('[data-scoring-station-complete]')){completeStation();return;}
+    if(event.target.closest('[data-scoring-station-next]')){nextStation();return;}
+    if(event.target.closest('[data-scoring-station-previous]')){previousStation();return;}
+    if(event.target.closest('[data-scoring-station-restart]')){restartStationWalkthrough();return;}
     if(event.target.closest('[data-scoring-stage-start]')){startStageSkill();return;}
     if(event.target.closest('[data-scoring-event-start]')){startEventSkill();return;}
     const stageAnswer=event.target.closest('[data-scoring-stage-answer]');if(stageAnswer){answerStage(stageAnswer);return;}
