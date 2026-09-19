@@ -113,7 +113,7 @@
       steps:[
         {module:"reports",href:"reports.html",label:"Scan results",detail:"Find the task family that needs attention."},
         {module:"study",href:"study.html",label:"Study plan",detail:"Return to the matching guided study area."},
-        {module:"practice",href:"practice.html",label:"Practice weak area",detail:"Run a focused set against the gap."},
+        {module:"practice",href:"reports.html#study-plan",label:"Practice weak area",detail:"Load the weakest topic, then start its focused question set."},
         {module:"reports",href:"reports.html#print",label:"Summarize",detail:"Use the report as a review checklist."}
       ]
     }

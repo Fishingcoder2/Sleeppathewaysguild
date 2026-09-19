@@ -20,6 +20,7 @@
   const taskOrder=["D1A","D1B","D1C","D2A","D2B","D2C","D2A/D2C","D3A","D3B","D3C","D4A","D4B","D4C"];
   const taskMap=new Map();
   const domainMap=new Map();
+  const subjectEngine=window.RPSGTPracticeSubjects||null;
 
   function $(selector){return document.querySelector(selector);}
   function $all(selector){return Array.from(document.querySelectorAll(selector));}
@@ -45,7 +46,12 @@
   }
   function learnerCount(){return Number(state.manifest?.meta?.questionCount||0)-Number(state.manifest?.integritySummary?.manualReviewRecommendedCount||0);}
   function qualityCount(){return Number(state.manifest?.integritySummary?.manualReviewRecommendedCount||0);}
+  function selectedSubject(){return $("[data-practice-subject]")?.value||"all";}
   function selectedDifficulty(){return $("[data-practice-difficulty]")?.value||"all";}
+  function matchesSubject(question,subject){
+    if(!subject||subject==="all") return true;
+    return Boolean(subjectEngine&&subjectEngine.matchesQuestion(question,subject));
+  }
   function matchesDifficulty(question,difficulty){
     if(!difficulty||difficulty==="all") return true;
     return String(question&&question.difficulty||"").trim().toLowerCase()===String(difficulty).trim().toLowerCase();
@@ -65,6 +71,20 @@
 
   function availableModules(){
     return (state.manifest?.modules||[]).filter(modeEligibleModule);
+  }
+
+  function populateSubjects(){
+    const select=$("[data-practice-subject]");
+    if(!select) return;
+    const previous=select.value||"all";
+    select.innerHTML='<option value="all">All subjects</option>';
+    (subjectEngine?.definitions||[]).forEach(function(subject){
+      const option=document.createElement("option");
+      option.value=subject.id;
+      option.textContent=subject.label;
+      select.appendChild(option);
+    });
+    if(Array.from(select.options).some(function(option){return option.value===previous;})) select.value=previous;
   }
 
   function populateDomains(){
@@ -132,6 +152,7 @@
   async function selectedPool(){
     const modules=selectedModuleMetadata();
     if(!modules.length) return [];
+    const subject=selectedSubject();
     const difficulty=selectedDifficulty();
     const status=$("[data-practice-load]");
     status.className="section notice";
@@ -139,7 +160,7 @@
     const packages=await Promise.all(modules.map(loadModule));
     const pool=packages.flat().filter(function(question){
       const eligible=state.mode==="quality"?isManualReview(question):!isManualReview(question);
-      return eligible&&matchesDifficulty(question,difficulty);
+      return eligible&&matchesSubject(question,subject)&&matchesDifficulty(question,difficulty);
     });
     state.activePoolSize=pool.length;
     return pool;
@@ -157,7 +178,7 @@
     setSetupBusy(true);
     try{
       const pool=await selectedPool();
-      if(!pool.length) throw new Error("No learner-ready questions match the selected domain, task, and difficulty filters.");
+      if(!pool.length) throw new Error("No learner-ready questions match the selected domain, task, subject, and difficulty filters.");
       const requested=$("[data-practice-size]").value;
       const size=requested==="all"?pool.length:Math.min(Number(requested)||10,pool.length);
       state.session=shuffle(pool).slice(0,size);
@@ -333,7 +354,8 @@
       selectedAnswer:selectedAnswer,
       answeredAt:new Date().toISOString(),
       source:"v3-practice-full-bank",
-      pool:"learner"
+      pool:"learner",
+      subject:subjectEngine&&subjectEngine.inferQuestion(question)?.id||null
     });
     if(saved.progress.history.length>2500) saved.progress.history=saved.progress.history.slice(-2500);
     saved.review.missedIds=Array.isArray(saved.review.missedIds)?saved.review.missedIds:[];
@@ -462,6 +484,7 @@
       if(!state.blueprint||!Array.isArray(state.blueprint.domains)) throw new Error("Invalid blueprint map");
       buildBlueprintMaps();
       renderBankSummary();
+      populateSubjects();
       populateDomains();
       refreshTasks();
       updateModeUi();
