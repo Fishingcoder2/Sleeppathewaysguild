@@ -10,11 +10,30 @@ test('live PSG uses a 30-second real-time right-to-left window with frozen revie
   await expect(canvas).toHaveAttribute('data-seconds-per-screen','30');
   await expect(canvas).toHaveAttribute('data-scroll-direction','right-to-left');
   await expect(canvas).toHaveAttribute('data-boundary-cycle-seconds','30');
+  await expect(host).toHaveAttribute('data-shared-timebase','true');
+  await expect(canvas).toHaveAttribute('data-shared-timebase','true');
+  await expect(canvas).toHaveAttribute('data-viewport-fit','true');
+  await expect(canvas).toHaveAttribute('data-channel-count','12');
+  const pixelsPerSecond=Number(await canvas.getAttribute('data-pixels-per-second'));
+  expect(pixelsPerSecond).toBeGreaterThan(5);
+  const syncSamples=Number(await canvas.getAttribute('data-sync-sample-count'));
+  expect(syncSamples).toBeGreaterThan(120);
   await expect(host.locator('[data-live-psg-channel-key] span')).toHaveCount(12);
   await expect(host.locator('[data-live-psg-mode]')).toHaveText('Paused');
   await expect(host.locator('[data-live-psg-fullscreen]')).toBeVisible();
   await expect(host.locator('[data-live-psg-workstation-link]')).toHaveAttribute('href','scoring-workstation.html');
   await expect(host.locator('[data-live-psg-cursor-toggle]')).toBeDisabled();
+
+  const viewport=page.viewportSize();
+  const initialBox=await canvas.boundingBox();
+  expect(initialBox).not.toBeNull();
+  if(viewport&&viewport.width>=900){
+    expect(initialBox.height).toBeLessThanOrEqual(Math.min(440,viewport.height*.5));
+    await host.scrollIntoViewIfNeeded();
+    const panelBox=await host.boundingBox();
+    expect(panelBox).not.toBeNull();
+    expect(panelBox.height).toBeLessThanOrEqual(viewport.height-40);
+  }
 
   const initialRange=await canvas.evaluate(node=>Number(node.dataset.windowEnd)-Number(node.dataset.windowStart));
   expect(initialRange).toBeCloseTo(30,2);
