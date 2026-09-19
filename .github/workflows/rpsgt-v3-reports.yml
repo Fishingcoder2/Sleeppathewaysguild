@@ -9,6 +9,7 @@ on:
       - 'rpsgt-v3/core/report-insights-engine.js'
       - 'rpsgt-v3/core/improvement-plan-engine.js'
       - 'rpsgt-v3/core/report-action-plan.js'
+      - 'rpsgt-v3/core/practice-subjects.js'
       - 'rpsgt-v3/core/study-summary*.js'
       - 'rpsgt-v3/core/guided-trail-report.js'
       - 'rpsgt-v3/core/mock-result-report.js'
@@ -62,6 +63,7 @@ jobs:
           node --check rpsgt-v3/core/report-insights-engine.js
           node --check rpsgt-v3/core/improvement-plan-engine.js
           node --check rpsgt-v3/core/report-action-plan.js
+          node --check rpsgt-v3/core/practice-subjects.js
           node --check rpsgt-v3/core/reports.js
           node --check rpsgt-v3/core/study-summary.js
           node --check rpsgt-v3/core/study-summary-action-plan.js
