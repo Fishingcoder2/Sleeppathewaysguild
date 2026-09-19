@@ -42,7 +42,7 @@ for(const difficulty of ['Easy','Intermediate','Hard']){
 }
 if(!js.includes('selectedDifficulty()')||!js.includes('matchesDifficulty(question,difficulty)')) throw new Error('Practice difficulty filtering is not wired into the learner pool.');
 if(!html.includes('core/practice-subjects.js')||!js.includes('selectedSubject()')||!js.includes('matchesSubject(question,subject)')) throw new Error('Practice subject filtering is not wired into the learner pool.');
-for(const token of ['sessionSubject:"all"','data.practiceSubjectLock','questionSubjectMatch','subject filter integrity check failed']){if(!js.includes(token)) throw new Error('Practice session subject lock is missing '+token+'.');}
+for(const token of ['sessionSubject:"all"','dataset.practiceSubjectLock','questionSubjectMatch','subject filter integrity check failed']){if(!js.includes(token)) throw new Error('Practice session subject lock is missing '+token+'.');}
 for(const subjectToken of ["id:'ekg'","ECG / cardiac rhythm","id:'respiratory'","id:'staging'","id:'pap'","primaryQuestionText","questionMatch(question)"]){if(!practiceSubjects.includes(subjectToken)) throw new Error('Practice subject taxonomy is missing '+subjectToken);}
 if(practiceSubjects.includes('question&&question.rationale')||practiceSubjects.includes('sourceCredit.sectionHint')) throw new Error('Practice subject matching must not classify questions from rationale/source metadata.');
 if(!practicePrefill.includes("params.get('subject')")||!practicePrefill.includes("params.get('start')==='1'")||!practicePrefill.includes('start.click()')) throw new Error('Practice deep links do not support subject prefill and direct start.');
