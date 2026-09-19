@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import {dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=join(dirname(fileURLToPath(import.meta.url)),'..');
-const [insights,reportsAction,summaryAction,engine,css,reportsHtml,summaryHtml,practiceHtml,practiceJs,practicePrefill,practiceSubjects]=await Promise.all([
+const [insights,reportsAction,summaryAction,engine,css,reportsHtml,summaryHtml,practiceHtml,practiceJs,practicePrefill,practiceSubjects,appShell]=await Promise.all([
   readFile(join(root,'core','report-insights-engine.js'),'utf8'),
   readFile(join(root,'core','report-action-plan.js'),'utf8'),
   readFile(join(root,'core','study-summary-action-plan.js'),'utf8'),
@@ -13,11 +13,13 @@ const [insights,reportsAction,summaryAction,engine,css,reportsHtml,summaryHtml,p
   readFile(join(root,'practice.html'),'utf8'),
   readFile(join(root,'core','practice.js'),'utf8'),
   readFile(join(root,'core','practice-prefill.js'),'utf8'),
-  readFile(join(root,'core','practice-subjects.js'),'utf8')
+  readFile(join(root,'core','practice-subjects.js'),'utf8'),
+  readFile(join(root,'core','app-shell.js'),'utf8')
 ]);
 if(!insights.includes("src='core/report-action-plan.js'")||!insights.includes("src='core/study-summary-action-plan.js'"))throw new Error('Report insight loader does not attach the actionable report companions.');
 for(const phrase of ['plain-language note from Coach Bob','Your improvement roadmap','Suggested reading and study materials','Practice inside the webapp'])if(!reportsAction.includes(phrase))throw new Error('Reports Center actionable recommendation UI is missing: '+phrase);
 for(const token of ['focusedPracticeRoute','syncRoutePracticeLink',"params.set('subject',subject.id)","params.set('start','1')"])if(!reportsAction.includes(token))throw new Error('Reports weak-area practice routing is missing '+token+'.');
+if(!appShell.includes('href:"reports.html#study-plan",label:"Practice weak area"'))throw new Error('Reports route must not send Practice weak area to an unfiltered generic Practice page before personalization loads.');
 for(const phrase of ['plain-language letter','Coach Bob’s note about your progress','Domains, tasks, materials, and webapp practice to use next','Suggested reading and study materials','Webapp practice'])if(!summaryAction.includes(phrase))throw new Error('Printable actionable recommendation UI is missing: '+phrase);
 for(const phrase of ['Guided Study: ','Focused Practice: ','Review missed questions','Recheck after remediation','Math Coach','Memory Games','Flashcard Center','practice.html?task='])if(!engine.includes(phrase))throw new Error('Improvement engine is missing an in-app remediation route: '+phrase);
 if(/RPSGTStorage\.save|localStorage\.(?:setItem|removeItem|clear)/.test(reportsAction+summaryAction+engine))throw new Error('Actionable reports must remain read only.');
