@@ -7,9 +7,10 @@
 
   const ekgTopicPattern=/\b(?:ecg|ekg|electrocardi|cardiac|sinus rhythms?|atrial rhythms?|ventricular rhythms?|ventricular ectopy|av blocks?|atrioventricular blocks?|heart rhythms?)\b/i;
   const ekgPromptPattern=/\b(?:ecg|ekg|electrocardiogram|electrocardiographic|rhythm strip|cardiac rhythm|arrhythm|dysrhythm|r[\s-]*r interval|p wave|qrs|pr interval|qt interval|atrial fibrillation|atrial flutter|premature atrial|pac\b|premature ventricular|pvc\b|ventricular tachycardia|ventricular fibrillation|asystole|heart block|atrioventricular block|junctional rhythm|bigeminy|trigeminy|ectopy|sinus bradycardia|sinus tachycardia|cardiac pause|compensatory pause|wide-complex rhythm|irregularly irregular|near-flatline)\b/i;
+  const ekgTextPattern=/\b(?:ecg|ekg|electrocardi|cardiac|sinus rhythms?|atrial rhythms?|ventricular rhythms?|ventricular ectopy|av blocks?|atrioventricular blocks?|heart rhythms?|rhythm strip|arrhythm|dysrhythm|qrs|p wave|pr interval|qt interval)\b/i;
 
   const definitions=[
-    {id:'ekg',label:'ECG / cardiac rhythm',pattern:ekgPromptPattern,questionMatch(question){
+    {id:'ekg',label:'ECG / cardiac rhythm',pattern:ekgTextPattern,questionMatch(question){
       const id=String(question&&question.id||'');
       const topic=String(question&&question.topic||'');
       const prompt=String(question&&question.prompt||'');
