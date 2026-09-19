@@ -13,10 +13,12 @@ const shell=await readFile(join(root,'core','app-shell.js'),'utf8');
 const repair=await readFile(join(root,'core','practice-learner-repair.js'),'utf8');
 const actions=await readFile(join(root,'core','practice-question-actions.js'),'utf8');
 const practiceCoach=await readFile(join(root,'core','practice-coach.js'),'utf8');
+const practiceSubjects=await readFile(join(root,'core','practice-subjects.js'),'utf8');
+const practicePrefill=await readFile(join(root,'core','practice-prefill.js'),'utf8');
 
 const requiredAttributes=[
   'data-practice-load','data-practice-setup','data-practice-mode','data-practice-domain',
-  'data-practice-task','data-practice-difficulty','data-practice-size','data-mode-notice','data-start-practice',
+  'data-practice-task','data-practice-subject','data-practice-difficulty','data-practice-size','data-mode-notice','data-start-practice',
   'data-practice-shell','data-question-panel','data-question-number','data-question-task',
   'data-question-difficulty','data-question-review','data-question-prompt','data-question-choices','data-practice-question-actions',
   'data-practice-coach','data-answer-feedback','data-submit-answer','data-previous-question','data-next-question','data-session-answered',
@@ -39,6 +41,9 @@ for(const difficulty of ['Easy','Intermediate','Hard']){
   if(!html.includes(`value="${difficulty}"`)) throw new Error(`Practice difficulty option ${difficulty} is missing.`);
 }
 if(!js.includes('selectedDifficulty()')||!js.includes('matchesDifficulty(question,difficulty)')) throw new Error('Practice difficulty filtering is not wired into the learner pool.');
+if(!html.includes('core/practice-subjects.js')||!js.includes('selectedSubject()')||!js.includes('matchesSubject(question,subject)')) throw new Error('Practice subject filtering is not wired into the learner pool.');
+for(const subjectToken of ["id:'ekg'","ECG / cardiac rhythm","id:'respiratory'","id:'staging'","id:'pap'"]){if(!practiceSubjects.includes(subjectToken)) throw new Error('Practice subject taxonomy is missing '+subjectToken);}
+if(!practicePrefill.includes("params.get('subject')")||!practicePrefill.includes("params.get('start')==='1'")||!practicePrefill.includes('start.click()')) throw new Error('Practice deep links do not support subject prefill and direct start.');
 if(!html.includes('role="dialog"')||!html.includes('aria-modal="true"')) throw new Error('Practice session is missing dialog semantics.');
 if(!html.includes('class="practice-close"')||!html.includes('aria-label="Close practice session"')) throw new Error('Practice modal close control is missing.');
 if(!css.includes('.practice-session:not(.hidden){position:fixed')||!css.includes('min-height:100dvh')) throw new Error('Practice mobile full-screen modal styling is missing.');
@@ -82,4 +87,4 @@ if(!html.includes('not an official BRPT score')) throw new Error('Practice compl
 if(!navigationCss.includes('grid-template-columns:minmax(0,1fr) minmax(0,1fr)')) throw new Error('Practice Previous/Next controls do not share the modal footer.');
 if(!navigationCss.includes('[data-submit-answer]{display:none!important}')) throw new Error('Visible Check answer styling returned.');
 
-console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,nextChecksAnswer:true,previousNavigation:true,reasoningPanel:true,focusedCompletion:true,nextActions:true},null,2));
+console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,subjectFilter:true,subjectDeepLinks:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,nextChecksAnswer:true,previousNavigation:true,reasoningPanel:true,focusedCompletion:true,nextActions:true},null,2));
