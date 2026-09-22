@@ -18330,7 +18330,7 @@ if(window.state && window.state.section === "labs"){
     grid.innerHTML=order.map(function(c,gi){
       var list=groups[c];
       var open=(q||cat!=='All'||gi===0)?' open':'';
-      var cards=list.map(function(fc){return '<button type="button" class="spgStickyCardMini '+(isFlagged(fc.id)?'flagged':'')+stickyClass(fc)+'" data-flashcard-id="'+esc(fc.id)+'"><strong>'+esc(fc.front)+'</strong><span>'+esc(fc.cat||'Flashcard')+(isFlagged(fc.id)?' - flagged':'')+'</span></button>';}).join('');
+      var cards=list.map(function(fc){return '<button type="button" class="spgStickyCardMini '+(isFlagged(fc.id)?'flagged':'')+stickyClass(fc)+'" data-spg-open-card62a="'+esc(fc.id)+'"><strong>'+esc(fc.front)+'</strong><span>'+esc(fc.cat||'Flashcard')+(isFlagged(fc.id)?' - flagged':'')+'</span></button>';}).join('');
       return '<details class="spgFlashDeckDrop"'+open+'><summary><span>'+esc(c)+'</span><em>'+list.length+' cards</em></summary><div class="flashDeckStandaloneGrid spgStickyGrid">'+cards+'</div></details>';
     }).join('');
   }
