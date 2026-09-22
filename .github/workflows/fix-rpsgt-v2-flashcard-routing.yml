@@ -1,0 +1,57 @@
+name: Fix RPSGT V2 flashcard routing
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-rpsgt-v2-flashcard-routing.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Patch standalone flashcard click routing
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("RPSGTv2.2026.html")
+          text = path.read_text(encoding="utf-8")
+
+          old = ' data-flashcard-id="'+esc(fc.id)+'"><strong>'+esc(fc.front)
+          new = ' data-spg-open-card62a="'+esc(fc.id)+'"><strong>'+esc(fc.front)
+
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f"Expected exactly one standalone flashcard routing target; found {count}.")
+
+          if "if(b.dataset.spgOpenCard62a)" not in text:
+              raise SystemExit("The standalone flashcard handler is missing; refusing to patch.")
+
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding="utf-8")
+
+          if old in text:
+              raise SystemExit("Old standalone flashcard routing attribute remains after patch.")
+          if text.count("data-spg-open-card62a") < 1:
+              raise SystemExit("New standalone flashcard routing attribute was not written.")
+          PY
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          if git diff --quiet -- RPSGTv2.2026.html; then
+            echo "No change needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add RPSGTv2.2026.html
+          git commit -m "fix: route RPSGT V2 flashcards to correct card"
+          git push
