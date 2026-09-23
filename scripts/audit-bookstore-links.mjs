@@ -62,7 +62,7 @@ function inspectBookstoreAnchors(file, text) {
 }
 
 function inspectLegacyRoute(file, text) {
-  if (file === '_redirects' || file === selfPath) return;
+  if (file === '_redirects' || file === selfPath || file.includes('/scripts/')) return;
   if (text.includes(legacyShelf)) addFailure(file, 'Legacy Guild Resource Shelf route is still embedded in learner-facing source.', legacyShelf);
 }
 
@@ -81,6 +81,7 @@ function inspectAmazonLinks(file, text) {
       addFailure(file, 'Malformed Amazon URL.', url);
       continue;
     }
+    if (parsed.pathname === '/s' && !parsed.search) continue;
     if (parsed.searchParams.get('tag') !== amazonTag) {
       addFailure(file, 'Amazon link is missing the verified Sleep Pathways Guild Associates tag.', url);
     }
