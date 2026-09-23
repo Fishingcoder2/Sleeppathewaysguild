@@ -36,6 +36,11 @@ for(const file of ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']){
 const cpsgt=await readFile(join(repoRoot,'cpsgt-study-app.html'),'utf8');
 const v3ReferenceCenter=await readFile(join(v3,'core','reference-center.js'),'utf8');
 const commerceRegistry=await readFile(join(repoRoot,'assets','guild-resource-commerce-registry.js'),'utf8');
+const homepage=await readFile(join(repoRoot,'index.html'),'utf8');
+const legacyBookstoreRedirect=await readFile(join(repoRoot,'SPG_Guild_Resource_Shelf_v1_APA_Affiliate.html'),'utf8');
+assert.ok(homepage.includes('<a href="/rpsgt-exam-prep-books">Book Store</a>'),'Homepage Book Store navigation is not routed to the canonical Guild bookstore.');
+assert.ok(legacyBookstoreRedirect.includes('url=https://sleeppathwaysguild.com/rpsgt-exam-prep-books')&&legacyBookstoreRedirect.includes('window.location.replace("https://sleeppathwaysguild.com/rpsgt-exam-prep-books")'),'Legacy Guild Resource Shelf no longer redirects to the canonical Guild bookstore.');
+assert.ok(cpsgt.includes('SPG_Guild_Resource_Shelf_v1_APA_Affiliate.html')||cpsgt.includes('https://sleeppathwaysguild.com/rpsgt-exam-prep-books'),'CPSGT no longer exposes a valid Guild bookstore route.');
 assert.ok(v3ReferenceCenter.includes('>View on Amazon</a>'),'RPSGT V3 Amazon action label drifted.');
 assert.ok(v3ReferenceCenter.includes('We may earn a commission from qualifying purchases through this link.'),'RPSGT V3 link-level commission disclosure is missing.');
 assert.ok(v3ReferenceCenter.includes('const actions=affiliate||(url?'),'RPSGT V3 must suppress public/publisher actions when verified Amazon commerce exists.');
