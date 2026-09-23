@@ -1,0 +1,25 @@
+name: Bookstore Link Audit
+
+on:
+  push:
+    branches:
+      - main
+      - 'audit/**'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-bookstore-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Audit bookstore and affiliate links
+        run: node scripts/audit-bookstore-links.mjs
