@@ -1,0 +1,47 @@
+name: One-time CPSGT bookstore route repair
+
+on:
+  push:
+    branches:
+      - audit/bookstore-links-20260923
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/bookstore-links-20260923
+          fetch-depth: 0
+      - name: Replace legacy CPSGT bookstore route
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("cpsgt-study-app.html")
+          text = p.read_text(encoding="utf-8")
+          old = "SPG_Guild_Resource_Shelf_v1_APA_Affiliate.html"
+          new = "https://sleeppathwaysguild.com/rpsgt-exam-prep-books"
+          count = text.count(old)
+          if count == 0:
+              print("No legacy CPSGT bookstore routes remain.")
+              raise SystemExit(0)
+          if count != 3:
+              raise SystemExit(f"Expected exactly 3 legacy CPSGT bookstore route references, found {count}.")
+          p.write_text(text.replace(old, new), encoding="utf-8")
+          print(f"Replaced {count} legacy CPSGT bookstore route references.")
+          PY
+      - name: Commit repair when needed
+        run: |
+          if git diff --quiet -- cpsgt-study-app.html; then
+            echo "No CPSGT bookstore repair needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cpsgt-study-app.html
+          git commit -m "fix: route CPSGT shelf actions to canonical bookstore"
+          git push origin HEAD:audit/bookstore-links-20260923
