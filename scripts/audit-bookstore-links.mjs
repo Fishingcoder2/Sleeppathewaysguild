@@ -45,13 +45,13 @@ function isCentralBookstoreHref(href) {
 }
 
 function inspectBookstoreAnchors(file, text) {
-  const anchorRe = /<a\\b([^>]*?)href\\s*=\\s*["']([^"']+)["']([^>]*)>([\\s\\S]*?)<\\/a>/gi;
+  const anchorRe = /<a\b([^>]*?)href\s*=\s*["']([^"']+)["']([^>]*)>([\s\S]*?)<\/a>/gi;
   let match;
   while ((match = anchorRe.exec(text))) {
     const href = normalizedHref(match[2]);
-    const label = match[4].replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();
+    const label = match[4].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     const searchable = label + ' ' + match[1] + ' ' + match[3];
-    if (!/(book\\s*store|bookstore|resource\\s*shelf)/i.test(searchable)) continue;
+    if (!/(book\s*store|bookstore|resource\s*shelf)/i.test(searchable)) continue;
     if (file === 'rpsgt-exam-prep-books.html' && href.startsWith('#')) continue;
     if (!isCentralBookstoreHref(href)) {
       addFailure(file, 'Book Store / Resource Shelf link does not point to the canonical Guild bookstore.', (label || '(no label)') + ' -> ' + href);
@@ -67,11 +67,11 @@ function inspectLegacyRoute(file, text) {
 }
 
 function inspectAmazonLinks(file, text) {
-  const urlRe = /https?:\\/\\/(?:www\\.)?(?:amazon\\.com|amzn\\.to)\\/[^\\s"'<>]+/gi;
+  const urlRe = /https?:\/\/(?:www\.)?(?:amazon\.com|amzn\.to)\/[^\s"'<>]+/gi;
   let match;
   while ((match = urlRe.exec(text))) {
     const url = match[0].replace(/[),.;]+$/, '');
-    if (/amzn\\.to/i.test(url)) {
+    if (/amzn\.to/i.test(url)) {
       addFailure(file, 'Legacy shortened Amazon link found; use a verified canonical Amazon destination.', url);
       continue;
     }
@@ -90,7 +90,7 @@ function inspectAmazonLinks(file, text) {
 async function assertRequiredFiles() {
   const redirects = await fs.readFile(path.join(repoRoot, '_redirects'), 'utf8');
   const requiredRedirect = '/' + legacyShelf + ' /rpsgt-exam-prep-books 301';
-  if (!redirects.split(/\\r?\\n/).map(line => line.trim()).includes(requiredRedirect)) {
+  if (!redirects.split(/\r?\n/).map(line => line.trim()).includes(requiredRedirect)) {
     addFailure('_redirects', 'Legacy Guild Resource Shelf redirect is missing or no longer targets the canonical bookstore.', requiredRedirect);
   }
   const sitemap = await fs.readFile(path.join(repoRoot, 'sitemap.xml'), 'utf8');
@@ -119,7 +119,7 @@ for (const full of files) {
 if (failures.length) {
   console.error('Bookstore link audit failed with ' + failures.length + ' issue(s):');
   for (const item of failures) {
-    console.error('- ' + item.file + ': ' + item.message + (item.detail ? '\\n  ' + item.detail : ''));
+    console.error('- ' + item.file + ': ' + item.message + (item.detail ? '\n  ' + item.detail : ''));
   }
   process.exit(1);
 }
