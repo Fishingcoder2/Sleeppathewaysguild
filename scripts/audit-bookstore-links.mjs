@@ -41,7 +41,9 @@ function normalizedHref(href) {
 }
 function isCentralBookstoreHref(href) {
   const value = normalizedHref(href);
-  return cleanBookstorePaths.has(value) || value === '#book-store' || value.startsWith('#book-store?');
+  // Category/pathway queries keep the canonical store destination intact.
+  const destination = value.split(/[?#]/, 1)[0];
+  return cleanBookstorePaths.has(destination) || value === '#book-store' || value.startsWith('#book-store?');
 }
 
 function inspectBookstoreAnchors(file, text) {
