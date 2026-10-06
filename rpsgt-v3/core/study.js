@@ -12,6 +12,12 @@
   const DOMAIN_MEDALS={D1:'Clinical Guide',D2:'Study Signal Scout',D3:'Scoring Pathfinder',D4:'Therapy Trail Guide'};
   if(!host) return;
   const state={blueprint:null,saved:null,trail:null,checkpoint:null,returnFocus:null,achievementOpen:false};
+  const lessonAreas={D1A:'daytime-testing',D1B:'hookup',D1C:'pediatric',D2A:'hookup',D2B:'instrumentation',D2C:'troubleshooting',D3C:'daytime-testing',D4A:'pap',D4B:'pap',D4C:'pap'};
+  function learningAction(code){
+    const area=lessonAreas[code];
+    const href=area?'lessons.html?area='+area:code==='D3A'?'lab-scoring.html':'lab-respiratory.html';
+    return '<a class="btn secondary" href="'+href+'">'+(area?'Read related lessons':'Learn in the '+(code==='D3A'?'Scoring':'Respiratory')+' lab')+'</a>';
+  }
   function cleanText(value){
     return String(value??'')
       .replace(/Medication-associated\s+\?Prozac eyes\?\s*\/\s*SSRI-related NREM eye movements/gi,'Medication-associated “Prozac eyes” (SSRI-related NREM eye movements)')
@@ -36,7 +42,7 @@
       <div class="task-next"><strong>Next study action</strong><span>${esc(task.nextAction||'')}</span></div>
       <details><summary>Show five study targets</summary><ol class="study-target-list">${targets}</ol></details>
       <details><summary>Show mapped resource keys</summary><div class="data-chip-list">${resources||'<span class="muted">No mapped keys.</span>'}</div></details>
-      <div class="trail-actions"><button class="btn secondary" type="button" data-trail-mark="${esc(task.code)}" ${row.studyMarked?'disabled':''}>${row.studyMarked?'Study completed':'Mark study complete'}</button><button class="btn primary" type="button" data-checkpoint-start="${esc(task.code)}">Take ${badgeQuestionCount()}-question badge checkpoint</button></div>
+      <div class="trail-actions">${learningAction(task.code)}<button class="btn secondary" type="button" data-trail-mark="${esc(task.code)}" ${row.studyMarked?'disabled':''}>${row.studyMarked?'Study completed':'Mark study complete'}</button><button class="btn primary" type="button" data-checkpoint-start="${esc(task.code)}">Take ${badgeQuestionCount()}-question badge checkpoint</button></div>
       ${task.crossTaskQuestionCount?`<div class="mapping-warning"><strong>Mapping review:</strong> ${task.crossTaskQuestionCount} records also carry a cross-task code and are excluded from learner checkpoints.</div>`:''}
     </article>`;
   }

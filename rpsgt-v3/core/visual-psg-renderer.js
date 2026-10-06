@@ -167,8 +167,9 @@
     if(channel.profile==='n3-delta')return N3_ROW_SCALE;
     return 20;
   }
-  function drawGrid(ctx,width,height,duration,channels){
-    const plotLeft=LABEL_WIDTH,plotRight=width-12,plotWidth=plotRight-plotLeft;
+  function drawGrid(ctx,width,height,duration,channels,layout){
+    const LABEL_WIDTH=layout.labelWidth,ROW_HEIGHT=layout.rowHeight;
+    const plotLeft=LABEL_WIDTH,plotRight=width-layout.rightPadding,plotWidth=plotRight-plotLeft;
     ctx.fillStyle='#ffffff';
     ctx.fillRect(0,0,width,height);
     ctx.font='12px system-ui,-apple-system,Segoe UI,sans-serif';
@@ -198,7 +199,7 @@
       ctx.fillStyle='#17344a';
       ctx.textAlign='left';
       ctx.font='700 12px system-ui,-apple-system,Segoe UI,sans-serif';
-      ctx.fillText(channel.label,10,y);
+      if(LABEL_WIDTH)ctx.fillText(channel.label,10,y);
       ctx.beginPath();
       ctx.strokeStyle='#dbe7ed';
       ctx.setLineDash([3,5]);
@@ -212,8 +213,9 @@
     ctx.font='11px system-ui,-apple-system,Segoe UI,sans-serif';
     ctx.fillText(duration+' s',plotRight,height-10);
   }
-  function drawSignal(ctx,channel,index,width,duration,sampleRate){
-    const plotLeft=LABEL_WIDTH,plotRight=width-12,plotWidth=plotRight-plotLeft,y0=TOP_PAD+index*ROW_HEIGHT+ROW_HEIGHT/2,scale=rowScale(channel),points=Math.max(2,Math.round(duration*sampleRate));
+  function drawSignal(ctx,channel,index,width,duration,sampleRate,layout){
+    const LABEL_WIDTH=layout.labelWidth,ROW_HEIGHT=layout.rowHeight;
+    const plotLeft=LABEL_WIDTH,plotRight=width-layout.rightPadding,plotWidth=plotRight-plotLeft,y0=TOP_PAD+index*ROW_HEIGHT+ROW_HEIGHT/2,scale=rowScale(channel)*(ROW_HEIGHT/58),points=Math.max(2,Math.round(duration*sampleRate));
     ctx.beginPath();
     ctx.strokeStyle='#132f3f';
     ctx.lineWidth=channel.type==='eeg'||channel.type==='eog'?1.15:1.05;
@@ -225,16 +227,17 @@
   }
   function render(canvas,study,options){
     if(!canvas||!study)return null;
-    const channels=Array.isArray(study.channels)?study.channels:[],duration=Number(study.durationSeconds||30),sampleRate=Math.min(250,Math.max(50,Number(study.sampleRate||100))),cssWidth=Math.max(980,Math.floor((options&&options.width)||canvas.parentElement&&canvas.parentElement.clientWidth||1040)),cssHeight=TOP_PAD+BOTTOM_PAD+channels.length*ROW_HEIGHT,ratio=Math.min(2,Math.max(1,window.devicePixelRatio||1));
+    const layout={labelWidth:options&&options.hideLabels?0:LABEL_WIDTH,rowHeight:Math.max(24,Math.min(ROW_HEIGHT,Number(options&&options.rowHeight)||ROW_HEIGHT)),rightPadding:options&&options.hideLabels?0:12};
+    const channels=Array.isArray(study.channels)?study.channels:[],duration=Number(study.durationSeconds||30),sampleRate=Math.min(250,Math.max(50,Number(study.sampleRate||100))),cssWidth=Math.max(options&&options.fitWidth?120:980,Math.floor((options&&options.width)||canvas.parentElement&&canvas.parentElement.clientWidth||1040)),cssHeight=TOP_PAD+BOTTOM_PAD+channels.length*layout.rowHeight,ratio=Math.min(2,Math.max(1,window.devicePixelRatio||1));
     canvas.style.width=cssWidth+'px';
     canvas.style.height=cssHeight+'px';
     canvas.width=Math.round(cssWidth*ratio);
     canvas.height=Math.round(cssHeight*ratio);
     const ctx=canvas.getContext('2d');
     ctx.setTransform(ratio,0,0,ratio,0,0);
-    drawGrid(ctx,cssWidth,cssHeight,duration,channels);
-    channels.forEach((channel,index)=>drawSignal(ctx,channel,index,cssWidth,duration,sampleRate));
-    return {width:cssWidth,height:cssHeight,labelWidth:LABEL_WIDTH,plotRight:cssWidth-12,duration,rowHeight:ROW_HEIGHT,topPad:TOP_PAD,bottomPad:BOTTOM_PAD,channels:channels.map(channel=>channel.label)};
+    drawGrid(ctx,cssWidth,cssHeight,duration,channels,layout);
+    channels.forEach((channel,index)=>drawSignal(ctx,channel,index,cssWidth,duration,sampleRate,layout));
+    return {width:cssWidth,height:cssHeight,labelWidth:layout.labelWidth,plotRight:cssWidth-layout.rightPadding,duration,rowHeight:layout.rowHeight,topPad:TOP_PAD,bottomPad:BOTTOM_PAD,channels:channels.map(channel=>channel.label)};
   }
   function channelBox(metrics,channelLabel){
     const index=metrics.channels.indexOf(String(channelLabel));
