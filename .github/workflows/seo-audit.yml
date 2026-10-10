@@ -23,7 +23,11 @@ jobs:
       - name: Audit sitemap-listed pages
         run: python scripts/seo_audit.py --site-url https://sleeppathwaysguild.com
 
-      - name: Audit internal and live public links
+      - name: Audit internal links in proposed site
+        run: python scripts/link_audit.py --site-url https://sleeppathwaysguild.com
+
+      - name: Audit live public links after deployment
+        if: github.event_name != 'pull_request'
         run: python scripts/link_audit.py --site-url https://sleeppathwaysguild.com --live
 
       - name: Inventory public download buttons
