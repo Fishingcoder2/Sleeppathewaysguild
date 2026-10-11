@@ -23,8 +23,21 @@ jobs:
       - name: Audit sitemap-listed pages
         run: python scripts/seo_audit.py --site-url https://sleeppathwaysguild.com
 
+      - name: Audit branch links before publication
+        if: github.event_name == 'pull_request'
+        run: python scripts/link_audit.py --site-url https://sleeppathwaysguild.com
+
       - name: Audit internal and live public links
+        if: github.event_name != 'pull_request'
         run: python scripts/link_audit.py --site-url https://sleeppathwaysguild.com --live
+
+      - name: Set up Node for tutoring intake validation
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify tutoring consent and form controls
+        run: node scripts/tutoring-intake-test.mjs
 
       - name: Inventory public download buttons
         run: python scripts/download_link_inventory.py
