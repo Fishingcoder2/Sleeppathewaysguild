@@ -205,7 +205,7 @@
   function upgradeNavigation(){
     const top=document.querySelector(".top-actions");
     if(top){
-      top.innerHTML='<a href="reports.html">Progress</a><a href="practice.html">Practice</a><a href="index.html#guild-resources">Guild Resources</a><button type="button" data-open-settings>⚙️ <span class="settings-button-label">Settings</span></button><button type="button" data-toggle-menu>Menu</button>';
+      top.innerHTML='<a href="reports.html">Progress</a><a href="practice.html">Practice</a><a href="learner-guide.html">Help</a><button type="button" data-open-settings>⚙️ <span class="settings-button-label">Settings</span></button><button type="button" data-toggle-menu>Menu</button>';
     }
     const sidebar=document.querySelector(".sidebar");
     if(sidebar){
@@ -226,10 +226,10 @@
         <a class="nav-link" href="lab-instrumentation.html"><span>🩺</span>Equipment &amp; Measurements</a>\
         <a class="nav-link" href="math-coach.html"><span>➗</span>Math Coach</a>\
         <a class="nav-link" href="flashcards.html"><span>🗂️</span>RPSGT Flashcards</a>\
-        <a class="nav-link" href="lab-scoring.html"><span>🧠</span>Scoring &amp; Recognition</a>\
+        <a class="nav-link" href="scoring-workstation.html"><span>🧠</span>PSG Skills Workstation</a>\
         <a class="nav-link" href="lab-respiratory.html"><span>🫁</span>Respiratory Lab</a>\
         <div class="nav-label">Candidate Center</div>\
-        <a class="nav-link" href="index.html#how-v3-works"><span>❓</span>How to Use This App</a>\
+        <a class="nav-link" href="learner-guide.html"><span>❓</span>Learner Guide</a>\
         <a class="nav-link" href="readiness.html"><span>🎯</span>Readiness Check</a>\
         <a class="nav-link" href="mock.html"><span>🧭</span>Mock-Style Exam</a>\
         <a class="nav-link" href="sources-disclosures.html"><span>📚</span>References &amp; Scope</a>\
@@ -284,7 +284,7 @@
     if(/^study\.html#/.test(destination)) return {href:destination,label:"Resume Guided Study",title:"Resume your exact study spot",detail:"The app saved your last study section, so you can continue without hunting through the map."};
     if(/^practice\.html/.test(destination)) return {href:destination,label:"Resume Practice",title:"Resume the Practice Center",detail:"Pick up from your last practice workflow, then review misses or check reports."};
     if(/^review/.test(destination)) return {href:destination,label:"Resume Review",title:"Resume your review queue",detail:"Return to the question list you were working through."};
-    if(/^(?:labs\.html|lab-)/.test(destination)) return {href:destination,label:"Resume Lab",title:"Resume applied lab work",detail:"Continue the technical skill path you opened last."};
+    if(/^(?:labs\.html|scoring-workstation\.html|lab-)/.test(destination)) return {href:destination,label:"Resume Lab",title:"Resume applied lab work",detail:"Continue the technical skill path you opened last."};
     if(/^reports\.html/.test(destination)) return {href:destination,label:"Open Reports",title:"Return to your reports",detail:"Use your learner evidence to decide the next task."};
     return {href:destination,label:"Resume",title:"Resume where you left off",detail:"Continue from the last learning screen saved in this browser."};
   }
@@ -391,7 +391,7 @@
   }
 
   function normalizedInternalDestination(raw){
-    if(!/^(index|study|practice|review|review-queue|readiness|mock|labs|reports|flashcards|math-coach|lab-[a-z-]+)\.html(?:[?#]|$)/.test(raw)) return null;
+    if(!/^(index|study|practice|review|review-queue|readiness|mock|labs|reports|flashcards|math-coach|scoring-workstation|lab-[a-z-]+)\.html(?:[?#]|$)/.test(raw)) return null;
     try{
       const url=new URL(raw,window.location.href);
       const file=url.pathname.split("/").filter(Boolean).pop()||"index.html";

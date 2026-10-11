@@ -18,7 +18,7 @@ const LAB_ROUTES = [
   'lab-ekg.html',
   'lab-visual.html',
   'lab-artifact.html',
-  'lab-scoring.html',
+  'scoring-workstation.html',
   'lab-respiratory.html',
   'lab-pap.html',
   'lab-instrumentation.html',
@@ -229,11 +229,14 @@ test('Mock builds 175 questions, saves, reloads, and resumes', async ({ page }) 
 test('Skills Lab catalog exposes exactly the eleven native v3 routes', async ({ page }) => {
   await page.goto('labs.html');
   await expect(page.locator('[data-lab-catalog]')).toBeVisible();
-  await expect(page.locator('[data-lab-catalog] a[href^="lab-"]')).toHaveCount(11);
 
-  const hrefs = await page.locator('[data-lab-catalog] a[href^="lab-"]').evaluateAll((links) =>
-    links.map((link) => link.getAttribute('href')).sort()
+  const hrefs = await page.locator('[data-lab-catalog] a').evaluateAll((links) =>
+    links
+      .map((link) => link.getAttribute('href'))
+      .filter((href) => href && (href.startsWith('lab-') || href === 'scoring-workstation.html'))
+      .sort()
   );
+  expect(hrefs).toHaveLength(11);
   expect(hrefs).toEqual([...LAB_ROUTES].sort());
 });
 
