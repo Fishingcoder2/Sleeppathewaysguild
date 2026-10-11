@@ -1,0 +1,10 @@
+.mentorship-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.mentorship-cards article{padding:26px 0;border-top:1px solid var(--line)}
+.mentorship-cards p:last-child{margin-bottom:0}
+.mentorship-panel{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;padding:36px;border:1px solid rgba(47,183,176,.32);border-radius:var(--radius);background:linear-gradient(120deg,rgba(47,183,176,.09),rgba(255,255,255,.04))}
+.mentorship-note{align-self:start;padding:28px;border:1px solid var(--line);border-radius:20px;background:rgba(7,17,29,.6)}
+.mentorship-note p:last-child{margin-bottom:0}
+.volunteer-panel{border-color:rgba(200,154,50,.32);background:linear-gradient(120deg,rgba(200,154,50,.09),rgba(255,255,255,.04))}
+.button[aria-disabled="true"]{pointer-events:none;cursor:not-allowed;background:#405160;border-color:#63727e;color:#e3e9ee;filter:none}
+@media(max-width:980px){.mentorship-panel{grid-template-columns:1fr;gap:24px}}
+@media(max-width:700px){.mentorship-cards{grid-template-columns:1fr;gap:0}.mentorship-panel{padding:24px}.mentorship-note{padding:22px}}
