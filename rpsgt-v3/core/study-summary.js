@@ -13,7 +13,7 @@
     mock:{label:'175-question Mock report',title:'RPSGT 175-Question Mock Report',sections:['snapshot','domain','plan','mock','followup','privacy']},
     guided:{label:'Guided Study & labs report',title:'RPSGT Guided Study & Skills Report',sections:['snapshot','trail','labs','followup','privacy']}
   };
-  async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   async function loadStudySources(){
     const base='data/study-sources/';const manifest=await loadJson(base+'manifest.json');
     const [sources,taskPlans,...topicPackages]=await Promise.all([

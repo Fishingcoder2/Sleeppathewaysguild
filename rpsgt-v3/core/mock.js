@@ -10,7 +10,7 @@
   function setText(selector,value){$all(selector).forEach(node=>node.textContent=value);}
   function show(selector){const node=$(selector);if(node) node.classList.remove("hidden");}
   function hide(selector){const node=$(selector);if(node) node.classList.add("hidden");}
-  async function loadJson(path){const response=await fetch(path,{cache:"no-store"});if(!response.ok) throw new Error(path+" HTTP "+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   function savedState(){return window.RPSGTStorage.load();}
   function saveRoot(root){window.RPSGTStorage.save(root);if(window.RPSGTApp) window.RPSGTApp.refresh();}
   function currentItem(){return state.session&&state.session.items?state.session.items[state.session.index]:null;}

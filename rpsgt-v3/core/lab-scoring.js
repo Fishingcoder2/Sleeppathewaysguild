@@ -17,7 +17,7 @@
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
   const familyLabel=value=>({'stage-transition':'Stage transition','sleep-stage':'Sleep stage','arousal':'Arousal','respiratory-event':'Respiratory event','limb-movement':'Limb movement','artifact':'Artifact review','pediatric':'Age-specific context','other':'Scoring context'}[value]||'Scoring context');
-  async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok) throw new Error(path+' HTTP '+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=window.RPSGTStorage.save(state.saved);}
   function shuffle(items){const copy=items.slice();for(let index=copy.length-1;index>0;index-=1){const swap=Math.floor(Math.random()*(index+1));[copy[index],copy[swap]]=[copy[swap],copy[index]];}return copy;}
   function renderSummary(){

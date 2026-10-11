@@ -43,7 +43,7 @@
     return map;
   }
 
-  async function loadJson(path){const response=await fetch(path,{cache:"no-store"});if(!response.ok) throw new Error(path+" HTTP "+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   async function loadModule(meta){if(state.moduleCache.has(meta.path)) return state.moduleCache.get(meta.path);const data=await loadJson("data/question-bank/"+meta.path);const questions=Array.isArray(data.questions)?data.questions:[];state.moduleCache.set(meta.path,questions);return questions;}
 
   async function resolveQuestions(){

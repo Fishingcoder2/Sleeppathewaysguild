@@ -11,7 +11,7 @@ if(!engine||!storage||!workspace||!summaryHost||!stationHost||!startButtons.leng
 const state={saved:null,bank:[],pack:null,mode:null,stationIndex:0,stationStep:'study',applySelected:null,applyFeedback:null,showHint:false,confirming:null,questions:[],checkpointIndex:0,answers:{},checkpointNotice:'',record:null};
 const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
-async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
+async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
 function saveLabs(nextLabs){state.saved.labs=nextLabs;state.saved=storage.save(state.saved);}
 function currentStation(){return state.pack&&state.pack.stations&&state.pack.stations[state.stationIndex]||null;}
 function report(){return engine.summary(state.saved.labs);}

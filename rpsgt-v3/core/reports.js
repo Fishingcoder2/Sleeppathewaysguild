@@ -10,7 +10,7 @@
   const esc=value=>String(value==null?"":value).replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
   const formatDate=value=>value?new Date(value).toLocaleString():"Date not recorded";
   const formatShortDate=value=>value?new Date(value).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}):"Not recorded";
-  async function loadJson(path){const response=await fetch(path,{cache:"no-store"});if(!response.ok) throw new Error(path+" HTTP "+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   async function loadOutlines(){
     const base="data/study-sources/";const manifest=await loadJson(base+"manifest.json");
     const [sources,taskPlans,...topicPackages]=await Promise.all([
