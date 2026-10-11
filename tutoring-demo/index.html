@@ -23,25 +23,36 @@ ul{padding-left:22px}li{margin:5px 0}.pill{padding:3px 8px;border-radius:6px;bac
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-space:nowrap}th,td{border-bottom:1px solid #dbe8e9;padding:10px;text-align:left}th{background:#f0f6f8}footer{margin-top:24px;border-top:1px solid #c9d8de;padding:18px 3px;color:#546c78;font-size:.88rem}
 .visuallyhidden{position:absolute;left:-10000px} .view[hidden]{display:none}.stack>*{margin-bottom:12px}.answer{padding:12px;background:#e9f3f2;border-radius:8px;margin-top:12px}
 @media(max-width:740px){.card,.third{grid-column:1/-1}header{padding:23px 16px}main{padding:14px}.card{padding:15px}}
-</style></head><body>
-<header><div><span class="tag">INDEPENDENT SAMPLE DATA • SHAREABLE DEMO</span><h1>Sleep Pathways Guild Tutoring</h1><p>Student learning, instructor-led tasks, approvals, and billing in one guided experience. Built around the Guild's existing RPSGT blueprint, study tools and screened practice questions.</p><a href="https://sleeppathwaysguild.com/">Sleep Pathways Guild homepage ↗</a></div></header>
-<main>
-<div class="notice"><strong>Important:</strong> This is a public demonstration, not a secure login or live tutoring system. Role switching, approvals, teaching hours, grades and payments are simulated, saved only to this browser. Do not enter personal, medical or financial information. Student/tutor permissions must be enforced on a private backend before real use.</div>
-<nav aria-label="Demonstration views"><button type="button" data-view="student" aria-pressed="true">🎓 Student</button><button type="button" data-view="tutor" aria-pressed="false">📚 Tutor</button><button type="button" data-view="admin" aria-pressed="false">🗂 Administrator</button><button type="button" data-view="resources" aria-pressed="false">🔗 Learning library</button><button type="button" id="reset">Reset demo</button></nav>
+</style><link rel="stylesheet" href="lesson.css"></head><body>
+<a class="skip-link" href="#main-content">Skip to learning content</a>
+<header><div><span class="tag">INDEPENDENT SAMPLE DATA • SHAREABLE DEMO</span><h1>Sleep Pathways Guild Tutoring</h1><p>Learn with Coach Bob, one step at a time. Begin with the patient, build your understanding, then practice with your tutor.</p><a href="https://sleeppathwaysguild.com/">Sleep Pathways Guild homepage ↗</a></div></header>
+<main id="main-content" tabindex="-1">
+<div class="notice"><strong>Sample lesson:</strong> Explore with fictional patient and learner details. This is a public demo; progress stays in this browser. Do not enter personal, medical, or financial information.</div>
+<details class="demo-tools"><summary>Explore demo roles and learning library</summary>
+<p class="muted">Role switching, approvals, enrollment, grades, and billing are simulations. Real tutoring requires a secure private portal.</p>
+<nav aria-label="Demonstration views"><button type="button" data-view="student" aria-pressed="true">Student</button><button type="button" data-view="tutor" aria-pressed="false">Tutor</button><button type="button" data-view="admin" aria-pressed="false">Administrator</button><button type="button" data-view="resources" aria-pressed="false">Learning library</button><button type="button" id="reset">Reset demo</button></nav></details>
 <p id="feedback" role="status" aria-live="polite"></p>
-<div class="card full" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h2>Learning journey</h2><span class="pill" id="overall">0 / 12 tasks signed off</span></div><div class="bar"><span id="progressbar"></span></div><p class="muted">Request → administrative enrollment → tutor assignment → learn → 3-question task check → tutor sign-off → domain exam → four readiness previews → full mock in the Guild's study engine.</p></div>
 <div id="student" class="view"><div class="grid">
-<section class="card"><h2>My Student Dashboard</h2><span class="tag">DEMO LEARNER • ALEX MORGAN</span><p><strong>Program:</strong> RPSGT Guided Tutoring</p><p><strong>Assigned tutor:</strong> <span id="studentTutor">Pending</span></p><p><strong>Enrollment:</strong> <span id="enrollState">Request not submitted</span></p><div class="row"><button id="studentRequest" class="primary">Request enrollment</button><button id="studentTerms">Acknowledge sample terms</button></div><p class="muted">These buttons do not create a real student account or electronic signature.</p></section>
-<section class="card"><h2>Contact & meetings</h2><p>Contact the assigned tutor or arrange a Google Meet using your Google account. The admin must verify a real tutor's address and appointment before sending invitations.</p><div class="row"><a href="mailto:admin@sleeppathwaysguild.com?subject=SPG%20Tutoring%20Demo%20Question">Email the Guild administrator ↗</a><a href="https://calendar.google.com/" target="_blank" rel="noopener">Google Calendar ↗</a><a href="https://meet.google.com/" target="_blank" rel="noopener">Google Meet ↗</a></div><p class="muted">Contact requests are not submitted to a Google Form in this demo. A private Forms-to-Sheets workflow must be configured before real intake.</p></section>
-<section class="card full"><h2>Course modules — study before testing</h2><p>Choose a task below. Finish its original teaching targets and source checklist, then complete its short knowledge check. A score of <strong>at least 85%</strong> plus the assigned tutor's sign-off is needed before the next task unlocks.</p><label for="taskPick">Current task</label><select id="taskPick" aria-label="Choose course task"></select><div id="lesson"></div></section>
-<section class="card full"><h2 id="quiztitle">Task knowledge check</h2><p id="quiznotice" class="muted"></p><div id="quiz"></div><div class="row"><button id="quizSubmit" class="primary">Grade task check</button><button id="quizRetry">Study and retry</button></div><div id="quizResult" aria-live="polite"></div></section>
-<section class="card full"><h2>End-of-domain exam</h2><p>After the tutor signs off all three tasks, take the domain examination. The preview uses <strong>9 real Guild practice questions</strong> for that domain; 8/9 correct is required to pass an 85% threshold. Questions overlap the shorter task checks in this limited demo set.</p><div id="domainPanel"></div></section>
-<section class="card full"><h2>Four readiness milestones & full mock</h2><p>Readiness checkpoints are unlocked after the four domain exams. This demo previews readiness with the same screened 36-question pool; repeated items are possible. Your existing RPSGT learning app has the larger readiness engine and a <strong>175-question mock-style assessment</strong>.</p><div id="readinessPanel"></div><div class="links"><a href="https://sleeppathwaysguild.com/rpsgt-v3/readiness.html" target="_blank" rel="noopener">Guild readiness engine (v3 development) ↗</a><a href="https://sleeppathwaysguild.com/rpsgt-v3/mock.html" target="_blank" rel="noopener">175-question mock (v3 development) ↗</a><a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html" target="_blank" rel="noopener">Original RPSGT study app ↗</a></div><p class="muted">Mock completion and learner scores do not sync back to this public demo.</p></section>
+<section id="lessonCard" class="card full lesson-card" aria-label="Current lesson"><div id="lesson"></div></section>
+<section id="quizCard" class="card full lesson-card" hidden aria-labelledby="quiztitle"><h2 id="quiztitle" tabindex="-1">Task practice check</h2><p id="quiznotice" class="muted"></p><div id="quiz"></div><div id="quizResult" role="status" aria-live="polite" tabindex="-1"></div><div class="row lesson-actions"><button id="quizSubmit" class="primary">Check my understanding</button><button id="quizRetry" class="primary">Review lesson before retry</button><button id="returnLesson">Return to lesson</button><button id="quizTutorReview" class="primary" hidden>Open sample tutor review</button></div></section>
+<details class="card full course-tools"><summary>Your course and progress</summary>
+<p>A domain is a group of related exam skills. Work through one task, study and practice, then meet with your tutor for review and approval before moving on.</p>
+<span class="pill" id="overall">0 / 12 tasks signed off</span><div class="bar" aria-hidden="true"><span id="progressbar"></span></div>
+<label for="taskPick">Choose a course task</label><select id="taskPick" aria-label="Choose course task"></select>
+<p class="muted">Only the first lesson has been redesigned in this preview. Later tasks retain their existing study checklists. The Guild learning target is at least 85%; this is not an official BRPT passing score.</p>
+<details><summary>Domain exams and readiness previews</summary>
+<h2>End-of-domain exams</h2><p>After tutor approval of all three tasks in a domain, try its nine-question preview. Eight correct meets the Guild’s 85% target. This limited set repeats questions from task checks.</p><div id="domainPanel"></div>
+<h2>Four readiness previews and full mock</h2><p>These previews use the same screened 36-question pool, so questions may repeat. This pool is not a complete exam bank.</p><div id="readinessPanel"></div>
+<div class="links"><a href="https://sleeppathwaysguild.com/rpsgt-v3/readiness.html" target="_blank" rel="noopener">Guild readiness engine ↗</a><a href="https://sleeppathwaysguild.com/rpsgt-v3/mock.html" target="_blank" rel="noopener">175-question mock ↗</a><a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html" target="_blank" rel="noopener">Original RPSGT study app ↗</a></div><p class="muted">Scores in other apps do not sync back to this demo.</p></details></details>
+<details class="card full"><summary>Sample learner setup and meetings</summary><div class="grid">
+<section class="card"><h2>Sample learner: Alex Morgan</h2><p><strong>Program:</strong> RPSGT Guided Tutoring</p><p><strong>Assigned tutor:</strong> <span id="studentTutor">Pending</span></p><p><strong>Enrollment:</strong> <span id="enrollState">Request not submitted</span></p><div class="row"><button id="studentRequest">Request sample enrollment</button><button id="studentTerms">Acknowledge sample terms</button></div><p class="muted">These buttons do not create an account or electronic signature. Starting first-lesson practice can set up this fictional learner and tutor for you.</p></section>
+<section class="card"><h2>Contact and meetings</h2><p>Ask the Guild about real tutoring, or use your own Google account for appointments and meetings.</p><div class="row"><a href="mailto:admin@sleeppathwaysguild.com?subject=SPG%20Tutoring%20Demo%20Question">Email the Guild ↗</a><a href="https://calendar.google.com/" target="_blank" rel="noopener">Google Calendar ↗</a><a href="https://meet.google.com/" target="_blank" rel="noopener">Google Meet ↗</a></div><p class="muted">This demo does not submit contact requests or send invitations.</p></section>
+</div></details>
 </div></div>
 <div id="tutor" class="view" hidden><div class="grid">
 <section class="card"><h2>Assigned tutor workstation</h2><span class="tag">FICTIONAL TUTOR • JORDAN LEE</span><p>Student: <strong>Alex Morgan</strong></p><p id="tutorAssignment"></p><p class="muted">Real tutors must sign in with their own Google Workspace-linked identities and receive only explicitly assigned students.</p></section>
 <section class="card"><h2>Teaching & grading requirements</h2><p>Before approving, teach or review the task, verify reading targets, explain missed concepts and confirm knowledge-check success. Repeating a task check does not create another charge.</p><p><strong>Next awaiting sign-off:</strong> <span id="tutorNext"></span></p></section>
-<section class="card full"><h2>Tutor task sign-off and session log</h2><p>The demo creates one mock sign-off per task and records <strong>15 illustrative instructional minutes</strong>. A production session requires actual start/end times; minutes must be counted once even if several tasks are taught.</p><label for="signoffTask">Task awaiting approval</label><select id="signoffTask"></select><label for="instructionNote">Teaching summary (demo only; no personal data)</label><textarea id="instructionNote" rows="3" maxlength="500" placeholder="Example: reviewed respiratory belt signals and corrected identification of effort channels"></textarea><div class="row"><button id="signoffButton" class="primary">Record sample teaching & sign off</button></div><p id="tutorTime"></p><div id="signoffs"></div></section>
+<section class="card full"><h2 id="tutorReviewHeading" tabindex="-1">Tutor task sign-off and session log</h2><p>The demo creates one mock sign-off per task and records <strong>15 illustrative instructional minutes</strong>. A production session requires actual start/end times; minutes must be counted once even if several tasks are taught.</p><label for="signoffTask">Task awaiting approval</label><select id="signoffTask"></select><label for="instructionNote">Teaching summary (demo only; no personal data)</label><textarea id="instructionNote" rows="3" maxlength="500" placeholder="Example: reviewed respiratory belt signals and corrected identification of effort channels"></textarea><div class="row"><button id="signoffButton" class="primary">Record sample teaching & sign off</button></div><p id="tutorTime"></p><div id="signoffs"></div></section>
 <section class="card full"><h2>Tutor's earnings preview</h2><p>Paid student sample: $65 for a completed 60-minute session, with $45 tutor earnings and $20 Guild administrative/content allocation. A $25 missed-session fee belongs entirely to the tutor if collected. Complimentary beta tuition and missed-session charges are $0; beta tutor compensation is separately agreed.</p><p class="muted">Tutor sign-off does not automatically create a charge. Administrator review and verified billing records are required.</p></section>
 </div></div>
 <div id="admin" class="view" hidden><div class="grid">
@@ -76,108 +87,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 </div></div>
 <footer>Sleep Pathways Guild educational pilot • Original practice-question excerpts are loaded from the Guild's existing screened RPSGT v3 development practice slice. Score thresholds here are Guild educational targets, not official BRPT passing scores. Developed with AI assistance for human review. No actual student records or fee collection are connected.</footer>
 </main>
-<script>
-(function(){
-"use strict";
-var root="/rpsgt-v3/data/";
-var D=["D1","D2","D3","D4"];var N=["Clinical Overview, Education & Patient Support","Sleep Study Preparation & Performance","Scoring, Reporting & Data Verification","Treatment & Intervention"];
-var fallbackTasks=[
-["D1A","Patient assessment","Understand referral reason, patient symptoms, medication history and relevant clinical risk."],
-["D1B","Patient education","Explain study sensors, communication and expectations clearly."],
-["D1C","Therapy support","Support mask fitting, adherence and comfort."],
-["D2A","Technical preparation","Select montage, calibrated signals and equipment."],
-["D2B","Study procedures","Follow standards for hookup, testing and documentation."],
-["D2C","Respond and document","Recognize safety threats and quality issues."],
-["D3A","Adult scoring","Distinguish stages, arousals, breathing and movement events."],
-["D3B","Pediatric and infant scoring","Apply age-appropriate scoring definitions."],
-["D3C","Reporting","Verify computed indexes and report accuracy."],
-["D4A","PAP therapy","Know CPAP, bilevel and therapeutic protocols."],
-["D4B","Alternative therapies","Know non-PAP interventions and indications."],
-["D4C","Oxygen therapy","Separate oxygenation, ventilation and obstruction treatment."]
-];
-var map={},bank={};var active="student",pick=fallbackTasks[0][0],test=null;var KEY="spg-tutor-demo-2026-v2";
-function init(){return {requested:false,terms:false,enrolled:false,assigned:false,read:[],passed:{},signoff:{},domain:{},readiness:{},session:false,invoice:false,paid:false,payout:false}}
-var s=init();try{var old=JSON.parse(localStorage.getItem(KEY)||"null");if(old&&typeof old==="object")s=Object.assign(init(),old)}catch(e){}
-function store(){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
-function el(id){return document.getElementById(id)};function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function msg(t){el("feedback").textContent=t;setTimeout(function(){if(el("feedback").textContent===t)el("feedback").textContent=""},9500)}
-function tasks(){return fallbackTasks.map(function(x){return {code:x[0],title:(map[x[0]]&&map[x[0]].title)||x[1],focus:(map[x[0]]&&map[x[0]].focus)||x[2],targets:(map[x[0]]&&map[x[0]].studyTargets)||[x[2]]}})}
-function pass(code){return !!s.passed[code]};function sign(code){return !!s.signoff[code]}
-function idx(code){return fallbackTasks.findIndex(function(x){return x[0]===code})}
-function unlocked(code){var n=idx(code);return n===0||(n>0&&sign(fallbackTasks[n-1][0]))}
-function domainReady(d){return tasks().filter(function(t){return t.code.slice(0,2)===d}).every(function(t){return sign(t.code)})}
-function fullDomains(){return D.every(function(d){return !!s.domain[d]})}
-function set(view){active=view;document.querySelectorAll(".view").forEach(function(x){x.hidden=x.id!==view});document.querySelectorAll("[data-view]").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.view===view))});render()}
-function render(){var done=tasks().filter(function(t){return sign(t.code)}).length;el("overall").textContent=done+" / 12 tasks signed off";el("progressbar").style.width=String(done/12*100)+"%";
-el("studentTutor").textContent=s.assigned?"Jordan Lee (fictional)":"Pending assignment";
-el("enrollState").textContent=s.enrolled?"Approved":s.requested?"Request filed (simulation)":"Not enrolled";
-el("studentRequest").disabled=s.requested;el("studentTerms").disabled=s.terms;
-el("approveEnrollment").disabled=!s.requested||!s.terms||s.enrolled;
-el("assignTutor").disabled=!s.enrolled||s.assigned;
-el("adminEnrollment").textContent="Requested: "+(s.requested?"Yes":"No")+" · Terms acknowledged: "+(s.terms?"Yes":"No")+" · Approved: "+(s.enrolled?"Yes":"No");
-el("adminTutor").textContent=s.assigned?"Tutor assigned and ready for tutoring check-ins":"Waiting for enrollment approval";
-el("tutorAssignment").textContent=s.assigned?"Assigned; teaching entries and signoffs can be recorded":"Assignment pending administrator authorization";
-el("tutorNext").textContent=tasks().filter(function(t){return pass(t.code)&&!sign(t.code)}).map(function(t){return t.code}).join(", ")||"None: student must pass a task check first";
-el("tutorTime").textContent="Demonstration instructional minutes: "+(Object.keys(s.signoff).length*15)+" across "+Object.keys(s.signoff).length+" task sign-offs. No charge is created by these entries.";
-el("signoffs").innerHTML=tasks().filter(function(t){return sign(t.code)}).map(function(t){return '<span class="tag">'+esc(t.code)+" ✓</span> "}).join("")||'<p class="muted">No sign-offs recorded.</p>';
-el("adminSignoffs").innerHTML=tasks().map(function(t){return "<p><strong>"+esc(t.code)+"</strong> "+esc(t.title)+": "+(pass(t.code)?"Quiz passed":"Quiz pending")+"; "+(sign(t.code)?"Tutor signed off (15 demo minutes)":"Tutor signoff pending")+"</p>"}).join("");
-el("billingState").textContent="Sample 60-minute session: "+(s.session?"Recorded":"Not recorded")+" · Invoice: "+(s.invoice?"Approved":"Not approved")+" · Collection: "+(s.paid?"Simulated confirmed":"Not recorded");
-el("payoutState").textContent=s.payout?"Simulated $45 payout approved; $20 Guild allocation":"No simulated $45 payout approved.";
-el("recordSession").disabled=s.session;el("approveBill").disabled=!s.session||s.invoice;el("recordPayment").disabled=!s.invoice||s.paid;el("approvePayout").disabled=!s.paid||s.payout;
-renderTaskSelect();renderLesson();renderTutorSelect();renderDomain();renderReadiness()}
-function renderTaskSelect(){var opts=tasks().map(function(t){return '<option value="'+t.code+'" '+(unlocked(t.code)?"":"disabled")+'>'+esc(t.code+" — "+t.title)+(sign(t.code)?" ✓":unlocked(t.code)?"":" 🔒")+"</option>"}).join("");el("taskPick").innerHTML=opts;if(!unlocked(pick))pick=fallbackTasks[0][0];el("taskPick").value=pick}
-function renderLesson(){var t=tasks().filter(function(x){return x.code===pick})[0];if(!t)return;
-var rd=s.read.indexOf(pick)>=0;
-var links={"D1":"<a href='https://www.brpt.org/' target='_blank' rel='noopener'>BRPT handbook</a>; AASM diagnostic/OSA and patient education practice guidance; AAST patient care guidance",
-"D2":"AASM scoring manual technical specifications; <a href='https://aastweb.org/' target='_blank' rel='noopener'>AAST PSG technical guidelines</a>; instrumentation, infection control, quality",
-"D3":"<a href='https://aasm.org/clinical-resources/scoring-manual/' target='_blank' rel='noopener'>Current AASM Scoring Manual</a>; staging, respiratory scoring, arousals, movements and report verification",
-"D4":"<a href='https://aasm.org/clinical-resources/practice-standards/practice-guidelines/' target='_blank' rel='noopener'>AASM PAP/OSA/respiratory guidance</a>; <a href='https://aastweb.org/' target='_blank' rel='noopener'>AAST PAP and titration technical guidance</a>"};
-el("lesson").innerHTML='<h3 style="margin-top:16px">'+esc(t.code+" · "+t.title)+'</h3><p><strong>Lesson outcome:</strong> '+esc(t.focus)+'</p><p><strong>Before the knowledge check, explain:</strong></p><ul>'+t.targets.slice(0,5).map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul><p><strong>Required:</strong> <em>Fundamentals of Sleep Technology</em> (match the topic in your edition); current AASM Scoring Manual; applicable <a href="https://aasm.org/clinical-resources/practice-standards/practice-guidelines/" target="_blank" rel="noopener">AASM practice guidelines</a>; '+links[t.code.slice(0,2)]+'</p><p><strong>Highly recommended:</strong> AAST technical guidelines, Marie Sosa books (verify title/edition), BRPT reference list, Guild original lessons and textbook review.</p><p class="muted">Exact chapter numbers need checking against the learner’s textbook edition and the Guild reference workbook. No copyrighted textbook is reproduced.</p><div class="row"><button type="button" id="markRead" '+(rd||!s.assigned?"disabled":"")+'>'+(rd?"Teaching targets reviewed ✓":"Mark study targets reviewed")+'</button><span class="pill">'+(pass(pick)?"Task quiz passed":rd?"Ready for quiz":"Reading not yet reviewed")+'</span><span class="pill">'+(sign(pick)?"Tutor approved":"Tutor approval required")+'</span></div>';
-if(test&&test.kind!=="task")return;
-el("quiznotice").textContent="Task "+pick+" • 3 screened Guild questions • Pass threshold 85% (3 correct out of 3). "+(!s.assigned?"Complete onboarding and tutor matching first.":!rd?"Review the teaching targets and mark them complete before answering.":"Take the quiz, then have your assigned tutor approve the task.");
-if(!test||test.key!==pick){el("quiz").innerHTML="";el("quizResult").innerHTML=""}
-el("quizSubmit").disabled=!s.assigned||!rd||!bank[pick]||bank[pick].length<3||pass(pick);
-el("quizRetry").disabled=!s.assigned||!rd||!bank[pick]||bank[pick].length<3;
-if(s.assigned&&rd&&bank[pick]&&bank[pick].length>=3&&!pass(pick)&&(!test||test.key!==pick))startTest("task",pick,bank[pick]);if(pass(pick)&&!(test&&test.done&&test.key===pick))el("quizResult").innerHTML='<div class="answer"><strong>Task knowledge check passed.</strong> Await tutor sign-off to unlock the next task.</div>'}
-function renderTutorSelect(){var options=tasks().filter(function(t){return pass(t.code)&&!sign(t.code)});el("signoffTask").innerHTML=options.map(function(t){return '<option value="'+esc(t.code)+'">'+esc(t.code+" — "+t.title)+"</option>"}).join("")||'<option value="">No pending approvals</option>';el("signoffButton").disabled=!s.assigned||!options.length}
-function renderDomain(){var html="";D.forEach(function(d,i){html+='<div class="status"><strong>'+d+": "+esc(N[i])+"</strong> · "+(s.domain[d]?"Passed ✓":domainReady(d)?"Ready":"Locked until all 3 task sign-offs")+'<div class="row" style="margin-top:8px"><button type="button" data-domain="'+d+'" '+(!domainReady(d)||s.domain[d]||!bank[d]?"disabled":"")+'>'+(s.domain[d]?"Passed":"Start 9-question domain exam")+"</button></div></div>"});el("domainPanel").innerHTML=html}
-function renderReadiness(){var html="";for(var i=1;i<=4;i++){var ready=fullDomains()&&(i===1||s.readiness[i-1]);html+='<div class="status"><strong>Readiness preview '+i+'</strong> · '+(s.readiness[i]?"Passed ✓":ready?"Available":"Locked")+'<div class="row" style="margin-top:8px"><button type="button" data-ready="'+i+'" '+(!ready||s.readiness[i]?"disabled":"")+'>'+(s.readiness[i]?"Passed":"Take 12-question readiness preview")+"</button></div></div>"}el("readinessPanel").innerHTML=html}
-function startTest(kind,key,list){if(kind!=="readiness"&&(!list||!list.length)){msg("The screened question set has not loaded. Please refresh.");return}var chosen=list.slice();if(kind==="readiness"){chosen=[];D.forEach(function(d,i){var a=(bank[d]||[]).slice();for(var j=0;j<3&&a.length;j++)chosen.push(a[(j+(Number(key)-1)*2)%a.length])})}test={kind:kind,key:key,questions:chosen.map(function(q){return q}),answers:{},done:false};renderTest();document.querySelector("#quiztitle").scrollIntoView({behavior:"smooth",block:"start"})}
-function renderTest(){if(!test){el("quiz").innerHTML="";return}el("quiztitle").textContent=test.kind==="task"?"Task knowledge check: "+test.key:test.kind==="domain"?"Domain "+test.key+" exam":"Readiness preview "+test.key;
-el("quiznotice").textContent=test.questions.length+" existing Guild questions • Minimum 85% required • "+(test.kind==="task"?"3 of 3":test.kind==="domain"?"8 of 9":"11 of 12")+" correct.";
-el("quiz").innerHTML=test.questions.map(function(q,i){return '<div class="status"><p><strong>'+(i+1)+'. '+esc(q.prompt)+'</strong></p>'+q.options.map(function(a,j){return '<label style="font-weight:500;margin:8px 0"><input style="width:auto" type="radio" name="item-'+i+'" value="'+j+'" '+(String(test.answers[i])===String(j)?"checked":"")+' '+(test.done?"disabled":"")+'> '+esc(a)+'</label>'}).join("")+'</div>'}).join("");
-el("quizSubmit").disabled=test.done;el("quizSubmit").textContent="Grade "+test.questions.length+"-question "+test.kind;el("quizRetry").disabled=false}
-function grade(){if(!test||test.done){msg("Start or reset a check first.");return}
-var empty=false;test.questions.forEach(function(q,i){var checked=document.querySelector('input[name="item-'+i+'"]:checked');if(checked)test.answers[i]=Number(checked.value);else empty=true});
-if(empty){msg("Answer every question before submitting.");return}
-var correct=0;test.questions.forEach(function(q,i){if(q.options[test.answers[i]]===q.answer)correct++});
-var score=Math.round(correct/test.questions.length*100),passed=score>=85;
-test.done=true;var details=test.questions.map(function(q,i){var good=q.options[test.answers[i]]===q.answer;return '<p><strong>Q'+(i+1)+" "+(good?"✓ Correct":"✗ Review")+"</strong> — "+esc(q.topic||q.task||"Task")+'<br><strong>Best answer:</strong> '+esc(q.answer)+'<br><strong>Why:</strong> '+esc(q.rationale||"Review the assigned primary source.")+"</p>"}).join("");
-el("quizResult").innerHTML='<div class="answer"><strong>'+score+'% ('+correct+'/'+test.questions.length+") — "+(passed?"PASS":"REMEDIATION REQUIRED")+'</strong><p>'+(passed?"You met the Guild study threshold.":"Return to the listed lesson targets and relevant AASM/AAST/Fundamentals reading, discuss missed concepts with your tutor, then retry.")+"</p><details><summary>Review answers, rationales and study topics</summary>"+details+"</details></div>";
-if(passed){if(test.kind==="task"){s.passed[test.key]=true;msg("Task check passed. Tutor sign-off is still required before advancing.");}if(test.kind==="domain"){s.domain[test.key]=true;msg("Domain exam passed.");}if(test.kind==="readiness"){s.readiness[test.key]=true;msg("Readiness preview "+test.key+" passed.");}}
-store();renderTest();render()}
-function action(fn){fn();store();render()}
-document.querySelectorAll("[data-view]").forEach(function(b){b.addEventListener("click",function(){set(b.dataset.view)})});
-el("reset").onclick=function(){if(confirm("Clear this browser's fictional tutoring demo progress?")){s=init();test=null;pick="D1A";store();render();msg("Demo reset.")}};
-el("studentRequest").onclick=function(){action(function(){s.requested=true});msg("Fictional enrollment request submitted for admin review.")};
-el("studentTerms").onclick=function(){action(function(){s.terms=true});msg("Sample terms acknowledged. This is not an electronic signature.")};
-el("approveEnrollment").onclick=function(){if(!s.requested||!s.terms)return;action(function(){s.enrolled=true});msg("Fictional enrollment approved.")};
-el("assignTutor").onclick=function(){if(!s.enrolled)return;action(function(){s.assigned=true});msg("Fictional tutor assigned. Student can begin learning.")};
-el("taskPick").onchange=function(e){pick=e.target.value;test=null;el("quizResult").innerHTML="";render()};
-document.addEventListener("click",function(e){if(e.target.id==="markRead"){if(!s.assigned)return;action(function(){if(s.read.indexOf(pick)<0)s.read.push(pick)});msg("Study checklist marked reviewed.");return}
-if(e.target.dataset.domain){var d=e.target.dataset.domain;if(domainReady(d)&&bank[d]){set("student");startTest("domain",d,bank[d]);}return}
-if(e.target.dataset.ready){var n=Number(e.target.dataset.ready);if(fullDomains()&&(n===1||s.readiness[n-1])){set("student");startTest("readiness",n,[])}return}});
-el("quizSubmit").onclick=grade;
-el("quizRetry").onclick=function(){if(!test){if(bank[pick])startTest("task",pick,bank[pick]);return}test.done=false;test.answers={};el("quizResult").innerHTML="";renderTest()};
-el("signoffButton").onclick=function(){var code=el("signoffTask").value;if(!code||!pass(code)||sign(code)||!s.assigned)return;var note=el("instructionNote").value.trim();if(note.length<12){msg("Write a brief teaching summary of at least 12 characters before signing off.");return}action(function(){s.signoff[code]={minutes:15,note:note.slice(0,400),at:new Date().toISOString()}});el("instructionNote").value="";msg(code+" signed off in fictional tutor view. Next student task unlocked.")};
-el("recordSession").onclick=function(){action(function(){s.session=true});msg("Fictional completed appointment logged.")};
-el("approveBill").onclick=function(){if(!s.session)return;action(function(){s.invoice=true});msg("Fictional $65 invoice approved. No email was sent.")};
-el("recordPayment").onclick=function(){if(!s.invoice)return;action(function(){s.paid=true});msg("Simulated $65 collection recorded. No payment occurred.")};
-el("approvePayout").onclick=function(){if(!s.paid)return;action(function(){s.payout=true});msg("Simulated $45 payout approved. No money moved.")};
-function load(){Promise.all([fetch(root+"blueprint.json").then(function(r){if(!r.ok)throw Error("blueprint");return r.json()}),Promise.all(D.map(function(d){return fetch(root+"practice-slice/"+d.toLowerCase()+".json").then(function(r){if(!r.ok)throw Error(d);return r.json()})}))]).then(function(all){
-all[0].domains.forEach(function(d){d.tasks.forEach(function(t){map[t.code]=t})});
-all[1].forEach(function(v,i){bank[D[i]]=v.questions.filter(function(q){return q&&q.prompt&&q.answer&&Array.isArray(q.options)&&q.options.indexOf(q.answer)>=0});v.questions.forEach(function(q){if(!bank[q.taskCode])bank[q.taskCode]=[];bank[q.taskCode].push(q)})});
-render();msg("Guild blueprint and 36 screened practice questions loaded.");}).catch(function(e){render();msg("Study materials could not load. Use the Guild app links, or refresh. No quiz result can be submitted until loaded.")})}
-render();load();
-})();
-</script></body></html>
+<script src="first-lesson.js"></script>
+<script src="read-aloud.js"></script>
+<script src="demo.js"></script>
+</body></html>
