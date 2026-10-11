@@ -19,11 +19,7 @@
   const text=(selector,value)=>{document.querySelectorAll(selector).forEach(node=>{node.textContent=value;});};
   const uniqueIds=values=>[...new Map((Array.isArray(values)?values:[]).map(value=>[String(value),value])).values()];
 
-  async function loadJson(path){
-    const response=await fetch(path,{cache:'no-store'});
-    if(!response.ok) throw new Error(path+' HTTP '+response.status);
-    return response.json();
-  }
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
 
   function taskFile(code){return 'data/question-bank/'+String(code).toLowerCase()+'.json';}
 

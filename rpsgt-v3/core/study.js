@@ -22,7 +22,7 @@
   const date=value=>value?new Date(value).toLocaleString():'Not recorded';
   const taskFile=code=>'data/question-bank/'+String(code).toLowerCase()+'.json';
   const badgeQuestionCount=()=>Number(engine&&engine.BADGE_QUESTION_COUNT)||15;
-  async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok) throw new Error(path+' HTTP '+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   function saveTrail(next){state.saved.guidedStudy=next;state.saved=window.RPSGTStorage.save(state.saved);state.trail=engine.summary(state.saved.guidedStudy,state.blueprint);}
   function taskCard(task){
     const row=state.trail.rows.find(item=>item.code===task.code)||{};

@@ -3,7 +3,7 @@
   const $=selector=>document.querySelector(selector);
   const esc=value=>String(value==null?'':value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[char]);
   const state={saved:null,blueprint:null,index:null,catalog:null,studySources:null,summary:null,insights:null,plan:null};
-  async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   function ensureCss(){if(document.querySelector('link[data-improvement-plan-css]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href='assets/improvement-plan.css';link.dataset.improvementPlanCss='true';document.head.appendChild(link);}
   function loadScript(src,globalName){if(window[globalName])return Promise.resolve();return new Promise((resolve,reject)=>{const existing=document.querySelector('script[data-dynamic-summary-src="'+src+'"]');if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});return;}const script=document.createElement('script');script.src=src;script.dataset.dynamicSummarySrc=src;script.onload=resolve;script.onerror=()=>reject(new Error('Could not load '+src));document.head.appendChild(script);});}
   async function waitForBase(){for(let i=0;i<160;i+=1){const content=$('[data-summary-content]');if(content&&!content.hidden&&window.RPSGTStudySummaryEngine&&window.RPSGTStorage)return;await new Promise(resolve=>setTimeout(resolve,50));}throw new Error('Printable summary base did not finish loading.');}

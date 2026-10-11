@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir, rm, readdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { dirname, join, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { splitOwnerReleaseQuestions } from './source-question-package.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..", "..");
@@ -36,9 +37,10 @@ async function readPackage(path) {
     if (!match) return null;
     const appDataText = match[1];
     const appData = JSON.parse(appDataText);
-    const questions = appData?.seed?.questionBank;
-    if (!Array.isArray(questions)) return null;
-    return { sourcePath: path, sourceText, appDataText, appData, questions };
+    const embeddedQuestions = appData?.seed?.questionBank;
+    if (!Array.isArray(embeddedQuestions)) return null;
+    const {sourceQuestions:questions,ownerReleaseQuestions}=splitOwnerReleaseQuestions(embeddedQuestions);
+    return { sourcePath: path, sourceText, appDataText, appData, questions, ownerReleaseQuestions };
   } catch {
     return null;
   }
@@ -56,8 +58,9 @@ if (!sourcePackage) {
 }
 if (!sourcePackage) throw new Error(`No HTML file containing a valid <script id="app-data"> question package was found under ${repoRoot}`);
 
-const { sourcePath, sourceText, appDataText, appData, questions } = sourcePackage;
+const { sourcePath, sourceText, appDataText, appData, questions, ownerReleaseQuestions } = sourcePackage;
 console.log(`Selected source package: ${relative(repoRoot, sourcePath)} (${questions.length} questions)`);
+if(ownerReleaseQuestions.length) console.log(`Preserved ${ownerReleaseQuestions.length} approved runtime additions separately; they are not re-extracted into source modules.`);
 
 const taskCounts = new Map();
 questions.forEach(question => taskCounts.set(question.taskCode, (taskCounts.get(question.taskCode) || 0) + 1));

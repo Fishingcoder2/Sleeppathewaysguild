@@ -10,11 +10,7 @@
   const $all=selector=>Array.from(document.querySelectorAll(selector));
   const escapeHtml=value=>String(value==null?"":value).replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
 
-  async function loadJson(path){
-    const response=await fetch(path,{cache:"no-store"});
-    if(!response.ok) throw new Error(path+" HTTP "+response.status);
-    return response.json();
-  }
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
 
   function storageState(){return window.RPSGTStorage.load();}
   function readinessRecord(saved){

@@ -143,9 +143,7 @@
 
   async function loadModule(moduleMeta){
     if(state.moduleCache.has(moduleMeta.path)) return state.moduleCache.get(moduleMeta.path);
-    const response=await fetch("data/question-bank/"+moduleMeta.path,{cache:"no-store"});
-    if(!response.ok) throw new Error(moduleMeta.path+" HTTP "+response.status);
-    const packageData=await response.json();
+    const packageData=await window.RPSGTOwnerQuestionRelease.loadJson("data/question-bank/"+moduleMeta.path);
     if(!packageData||!Array.isArray(packageData.questions)) throw new Error(moduleMeta.path+" is not a valid question module");
     state.moduleCache.set(moduleMeta.path,packageData.questions);
     return packageData.questions;
@@ -497,14 +495,10 @@
 
   async function init(){
     try{
-      const responses=await Promise.all([
-        fetch("data/question-bank/manifest.json",{cache:"no-store"}),
-        fetch("data/blueprint.json",{cache:"no-store"})
+      [state.manifest,state.blueprint]=await Promise.all([
+        window.RPSGTOwnerQuestionRelease.loadJson("data/question-bank/manifest.json"),
+        window.RPSGTOwnerQuestionRelease.loadJson("data/blueprint.json")
       ]);
-      if(!responses[0].ok) throw new Error("Question-bank manifest HTTP "+responses[0].status);
-      if(!responses[1].ok) throw new Error("Blueprint HTTP "+responses[1].status);
-      state.manifest=await responses[0].json();
-      state.blueprint=await responses[1].json();
       if(!state.manifest||!Array.isArray(state.manifest.modules)) throw new Error("Invalid question-bank manifest");
       if(!state.blueprint||!Array.isArray(state.blueprint.domains)) throw new Error("Invalid blueprint map");
       buildBlueprintMaps();

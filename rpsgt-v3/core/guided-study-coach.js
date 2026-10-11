@@ -16,11 +16,7 @@
   const normalize=value=>clean(value).trim().toLowerCase().replace(/\s+/g,' ');
   const esc=value=>clean(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
-  async function loadJson(path){
-    const response=await fetch(path,{cache:'no-store'});
-    if(!response.ok) throw new Error(path+' HTTP '+response.status);
-    return response.json();
-  }
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
 
   function taskQuestions(taskCode){
     if(state.moduleCache.has(taskCode)) return state.moduleCache.get(taskCode);

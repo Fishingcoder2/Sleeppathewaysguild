@@ -86,9 +86,7 @@
 
   async function loadManifestCount(){
     try{
-      const response=await fetch(MANIFEST_URL,{cache:'no-store'});
-      if(!response.ok) return;
-      const manifest=await response.json();
+      const manifest=await window.RPSGTOwnerQuestionRelease.loadJson(MANIFEST_URL);
       const total=Number(manifest&&manifest.meta&&manifest.meta.questionCount||0);
       if(total) setText('[data-home-question-count]',total.toLocaleString());
     }catch(error){

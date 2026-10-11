@@ -1,0 +1,41 @@
+name: Validate owner-approved public question release
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'RPSGTv2.2026*.html'
+      - 'cpsgt-study-app.html'
+      - 'data/owner-approved-question-release.json'
+      - 'scripts/public-question-release-v2*.mjs'
+      - 'rpsgt-v3/**'
+      - '.github/workflows/owner-approved-question-release.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'RPSGTv2.2026*.html'
+      - 'data/owner-approved-question-release.json'
+      - 'scripts/public-question-release-v2*.mjs'
+      - 'rpsgt-v3/**'
+      - '.github/workflows/owner-approved-question-release.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  approved-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify preserved V2 records, approved coverage, learner pools and legacy aliases
+        run: node scripts/public-question-release-v2-test.mjs
+      - name: Validate original V3 module integrity and shared release integration
+        run: |
+          node rpsgt-v3/scripts/validate-question-bank.mjs
+          node rpsgt-v3/scripts/test-owner-question-release.mjs
+          node rpsgt-v3/scripts/test-three-app-quality-guards.mjs

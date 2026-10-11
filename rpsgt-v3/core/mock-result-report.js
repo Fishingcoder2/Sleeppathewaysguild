@@ -7,7 +7,7 @@
   const esc=value=>String(value==null?"":value).replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
   const formatDate=value=>value?new Date(value).toLocaleString():"Date not recorded";
   const formatElapsed=ms=>{const total=Math.max(0,Math.floor((Number(ms)||0)/1000));const hours=Math.floor(total/3600);const minutes=Math.floor((total%3600)/60);const seconds=total%60;return (hours?hours+":":"")+String(minutes).padStart(hours?2:1,"0")+":"+String(seconds).padStart(2,"0");};
-  async function loadJson(path){const response=await fetch(path,{cache:"no-store"});if(!response.ok) throw new Error(path+" HTTP "+response.status);return response.json();}
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   function attemptHref(attempt){return "reports.html?mock="+encodeURIComponent(String(attempt&&attempt.sessionId||""))+"#mock-detail";}
   function requestedSession(){try{return new URLSearchParams(window.location.search).get("mock")||"";}catch(error){return "";}}
 

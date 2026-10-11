@@ -24,6 +24,14 @@ Cloudflare is connected to the `main` branch of this repository. A merged or dir
 
 The repository name, `Sleeppathewaysguild`, contains a historical spelling error. Do not rename it without first updating the Cloudflare Git connection and deployment configuration.
 
+## Owner-approved question release, October 11, 2026
+
+The CPSGT app already contains all 600 owner-approved CPSGT questions. The RPSGT V2 app now preserves its original 2,920 records and adds 315 missing approved questions plus five distinct approved revisions, for 3,240 records. The other 29 approved RPSGT questions already match existing records. Legacy `RPSGTv2.2026-app.html` and `RPSGTv2.2026-core.html` entry points forward to the canonical V2 app with their query and fragment intact.
+
+`data/owner-approved-question-release.json` records all 949 approved question mappings and the 320 additive RPSGT records. Original source review statuses and four unresolved verification holds are retained separately from the owner's release approval. This release does not claim additional independent clinical verification. Existing question IDs, original content and browser-storage keys remain unchanged.
+
+The V3 development app uses the same additive release through its runtime loader while preserving the original extracted task modules and their audit hashes. V3 remains development-only with its existing release gates and `noindex,nofollow` status.
+
 ## CPSGT maintenance note
 
 The CPSGT app is now a single standalone HTML file. It does not require `.cpsgt-upload`, `cpsgt-assets`, compressed package fragments, or a browser-side loader. Do not restore those obsolete folders unless the deployment architecture is intentionally changed.

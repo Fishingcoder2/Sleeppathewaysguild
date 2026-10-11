@@ -8,7 +8,15 @@ const v3=resolve(here,'..');
 const repoRoot=resolve(v3,'..');
 const readJson=async path=>JSON.parse(await readFile(path,'utf8'));
 
-for(const file of ['RPSGTv2.2026.html','RPSGTv2.2026-app.html']){
+// The supported older entry addresses now route to one canonical V2 app.
+for(const file of ['RPSGTv2.2026-app.html','RPSGTv2.2026-core.html']){
+  const html=await readFile(join(repoRoot,file),'utf8');
+  assert.ok(html.includes("new URL('./RPSGTv2.2026.html', window.location.href)"),`${file} no longer routes to the canonical question bank.`);
+  assert.ok(html.includes('currentApp.search = window.location.search')&&html.includes('currentApp.hash = window.location.hash'),`${file} does not preserve deep links.`);
+  assert.ok(html.includes('window.location.replace(currentApp.href)'),`${file} does not open the current app.`);
+  assert.ok(!html.includes('id="app-data"'),`${file} contains a second stale question bank.`);
+}
+for(const file of ['RPSGTv2.2026.html']){
   const html=await readFile(join(repoRoot,file),'utf8');
   const start=html.indexOf('function examEligibleQuestions(pool)');
   const guard=html.slice(start,start+500);

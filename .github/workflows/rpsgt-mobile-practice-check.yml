@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Check repair JavaScript syntax
         run: node --check assets/rpsgt-mobile-practice-fix.js
       - name: Check launcher JavaScript syntax
@@ -50,14 +52,12 @@ jobs:
           Path('/tmp/rpsgt-launcher.js').write_text('\n'.join(scripts), encoding='utf-8')
           PY
           node --check /tmp/rpsgt-launcher.js
-      - name: Verify direct-render apps and learner-delivery guards
+      - name: Verify canonical app, current-bank aliases and learner-delivery guards
         run: |
-          test "$(git hash-object RPSGTv2.2026-app.html)" = "4ae96667fbc0994a03d6f18ebff43d2f99ea7dbd"
-          for app in RPSGTv2.2026.html RPSGTv2.2026-app.html; do
-            test "$(wc -c < "$app")" -gt 10000000
-            grep -q 'id="app-data"' "$app"
-            grep -q 'manualReviewRecommended' "$app"
-            grep -q 'spgAllocateBlueprintCountsV1266' "$app"
-          done
+          test "$(wc -c < RPSGTv2.2026.html)" -gt 10000000
+          grep -q 'id="app-data"' RPSGTv2.2026.html
+          grep -q 'manualReviewRecommended' RPSGTv2.2026.html
+          grep -q 'spgAllocateBlueprintCountsV1266' RPSGTv2.2026.html
           grep -q 'SPG VERIFIED DIRECT-RENDER BUILD' RPSGTv2.2026.html
           grep -q '__spgMobilePracticeFix' assets/rpsgt-mobile-practice-fix.js
+          node scripts/public-question-release-v2-test.mjs

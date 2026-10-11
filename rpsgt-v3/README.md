@@ -2,6 +2,16 @@
 
 This directory is the non-destructive modular rebuild of the Sleep Pathways Guild RPSGT application. It remains development-only and does not replace the current public app.
 
+## Owner-approved question release, October 11, 2026
+
+The v3 runtime now loads the same `../data/owner-approved-question-release.json` release as the public V2 app. It adds 320 questions to the original 2,920 extracted records: 315 previously missing core questions and five separately identified source revisions. Another 29 owner-approved RPSGT questions already match existing live records. The CPSGT app already contains its 600 approved questions and uses its own program bank.
+
+`core/owner-question-release.js` combines approved additions with fetched task modules, manifest counts, Guided Study task counts and the compact learner-feedback index. Practice, saved-question review, Readiness, Guided Study, relevant Skills Lab checkpoints and suitable Mock-style questions use the combined runtime data. Existing Mock difficulty, visual, duplicate-family and eligibility rules still apply. The effective RPSGT bank contains 3,240 unique records, including 2,680 learner-eligible records and the original 560 records kept outside learner practice.
+
+The source modules, source indices, original question wording, answers, source hashes, browser progress and migration settings remain unchanged. Original source integrity metrics and hashes stay separate from effective runtime counts. The release retains source review notes and unresolved verification flags; owner authorization does not claim new clinical verification. V3 remains development-only and `noindex`; this release does not promote it over the public V2 app.
+
+Run `node rpsgt-v3/scripts/test-owner-question-release.mjs` to verify the combined runtime bank, all existing source-module hashes, original-record preservation, approved-question eligibility, compact feedback, concurrent loading and page integration. The original bank-validation and engine tests continue to validate the preserved source fixture independently.
+
 ## Current development milestones
 
 - Five connected learner destinations: Dashboard, Guided Study, Practice & Exam, Skills Labs, and Reports.

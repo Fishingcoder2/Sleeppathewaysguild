@@ -18,11 +18,7 @@
   const normalize=value=>clean(value).trim().toLowerCase().replace(/\s+/g,' ');
   const sameId=(left,right)=>String(left)===String(right);
 
-  async function loadJson(path){
-    const response=await fetch(path,{cache:'no-store'});
-    if(!response.ok) throw new Error(path+' HTTP '+response.status);
-    return response.json();
-  }
+  async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
 
   async function ensureBlueprint(){
     if(state.taskMap.size) return state.taskMap;
