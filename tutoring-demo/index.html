@@ -50,6 +50,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 .reasoning summary:focus-visible{outline:3px solid #e7a635}
 @media(max-width:600px){.clinical-flow-steps{flex-direction:column}.clinical-flow-steps .flowstep{min-width:0;flex:auto}}
 .next-block{padding:18px;border:1px solid #acd1d5;background:#edf8f7;border-radius:13px;margin-top:22px}
+.question-fieldset{margin:12px 0;padding:13px 15px;border:1px solid #ccdee4;border-radius:10px;background:#eef5f6;min-width:0}
+.question-fieldset legend{max-width:100%;white-space:normal;padding:0 6px;font-weight:700}
+.question-fieldset label{display:block;font-weight:500;margin:10px 0;cursor:pointer}
+.question-fieldset label input{width:auto;margin-right:7px}
 #quizCard[hidden]{display:none}.quiet{background:none;border:none;text-decoration:underline}
 @media(max-width:600px){.mini-map{grid-template-columns:1fr}.speech select{width:100%}#student .grid{gap:11px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
@@ -63,7 +67,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 <div id="student" class="view"><div class="grid">
 <section class="card full" id="learningHome" aria-labelledby="welcomeTitle">
 <span class="tag" id="lessonBadge">START HERE • LESSON ONE</span>
-<h2 id="welcomeTitle" style="margin-top:12px">Your first step: understand the patient</h2>
+<h2 id="welcomeTitle" tabindex="-1" style="margin-top:12px">Your first step: understand the patient</h2>
 <p class="student-intro" id="welcomeIntro">Before you connect a single electrode, you need to know why the patient has come to the sleep laboratory. We will explain each idea, give you a realistic example, and then help you check what you learned.</p>
 <p class="muted">RPSGT stands for Registered Polysomnographic Technologist. The examination groups work into four major subject areas, called <strong>domains</strong>. Each domain contains smaller lessons, called <strong>tasks</strong>. You do not need to memorize these labels before you begin.</p>
 <label for="taskPick">Choose a lesson (later lessons unlock with a tutor's approval)</label><select id="taskPick" aria-label="Choose course lesson"></select>
@@ -75,7 +79,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 <div id="lesson"></div>
 </section>
 
-<section class="card full" id="quizCard" hidden aria-labelledby="quiztitle"><h2 id="quiztitle">Quick understanding check</h2>
+<section class="card full" id="quizCard" hidden aria-labelledby="quiztitle"><h2 id="quiztitle" tabindex="-1">Quick understanding check</h2>
 <p id="quiznotice" class="muted"></p><div id="quiz"></div>
 <div class="row"><button id="quizSubmit" class="primary">Check my answers</button><button id="quizRetry">Review and try again</button><button type="button" id="quizBack">← Back to lesson</button></div>
 <div id="quizResult" aria-live="polite"></div>
@@ -295,11 +299,11 @@ function renderLesson(){
 function renderTutorSelect(){var options=tasks().filter(function(t){return pass(t.code)&&!sign(t.code)});el("signoffTask").innerHTML=options.map(function(t){return '<option value="'+esc(t.code)+'">'+esc(t.code+" — "+t.title)+"</option>"}).join("")||'<option value="">No pending approvals</option>';el("signoffButton").disabled=!s.assigned||!options.length}
 function renderDomain(){var html="";D.forEach(function(d,i){html+='<div class="status"><strong>'+d+": "+esc(N[i])+"</strong> · "+(s.domain[d]?"Passed ✓":domainReady(d)?"Ready":"Locked until all 3 task sign-offs")+'<div class="row" style="margin-top:8px"><button type="button" data-domain="'+d+'" '+(!domainReady(d)||s.domain[d]||!bank[d]?"disabled":"")+'>'+(s.domain[d]?"Passed":"Start 9-question domain exam")+"</button></div></div>"});el("domainPanel").innerHTML=html}
 function renderReadiness(){var html="";for(var i=1;i<=4;i++){var ready=fullDomains()&&(i===1||s.readiness[i-1]);html+='<div class="status"><strong>Readiness preview '+i+'</strong> · '+(s.readiness[i]?"Passed ✓":ready?"Available":"Locked")+'<div class="row" style="margin-top:8px"><button type="button" data-ready="'+i+'" '+(!ready||s.readiness[i]?"disabled":"")+'>'+(s.readiness[i]?"Passed":"Take 12-question readiness preview")+"</button></div></div>"}el("readinessPanel").innerHTML=html}
-function startTest(kind,key,list){stopSpeech();if(kind!=="readiness"&&(!list||!list.length)){msg("The screened question set has not loaded. Please refresh.");return}var chosen=list.slice();if(kind==="readiness"){chosen=[];D.forEach(function(d,i){var a=(bank[d]||[]).slice();for(var j=0;j<3&&a.length;j++)chosen.push(a[(j+(Number(key)-1)*2)%a.length])})}test={kind:kind,key:key,questions:chosen.map(function(q){return q}),answers:{},done:false};renderTest();el("quizCard").hidden=false;document.querySelector("#quiztitle").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})}
+function startTest(kind,key,list){stopSpeech();if(kind!=="readiness"&&(!list||!list.length)){msg("The screened question set has not loaded. Please refresh.");return}var chosen=list.slice();if(kind==="readiness"){chosen=[];D.forEach(function(d,i){var a=(bank[d]||[]).slice();for(var j=0;j<3&&a.length;j++)chosen.push(a[(j+(Number(key)-1)*2)%a.length])})}test={kind:kind,key:key,questions:chosen.map(function(q){return q}),answers:{},done:false};renderTest();el("quizCard").hidden=false;document.querySelector("#quiztitle").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});el("quiztitle").focus()}
 function renderTest(){if(!test){el("quiz").innerHTML="";return}el("quizCard").hidden=false;el("quiztitle").textContent=test.kind==="task"?"Task knowledge check: "+test.key:test.kind==="domain"?"Domain "+test.key+" exam":"Readiness preview "+test.key;
 el("quiznotice").textContent=test.questions.length+" existing Guild questions • Minimum 85% required • "+(test.kind==="task"?"3 of 3":test.kind==="domain"?"8 of 9":"11 of 12")+" correct.";
-el("quiz").innerHTML=test.questions.map(function(q,i){return '<div class="status"><p><strong>'+(i+1)+'. '+esc(q.prompt)+'</strong></p>'+q.options.map(function(a,j){return '<label style="font-weight:500;margin:8px 0"><input style="width:auto" type="radio" name="item-'+i+'" value="'+j+'" '+(String(test.answers[i])===String(j)?"checked":"")+' '+(test.done?"disabled":"")+'> '+esc(a)+'</label>'}).join("")+'</div>'}).join("");
-el("quizSubmit").disabled=test.done;el("quizSubmit").textContent="Grade "+test.questions.length+"-question "+test.kind;el("quizRetry").disabled=false}
+el("quiz").innerHTML=test.questions.map(function(q,i){return '<fieldset class="question-fieldset"><legend>'+(i+1)+'. '+esc(q.prompt)+'</legend>'+q.options.map(function(a,j){return '<label><input type="radio" name="item-'+i+'" value="'+j+'" '+(String(test.answers[i])===String(j)?"checked":"")+' '+(test.done?"disabled":"")+'> '+esc(a)+'</label>'}).join("")+'</fieldset>'}).join("");
+el("quizSubmit").disabled=test.done;el("quizSubmit").textContent="Grade "+test.questions.length+"-question "+test.kind;el("quizRetry").disabled=test.kind==="task"?pass(test.key):test.kind==="domain"?!!s.domain[test.key]:!!s.readiness[test.key]}
 function grade(){if(!test||test.done){msg("Start or reset a check first.");return}
 var empty=false;test.questions.forEach(function(q,i){var checked=document.querySelector('input[name="item-'+i+'"]:checked');if(checked)test.answers[i]=Number(checked.value);else empty=true});
 if(empty){msg("Answer every question before submitting.");return}
@@ -318,7 +322,7 @@ el("studentTerms").onclick=function(){action(function(){s.terms=true});msg("Samp
 el("approveEnrollment").onclick=function(){if(!s.requested||!s.terms)return;action(function(){s.enrolled=true});msg("Fictional enrollment approved.")};
 el("assignTutor").onclick=function(){if(!s.enrolled)return;action(function(){s.assigned=true});msg("Fictional tutor assigned. Student can begin learning.")};
 el("taskPick").onchange=function(e){stopSpeech();pick=e.target.value;test=null;el("quizResult").innerHTML="";render()};
-document.addEventListener("click",function(e){if(e.target.dataset.nextLesson){if(unlocked(e.target.dataset.nextLesson)){stopSpeech();pick=e.target.dataset.nextLesson;test=null;render();el("learningHome").scrollIntoView({behavior:"smooth",block:"start"});}return}
+document.addEventListener("click",function(e){if(e.target.dataset.nextLesson){if(unlocked(e.target.dataset.nextLesson)){stopSpeech();pick=e.target.dataset.nextLesson;test=null;render();el("learningHome").scrollIntoView({behavior:"smooth",block:"start"});el("welcomeTitle").focus();}return}
 if(e.target.id==="goOnboard"){el("studentOnboarding").scrollIntoView({behavior:"smooth",block:"start"});el("studentRequest").focus();return}
 if(e.target.id==="quizStart"){if(s.assigned&&s.read.indexOf(pick)>=0&&!pass(pick)&&bank[pick]){startTest("task",pick,bank[pick]);el("quizCard").hidden=false;}return}
 if(e.target.id==="markRead"){if(!s.assigned)return;action(function(){if(s.read.indexOf(pick)<0)s.read.push(pick)});msg("Study checklist marked reviewed.");return}
@@ -326,7 +330,7 @@ if(e.target.dataset.domain){var d=e.target.dataset.domain;if(domainReady(d)&&ban
 if(e.target.dataset.ready){var n=Number(e.target.dataset.ready);if(fullDomains()&&(n===1||s.readiness[n-1])){set("student");startTest("readiness",n,[])}return}});
 el("quizSubmit").onclick=grade;
 el("quizBack").onclick=function(){test=null;render();el("learningHome").scrollIntoView({behavior:"smooth",block:"start"})};
-el("quizRetry").onclick=function(){if(!test){if(bank[pick])startTest("task",pick,bank[pick]);return}test.done=false;test.answers={};el("quizResult").innerHTML="";renderTest()};
+el("quizRetry").onclick=function(){if(!test){if(bank[pick])startTest("task",pick,bank[pick]);return}if((test.kind==="task"&&pass(test.key))||(test.kind==="domain"&&s.domain[test.key])||(test.kind==="readiness"&&s.readiness[test.key])){msg("This check is already passed. Continue with your next learning step.");return}test.done=false;test.answers={};el("quizResult").innerHTML="";renderTest()};
 el("signoffButton").onclick=function(){var code=el("signoffTask").value;if(!code||!pass(code)||sign(code)||!s.assigned)return;var note=el("instructionNote").value.trim();if(note.length<12){msg("Write a brief teaching summary of at least 12 characters before signing off.");return}action(function(){s.signoff[code]={minutes:15,note:note.slice(0,400),at:new Date().toISOString()}});el("instructionNote").value="";msg(code+" signed off in fictional tutor view. Next student task unlocked.")};
 el("recordSession").onclick=function(){action(function(){s.session=true});msg("Fictional completed appointment logged.")};
 el("approveBill").onclick=function(){if(!s.session)return;action(function(){s.invoice=true});msg("Fictional $65 invoice approved. No email was sent.")};
