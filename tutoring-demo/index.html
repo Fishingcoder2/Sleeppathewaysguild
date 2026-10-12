@@ -73,7 +73,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 <label for="taskPick">Choose a lesson (later lessons unlock with a tutor's approval)</label><select id="taskPick" aria-label="Choose course lesson"></select>
 <div class="speech" aria-label="Lesson read-aloud options">
 <strong>Listen to this lesson</strong><span class="muted"> — reads the teaching text, not the menu or buttons.</span>
-<div class="row"><button type="button" id="speechPlay">▶ Play</button><button type="button" id="speechPause">⏸ Pause</button><button type="button" id="speechStop">■ Stop</button><label for="speechRate" style="margin:0">Speed</label><select id="speechRate"><option value="0.8">0.8×</option><option value="1" selected>1×</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option></select></div>
+<div class="row"><button type="button" id="speechPlay">▶ Play</button><button type="button" id="speechPause">⏯ Pause / resume</button><button type="button" id="speechStop">■ Stop</button><label for="speechRate" style="margin:0">Speed</label><select id="speechRate"><option value="0.8">0.8×</option><option value="1" selected>1×</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option></select></div>
 <p class="muted" id="speechStatus" role="status" aria-live="polite">Read-aloud is available when your browser supports speech synthesis. Otherwise, read the text below or use your device's screen reader.</p>
 </div>
 <div id="lesson"></div>
@@ -339,6 +339,7 @@ el("approvePayout").onclick=function(){if(!s.paid)return;action(function(){s.pay
 
 var synth=typeof window!=="undefined"&&"speechSynthesis" in window?window.speechSynthesis:null;
 var utterance=null,speechToken=0;
+if(!synth||typeof SpeechSynthesisUtterance==="undefined"){["speechPlay","speechPause","speechStop","speechRate"].forEach(function(id){el(id).disabled=true});el("speechStatus").textContent="Read-aloud is unavailable in this browser. Use the lesson text or your device screen reader.";}
 function speechState(t){el("speechStatus").textContent=t;}
 function stopSpeech(){speechToken++;if(synth){synth.cancel()}utterance=null;if(el("speechStatus"))speechState("Reading stopped. Select Play to hear this lesson.");}
 el("speechPlay").onclick=function(){
