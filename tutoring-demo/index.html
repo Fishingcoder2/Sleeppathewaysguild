@@ -25,7 +25,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 @media(max-width:740px){.card,.third{grid-column:1/-1}header{padding:23px 16px}main{padding:14px}.card{padding:15px}}
 
 /* Student-first, accessible teaching layout */
-#learningHome{order:-3}#quizCard{order:-2}#student>.grid>section:not(#learningHome):not(#quizCard){order:1}
+/* Student lesson is first in visual, reading, and keyboard order. */
 .student-intro{font-size:1.08rem;max-width:74ch}.lesson-head{padding:18px;background:#edf6f6;border-radius:12px}
 .step-note{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0}
 .step-note strong{color:#185166}
@@ -59,15 +59,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 <div class="notice"><strong>Important:</strong> This is a public demonstration, not a secure login or live tutoring system. Role switching, approvals, teaching hours, grades and payments are simulated, saved only to this browser. Do not enter personal, medical or financial information. Student/tutor permissions must be enforced on a private backend before real use.</div>
 <nav aria-label="Demonstration views"><button type="button" data-view="student" aria-pressed="true">🎓 Student</button><button type="button" data-view="tutor" aria-pressed="false">📚 Tutor</button><button type="button" data-view="admin" aria-pressed="false">🗂 Administrator</button><button type="button" data-view="resources" aria-pressed="false">🔗 Learning library</button><button type="button" id="reset">Reset demo</button></nav>
 <p id="feedback" role="status" aria-live="polite"></p>
-<div class="card full" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h2>Learning journey</h2><span class="pill" id="overall">0 / 12 tasks signed off</span></div><div class="bar"><span id="progressbar"></span></div><p class="muted">Learn the concept → review your readings → try a short check → discuss with your tutor → receive approval → move forward. The demo lets everyone explore lessons; completing checks still requires fictional enrollment and tutor assignment.</p></div>
+<div class="card full" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h2>Learning journey</h2><span class="pill" id="overall">0 / 12 tasks signed off</span></div><div class="bar" role="progressbar" aria-label="Tutor-approved learning tasks" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span id="progressbar"></span></div><p class="muted">Learn the concept → review your readings → try a short check → discuss with your tutor → receive approval → move forward. The demo lets everyone explore lessons; completing checks still requires fictional enrollment and tutor assignment.</p></div>
 <div id="student" class="view"><div class="grid">
-<section class="card" id="studentOnboarding"><h2>My learning account (demo)</h2><span class="tag">DEMO LEARNER • ALEX MORGAN</span><p><strong>Program:</strong> RPSGT Guided Tutoring</p><p><strong>Assigned tutor:</strong> <span id="studentTutor">Pending</span></p><p><strong>Enrollment:</strong> <span id="enrollState">Request not submitted</span></p><div class="row"><button id="studentRequest" class="primary">Request enrollment</button><button id="studentTerms">Acknowledge sample terms</button></div><p class="muted">These buttons do not create a real student account or electronic signature.</p></section>
-<section class="card"><h2>Ask for help or arrange tutoring</h2><p>Contact the assigned tutor or arrange a Google Meet using your Google account. The admin must verify a real tutor's address and appointment before sending invitations.</p><div class="row"><a href="mailto:admin@sleeppathwaysguild.com?subject=SPG%20Tutoring%20Demo%20Question">Email the Guild administrator ↗</a><a href="https://calendar.google.com/" target="_blank" rel="noopener">Google Calendar ↗</a><a href="https://meet.google.com/" target="_blank" rel="noopener">Google Meet ↗</a></div><p class="muted">Contact requests are not submitted to a Google Form in this demo. A private Forms-to-Sheets workflow must be configured before real intake.</p></section>
-
 <section class="card full" id="learningHome" aria-labelledby="welcomeTitle">
-<span class="tag">START HERE • LESSON ONE</span>
+<span class="tag" id="lessonBadge">START HERE • LESSON ONE</span>
 <h2 id="welcomeTitle" style="margin-top:12px">Your first step: understand the patient</h2>
-<p class="student-intro">Before you connect a single electrode, you need to know why the patient has come to the sleep laboratory. We will explain each idea, give you a realistic example, and then help you check what you learned.</p>
+<p class="student-intro" id="welcomeIntro">Before you connect a single electrode, you need to know why the patient has come to the sleep laboratory. We will explain each idea, give you a realistic example, and then help you check what you learned.</p>
 <p class="muted">RPSGT stands for Registered Polysomnographic Technologist. The examination groups work into four major subject areas, called <strong>domains</strong>. Each domain contains smaller lessons, called <strong>tasks</strong>. You do not need to memorize these labels before you begin.</p>
 <label for="taskPick">Choose a lesson (later lessons unlock with a tutor's approval)</label><select id="taskPick" aria-label="Choose course lesson"></select>
 <div class="speech" aria-label="Lesson read-aloud options">
@@ -83,6 +80,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;white-sp
 <div class="row"><button id="quizSubmit" class="primary">Check my answers</button><button id="quizRetry">Review and try again</button><button type="button" id="quizBack">← Back to lesson</button></div>
 <div id="quizResult" aria-live="polite"></div>
 </section>
+
+<section class="card" id="studentOnboarding"><h2>My learning account (demo)</h2><span class="tag">DEMO LEARNER • ALEX MORGAN</span><p><strong>Program:</strong> RPSGT Guided Tutoring</p><p><strong>Assigned tutor:</strong> <span id="studentTutor">Pending</span></p><p><strong>Enrollment:</strong> <span id="enrollState">Request not submitted</span></p><div class="row"><button id="studentRequest" class="primary">Request enrollment</button><button id="studentTerms">Acknowledge sample terms</button></div><p class="muted">These buttons do not create a real student account or electronic signature.</p></section>
+<section class="card"><h2>Ask for help or arrange tutoring</h2><p>Contact the assigned tutor or arrange a Google Meet using your Google account. The admin must verify a real tutor's address and appointment before sending invitations.</p><div class="row"><a href="mailto:admin@sleeppathwaysguild.com?subject=SPG%20Tutoring%20Demo%20Question">Email the Guild administrator ↗</a><a href="https://calendar.google.com/" target="_blank" rel="noopener">Google Calendar ↗</a><a href="https://meet.google.com/" target="_blank" rel="noopener">Google Meet ↗</a></div><p class="muted">Contact requests are not submitted to a Google Form in this demo. A private Forms-to-Sheets workflow must be configured before real intake.</p></section>
+
 <section class="card full"><h2>End-of-domain exam</h2><p>After the tutor signs off all three tasks, take the domain examination. The preview uses <strong>9 real Guild practice questions</strong> for that domain; 8/9 correct is required to pass an 85% threshold. Questions overlap the shorter task checks in this limited demo set.</p><div id="domainPanel"></div></section>
 <section class="card full"><h2>Four readiness milestones & full mock</h2><p>Readiness checkpoints are unlocked after the four domain exams. This demo previews readiness with the same screened 36-question pool; repeated items are possible. Your existing RPSGT learning app has the larger readiness engine and a <strong>175-question mock-style assessment</strong>.</p><div id="readinessPanel"></div><div class="links"><a href="https://sleeppathwaysguild.com/rpsgt-v3/readiness.html" target="_blank" rel="noopener">Guild readiness engine (v3 development) ↗</a><a href="https://sleeppathwaysguild.com/rpsgt-v3/mock.html" target="_blank" rel="noopener">175-question mock (v3 development) ↗</a><a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html" target="_blank" rel="noopener">Original RPSGT study app ↗</a></div><p class="muted">Mock completion and learner scores do not sync back to this public demo.</p></section>
 </div></div>
@@ -224,7 +225,7 @@ function unlocked(code){var n=idx(code);if(n===0)return true;if(n<0||!sign(fallb
 function domainReady(d){return tasks().filter(function(t){return t.code.slice(0,2)===d}).every(function(t){return sign(t.code)})}
 function fullDomains(){return D.every(function(d){return !!s.domain[d]})}
 function set(view){stopSpeech();active=view;document.querySelectorAll(".view").forEach(function(x){x.hidden=x.id!==view});document.querySelectorAll("[data-view]").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.view===view))});render()}
-function render(){var done=tasks().filter(function(t){return sign(t.code)}).length;el("overall").textContent=done+" / 12 tasks signed off";el("progressbar").style.width=String(done/12*100)+"%";
+function render(){var done=tasks().filter(function(t){return sign(t.code)}).length;el("overall").textContent=done+" / 12 tasks signed off";el("progressbar").style.width=String(done/12*100)+"%";document.querySelector(".bar").setAttribute("aria-valuenow",String(done));
 el("studentTutor").textContent=s.assigned?"Jordan Lee (fictional)":"Pending assignment";
 el("enrollState").textContent=s.enrolled?"Approved":s.requested?"Request filed (simulation)":"Not enrolled";
 el("studentRequest").disabled=s.requested;el("studentTerms").disabled=s.terms;
@@ -249,6 +250,7 @@ function renderTaskSelect(){
 function renderLesson(){
   var t=tasks().filter(function(x){return x.code===pick})[0];if(!t)return;
   var rd=s.read.indexOf(pick)>=0,done=pass(pick),approved=sign(pick),teach=teaching[pick]||teaching.D1A;
+  el("lessonBadge").textContent="LESSON "+(idx(pick)+1)+" OF 12";el("welcomeTitle").textContent=teach.name;el("welcomeIntro").textContent=pick==="D1A"?"Before you connect a single electrode, learn why the patient is here. We explain each idea, show a realistic situation, and help you check what you understand.":"Learn why this step matters in the sleep laboratory, explore an everyday clinical situation, and work through the reasoning before you try questions.";
   var d=pick.slice(0,2),code=esc(pick),preview=(!s.assigned?"Explore the lesson freely. To record your practice results in this demonstration, complete the fictional enrollment and tutor assignment first.":"");
   var targetList=t.targets.slice(0,5).map(function(x){return "<li>"+esc(x)+"</li>"}).join("");
   var moves=teach.moves.map(function(x){return "<li>"+esc(x)+"</li>"}).join("");
