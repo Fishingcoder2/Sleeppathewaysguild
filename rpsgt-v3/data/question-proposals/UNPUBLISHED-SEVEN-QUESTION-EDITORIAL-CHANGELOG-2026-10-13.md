@@ -1,7 +1,7 @@
 # Sleep Pathways Guild — held seven-question editorial compliance revisions
 
 **Date:** October 13, 2026  
-**Stage:** Original proposal refinement only — **NOT learner-facing, NOT qualified independent clinical signoff, NOT licensed AASM v3 verification.**  
+**Stage:** Original proposal refinement; **Guild owner RPSGT clinical review APPROVED October 13, 2026**. No second clinical reviewer is required by owner policy. **NOT yet learner-facing or licensed AASM v3 verified.**  
 **Repository baseline:** `a90d651d478b39e88573cae9436e907d811ff994` on `main`.  
 **Source:** `OWNER-CONDITIONAL-APPROVAL-2026-10-13.json` and `RELEASE-EVIDENCE-AND-REVIEW-QUEUE-2026-10-13.md`.  
 **Supporting prior triage:** [PR #139](https://github.com/Fishingcoder2/Sleeppathewaysguild/pull/139) (a separate, draft, non-publishing editorial/semantic-family preflight).
@@ -14,7 +14,7 @@ Revised the *unpublished* `options` and `rationale` fields for **all seven** con
 
 All draft `id`, `taskCode`, `answer`, `prompt`, source/reference metadata, QA hold flags and `publicationStatus=proposed-not-learner-eligible` values were **preserved**. No historical/question-bank files, V2 embedded data, V3 task modules, owner-approved overlay, active learner answers, migration keys, scoring/reporting code, duplicate eligibility, or public app configuration were edited.
 
-The purpose is to improve single-best-answer discrimination and clarify the relevant clinical/protocol boundaries **in readiness for** qualified review. Do not treat the changes as clinical signoff or permission to activate questions.
+The purpose is to improve single-best-answer discrimination and clarify the relevant clinical/protocol boundaries **in readiness for** source/technical review. Owner RPSGT content approval has now been documented separately; that approval is not itself permission to activate questions.
 
 | Held ID | BRPT | Editorial correction and stronger incorrect-choice themes | Controlling evidence / limitation |
 |---|---|---|---|
@@ -39,8 +39,8 @@ Existing CI separately checks full 2,920-original + 320 owner-approved ID parity
 
 ## Outstanding gates — unchanged
 
-1. A qualified independent clinical/editorial reviewer must evaluate the revised *entire item*: stem, answer, each incorrect choice, and rationale, document qualifications/signature/date and disposition **for each** candidate.
-2. Complete independent semantic-family novelty review of each revised item against the 3,240-question bank; automatically low word-overlap scores cannot serve as clinical novelty approval.
+1. The owner RPSGT, with pediatric badge certificate, has personally approved all seven final revised stems, keys, options and rationales. Owner signoff is documented by ID and commit in `OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json`. **No external second clinical reviewer is required.** Any future change to a reviewed item needs renewed owner confirmation.
+2. Complete human semantic-family novelty review (owner may serve as reviewer) of each revised item against the 3,240-question bank; automatically low word-overlap scores cannot serve as clinical novelty approval.
 3. For `SPG-SPRIGGS-2026-008`, directly verify the complete applicable pediatric respiratory scoring rule and current errata in the **licensed current AASM Scoring Manual Version 3**.
 4. Demonstrate real-browser representative saved learner progression/history/export/report regression in both V2 and V3 with migration/progress safeguards. Do not claim CI structural checks are equivalent.
 5. Use controlled item-specific release gates only after every gate closes; never import these draft files into active modules. **All fifteen duplicate-retirement candidates remain active with unchanged IDs.** Existing five revision proposals stay held separately. V2 remains public and V3 development-controlled.
@@ -62,3 +62,8 @@ Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). *Fundame
 Winkelman, J. W., et al. (2025). Treatment of restless legs syndrome and periodic limb movement disorder: An American Academy of Sleep Medicine clinical practice guideline. *Journal of Clinical Sleep Medicine, 21*(1), 137–152. https://doi.org/10.5664/jcsm.11390
 
 **Citation boundary:** Original Guild textbook passage locations and current authoritative articles are documented as concept support; indexed Spriggs chapter headings are not passage-level verification. Learners continue to see APA references only if/when these items undergo a fully cleared controlled release.
+
+
+## 2026-10-13 owner-as-clinical-reviewer amendment
+
+The Guild's sole owner and maker, an RPSGT with pediatric badge certificate, expressly directed elimination of the mandatory outside/independent second reviewer. All seven revised question stems, keyed answers, distractors and rationales carry the owner's documented clinical approval. This is **not** independent external review and should never be described as such. `OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json` documents that approval; the source/manual check, human question-family disposition and real V2/V3 learner-history regression remain required. Five proposed existing-item edits still need separate owner review. The 15 duplicate-retirement candidates remain untouched.
