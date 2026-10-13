@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "createdAt": "2026-10-12",
   "title": "Sleep Pathways Guild — indexed Spriggs topic gap pilot (current-authority controlled)",
-  "status": "DRAFT — NOT IN LEARNER BANK; NOT CLINICALLY APPROVED",
+  "status": "DRAFT — NOT IN LEARNER BANK; OWNER CLINICAL REVIEW APPROVED; SOURCE, DUPLICATE AND HISTORY RELEASE QA PENDING",
   "questionCount": 2,
   "groundwork": {
     "inspectedQuestionPool": 3240,
@@ -75,9 +75,10 @@
         "blueprintTaskMapped": true,
         "answerInOptions": true,
         "manualReviewRecommended": true,
-        "needsIndependentClinicalReview": true,
+        "needsIndependentClinicalReview": false,
         "needsSemanticFamilyReview": true,
-        "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
+        "qaStatus": "OWNER RPSGT CLINICAL CONTENT APPROVED; no second reviewer required; semantic-family and real-history release QA pending",
+        "ownerProfessionalClinicalReviewApproved": true
       },
       "notes": "Avoid clinician-directed dose selection; this is intake recognition/escalation, not pharmacologic prescribing.",
       "libraryEvidence": {
@@ -182,9 +183,10 @@
         "blueprintTaskMapped": true,
         "answerInOptions": true,
         "manualReviewRecommended": true,
-        "needsIndependentClinicalReview": true,
+        "needsIndependentClinicalReview": false,
         "needsSemanticFamilyReview": true,
-        "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
+        "qaStatus": "OWNER RPSGT CLINICAL CONTENT APPROVED; no second reviewer required; semantic-family and real-history release QA pending",
+        "ownerProfessionalClinicalReviewApproved": true
       },
       "notes": "Do not conflate initial diagnostic-test guideline with 2021 follow-up testing in treated established OSA.",
       "libraryEvidence": {
@@ -240,10 +242,12 @@
     }
   ],
   "editorialGate": {
-    "independentClinicalReview": "REQUIRED",
+    "independentClinicalReview": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
     "semanticDuplicateReview": "REQUIRED",
     "ownerReleaseApproval": "NOT GRANTED",
-    "mergeStatus": "DO NOT MERGE UNTIL FULL QA"
+    "mergeStatus": "DO NOT MERGE UNTIL FULL QA",
+    "ownerProfessionalClinicalReview": "APPROVED_2026-10-13",
+    "ownerReviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json"
   },
   "learnerReferencePresentation": "APA 7 only. Hide internal mapping labels/keys in learner UI.",
   "copyrightBoundary": "New original cases. No verbatim Spriggs passages, figures, source test items, or publisher answer keys.",
