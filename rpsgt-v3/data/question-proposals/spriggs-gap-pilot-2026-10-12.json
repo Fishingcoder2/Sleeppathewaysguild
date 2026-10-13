@@ -45,11 +45,15 @@
       "rationale": "Earlier onset, shorter symptom latency during rest, and spread beyond the legs during long-term dopaminergic therapy are recognized features of possible RLS augmentation. The technologist should document the pattern and communicate it for prescriber evaluation, not diagnose PLMD or independently adjust medications.",
       "referenceKeys": [
         "brpt-blueprint",
-        "aasm-rls-plmd-2025"
+        "aasm-rls-plmd-2025",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e"
       ],
       "studyRecommendationKeys": [
         "aasm-rls-plmd-2025",
-        "icsd-3-tr"
+        "icsd-3-tr",
+        "fundamentals-sleep-technology-3e"
       ],
       "sourceCredit": {
         "inspiration": "Spriggs (2015) chapter-topic map only. Original SPG question; not copied or adapted from publisher exam material.",
@@ -75,7 +79,46 @@
         "needsSemanticFamilyReview": true,
         "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
       },
-      "notes": "Avoid clinician-directed dose selection; this is intake recognition/escalation, not pharmacologic prescribing."
+      "notes": "Avoid clinician-directed dose selection; this is intake recognition/escalation, not pharmacologic prescribing.",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D1A",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-19",
+            "chapterOrSection": "Chapter 19: Restless Legs Syndrome and Periodic Limb Movement Disorder",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ]
+      }
     },
     {
       "id": "SPG-GAP-2026-002",
@@ -97,11 +140,15 @@
       "rationale": "AASM guidance recommends PSG after a single negative, inconclusive, or technically inadequate HSAT when evaluating suspected OSA. The technologist should communicate the limitation and coordinate under the ordering clinician's direction rather than interpreting the HSAT as definitively excluding disease.",
       "referenceKeys": [
         "brpt-blueprint",
-        "aasm-adult-osa-diagnostic-testing-2017"
+        "aasm-adult-osa-diagnostic-testing-2017",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e"
       ],
       "studyRecommendationKeys": [
         "aasm-adult-osa-diagnostic-testing-2017",
-        "aast-hsat-2020"
+        "aast-hsat-2020",
+        "fundamentals-sleep-technology-3e"
       ],
       "sourceCredit": {
         "inspiration": "Spriggs (2015) chapter-topic map for alternative/portable study pathways; no copied text or publisher questions.",
@@ -127,7 +174,46 @@
         "needsSemanticFamilyReview": true,
         "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
       },
-      "notes": "Do not conflate initial diagnostic-test guideline with 2021 follow-up testing in treated established OSA."
+      "notes": "Do not conflate initial diagnostic-test guideline with 2021 follow-up testing in treated established OSA.",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D2B",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-44",
+            "chapterOrSection": "Chapter 44: Home Sleep Apnea Testing",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ]
+      }
     }
   ],
   "editorialGate": {
@@ -162,5 +248,16 @@
       "Owner release approval before learner-facing import."
     ],
     "approval": "NOT GRANTED"
+  },
+  "sourcePriorityPolicy": {
+    "policyId": "SPG-RPSGT-LIBRARY-FIRST-2026-10-12",
+    "examScope": "brpt-blueprint",
+    "examFormatAndPolicies": "brpt-handbook",
+    "recommendedReadings": "brpt-refs",
+    "recommendedBookFirst": true,
+    "libraryMasterWorkbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+    "currentClinicalRules": "Specific indexed AASM/AAST/ICSD references only when required for a present-day clinical or scoring decision; these are verification overlays, not primary topic-selection sources.",
+    "secondaryTopicSeed": "Spriggs (2015) mapped chapters; 2002 source historical only",
+    "noOutsideTopicSeedsWithoutLibraryJustification": true
   }
 }
