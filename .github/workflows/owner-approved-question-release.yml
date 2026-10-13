@@ -39,3 +39,5 @@ jobs:
           node rpsgt-v3/scripts/validate-question-bank.mjs
           node rpsgt-v3/scripts/test-owner-question-release.mjs
           node rpsgt-v3/scripts/test-three-app-quality-guards.mjs
+      - name: Enforce conditional owner approvals and prevent premature learner or duplicate release
+        run: node rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
