@@ -78,7 +78,7 @@ All source page locators here refer to specific split-PDF **volume pages**, not 
 **Guild-indexed BRPT sources used:** FST3 Ch. 61 local split PDF volume 4 pp. 35–40, *Pediatric Sleep Pearls* sections 2–3/7 (indexed), *A Clinical Guide to Pediatric Sleep* chapters 4/17 (indexed), current AASM Scoring Manual v3 reference record, and the **directly read** Maski et al. (2024) pediatric MSLT PDF Box 2 Item 2 (PDF page 4).
 
 - **Five confirmed duplicates in eligible original D3B source:** `v1264-0161` through `-0165` have identical prompt, four options, answer and rationale. Propose maintaining a canonical item and reviewing four for controlled owner-approved retirement/replacement; current learner bank unmodified.
-- **Threshold wording conflict:** `mb-pediatric-mixed-4` uses “at least 25%” while FST3 Ch. 61 local p.40 and other D3B items say **“more than 25%”** for pediatric sleep-related hypoventilation. This needs licensed current AASM v3 confirmation, including the obstructive-hypoventilation context, before applying a wording/answer revision.
+- **Diagnosis-versus-scoring clarification (important correction):** `mb-pediatric-mixed-4` concerns an **ICSD-3-TR pediatric OSA obstructive-hypoventilation diagnostic pattern**, which the user-provided **2023 ICSD-3-TR supplemental correction sheet, local PDF p. 3, specifies as *at least* 25%** with hypercapnia and obstructive features. FST3 Ch. 61 local PDF p. 40 instead reproduces an older AASM Version 2.5 standalone **pediatric PSG hypoventilation scoring** rule of *more than* 25%. Do **not** replace the existing answer. Stage only a clearer diagnosis-specific prompt/rationale; separately verify current scoring-only items against licensed AASM Version 3.
 - **Precision reviews:** `imp-050` pediatric hypopnea explanation lacks event-duration context; `boost-039` pediatric short central-apnea scenario lacks two-missed-breath detail. `boost-039`, `src32-026`, and `case-d3-010` also test essentially the same case decision.
 - **2024 pediatric MSLT direct authority:** For held `SPG-SPRIGGS-2026-005`, Box 2 Item 2 confirms preceding PSG ≥8 hours in bed, ≥7 hours sleep, and avoiding MSLT after PAP pressure changes.
 
@@ -88,3 +88,7 @@ Development assets:
 - [Cross-version held-revision validation script](../rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs)
 
 **No original V2/V3 question records altered.** All changes are review notes, metadata, and regression tests; future actual content/release edits need qualified clinical scoring review plus explicit owner approval and saved-progress compatibility testing.
+
+## October 12 source-difference safeguard
+
+The uploaded `333828895-Sleep-Stage-Scoring-c3-version.pdf` is a 2015 presentation that cites AASM Scoring Manual Version **2.1**, **not Version 3**. It is historical training material. Neither this deck nor the BRPT-recommended textbook's Version 2.5 table can authorize current AASM Version 3 scoring thresholds. The 2023 **ICSD-3-TR supplemental corrections** directly establish the pediatric OSA obstructive-pattern diagnostic cutoff, *not* the separate PSG-scoring rule. A new automated check blocks an attempted replacement of `mb-pediatric-mixed-4`'s diagnostic answer with the historical scoring threshold. No learner-bank edits were applied.
