@@ -1,9 +1,9 @@
 {
   "packageId": "spg-rpsgt-v3-spriggs-original-questions-2026-10-12",
   "schemaVersion": 1,
-  "status": "DRAFT—8 UNIQUE-ID CANDIDATES AFTER CONCEPT TRIAGE; NOT CLINICALLY APPROVED; NOT RELEASED",
+  "status": "DRAFT—5 CANDIDATES HELD FOR CLINICAL AND EDITORIAL REVIEW; NOT RELEASED",
   "draftDate": "2026-10-12",
-  "questionCount": 8,
+  "questionCount": 5,
   "basis": "Question-writing topics are drawn from indexed chapter maps for Spriggs (2015) and historical Spriggs (2002), independently modernized using current AASM, AAST, BRPT and AASM-published protocol evidence. No publisher questions, posttests, answer keys, figures or text copied.",
   "books": [
     {
@@ -82,63 +82,12 @@
     "Audit near-duplicates against 3,240 effective questions (2,920 originals plus 320 owner-approved additions) before promotion.",
     "Complete chapter-to-statement/page locator audit before claiming direct citation of Spriggs passage.",
     "Initial 16 candidate concepts narrowed to 10 after near-duplicate triage; 6 rejected concepts and existing-bank IDs are documented in duplicateAudit.",
-    "After complete 3,240-question GitHub Actions scan, two further conceptually duplicative questions were retired (original IDs 002 and 007), leaving eight unreleased draft IDs without renumbering."
+    "After complete 3,240-question GitHub Actions scan, two further conceptually duplicative questions were retired (original IDs 002 and 007), leaving eight unreleased draft IDs without renumbering.",
+    "Second editorial pass retired current draft 001 (shift intake overlap), 004 (low discrimination), and 010 (oximeter artifact concept overlap). Current draft contains five IDs, none re-used or renumbered.",
+    "2015 Spriggs Ch. 14 is Cardiac Rhythms, not reporting. Draft 009 corrected to Ch. 15 Scoring and Reporting (printed pp. 225–233).",
+    "Chapter IDs and printed/PDF ranges verified against two indexed Spriggs mapping spreadsheets; this DOES NOT establish direct passage-level substantiation."
   ],
   "questions": [
-    {
-      "id": "SPG-SPRIGGS-2026-001",
-      "domain": "D1",
-      "taskCode": "D1A",
-      "task": "Patient information and clinical assessment",
-      "topic": "Sleepiness assessment",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "An adult referred for sleep testing reports severe daytime sleepiness while routinely sleeping only four to five hours because of rotating shifts. What information is most important to document before attributing the complaint to a primary hypersomnolence disorder?",
-      "options": [
-        "Whether the patient prefers a morning appointment",
-        "Usual sleep schedule, sleep duration, shift pattern, and relevant medication use",
-        "Whether the patient has ever used a nasal pillow mask",
-        "The preferred EEG screen color"
-      ],
-      "answer": "Usual sleep schedule, sleep duration, shift pattern, and relevant medication use",
-      "rationale": "Restricted or irregular sleep and substances can confound assessment of excessive daytime sleepiness; the clinical evaluation must account for sleep opportunity and schedules.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "icsd-3-tr"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "icsd-3-tr",
-        "brpt-blueprint"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 2,
-        "spriggs2002HistoricalChapter": 4,
-        "authority": [
-          "International Classification of Sleep Disorders, Third Edition, Text Revision (ICSD-3-TR)",
-          "BRPT RPSGT Exam Blueprint / Candidate Handbook (current online version)"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D1A",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible",
-      "editorialChecks": {
-        "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
-        "needsCurrentManualLicensedRuleReview": false,
-        "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
-      }
-    },
     {
       "id": "SPG-SPRIGGS-2026-003",
       "domain": "D2",
@@ -147,15 +96,15 @@
       "topic": "Signal preparation",
       "questionType": "Clinical application",
       "difficulty": "Intermediate",
-      "prompt": "During hookup, the eye-movement channel remains nearly flat during instructed left-right eye movements while EEG responds normally. What is the most appropriate next step?",
+      "prompt": "During pre-study physiologic calibration, the patient follows the eye-movement instructions. One EOG channel remains nearly flat, but the other EOG channel shows eye movement and the EEG channels appear intact. What is the best next action before lights out?",
       "options": [
-        "Assume the patient cannot enter REM sleep",
-        "Verify the EOG electrodes, connections, derivation and calibration before recording",
-        "Raise every channel's high-frequency filter to conceal the problem",
-        "Remove the EOG channels from the montage without explanation"
+        "Proceed and annotate the flat EOG channel as a normal finding",
+        "Check the affected EOG electrode, connector, impedance and derivation; restore the signal and repeat calibration",
+        "Use the intact EOG channel to infer that both EOG electrodes are functioning",
+        "Change the EEG montage without first checking the nonresponsive EOG channel"
       ],
-      "answer": "Verify the EOG electrodes, connections, derivation and calibration before recording",
-      "rationale": "A failed channel-specific biocalibration is a setup or acquisition problem until electrode, derivation and equipment integrity are checked.",
+      "answer": "Check the affected EOG electrode, connector, impedance and derivation; restore the signal and repeat calibration",
+      "rationale": "The failure is specific to a required eye-movement channel during a patient calibration. The technologist should inspect the affected EOG signal path, correct it, and repeat/annotate calibration rather than assuming the patient produced no eye movement.",
       "referenceKeys": [
         "brpt-blueprint",
         "aast-psg",
@@ -174,7 +123,27 @@
           "AAST Standard Polysomnography technical guideline",
           "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
         ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete",
+        "chapter2015": {
+          "edition": 2,
+          "year": 2015,
+          "chapterNumber": 6,
+          "title": "Patient Hookup Procedures",
+          "printedPageRange": "65–81",
+          "mappedPdfPageRange": "79–95",
+          "sectionLevelVerifiedBy": "Essentials_of_Polysomnography_2e_2015_RPSGT_Map.xlsx",
+          "evidenceBoundary": "Chapter-level map ONLY; no statement/page proof from the Spriggs textbook."
+        },
+        "chapter2002Historical": {
+          "edition": 1,
+          "year": 2002,
+          "chapterNumber": 1,
+          "title": "Patient Hook-Up",
+          "printedPageRange": "5–34",
+          "mappedPdfPageRange": "15–44",
+          "historicalOnly": true,
+          "evidenceBoundary": "Historical topical relevance only, not current standard."
+        }
       },
       "qa": {
         "blueprintTaskMapped": true,
@@ -191,63 +160,14 @@
         "needsIndependentClinicalReview": true,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
-      }
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-004",
-      "domain": "D2",
-      "taskCode": "D2A",
-      "task": "Determine technical preparation",
-      "topic": "Electrode placement",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "A technologist is preparing standard EEG sites for a PSG. Which approach best supports reproducible placement across patients?",
-      "options": [
-        "Estimate sites from the patient's hairstyle",
-        "Use measured anatomical landmarks and the prescribed electrode-placement system",
-        "Place both electrodes directly over the ears",
-        "Choose different unmeasured positions whenever a cable seems short"
-      ],
-      "answer": "Use measured anatomical landmarks and the prescribed electrode-placement system",
-      "rationale": "Standardized landmark measurements support consistent electrode locations; montage and technical requirements should be checked against the current AASM manual.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aasm-scoring-current",
-        "aast-psg"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aasm-scoring-current",
-        "aast-psg"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 6,
-        "spriggs2002HistoricalChapter": 1,
-        "authority": [
-          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ",
-          "AAST Standard Polysomnography technical guideline"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+        "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
+        "documentedCurrentAuthority": {
+          "reference": "Standard Polysomnography (2021), §2.2.3 Physiological Calibration, AAST PDF p. 13 (0-based 12)",
+          "evidence": "The guideline lists left-right eye-movement biocalibrations and directs signal/electrode checks and corrective action.",
+          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
+        }
       },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D2A",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible",
-      "editorialChecks": {
-        "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
-        "needsCurrentManualLicensedRuleReview": false,
-        "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
-      }
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
     },
     {
       "id": "SPG-SPRIGGS-2026-005",
@@ -281,7 +201,27 @@
         "authority": [
           "Maski et al. (2024), pediatric MSLT protocols"
         ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete",
+        "chapter2015": {
+          "edition": 2,
+          "year": 2015,
+          "chapterNumber": 11,
+          "title": "Performing Other Types of Sleep Studies",
+          "printedPageRange": "153–156",
+          "mappedPdfPageRange": "167–170",
+          "sectionLevelVerifiedBy": "Essentials_of_Polysomnography_2e_2015_RPSGT_Map.xlsx",
+          "evidenceBoundary": "Chapter-level map ONLY; no statement/page proof from the Spriggs textbook."
+        },
+        "chapter2002Historical": {
+          "edition": 1,
+          "year": 2002,
+          "chapterNumber": 3,
+          "title": "Special Procedures",
+          "printedPageRange": "122–158",
+          "mappedPdfPageRange": "132–168",
+          "historicalOnly": true,
+          "evidenceBoundary": "Historical topical relevance only, not current standard."
+        }
       },
       "qa": {
         "blueprintTaskMapped": true,
@@ -298,14 +238,20 @@
         "needsIndependentClinicalReview": true,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance.",
+        "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
         "independentVerification": {
           "verified": true,
           "authority": "Maski et al. (2024), Box 2, Item 2",
           "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10985297/",
           "verifiedFinding": "pediatric MSLT minimum 8 hours time in bed and 7 hours TST"
+        },
+        "documentedCurrentAuthority": {
+          "reference": "Maski et al. (2024), Box 2, recommendation 2; uploaded article text",
+          "evidence": "At least 8 hours time in bed and at least 7 hours total sleep on the preceding attended pediatric PSG.",
+          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
-      }
+      },
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
     },
     {
       "id": "SPG-SPRIGGS-2026-006",
@@ -339,7 +285,27 @@
         "authority": [
           "Krahn et al. (2021), adult MSLT/MWT protocols"
         ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete",
+        "chapter2015": {
+          "edition": 2,
+          "year": 2015,
+          "chapterNumber": 11,
+          "title": "Performing Other Types of Sleep Studies",
+          "printedPageRange": "153–156",
+          "mappedPdfPageRange": "167–170",
+          "sectionLevelVerifiedBy": "Essentials_of_Polysomnography_2e_2015_RPSGT_Map.xlsx",
+          "evidenceBoundary": "Chapter-level map ONLY; no statement/page proof from the Spriggs textbook."
+        },
+        "chapter2002Historical": {
+          "edition": 1,
+          "year": 2002,
+          "chapterNumber": 3,
+          "title": "Special Procedures",
+          "printedPageRange": "122–158",
+          "mappedPdfPageRange": "132–168",
+          "historicalOnly": true,
+          "evidenceBoundary": "Historical topical relevance only, not current standard."
+        }
       },
       "qa": {
         "blueprintTaskMapped": true,
@@ -356,14 +322,20 @@
         "needsIndependentClinicalReview": true,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance.",
+        "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
         "independentVerification": {
           "verified": true,
           "authority": "Krahn et al. (2021), Box 2",
           "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8726366/",
           "verifiedFinding": "MSLT should not follow split-night or PAP titration night"
+        },
+        "documentedCurrentAuthority": {
+          "reference": "Krahn et al. (2021), Box 2, General Testing Procedures #1",
+          "evidence": "Adult MSLT should not be performed immediately after split-night/PAP-pressure-adjustment PSG.",
+          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
-      }
+      },
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
     },
     {
       "id": "SPG-SPRIGGS-2026-008",
@@ -373,15 +345,15 @@
       "topic": "Pediatric scoring quality",
       "questionType": "Clinical application",
       "difficulty": "Intermediate",
-      "prompt": "A nine-year-old child's PSG was scored using adult respiratory criteria merely because the scorer used a default adult software template. What is the best quality-review action?",
+      "prompt": "A nine-year-old child's PSG is found to have respiratory events scored using the adult template solely because the software defaulted to adult criteria. Which correction should the quality reviewer request?",
       "options": [
-        "Keep the template without checking age or the laboratory's approved scoring pathway",
-        "Check patient age and the applicable AASM pediatric versus optional adult scoring pathway, then review affected events under the authorized approach",
-        "Average the adult and pediatric results automatically",
-        "Convert all pediatric respiratory events to arousals"
+        "Keep the adult template because both adult and pediatric scoring rules are always interchangeable",
+        "Review and, where necessary, re-score the respiratory events under the AASM pediatric rules applicable to this age, documenting the correction",
+        "Apply adult rules only to REM epochs and pediatric rules only to non-REM epochs",
+        "Leave the respiratory event labels unchanged but change the reported patient's age"
       ],
-      "answer": "Check patient age and the applicable AASM pediatric versus optional adult scoring pathway, then review affected events under the authorized approach",
-      "rationale": "A nine-year-old requires pediatric respiratory scoring rules. The current AASM FAQ allows—but does not require—adult respiratory rules beginning at age 13; default software settings cannot override the selected age-appropriate rule set.",
+      "answer": "Review and, where necessary, re-score the respiratory events under the AASM pediatric rules applicable to this age, documenting the correction",
+      "rationale": "AASM Version 3 FAQ allows optional adult respiratory criteria for children aged 13 or older, not for a nine-year-old. A software default is not authority to substitute adult scoring rules.",
       "referenceKeys": [
         "brpt-blueprint",
         "aasm-scoring-current"
@@ -397,7 +369,27 @@
         "authority": [
           "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
         ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete",
+        "chapter2015": {
+          "edition": 2,
+          "year": 2015,
+          "chapterNumber": 16,
+          "title": "Pediatric Sleep Medicine",
+          "printedPageRange": "234–237",
+          "mappedPdfPageRange": "248–251",
+          "sectionLevelVerifiedBy": "Essentials_of_Polysomnography_2e_2015_RPSGT_Map.xlsx",
+          "evidenceBoundary": "Chapter-level map ONLY; no statement/page proof from the Spriggs textbook."
+        },
+        "chapter2002Historical": {
+          "edition": 1,
+          "year": 2002,
+          "chapterNumber": 4,
+          "title": "Sleep Disorders",
+          "printedPageRange": "175–210",
+          "mappedPdfPageRange": "185–220",
+          "historicalOnly": true,
+          "evidenceBoundary": "Historical topical relevance only, not current standard."
+        }
       },
       "qa": {
         "blueprintTaskMapped": true,
@@ -414,14 +406,20 @@
         "needsIndependentClinicalReview": true,
         "needsCurrentManualLicensedRuleReview": true,
         "originalQuestion": true,
-        "sourceLocatorReview": "Verify 2015 Spriggs pediatric chapter heading; the authoritative AASM v3 pediatric rule and FAQ, not textbook content, control.",
+        "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
         "independentVerification": {
           "verified": true,
           "authority": "Current AASM Scoring Manual v3 FAQ",
           "url": "https://learn.aasm.org/AssetListing/The-AASM-Manual-for-the-Scoring-of-Sleep-and-Associated-Events-Series-2-1455/Scoring-of-Sleep-and-Associated-Events-FAQs-6696",
           "verifiedFinding": "option to use adult respiratory criteria only from age 13"
+        },
+        "documentedCurrentAuthority": {
+          "reference": "AASM Scoring Manual v3 current FAQs, Respiratory Rules; §VIII Part 2 under licensed rules",
+          "evidence": "Adult respiratory rules for children 13 years or older are optional; nine-year-olds use pediatric respiratory rules.",
+          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
-      }
+      },
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
     },
     {
       "id": "SPG-SPRIGGS-2026-009",
@@ -431,15 +429,15 @@
       "topic": "Report and study quality",
       "questionType": "Clinical application",
       "difficulty": "Intermediate",
-      "prompt": "A respiratory sensor failed for a substantial part of a study, then was replaced successfully. What should the technical report and handoff preserve?",
+      "prompt": "During a diagnostic PSG, nasal-pressure airflow was unavailable from 02:10 to 03:00 because of a disconnected cannula; the channel was restored at 03:00. Which handoff entry best preserves the quality of the recording?",
       "options": [
-        "Only a statement that all sensors were normal at the end",
-        "Timing of signal loss, corrective action, restoration and any limitation on data quality",
-        "A revised interpretation written independently by the technologist",
-        "No notation because the signal returned"
+        "All sensors normal by the conclusion of the study; no other technical detail required",
+        "Nasal-pressure signal absent from 02:10–03:00; cause, correction and restoration time recorded, with affected data-quality limitations identified",
+        "Respiratory scoring was normal for the entire night because the channel later returned",
+        "All respiratory channels should be excluded from the entire study because one channel was interrupted"
       ],
-      "answer": "Timing of signal loss, corrective action, restoration and any limitation on data quality",
-      "rationale": "The record must support subsequent scoring and interpretation by making equipment problems and periods of non-interpretable data traceable.",
+      "answer": "Nasal-pressure signal absent from 02:10–03:00; cause, correction and restoration time recorded, with affected data-quality limitations identified",
+      "rationale": "A chronological technical record should describe the affected signal, interval, cause, intervention, restored channel and limitation for downstream scoring/review. This is technical documentation, not an independent clinical interpretation.",
       "referenceKeys": [
         "brpt-blueprint",
         "aast-psg",
@@ -452,13 +450,33 @@
       ],
       "sourceCredit": {
         "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 14,
+        "spriggs2015Chapter": 15,
         "spriggs2002HistoricalChapter": 6,
         "authority": [
           "AAST Standard Polysomnography technical guideline",
           "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
         ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete",
+        "chapter2015": {
+          "edition": 2,
+          "year": 2015,
+          "chapterNumber": 15,
+          "title": "Scoring and Reporting",
+          "printedPageRange": "225–233",
+          "mappedPdfPageRange": "239–247",
+          "sectionLevelVerifiedBy": "Essentials_of_Polysomnography_2e_2015_RPSGT_Map.xlsx",
+          "evidenceBoundary": "Chapter-level map ONLY; no statement/page proof from the Spriggs textbook."
+        },
+        "chapter2002Historical": {
+          "edition": 1,
+          "year": 2002,
+          "chapterNumber": 6,
+          "title": "Scoring and Analysis",
+          "printedPageRange": "361–408",
+          "mappedPdfPageRange": "371–418",
+          "historicalOnly": true,
+          "evidenceBoundary": "Historical topical relevance only, not current standard."
+        }
       },
       "qa": {
         "blueprintTaskMapped": true,
@@ -475,96 +493,53 @@
         "needsIndependentClinicalReview": true,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
-      }
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-010",
-      "domain": "D3",
-      "taskCode": "D3A",
-      "task": "Score adult studies",
-      "topic": "Scoring data verification",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "During adult PSG review, repeated apparent oxygen dips align exactly with loss of the plethysmographic waveform during hand movement. What should the scorer do before accepting the drops as physiological evidence?",
-      "options": [
-        "Confirm the pulse-oximetry signal quality and cross-check accompanying respiratory/physiological channels",
-        "Automatically count every displayed dip as a scored respiratory event",
-        "Infer sleep stage N3 from the oxygen channel",
-        "Remove all movement annotation from the record"
-      ],
-      "answer": "Confirm the pulse-oximetry signal quality and cross-check accompanying respiratory/physiological channels",
-      "rationale": "Poor plethysmographic signal can create false SpO2 changes; scoring and reporting require signal validation and the applicable current AASM criteria.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aasm-scoring-current",
-        "aast-psg"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aasm-scoring-current",
-        "aast-psg"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 13,
-        "spriggs2002HistoricalChapter": 6,
-        "authority": [
-          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ",
-          "AAST Standard Polysomnography technical guideline"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+        "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
+        "documentedCurrentAuthority": {
+          "reference": "AAST Standard Polysomnography (2021), §§3.3.1–3.3.2; AAST PDF p. 16 (0-based 15)",
+          "evidence": "Chronological log of technical difficulties and interventions and complete study summary.",
+          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
+        }
       },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D3A",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible",
-      "editorialChecks": {
-        "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
-        "needsCurrentManualLicensedRuleReview": false,
-        "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
-      }
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
     }
   ],
   "duplicateAudit": {
-    "scope": "Accessible direct-task records across ten mapped modules, plus attempted owner-approved overlay. Large D2A/D3A files and owner overlay truncated during connector read; full-bank duplicate audit remains mandatory.",
+    "scope": "Full 2,920 extracted and 320 owner-approved effective questions inspected in CI; token-based matching is not clinical or semantic signoff.",
     "method": "heuristic token-overlap + manual review of closest matching prompts; NOT a complete semantic audit",
     "removedAsLikelyNearDuplicates": [
       {
-        "draftId": "SPG-SPRIGGS-2026-003",
+        "stage": "initial-16-before-renumbering",
+        "idAtStage": "SPG-SPRIGGS-2026-003",
         "existingId": "RPSGT-B3-C022",
         "reason": "PAP anxiety scenario repeats current learner support question"
       },
       {
-        "draftId": "SPG-SPRIGGS-2026-009",
+        "stage": "initial-16-before-renumbering",
+        "idAtStage": "SPG-SPRIGGS-2026-009",
         "existingId": "RPSGT-B3-C063",
         "reason": "ETCO2 sampling line kink already tested as best action"
       },
       {
-        "draftId": "SPG-SPRIGGS-2026-010",
+        "stage": "initial-16-before-renumbering",
+        "idAtStage": "SPG-SPRIGGS-2026-010",
         "existingId": "RPSGT-B5-S065",
         "reason": "jaw-clenching muscle artifact already directly tested"
       },
       {
-        "draftId": "SPG-SPRIGGS-2026-013",
+        "stage": "initial-16-before-renumbering",
+        "idAtStage": "SPG-SPRIGGS-2026-013",
         "existingId": "mine-d1c-003",
         "reason": "mask leak into eyes question already present"
       },
       {
-        "draftId": "SPG-SPRIGGS-2026-014",
+        "stage": "initial-16-before-renumbering",
+        "idAtStage": "SPG-SPRIGGS-2026-014",
         "existingId": "RPSGT-B3-C137",
         "reason": "CPAP intolerance and oral appliance referral already present"
       },
       {
-        "draftId": "SPG-SPRIGGS-2026-015",
+        "stage": "initial-16-before-renumbering",
+        "idAtStage": "SPG-SPRIGGS-2026-015",
         "existingId": "RPSGT-B5-S067",
         "reason": "SpO2 drop with poor pleth waveform already tested"
       }
@@ -572,25 +547,51 @@
     "remainingReviewRequired": true,
     "removedAfterCompleteBankReview": [
       {
-        "draftId": "SPG-SPRIGGS-2026-002",
+        "stage": "renumbered-10",
+        "idAtStage": "SPG-SPRIGGS-2026-002",
         "existingId": "D1B-011",
         "reason": "Conceptual duplicate: explaining multisignal PSG monitoring is already tested in the effective bank; new item adds little distinct competence."
       },
       {
-        "draftId": "SPG-SPRIGGS-2026-007",
+        "stage": "renumbered-10",
+        "idAtStage": "SPG-SPRIGGS-2026-007",
         "existingId": "D2C-019",
         "reason": "Conceptual duplicate: patient repositioning followed by a flat respiratory channel is already tested as a troubleshooting scenario."
       }
     ],
     "completeBankHeuristic": {
-      "runId": 38326465399,
+      "runId": 38326654883,
       "originalCount": 2920,
       "ownerApprovedAdditions": 320,
       "effectiveCount": 3240,
       "hardErrors": 0,
       "heuristicHighSimilarityFlags": 0,
       "limitation": "No high token-overlap flags does not exclude concept-level repeats. Two additional concepts removed manually."
-    }
+    },
+    "removedAfterClinicalEditorialTriage": [
+      {
+        "stage": "renumbered-8",
+        "idAtStage": "SPG-SPRIGGS-2026-001",
+        "relatedExistingIds": [
+          "D1A-018"
+        ],
+        "reason": "Overlaps existing D1A-018 shift-work/sleep schedule intake competency and uses implausible distractors; needs fundamentally new decision objective before reintroduction."
+      },
+      {
+        "stage": "renumbered-8",
+        "idAtStage": "SPG-SPRIGGS-2026-004",
+        "relatedExistingIds": [],
+        "reason": "Basic landmark-placement item lacks discrimination and likely overlaps large D2A electrode-positioning family; rewrite as applied scenario only after topic-gap audit."
+      },
+      {
+        "stage": "renumbered-8",
+        "idAtStage": "SPG-SPRIGGS-2026-010",
+        "relatedExistingIds": [
+          "RPSGT-B5-S067"
+        ],
+        "reason": "Oximetry artifact inference overlaps existing RPSGT-B5-S067 poor-pleth scenario despite a changed task label; no additional independent skill demonstrated."
+      }
+    ]
   },
   "currentAuthorityPolicy": {
     "scoring": "AASM Scoring Manual v3 (2023) with the current online erratum and FAQ; confirm licensed rule before publishing scoring cases.",
@@ -605,5 +606,47 @@
     "Maski, K. P., Amos, L. B., Carter, J. C., Koch, E. E., Kazmi, U., & Rosen, C. L. (2024). Recommended protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in children: Guidance from the American Academy of Sleep Medicine. Journal of Clinical Sleep Medicine, 20(4), 631–641. https://doi.org/10.5664/jcsm.10974",
     "American Association of Sleep Technologists. (2021). Standard polysomnography [Technical guideline]. https://aastweb.org/wp-content/uploads/2025/03/AAST-PSG-Guideline-Final.pdf",
     "American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). https://aasm.org/clinical-resources/scoring-manual/"
-  ]
+  ],
+  "provenanceIdentityPolicy": {
+    "originalConceptIdsImmutable": true,
+    "idRenumberingOccurredInFirstPilot": true,
+    "history": "The first pilot of 16 concepts was renumbered once when narrowed to 10. Historical retired IDs (stage 16) can collide with surviving IDs (stage 10 and later). An audit entry must always specify its stage; never interpret an unqualified ID from the first triage as the current proposal.",
+    "initial16RemovedOriginalIds": [
+      "003",
+      "009",
+      "010",
+      "013",
+      "014",
+      "015"
+    ],
+    "initial16SurvivorsToStage10Ids": {
+      "001": "001",
+      "002": "002",
+      "004": "003",
+      "005": "004",
+      "006": "005",
+      "007": "006",
+      "008": "007",
+      "011": "008",
+      "012": "009",
+      "016": "010"
+    },
+    "stage10RetiredIds": [
+      "002",
+      "007"
+    ],
+    "stage8RetiredIds": [
+      "SPG-SPRIGGS-2026-001",
+      "SPG-SPRIGGS-2026-004",
+      "SPG-SPRIGGS-2026-010"
+    ],
+    "retainedSourceOrigins": {
+      "SPG-SPRIGGS-2026-003": "initial16-004",
+      "SPG-SPRIGGS-2026-005": "initial16-006",
+      "SPG-SPRIGGS-2026-006": "initial16-007",
+      "SPG-SPRIGGS-2026-008": "initial16-011",
+      "SPG-SPRIGGS-2026-009": "initial16-012"
+    },
+    "immutableSurvivingIds": true
+  }
 }
