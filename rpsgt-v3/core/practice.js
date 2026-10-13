@@ -23,6 +23,7 @@
   const taskMap=new Map();
   const domainMap=new Map();
   const subjectEngine=window.RPSGTPracticeSubjects||null;
+  const difficultyEngine=window.RPSGTPracticeDifficulty||null;
 
   function $(selector){return document.querySelector(selector);}
   function $all(selector){return Array.from(document.querySelectorAll(selector));}
@@ -56,7 +57,8 @@
   }
   function matchesDifficulty(question,difficulty){
     if(!difficulty||difficulty==="all") return true;
-    return String(question&&question.difficulty||"").trim().toLowerCase()===String(difficulty).trim().toLowerCase();
+    if(!difficultyEngine) throw new Error("Practice difficulty filters could not load.");
+    return difficultyEngine.matches(question,difficulty);
   }
 
   function buildBlueprintMaps(){
@@ -196,6 +198,10 @@
       state.selections=new Map();
       state.responses=new Map();
       setText("[data-session-pool]",pool.length.toLocaleString());
+      const requestedCount=requested==="all"?pool.length:Number(requested)||10;
+      setText("[data-session-availability-note]",size<requestedCount
+        ?"Only "+size+" eligible question"+(size===1?"":"s")+" match your filters; the session uses all of them."
+        :"Showing "+size+" of "+pool.length+" matching eligible questions.");
       setText("[data-session-subject]",state.sessionSubject==="all"?"All subjects":subjectEngine?.label(state.sessionSubject)||state.sessionSubject);
       const shell=$("[data-practice-shell]");
       if(shell){
