@@ -2,7 +2,7 @@
 
 **Checked 2026-10-13. Intended for development audit and clinical review, not a learner-facing page.**
 
-The Guild owner explicitly authorizes **seven new questions** for publication *after all previously identified source, qualified clinical, manual, duplicate-family and real V2/V3 learner-progress regression gates pass*; authorizes **five existing-question revisions to proceed** toward those gates; and explicitly forbids the **15 duplicate retirements**. See `OWNER-CONDITIONAL-APPROVAL-2026-10-13.json`. **This authorization is not independent qualified clinical review.**
+The Guild owner authorizes **seven new questions** conditionally, authorizes **five existing revisions to proceed**, and forbids **all 15 duplicate retirements**. **Policy amended October 13, 2026:** the Guild's creator/owner, an RPSGT with a pediatric badge certificate, personally approved the final seven revised questions and serves as the sole clinical content reviewer; an external second reviewer is **NOT REQUIRED**. See `OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json`. Technical/source, human duplicate-family, and real V2/V3 learner history gates remain. The five existing revisions are not yet clinically approved.
 
 ## Scope and source verification
 
@@ -16,19 +16,19 @@ The editorial priority remains the BRPT exam blueprint and candidate handbook, f
 - The public AASM *Scoring Manual Version 3* FAQ confirms **adult respiratory scoring criteria for children ≥13 years are optional**; its public summary supports the nine-year-old question's age distinction. The complete current **licensed Version 3** respiratory rule and relevant errata **have not been directly checked**: <https://learn.aasm.org/AssetListing/The-AASM-Manual-for-the-Scoring-of-Sleep-and-Associated-Events-Series-2-1455/Scoring-of-Sleep-and-Associated-Events-FAQs-6696>.
 - The uploaded 2023 **ICSD-3-TR correction**, local PDF **p. 3**, specifies **at least 25%** of total sleep time in pediatric OSA **obstructive hypoventilation diagnostic** Criterion B(2) along with hypercapnia and an obstructive feature. The BRPT-recommended textbook's split-volume 4 **PDF p. 40** prints **more than 25%** for a standalone PSG hypoventilation **scoring rule from old AASM Version 2.5**. Do not conflate these; do not change the current diagnostic correct answer on this basis.
 
-**Citation boundary:** Checking the specific guideline page or section establishes support for the stated concept; it does **not** mean the full individual answer/distractor/rationale and semantic novelty have been independently clinically signed off. Indexed Spriggs and recommended-book section matches are not statement-level passage verification unless a specific passage was reviewed.
+**Citation boundary:** The owner has reviewed and approved each final revised stem, all choices, answer and rationale for the seven new drafts. This is the Guild's clinical signoff under the updated sole-owner policy, not a claim of a second review. Checked source passages still do not establish full semantic uniqueness or licensed scoring-manual compliance. Indexed Spriggs and recommended-book section matches are not statement-level passage verification unless a specific passage was reviewed.
 
 ## New questions — conditional approval and individual outstanding gates
 
 | ID | BRPT task | Clinical concept source preflight | Necessary remaining gate |
 |---|---|---|---|
-| `SPG-SPRIGGS-2026-003` | D2A | AAST 2021 PSG §2.2.3 supports EOG calibration signal check and correction | Independent clinical/editorial item review; all options/rationale; semantic overlap with calibration family; actual V2/V3 learner history regression |
-| `SPG-SPRIGGS-2026-005` | D2B | Direct Maski et al. (2024) Box 2 check: 8 h in bed/7 h sleep for child | Independent clinical/editorial item review; semantic overlap with pediatric MSLT bank; actual V2/V3 learner history regression |
-| `SPG-SPRIGGS-2026-006` | D2B | Krahn et al. (2021) Box 2 confirms no adult MSLT after split-night PAP adjustment | Independent clinical/editorial item review; semantic overlap with adult MSLT bank; actual V2/V3 learner history regression |
-| `SPG-SPRIGGS-2026-008` | D3B | Public AASM v3 FAQ confirms 13+ optional adult respiratory rule; 9-year-old does not meet age | **Licensed current AASM v3 pediatric rule and errata text**; independent item/semantic clinical review; V2/V3 regression |
-| `SPG-SPRIGGS-2026-009` | D3C | AAST 2021 PSG §§3.3.1–3.3.2 supports technical interruption and intervention documentation | Independent clinical/editorial item review; semantic overlap with PSG logging families; V2/V3 regression |
-| `SPG-GAP-2026-001` | D1A | Direct FST3 passage and AASM 2025 RLS augmentation guidance support symptom progression, not technologist prescribing | Independent clinical/editorial item review; all RLS question-family prompts; V2/V3 regression |
-| `SPG-GAP-2026-002` | D2B | Direct FST3 passage and Kapur et al. (2017) recommendation 3 support clinician-directed PSG after negative HSAT | Independent clinical/editorial item review; all HSAT decision-family prompts; V2/V3 regression |
+| `SPG-SPRIGGS-2026-003` | D2A | AAST 2021 PSG §2.2.3 supports EOG calibration signal check and correction | Owner RPSGT clinical review COMPLETE; semantic overlap with calibration family; actual V2/V3 learner history regression |
+| `SPG-SPRIGGS-2026-005` | D2B | Direct Maski et al. (2024) Box 2 check: 8 h in bed/7 h sleep for child | Owner RPSGT clinical review COMPLETE; semantic overlap with pediatric MSLT bank; actual V2/V3 learner history regression |
+| `SPG-SPRIGGS-2026-006` | D2B | Krahn et al. (2021) Box 2 confirms no adult MSLT after split-night PAP adjustment | Owner RPSGT clinical review COMPLETE; semantic overlap with adult MSLT bank; actual V2/V3 learner history regression |
+| `SPG-SPRIGGS-2026-008` | D3B | Public AASM v3 FAQ confirms 13+ optional adult respiratory rule; 9-year-old does not meet age | **Licensed current AASM v3 pediatric rule and errata text**; owner clinical review COMPLETE; human semantic-family review; V2/V3 regression |
+| `SPG-SPRIGGS-2026-009` | D3C | AAST 2021 PSG §§3.3.1–3.3.2 supports technical interruption and intervention documentation | Owner RPSGT clinical review COMPLETE; semantic overlap with PSG logging families; V2/V3 regression |
+| `SPG-GAP-2026-001` | D1A | Direct FST3 passage and AASM 2025 RLS augmentation guidance support symptom progression, not technologist prescribing | Owner RPSGT clinical review COMPLETE; all RLS question-family prompts; V2/V3 regression |
+| `SPG-GAP-2026-002` | D2B | Direct FST3 passage and Kapur et al. (2017) recommendation 3 support clinician-directed PSG after negative HSAT | Owner RPSGT clinical review COMPLETE; all HSAT decision-family prompts; V2/V3 regression |
 
 **Current new-question learner eligibility: 0 of 7.** All seven remain `manualReviewRecommended`, `publicationStatus=proposed-not-learner-eligible`, and excluded from current V2/V3 learner question banks.
 
@@ -36,11 +36,11 @@ The editorial priority remains the BRPT exam blueprint and candidate handbook, f
 
 | ID | What is being reviewed | Release gate |
 |---|---|---|
-| `imp-051` | Adult MSLT rationale context and precise Krahn et al. citation; preserve original answer and ID | Independent clinical/editorial review; V2/V3 browser history/answer report regression; exact source-key validation |
+| `imp-051` | Adult MSLT rationale context and precise Krahn et al. citation; preserve original answer and ID | Owner RPSGT clinical review PENDING for this existing edit; V2/V3 browser history/answer report regression; exact source-key validation |
 | `grow-041` | Adult MSLT rationale about SOREMPs and complete clinical interpretation | Same gates; do not infer diagnosis from MSLT numbers alone |
-| `mb-pediatric-mixed-4` | Clarify **ICSD-3-TR pediatric OSA diagnosis**, keeping existing "at least 25%" answer | Clinical/editorial review and V2/V3 history regression; **never substitute older PSG-scoring threshold** |
-| `imp-050` | Pediatric hypopnea explanation needs applicable event-duration context | Direct licensed current AASM v3 rule verification, independent clinical/editorial review and V2/V3 history regression |
-| `boost-039` | Pediatric central apnea short-event question needs two-missed-breath qualifier | Direct licensed current AASM v3 rule verification, independent clinical/editorial review, semantic overlap and V2/V3 history regression |
+| `mb-pediatric-mixed-4` | Clarify **ICSD-3-TR pediatric OSA diagnosis**, keeping existing "at least 25%" answer | Owner RPSGT review of proposed revision and V2/V3 history regression; **never substitute older PSG-scoring threshold** |
+| `imp-050` | Pediatric hypopnea explanation needs applicable event-duration context | Direct licensed current AASM v3 rule verification, owner RPSGT editorial review PENDING and V2/V3 history regression |
+| `boost-039` | Pediatric central apnea short-event question needs two-missed-breath qualifier | Direct licensed current AASM v3 rule verification, owner RPSGT editorial review PENDING, semantic overlap and V2/V3 history regression |
 
 **Current revision publishability: 0 of 5.** Preserve existing question IDs, options, correct answers, rationale and current learner records until all corresponding gates are documented. Never silently alter saved user progress or score historic attempts against an unreviewed replacement.
 
@@ -60,4 +60,9 @@ The editorial priority remains the BRPT exam blueprint and candidate handbook, f
 | Duplicate retirements | 0, expressly prohibited | 0 | **0** |
 | Source/audit evidence and approval records | Yes | Documentation and CI checks | Already on `main`; publishable as **internal review artifacts only** |
 
-The remaining **independent qualified clinical signoff** cannot be inferred from a source citation, from a passing JavaScript test, or from the owner's conditional approval. Release the learning-content items only after per-item gate status changes from pending to verified, followed by approved ID-preserving V2/V3 import and real learner regression.
+**No outside second reviewer is necessary.** The seven named drafts have documented owner RPSGT clinical signoff on final revised content. Keep the scoring-manual validation (where required), human semantic decision-family review, and representative V2/V3 saved-progress/history/report regression before activation. Five existing proposed revisions still require their own owner review; no retirement or automatic publication follows from changing the clinical-review policy.
+
+
+## 2026-10-13 owner-as-clinical-reviewer amendment
+
+The Guild's sole owner and maker, an RPSGT with pediatric badge certificate, expressly directed elimination of the mandatory outside/independent second reviewer. All seven revised question stems, keyed answers, distractors and rationales carry the owner's documented clinical approval. This is **not** independent external review and should never be described as such. `OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json` documents that approval; the source/manual check, human question-family disposition and real V2/V3 learner-history regression remain required. Five proposed existing-item edits still need separate owner review. The 15 duplicate-retirement candidates remain untouched.
