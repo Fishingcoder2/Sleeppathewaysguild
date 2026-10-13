@@ -21,3 +21,39 @@ jobs:
         run: node --check rpsgt-v3/scripts/test-static-route-assets.mjs
       - name: Validate all V3 static href/src and owner release fetch routes
         run: node rpsgt-v3/scripts/test-static-route-assets.mjs
+
+  chromium-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        deploy-context: [guild-subdirectory, isolated-worker]
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test navigation, settings and HTTP responses in both deployment layouts
+        shell: bash
+        run: |
+          if [[ "${{ matrix.deploy-context }}" == "isolated-worker" ]]; then
+            python3 -m http.server 4174 --directory . > /tmp/rpsgt-v3-server.log 2>&1 &
+            export RPSGT_V3_BASE_URL="http://127.0.0.1:4174/"
+            for attempt in {1..30}; do curl -sSf "$RPSGT_V3_BASE_URL" >/dev/null && break || sleep 1; done
+          fi
+          npx playwright test --config=playwright.config.mjs --project=desktop-chromium tests/browser/navigation-404.spec.mjs
+      - name: Upload browser failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-route-404-${{ matrix.deploy-context }}-failures
+          path: rpsgt-v3/test-results
+          if-no-files-found: ignore
