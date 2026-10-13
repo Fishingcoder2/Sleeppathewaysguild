@@ -1,0 +1,100 @@
+name: Audit unreleased Spriggs RPSGT candidates
+
+on:
+  push:
+    branches:
+      - content/rpsgt-spriggs-modernized-2026-10-12
+    paths:
+      - rpsgt-v3/data/question-proposals/**
+      - rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+      - rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+      - rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
+      - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+      - rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
+      - rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+      - rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-pediatric-duplicate-retirement-dry-run-2026.mjs
+      - rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+      - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - rpsgt-v3/data/question-proposals/**
+      - rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+      - rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+      - rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
+      - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+      - rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
+      - rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+      - rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-pediatric-duplicate-retirement-dry-run-2026.mjs
+      - rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+      - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit-candidates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out proposal branch
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify proposal syntax and four-choice review gate
+        run: |
+          node --check rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+          node --check rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-pediatric-duplicate-retirement-dry-run-2026.mjs
+          node --check rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+          node --check rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+          node --check rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+          node --check rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
+          node rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+      - name: Audit all 3,240 effective RPSGT questions and exact source keys
+        run: node rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+      - name: Screen indexed Spriggs topic families across the complete effective bank
+        run: node rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+      - name: Validate two extra original gap questions against the full bank
+        run: node rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
+      - name: Verify BRPT blueprint, candidate handbook and indexed library source mappings
+        run: node rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+      - name: Screen V2 and V3 shared bank for outdated RLS and HSAT claims
+        run: node rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
+      - name: Validate held MSLT rationale revisions match both V2 and V3
+        run: node rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+      - name: Verify held pediatric threshold, duplicate and MSLT repairs are cross-version safe
+        run: node rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
+      - name: Simulate progress-safe pediatric duplicate retirement with V3 mock and practice quota gates
+        run: node rpsgt-v3/scripts/test-rpsgt-pediatric-duplicate-retirement-dry-run-2026.mjs
+      - name: Inventory exact V2 V3 bank duplicate families and conflicting recorded answers
+        run: node rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
+      - name: Simulate six-family duplicate consolidation across shared V2 V3 question IDs
+        run: node rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+      - name: Upload full audit JSON and Markdown
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spriggs-rpsgt-full-bank-duplicate-audit
+          path: |
+            rpsgt-v3/audit-output/spriggs-full-bank-report.*
+            rpsgt-v3/audit-output/spriggs-topic-coverage-2026.*
+            rpsgt-v3/audit-output/spriggs-gap-pilot-audit-2026.*
+            rpsgt-v3/audit-output/rpsgt-v2-v3-source-currency-screen.*
+            rpsgt-v3/audit-output/rpsgt-pediatric-cross-version-review-2026.*
+            rpsgt-v3/audit-output/rpsgt-pediatric-duplicate-retirement-dry-run-2026.*
+            rpsgt-v3/audit-output/rpsgt-v2-v3-exact-duplicate-families-2026.*
+            rpsgt-v3/audit-output/rpsgt-v2-v3-six-family-consolidation-dry-run-2026.*
+          if-no-files-found: warn

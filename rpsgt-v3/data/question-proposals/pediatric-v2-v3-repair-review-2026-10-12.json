@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-12",
+  "title": "Shared RPSGT V2/V3 pediatric D3B correction and deduplication review — source-first",
+  "publicationStatus": "editorial-review-only-not-owner-approved",
+  "scope": "V2 canonical original app-data and V3 D3B original module; existing published question records stay unchanged.",
+  "sourceHierarchy": {
+    "blueprint": "brpt-blueprint D3B",
+    "handbook": "brpt-handbook",
+    "guildWorkbook": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+    "recommendedBooks": [
+      {
+        "id": "fundamentals-sleep-technology-3e",
+        "chapter": 61,
+        "splitPdf": "Fundamentalssleep(4).PDF",
+        "localPages": [
+          35,
+          36,
+          39,
+          40
+        ],
+        "notes": "Chapter 61 pediatric central apnea and hypoventilation discussion: p35 central apnea summary and pp39-40 table for pediatric hypoventilation. Text reprints older AASM rules, not current version-3 authority."
+      },
+      {
+        "id": "pediatric-sleep-pearls-1e",
+        "section": "PSP-S02",
+        "verification": "Indexed topic fit only; direct statement/page not checked."
+      },
+      {
+        "id": "polysomnography-sleep-technologist-2014",
+        "chapter": 12,
+        "verification": "Indexed technical CO2 background only; not current scoring authority."
+      }
+    ],
+    "controllingCurrentRule": "Use ICSD-3-TR (2023 correction sheet page 3) for pediatric OSA diagnostic obstructive-hypoventilation pattern (at least 25%); use current licensed AASM Scoring Manual v3 for PSG respiratory event scoring (separate rule). Textbook v2.5 scoring information is not the diagnostic authority.",
+    "currentAuthorityVerification": "ICSD-3-TR pediatric OSA diagnostic criterion verified directly from user-supplied 2023 correction sheet PDF p3. AASM scoring v3 rule was not directly verified from its licensed full text: current scoring-only items remain held.",
+    "additionalOriginalUploadedAuthority": {
+      "sourceId": "icsd-3-tr",
+      "localPdf": "732473293-ICSD-3-Text-Revision-Supplemental-Material.pdf",
+      "localPdfPage": 3,
+      "verificationStatus": "Directly inspected 2023 pediatric OSA correction, including diagnostic Criteria A-C and criterion B(2) at-least 25%",
+      "sourceRole": "ICSD pediatric OSA classification, not AASM PSG event scoring"
+    }
+  },
+  "proposedRuleSensitiveRevisions": [
+    {
+      "id": "mb-pediatric-mixed-4",
+      "priority": "P0—resolved source-role confusion; rationale/context precision review remains",
+      "disposition": "KEEP THE EXISTING AT-LEAST-25% ANSWER. Do not apply the formerly suggested >25% scoring threshold here: the stem asks about obstructive hypoventilation, and the 2023 ICSD-3-TR correction sheet gives at least 25% for the pediatric OSA obstructive hypoventilation diagnostic pattern. Proposed improvement is source-specific stem/rationale only; stage remains held pending clinical/editorial review.",
+      "proposedAnswer": "CO2 greater than 50 mm Hg for at least 25% of total sleep time with obstructive features",
+      "proposedRationale": "The ICSD-3-TR pediatric OSA diagnostic criteria describe an obstructive hypoventilation pattern with hypercapnia (PaCO2 greater than 50 mm Hg) during at least 25% of total sleep time, together with features such as snoring, inspiratory flow flattening or paradoxical thoracoabdominal movement. Do not substitute the separate AASM pediatric hypoventilation event-scoring duration threshold for this diagnostic pattern. PSG scoring uses the applicable current AASM manual; diagnosis rests with the interpreting clinician.",
+      "why": "Directly checked user-supplied 2023 ICSD-3-TR supplemental correction PDF page 3: its revised pediatric OSA diagnostic Criterion B(2) explicitly says AT LEAST 25%. FST3 Chapter 61 split PDF volume 4 p40 prints an older (v2.5) PSG pediatric hypoventilation SCORING rule with MORE THAN 25%. The prior review incorrectly treated the two source types as interchangeable. The existing answer matches the ICSD-3-TR obstructive diagnostic context, so do not change its option or answer.",
+      "taskCode": "D3B",
+      "existing": {
+        "prompt": "Pediatric obstructive hypoventilation is classically associated with which finding?",
+        "answer": "CO2 greater than 50 mm Hg for at least 25% of total sleep time with obstructive features",
+        "rationale": "The correct answer is: CO2 greater than 50 mm Hg for at least 25% of total sleep time with obstructive features.",
+        "options": [
+          "PaCO2 less than 35 mm Hg for 10% of sleep",
+          "CO2 greater than 50 mm Hg for at least 25% of total sleep time with obstructive features",
+          "SpO2 below 95% during REM only",
+          "AHI greater than 5 without any CO2 abnormality"
+        ]
+      },
+      "isLearnerEligibleNow": true,
+      "unchangedId": true,
+      "referenceKeyAdditions": [
+        "icsd-3-tr",
+        "aasm-scoring-manual-v3",
+        "fundamentals-sleep-technology-3e",
+        "brpt-handbook"
+      ],
+      "reviewComplete": false,
+      "proposedPrompt": "According to ICSD-3-TR pediatric obstructive sleep apnea diagnostic criteria, which polysomnographic finding supports an obstructive hypoventilation pattern?",
+      "currentAnswerSupportedByDirectICSD3TRSupplement": true,
+      "boundaryComparison": {
+        "diagnosis": {
+          "sourceId": "icsd-3-tr",
+          "sourceName": "ICSD-3-TR 2023 official corrections/supplemental material",
+          "localFile": "732473293-ICSD-3-Text-Revision-Supplemental-Material.pdf",
+          "localPdfPage": 3,
+          "context": "Pediatric OSA criteria B(2), obstructive hypoventilation diagnostic pattern",
+          "threshold": "at least 25% of total sleep time with PaCO2 above 50 mm Hg and obstructive features",
+          "directPageRead": true,
+          "role": "diagnostic classification"
+        },
+        "scoring": {
+          "sourceId": "fundamentals-sleep-technology-3e",
+          "localFile": "Fundamentalssleep(4).PDF",
+          "localPdfPage": 40,
+          "context": "Pediatric hypoventilation scoring rule as printed from AASM scoring manual v2.5",
+          "threshold": "more than 25% of total sleep time with PCO2 above 50 mm Hg",
+          "directPageRead": true,
+          "role": "historical PSG scoring-study support only"
+        },
+        "currentScoringAuthority": "aasm-scoring-manual-v3",
+        "currentManualChecked": false,
+        "releaseDecision": "Do not modify existing correct answer based on historical v2.5 scoring statement. Independently verify any version-3 scoring rule before separate scoring-question edits."
+      }
+    },
+    {
+      "id": "imp-050",
+      "priority": "P1—incomplete event-definition explanation",
+      "disposition": "propose rationale-only precision repair after scoring-manual review",
+      "proposedAnswer": "3%",
+      "proposedRationale": "A pediatric hypopnea requires the applicable airflow-reduction duration and measurement criteria as well as an associated qualifying desaturation or arousal. The question isolates the associated 3% SpO2 threshold; meeting that threshold alone is not sufficient to score the event. Confirm the complete definition against the licensed AASM Version 3 pediatric scoring rules.",
+      "why": "Correct answer tests desaturation threshold, but stem uses 'is scored ... if' and rationale omits the pediatric event-duration rule; risk of overgeneralization.",
+      "taskCode": "D3B",
+      "existing": {
+        "prompt": "According to AASM pediatric scoring rules, a respiratory event is scored as a hypopnea if the amplitude drops by at least 30% and is associated with an arousal, an awakening, or a drop in SpO2 of at least:",
+        "answer": "3%",
+        "rationale": "Pediatric hypopnea criteria use a >=30% amplitude reduction plus an arousal, awakening, or >=3% desaturation.",
+        "options": [
+          "2%",
+          "3%",
+          "4%",
+          "5%"
+        ]
+      },
+      "isLearnerEligibleNow": true,
+      "unchangedId": true,
+      "referenceKeyAdditions": [
+        "aasm-scoring-manual-v3",
+        "fundamentals-sleep-technology-3e",
+        "brpt-handbook"
+      ],
+      "reviewComplete": false
+    },
+    {
+      "id": "boost-039",
+      "priority": "P1—underspecified pediatric central apnea case",
+      "disposition": "propose clarified case wording after current licensed scoring-manual review, while retaining the answer",
+      "proposedPrompt": "A child has absent airflow and absent respiratory effort for at least two missed breaths but less than 20 seconds, with a qualifying associated arousal. Which interpretation best fits the appropriate pediatric scoring pathway?",
+      "proposedAnswer": "It may still meet pediatric central apnea criteria",
+      "proposedRationale": "Unlike a blanket adult 10-second approach, pediatric central apnea criteria may capture events shorter than 20 seconds when the required two-breath duration and associated qualifying consequence are documented. Verify the exact current threshold and event conditions against AASM Version 3 before publication.",
+      "why": "Existing case only says less than 20 seconds, without confirming the two-missed-breath minimum. Other current learner questions test the same decision family (src32-026, case-d3-010).",
+      "taskCode": "D3B",
+      "existing": {
+        "prompt": "A pediatric event has absent airflow and absent effort, lasts less than 20 seconds, and is associated with arousal and desaturation. What is the best interpretation?",
+        "answer": "It may still meet pediatric central apnea criteria",
+        "rationale": "Pediatric central-apnea scoring may allow shorter events when accompanied by associated consequences such as desaturation or arousal.",
+        "options": [
+          "It may still meet pediatric central apnea criteria",
+          "It cannot be scored because it is under 20 seconds",
+          "It must be obstructive",
+          "It must be a PLM"
+        ]
+      },
+      "isLearnerEligibleNow": true,
+      "unchangedId": true,
+      "referenceKeyAdditions": [
+        "aasm-scoring-manual-v3",
+        "fundamentals-sleep-technology-3e",
+        "brpt-handbook"
+      ],
+      "reviewComplete": false
+    }
+  ],
+  "confirmedExactDuplicateFamily": {
+    "canonicalTeachingDecision": "Select age-appropriate pediatric rather than adult-default scoring for a 5-year-old",
+    "prompt": "A scoring question describes a 5-year-old patient and asks for the best scoring approach. What is the safest exam strategy?",
+    "optionSet": [
+      "Use pediatric scoring context/rules when applicable",
+      "Apply adult thresholds automatically",
+      "Ignore age and score from the snore channel only",
+      "Choose the answer used by your own lab even if it conflicts with the manual"
+    ],
+    "answer": "Use pediatric scoring context/rules when applicable",
+    "rationale": "BRPT-style questions often hide the needed rule set in the patient age or study context.",
+    "existingIds": [
+      "v1264-0161",
+      "v1264-0162",
+      "v1264-0163",
+      "v1264-0164",
+      "v1264-0165"
+    ],
+    "verifiedIdenticalAcross": [
+      "prompt",
+      "options",
+      "answer",
+      "rationale"
+    ],
+    "recommendedRetentionCandidate": "v1264-0161",
+    "proposedReviewForFutureDuplicateExclusion": [
+      "v1264-0162",
+      "v1264-0163",
+      "v1264-0164",
+      "v1264-0165"
+    ],
+    "learnerReleaseStatus": "All five remain current source records; none automatically retired or changed.",
+    "editorialBenefit": "Four repeated literal variants consume question slots without exercising four additional competencies. Review which to retain and whether to replace the others with original applied cases."
+  },
+  "nearDuplicateDecisionFamily": {
+    "existingIds": [
+      "boost-039",
+      "src32-026",
+      "case-d3-010"
+    ],
+    "observation": "All ask the same shorter-than-20-seconds pediatric central apnea decision with similar distractors. Not literal duplicates, but require manual decision-level dedupe and correction of missing two-breath qualifier before any new equivalent questions."
+  },
+  "otherExistingFamilyContext": [
+    "src32-025",
+    "nm-026",
+    "mb-domain-3-pediatric-infant-12",
+    "mb-domain-3-pediatric-infant-10"
+  ],
+  "releaseGates": {
+    "qualifiedClinicalQA": "PENDING",
+    "licensedAASMv3RuleVerification": "PENDING",
+    "ownerApproval": "NOT GRANTED",
+    "crossVersionTest": "PENDING",
+    "publish": false
+  },
+  "studentFacingRules": "APA references only; do not show internal source IDs or 'mapped reference' text; do not reproduce textbook figures or copy proprietary questions.",
+  "editorialCorrectionLog": [
+    {
+      "date": "2026-10-12",
+      "itemId": "mb-pediatric-mixed-4",
+      "issue": "Prior proposed correction from at least 25% to more than 25% confounded ICSD-3-TR pediatric OSA obstructive hypoventilation diagnostic criteria with AASM PSG hypoventilation scoring criteria.",
+      "newDisposition": "Keep original answer 'at least 25%'; pending rationale/stem clarification and clinical editorial review. Do not apply old replacement suggestion.",
+      "evidence": "User-provided ICSD-3-TR 2023 supplemental correction sheet PDF p3 vs user-provided FST3 Chapter 61 split PDF volume 4 p40 (reprints AASM Version 2.5 scoring rule).",
+      "currentScoringVersion3TextChecked": false
+    }
+  ]
+}

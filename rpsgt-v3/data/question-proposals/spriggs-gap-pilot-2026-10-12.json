@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-12",
+  "title": "Sleep Pathways Guild — indexed Spriggs topic gap pilot (current-authority controlled)",
+  "status": "DRAFT — NOT IN LEARNER BANK; NOT CLINICALLY APPROVED",
+  "questionCount": 2,
+  "groundwork": {
+    "inspectedQuestionPool": 3240,
+    "alreadyEligible": 2680,
+    "existingHeld": 560,
+    "screeningRun": 38332022784,
+    "method": "Full-bank prompt-phrase coverage and direct task-module semantic triage. Sparse phrase matches are not proof of absent competence.",
+    "sourceMapping": "2015 Spriggs 2e Guild chapter map; textbook passages not directly verified.",
+    "controllingGuidelines": [
+      {
+        "id": "aasm-rls-plmd-2025",
+        "doi": "10.5664/jcsm.11390",
+        "verified": "Published guideline discusses augmentation features: earlier onset, spread, shorter rest latency; medication decisions remain clinician-directed."
+      },
+      {
+        "id": "aasm-adult-osa-diagnostic-testing-2017",
+        "doi": "10.5664/jcsm.6506",
+        "verified": "Guideline Recommendation 3 favors PSG after negative, inconclusive or technically inadequate adult HSAT."
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "SPG-GAP-2026-001",
+      "domain": "D1",
+      "taskCode": "D1A",
+      "task": "Patient information and clinical assessment",
+      "topic": "RLS augmentation assessment",
+      "questionType": "Case-based current-guideline application",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "During the pre-study interview, an adult treated with ropinirole for restless legs syndrome reports that symptoms once occurred only late in the evening. Over several years, they have begun before lunch, appear after shorter periods of sitting, and now sometimes involve the arms. Which action is most appropriate for the sleep technologist?",
+      "options": [
+        "Recommend adding a daytime dose of ropinirole to improve coverage before the PSG",
+        "Treat the change as evidence of PLMD that must be confirmed by the sleep study before anyone is informed",
+        "Document the new symptom timing, involved body regions and dopaminergic medication history, and alert the treating clinician to possible augmentation",
+        "Record the leg symptoms only, because medication chronology cannot influence RLS assessment"
+      ],
+      "answer": "Document the new symptom timing, involved body regions and dopaminergic medication history, and alert the treating clinician to possible augmentation",
+      "rationale": "Earlier onset, shorter symptom latency during rest, and spread beyond the legs during long-term dopaminergic therapy are recognized features of possible RLS augmentation. The technologist should document the pattern and communicate it for prescriber evaluation, not diagnose PLMD or independently adjust medications.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-rls-plmd-2025",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e"
+      ],
+      "studyRecommendationKeys": [
+        "aasm-rls-plmd-2025",
+        "icsd-3-tr",
+        "fundamentals-sleep-technology-3e"
+      ],
+      "sourceCredit": {
+        "inspiration": "Spriggs (2015) chapter-topic map only. Original SPG question; not copied or adapted from publisher exam material.",
+        "spriggs2015": {
+          "chapter": 2,
+          "title": "Sleep Disorders",
+          "printedPages": "12–34",
+          "pdfPages": "26–48"
+        },
+        "controllingSource": {
+          "id": "aasm-rls-plmd-2025",
+          "location": "Augmentation discussion and dopamine-agonist recommendations",
+          "doi": "10.5664/jcsm.11390",
+          "apa7": "Winkelman, J. W., Berkowski, J. A., DelRosso, L. M., Koo, B. B., Scharf, M. T., Sharon, D., Zak, R. S., Kazmi, U., Falck-Ytter, Y., Shelgikar, A. V., Trotti, L. M., & Walters, A. S. (2025). Treatment of restless legs syndrome and periodic limb movement disorder: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 21(1), 137–152. https://doi.org/10.5664/jcsm.11390"
+        },
+        "evidenceBoundary": "RLS treatment guideline supports augmentation pattern; ICSD-3-TR controls formal diagnosis. Exact textbook passage not verified."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "needsIndependentClinicalReview": true,
+        "needsSemanticFamilyReview": true,
+        "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
+      },
+      "notes": "Avoid clinician-directed dose selection; this is intake recognition/escalation, not pharmacologic prescribing.",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D1A",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-19",
+            "chapterOrSection": "Chapter 19: Restless Legs Syndrome and Periodic Limb Movement Disorder",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ],
+        "directBookPassageReview": {
+          "sourceId": "fundamentals-sleep-technology-3e",
+          "chapter": "19 — Restless Legs Syndrome and Periodic Limb Movement Disorder",
+          "localVolume": "Fundamentalssleep(2).PDF",
+          "localPdfPage": 14,
+          "section": "Treatment of RLS and PLMD",
+          "passageSupports": "Older FST3 text describes long-term augmentation under dopamine therapy with worsening symptoms, earlier daytime onset and spread to the arms or other areas.",
+          "passageDoesNotEstablish": "Current recommended RLS drug selection, formal diagnosis, clinical dosing decisions, or independent technologist medication adjustment.",
+          "criticalSupersession": "The same textbook passage describes dopamine agonists as first-line based on older guidance; do not carry this prescription recommendation into current learner rationales. The Guild's indexed AASM 2025 RLS/PLMD guideline controls contemporary treatment advice.",
+          "verificationLevel": "direct PDF page checked for concept only; current treatment source separately required",
+          "checkedFrom": "user-provided local BRPT-listed recommended textbook PDF"
+        }
+      }
+    },
+    {
+      "id": "SPG-GAP-2026-002",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Perform procedures and follow practice guidelines",
+      "topic": "Adult negative HSAT follow-up pathway",
+      "questionType": "Case-based current-guideline application",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "An adult continues to report loud snoring, witnessed apneas, and daytime sleepiness after one technically adequate home sleep apnea test is reported as negative. When reviewing the referral pathway with the ordering team, which recommendation is consistent with the AASM diagnostic-testing guideline?",
+      "options": [
+        "Repeat the same home apnea test to confirm the negative result before any in-lab testing is considered",
+        "Arrange clinician-directed attended polysomnography because a negative HSAT does not conclusively exclude OSA in this symptomatic patient",
+        "Use a negative technically adequate HSAT to rule out OSA despite continued symptoms",
+        "Replace PSG with overnight oximetry alone as the definitive next diagnostic step"
+      ],
+      "answer": "Arrange clinician-directed attended polysomnography because a negative HSAT does not conclusively exclude OSA in this symptomatic patient",
+      "rationale": "AASM guidance recommends PSG after a single negative, inconclusive, or technically inadequate HSAT when evaluating suspected OSA. The technologist should communicate the limitation and coordinate under the ordering clinician's direction rather than interpreting the HSAT as definitively excluding disease.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-adult-osa-diagnostic-testing-2017",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e"
+      ],
+      "studyRecommendationKeys": [
+        "aasm-adult-osa-diagnostic-testing-2017",
+        "aast-hsat-2020",
+        "fundamentals-sleep-technology-3e"
+      ],
+      "sourceCredit": {
+        "inspiration": "Spriggs (2015) chapter-topic map for alternative/portable study pathways; no copied text or publisher questions.",
+        "spriggs2015": {
+          "chapter": 11,
+          "title": "Performing Other Types of Sleep Studies",
+          "printedPages": "153–156",
+          "pdfPages": "167–170"
+        },
+        "controllingSource": {
+          "id": "aasm-adult-osa-diagnostic-testing-2017",
+          "location": "Recommendation 3: negative/inconclusive/technically inadequate HSAT follow-up",
+          "doi": "10.5664/jcsm.6506",
+          "apa7": "Kapur, V. K., Auckley, D. H., Chowdhuri, S., Kuhlmann, D. C., Mehra, R., Ramar, K., & Harrod, C. G. (2017). Clinical practice guideline for diagnostic testing for adult obstructive sleep apnea: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 13(3), 479–504. https://doi.org/10.5664/jcsm.6506"
+        },
+        "evidenceBoundary": "Applies to adult diagnostic pathway; clinician decides appropriate testing. This is distinct from longitudinal management after established OSA. Exact textbook passage not verified."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "needsIndependentClinicalReview": true,
+        "needsSemanticFamilyReview": true,
+        "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
+      },
+      "notes": "Do not conflate initial diagnostic-test guideline with 2021 follow-up testing in treated established OSA.",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D2B",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-44",
+            "chapterOrSection": "Chapter 44: Home Sleep Apnea Testing",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ],
+        "directBookPassageReview": {
+          "sourceId": "fundamentals-sleep-technology-3e",
+          "chapter": "44 — Home Sleep Apnea Testing",
+          "localVolume": "Fundamentalssleep(3).PDF",
+          "localPdfPage": 185,
+          "section": "Sensitivity, Specificity, and Positive Predictive Values of HSAT",
+          "passageSupports": "A negative HSAT has lower negative predictive value in high-pretest-probability patients; the chapter recommends attended PSG if clinical suspicion remains high.",
+          "passageDoesNotEstablish": "A technologist's independent authority to order testing or an override of current AASM adult OSA diagnostic testing guideline.",
+          "verificationLevel": "direct PDF page checked for concept only; AASM 2017 adult OSA diagnostic guideline remains decision authority",
+          "checkedFrom": "user-provided local BRPT-listed recommended textbook PDF"
+        }
+      }
+    }
+  ],
+  "editorialGate": {
+    "independentClinicalReview": "REQUIRED",
+    "semanticDuplicateReview": "REQUIRED",
+    "ownerReleaseApproval": "NOT GRANTED",
+    "mergeStatus": "DO NOT MERGE UNTIL FULL QA"
+  },
+  "learnerReferencePresentation": "APA 7 only. Hide internal mapping labels/keys in learner UI.",
+  "copyrightBoundary": "New original cases. No verbatim Spriggs passages, figures, source test items, or publisher answer keys.",
+  "sourcesAPA7": [
+    "Winkelman, J. W., Berkowski, J. A., DelRosso, L. M., Koo, B. B., Scharf, M. T., Sharon, D., Zak, R. S., Kazmi, U., Falck-Ytter, Y., Shelgikar, A. V., Trotti, L. M., & Walters, A. S. (2025). Treatment of restless legs syndrome and periodic limb movement disorder: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 21(1), 137–152. https://doi.org/10.5664/jcsm.11390",
+    "Kapur, V. K., Auckley, D. H., Chowdhuri, S., Kuhlmann, D. C., Mehra, R., Ramar, K., & Harrod, C. G. (2017). Clinical practice guideline for diagnostic testing for adult obstructive sleep apnea: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 13(3), 479–504. https://doi.org/10.5664/jcsm.6506",
+    "Spriggs, W. H. (2015). Essentials of polysomnography: A training guide and reference for sleep technicians (2nd ed.). Jones & Bartlett Learning."
+  ],
+  "gapReview": {
+    "stage": "RPSGT question-development / high-value underrepresented decision-family pilot",
+    "currentEvidenceVerified": [
+      "2025 AASM RLS/PLMD guideline describes augmentation as earlier onset, spread to other body areas, and shorter rest latency associated with dopaminergic therapies.",
+      "2017 AASM adult OSA diagnostic testing guideline Recommendation 3 explicitly recommends PSG following one negative, inconclusive, or technically inadequate HSAT.",
+      "Both correct responses stay within technologist documentation, communication, and coordination scope."
+    ],
+    "bankRunId": 38332267610,
+    "bankCount": 3240,
+    "previousHeldPilotCount": 5,
+    "lexicalSimilarityFlags": 0,
+    "errors": 0,
+    "conceptFamilyCaution": "Six RLS-related prompts and 43 HSAT-related prompts detected by broad search; no equivalent tested decision seen among logged samples. This is NOT complete human semantic approval.",
+    "pending": [
+      "Review all 6 RLS and all 43 HSAT concept-family prompts for equivalent decisions.",
+      "Independent qualified clinical/editorial review of both answer rationales and distractors.",
+      "Owner release approval before learner-facing import."
+    ],
+    "approval": "NOT GRANTED",
+    "libraryPassageCheck": "Both cases checked against specific original user-provided Fundamentals of Sleep Technology 3e pages: volume 2 page 14 (RLS augmentation), volume 3 page 185 (negative HSAT). Current AASM overlays preserved; chapter 19 pharmacotherapy hierarchy is outdated."
+  },
+  "sourcePriorityPolicy": {
+    "policyId": "SPG-RPSGT-LIBRARY-FIRST-2026-10-12",
+    "examScope": "brpt-blueprint",
+    "examFormatAndPolicies": "brpt-handbook",
+    "recommendedReadings": "brpt-refs",
+    "recommendedBookFirst": true,
+    "libraryMasterWorkbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+    "currentClinicalRules": "Specific indexed AASM/AAST/ICSD references only when required for a present-day clinical or scoring decision; these are verification overlays, not primary topic-selection sources.",
+    "secondaryTopicSeed": "Spriggs (2015) mapped chapters; 2002 source historical only",
+    "noOutsideTopicSeedsWithoutLibraryJustification": true
+  }
+}
