@@ -49,10 +49,11 @@
     <label>Domain<select data-practice-domain><option value="all">All domains</option></select></label>
     <label>Task<select data-practice-task><option value="all">All tasks</option></select></label>
     <label>Subject<select data-practice-subject><option value="all">All subjects</option></select></label>
-    <label>Difficulty<select data-practice-difficulty><option value="all" selected>All difficulty levels</option><option value="Easy">Easy</option><option value="Intermediate">Intermediate</option><option value="Hard">Hard</option></select></label>
+    <label>Difficulty<select data-practice-difficulty><option value="all" selected>All difficulty levels</option><option value="easy">Easy / Foundations</option><option value="intermediate">Intermediate</option><option value="hard">Hard / Advanced</option><option value="exam">Exam-tagged (separate)</option></select></label>
     <label>Session size<select data-practice-size><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="25">25 questions</option><option value="50">50 questions</option><option value="100">100 questions</option><option value="all">All filtered questions</option></select></label>
   </div>
   <div class="mode-notice learner" data-mode-notice><strong>Learner-ready questions only:</strong> Questions with incomplete prompts, invalid answer sets, or unresolved learner-readiness issues are excluded from sessions while the underlying bank remains unchanged.</div>
+  <p class="rail-note" data-difficulty-help>Difficulty uses existing source tags: Easy includes Beginner, Foundation and Core; Hard includes Advanced and Tricky. Exam-tagged questions are separate because “Exam” is not a difficulty rating. Choosing a domain, task or subject can reduce the available pool.</p>
   <div class="actions"><button class="btn primary" type="button" data-start-practice>Start practice</button></div>
 </section>
 <section class="section practice-session hidden" data-practice-shell role="dialog" aria-modal="true" aria-label="Practice session" tabindex="-1">
@@ -72,7 +73,7 @@
     </footer>
   </div>
   <aside class="session-rail">
-    <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span>Subject: <strong data-session-subject>All subjects</strong></span><br><span data-progress-policy>Recorded in your learner progress</span></p></div>
+    <div class="card"><h3>This session</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-session-answered>0</strong></div><div class="session-stat"><span>Correct</span><strong data-session-correct>0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-session-accuracy>0%</strong></div><div class="session-stat"><span>Filtered pool</span><strong data-session-pool>0</strong></div></div><p class="rail-note" role="status" data-session-availability-note></p><p class="rail-note"><strong data-active-mode>Learner practice</strong><br><span>Subject: <strong data-session-subject>All subjects</strong></span><br><span data-progress-policy>Recorded in your learner progress</span></p></div>
     <div class="card"><h3>Overall learner record</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-stat="answered">0</strong></div><div class="session-stat"><span>Accuracy</span><strong data-stat="accuracy">0%</strong></div><div class="session-stat"><span>Missed</span><strong data-stat="missed">0</strong></div></div></div>
     <div class="card practice-calculator-card" data-practice-calculator>
       <div class="practice-calculator-head"><h3>Calculator</h3><span class="status">Study tool</span></div>
@@ -141,6 +142,7 @@
 <script src="core/practice-learner-repair.js"></script>
 <script src="core/question-option-order.js"></script>
 <script src="core/practice-subjects.js"></script>
+<script src="core/practice-difficulty.js"></script>
 <script src="core/practice.js"></script>
 <script src="core/practice-coach.js"></script>
 <script src="core/practice-prefill.js"></script>

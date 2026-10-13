@@ -37,9 +37,13 @@ for(const developerTerm of ['Development boundary','complete question-bank manif
 for(const learnerMarker of ['Practice Center · Focused sessions','Practice boundary:','Available bank records','Overall learner record','Full-length Mock-Style Exam practice remains in the Candidate Center']){
   if(!html.includes(learnerMarker)) throw new Error(`Practice Center learner presentation is missing ${learnerMarker}.`);
 }
-for(const difficulty of ['Easy','Intermediate','Hard']){
+for(const difficulty of ['easy','intermediate','hard','exam']){
   if(!html.includes(`value="${difficulty}"`)) throw new Error(`Practice difficulty option ${difficulty} is missing.`);
 }
+const difficultyEngine=await readFile(join(root,'core','practice-difficulty.js'),'utf8');
+if(!difficultyEngine.includes('RPSGTPracticeDifficulty')||!js.includes('difficultyEngine.matches(question,difficulty)')) throw new Error('Shared difficulty tier grouping must be loaded into the learner filter.');
+if(html.indexOf('src="core/practice-difficulty.js"')<0||html.indexOf('src="core/practice-difficulty.js"')>html.indexOf('src="core/practice.js"')) throw new Error('Shared difficulty grouping must initialize before Practice.');
+if(!html.includes('data-session-availability-note')||!js.includes('data-session-availability-note')) throw new Error('Filtered session size needs an explicit available-question message.');
 if(!js.includes('selectedDifficulty()')||!js.includes('matchesDifficulty(question,difficulty)')) throw new Error('Practice difficulty filtering is not wired into the learner pool.');
 if(!html.includes('core/practice-subjects.js')||!js.includes('selectedSubject()')||!js.includes('matchesSubject(question,subject)')) throw new Error('Practice subject filtering is not wired into the learner pool.');
 for(const token of ['sessionSubject:"all"','dataset.practiceSubjectLock','questionSubjectMatch','subject filter integrity check failed']){if(!js.includes(token)) throw new Error('Practice session subject lock is missing '+token+'.');}
