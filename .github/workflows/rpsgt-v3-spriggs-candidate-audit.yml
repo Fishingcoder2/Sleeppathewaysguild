@@ -20,6 +20,7 @@ on:
       - rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-seven-editorial-preflight-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
   pull_request:
     branches:
@@ -38,6 +39,7 @@ on:
       - rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-seven-editorial-preflight-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
 
 permissions:
@@ -64,6 +66,7 @@ jobs:
           node --check rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
           node --check rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
           node --check rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-seven-editorial-preflight-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
@@ -88,6 +91,8 @@ jobs:
         run: node rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
       - name: Simulate six-family duplicate consolidation across shared V2 V3 question IDs
         run: node rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+      - name: Check seven unpublished draft answer keys, distractors, sources and release holds
+        run: node rpsgt-v3/scripts/test-rpsgt-seven-editorial-preflight-2026.mjs
       - name: Enforce seven conditional owner approvals, five revision holds, fifteen duplicate exclusions prohibited
         run: node rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
       - name: Upload full audit JSON and Markdown
@@ -105,4 +110,5 @@ jobs:
             rpsgt-v3/audit-output/rpsgt-v2-v3-exact-duplicate-families-2026.*
             rpsgt-v3/audit-output/rpsgt-v2-v3-six-family-consolidation-dry-run-2026.*
             rpsgt-v3/audit-output/rpsgt-conditional-owner-approval-release-gate-2026.*
+            rpsgt-v3/audit-output/rpsgt-seven-editorial-preflight-2026.*
           if-no-files-found: warn
