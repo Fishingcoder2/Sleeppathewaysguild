@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Editorial quality contract for seven UNPUBLISHED RPSGT candidates.
-// This check does not constitute clinical signoff, semantic uniqueness,
+// The separate owner-attestation record establishes the owner's RPSGT clinical review.
+// This automated check alone does not constitute clinical signoff or semantic uniqueness,
 // licensed AASM v3 verification, or learner-history/browser regression.
 import assert from 'node:assert/strict';
 import {readFile, writeFile, mkdir} from 'node:fs/promises';
@@ -13,6 +14,7 @@ const dir='rpsgt-v3/data/question-proposals/';
 const spriggs=await read(dir+'spriggs-modernized-2026-10-12.json');
 const gaps=await read(dir+'spriggs-gap-pilot-2026-10-12.json');
 const approval=await read(dir+'OWNER-CONDITIONAL-APPROVAL-2026-10-13.json');
+const ownerReview=await read(dir+'OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json');
 const overlay=await read('data/owner-approved-question-release.json');
 const qList=[...spriggs.questions,...gaps.questions];
 const expected={
@@ -42,8 +44,9 @@ for(const q of qList){
  assert.equal(recorded.ownerConditionalPublicationApproved,true);
  assert.equal(recorded.finalLearnerReleaseApproved,false);
  assert.equal(recorded.eligibleForLearnerBank,false);
- assert.equal(recorded.independentQualifiedClinicalSignoff,'PENDING');
- assert.equal(recorded.individualAnswerDistractorRationaleSignoff,'PENDING');
+ assert.equal(recorded.independentQualifiedClinicalSignoff,'NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13');
+ assert.equal(recorded.individualAnswerDistractorRationaleSignoff,'OWNER_RPSGT_APPROVED_2026-10-13');
+ assert.equal(ownerReview.itemAttestations.find(x=>x.id===q.id)?.ownerApprovedFinalWording,true);
  assert.equal(recorded.completeSemanticDuplicateReview,'PENDING');
  assert.equal(recorded.crossVersionLearnerAndHistoryRegression,'PENDING');
  assert.equal(recorded.licensedCurrentAasmV3CheckCompleted,false);
@@ -64,6 +67,8 @@ assert.equal(approval.decisionSummary.learnerQuestionRevisionsAuthorizedNow,0);
 assert.equal(approval.decisionSummary.learnerRetirementsAuthorizedNow,0);
 assert.equal(approval.duplicateRetirements.anyRetirementActionAllowed,false);
 assert.equal(approval.duplicateRetirements.candidateCount,15);
+assert.equal(approval.policyAmendment.independentSecondReviewerRequired,false);
+assert.equal(approval.gateDecision.ownerClinicalItemReview,'COMPLETED_SEVEN_NEW__FIVE_REVISIONS_PENDING');
 assert.equal(approval.gateDecision.status,'BLOCKED_FROM_LEARNER_ACTIVATION');
 const report={
  date:'2026-10-13',
@@ -75,11 +80,12 @@ const report={
  unchangedTaskCodes:7,
  uniqueFourOptionItems:7,
  ownerConditionalApprovals:7,
- qualifiedClinicalSignoffsClaimed:0,
+ ownerRpsgtClinicalApprovalsRecorded:7,
+ externalSecondReviewerRequired:false,
  licensedAasmV3ScoringRulesClaimedVerified:0,
  learnerContentActivated:0,
  duplicateRetirementsAuthorized:0,
- caveat:'Automated structural and editorial checks do not replace qualified professional clinical review, comprehensive semantic-family signoff, licensed current AASM v3 validation, or real learner-history regression.'
+ caveat:'The Guild owner RPSGT reviewed and approved seven draft questions separately; a second reviewer is not required by policy. Automated checks do not replace semantic-family review, licensed current AASM v3 validation, or real learner-history regression.'
 };
 const target=join(root,'rpsgt-v3/audit-output');
 await mkdir(target,{recursive:true});
