@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-12",
+  "title": "Sleep Pathways Guild — indexed Spriggs topic gap pilot (current-authority controlled)",
+  "status": "DRAFT — NOT IN LEARNER BANK; NOT CLINICALLY APPROVED",
+  "questionCount": 2,
+  "groundwork": {
+    "inspectedQuestionPool": 3240,
+    "alreadyEligible": 2680,
+    "existingHeld": 560,
+    "screeningRun": 38332022784,
+    "method": "Full-bank prompt-phrase coverage and direct task-module semantic triage. Sparse phrase matches are not proof of absent competence.",
+    "sourceMapping": "2015 Spriggs 2e Guild chapter map; textbook passages not directly verified.",
+    "controllingGuidelines": [
+      {
+        "id": "aasm-rls-plmd-2025",
+        "doi": "10.5664/jcsm.11390",
+        "verified": "Published guideline discusses augmentation features: earlier onset, spread, shorter rest latency; medication decisions remain clinician-directed."
+      },
+      {
+        "id": "aasm-adult-osa-diagnostic-testing-2017",
+        "doi": "10.5664/jcsm.6506",
+        "verified": "Guideline Recommendation 3 favors PSG after negative, inconclusive or technically inadequate adult HSAT."
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "SPG-GAP-2026-001",
+      "domain": "D1",
+      "taskCode": "D1A",
+      "task": "Patient information and clinical assessment",
+      "topic": "RLS augmentation assessment",
+      "questionType": "Case-based current-guideline application",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "During the pre-study interview, an adult treated with ropinirole for restless legs syndrome reports that symptoms once occurred only late in the evening. Over several years, they have begun before lunch, appear after shorter periods of sitting, and now sometimes involve the arms. Which action is most appropriate for the sleep technologist?",
+      "options": [
+        "Document the change in symptom timing, spread, and medication history, and alert the treating clinician to possible augmentation",
+        "Suggest doubling the ropinirole dose before the overnight study",
+        "Conclude that the patient has periodic limb movement disorder based on the interview alone",
+        "Ignore the changes because earlier symptom onset always indicates successful treatment"
+      ],
+      "answer": "Document the change in symptom timing, spread, and medication history, and alert the treating clinician to possible augmentation",
+      "rationale": "Earlier onset, shorter symptom latency during rest, and spread beyond the legs during long-term dopaminergic therapy are recognized features of possible RLS augmentation. The technologist should document the pattern and communicate it for prescriber evaluation, not diagnose PLMD or independently adjust medications.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-rls-plmd-2025"
+      ],
+      "studyRecommendationKeys": [
+        "aasm-rls-plmd-2025",
+        "icsd-3-tr"
+      ],
+      "sourceCredit": {
+        "inspiration": "Spriggs (2015) chapter-topic map only. Original SPG question; not copied or adapted from publisher exam material.",
+        "spriggs2015": {
+          "chapter": 2,
+          "title": "Sleep Disorders",
+          "printedPages": "12–34",
+          "pdfPages": "26–48"
+        },
+        "controllingSource": {
+          "id": "aasm-rls-plmd-2025",
+          "location": "Augmentation discussion and dopamine-agonist recommendations",
+          "doi": "10.5664/jcsm.11390"
+        },
+        "evidenceBoundary": "RLS treatment guideline supports augmentation pattern; ICSD-3-TR controls formal diagnosis. Exact textbook passage not verified."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "needsIndependentClinicalReview": true,
+        "needsSemanticFamilyReview": true,
+        "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
+      },
+      "notes": "Avoid clinician-directed dose selection; this is intake recognition/escalation, not pharmacologic prescribing."
+    },
+    {
+      "id": "SPG-GAP-2026-002",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Perform procedures and follow practice guidelines",
+      "topic": "Adult negative HSAT follow-up pathway",
+      "questionType": "Case-based current-guideline application",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "An adult continues to report loud snoring, witnessed apneas, and daytime sleepiness after one technically adequate home sleep apnea test is reported as negative. When reviewing the referral pathway with the ordering team, which recommendation is consistent with the AASM diagnostic-testing guideline?",
+      "options": [
+        "Arrange clinician-directed attended polysomnography because a negative HSAT does not exclude OSA in a symptomatic patient",
+        "Conclude that OSA has been ruled out and close the referral without follow-up",
+        "Repeat home oximetry alone until it produces an apnea-hypopnea index",
+        "Initiate supplemental oxygen without a new order or diagnostic assessment"
+      ],
+      "answer": "Arrange clinician-directed attended polysomnography because a negative HSAT does not exclude OSA in a symptomatic patient",
+      "rationale": "AASM guidance recommends PSG after a single negative, inconclusive, or technically inadequate HSAT when evaluating suspected OSA. The technologist should communicate the limitation and coordinate under the ordering clinician's direction rather than interpreting the HSAT as definitively excluding disease.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-adult-osa-diagnostic-testing-2017"
+      ],
+      "studyRecommendationKeys": [
+        "aasm-adult-osa-diagnostic-testing-2017",
+        "aast-hsat-2020"
+      ],
+      "sourceCredit": {
+        "inspiration": "Spriggs (2015) chapter-topic map for alternative/portable study pathways; no copied text or publisher questions.",
+        "spriggs2015": {
+          "chapter": 11,
+          "title": "Performing Other Types of Sleep Studies",
+          "printedPages": "153–156",
+          "pdfPages": "167–170"
+        },
+        "controllingSource": {
+          "id": "aasm-adult-osa-diagnostic-testing-2017",
+          "location": "Recommendation 3: negative/inconclusive/technically inadequate HSAT follow-up",
+          "doi": "10.5664/jcsm.6506"
+        },
+        "evidenceBoundary": "Applies to adult diagnostic pathway; clinician decides appropriate testing. This is distinct from longitudinal management after established OSA. Exact textbook passage not verified."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "needsIndependentClinicalReview": true,
+        "needsSemanticFamilyReview": true,
+        "qaStatus": "PROPOSED; independent clinical + duplicate review needed; not approved"
+      },
+      "notes": "Do not conflate initial diagnostic-test guideline with 2021 follow-up testing in treated established OSA."
+    }
+  ],
+  "editorialGate": {
+    "independentClinicalReview": "REQUIRED",
+    "semanticDuplicateReview": "REQUIRED",
+    "ownerReleaseApproval": "NOT GRANTED",
+    "mergeStatus": "DO NOT MERGE UNTIL FULL QA"
+  },
+  "learnerReferencePresentation": "APA 7 only. Hide internal mapping labels/keys in learner UI.",
+  "copyrightBoundary": "New original cases. No verbatim Spriggs passages, figures, source test items, or publisher answer keys."
+}
