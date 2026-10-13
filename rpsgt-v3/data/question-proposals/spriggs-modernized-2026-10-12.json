@@ -1,0 +1,835 @@
+{
+  "packageId": "spg-rpsgt-v3-spriggs-original-questions-2026-10-12",
+  "schemaVersion": 1,
+  "status": "DRAFT—EDITORIAL REVIEW ONLY; NOT IN LEARNER BANK",
+  "draftDate": "2026-10-12",
+  "questionCount": 16,
+  "basis": "Question-writing topics are drawn from indexed chapter maps for Spriggs (2015) and historical Spriggs (2002), independently modernized using current AASM, AAST, BRPT and AASM-published protocol evidence. No publisher questions, posttests, answer keys, figures or text copied.",
+  "books": [
+    {
+      "apa": "Spriggs, W. H. (2015). Essentials of polysomnography: A training guide and reference for sleep technicians (2nd ed.). Jones & Bartlett Learning.",
+      "role": "2015 indexed chapter-level topic guide; requires independent clinical corroboration.",
+      "indexedMap": "https://docs.google.com/spreadsheets/d/111Es2ZAyBvf94LlRe3iuCWmZLEaXJ_79/edit"
+    },
+    {
+      "apa": "Spriggs, W. H. (2002). Principles of polysomnography: A complete training program for sleep technicians. Sleep Ed, LLC.",
+      "role": "Historical contextual source only; not current scoring, diagnostic, device or clinical authority.",
+      "indexedMap": "https://docs.google.com/spreadsheets/d/1IyL0iI-QFNHU5zgB__zm_rJSDR0Q1sMU/edit"
+    }
+  ],
+  "authorityReferences": [
+    {
+      "id": "aasmV3",
+      "key": "aasm-scoring-current",
+      "label": "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ",
+      "url": "https://aasm.org/clinical-resources/scoring-manual/"
+    },
+    {
+      "id": "brpt",
+      "key": "brpt-blueprint",
+      "label": "BRPT RPSGT Exam Blueprint / Candidate Handbook (current online version)",
+      "url": "https://brpt.org/rpsgt/exam-blueprint/"
+    },
+    {
+      "id": "aastPsg",
+      "key": "aast-psg",
+      "label": "AAST Standard Polysomnography technical guideline",
+      "url": "https://aastweb.org/clinical-resources/technical-guidelines/"
+    },
+    {
+      "id": "aastEtco2",
+      "key": "aast-end-tidal-co2-2018",
+      "label": "AAST End-Tidal CO2 Technical Guideline",
+      "url": "https://www.aastweb.org/Portals/0/Docs/Resources/Guidelines/End-Tidal%20CO2-1.pdf"
+    },
+    {
+      "id": "papAcclimation",
+      "key": "aast-pap-acclimation",
+      "label": "AAST Positive Airway Pressure Acclimation and Desensitization (2022)",
+      "url": "https://aastweb.org/wp-content/uploads/2025/03/Positive-Airway-Pressure-Acclimation-and-Desensitization-Guideline-2022.pdf"
+    },
+    {
+      "id": "adultMslt",
+      "key": "aasm-mslt-mwt",
+      "label": "Krahn et al. (2021), adult MSLT/MWT protocols",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8726366/"
+    },
+    {
+      "id": "pedMslt",
+      "key": "aasm-pediatric-mslt-mwt-2024",
+      "label": "Maski et al. (2024), pediatric MSLT protocols",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10985297/"
+    },
+    {
+      "id": "oral",
+      "key": "aasm-oral-appliance",
+      "label": "AASM/AADSM oral appliance clinical practice guideline (2015)",
+      "url": "https://aasm.org/clinical-resources/practice-standards/practice-guidelines/"
+    },
+    {
+      "id": "icsd",
+      "key": "icsd",
+      "label": "International Classification of Sleep Disorders, Third Edition, Text Revision (ICSD-3-TR)",
+      "url": "https://aasm.org/clinical-resources/international-classification-sleep-disorders/"
+    }
+  ],
+  "controlNotes": [
+    "Owner-reviewed, question-by-question editorial approval is required before release.",
+    "All items carry qa.manualReviewRecommended=true and are outside the owner-approved release and all learner pools.",
+    "Current AASM online Version 3 (with erratum/FAQ) governs scoring; book-specific rules and case examples are not reproduced.",
+    "2024 pediatric MSLT differs from 2021 adult MSLT minimum-sleep conditions; do not mix populations.",
+    "Verify wording against licensed current manual when exact scoring-rule interpretations arise.",
+    "Audit near-duplicates against 3,240 effective questions (2,920 originals plus 320 owner-approved additions) before promotion.",
+    "Complete chapter-to-statement/page locator audit before claiming direct citation of Spriggs passage."
+  ],
+  "questions": [
+    {
+      "id": "SPG-SPRIGGS-2026-001",
+      "domain": "D1",
+      "taskCode": "D1A",
+      "task": "Patient information and clinical assessment",
+      "topic": "Sleepiness assessment",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "An adult referred for sleep testing reports severe daytime sleepiness while routinely sleeping only four to five hours because of rotating shifts. What information is most important to document before attributing the complaint to a primary hypersomnolence disorder?",
+      "options": [
+        "Whether the patient prefers a morning appointment",
+        "Usual sleep schedule, sleep duration, shift pattern, and relevant medication use",
+        "Whether the patient has ever used a nasal pillow mask",
+        "The preferred EEG screen color"
+      ],
+      "answer": "Usual sleep schedule, sleep duration, shift pattern, and relevant medication use",
+      "rationale": "Restricted or irregular sleep and substances can confound assessment of excessive daytime sleepiness; the clinical evaluation must account for sleep opportunity and schedules.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "icsd"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "icsd",
+        "brpt-blueprint"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 2,
+        "spriggs2002HistoricalChapter": 4,
+        "authority": [
+          "International Classification of Sleep Disorders, Third Edition, Text Revision (ICSD-3-TR)",
+          "BRPT RPSGT Exam Blueprint / Candidate Handbook (current online version)"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D1A",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-002",
+      "domain": "D1",
+      "taskCode": "D1B",
+      "task": "Patient and caregiver education",
+      "topic": "Patient education",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A caregiver asks why an attended polysomnogram includes head and eye electrodes as well as breathing sensors. Which explanation best matches the purpose of a comprehensive PSG?",
+      "options": [
+        "Head and eye electrodes record sleep-related signals while airflow, effort, and oxygen channels provide respiratory context",
+        "The electrodes are used only to estimate blood pressure",
+        "Eye electrodes directly diagnose obstructive sleep apnea without any other channels",
+        "A single pulse-oximeter channel determines sleep stages"
+      ],
+      "answer": "Head and eye electrodes record sleep-related signals while airflow, effort, and oxygen channels provide respiratory context",
+      "rationale": "PSG combines neurophysiologic and cardiorespiratory signals. No single pulse-oximeter channel measures the stages of sleep.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 6,
+        "spriggs2002HistoricalChapter": 1,
+        "authority": [
+          "AAST Standard Polysomnography technical guideline",
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D1B",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-003",
+      "domain": "D1",
+      "taskCode": "D1C",
+      "task": "Provide therapy support",
+      "topic": "PAP support",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A patient becomes anxious when the prescribed PAP mask is first applied and asks to stop. What is the best initial technologist response?",
+      "options": [
+        "Increase pressure to shorten the adjustment period",
+        "Tell the patient interface discomfort cannot be addressed",
+        "Offer explanation, supported mask familiarization and interface options, and document the patient's response",
+        "Silently change to an unprescribed treatment modality"
+      ],
+      "answer": "Offer explanation, supported mask familiarization and interface options, and document the patient's response",
+      "rationale": "Supported acclimation and individual mask fitting are recommended; changes to ordered treatment require proper clinical authorization.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-pap-acclimation"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-pap-acclimation"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 10,
+        "spriggs2002HistoricalChapter": 3,
+        "authority": [
+          "AAST Positive Airway Pressure Acclimation and Desensitization (2022)"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D1C",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-004",
+      "domain": "D2",
+      "taskCode": "D2A",
+      "task": "Determine technical preparation",
+      "topic": "Signal preparation",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "During hookup, the eye-movement channel remains nearly flat during instructed left-right eye movements while EEG responds normally. What is the most appropriate next step?",
+      "options": [
+        "Assume the patient cannot enter REM sleep",
+        "Verify the EOG electrodes, connections, derivation and calibration before recording",
+        "Raise every channel's high-frequency filter to conceal the problem",
+        "Remove the EOG channels from the montage without explanation"
+      ],
+      "answer": "Verify the EOG electrodes, connections, derivation and calibration before recording",
+      "rationale": "A failed channel-specific biocalibration is a setup or acquisition problem until electrode, derivation and equipment integrity are checked.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 6,
+        "spriggs2002HistoricalChapter": 1,
+        "authority": [
+          "AAST Standard Polysomnography technical guideline",
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D2A",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-005",
+      "domain": "D2",
+      "taskCode": "D2A",
+      "task": "Determine technical preparation",
+      "topic": "Electrode placement",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A technologist is preparing standard EEG sites for a PSG. Which approach best supports reproducible placement across patients?",
+      "options": [
+        "Estimate sites from the patient's hairstyle",
+        "Use measured anatomical landmarks and the prescribed electrode-placement system",
+        "Place both electrodes directly over the ears",
+        "Choose different unmeasured positions whenever a cable seems short"
+      ],
+      "answer": "Use measured anatomical landmarks and the prescribed electrode-placement system",
+      "rationale": "Standardized landmark measurements support consistent electrode locations; montage and technical requirements should be checked against the current AASM manual.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-scoring-current",
+        "aast-psg"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aasm-scoring-current",
+        "aast-psg"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 6,
+        "spriggs2002HistoricalChapter": 1,
+        "authority": [
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ",
+          "AAST Standard Polysomnography technical guideline"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D2A",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-006",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Perform procedures and follow practice guidelines",
+      "topic": "Pediatric MSLT protocol",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A 12-year-old has a PSG before a planned MSLT. The recording provides eight hours in bed but only six hours and twenty minutes of sleep. What should the technologist do?",
+      "options": [
+        "Treat this as meeting the pediatric minimum sleep-time protocol",
+        "Ignore the PSG because the MSLT uses only daytime data",
+        "Flag the short sleep time and communicate with the ordering team under the laboratory's protocol before proceeding",
+        "Substitute a home pulse-oximetry result for the missing sleep"
+      ],
+      "answer": "Flag the short sleep time and communicate with the ordering team under the laboratory's protocol before proceeding",
+      "rationale": "The 2024 pediatric MSLT guidance calls for an attended PSG allowing at least eight hours in bed and seven hours of sleep; insufficient sleep requires protocol review.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-pediatric-mslt-mwt-2024"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aasm-pediatric-mslt-mwt-2024"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 11,
+        "spriggs2002HistoricalChapter": 3,
+        "authority": [
+          "Maski et al. (2024), pediatric MSLT protocols"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D2B",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-007",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Perform procedures and follow practice guidelines",
+      "topic": "Adult MSLT protocol",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "An adult is scheduled for MSLT immediately after a split-night study in which PAP pressures were adjusted. Which response best protects test validity?",
+      "options": [
+        "Proceed without noting the titration because the patient slept at least once",
+        "Recognize that an MSLT should not follow a PAP-adjustment night and contact the ordering team about rescheduling or further direction",
+        "Replace the first nap with an extra ECG lead",
+        "Use the overnight recording as the first MSLT nap"
+      ],
+      "answer": "Recognize that an MSLT should not follow a PAP-adjustment night and contact the ordering team about rescheduling or further direction",
+      "rationale": "The adult AASM protocol excludes MSLT after a split-night or initial PAP titration because the preceding sleep and treatment conditions can confound interpretation.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-mslt-mwt"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aasm-mslt-mwt"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 11,
+        "spriggs2002HistoricalChapter": 3,
+        "authority": [
+          "Krahn et al. (2021), adult MSLT/MWT protocols"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D2B",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-008",
+      "domain": "D2",
+      "taskCode": "D2C",
+      "task": "Identify, respond, and document",
+      "topic": "Respiratory signal integrity",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A nasal-pressure trace abruptly disappears when a sleeping patient turns, but chest and abdominal movement and other channels remain interpretable. What is the best first technical response?",
+      "options": [
+        "Immediately classify every interval as central apnea",
+        "Check the patient's condition and cannula placement, restore the pressure signal, and document the interruption",
+        "Delete the respiratory-effort signals",
+        "Increase the event threshold to hide the flat trace"
+      ],
+      "answer": "Check the patient's condition and cannula placement, restore the pressure signal, and document the interruption",
+      "rationale": "Loss of one sensor while other physiological signals remain present suggests possible sensor displacement; patient assessment and signal restoration precede scoring decisions.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 8,
+        "spriggs2002HistoricalChapter": 2,
+        "authority": [
+          "AAST Standard Polysomnography technical guideline",
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D2C",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-009",
+      "domain": "D2",
+      "taskCode": "D2C",
+      "task": "Identify, respond, and document",
+      "topic": "Carbon-dioxide troubleshooting",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "An end-tidal CO2 signal becomes implausibly flat while the patient continues visibly breathing; inspection shows a kinked sampling line. What should be done first?",
+      "options": [
+        "Score sustained hypoventilation based solely on the flat channel",
+        "Verify and correct the sampling-line obstruction, assess the patient, and repeat signal-quality checks",
+        "Open the capnograph housing to repair internal components",
+        "Change the patient's PAP prescription"
+      ],
+      "answer": "Verify and correct the sampling-line obstruction, assess the patient, and repeat signal-quality checks",
+      "rationale": "Occluded or kinked sample lines are recognized ETCO2 signal-failure causes; accurate capnography depends on a patent sampling path.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-end-tidal-co2-2018",
+        "aast-psg"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-end-tidal-co2-2018",
+        "aast-psg"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 8,
+        "spriggs2002HistoricalChapter": 2,
+        "authority": [
+          "AAST End-Tidal CO2 Technical Guideline",
+          "AAST Standard Polysomnography technical guideline"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D2C",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-010",
+      "domain": "D2",
+      "taskCode": "D2C",
+      "task": "Identify, respond, and document",
+      "topic": "Artifact discrimination",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "Rapid irregular activity appears in several EEG channels only when the patient clenches the jaw. It coincides with increased chin EMG and resolves when the jaw relaxes. What is the most likely explanation?",
+      "options": [
+        "Muscle artifact contaminating EEG",
+        "A sustained normal slow-wave sleep pattern",
+        "A true oxygen-desaturation event",
+        "Loss of calibration voltage in the oximeter"
+      ],
+      "answer": "Muscle artifact contaminating EEG",
+      "rationale": "The temporal association between jaw activity, chin EMG and EEG interference supports myogenic artifact rather than a sleep-stage or oxygen event.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 8,
+        "spriggs2002HistoricalChapter": 2,
+        "authority": [
+          "AAST Standard Polysomnography technical guideline",
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D2C",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-011",
+      "domain": "D3",
+      "taskCode": "D3B",
+      "task": "Score pediatric and infant studies",
+      "topic": "Pediatric scoring quality",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A pediatric PSG was scored using adult respiratory criteria merely because the scorer used a default adult software template. What is the best quality-review action?",
+      "options": [
+        "Keep the template without checking age or the laboratory's approved scoring pathway",
+        "Check patient age and the applicable AASM pediatric versus optional adult scoring pathway, then review affected events under the authorized approach",
+        "Average the adult and pediatric results automatically",
+        "Convert all pediatric respiratory events to arousals"
+      ],
+      "answer": "Check patient age and the applicable AASM pediatric versus optional adult scoring pathway, then review affected events under the authorized approach",
+      "rationale": "Pediatric respiratory scoring is age- and rule-pathway-sensitive; software defaults do not establish the applicable authorized scoring criteria.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-scoring-current"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aasm-scoring-current"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 16,
+        "spriggs2002HistoricalChapter": 4,
+        "authority": [
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D3B",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-012",
+      "domain": "D3",
+      "taskCode": "D3C",
+      "task": "Generate and verify report",
+      "topic": "Report and study quality",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A respiratory sensor failed for a substantial part of a study, then was replaced successfully. What should the technical report and handoff preserve?",
+      "options": [
+        "Only a statement that all sensors were normal at the end",
+        "Timing of signal loss, corrective action, restoration and any limitation on data quality",
+        "A revised interpretation written independently by the technologist",
+        "No notation because the signal returned"
+      ],
+      "answer": "Timing of signal loss, corrective action, restoration and any limitation on data quality",
+      "rationale": "The record must support subsequent scoring and interpretation by making equipment problems and periods of non-interpretable data traceable.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-psg",
+        "aasm-scoring-current"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 14,
+        "spriggs2002HistoricalChapter": 6,
+        "authority": [
+          "AAST Standard Polysomnography technical guideline",
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D3C",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-013",
+      "domain": "D4",
+      "taskCode": "D4A",
+      "task": "Administer PAP therapy",
+      "topic": "Mask leak and comfort",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "During PAP acclimation, a patient reports air blowing toward the eyes and mask discomfort. Which action should the technologist prioritize?",
+      "options": [
+        "Tighten the headgear as much as possible without reassessing",
+        "Recheck mask size, seal and interface choice with the patient while following the ordered treatment plan",
+        "Increase pressure until the leak noise stops",
+        "Tell the patient all eye leaks are unavoidable"
+      ],
+      "answer": "Recheck mask size, seal and interface choice with the patient while following the ordered treatment plan",
+      "rationale": "Correct interface fit and patient-centered adjustments address common leak and tolerance barriers more appropriately than arbitrary pressure changes or excessive strap tension.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-pap-acclimation"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-pap-acclimation"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 10,
+        "spriggs2002HistoricalChapter": 3,
+        "authority": [
+          "AAST Positive Airway Pressure Acclimation and Desensitization (2022)"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D4A",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-014",
+      "domain": "D4",
+      "taskCode": "D4B",
+      "task": "Identify alternative therapies",
+      "topic": "Alternatives to PAP",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "A patient who struggles with prescribed PAP asks the sleep technologist to prescribe an oral appliance instead. Which response best respects scope of practice?",
+      "options": [
+        "Select an appliance and prescribe it immediately",
+        "Explain that oral appliances are clinician-directed treatment options, then communicate the concern to the treating team",
+        "Tell the patient oral appliances are never used for sleep apnea",
+        "Change the overnight study type without any order"
+      ],
+      "answer": "Explain that oral appliances are clinician-directed treatment options, then communicate the concern to the treating team",
+      "rationale": "The technologist may support education and care coordination but should not independently prescribe or replace the physician's treatment plan.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-oral-appliance"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aasm-oral-appliance",
+        "brpt-blueprint"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 2,
+        "spriggs2002HistoricalChapter": 3,
+        "authority": [
+          "AASM/AADSM oral appliance clinical practice guideline (2015)",
+          "BRPT RPSGT Exam Blueprint / Candidate Handbook (current online version)"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D4B",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-015",
+      "domain": "D4",
+      "taskCode": "D4C",
+      "task": "Administer oxygen therapy",
+      "topic": "Oxygen monitoring and escalation",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "During a PSG, the displayed oxygen saturation suddenly drops while the plethysmographic waveform becomes poor and the finger probe has slipped. Which first response is most appropriate?",
+      "options": [
+        "Increase oxygen flow despite having no order or assessment",
+        "Assess the patient, verify and correct the oximeter signal, and escalate confirmed concerns according to orders and safety protocol",
+        "Assume every desaturation is artifact and ignore the patient",
+        "Turn off all respiratory channels"
+      ],
+      "answer": "Assess the patient, verify and correct the oximeter signal, and escalate confirmed concerns according to orders and safety protocol",
+      "rationale": "Patient assessment and validation of an unreliable SpO2 channel come before interpretation; oxygen administration follows applicable orders and emergency procedures.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aast-psg"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aast-psg"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 13,
+        "spriggs2002HistoricalChapter": 3,
+        "authority": [
+          "AAST Standard Polysomnography technical guideline"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D4C",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-016",
+      "domain": "D3",
+      "taskCode": "D3A",
+      "task": "Score adult studies",
+      "topic": "Scoring data verification",
+      "questionType": "Clinical application",
+      "difficulty": "Intermediate",
+      "prompt": "During adult PSG review, repeated apparent oxygen dips align exactly with loss of the plethysmographic waveform during hand movement. What should the scorer do before accepting the drops as physiological evidence?",
+      "options": [
+        "Confirm the pulse-oximetry signal quality and cross-check accompanying respiratory/physiological channels",
+        "Automatically count every displayed dip as a scored respiratory event",
+        "Infer sleep stage N3 from the oxygen channel",
+        "Remove all movement annotation from the record"
+      ],
+      "answer": "Confirm the pulse-oximetry signal quality and cross-check accompanying respiratory/physiological channels",
+      "rationale": "Poor plethysmographic signal can create false SpO2 changes; scoring and reporting require signal validation and the applicable current AASM criteria.",
+      "referenceKeys": [
+        "brpt-blueprint",
+        "aasm-scoring-current",
+        "aast-psg"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "aasm-scoring-current",
+        "aast-psg"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
+        "spriggs2015Chapter": 13,
+        "spriggs2002HistoricalChapter": 6,
+        "authority": [
+          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ",
+          "AAST Standard Polysomnography technical guideline"
+        ],
+        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "taskCode": "D3A",
+        "answerInOptions": true,
+        "hasReferenceKeys": true,
+        "manualReviewRecommended": true,
+        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "sourceMappingStatus": "indexed chapter level"
+      },
+      "publicationStatus": "proposed-not-learner-eligible"
+    }
+  ]
+}
