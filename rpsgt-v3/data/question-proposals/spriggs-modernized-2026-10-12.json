@@ -1,9 +1,9 @@
 {
   "packageId": "spg-rpsgt-v3-spriggs-original-questions-2026-10-12",
   "schemaVersion": 1,
-  "status": "DRAFT—EDITORIAL REVIEW ONLY; NOT IN LEARNER BANK",
+  "status": "DRAFT—10 CANDIDATES; 6 NEAR-DUPLICATES REMOVED; REVIEW REQUIRED; NOT RELEASED",
   "draftDate": "2026-10-12",
-  "questionCount": 16,
+  "questionCount": 10,
   "basis": "Question-writing topics are drawn from indexed chapter maps for Spriggs (2015) and historical Spriggs (2002), independently modernized using current AASM, AAST, BRPT and AASM-published protocol evidence. No publisher questions, posttests, answer keys, figures or text copied.",
   "books": [
     {
@@ -80,7 +80,8 @@
     "2024 pediatric MSLT differs from 2021 adult MSLT minimum-sleep conditions; do not mix populations.",
     "Verify wording against licensed current manual when exact scoring-rule interpretations arise.",
     "Audit near-duplicates against 3,240 effective questions (2,920 originals plus 320 owner-approved additions) before promotion.",
-    "Complete chapter-to-statement/page locator audit before claiming direct citation of Spriggs passage."
+    "Complete chapter-to-statement/page locator audit before claiming direct citation of Spriggs passage.",
+    "Initial 16 candidate concepts narrowed to 10 after near-duplicate triage; 6 rejected concepts and existing-bank IDs are documented in duplicateAudit."
   ],
   "questions": [
     {
@@ -180,51 +181,6 @@
     },
     {
       "id": "SPG-SPRIGGS-2026-003",
-      "domain": "D1",
-      "taskCode": "D1C",
-      "task": "Provide therapy support",
-      "topic": "PAP support",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "A patient becomes anxious when the prescribed PAP mask is first applied and asks to stop. What is the best initial technologist response?",
-      "options": [
-        "Increase pressure to shorten the adjustment period",
-        "Tell the patient interface discomfort cannot be addressed",
-        "Offer explanation, supported mask familiarization and interface options, and document the patient's response",
-        "Silently change to an unprescribed treatment modality"
-      ],
-      "answer": "Offer explanation, supported mask familiarization and interface options, and document the patient's response",
-      "rationale": "Supported acclimation and individual mask fitting are recommended; changes to ordered treatment require proper clinical authorization.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aast-pap-acclimation"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aast-pap-acclimation"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 10,
-        "spriggs2002HistoricalChapter": 3,
-        "authority": [
-          "AAST Positive Airway Pressure Acclimation and Desensitization (2022)"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D1C",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible"
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-004",
       "domain": "D2",
       "taskCode": "D2A",
       "task": "Determine technical preparation",
@@ -272,7 +228,7 @@
       "publicationStatus": "proposed-not-learner-eligible"
     },
     {
-      "id": "SPG-SPRIGGS-2026-005",
+      "id": "SPG-SPRIGGS-2026-004",
       "domain": "D2",
       "taskCode": "D2A",
       "task": "Determine technical preparation",
@@ -320,7 +276,7 @@
       "publicationStatus": "proposed-not-learner-eligible"
     },
     {
-      "id": "SPG-SPRIGGS-2026-006",
+      "id": "SPG-SPRIGGS-2026-005",
       "domain": "D2",
       "taskCode": "D2B",
       "task": "Perform procedures and follow practice guidelines",
@@ -365,7 +321,7 @@
       "publicationStatus": "proposed-not-learner-eligible"
     },
     {
-      "id": "SPG-SPRIGGS-2026-007",
+      "id": "SPG-SPRIGGS-2026-006",
       "domain": "D2",
       "taskCode": "D2B",
       "task": "Perform procedures and follow practice guidelines",
@@ -410,7 +366,7 @@
       "publicationStatus": "proposed-not-learner-eligible"
     },
     {
-      "id": "SPG-SPRIGGS-2026-008",
+      "id": "SPG-SPRIGGS-2026-007",
       "domain": "D2",
       "taskCode": "D2C",
       "task": "Identify, respond, and document",
@@ -458,103 +414,7 @@
       "publicationStatus": "proposed-not-learner-eligible"
     },
     {
-      "id": "SPG-SPRIGGS-2026-009",
-      "domain": "D2",
-      "taskCode": "D2C",
-      "task": "Identify, respond, and document",
-      "topic": "Carbon-dioxide troubleshooting",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "An end-tidal CO2 signal becomes implausibly flat while the patient continues visibly breathing; inspection shows a kinked sampling line. What should be done first?",
-      "options": [
-        "Score sustained hypoventilation based solely on the flat channel",
-        "Verify and correct the sampling-line obstruction, assess the patient, and repeat signal-quality checks",
-        "Open the capnograph housing to repair internal components",
-        "Change the patient's PAP prescription"
-      ],
-      "answer": "Verify and correct the sampling-line obstruction, assess the patient, and repeat signal-quality checks",
-      "rationale": "Occluded or kinked sample lines are recognized ETCO2 signal-failure causes; accurate capnography depends on a patent sampling path.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aast-end-tidal-co2-2018",
-        "aast-psg"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aast-end-tidal-co2-2018",
-        "aast-psg"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 8,
-        "spriggs2002HistoricalChapter": 2,
-        "authority": [
-          "AAST End-Tidal CO2 Technical Guideline",
-          "AAST Standard Polysomnography technical guideline"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D2C",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible"
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-010",
-      "domain": "D2",
-      "taskCode": "D2C",
-      "task": "Identify, respond, and document",
-      "topic": "Artifact discrimination",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "Rapid irregular activity appears in several EEG channels only when the patient clenches the jaw. It coincides with increased chin EMG and resolves when the jaw relaxes. What is the most likely explanation?",
-      "options": [
-        "Muscle artifact contaminating EEG",
-        "A sustained normal slow-wave sleep pattern",
-        "A true oxygen-desaturation event",
-        "Loss of calibration voltage in the oximeter"
-      ],
-      "answer": "Muscle artifact contaminating EEG",
-      "rationale": "The temporal association between jaw activity, chin EMG and EEG interference supports myogenic artifact rather than a sleep-stage or oxygen event.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aast-psg",
-        "aasm-scoring-current"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aast-psg",
-        "aasm-scoring-current"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 8,
-        "spriggs2002HistoricalChapter": 2,
-        "authority": [
-          "AAST Standard Polysomnography technical guideline",
-          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D2C",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible"
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-011",
+      "id": "SPG-SPRIGGS-2026-008",
       "domain": "D3",
       "taskCode": "D3B",
       "task": "Score pediatric and infant studies",
@@ -599,7 +459,7 @@
       "publicationStatus": "proposed-not-learner-eligible"
     },
     {
-      "id": "SPG-SPRIGGS-2026-012",
+      "id": "SPG-SPRIGGS-2026-009",
       "domain": "D3",
       "taskCode": "D3C",
       "task": "Generate and verify report",
@@ -647,144 +507,7 @@
       "publicationStatus": "proposed-not-learner-eligible"
     },
     {
-      "id": "SPG-SPRIGGS-2026-013",
-      "domain": "D4",
-      "taskCode": "D4A",
-      "task": "Administer PAP therapy",
-      "topic": "Mask leak and comfort",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "During PAP acclimation, a patient reports air blowing toward the eyes and mask discomfort. Which action should the technologist prioritize?",
-      "options": [
-        "Tighten the headgear as much as possible without reassessing",
-        "Recheck mask size, seal and interface choice with the patient while following the ordered treatment plan",
-        "Increase pressure until the leak noise stops",
-        "Tell the patient all eye leaks are unavoidable"
-      ],
-      "answer": "Recheck mask size, seal and interface choice with the patient while following the ordered treatment plan",
-      "rationale": "Correct interface fit and patient-centered adjustments address common leak and tolerance barriers more appropriately than arbitrary pressure changes or excessive strap tension.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aast-pap-acclimation"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aast-pap-acclimation"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 10,
-        "spriggs2002HistoricalChapter": 3,
-        "authority": [
-          "AAST Positive Airway Pressure Acclimation and Desensitization (2022)"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D4A",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible"
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-014",
-      "domain": "D4",
-      "taskCode": "D4B",
-      "task": "Identify alternative therapies",
-      "topic": "Alternatives to PAP",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "A patient who struggles with prescribed PAP asks the sleep technologist to prescribe an oral appliance instead. Which response best respects scope of practice?",
-      "options": [
-        "Select an appliance and prescribe it immediately",
-        "Explain that oral appliances are clinician-directed treatment options, then communicate the concern to the treating team",
-        "Tell the patient oral appliances are never used for sleep apnea",
-        "Change the overnight study type without any order"
-      ],
-      "answer": "Explain that oral appliances are clinician-directed treatment options, then communicate the concern to the treating team",
-      "rationale": "The technologist may support education and care coordination but should not independently prescribe or replace the physician's treatment plan.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aasm-oral-appliance"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aasm-oral-appliance",
-        "brpt-blueprint"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 2,
-        "spriggs2002HistoricalChapter": 3,
-        "authority": [
-          "AASM/AADSM oral appliance clinical practice guideline (2015)",
-          "BRPT RPSGT Exam Blueprint / Candidate Handbook (current online version)"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D4B",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible"
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-015",
-      "domain": "D4",
-      "taskCode": "D4C",
-      "task": "Administer oxygen therapy",
-      "topic": "Oxygen monitoring and escalation",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "During a PSG, the displayed oxygen saturation suddenly drops while the plethysmographic waveform becomes poor and the finger probe has slipped. Which first response is most appropriate?",
-      "options": [
-        "Increase oxygen flow despite having no order or assessment",
-        "Assess the patient, verify and correct the oximeter signal, and escalate confirmed concerns according to orders and safety protocol",
-        "Assume every desaturation is artifact and ignore the patient",
-        "Turn off all respiratory channels"
-      ],
-      "answer": "Assess the patient, verify and correct the oximeter signal, and escalate confirmed concerns according to orders and safety protocol",
-      "rationale": "Patient assessment and validation of an unreliable SpO2 channel come before interpretation; oxygen administration follows applicable orders and emergency procedures.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aast-psg"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aast-psg"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 13,
-        "spriggs2002HistoricalChapter": 3,
-        "authority": [
-          "AAST Standard Polysomnography technical guideline"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D4C",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible"
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-016",
+      "id": "SPG-SPRIGGS-2026-010",
       "domain": "D3",
       "taskCode": "D3A",
       "task": "Score adult studies",
@@ -831,5 +554,42 @@
       },
       "publicationStatus": "proposed-not-learner-eligible"
     }
-  ]
+  ],
+  "duplicateAudit": {
+    "scope": "Accessible direct-task records across ten mapped modules, plus attempted owner-approved overlay. Large D2A/D3A files and owner overlay truncated during connector read; full-bank duplicate audit remains mandatory.",
+    "method": "heuristic token-overlap + manual review of closest matching prompts; NOT a complete semantic audit",
+    "removedAsLikelyNearDuplicates": [
+      {
+        "draftId": "SPG-SPRIGGS-2026-003",
+        "existingId": "RPSGT-B3-C022",
+        "reason": "PAP anxiety scenario repeats current learner support question"
+      },
+      {
+        "draftId": "SPG-SPRIGGS-2026-009",
+        "existingId": "RPSGT-B3-C063",
+        "reason": "ETCO2 sampling line kink already tested as best action"
+      },
+      {
+        "draftId": "SPG-SPRIGGS-2026-010",
+        "existingId": "RPSGT-B5-S065",
+        "reason": "jaw-clenching muscle artifact already directly tested"
+      },
+      {
+        "draftId": "SPG-SPRIGGS-2026-013",
+        "existingId": "mine-d1c-003",
+        "reason": "mask leak into eyes question already present"
+      },
+      {
+        "draftId": "SPG-SPRIGGS-2026-014",
+        "existingId": "RPSGT-B3-C137",
+        "reason": "CPAP intolerance and oral appliance referral already present"
+      },
+      {
+        "draftId": "SPG-SPRIGGS-2026-015",
+        "existingId": "RPSGT-B5-S067",
+        "reason": "SpO2 drop with poor pleth waveform already tested"
+      }
+    ],
+    "remainingReviewRequired": true
+  }
 }
