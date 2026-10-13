@@ -1,0 +1,47 @@
+name: Audit unreleased Spriggs RPSGT candidates
+
+on:
+  push:
+    branches:
+      - content/rpsgt-spriggs-modernized-2026-10-12
+    paths:
+      - rpsgt-v3/data/question-proposals/**
+      - rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+      - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+      - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - rpsgt-v3/data/question-proposals/**
+      - rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+      - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+      - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit-candidates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out proposal branch
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify proposal syntax and four-choice review gate
+        run: |
+          node --check rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+          node --check rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+          node rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
+      - name: Audit all 3,240 effective RPSGT questions and exact source keys
+        run: node rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
+      - name: Upload full audit JSON and Markdown
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spriggs-rpsgt-full-bank-duplicate-audit
+          path: rpsgt-v3/audit-output/spriggs-full-bank-report.*
+          if-no-files-found: warn
