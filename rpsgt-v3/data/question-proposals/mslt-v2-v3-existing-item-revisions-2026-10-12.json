@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "title": "V2/V3 shared-bank MSLT existing-item rationale + source-key revision proposals",
+  "status": "DRAFT — DO NOT APPLY OR PUBLISH; QUALIFIED EDITOR AND OWNER APPROVAL REQUIRED",
+  "date": "2026-10-12",
+  "crossVersion": {
+    "originalBank": "V2 canonical embedded app-data seed and V3 original D2B module are the same source identities; V3 additionally overlays 320 owner-approved records.",
+    "affectedLearnerSites": [
+      "RPSGT V2 canonical study, practice, readiness and mock when eligible",
+      "RPSGT V3 guided study, practice, readiness, mock when eligible"
+    ],
+    "changeType": "Existing ID-preserving educational rationale correction, not new question addition.",
+    "applicationPolicy": "Do not mutate the original published source ID without a versioned owner-approved correction and progress-migration compatibility review; preserve current learner history and stable answer."
+  },
+  "authorityChain": {
+    "blueprint": {
+      "id": "brpt-blueprint",
+      "task": "D2B"
+    },
+    "candidateHandbook": {
+      "id": "brpt-handbook",
+      "role": "exam format and candidate policy, not narcolepsy clinical criteria"
+    },
+    "listedTextbook": {
+      "id": "fundamentals-sleep-technology-3e",
+      "chapter": "Chapter 43: Multiple Sleep Latency Test and Maintenance of Wakefulness Test",
+      "localVolume": "Fundamentalssleep(3).PDF",
+      "verifiedPage": 162,
+      "chapterStartPage": 159,
+      "observation": "Text supports distinguishing diagnostic indications, multiple SOREMPs and confounding sleep disorders; it expressly requires clinical context and preceding PSG. Source describes older protocols and is not the final authority for current procedural thresholds.",
+      "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer."
+    },
+    "currentControllingGuidance": {
+      "id": "aasm-adult-mslt-mwt-2021",
+      "role": "Adult MSLT preparation, sleep adequacy and interpreting test validity",
+      "apa7": "Krahn, L. E., Arand, D. L., Avidan, A. Y., Davila, D. G., DeBassio, W. A., Ruoff, C. M., & Harrod, C. G. (2021). Recommended protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in adults: Guidance from the American Academy of Sleep Medicine. Journal of Clinical Sleep Medicine, 17(12), 2489–2498. https://doi.org/10.5664/jcsm.9620"
+    },
+    "clinicalClassification": {
+      "id": "icsd-3-tr",
+      "role": "Current narcolepsy diagnostic classification; full licensed version requires separate verification"
+    }
+  },
+  "items": [
+    {
+      "id": "imp-051",
+      "taskCode": "D2B",
+      "existingQuestion": "During an MSLT, the patient's mean sleep latency is 6 minutes, and they exhibit 2 Sleep Onset REM Periods (SOREMPs). These findings are most indicative of:",
+      "existingAnswer": "Narcolepsy",
+      "originalRationale": "A short mean sleep latency with two SOREMPs is strongly suggestive of narcolepsy.",
+      "proposedRationale": "A short mean sleep latency with two SOREMPs can support suspected narcolepsy, provided the MSLT is interpreted with an appropriate preceding PSG, adequate sleep and relevant clinical context. Other causes of sleepiness and protocol confounders must be considered; the technologist does not diagnose narcolepsy from these numbers alone.",
+      "proposedReferenceKeyAdditions": [
+        "aasm-adult-mslt-mwt-2021",
+        "fundamentals-sleep-technology-3e",
+        "brpt-handbook"
+      ],
+      "proposedLegacyAliasReview": [
+        "aasm-mslt-mwt"
+      ],
+      "whyReview": "The original answer remains the best option, but the explanation lacks prior-night PSG and differential context and uses a historical umbrella source reference."
+    },
+    {
+      "id": "grow-041",
+      "taskCode": "D2B",
+      "existingQuestion": "Which result pattern most strongly supports narcolepsy on a properly prepared MSLT?",
+      "existingAnswer": "Mean sleep latency under 5 minutes with 2 or more SOREMPs",
+      "originalRationale": "Marked physiologic sleepiness with multiple SOREMPs strongly supports narcolepsy when the study is properly prepared.",
+      "proposedRationale": "Marked sleepiness with multiple SOREMPs may strongly support narcolepsy when an MSLT is correctly prepared and interpreted in clinical context. The prior PSG, sufficient sleep, stable treatment of coexisting disorders and other confounders remain essential; the result by itself is not a complete clinical diagnosis.",
+      "proposedReferenceKeyAdditions": [
+        "aasm-adult-mslt-mwt-2021",
+        "fundamentals-sleep-technology-3e",
+        "brpt-handbook"
+      ],
+      "proposedLegacyAliasReview": [
+        "aasm-mslt-mwt"
+      ],
+      "whyReview": "The comparative best-answer option is not being challenged, but the explanation can more directly reinforce the protocol and differential instead of suggesting the MSLT pattern is self-contained."
+    }
+  ],
+  "reviewGates": {
+    "independentClinicianReview": "NOT COMPLETED",
+    "testContentSemanticsReview": "NOT COMPLETED",
+    "sourceKeyResolutionReview": "NOT COMPLETED",
+    "storageImpactReview": "NOT COMPLETED",
+    "ownerApproval": "NOT GRANTED",
+    "releaseEligibility": false
+  },
+  "learnerReferencePresentation": "APA 7 references only; do not display internal source-routing metadata."
+}
