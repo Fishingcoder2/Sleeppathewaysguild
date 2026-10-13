@@ -11,6 +11,7 @@ on:
       - rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
       - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+      - rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
   pull_request:
     branches:
@@ -22,6 +23,7 @@ on:
       - rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
       - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+      - rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
 
 permissions:
@@ -41,6 +43,7 @@ jobs:
         run: |
           node --check rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
           node --check rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+          node --check rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
@@ -53,6 +56,8 @@ jobs:
         run: node rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
       - name: Verify BRPT blueprint, candidate handbook and indexed library source mappings
         run: node rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
+      - name: Screen V2 and V3 shared bank for outdated RLS and HSAT claims
+        run: node rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
       - name: Upload full audit JSON and Markdown
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,4 +67,5 @@ jobs:
             rpsgt-v3/audit-output/spriggs-full-bank-report.*
             rpsgt-v3/audit-output/spriggs-topic-coverage-2026.*
             rpsgt-v3/audit-output/spriggs-gap-pilot-audit-2026.*
+            rpsgt-v3/audit-output/rpsgt-v2-v3-source-currency-screen.*
           if-no-files-found: warn
