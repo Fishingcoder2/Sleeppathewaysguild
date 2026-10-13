@@ -55,3 +55,19 @@ The [combined owner-release CI validation](https://github.com/Fishingcoder2/Slee
 - Library-first metadata validator has been staged at `rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs`, but not yet incorporated into existing Actions. The direct repository metadata check passed 7/7; that does not equal CI execution of the new script.
 - Scoring-sensitive pediatric candidate needs licensed current AASM scoring-manual review.
 - Retained v2 monolithic app is still the public target; v3 is development-only pending its own release checklist.
+
+
+## October 12 follow-on: direct BRPT-textbook reading and paired MSLT correction queue
+
+**Verified from original user-supplied textbook PDFs (not internet-derived):**
+- FST3, Chapter 19, split PDF volume 2, local PDF page 14: possible RLS augmentation can present with earlier symptom onset and spread during long-term dopaminergic use. The same historical paragraph calls dopamine agonists first-line; that **outdated treatment preference cannot be taught as current** and requires the Guild-indexed AASM 2025 guideline.
+- FST3, Chapter 44, split PDF volume 3, local PDF page 185: a negative HSAT has lower negative predictive value with high pretest probability and requires PSG consideration with persistent clinical suspicion; adult testing pathway remains clinician-directed under the indexed 2017 AASM diagnostic guideline.
+- FST3, Chapter 43, split PDF volume 3, local PDF pages 159–162: MSLT/SOREMP interpretation needs appropriate prior PSG and clinical context; older source descriptions must not be substituted for the current adult protocol.
+
+**New reversible development controls:**
+- `rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs` is now executed in the existing unreleased-proposal GitHub Action (the former unattended-library-test gap is closed).
+- `rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs` screens the shared **3,240-question effective bank** for exact wording patterns related to old RLS first-line treatment, wrong RLS/PLMD diagnosis, false-negative HSAT assurance, overconfident MSLT/narcolepsy diagnoses and related families. The first completed run returned **zero literal matches**, **not zero concept risks**. No existing learner item is changed automatically.
+- `rpsgt-v3/data/question-proposals/mslt-v2-v3-existing-item-revisions-2026-10-12.json` stages ID-preserving proposed rationale and exact `aasm-adult-mslt-mwt-2021` citation-key improvements for current D2B IDs **imp-051** and **grow-041**. Their correct answers are deliberately unchanged; these two revisions are **not approved or deployed**.
+- `rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs` reads V2 canonical `app-data`, V3 D2B source and the proposed revisions, ensuring the original IDs, text, answers and release holds remain intact before independent clinical/editorial approval.
+
+All source page locators here refer to specific split-PDF **volume pages**, not printed textbook pages. Clinical wording remains pending qualified review. The earlier seven fully new original cases remain held separately.
