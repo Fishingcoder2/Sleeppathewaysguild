@@ -27,6 +27,15 @@ A separate [whole-bank comparison of the two new candidates](https://github.com/
 - **Existing-bank context:** Existing D2B HSAT items cover portable-equipment setup, limitations, comparison with PSG, patient education and follow-up of treated OSA. The 43-item broader family screen (across tasks) contains HSAT coverage but not an obvious identical *negative initial HSAT → PSG* decision among logged examples.
 - **Risk and review:** Inspect all 43 HSAT-related source prompts for semantic collisions, ensure the stem clearly describes **adult initial diagnosis**, and obtain independent clinical QA.
 
+## Direct verification in Guild-owned *Fundamentals of Sleep Technology* (3rd ed.)
+
+The two cases have now moved beyond chapter-title-only routing to **targeted verification in the user-provided PDF pages**, with deliberate separation of older textbook claims and current guidelines:
+
+- **RLS augmentation (001):** `Fundamentalssleep(2).PDF`, local PDF page **14**, Chapter 19 treatment section. The text directly describes long-term augmentation with symptoms appearing earlier in the day and sometimes spreading to arms/other body regions. **Currency caution:** The same section promotes dopamine agonists as first-line based on older guidance; this treatment hierarchy must **not** be taught as present-day AASM preference. The Guild-indexed Winkelman et al. (2025) treatment guideline controls current clinical pharmacotherapy. The learner is asked only to observe, document and communicate.
+- **Negative HSAT (002):** `Fundamentalssleep(3).PDF`, local PDF page **185**, Chapter 44 discussion of HSAT predictive values. It directly explains that negative predictive value falls as OSA prevalence/pretest probability increases and advises attended PSG when an HSAT is negative despite substantial clinical suspicion. The current Kapur et al. (2017) adult diagnostic guideline remains the precise examination-facing clinical recommendation.
+
+These local page numbers identify the user's split PDF **volume pages**, not the book's printed pagination. For learner-facing citations use the canonical APA book and guideline citations; do not expose local file names, mapped references or internal review fields. These two confirmations support their *clinical concepts* but **do not** establish final answer/distractor approval or permission for a technologist to prescribe testing/treatment.
+
 ## Controls for both
 
 - Both are **original four-option cases**, never copied from a Spriggs book review question, figure, or exam.
