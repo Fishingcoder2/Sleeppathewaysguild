@@ -108,12 +108,18 @@
       "referenceKeys": [
         "brpt-blueprint",
         "aast-psg",
-        "aasm-scoring-current"
+        "aasm-scoring-current",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e",
+        "polysomnography-sleep-technologist-2014"
       ],
       "studyRecommendationKeys": [
         "brpt-handbook",
         "aast-psg",
-        "aasm-scoring-current"
+        "aasm-scoring-current",
+        "fundamentals-sleep-technology-3e",
+        "polysomnography-sleep-technologist-2014"
       ],
       "sourceCredit": {
         "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
@@ -167,7 +173,57 @@
           "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D2A",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-35",
+            "chapterOrSection": "Chapter 35: Recording the Biopotentials of Sleep",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          },
+          {
+            "sourceId": "polysomnography-sleep-technologist-2014",
+            "sectionId": "pst-chapter-9",
+            "chapterOrSection": "Chapter 9: The Polysomnogram: Prestudy Procedures, Monitoring Activities, and Poststudy Scoring and Interpretation",
+            "apa7": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": false,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ]
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-005",
@@ -188,11 +244,17 @@
       "rationale": "The 2024 pediatric MSLT guidance calls for an attended PSG allowing at least eight hours in bed and seven hours of sleep; insufficient sleep requires protocol review.",
       "referenceKeys": [
         "brpt-blueprint",
-        "aasm-pediatric-mslt-mwt-2024"
+        "aasm-pediatric-mslt-mwt-2024",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e",
+        "pediatric-sleep-pearls-1e"
       ],
       "studyRecommendationKeys": [
         "brpt-handbook",
-        "aasm-pediatric-mslt-mwt-2024"
+        "aasm-pediatric-mslt-mwt-2024",
+        "fundamentals-sleep-technology-3e",
+        "pediatric-sleep-pearls-1e"
       ],
       "sourceCredit": {
         "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
@@ -251,7 +313,57 @@
           "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D2B",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-43",
+            "chapterOrSection": "Chapter 43: Multiple Sleep Latency Test and Maintenance of Wakefulness Test",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          },
+          {
+            "sourceId": "pediatric-sleep-pearls-1e",
+            "sectionId": "PSP-S07",
+            "chapterOrSection": "Disorders of hypersomnolence (local PDF pp. 82–92)",
+            "apa7": "DelRosso, L. M., Berry, R. B., Beck, S. E., Wagner, M. H., & Marcus, C. L. (2017). Pediatric sleep pearls. Elsevier.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ]
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-006",
@@ -272,11 +384,15 @@
       "rationale": "The adult AASM protocol excludes MSLT after a split-night or initial PAP titration because the preceding sleep and treatment conditions can confound interpretation.",
       "referenceKeys": [
         "brpt-blueprint",
-        "aasm-adult-mslt-mwt-2021"
+        "aasm-adult-mslt-mwt-2021",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e"
       ],
       "studyRecommendationKeys": [
         "brpt-handbook",
-        "aasm-adult-mslt-mwt-2021"
+        "aasm-adult-mslt-mwt-2021",
+        "fundamentals-sleep-technology-3e"
       ],
       "sourceCredit": {
         "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
@@ -335,7 +451,46 @@
           "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D2B",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-43",
+            "chapterOrSection": "Chapter 43: Multiple Sleep Latency Test and Maintenance of Wakefulness Test",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ]
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-008",
@@ -356,11 +511,17 @@
       "rationale": "AASM Version 3 FAQ allows optional adult respiratory criteria for children aged 13 or older, not for a nine-year-old. A software default is not authority to substitute adult scoring rules.",
       "referenceKeys": [
         "brpt-blueprint",
-        "aasm-scoring-current"
+        "aasm-scoring-current",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e",
+        "pediatric-sleep-pearls-1e"
       ],
       "studyRecommendationKeys": [
         "brpt-handbook",
-        "aasm-scoring-current"
+        "aasm-scoring-current",
+        "fundamentals-sleep-technology-3e",
+        "pediatric-sleep-pearls-1e"
       ],
       "sourceCredit": {
         "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
@@ -419,7 +580,68 @@
           "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D3B",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-60",
+            "chapterOrSection": "Chapter 60: Pediatric Polysomnography",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          },
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-61",
+            "chapterOrSection": "Chapter 61: Pediatric Scoring",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          },
+          {
+            "sourceId": "pediatric-sleep-pearls-1e",
+            "sectionId": "PSP-S02",
+            "chapterOrSection": "Pediatric polysomnography (local PDF pp. 15–24)",
+            "apa7": "DelRosso, L. M., Berry, R. B., Beck, S. E., Wagner, M. H., & Marcus, C. L. (2017). Pediatric sleep pearls. Elsevier.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ]
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-009",
@@ -441,12 +663,18 @@
       "referenceKeys": [
         "brpt-blueprint",
         "aast-psg",
-        "aasm-scoring-current"
+        "aasm-scoring-current",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-sleep-technology-3e",
+        "polysomnography-sleep-technologist-2014"
       ],
       "studyRecommendationKeys": [
         "brpt-handbook",
         "aast-psg",
-        "aasm-scoring-current"
+        "aasm-scoring-current",
+        "fundamentals-sleep-technology-3e",
+        "polysomnography-sleep-technologist-2014"
       ],
       "sourceCredit": {
         "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
@@ -500,7 +728,57 @@
           "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
         }
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval"
+      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "libraryEvidence": {
+        "brptBlueprint": {
+          "sourceId": "brpt-blueprint",
+          "sectionId": "brpt-D3C",
+          "evidenceLevel": "official-task-alignment",
+          "limits": "BRPT task scope and exam weight, not clinical answer authority"
+        },
+        "brptCandidateHandbook": {
+          "sourceId": "brpt-handbook",
+          "sectionId": "brpt-handbook-exam-overview",
+          "evidenceLevel": "exam-format-policy",
+          "limits": "Exam procedure and format; not clinical answer authority"
+        },
+        "brptRecommendedReadingIndex": {
+          "sourceId": "brpt-refs",
+          "sectionId": "brpt-refs-textbooks",
+          "workbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+          "evidenceLevel": "Guild-cataloged BRPT recommended-reading record, last indexed 2026-10-07"
+        },
+        "brptRecommendedBooks": [
+          {
+            "sourceId": "fundamentals-sleep-technology-3e",
+            "sectionId": "fst-chapter-42",
+            "chapterOrSection": "Chapter 42: Generating the Polysomnography Report",
+            "apa7": "Mattice, C. D., Brooks, R. J., & Lee-Chiong, T. L., Jr. (Eds.). (2020). Fundamentals of sleep technology (3rd ed.). Wolters Kluwer.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          },
+          {
+            "sourceId": "polysomnography-sleep-technologist-2014",
+            "sectionId": "pst-chapter-9",
+            "chapterOrSection": "Chapter 9: The Polysomnogram: Prestudy Procedures, Monitoring Activities, and Poststudy Scoring and Interpretation",
+            "apa7": "Robertson, B., Marshall, B., & Carno, M.-A. (2014). Polysomnography for the sleep technologist: Instrumentation, monitoring, and related procedures. Mosby.",
+            "sourceRole": "BRPT-listed textbook study support",
+            "evidenceLevel": "indexed-chapter-or-section-only",
+            "supportsTaskMapping": true,
+            "chapterTextReviewed": false,
+            "answerClaimTextVerified": false
+          }
+        ],
+        "evidenceBoundary": "Book chapter titles/task-routing come from the Guild's indexed source spreadsheets and repository records. Do not claim statement-level textbook evidence or that the current AASM rules appear in the older book.",
+        "requiredBeforePublication": [
+          "Direct source-passage check (where a passage-level citation is claimed)",
+          "Independent clinical accuracy and semantic-duplicate review",
+          "Owner-approved release"
+        ]
+      }
     }
   ],
   "duplicateAudit": {
@@ -672,5 +950,16 @@
     ],
     "manualApproval": "NOT GRANTED",
     "releaseApproval": "NOT GRANTED"
+  },
+  "sourcePriorityPolicy": {
+    "policyId": "SPG-RPSGT-LIBRARY-FIRST-2026-10-12",
+    "examScope": "brpt-blueprint",
+    "examFormatAndPolicies": "brpt-handbook",
+    "recommendedReadings": "brpt-refs",
+    "recommendedBookFirst": true,
+    "libraryMasterWorkbookUrl": "https://docs.google.com/spreadsheets/d/11KL3BVbdQhIley-qx7vKp2zeWqrVBB58/edit",
+    "currentClinicalRules": "Specific indexed AASM/AAST/ICSD references only when required for a present-day clinical or scoring decision; these are verification overlays, not primary topic-selection sources.",
+    "secondaryTopicSeed": "Spriggs (2015) mapped chapters; 2002 source historical only",
+    "noOutsideTopicSeedsWithoutLibraryJustification": true
   }
 }
