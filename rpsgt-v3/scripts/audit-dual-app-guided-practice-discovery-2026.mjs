@@ -44,3 +44,55 @@ const overlay=JSON.parse(await read('data/owner-approved-question-release.json')
 const taskMap={};
 for(const q of [...base,...overlay]){const task=q.taskCode||'UNMAPPED';const v=taskMap[task]||={total:0,held:0,eligible:0,topics:{},difficulty:{},types:{},uniquePrompts:new Set()};v.total++;const held=!!(q.qa?.manualReviewRecommended||q.manualReviewRecommended);v[held?'held':'eligible']++;const topic=String(q.topic||'unclassified');v.topics[topic]=(v.topics[topic]||0)+1;const d=String(q.difficulty||'unclassified');v.difficulty[d]=(v.difficulty[d]||0)+1;const qt=String(q.questionType||'unclassified');v.types[qt]=(v.types[qt]||0)+1;v.uniquePrompts.add(String(q.prompt||'').toLowerCase().replace(/\s+/g,' ').trim());}
 for(const [task,v] of Object.entries(taskMap)){let top=Object.entries(v.topics).sort((a,b)=>b[1]-a[1]);console.log('RPSGT_TASK',JSON.stringify({task,total:v.total,eligible:v.eligible,held:v.held,uniquePrompts:v.uniquePrompts.size,uniqueTopicCount:top.length,topTopics:top.slice(0,7),difficulty:v.difficulty,types:v.types}));}
+
+
+// Parse the CPSGT data package itself (the 4-MB literal APP_DATA object).
+function extractJsonAssignment(full,variable){
+ const p=full.indexOf('const '+variable+'=');
+ if(p<0)throw Error('No '+variable+' assignment');
+ let i=full.indexOf('{',p);
+ if(i<0)throw Error('No object start');
+ const start=i;let depth=0,quoted=false,escape=false;
+ for(;i<full.length;i++){
+  const ch=full[i];
+  if(quoted){if(escape)escape=false;else if(ch==='\\')escape=true;else if(ch==='"')quoted=false;continue}
+  if(ch==='"'){quoted=true;continue}
+  if(ch==='{')depth++;
+  if(ch==='}'&&--depth===0)return JSON.parse(full.slice(start,i+1));
+ }
+ throw Error('Unbalanced object '+variable);
+}
+const cpsgt=extractJsonAssignment(html,'APP_DATA');
+const qC=Array.isArray(cpsgt.questions)?cpsgt.questions:[];
+console.log('CPSGT_PACKAGE',JSON.stringify({
+ manifest:{schemaVersion:cpsgt.manifest?.schemaVersion,title:cpsgt.manifest?.title,questionCount:cpsgt.manifest?.questionCount,blueprint:cpsgt.manifest?.blueprint},
+ totalQuestions:qC.length,
+ questionFields:Object.keys(qC[0]||{}),
+ firstQuestion:{id:qC[0]?.id,topic:qC[0]?.topic,sub:qC[0]?.sub,difficulty:qC[0]?.difficulty,type:qC[0]?.type,alignment:qC[0]?.handbookAlignment},
+ metadataKeys:Object.keys(cpsgt.manifest||{})
+}));
+const cpsgtTasks={};
+for(const q of qC){
+ const task=q.handbookAlignment?.taskCode||q.id?.match(/CPSGT-([D1-9][A-Z]+)-/)?.[1]||'UNMAPPED';
+ const v=cpsgtTasks[task]||={total:0,topics:{},subs:{},difficulties:{},types:{},stems:new Set(),answers:{},style:{}};
+ v.total++;
+ const topic=String(q.topic||'unclassified'),sub=String(q.sub||'unclassified'),dif=String(q.difficulty||'unclassified'),type=String(q.type||'unclassified');
+ for(const [k,key] of [['topics',topic],['subs',sub],['difficulties',dif],['types',type]])v[k][key]=(v[k][key]||0)+1;
+ const stem=String(q.q||q.prompt||'').toLowerCase().replace(/^\s*(?:question|item)\s*\d+\W*/,'').replace(/\d+(?:\.\d+)?/g,'#').replace(/[^a-z# ]+/g,' ').replace(/\s+/g,' ').trim();
+ v.stems.add(stem);
+ const a=String(q.answer??q.correct??'none');v.answers[a]=(v.answers[a]||0)+1;
+ const style=String(q.handbookAlignment?.questionStyle||'unclassified');v.style[style]=(v.style[style]||0)+1;
+}
+for(const [task,v] of Object.entries(cpsgtTasks)){
+ const top=k=>Object.entries(v[k]).sort((a,b)=>b[1]-a[1]);
+ console.log('CPSGT_TASK',JSON.stringify({task,total:v.total,uniqueNormalizedStems:v.stems.size,topicCount:top('topics').length,topTopics:top('topics').slice(0,8),topSubs:top('subs').slice(0,8),difficulty:top('difficulties'),types:top('types'),questionStyles:top('style').slice(0,8),answerIndexCounts:v.answers}));
+}
+const body=html.slice(html.indexOf('const BANK=APP_DATA.questions;'));
+const terms=['function startPractice','function beginPractice','function openPractice','function renderPractice','function practice','function startTrail','function openTrail','const TRAIL','function choose','function select','const BANK','shuffle(BANK','shuffle(pool)','state.activePractice','function showTrail','function selectQuestions','state.stats.practiceByTask'];
+for(const term of terms){
+ let pos=body.indexOf(term),count=0;
+ while(pos>=0 && count<3){
+  console.log('CPSGT_LOGIC',JSON.stringify({term,at:pos,code:body.slice(Math.max(0,pos-140),pos+1700).replace(/\s+/g,' ').slice(0,1740)}));
+  pos=body.indexOf(term,pos+term.length);count++;
+ }
+}
