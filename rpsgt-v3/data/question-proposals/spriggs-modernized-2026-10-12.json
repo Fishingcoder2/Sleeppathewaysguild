@@ -98,13 +98,13 @@
       "difficulty": "Intermediate",
       "prompt": "During pre-study physiologic calibration, the patient follows the eye-movement instructions. One EOG channel remains nearly flat, but the other EOG channel shows eye movement and the EEG channels appear intact. What is the best next action before lights out?",
       "options": [
-        "Proceed and annotate the flat EOG channel as a normal finding",
+        "Repeat the eye-movement commands and start the study if the other EOG channel still responds",
         "Check the affected EOG electrode, connector, impedance and derivation; restore the signal and repeat calibration",
-        "Use the intact EOG channel to infer that both EOG electrodes are functioning",
-        "Change the EEG montage without first checking the nonresponsive EOG channel"
+        "Use the functioning EOG derivation as a substitute for both EOG channels without documenting a limitation",
+        "Increase display gain on the flat EOG channel and accept calibration without checking signal integrity"
       ],
       "answer": "Check the affected EOG electrode, connector, impedance and derivation; restore the signal and repeat calibration",
-      "rationale": "The failure is specific to a required eye-movement channel during a patient calibration. The technologist should inspect the affected EOG signal path, correct it, and repeat/annotate calibration rather than assuming the patient produced no eye movement.",
+      "rationale": "The patient performed the eye-movement maneuver and the other EOG channel responds, so the near-flat trace warrants a channel-specific technical check. Inspect the affected electrode, connector, impedance and derivation, correct the signal path, and repeat/annotate the physiologic calibration before lights out. Display gain or another functioning channel alone does not establish that the affected derivation is recording correctly. This is a signal-quality decision, not a sleep-stage interpretation.",
       "referenceKeys": [
         "brpt-blueprint",
         "aast-psg",
@@ -235,13 +235,13 @@
       "difficulty": "Intermediate",
       "prompt": "A 12-year-old has a PSG before a planned MSLT. The recording provides eight hours in bed but only six hours and twenty minutes of sleep. What should the technologist do?",
       "options": [
-        "Treat this as meeting the pediatric minimum sleep-time protocol",
-        "Ignore the PSG because the MSLT uses only daytime data",
+        "Proceed because the required eight hours in bed was provided, even though total sleep time is under seven hours",
+        "Proceed because six hours of total sleep time meets the minimum stated for adult MSLT preparation",
         "Flag the short sleep time and communicate with the ordering team under the laboratory's protocol before proceeding",
-        "Substitute a home pulse-oximetry result for the missing sleep"
+        "Extend the first daytime nap trial to make up for the forty minutes of insufficient overnight sleep"
       ],
       "answer": "Flag the short sleep time and communicate with the ordering team under the laboratory's protocol before proceeding",
-      "rationale": "The 2024 pediatric MSLT guidance calls for an attended PSG allowing at least eight hours in bed and seven hours of sleep; insufficient sleep requires protocol review.",
+      "rationale": "The AASM pediatric MSLT protocol calls for an attended preceding PSG allowing at least eight hours in bed and at least seven hours of total sleep time. This 12-year-old obtained only six hours and twenty minutes of sleep, so meeting the time-in-bed target alone does not meet the pediatric sleep requirement. The adult six-hour sleep minimum must not be substituted, and daytime nap duration cannot replace insufficient overnight sleep. The technologist should document the discrepancy and obtain clinician/protocol direction rather than unilaterally treating the study as valid.",
       "referenceKeys": [
         "brpt-blueprint",
         "aasm-pediatric-mslt-mwt-2024",
@@ -389,13 +389,13 @@
       "difficulty": "Intermediate",
       "prompt": "An adult is scheduled for MSLT immediately after a split-night study in which PAP pressures were adjusted. Which response best protects test validity?",
       "options": [
-        "Proceed without noting the titration because the patient slept at least once",
+        "Proceed because six hours of total sleep on the PSG is sufficient even when PAP pressures were adjusted",
         "Recognize that an MSLT should not follow a PAP-adjustment night and contact the ordering team about rescheduling or further direction",
-        "Replace the first nap with an extra ECG lead",
-        "Use the overnight recording as the first MSLT nap"
+        "Proceed if respiratory events were adequately controlled at the final PAP pressure during the treatment portion",
+        "Proceed because the MSLT was scheduled before the study was converted to a split-night PAP titration"
       ],
       "answer": "Recognize that an MSLT should not follow a PAP-adjustment night and contact the ordering team about rescheduling or further direction",
-      "rationale": "The adult AASM protocol excludes MSLT after a split-night or initial PAP titration because the preceding sleep and treatment conditions can confound interpretation.",
+      "rationale": "The AASM adult MSLT protocol specifies that MSLT should not follow a night when PAP pressures were adjusted, including a split-night or initial PAP titration study. Adequate total sleep time, apparent control of respiratory events at the final pressure, or prior scheduling does not remove this protocol exclusion. Document the circumstances and contact the ordering team for clinician-directed next steps. Do not apply the distinct pediatric minimum sleep requirements to this adult case.",
       "referenceKeys": [
         "brpt-blueprint",
         "aasm-adult-mslt-mwt-2021",
@@ -516,13 +516,13 @@
       "difficulty": "Intermediate",
       "prompt": "A nine-year-old child's PSG is found to have respiratory events scored using the adult template solely because the software defaulted to adult criteria. Which correction should the quality reviewer request?",
       "options": [
-        "Keep the adult template because both adult and pediatric scoring rules are always interchangeable",
+        "Accept the adult respiratory scores if the software's event detections were visually checked",
         "Review and, where necessary, re-score the respiratory events under the AASM pediatric rules applicable to this age, documenting the correction",
-        "Apply adult rules only to REM epochs and pediatric rules only to non-REM epochs",
-        "Leave the respiratory event labels unchanged but change the reported patient's age"
+        "Update the patient's age in the software without revisiting respiratory events scored under adult criteria",
+        "Retain the adult event labels and note the software default in the final technical report"
       ],
       "answer": "Review and, where necessary, re-score the respiratory events under the AASM pediatric rules applicable to this age, documenting the correction",
-      "rationale": "AASM Version 3 FAQ allows optional adult respiratory criteria for children aged 13 or older, not for a nine-year-old. A software default is not authority to substitute adult scoring rules.",
+      "rationale": "The AASM Version 3 public respiratory-scoring FAQ describes adult respiratory criteria as optional for children aged 13 years or older; this nine-year-old is below that option's age boundary. Software defaults and a retrospective notation cannot substitute for review under the age-appropriate pediatric respiratory rules. The reviewer should identify affected epochs, arrange correction as indicated, and document the re-scoring. This rationale is an age-boundary preflight only: the complete applicable licensed AASM Version 3 pediatric respiratory rules and current errata still require direct verification before publication.",
       "referenceKeys": [
         "brpt-blueprint",
         "aasm-scoring-current",
@@ -667,13 +667,13 @@
       "difficulty": "Intermediate",
       "prompt": "During a diagnostic PSG, nasal-pressure airflow was unavailable from 02:10 to 03:00 because of a disconnected cannula; the channel was restored at 03:00. Which handoff entry best preserves the quality of the recording?",
       "options": [
-        "All sensors normal by the conclusion of the study; no other technical detail required",
+        "Record only that the nasal cannula was reconnected at 03:00 because the signal had recovered",
         "Nasal-pressure signal absent from 02:10–03:00; cause, correction and restoration time recorded, with affected data-quality limitations identified",
-        "Respiratory scoring was normal for the entire night because the channel later returned",
-        "All respiratory channels should be excluded from the entire study because one channel was interrupted"
+        "Describe the overall study as technically limited without specifying the missing channel or its interruption interval",
+        "Record zero respiratory events during the interrupted interval because nasal-pressure airflow is unavailable"
       ],
       "answer": "Nasal-pressure signal absent from 02:10–03:00; cause, correction and restoration time recorded, with affected data-quality limitations identified",
-      "rationale": "A chronological technical record should describe the affected signal, interval, cause, intervention, restored channel and limitation for downstream scoring/review. This is technical documentation, not an independent clinical interpretation.",
+      "rationale": "A complete PSG technical log should chronologically identify the missing nasal-pressure signal, the 02:10–03:00 interval, the disconnection, corrective action and signal restoration, and the resulting limitation for later scoring or interpretation. Return of the channel does not erase the gap. Loss of one airflow signal cannot be equated to an absence of respiratory events; other recorded channels must be reviewed using the applicable scoring rules. This question tests technical documentation rather than diagnosis or final respiratory scoring.",
       "referenceKeys": [
         "brpt-blueprint",
         "aast-psg",
