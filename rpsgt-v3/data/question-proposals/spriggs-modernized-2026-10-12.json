@@ -157,23 +157,25 @@
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "qaStatus": "OWNER RPSGT CLINICAL CONTENT APPROVED; external second reviewer NOT REQUIRED; source/semantic/history publication gates pending",
         "sourceMappingStatus": "indexed chapter level"
       },
       "publicationStatus": "proposed-not-learner-eligible",
       "editorialChecks": {
         "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
+        "needsIndependentClinicalReview": false,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
         "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
         "documentedCurrentAuthority": {
           "reference": "Standard Polysomnography (2021), §2.2.3 Physiological Calibration, AAST PDF p. 13 (0-based 12)",
           "evidence": "The guideline lists left-right eye-movement biocalibrations and directs signal/electrode checks and corrective action.",
-          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
-        }
+          "status": "Public source statement located; licensed current scoring/manual review and owner clinical approval completed; current applicable rule and technical checks still required."
+        },
+        "ownerClinicalReviewApproved": true,
+        "ownerClinicalReviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json"
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "editorialDisposition": "hold-for-source-duplicates-and-history-release-qa",
       "libraryEvidence": {
         "brptBlueprint": {
           "sourceId": "brpt-blueprint",
@@ -291,13 +293,13 @@
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
-        "qaStatus": "Draft reviewed against Maski et al. (2024) Box 2 and uploaded 2024 article: minimum eight hours in bed and seven hours total sleep; clinician/facility protocol decision still required.",
+        "qaStatus": "OWNER RPSGT CLINICAL CONTENT APPROVED; external second reviewer NOT REQUIRED; source/semantic/history publication gates pending",
         "sourceMappingStatus": "indexed chapter level"
       },
       "publicationStatus": "proposed-not-learner-eligible",
       "editorialChecks": {
         "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
+        "needsIndependentClinicalReview": false,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
         "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
@@ -310,10 +312,12 @@
         "documentedCurrentAuthority": {
           "reference": "Maski et al. (2024), Box 2, recommendation 2; uploaded article text",
           "evidence": "At least 8 hours time in bed and at least 7 hours total sleep on the preceding attended pediatric PSG.",
-          "status": "Direct uploaded PDF Box 2 item 2 text verified; still pending clinical/editorial signoff and owner approval."
-        }
+          "status": "Direct uploaded PDF Box 2 item 2 text verified; still owner clinical review completed; technical release checks pending."
+        },
+        "ownerClinicalReviewApproved": true,
+        "ownerClinicalReviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json"
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "editorialDisposition": "hold-for-source-duplicates-and-history-release-qa",
       "libraryEvidence": {
         "brptBlueprint": {
           "sourceId": "brpt-blueprint",
@@ -443,13 +447,13 @@
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
-        "qaStatus": "Draft reviewed against Krahn et al. (2021) Box 2: no adult MSLT immediately after split-night or PAP titration; full editor review remains.",
+        "qaStatus": "OWNER RPSGT CLINICAL CONTENT APPROVED; external second reviewer NOT REQUIRED; source/semantic/history publication gates pending",
         "sourceMappingStatus": "indexed chapter level"
       },
       "publicationStatus": "proposed-not-learner-eligible",
       "editorialChecks": {
         "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
+        "needsIndependentClinicalReview": false,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
         "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
@@ -462,10 +466,12 @@
         "documentedCurrentAuthority": {
           "reference": "Krahn et al. (2021), Box 2, General Testing Procedures #1",
           "evidence": "Adult MSLT should not be performed immediately after split-night/PAP-pressure-adjustment PSG.",
-          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
-        }
+          "status": "Public source statement located; licensed current scoring/manual review and owner clinical approval completed; current applicable rule and technical checks still required."
+        },
+        "ownerClinicalReviewApproved": true,
+        "ownerClinicalReviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json"
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "editorialDisposition": "hold-for-source-duplicates-and-history-release-qa",
       "libraryEvidence": {
         "brptBlueprint": {
           "sourceId": "brpt-blueprint",
@@ -572,13 +578,13 @@
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "qaStatus": "OWNER RPSGT CLINICAL CONTENT APPROVED; external second reviewer NOT REQUIRED; source/semantic/history publication gates pending",
         "sourceMappingStatus": "indexed chapter level"
       },
       "publicationStatus": "proposed-not-learner-eligible",
       "editorialChecks": {
         "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
+        "needsIndependentClinicalReview": false,
         "needsCurrentManualLicensedRuleReview": true,
         "originalQuestion": true,
         "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
@@ -591,10 +597,12 @@
         "documentedCurrentAuthority": {
           "reference": "AASM Scoring Manual v3 current FAQs, Respiratory Rules; §VIII Part 2 under licensed rules",
           "evidence": "Adult respiratory rules for children 13 years or older are optional; nine-year-olds use pediatric respiratory rules.",
-          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
-        }
+          "status": "Public source statement located; licensed current scoring/manual review and owner clinical approval completed; current applicable rule and technical checks still required."
+        },
+        "ownerClinicalReviewApproved": true,
+        "ownerClinicalReviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json"
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "editorialDisposition": "hold-for-source-duplicates-and-history-release-qa",
       "libraryEvidence": {
         "brptBlueprint": {
           "sourceId": "brpt-blueprint",
@@ -726,23 +734,25 @@
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "qaStatus": "OWNER RPSGT CLINICAL CONTENT APPROVED; external second reviewer NOT REQUIRED; source/semantic/history publication gates pending",
         "sourceMappingStatus": "indexed chapter level"
       },
       "publicationStatus": "proposed-not-learner-eligible",
       "editorialChecks": {
         "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
+        "needsIndependentClinicalReview": false,
         "needsCurrentManualLicensedRuleReview": false,
         "originalQuestion": true,
         "sourceLocatorReview": "Spriggs chapter identity and printed/PDF ranges verified in indexed maps; exact textbook passage not independently located; public current-authority section identified.",
         "documentedCurrentAuthority": {
           "reference": "AAST Standard Polysomnography (2021), §§3.3.1–3.3.2; AAST PDF p. 16 (0-based 15)",
           "evidence": "Chronological log of technical difficulties and interventions and complete study summary.",
-          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
-        }
+          "status": "Public source statement located; licensed current scoring/manual review and owner clinical approval completed; current applicable rule and technical checks still required."
+        },
+        "ownerClinicalReviewApproved": true,
+        "ownerClinicalReviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json"
       },
-      "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
+      "editorialDisposition": "hold-for-source-duplicates-and-history-release-qa",
       "libraryEvidence": {
         "brptBlueprint": {
           "sourceId": "brpt-blueprint",
@@ -943,8 +953,8 @@
   },
   "editorialReview": {
     "reviewDate": "2026-10-12",
-    "status": "Bibliographic/clinical-evidence preflight COMPLETE; independent clinical content approval PENDING",
-    "scope": "Five retained original drafts, not approved and not published",
+    "status": "Public-source editorial preflight COMPLETED; owner RPSGT clinical content approval COMPLETED for five final revised items; technical release gates PENDING",
+    "scope": "Five retained original drafts; content professionally approved by Guild owner RPSGT, not published",
     "completedChecks": [
       "All Spriggs 2015 chapter titles, chapter numbers and printed chapter page ranges compared with indexed 2e source map.",
       "All historical Spriggs 2002 chapter boundaries compared with indexed 2002 source map.",
@@ -956,14 +966,14 @@
       "APA adult MSLT citation corrected to all seven listed article authors."
     ],
     "outstandingChecks": [
-      "Independent qualified sleep-technology clinical review for all five item stems, plausible distractors and rationales.",
       "Licensed AASM scoring manual section/rule verification for pediatric item 008.",
       "Semantic family duplicate review against bank beyond weighted token matches, especially calibration and logging families.",
       "Statement-level Spriggs book-source provenance requires actual content reading and page check; indexed chapter-level reference is not proof.",
-      "Explicit owner approval and separate release-gate actions before any learner-facing use."
+      "Current licensed AASM v3 pediatric scoring rule review for case 008 remains pending; semantic-family decision and representative V2/V3 real-history regression needed before release."
     ],
-    "manualApproval": "NOT GRANTED",
-    "releaseApproval": "NOT GRANTED"
+    "manualApproval": "OWNER_RPSGT_APPROVED_2026-10-13",
+    "releaseApproval": "NOT GRANTED",
+    "ownerClinicalApprovalRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json"
   },
   "sourcePriorityPolicy": {
     "policyId": "SPG-RPSGT-LIBRARY-FIRST-2026-10-12",
