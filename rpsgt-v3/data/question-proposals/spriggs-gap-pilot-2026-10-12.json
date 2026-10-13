@@ -36,12 +36,12 @@
       "publicationStatus": "proposed-not-learner-eligible",
       "prompt": "During the pre-study interview, an adult treated with ropinirole for restless legs syndrome reports that symptoms once occurred only late in the evening. Over several years, they have begun before lunch, appear after shorter periods of sitting, and now sometimes involve the arms. Which action is most appropriate for the sleep technologist?",
       "options": [
-        "Document the change in symptom timing, spread, and medication history, and alert the treating clinician to possible augmentation",
-        "Suggest doubling the ropinirole dose before the overnight study",
-        "Conclude that the patient has periodic limb movement disorder based on the interview alone",
-        "Ignore the changes because earlier symptom onset always indicates successful treatment"
+        "Recommend adding a daytime dose of ropinirole to improve coverage before the PSG",
+        "Treat the change as evidence of PLMD that must be confirmed by the sleep study before anyone is informed",
+        "Document the new symptom timing, involved body regions and dopaminergic medication history, and alert the treating clinician to possible augmentation",
+        "Record the leg symptoms only, because medication chronology cannot influence RLS assessment"
       ],
-      "answer": "Document the change in symptom timing, spread, and medication history, and alert the treating clinician to possible augmentation",
+      "answer": "Document the new symptom timing, involved body regions and dopaminergic medication history, and alert the treating clinician to possible augmentation",
       "rationale": "Earlier onset, shorter symptom latency during rest, and spread beyond the legs during long-term dopaminergic therapy are recognized features of possible RLS augmentation. The technologist should document the pattern and communicate it for prescriber evaluation, not diagnose PLMD or independently adjust medications.",
       "referenceKeys": [
         "brpt-blueprint",
@@ -87,12 +87,12 @@
       "publicationStatus": "proposed-not-learner-eligible",
       "prompt": "An adult continues to report loud snoring, witnessed apneas, and daytime sleepiness after one technically adequate home sleep apnea test is reported as negative. When reviewing the referral pathway with the ordering team, which recommendation is consistent with the AASM diagnostic-testing guideline?",
       "options": [
-        "Arrange clinician-directed attended polysomnography because a negative HSAT does not exclude OSA in a symptomatic patient",
-        "Conclude that OSA has been ruled out and close the referral without follow-up",
-        "Repeat home oximetry alone until it produces an apnea-hypopnea index",
-        "Initiate supplemental oxygen without a new order or diagnostic assessment"
+        "Repeat the same home apnea test to confirm the negative result before any in-lab testing is considered",
+        "Arrange clinician-directed attended polysomnography because a negative HSAT does not conclusively exclude OSA in this symptomatic patient",
+        "Use a negative technically adequate HSAT to rule out OSA despite continued symptoms",
+        "Replace PSG with overnight oximetry alone as the definitive next diagnostic step"
       ],
-      "answer": "Arrange clinician-directed attended polysomnography because a negative HSAT does not exclude OSA in a symptomatic patient",
+      "answer": "Arrange clinician-directed attended polysomnography because a negative HSAT does not conclusively exclude OSA in this symptomatic patient",
       "rationale": "AASM guidance recommends PSG after a single negative, inconclusive, or technically inadequate HSAT when evaluating suspected OSA. The technologist should communicate the limitation and coordinate under the ordering clinician's direction rather than interpreting the HSAT as definitively excluding disease.",
       "referenceKeys": [
         "brpt-blueprint",
