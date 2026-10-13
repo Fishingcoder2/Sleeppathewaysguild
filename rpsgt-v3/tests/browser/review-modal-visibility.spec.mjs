@@ -31,7 +31,8 @@ test('twenty-item missed review shows only the question modal before the first a
   await expect(active(page)).toBeVisible();
   await expect(result(page)).toBeHidden();
   expect(await result(page).evaluate(el=>getComputedStyle(el).display)).toBe('none');
-  await expect(page.locator('.session-rail')).toBeVisible();
+  if(test.info().project.name==='mobile-chromium') await expect(page.locator('.session-rail')).toBeHidden();
+  else await expect(page.locator('.session-rail')).toBeVisible();
   await expect(page.locator('[data-review-forward]')).toHaveText('Check answer');
   const choices=page.locator('[data-question-choices] .practice-choice');
   await expect(choices).toHaveCount(4);
@@ -50,8 +51,11 @@ test('results replace the question only after all selected missed items are revi
     await expect(result(page)).toBeHidden();
     await expect(active(page)).toBeVisible();
     await expect(page.locator('[data-question-number]')).toHaveText('Question '+(i+1)+' of 3');
-    const index=questions[i].options.indexOf(questions[i].answer);
-    await page.locator('[data-question-choices] .practice-choice').nth(index).click();
+    // The app deliberately shuffles options at runtime, so select by visible
+    // answer text instead of trusting the source bank's original option index.
+    const choice=page.locator('[data-question-choices] .practice-choice').filter({has:page.getByText(questions[i].answer,{exact:true})});
+    await expect(choice).toHaveCount(1);
+    await choice.click();
     await page.locator('[data-review-forward]').click();
     await expect(page.locator('[data-answer-feedback]')).toBeVisible();
     await expect(result(page)).toBeHidden();
