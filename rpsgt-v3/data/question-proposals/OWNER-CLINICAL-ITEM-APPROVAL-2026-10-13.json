@@ -2,7 +2,7 @@
   "recordType": "OWNER_CLINICAL_REVIEW_ATTESTATION",
   "date": "2026-10-13",
   "localTimeContext": "2026-10-13T08:29:00-04:00 (approximate conversation time, America/New_York)",
-  "status": "OWNER_PROFESSIONAL_ITEM_APPROVAL_RECORDED__NON_INDEPENDENT",
+  "status": "OWNER_CLINICAL_ITEM_APPROVAL_COMPLETE__RELEASE_TECHNICAL_GATES_PENDING",
   "sourceOfAttestation": "Guild owner's explicit affirmative reply ('Yes') to whether they personally reviewed and approved final wording of all seven revised questions, including their correct answers, distractors and rationales.",
   "reviewer": {
     "role": "Sleep Pathways Guild owner; clinical content reviewer",
@@ -12,7 +12,8 @@
     ],
     "credentialsIndependentlyVerified": false,
     "reviewerNamedHere": false,
-    "independentThirdPartyReviewer": false
+    "independentThirdPartyReviewer": false,
+    "reviewAuthorizedUnderGuildPolicy": true
   },
   "reviewedVersion": {
     "pullRequest": "https://github.com/Fishingcoder2/Sleeppathewaysguild/pull/140",
@@ -41,10 +42,11 @@
       "ownerApprovedFinalWording": true,
       "reviewIncludesStemAndOptionsAnswerAndRationale": true,
       "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "humanSemanticFamilySignoff": "PENDING",
       "crossVersionRealHistoryRegression": "PENDING",
-      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED",
+      "ownerClinicalSignoff": "APPROVED_BY_OWNER_RPSGT_2026-10-13"
     },
     {
       "id": "SPG-SPRIGGS-2026-005",
@@ -52,10 +54,11 @@
       "ownerApprovedFinalWording": true,
       "reviewIncludesStemAndOptionsAnswerAndRationale": true,
       "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "humanSemanticFamilySignoff": "PENDING",
       "crossVersionRealHistoryRegression": "PENDING",
-      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED",
+      "ownerClinicalSignoff": "APPROVED_BY_OWNER_RPSGT_2026-10-13"
     },
     {
       "id": "SPG-SPRIGGS-2026-006",
@@ -63,10 +66,11 @@
       "ownerApprovedFinalWording": true,
       "reviewIncludesStemAndOptionsAnswerAndRationale": true,
       "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "humanSemanticFamilySignoff": "PENDING",
       "crossVersionRealHistoryRegression": "PENDING",
-      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED",
+      "ownerClinicalSignoff": "APPROVED_BY_OWNER_RPSGT_2026-10-13"
     },
     {
       "id": "SPG-SPRIGGS-2026-008",
@@ -74,10 +78,11 @@
       "ownerApprovedFinalWording": true,
       "reviewIncludesStemAndOptionsAnswerAndRationale": true,
       "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "humanSemanticFamilySignoff": "PENDING",
       "crossVersionRealHistoryRegression": "PENDING",
-      "licensedCurrentAasmV3Check": "REQUIRED_NOT_VERIFIED"
+      "licensedCurrentAasmV3Check": "REQUIRED_NOT_VERIFIED",
+      "ownerClinicalSignoff": "APPROVED_BY_OWNER_RPSGT_2026-10-13"
     },
     {
       "id": "SPG-SPRIGGS-2026-009",
@@ -85,10 +90,11 @@
       "ownerApprovedFinalWording": true,
       "reviewIncludesStemAndOptionsAnswerAndRationale": true,
       "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "humanSemanticFamilySignoff": "PENDING",
       "crossVersionRealHistoryRegression": "PENDING",
-      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED",
+      "ownerClinicalSignoff": "APPROVED_BY_OWNER_RPSGT_2026-10-13"
     },
     {
       "id": "SPG-GAP-2026-001",
@@ -96,10 +102,11 @@
       "ownerApprovedFinalWording": true,
       "reviewIncludesStemAndOptionsAnswerAndRationale": true,
       "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "humanSemanticFamilySignoff": "PENDING",
       "crossVersionRealHistoryRegression": "PENDING",
-      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED",
+      "ownerClinicalSignoff": "APPROVED_BY_OWNER_RPSGT_2026-10-13"
     },
     {
       "id": "SPG-GAP-2026-002",
@@ -107,10 +114,11 @@
       "ownerApprovedFinalWording": true,
       "reviewIncludesStemAndOptionsAnswerAndRationale": true,
       "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "humanSemanticFamilySignoff": "PENDING",
       "crossVersionRealHistoryRegression": "PENDING",
-      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED",
+      "ownerClinicalSignoff": "APPROVED_BY_OWNER_RPSGT_2026-10-13"
     }
   ],
   "releaseDecision": {
@@ -120,16 +128,19 @@
     "fullSemanticDuplicateReviewComplete": false,
     "representativeRealV2V3HistoryRegressionComplete": false,
     "licensedAasmV3CheckForItem008Complete": false,
-    "publicationStatus": "BLOCKED__PRESERVE_EXISTING_RELEASE_GATES",
+    "publicationStatus": "OWNER_CLINICAL_APPROVED__TECHNICAL_GATES_OUTSTANDING",
     "learnerQuestionAdditionsAuthorizedNow": 0,
-    "learnerRetirementsAuthorizedNow": 0
+    "learnerRetirementsAuthorizedNow": 0,
+    "independentClinicalReviewRequired": false,
+    "externalSecondReviewerRequired": false,
+    "ownerPolicyAmendmentDate": "2026-10-13"
   },
   "boundaries": [
     "A conversation confirmation establishes the owner's expressed assessment; it does not independently authenticate professional credentials or supply a separate reviewer.",
     "Earlier conditional owner approval and this owner professional review are two distinguishable decisions.",
-    "No independently qualified third-party clinical review is recorded through this attestation.",
     "No full manual-current-AASM-v3 pediatric respiratory rule verification is claimed.",
-    "No live V2/V3 learner questions, IDs, historical records, overlays, mock weighting, or duplicate retirements are changed."
+    "No live V2/V3 learner questions, IDs, historical records, overlays, mock weighting, or duplicate retirements are changed.",
+    "A second or independent external reviewer is NOT required under owner policy effective October 13, 2026. The owner's documented review satisfies the Guild clinical content-review gate for these seven named drafts, but not technical or source-validation gates."
   ],
-  "authoritativeGate": "rpsgt-v3/data/question-proposals/OWNER-CONDITIONAL-APPROVAL-2026-10-13.json remains the blocking release gate with independent signoff PENDING."
+  "authoritativeGate": "The OWNER-CONDITIONAL-APPROVAL-2026-10-13.json policy record as amended on 2026-10-13 waives a second reviewer and recognizes owner clinical approval; learner publication is still blocked by source-specific scoring verification, semantic-family decision review and representative progress/history regression."
 }
