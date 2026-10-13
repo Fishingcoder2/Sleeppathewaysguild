@@ -53,7 +53,7 @@ for(const q of draftQuestions){
  assert.equal(approval.licensedCurrentAasmV3CheckCompleted,false);
  assert.ok(q.libraryEvidence?.brptRecommendedBooks?.length,'No indexed BRPT textbook mapping: '+q.id);
  assert.ok(q.referenceKeys.includes(approval.controllingReferenceKey)||q.referenceKeys.includes('aasm-scoring-current'),'Current evidence key not supported: '+q.id);
- assert.equal(q.qa?.manualReviewRecommended,true,'Candidate's manual-review hold must remain: '+q.id);
+ assert.equal(q.qa?.manualReviewRecommended,true,"Candidate manual-review hold must remain: "+q.id);
  assert.equal(q.publicationStatus,'proposed-not-learner-eligible');
  assert.notEqual(q.ownerReleaseApproved,true,'Conditional owner approval must NOT set automatic release flag');
  assert.ok(q.options.includes(q.answer),'Correct answer not in options '+q.id);
