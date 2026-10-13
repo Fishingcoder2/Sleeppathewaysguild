@@ -1,4 +1,7 @@
 # Spriggs modernization — clinical and editorial evidence ledger
+
+> **Current owner policy (October 13, 2026):** The Guild creator and owner, an RPSGT with pediatric badge certificate, is the designated sole clinical-content reviewer. The owner personally approved the seven revised final drafts (five Spriggs, two gap); a second independent reviewer is **not** required. This owner approval does not activate them for learners: applicable licensed AASM rule verification, human semantic-family disposition, and representative V2/V3 saved learner history/report regression remain. See `CLINICAL-REVIEW-POLICY.md`, `OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json` and PR #140. The historical October 12 status descriptions below are retained as development history and are superseded on clinical signoff.
+
 Date: October 12, 2026
 
 **Status: FIVE STAGED QUESTIONS — NOT CLINICALLY APPROVED; NOT RELEASED**
