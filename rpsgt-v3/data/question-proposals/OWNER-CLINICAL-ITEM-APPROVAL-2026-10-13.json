@@ -1,0 +1,135 @@
+{
+  "recordType": "OWNER_CLINICAL_REVIEW_ATTESTATION",
+  "date": "2026-10-13",
+  "localTimeContext": "2026-10-13T08:29:00-04:00 (approximate conversation time, America/New_York)",
+  "status": "OWNER_PROFESSIONAL_ITEM_APPROVAL_RECORDED__NON_INDEPENDENT",
+  "sourceOfAttestation": "Guild owner's explicit affirmative reply ('Yes') to whether they personally reviewed and approved final wording of all seven revised questions, including their correct answers, distractors and rationales.",
+  "reviewer": {
+    "role": "Sleep Pathways Guild owner; clinical content reviewer",
+    "credentialsSelfReported": [
+      "RPSGT",
+      "pediatric badge certificate"
+    ],
+    "credentialsIndependentlyVerified": false,
+    "reviewerNamedHere": false,
+    "independentThirdPartyReviewer": false
+  },
+  "reviewedVersion": {
+    "pullRequest": "https://github.com/Fishingcoder2/Sleeppathewaysguild/pull/140",
+    "contentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+    "sourceFiles": [
+      {
+        "path": "rpsgt-v3/data/question-proposals/spriggs-modernized-2026-10-12.json",
+        "blobSha": "d999f856270c63d40c55b32693409fef0eefe848"
+      },
+      {
+        "path": "rpsgt-v3/data/question-proposals/spriggs-gap-pilot-2026-10-12.json",
+        "blobSha": "ba3ea2c50c168501fedb724b29fbf3fa900d12a7"
+      }
+    ]
+  },
+  "reviewScope": [
+    "question stem",
+    "all four options including three distractors",
+    "existing keyed correct answer",
+    "rationale"
+  ],
+  "itemAttestations": [
+    {
+      "id": "SPG-SPRIGGS-2026-003",
+      "ownerPersonalClinicalReviewConfirmed": true,
+      "ownerApprovedFinalWording": true,
+      "reviewIncludesStemAndOptionsAnswerAndRationale": true,
+      "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "humanSemanticFamilySignoff": "PENDING",
+      "crossVersionRealHistoryRegression": "PENDING",
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-005",
+      "ownerPersonalClinicalReviewConfirmed": true,
+      "ownerApprovedFinalWording": true,
+      "reviewIncludesStemAndOptionsAnswerAndRationale": true,
+      "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "humanSemanticFamilySignoff": "PENDING",
+      "crossVersionRealHistoryRegression": "PENDING",
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-006",
+      "ownerPersonalClinicalReviewConfirmed": true,
+      "ownerApprovedFinalWording": true,
+      "reviewIncludesStemAndOptionsAnswerAndRationale": true,
+      "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "humanSemanticFamilySignoff": "PENDING",
+      "crossVersionRealHistoryRegression": "PENDING",
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-008",
+      "ownerPersonalClinicalReviewConfirmed": true,
+      "ownerApprovedFinalWording": true,
+      "reviewIncludesStemAndOptionsAnswerAndRationale": true,
+      "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "humanSemanticFamilySignoff": "PENDING",
+      "crossVersionRealHistoryRegression": "PENDING",
+      "licensedCurrentAasmV3Check": "REQUIRED_NOT_VERIFIED"
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-009",
+      "ownerPersonalClinicalReviewConfirmed": true,
+      "ownerApprovedFinalWording": true,
+      "reviewIncludesStemAndOptionsAnswerAndRationale": true,
+      "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "humanSemanticFamilySignoff": "PENDING",
+      "crossVersionRealHistoryRegression": "PENDING",
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+    },
+    {
+      "id": "SPG-GAP-2026-001",
+      "ownerPersonalClinicalReviewConfirmed": true,
+      "ownerApprovedFinalWording": true,
+      "reviewIncludesStemAndOptionsAnswerAndRationale": true,
+      "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "humanSemanticFamilySignoff": "PENDING",
+      "crossVersionRealHistoryRegression": "PENDING",
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+    },
+    {
+      "id": "SPG-GAP-2026-002",
+      "ownerPersonalClinicalReviewConfirmed": true,
+      "ownerApprovedFinalWording": true,
+      "reviewIncludesStemAndOptionsAnswerAndRationale": true,
+      "reviewDecision": "OWNER_APPROVES_REVISED_ITEM",
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "humanSemanticFamilySignoff": "PENDING",
+      "crossVersionRealHistoryRegression": "PENDING",
+      "licensedCurrentAasmV3Check": "NOT_ITEM_SPECIFICALLY_REQUIRED"
+    }
+  ],
+  "releaseDecision": {
+    "eligibleForLearnerBank": false,
+    "ownerProfessionalItemApprovalComplete": true,
+    "independentClinicalReviewComplete": false,
+    "fullSemanticDuplicateReviewComplete": false,
+    "representativeRealV2V3HistoryRegressionComplete": false,
+    "licensedAasmV3CheckForItem008Complete": false,
+    "publicationStatus": "BLOCKED__PRESERVE_EXISTING_RELEASE_GATES",
+    "learnerQuestionAdditionsAuthorizedNow": 0,
+    "learnerRetirementsAuthorizedNow": 0
+  },
+  "boundaries": [
+    "A conversation confirmation establishes the owner's expressed assessment; it does not independently authenticate professional credentials or supply a separate reviewer.",
+    "Earlier conditional owner approval and this owner professional review are two distinguishable decisions.",
+    "No independently qualified third-party clinical review is recorded through this attestation.",
+    "No full manual-current-AASM-v3 pediatric respiratory rule verification is claimed.",
+    "No live V2/V3 learner questions, IDs, historical records, overlays, mock weighting, or duplicate retirements are changed."
+  ],
+  "authoritativeGate": "rpsgt-v3/data/question-proposals/OWNER-CONDITIONAL-APPROVAL-2026-10-13.json remains the blocking release gate with independent signoff PENDING."
+}
