@@ -310,7 +310,7 @@
         "documentedCurrentAuthority": {
           "reference": "Maski et al. (2024), Box 2, recommendation 2; uploaded article text",
           "evidence": "At least 8 hours time in bed and at least 7 hours total sleep on the preceding attended pediatric PSG.",
-          "status": "Public source statement located; licensed current scoring/manual review and independent specialist signoff remain required as applicable."
+          "status": "Direct uploaded PDF Box 2 item 2 text verified; still pending clinical/editorial signoff and owner approval."
         }
       },
       "editorialDisposition": "hold-for-licensed-clinical-and-editorial-approval",
@@ -362,7 +362,21 @@
           "Direct source-passage check (where a passage-level citation is claimed)",
           "Independent clinical accuracy and semantic-duplicate review",
           "Owner-approved release"
-        ]
+        ],
+        "directCurrentSourcePassageReview": {
+          "sourceId": "aasm-pediatric-mslt-mwt-2024",
+          "libraryFile": "2024 - Pediatric MSLT and MWT Protocols - Maski et al AASM.pdf",
+          "localPdfPage": 4,
+          "locator": "Box 2, MSLT general testing, conditions and instructions, item 2",
+          "findings": [
+            "Pediatric MSLT follows an attended PSG allowing at least 8 hours of time in bed and at least 7 hours of total sleep time.",
+            "MSLT should not follow a preceding PSG that included adjustment of PAP pressures (split-night or initial PAP titration study)."
+          ],
+          "authorityRole": "Current pediatric daytime testing protocol for 2024, not a pediatric respiratory scoring manual.",
+          "verificationLevel": "direct read of uploaded article PDF",
+          "needsClinicalReleaseReview": true,
+          "sourceKey": "aasm-pediatric-mslt-mwt-2024"
+        }
       }
     },
     {
