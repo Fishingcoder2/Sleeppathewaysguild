@@ -17,7 +17,7 @@ for(const q of packageData.questions){
  if(!q.rationale||!q.sourceCredit?.spriggs2015Chapter||!q.sourceCredit?.authority?.length)throw Error('Missing evidence context: '+q.id);
  if(!q.qa?.manualReviewRecommended||q.publicationStatus!=='proposed-not-learner-eligible')throw Error('Premature release risk: '+q.id);
  if(!Array.isArray(q.referenceKeys)||q.referenceKeys.length<2)throw Error('Insufficient references: '+q.id);
- const normalized=q.prompt.toLowerCase().replace(/\\W+/g,' ').trim();
+ const normalized=q.prompt.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
  if(prompts.has(normalized))throw Error('Exact duplicate candidate prompt: '+q.id);
  prompts.add(normalized);
 }
