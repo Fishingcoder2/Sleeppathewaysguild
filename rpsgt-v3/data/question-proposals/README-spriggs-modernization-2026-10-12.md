@@ -1,5 +1,8 @@
 # Spriggs-based RPSGT question candidate batch — October 12, 2026
 
+> **Current owner policy (October 13, 2026):** The Guild creator and owner, an RPSGT with pediatric badge certificate, is the designated sole clinical-content reviewer. The owner personally approved the seven revised final drafts (five Spriggs, two gap); a second independent reviewer is **not** required. This owner approval does not activate them for learners: applicable licensed AASM rule verification, human semantic-family disposition, and representative V2/V3 saved learner history/report regression remain. See `CLINICAL-REVIEW-POLICY.md`, `OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json` and PR #140. The historical October 12 status descriptions below are retained as development history and are superseded on clinical signoff.
+
+
 **Status:** Editorial proposal, not published, not owner approved.
 
 The batch now contains **5 retained original four-choice case-based questions** mapped to the current BRPT RPSGT D1–D4 task framework. Candidate IDs retain their stable post-triage numbers: `003`, `005`, `006`, `008`, and `009`.
