@@ -50,7 +50,7 @@
     const wanted=new Set(state.ids.map(String)),found=new Map(),taskMap=historyTaskMap(),modules=Array.isArray(state.manifest.modules)?state.manifest.modules:[];
     const inferredCodes=new Set(state.ids.map(id=>taskMap.get(String(id))).filter(Boolean));
     const firstPass=modules.filter(meta=>inferredCodes.has(meta.taskCode)),remaining=modules.filter(meta=>!inferredCodes.has(meta.taskCode));
-    async function scan(batch){for(const meta of batch){if(found.size===wanted.size) break;const questions=await loadModule(meta);questions.forEach(question=>{const key=String(question.id);if(wanted.has(key)&&!isManualReview(question)) found.set(key,question);});}}
+    async function scan(batch){for(const meta of batch){if(found.size===wanted.size) break;const questions=await loadModule(meta);questions.forEach(question=>{const key=String(question.id);if(wanted.has(key)) found.set(key,question);});}}
     await scan(firstPass);await scan(remaining);
     state.questions=state.ids.map(id=>found.get(String(id))).filter(Boolean);state.unresolved=state.ids.filter(id=>!found.has(String(id)));
   }

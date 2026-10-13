@@ -47,7 +47,7 @@
     const domain=domainMap.get(code);
     return domain?code+" · "+domain.fullName:code;
   }
-  function learnerCount(){return Number(state.manifest?.meta?.questionCount||0)-Number(state.manifest?.integritySummary?.manualReviewRecommendedCount||0);}
+  function learnerCount(){return Number(state.manifest?.meta?.questionCount||0);}
   function qualityCount(){return Number(state.manifest?.integritySummary?.manualReviewRecommendedCount||0);}
   function selectedSubject(){return $("[data-practice-subject]")?.value||"all";}
   function selectedDifficulty(){return $("[data-practice-difficulty]")?.value||"all";}
@@ -132,7 +132,7 @@
     notice.className="mode-notice "+(quality?"quality":"learner");
     notice.innerHTML=quality
       ?"<strong>Quality-review pool:</strong> Only records marked <code>manualReviewRecommended</code> are included. Answers are shown for editorial inspection, but attempts do not change learner totals, missed questions, mastery, readiness, or reports."
-      :"<strong>Learner-practice pool:</strong> All records marked <code>manualReviewRecommended</code> are excluded. Correct and incorrect answers update only the new <code>spg_rpsgt_v3</code> learner record.";
+       :"<strong>Learner-practice pool:</strong> All original questions are available, including the 560 previously held for editorial review. Answers update your learner record.";
   }
 
   function selectedModuleMetadata(){
@@ -161,7 +161,7 @@
     status.textContent="Loading "+modules.length+" selected task module"+(modules.length===1?"":"s")+"…";
     const packages=await Promise.all(modules.map(loadModule));
     const pool=packages.flat().filter(function(question){
-      const eligible=state.mode==="quality"?isManualReview(question):!isManualReview(question);
+      const eligible=state.mode==="quality"?isManualReview(question):true;
       return eligible&&matchesSubject(question,subject)&&matchesDifficulty(question,difficulty);
     });
     state.activePoolSize=pool.length;

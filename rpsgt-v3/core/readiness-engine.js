@@ -85,7 +85,7 @@
   }
 
   function isEligible(question){
-    return Boolean(question)&&DIRECT_TASKS.includes(question.taskCode)&&!(question.qa&&question.qa.manualReviewRecommended);
+    return Boolean(question)&&DIRECT_TASKS.includes(question.taskCode);
   }
 
   function dedupeByFamily(pool){
