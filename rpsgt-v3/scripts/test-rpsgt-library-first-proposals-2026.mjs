@@ -70,7 +70,7 @@ for(const p of proposals){
     const p=evidence.directBookPassageReview;
     const exp=q.id.endsWith('001')?{chapter:19,page:14,volume:'Fundamentalssleep(2).PDF'}:{chapter:44,page:185,volume:'Fundamentalssleep(3).PDF'};
     if(!p||!p.chapter?.startsWith(String(exp.chapter)+' ')||p.localPdfPage!==exp.page||p.localVolume!==exp.volume||
-       p.sourceId!=='fundamentals-sleep-technology-3e'||!p.verificationLevel?.includes('current')||
+       p.sourceId!=='fundamentals-sleep-technology-3e'||!p.verificationLevel?.includes('direct PDF page checked')||
        !p.passageDoesNotEstablish?.includes('technologist')) {
       errors.push('Missing direct book-passage review or current-authority boundary: '+q.id);
     }
