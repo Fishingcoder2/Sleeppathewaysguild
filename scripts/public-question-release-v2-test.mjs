@@ -30,6 +30,16 @@ assert.equal(after.data.seed.meta.ownerApprovedQuestionRelease.releaseId, releas
 assert.equal(after.data.seed.meta.ownerApprovedQuestionRelease.clinicalVerificationAdded, false);
 assert.equal(after.data.seed.meta.ownerApprovedQuestionRelease.sourceVerificationHoldCount, 4);
 assert.equal(importRelease(html, release, hash(releaseRaw)).html, html, 'Importer is idempotent');
+// The V2 importer must reject any staged/unreviewed material even when a matching ID exists.
+for (const unsafe of [
+  {ownerReleaseApproved:false},
+  {qa:{...release.questions[0].qa,manualReviewRecommended:true}},
+  {qa:{...release.questions[0].qa,learnerExcluded:true}},
+  {publicationStatus:'proposed-not-learner-eligible'}
+]) {
+  const proposed={...release,questions:[{...release.questions[0],...unsafe}]};
+  assert.throws(()=>importRelease(html,proposed),/not approved for learner release/, 'V2 must reject an unapproved or held source item');
+}
 
 // All app code and storage keys remain unchanged: only the seed bank and its metadata change.
 assert.equal(hash(html.replace(after.match[0], '<APP_DATA>').replace(/\r\n/g, '\n')), hash(originalHtml.replace(before.match[0], '<APP_DATA>').replace(/\r\n/g, '\n')), 'App code and markup are unchanged outside the release data, ignoring checkout line endings');
