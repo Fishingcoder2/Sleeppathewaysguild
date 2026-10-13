@@ -1,9 +1,9 @@
 {
   "packageId": "spg-rpsgt-v3-spriggs-original-questions-2026-10-12",
   "schemaVersion": 1,
-  "status": "DRAFT—10 CANDIDATES; 6 NEAR-DUPLICATES REMOVED; REVIEW REQUIRED; NOT RELEASED",
+  "status": "DRAFT—8 UNIQUE-ID CANDIDATES AFTER CONCEPT TRIAGE; NOT CLINICALLY APPROVED; NOT RELEASED",
   "draftDate": "2026-10-12",
-  "questionCount": 10,
+  "questionCount": 8,
   "basis": "Question-writing topics are drawn from indexed chapter maps for Spriggs (2015) and historical Spriggs (2002), independently modernized using current AASM, AAST, BRPT and AASM-published protocol evidence. No publisher questions, posttests, answer keys, figures or text copied.",
   "books": [
     {
@@ -81,7 +81,8 @@
     "Verify wording against licensed current manual when exact scoring-rule interpretations arise.",
     "Audit near-duplicates against 3,240 effective questions (2,920 originals plus 320 owner-approved additions) before promotion.",
     "Complete chapter-to-statement/page locator audit before claiming direct citation of Spriggs passage.",
-    "Initial 16 candidate concepts narrowed to 10 after near-duplicate triage; 6 rejected concepts and existing-bank IDs are documented in duplicateAudit."
+    "Initial 16 candidate concepts narrowed to 10 after near-duplicate triage; 6 rejected concepts and existing-bank IDs are documented in duplicateAudit.",
+    "After complete 3,240-question GitHub Actions scan, two further conceptually duplicative questions were retired (original IDs 002 and 007), leaving eight unreleased draft IDs without renumbering."
   ],
   "questions": [
     {
@@ -123,61 +124,6 @@
       "qa": {
         "blueprintTaskMapped": true,
         "taskCode": "D1A",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible",
-      "editorialChecks": {
-        "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
-        "needsCurrentManualLicensedRuleReview": false,
-        "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
-      }
-    },
-    {
-      "id": "SPG-SPRIGGS-2026-002",
-      "domain": "D1",
-      "taskCode": "D1B",
-      "task": "Patient and caregiver education",
-      "topic": "Patient education",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "A caregiver asks why an attended polysomnogram includes head and eye electrodes as well as breathing sensors. Which explanation best matches the purpose of a comprehensive PSG?",
-      "options": [
-        "Head and eye electrodes record sleep-related signals while airflow, effort, and oxygen channels provide respiratory context",
-        "The electrodes are used only to estimate blood pressure",
-        "Eye electrodes directly diagnose obstructive sleep apnea without any other channels",
-        "A single pulse-oximeter channel determines sleep stages"
-      ],
-      "answer": "Head and eye electrodes record sleep-related signals while airflow, effort, and oxygen channels provide respiratory context",
-      "rationale": "PSG combines neurophysiologic and cardiorespiratory signals. No single pulse-oximeter channel measures the stages of sleep.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aast-psg",
-        "aasm-scoring-current"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aast-psg",
-        "aasm-scoring-current"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 6,
-        "spriggs2002HistoricalChapter": 1,
-        "authority": [
-          "AAST Standard Polysomnography technical guideline",
-          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D1B",
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
@@ -420,61 +366,6 @@
       }
     },
     {
-      "id": "SPG-SPRIGGS-2026-007",
-      "domain": "D2",
-      "taskCode": "D2C",
-      "task": "Identify, respond, and document",
-      "topic": "Respiratory signal integrity",
-      "questionType": "Clinical application",
-      "difficulty": "Intermediate",
-      "prompt": "A nasal-pressure trace abruptly disappears when a sleeping patient turns, but chest and abdominal movement and other channels remain interpretable. What is the best first technical response?",
-      "options": [
-        "Immediately classify every interval as central apnea",
-        "Check the patient's condition and cannula placement, restore the pressure signal, and document the interruption",
-        "Delete the respiratory-effort signals",
-        "Increase the event threshold to hide the flat trace"
-      ],
-      "answer": "Check the patient's condition and cannula placement, restore the pressure signal, and document the interruption",
-      "rationale": "Loss of one sensor while other physiological signals remain present suggests possible sensor displacement; patient assessment and signal restoration precede scoring decisions.",
-      "referenceKeys": [
-        "brpt-blueprint",
-        "aast-psg",
-        "aasm-scoring-current"
-      ],
-      "studyRecommendationKeys": [
-        "brpt-handbook",
-        "aast-psg",
-        "aasm-scoring-current"
-      ],
-      "sourceCredit": {
-        "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
-        "spriggs2015Chapter": 8,
-        "spriggs2002HistoricalChapter": 2,
-        "authority": [
-          "AAST Standard Polysomnography technical guideline",
-          "AASM Scoring Manual, Version 3 (2023), including current errata/FAQ"
-        ],
-        "mappingStatus": "chapter-level indexed source map; direct statement/page verification not yet complete"
-      },
-      "qa": {
-        "blueprintTaskMapped": true,
-        "taskCode": "D2C",
-        "answerInOptions": true,
-        "hasReferenceKeys": true,
-        "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
-        "sourceMappingStatus": "indexed chapter level"
-      },
-      "publicationStatus": "proposed-not-learner-eligible",
-      "editorialChecks": {
-        "needsFullBankDuplicateReview": true,
-        "needsIndependentClinicalReview": true,
-        "needsCurrentManualLicensedRuleReview": false,
-        "originalQuestion": true,
-        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
-      }
-    },
-    {
       "id": "SPG-SPRIGGS-2026-008",
       "domain": "D3",
       "taskCode": "D3B",
@@ -678,7 +569,28 @@
         "reason": "SpO2 drop with poor pleth waveform already tested"
       }
     ],
-    "remainingReviewRequired": true
+    "remainingReviewRequired": true,
+    "removedAfterCompleteBankReview": [
+      {
+        "draftId": "SPG-SPRIGGS-2026-002",
+        "existingId": "D1B-011",
+        "reason": "Conceptual duplicate: explaining multisignal PSG monitoring is already tested in the effective bank; new item adds little distinct competence."
+      },
+      {
+        "draftId": "SPG-SPRIGGS-2026-007",
+        "existingId": "D2C-019",
+        "reason": "Conceptual duplicate: patient repositioning followed by a flat respiratory channel is already tested as a troubleshooting scenario."
+      }
+    ],
+    "completeBankHeuristic": {
+      "runId": 38326465399,
+      "originalCount": 2920,
+      "ownerApprovedAdditions": 320,
+      "effectiveCount": 3240,
+      "hardErrors": 0,
+      "heuristicHighSimilarityFlags": 0,
+      "limitation": "No high token-overlap flags does not exclude concept-level repeats. Two additional concepts removed manually."
+    }
   },
   "currentAuthorityPolicy": {
     "scoring": "AASM Scoring Manual v3 (2023) with the current online erratum and FAQ; confirm licensed rule before publishing scoring cases.",
