@@ -47,6 +47,7 @@ function meta(g){return {count:g.length,ids:g.map(id),tasks:[...new Set(g.map(q=
  answers:[...new Set(g.map(q=>normalize(q.answer)))],
  answerConflict:new Set(g.map(q=>normalize(q.answer))).size>1,
  sameOptions:new Set(g.map(options)).size===1,
+ reviewedSourceRecords:g.map(q=>({id:q.id,prompt:q.prompt,answer:q.answer,options:q.options,rationale:q.rationale,taskCode:q.taskCode})),
  manualReviewRequired:true};}
 const conflicts=sameStem.filter(g=>new Set(g.map(q=>normalize(q.answer))).size>1).map(meta);
 const families=sameNormalized.map(meta);
@@ -77,9 +78,9 @@ const md=[
  '| Identical-stem families | '+result.identicalPromptFamilies+' |',
  '| Identical stems with different recorded correct answers | '+result.identicalPromptAnswerConflictFamilies+' |',
  '','## Largest duplicate families',
- ...families.slice(0,30).map((g,i)=>(i+1)+'. '+g.ids.join(', ')+' ('+g.count+' records; '+g.eligibleCount+' eligible; task '+g.tasks.join('/')+'): '+g.prompt),
+ ...families.slice(0,30).map((g,i)=>(i+1)+'. '+g.ids.join(', ')+' ('+g.count+' records; '+g.eligibleCount+' eligible; task '+g.tasks.join('/')+'): '+g.prompt+' **Recorded answer:** '+g.reviewedSourceRecords[0].answer),
  '','## Same-stem recorded-answer conflicts — editor review only',
- ...(conflicts.length?conflicts.slice(0,30).map(g=>'- '+g.ids.join(', ')+': '+g.prompt+' (answers differ; read full context/options before judgment)'):['No identical-stem different-answer families were detected.']),
+ ...(conflicts.length?conflicts.slice(0,30).flatMap(g=>['- '+g.ids.join(', ')+': '+g.prompt+' (recorded correct answers differ; review complete choices and question rationale)',...g.reviewedSourceRecords.map(q=>'  - '+q.id+' **Answer:** '+q.answer+' **Choices:** '+q.options.join(' | ')+' **Rationale:** '+q.rationale)]):['No identical-stem different-answer families were detected.']),
  '','## Interpretation',
  'V3 Mock already consolidates normalized question families at selection time. This audit does **not** mean every copy is shown in a single mock exam. Prioritize quality in Practice/Guided Study/Readiness and actual V2 browser routing.',
  'Do not auto-retire copies, renumber IDs, or replace scoring thresholds from an unrelated diagnostic source. Qualified editorial/clinical review, owner approval and saved-progress regression come first.'
