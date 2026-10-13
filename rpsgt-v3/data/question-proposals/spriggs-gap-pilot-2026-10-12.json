@@ -62,7 +62,8 @@
         "controllingSource": {
           "id": "aasm-rls-plmd-2025",
           "location": "Augmentation discussion and dopamine-agonist recommendations",
-          "doi": "10.5664/jcsm.11390"
+          "doi": "10.5664/jcsm.11390",
+          "apa7": "Winkelman, J. W., Berkowski, J. A., DelRosso, L. M., Koo, B. B., Scharf, M. T., Sharon, D., Zak, R. S., Kazmi, U., Falck-Ytter, Y., Shelgikar, A. V., Trotti, L. M., & Walters, A. S. (2025). Treatment of restless legs syndrome and periodic limb movement disorder: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 21(1), 137–152. https://doi.org/10.5664/jcsm.11390"
         },
         "evidenceBoundary": "RLS treatment guideline supports augmentation pattern; ICSD-3-TR controls formal diagnosis. Exact textbook passage not verified."
       },
@@ -113,7 +114,8 @@
         "controllingSource": {
           "id": "aasm-adult-osa-diagnostic-testing-2017",
           "location": "Recommendation 3: negative/inconclusive/technically inadequate HSAT follow-up",
-          "doi": "10.5664/jcsm.6506"
+          "doi": "10.5664/jcsm.6506",
+          "apa7": "Kapur, V. K., Auckley, D. H., Chowdhuri, S., Kuhlmann, D. C., Mehra, R., Ramar, K., & Harrod, C. G. (2017). Clinical practice guideline for diagnostic testing for adult obstructive sleep apnea: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 13(3), 479–504. https://doi.org/10.5664/jcsm.6506"
         },
         "evidenceBoundary": "Applies to adult diagnostic pathway; clinician decides appropriate testing. This is distinct from longitudinal management after established OSA. Exact textbook passage not verified."
       },
@@ -135,5 +137,30 @@
     "mergeStatus": "DO NOT MERGE UNTIL FULL QA"
   },
   "learnerReferencePresentation": "APA 7 only. Hide internal mapping labels/keys in learner UI.",
-  "copyrightBoundary": "New original cases. No verbatim Spriggs passages, figures, source test items, or publisher answer keys."
+  "copyrightBoundary": "New original cases. No verbatim Spriggs passages, figures, source test items, or publisher answer keys.",
+  "sourcesAPA7": [
+    "Winkelman, J. W., Berkowski, J. A., DelRosso, L. M., Koo, B. B., Scharf, M. T., Sharon, D., Zak, R. S., Kazmi, U., Falck-Ytter, Y., Shelgikar, A. V., Trotti, L. M., & Walters, A. S. (2025). Treatment of restless legs syndrome and periodic limb movement disorder: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 21(1), 137–152. https://doi.org/10.5664/jcsm.11390",
+    "Kapur, V. K., Auckley, D. H., Chowdhuri, S., Kuhlmann, D. C., Mehra, R., Ramar, K., & Harrod, C. G. (2017). Clinical practice guideline for diagnostic testing for adult obstructive sleep apnea: An American Academy of Sleep Medicine clinical practice guideline. Journal of Clinical Sleep Medicine, 13(3), 479–504. https://doi.org/10.5664/jcsm.6506",
+    "Spriggs, W. H. (2015). Essentials of polysomnography: A training guide and reference for sleep technicians (2nd ed.). Jones & Bartlett Learning."
+  ],
+  "gapReview": {
+    "stage": "RPSGT question-development / high-value underrepresented decision-family pilot",
+    "currentEvidenceVerified": [
+      "2025 AASM RLS/PLMD guideline describes augmentation as earlier onset, spread to other body areas, and shorter rest latency associated with dopaminergic therapies.",
+      "2017 AASM adult OSA diagnostic testing guideline Recommendation 3 explicitly recommends PSG following one negative, inconclusive, or technically inadequate HSAT.",
+      "Both correct responses stay within technologist documentation, communication, and coordination scope."
+    ],
+    "bankRunId": 38332267610,
+    "bankCount": 3240,
+    "previousHeldPilotCount": 5,
+    "lexicalSimilarityFlags": 0,
+    "errors": 0,
+    "conceptFamilyCaution": "Six RLS-related prompts and 43 HSAT-related prompts detected by broad search; no equivalent tested decision seen among logged samples. This is NOT complete human semantic approval.",
+    "pending": [
+      "Review all 6 RLS and all 43 HSAT concept-family prompts for equivalent decisions.",
+      "Independent qualified clinical/editorial review of both answer rationales and distractors.",
+      "Owner release approval before learner-facing import."
+    ],
+    "approval": "NOT GRANTED"
+  }
 }
