@@ -117,7 +117,19 @@
           "Direct source-passage check (where a passage-level citation is claimed)",
           "Independent clinical accuracy and semantic-duplicate review",
           "Owner-approved release"
-        ]
+        ],
+        "directBookPassageReview": {
+          "sourceId": "fundamentals-sleep-technology-3e",
+          "chapter": "19 — Restless Legs Syndrome and Periodic Limb Movement Disorder",
+          "localVolume": "Fundamentalssleep(2).PDF",
+          "localPdfPage": 14,
+          "section": "Treatment of RLS and PLMD",
+          "passageSupports": "Older FST3 text describes long-term augmentation under dopamine therapy with worsening symptoms, earlier daytime onset and spread to the arms or other areas.",
+          "passageDoesNotEstablish": "Current recommended RLS drug selection, formal diagnosis, clinical dosing decisions, or independent technologist medication adjustment.",
+          "criticalSupersession": "The same textbook passage describes dopamine agonists as first-line based on older guidance; do not carry this prescription recommendation into current learner rationales. The Guild's indexed AASM 2025 RLS/PLMD guideline controls contemporary treatment advice.",
+          "verificationLevel": "direct PDF page checked for concept only; current treatment source separately required",
+          "checkedFrom": "user-provided local BRPT-listed recommended textbook PDF"
+        }
       }
     },
     {
@@ -212,7 +224,18 @@
           "Direct source-passage check (where a passage-level citation is claimed)",
           "Independent clinical accuracy and semantic-duplicate review",
           "Owner-approved release"
-        ]
+        ],
+        "directBookPassageReview": {
+          "sourceId": "fundamentals-sleep-technology-3e",
+          "chapter": "44 — Home Sleep Apnea Testing",
+          "localVolume": "Fundamentalssleep(3).PDF",
+          "localPdfPage": 185,
+          "section": "Sensitivity, Specificity, and Positive Predictive Values of HSAT",
+          "passageSupports": "A negative HSAT has lower negative predictive value in high-pretest-probability patients; the chapter recommends attended PSG if clinical suspicion remains high.",
+          "passageDoesNotEstablish": "A technologist's independent authority to order testing or an override of current AASM adult OSA diagnostic testing guideline.",
+          "verificationLevel": "direct PDF page checked for concept only; AASM 2017 adult OSA diagnostic guideline remains decision authority",
+          "checkedFrom": "user-provided local BRPT-listed recommended textbook PDF"
+        }
       }
     }
   ],
@@ -247,7 +270,8 @@
       "Independent qualified clinical/editorial review of both answer rationales and distractors.",
       "Owner release approval before learner-facing import."
     ],
-    "approval": "NOT GRANTED"
+    "approval": "NOT GRANTED",
+    "libraryPassageCheck": "Both cases checked against specific original user-provided Fundamentals of Sleep Technology 3e pages: volume 2 page 14 (RLS augmentation), volume 3 page 185 (negative HSAT). Current AASM overlays preserved; chapter 19 pharmacotherapy hierarchy is outdated."
   },
   "sourcePriorityPolicy": {
     "policyId": "SPG-RPSGT-LIBRARY-FIRST-2026-10-12",
