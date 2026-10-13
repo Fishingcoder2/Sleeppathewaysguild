@@ -21,4 +21,30 @@ for(const q of packageData.questions){
  if(prompts.has(normalized))throw Error('Exact duplicate candidate prompt: '+q.id);
  prompts.add(normalized);
 }
+// Record-identity, source-locator and publication-gate contract.
+const retained=new Set([
+ 'SPG-SPRIGGS-2026-003','SPG-SPRIGGS-2026-005','SPG-SPRIGGS-2026-006','SPG-SPRIGGS-2026-008','SPG-SPRIGGS-2026-009'
+]);
+if(packageData.questionCount!==5||packageData.questions.some(q=>!retained.has(q.id)))throw Error('Unexpected staged candidate count/IDs; require editorial reconfirmation.');
+if(packageData.editorialReview?.manualApproval!=='NOT GRANTED'||packageData.editorialReview?.releaseApproval!=='NOT GRANTED')throw Error('Draft cannot declare clinical or owner approval.');
+const mapped2015={
+ '003':{chapter:6,title:'Patient Hookup Procedures',pages:'65–81'},
+ '005':{chapter:11,title:'Performing Other Types of Sleep Studies',pages:'153–156'},
+ '006':{chapter:11,title:'Performing Other Types of Sleep Studies',pages:'153–156'},
+ '008':{chapter:16,title:'Pediatric Sleep Medicine',pages:'234–237'},
+ '009':{chapter:15,title:'Scoring and Reporting',pages:'225–233'}
+};
+for(const q of packageData.questions){
+ const short=String(q.id).slice(-3), expected=mapped2015[short], book=q.sourceCredit?.chapter2015;
+ if(!book||book.chapterNumber!==expected.chapter||book.title!==expected.title||book.printedPageRange!==expected.pages)throw Error('Incorrect indexed Spriggs chapter/range: '+q.id);
+ if(!book.evidenceBoundary?.includes('Chapter-level map ONLY'))throw Error('Source provenance level overstated: '+q.id);
+ if(!q.editorialChecks?.needsIndependentClinicalReview||q.editorialDisposition!=='hold-for-licensed-clinical-and-editorial-approval')throw Error('Question prematurely approved: '+q.id);
+}
+const adult=packageData.questions.find(q=>q.id.endsWith('006'));
+const child=packageData.questions.find(q=>q.id.endsWith('005'));
+const pediatricResp=packageData.questions.find(q=>q.id.endsWith('008'));
+if(!adult.referenceKeys.includes('aasm-adult-mslt-mwt-2021')||!child.referenceKeys.includes('aasm-pediatric-mslt-mwt-2024'))throw Error('Adult and pediatric MSLT source identities must not be mixed.');
+if(!pediatricResp.editorialChecks?.needsCurrentManualLicensedRuleReview)throw Error('Pediatric scoring item missing licensed scoring-rule review gate.');
+if(!packageData.provenanceIdentityPolicy?.idRenumberingOccurredInFirstPilot)throw Error('Historic draft ID renumbering must be disclosed.');
+
 console.log('Validated '+packageData.questionCount+' unreleased, original Spriggs topic-based candidates. Full clinical and semantic review still required.');
