@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Contract: owner conditional approval is not permission to bypass clinical or regression gates.
+// Contract: the owner's dated professional RPSGT item review satisfies Guild clinical signoff.
+// No external second reviewer is required; source, duplicate and regression safeguards remain.
 // This intentionally leaves the V2/V3 learner banks and every duplicate ID unchanged.
 import assert from 'node:assert/strict';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
@@ -8,6 +9,7 @@ import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
 const json=async p=>JSON.parse(await readFile(join(root,p),'utf8'));
 const file=await json('rpsgt-v3/data/question-proposals/OWNER-CONDITIONAL-APPROVAL-2026-10-13.json');
+const ownerReview=await json('rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json');
 const first=await json('rpsgt-v3/data/question-proposals/spriggs-modernized-2026-10-12.json');
 const second=await json('rpsgt-v3/data/question-proposals/spriggs-gap-pilot-2026-10-12.json');
 const mslt=await json('rpsgt-v3/data/question-proposals/mslt-v2-v3-existing-item-revisions-2026-10-12.json');
@@ -34,7 +36,13 @@ assert.equal(totals.newQuestionsConditionallyApproved,7);
 assert.equal(totals.existingQuestionRevisionsAuthorizedToProceed,5);
 assert.equal(totals.duplicateCandidatesPendingReview,15);
 for(const field of ['learnerQuestionAdditionsAuthorizedNow','learnerQuestionRevisionsAuthorizedNow','learnerRetirementsAuthorizedNow','duplicateRetirementsAuthorized'])assert.equal(totals[field],0,'No learner activation authorized: '+field);
-assert.equal(file.gateDecision.qualifiedClinicalReleaseEligibility,'NONE_READY');
+assert.equal(file.policyAmendment.independentSecondReviewerRequired,false,'Owner policy must not require an external second reviewer');
+assert.deepEqual(file.policyAmendment.reviewerQualificationsSelfReported,['RPSGT','pediatric badge certificate']);
+assert.equal(file.gateDecision.qualifiedClinicalReleaseEligibility,'OWNER_CLINICAL_SIGNOFF_COMPLETE__TECHNICAL_GATES_PENDING');
+assert.equal(file.gateDecision.ownerClinicalItemReview,'COMPLETED_SEVEN_NEW__FIVE_REVISIONS_PENDING');
+assert.equal(ownerReview.itemAttestations.length,7);
+assert.equal(ownerReview.releaseDecision.externalSecondReviewerRequired,false);
+assert.equal(ownerReview.releaseDecision.ownerProfessionalItemApprovalComplete,true);
 assert.equal(file.gateDecision.status,'BLOCKED_FROM_LEARNER_ACTIVATION');
 const draftQuestions=[...first.questions,...second.questions];
 const requiredNew=['SPG-SPRIGGS-2026-003','SPG-SPRIGGS-2026-005','SPG-SPRIGGS-2026-006','SPG-SPRIGGS-2026-008','SPG-SPRIGGS-2026-009','SPG-GAP-2026-001','SPG-GAP-2026-002'];
@@ -46,8 +54,12 @@ for(const q of draftQuestions){
  assert.equal(approval.ownerConditionalPublicationApproved,true);
  assert.equal(approval.finalLearnerReleaseApproved,false);
  assert.equal(approval.eligibleForLearnerBank,false);
- assert.equal(approval.independentQualifiedClinicalSignoff,'PENDING');
- assert.equal(approval.individualAnswerDistractorRationaleSignoff,'PENDING');
+ assert.equal(approval.independentQualifiedClinicalSignoff,'NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13');
+ assert.equal(approval.individualAnswerDistractorRationaleSignoff,'OWNER_RPSGT_APPROVED_2026-10-13');
+ const ownerItem=ownerReview.itemAttestations.find(x=>x.id===q.id);
+ assert.ok(ownerItem?.ownerApprovedFinalWording,'The Guild owner has not signed the final question: '+q.id);
+ assert.equal(ownerItem.reviewIncludesStemAndOptionsAnswerAndRationale,true);
+ assert.equal(approval.ownerClinicalReview?.reviewedContentCommit,ownerReview.reviewedVersion.contentCommit);
  assert.equal(approval.completeSemanticDuplicateReview,'PENDING');
  assert.equal(approval.crossVersionLearnerAndHistoryRegression,'PENDING');
  assert.equal(approval.licensedCurrentAasmV3CheckCompleted,false);
@@ -70,7 +82,8 @@ for(const q of revisions){
  assert.equal(approval.ownerAuthorizedToProceed,true);
  assert.equal(approval.finalLearnerRevisionApproved,false);
  assert.equal(approval.eligibleToApply,false);
- assert.equal(approval.independentQualifiedClinicalSignoff,'PENDING');
+ assert.equal(approval.independentQualifiedClinicalSignoff,'NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13');
+ assert.equal(approval.ownerClinicalReview,'PENDING_SEPARATE_REVISED_ITEM_REVIEW');
  assert.equal(approval.manualEditorialReview,'PENDING');
  assert.equal(approval.crossVersionHistoryAndReportRegression,'PENDING');
  const a=v2ById.get(q.id),b=v3ById.get(q.id);
@@ -105,11 +118,11 @@ assert.equal(readiness.manualGates.representativeRealBrowserMigrationExports.com
 assert.equal(readiness.manualGates.interactiveDesktopMobileRegression.complete,false);
 const result={
  date:file.recordedDate,ownerConditionalNew:7,ownerProceedRevisions:5,
- clinicalReleaseEligibleNew:0,clinicalReleaseEligibleRevisions:0,activatedNow:0,
+ ownerClinicalApprovedNew:7,externalSecondReviewerRequired:false,clinicalReleaseEligibleNew:0,clinicalReleaseEligibleRevisions:0,activatedNow:0,
  duplicatesUntouched:15,immutableV2V3IDs:3240,
  currentSourceBankRecords:modules.length,existingApprovedOverlayRecords:release.questions.length,
  v3PublicReleaseAllowed:false,checksPassed:true,
- outstanding:['qualified independent clinical signoff on 7 new questions and 5 edits','complete human concept-family duplicate review','licensed AASM Version 3 scoring-rule passage for SPG-SPRIGGS-2026-008, imp-050 and boost-039','browser and stored progress/history/report regression for actual learner content activation','V3 public entry blocked on independent migration/interactive gates']
+ outstanding:['owner professional clinical review DONE for 7 new questions; 5 existing edits await their own owner review','complete human concept-family duplicate review','licensed AASM Version 3 scoring-rule passage for SPG-SPRIGGS-2026-008, imp-050 and boost-039','browser and stored progress/history/report regression for actual learner content activation','V3 public entry blocked on independent migration/interactive gates']
 };
 const dir=join(root,'rpsgt-v3/audit-output');await mkdir(dir,{recursive:true});
 await writeFile(join(dir,'rpsgt-conditional-owner-approval-release-gate-2026.json'),JSON.stringify(result,null,2)+'\n');
@@ -123,7 +136,7 @@ const report=[
 '| Duplicate retirements | 0 (15 pending review) | 0 |',
 '','All 3,240 existing source question IDs and options/answers remain matched across V2 and V3; no new draft IDs in either learner pool, no duplicate candidates retired, no storage schema changes.',
 '','## Unresolved gates',...result.outstanding.map(x=>'- '+x),
-'','The source-preflight evidence is necessary but not independent specialist signoff. This report does not enable learner publication.'
+'','The owner RPSGT review meets the Guild clinical signoff policy for these seven new questions; NO second reviewer is required. This report does not enable learner publication until source/manual, semantic-family, and real-history regression gates pass.'
 ].join('\n');
 await writeFile(join(dir,'rpsgt-conditional-owner-approval-release-gate-2026.md'),report+'\n');
 console.log(report);
