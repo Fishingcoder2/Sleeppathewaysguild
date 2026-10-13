@@ -96,3 +96,24 @@ for(const term of terms){
   pos=body.indexOf(term,pos+term.length);count++;
  }
 }
+
+// Follow-up precise Guided Trail selection and eligible-only RPSGT educational variety.
+for(const term of ['function taskQuestionPool','function startPracticeSession','const TRAIL=','const TRAIL =','function taskDetailsFromId','function renderTrail','function markTaskComplete']){
+ const at=body.indexOf(term);
+ if(at>=0)console.log('CPSGT_TARGETED',JSON.stringify({term,at,code:body.slice(Math.max(at-100,0),at+4000).replace(/\s+/g,' ').slice(0,4030)}));
+}
+for(const task of Object.keys(taskMap).sort()){
+ const eligible=[...base,...overlay].filter(q=>q.taskCode===task && !q.qa?.manualReviewRecommended && !q.manualReviewRecommended);
+ if(!eligible.length)continue;
+ const diff={},types={},topics={},cat={calculation:0,directRecall:0,scenarioOrDecision:0,other:0};
+ for(const q of eligible){
+  const d=String(q.difficulty||'other'); diff[d]=(diff[d]||0)+1;
+  const t=String(q.questionType||'other');types[t]=(types[t]||0)+1;
+  const topic=String(q.topic||'unknown');topics[topic]=(topics[topic]||0)+1;
+  if(/calculation|unit trap|math/i.test(t))cat.calculation++;
+  else if(/concept|definition|recall|memory|recognition/i.test(t))cat.directRecall++;
+  else if(/scenario|decision|next step|next action|best answer|interpretation|troubleshooting|first action/i.test(t))cat.scenarioOrDecision++;
+  else cat.other++;
+ }
+ console.log('RPSGT_ELIGIBLE',JSON.stringify({task,total:eligible.length,difficulties:diff,typesTop:Object.entries(types).sort((a,b)=>b[1]-a[1]).slice(0,12),topicsTop:Object.entries(topics).sort((a,b)=>b[1]-a[1]).slice(0,10),approxTypeBuckets:cat}));
+}
