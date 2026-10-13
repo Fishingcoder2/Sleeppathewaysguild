@@ -117,3 +117,8 @@ for(const task of Object.keys(taskMap).sort()){
  }
  console.log('RPSGT_ELIGIBLE',JSON.stringify({task,total:eligible.length,difficulties:diff,typesTop:Object.entries(types).sort((a,b)=>b[1]-a[1]).slice(0,12),topicsTop:Object.entries(topics).sort((a,b)=>b[1]-a[1]).slice(0,10),approxTypeBuckets:cat}));
 }
+
+for(const term of ['const TRAIL','let TRAIL','const DOMAIN_DATA','function taskCodeFromGuidedTaskId','const OFFICIAL_CPSGT_TASK_CODES','const TASK_FILTER_STOP_WORDS','function renderTrail','function taskHtml']){
+ const at=html.indexOf(term);
+ if(at>=0)console.log('CPSGT_TRAIL_IMPL',JSON.stringify({term,at,code:html.slice(Math.max(0,at-100),at+2400).replace(/\s+/g,' ').slice(0,2440)}));
+}
