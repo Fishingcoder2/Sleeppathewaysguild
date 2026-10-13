@@ -1,0 +1,70 @@
+name: RPSGT V3 Missed Review modal regression
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rpsgt-v3/review.html'
+      - 'rpsgt-v3/core/review.js'
+      - 'rpsgt-v3/assets/review.css'
+      - 'rpsgt-v3/scripts/test-review-system.mjs'
+      - 'rpsgt-v3/tests/browser/review-modal-visibility.spec.mjs'
+      - '.github/workflows/rpsgt-v3-review-modal-regression.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'rpsgt-v3/review.html'
+      - 'rpsgt-v3/core/review.js'
+      - 'rpsgt-v3/assets/review.css'
+      - 'rpsgt-v3/scripts/test-review-system.mjs'
+      - 'rpsgt-v3/tests/browser/review-modal-visibility.spec.mjs'
+      - '.github/workflows/rpsgt-v3-review-modal-regression.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  review-static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check JS syntax
+        run: |
+          node --check rpsgt-v3/core/review.js
+          node --check rpsgt-v3/tests/browser/review-modal-visibility.spec.mjs
+          node --check rpsgt-v3/scripts/test-review-system.mjs
+      - name: Validate missed and mastered review state and modal visibility contract
+        run: node rpsgt-v3/scripts/test-review-system.mjs
+  review-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [desktop-chromium, mobile-chromium]
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install test browser dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify initial 20-question review and completion-only results
+        run: npx playwright test --config=playwright.config.mjs --project=${{ matrix.project }} tests/browser/review-modal-visibility.spec.mjs
+      - name: Save failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-review-modal-${{ matrix.project }}-evidence
+          path: |
+            rpsgt-v3/test-results
+            rpsgt-v3/playwright-report
+          if-no-files-found: ignore
