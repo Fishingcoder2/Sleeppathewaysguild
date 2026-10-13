@@ -127,4 +127,15 @@ for(const file of (await readdir(root)).filter(file=>file.endsWith('.html'))){
 }
 assert.throws(()=>releaseApi.validateRelease({...release,rpsgtAddedCount:319}),/count/);
 assert.throws(()=>releaseApi.validateRelease({...release,questions:[{...release.questions[0],ownerReleaseApproved:false}]}),/incomplete/);
+for (const unsafe of [
+  {qa:{...release.questions[0].qa,manualReviewRecommended:true}},
+  {qa:{...release.questions[0].qa,learnerExcluded:true}},
+  {publicationStatus:'proposed-not-learner-eligible'}
+]) {
+  assert.throws(
+    ()=>releaseApi.validateRelease({...release,questions:[{...release.questions[0],...unsafe}]}),
+    /not been released for learner practice/,
+    'V3 must reject held or learner-excluded candidate'
+  );
+}
 console.log(JSON.stringify({sourceQuestions:2920,approvedAdditions:320,effectiveQuestions:3240,learnerEligible:2680,preservedQualityReview:560,bankControllers:bankControllers.length,integratedPages:pages,mockCandidates:mockCandidates.length},null,2));
