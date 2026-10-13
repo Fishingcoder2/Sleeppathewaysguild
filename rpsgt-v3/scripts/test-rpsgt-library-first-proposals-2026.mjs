@@ -64,8 +64,23 @@ for(const p of proposals){
   if(!q.referenceKeys.includes('brpt-blueprint')||!q.referenceKeys.includes('brpt-handbook')||!q.referenceKeys.includes('brpt-refs'))
     errors.push('Required exam-scoping sources not in question metadata: '+q.id);
   if(!evidence.evidenceBoundary?.includes('Do not claim statement-level'))errors.push('No chapter-vs-passage evidence warning: '+q.id);
+  // For the two gap pilots we have now inspected the original Guild-owned book pages.
+  // Preserve the limited scope of that review and the current-treatment override.
+  if(q.id.startsWith('SPG-GAP-2026-')){
+    const p=evidence.directBookPassageReview;
+    const exp=q.id.endsWith('001')?{chapter:19,page:14,volume:'Fundamentalssleep(2).PDF'}:{chapter:44,page:185,volume:'Fundamentalssleep(3).PDF'};
+    if(!p||!p.chapter?.startsWith(String(exp.chapter)+' ')||p.localPdfPage!==exp.page||p.localVolume!==exp.volume||
+       p.sourceId!=='fundamentals-sleep-technology-3e'||!p.verificationLevel?.includes('current')||
+       !p.passageDoesNotEstablish?.includes('technologist')) {
+      errors.push('Missing direct book-passage review or current-authority boundary: '+q.id);
+    }
+    if(q.id.endsWith('001')&&!p?.criticalSupersession?.includes('first-line'))
+      errors.push('Missing historical dopamine-agonist first-line treatment warning for '+q.id);
+  }
   rows.push({id:q.id,task:q.taskCode,bookSections:evidence.brptRecommendedBooks.map(x=>x.sourceId+'#'+x.sectionId),
-    mappedTaskSections:mapped.length,held:true,sourceCheck:'Indexed chapter only; independent content validation still required'});
+    mappedTaskSections:mapped.length,held:true,sourceCheck:evidence.directBookPassageReview?
+      'Specified Guild textbook passage checked; current clinical rule and editorial approval still required':
+      'Indexed chapter only; direct passage and independent content validation still required'});
  }
 }
 if(rows.length!==7)errors.push('Expected seven staged candidates, received '+rows.length);
