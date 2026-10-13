@@ -122,3 +122,26 @@ for(const term of ['const TRAIL','let TRAIL','const DOMAIN_DATA','function taskC
  const at=html.indexOf(term);
  if(at>=0)console.log('CPSGT_TRAIL_IMPL',JSON.stringify({term,at,code:html.slice(Math.max(0,at-100),at+2400).replace(/\s+/g,' ').slice(0,2440)}));
 }
+
+const trailMatch=html.match(/const TRAIL=(\[[\s\S]*?\]);\s*const BANK=APP_DATA\.questions/);
+if(!trailMatch)throw Error('Unable to parse static CPSGT Guided Trail stop list');
+const trail=JSON.parse(trailMatch[1]);
+const stopWords=new Set(["and","the","for","with","from","into","under","according","appropriate","perform","follow","identify","review","recognize","support","technical","procedure","procedures","protocol","protocols"]);
+let contaminatedStops=0,allCross=0,allSelected=0;
+for(const [id,label,sub] of trail){
+ const m=String(id).match(/^d([123])-(\d+)-/);if(!m)throw Error('Unknown trail stop '+id);
+ const domain=Number(m[1]), officialTask='D'+m[1]+String.fromCharCode(65+Number(m[2]));
+ const group=JSON.parse(JSON.stringify(cpsgt)); // intentionally do not mutate app data
+ void group;
+ const taskDetailsLabel=JSON.parse(html.slice(html.indexOf('const DOMAIN_DATA=')+'const DOMAIN_DATA='.length,html.indexOf(';',html.indexOf('const DOMAIN_DATA='))))['d'+domain]?.groups?.[Number(m[2])]?.[1]?.[Number(id.split('-')[2])];
+ const tokens=String(taskDetailsLabel).toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(x=>x.length>=4&&!stopWords.has(x));
+ const pool=qC.filter(q=>Number(q.d)===domain);
+ const scored=pool.map(q=>{const hay=(q.topic+' '+q.sub+' '+q.task+' '+q.q).toLowerCase();return {q,score:tokens.reduce((sum,token)=>sum+(hay.includes(token)?1:0),0)};}).sort((a,b)=>b.score-a.score);
+ const matched=scored.filter(x=>x.score>0).map(x=>x.q);
+ const selected=matched.length>=5?matched.slice(0,40):pool;
+ const cross=selected.filter(q=>q.handbookAlignment?.taskCode!==officialTask);
+ const within=selected.filter(q=>q.handbookAlignment?.taskCode===officialTask);
+ contaminatedStops+=cross.length>0?1:0;allCross+=cross.length;allSelected+=selected.length;
+ console.log('CPSGT_TRAIL_STOP',JSON.stringify({id,label,officialTask,details:taskDetailsLabel,domainPoolSize:pool.length,keywordMatched:matched.length,selectedCandidatePoolSize:selected.length,withinOfficialTask:within.length,crossOfficialTask:cross.length,crossPercent:Math.round(cross.length/selected.length*100),selectionMode:matched.length>=5?'ranked-match-top-40':'entire-domain-fallback',wrongTaskExamples:cross.slice(0,4).map(q=>({id:q.id,taskCode:q.handbookAlignment?.taskCode,topic:q.topic}))}));
+}
+console.log('CPSGT_TRAIL_SUMMARY',JSON.stringify({trailStops:trail.length,contaminatedStops,selectedCandidatePoolEntries:allSelected,crossTaskCandidateEntries:allCross,crossTaskCandidateSharePercent:Math.round(100*allCross/allSelected),warning:'Calculated from source selector and eligible domain pool; actual random five-question draw varies.'}));
