@@ -22,7 +22,7 @@ for(const m of manifest.modules){
 current.push(...release.questions);
 const existing=current.concat(pilot.questions);
 if(current.length!==3240||pilot.questions.length!==5||gap.questions.length!==2)throw Error('Review bank/pilot counts before publication.');
-if(!gap.status.includes('NOT IN LEARNER BANK')||gap.editorialGate?.ownerReleaseApproval!=='NOT GRANTED'||gap.editorialGate?.mergeStatus!=='DO NOT MERGE UNTIL FULL QA')throw Error('Release gate not closed.');
+if(!gap.status.includes('NOT IN LEARNER BANK')||gap.editorialGate?.ownerReleaseApproval!=='NOT GRANTED'||gap.editorialGate?.mergeStatus!=='DO NOT MERGE UNTIL FULL QA'||gap.editorialGate?.independentClinicalReview!=='NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13'||gap.editorialGate?.ownerProfessionalClinicalReview!=='APPROVED_2026-10-13')throw Error('Owner clinical policy or learner release gate invalid.');
 const normalized=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const stop=new Set('the from were have with into for and this that during after before when what which should would best most one who why how sleep study adult patient their through because reports following technologist approach appropriate'.split(' '));
 const tokens=s=>new Set(normalized(s).split(/\s+/).filter(x=>x.length>2&&!stop.has(x)));
@@ -49,7 +49,7 @@ for(const q of gap.questions){
  seen.add(q.id);
  if(!exp||q.taskCode!==exp.task||q.domain!==exp.task.slice(0,2))errors.push('Task mismatch: '+q.id);
  if(!Array.isArray(q.options)||q.options.length!==4||new Set(q.options).size!==4||q.options.filter(x=>x===q.answer).length!==1)errors.push('Four choice / unique-answer error: '+q.id);
- if(!q.rationale||!q.qa?.manualReviewRecommended||q.publicationStatus!=='proposed-not-learner-eligible'||!q.qa?.needsIndependentClinicalReview)errors.push('Publication gate/rationale missing: '+q.id);
+ if(!q.rationale||!q.qa?.manualReviewRecommended||q.publicationStatus!=='proposed-not-learner-eligible'||q.qa?.needsIndependentClinicalReview!==false||q.qa?.ownerProfessionalClinicalReviewApproved!==true)errors.push('Owner approval / technical release gate / rationale missing: '+q.id);
  const loc=q.sourceCredit?.spriggs2015;
  if(!exp||loc?.chapter!==exp.chap||loc?.title!==exp.title||q.sourceCredit?.controllingSource?.id!==exp.source||q.sourceCredit?.controllingSource?.doi!==exp.doi)errors.push('Indexed chapter/current authority mismatch: '+q.id);
  if(!q.referenceKeys?.includes(exp.source)||!q.studyRecommendationKeys?.includes(exp.source))errors.push('Current authority not in references: '+q.id);
@@ -64,7 +64,7 @@ for(const q of gap.questions){
  const related=current.filter(x=>family.test(String(x.prompt||'')+' '+String(x.topic||'')));
  matches.push({candidateId:q.id,familyContextCount:related.length,
   relatedExamples:related.slice(0,20).map(x=>({id:x.id,taskCode:x.taskCode,prompt:x.prompt})),
-  nearest,editorialDisposition:'Independent clinical+concept-family review required; not eligible'});
+  nearest,editorialDisposition:'Owner RPSGT review COMPLETE; human concept-family and learner-history technical gates pending; not eligible'});
 }
 const result={scannedExisting:current.length,priorPilot:pilot.questions.length,prospective:gap.questions.length,errors,warnings,matches};
 const outDir=join(root,'rpsgt-v3/audit-output');await mkdir(outDir,{recursive:true});
