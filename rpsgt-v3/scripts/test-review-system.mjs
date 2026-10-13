@@ -6,6 +6,7 @@ const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,"..");
 const html=await readFile(join(root,"review.html"),"utf8");
 const js=await readFile(join(root,"core","review.js"),"utf8");
+const reviewCss=await readFile(join(root,"assets","review.css"),"utf8");
 const manifest=JSON.parse(await readFile(join(root,"data","question-bank","manifest.json"),"utf8"));
 
 const requiredSelectors=[
@@ -17,6 +18,11 @@ for(const selector of requiredSelectors){
   if(!html.includes(selector)) throw new Error(`review.html is missing ${selector}`);
 }
 if(!html.includes("core/review.js")) throw new Error("review.html does not load core/review.js");
+if(!html.includes('class="review-page"')) throw new Error("Missed Review page must have a dedicated CSS scope.");
+if(!reviewCss.includes(".review-page .hidden{display:none!important}")) throw new Error("Review inactive results and question panels are not actually hidden.");
+if(!reviewCss.includes("[data-review-shell]:not(.is-complete) [data-review-complete]")) throw new Error("A Review result panel must never be visible before completion.");
+if(!reviewCss.includes("[data-review-shell].is-complete [data-question-panel]")) throw new Error("The Review question panel must be hidden when results appear.");
+if(!js.includes('shell.classList.add("is-complete")')||!js.includes('shell.classList.remove("is-complete")')) throw new Error("Review completion view state must be explicit and reversible.");
 if(!html.includes("assets/practice-navigation.css")) throw new Error("review.html does not load the unified practice-navigation styles");
 if(!js.includes('v3-review-missed')||!js.includes('v3-review-mastered')) throw new Error("review history sources are missing");
 for(const token of ["function previousQuestion","function forward","Check answer","Next question"]){

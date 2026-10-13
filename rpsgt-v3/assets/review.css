@@ -1,1 +1,11 @@
 .review-hero .actions{margin-top:18px}.review-summary{padding-top:0}.review-empty{text-align:center;padding:30px}.review-empty p{max-width:640px;margin:10px auto 18px}.review-summary .stat strong{font-variant-numeric:tabular-nums}@media(max-width:680px){.review-hero .actions{display:grid;grid-template-columns:1fr}.review-hero .actions .btn{width:100%}}
+
+/* The shared Practice modal stylesheet defines both question and completion cards
+   but has no .hidden utility. Keep review-only visibility explicit and high priority:
+   otherwise the completion card can appear on top of the first missed question. */
+.review-page .hidden{display:none!important}
+.review-page [data-review-shell]:not(.is-complete) [data-review-complete]{display:none!important}
+.review-page [data-review-shell].is-complete [data-question-panel],
+.review-page [data-review-shell].is-complete > .session-rail{display:none!important}
+.review-page [data-review-shell].is-complete{grid-template-columns:minmax(0,780px)}
+.review-page [data-review-shell].is-complete > [data-review-complete]{grid-column:1;width:min(720px,100%);justify-self:center}

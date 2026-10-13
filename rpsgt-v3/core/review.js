@@ -90,6 +90,9 @@
   }
   function renderQuestion(){
     const question=state.questions[state.index];if(!question){renderComplete();return;}
+    const shell=$("[data-review-shell]");shell.classList.remove("is-complete");
+    $("[data-question-panel]").classList.remove("hidden");
+    $("[data-review-complete]").classList.add("hidden");
     const key=questionKey(question),response=state.responses.get(key)||null;state.selected=state.selections.has(key)?state.selections.get(key):null;
     $("[data-question-number]").textContent="Question "+(state.index+1)+" of "+state.questions.length;$("[data-question-task]").textContent=question.taskCode+" · "+question.topic;$("[data-question-difficulty]").textContent=question.difficulty+" · "+question.questionType;$("[data-question-prompt]").textContent=question.prompt;
     const choices=$("[data-question-choices]");choices.innerHTML="";question.options.forEach((option,index)=>choices.appendChild(createChoice(option,index,question,response)));
@@ -117,7 +120,12 @@
   function previousQuestion(){if(state.index<=0)return;state.index-=1;renderQuestion();}
   function forward(){const question=state.questions[state.index],key=questionKey(question);if(!state.responses.has(key)){submitAnswer();return;}state.index+=1;state.index>=state.questions.length?renderComplete():renderQuestion();}
   function renderComplete(){
-    $("[data-question-panel]").classList.add("hidden");$("[data-review-complete]").classList.remove("hidden");$("[data-complete-score]").textContent=state.correct+" / "+state.answeredCount;$("[data-complete-percent]").textContent=(state.answeredCount?Math.round(state.correct/state.answeredCount*100):0)+"%";
+    const shell=$("[data-review-shell]");
+    $("[data-question-panel]").classList.add("hidden");
+    shell.classList.add("is-complete");
+    $("[data-review-complete]").classList.remove("hidden");
+    $("[data-complete-score]").textContent=state.correct+" / "+state.answeredCount;
+    $("[data-complete-percent]").textContent=(state.answeredCount?Math.round(state.correct/state.answeredCount*100):0)+"%";
   }
   function renderEmpty(){
     $("[data-review-shell]").classList.add("hidden");$("[data-review-empty]").classList.remove("hidden");const copy=state.listType==="mastered"?"No mastered questions are stored yet. Correctly answer a missed question to move it here.":"No missed questions are stored. Continue learner practice to build a focused review list.";$("[data-empty-message]").textContent=copy;
