@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-12",
+  "title": "Cross-version RPSGT exact and semantic duplicate consolidation queue",
+  "status": "REVIEW ONLY—NOT OWNER APPROVED; NO LEARNER-BANK MUTATIONS",
+  "sourceBank": {
+    "v2": "RPSGTv2.2026.html#app-data",
+    "v3": "rpsgt-v3/data/question-bank/* plus data/owner-approved-question-release.json",
+    "effectiveRecords": 3240,
+    "sourceFieldParity": "0 discrepancies in latest CI full-bank audit",
+    "auditScript": "rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs",
+    "auditRun": "https://github.com/Fishingcoder2/Sleeppathewaysguild/actions/runs/38338816746",
+    "relatedHeldPediatricReview": "rpsgt-v3/data/question-proposals/pediatric-v2-v3-repair-review-2026-10-12.json"
+  },
+  "method": {
+    "exact": "Identical prompt, four choices, answer and rationale, independent of ID.",
+    "sameStemEquivalentDecision": "Identical prompt but different options and answer wording; complete item/rationale review finds compatible core decisions. Not an answer-key conflict.",
+    "doesNotImply": "Do not infer incorrect answers or mock-exam repetition; V3 mock already normalizes/dedupes prompt families."
+  },
+  "families": [
+    {
+      "familyId": "spg-dup-child-age-five",
+      "task": "D3B",
+      "category": "exact",
+      "ids": [
+        "v1264-0161",
+        "v1264-0162",
+        "v1264-0163",
+        "v1264-0164",
+        "v1264-0165"
+      ],
+      "keep": "v1264-0161",
+      "objective": "Identify when pediatric scoring applies in a 5-year-old.",
+      "authority": "AASM scoring manual v3 pediatric respiratory/staging rules; FST3 Ch 60-61 as foundational study support.",
+      "note": "All five prompts, four choices, recorded answers and rationales are literal duplicates. The retained question is very broad; later improve application depth only with AASM-v3 verification.",
+      "stageOnly": true,
+      "retentionCandidate": "v1264-0161",
+      "proposedExclusionIds": [
+        "v1264-0162",
+        "v1264-0163",
+        "v1264-0164",
+        "v1264-0165"
+      ],
+      "ownerApproved": false,
+      "clinicalSignoff": false,
+      "manualDecisionReview": "still required",
+      "learnerHistory": "preserve all original IDs even if later excluded from new sessions"
+    },
+    {
+      "familyId": "spg-dup-adolescent-age-sixteen",
+      "task": "D3A",
+      "category": "exact",
+      "ids": [
+        "v1264-0166",
+        "v1264-0167",
+        "v1264-0168",
+        "v1264-0169",
+        "v1264-0170"
+      ],
+      "keep": "v1264-0166",
+      "objective": "Check age and AASM-consistent laboratory scoring pathway for an adolescent before scoring.",
+      "authority": "AASM Scoring Manual v3 and pediatric FAQ: optional adult respiratory criteria in children 13+; avoid suggesting automatic adult scoring.",
+      "note": "Five verbatim duplicates. Broad answer says use age/protocol context; it is not authorization to apply adult rules automatically. Rule-specific updates need licensed scoring-manual check.",
+      "stageOnly": true,
+      "retentionCandidate": "v1264-0166",
+      "proposedExclusionIds": [
+        "v1264-0167",
+        "v1264-0168",
+        "v1264-0169",
+        "v1264-0170"
+      ],
+      "ownerApproved": false,
+      "clinicalSignoff": false,
+      "manualDecisionReview": "still required",
+      "learnerHistory": "preserve all original IDs even if later excluded from new sessions"
+    },
+    {
+      "familyId": "spg-dup-adult-age-sixty",
+      "task": "D3A",
+      "category": "exact",
+      "ids": [
+        "v1264-0171",
+        "v1264-0172",
+        "v1264-0173",
+        "v1264-0174",
+        "v1264-0175"
+      ],
+      "keep": "v1264-0171",
+      "objective": "Use adult scoring framework for adult PSG.",
+      "authority": "AASM Scoring Manual v3 adult rules; FST3 adult PSG chapters as study support.",
+      "note": "Five identical basic recall/application variants; retaining one and replacing others only after owner approval is preferable to repeating it.",
+      "stageOnly": true,
+      "retentionCandidate": "v1264-0171",
+      "proposedExclusionIds": [
+        "v1264-0172",
+        "v1264-0173",
+        "v1264-0174",
+        "v1264-0175"
+      ],
+      "ownerApproved": false,
+      "clinicalSignoff": false,
+      "manualDecisionReview": "still required",
+      "learnerHistory": "preserve all original IDs even if later excluded from new sessions"
+    },
+    {
+      "familyId": "spg-dup-d1a-multisource-assessment",
+      "task": "D1A",
+      "category": "same-stem-equivalent-decision",
+      "ids": [
+        "D1A-019",
+        "D1A-035"
+      ],
+      "keep": "D1A-019",
+      "objective": "Integrate patient order, chart history, interview and direct observation before the study.",
+      "authority": "BRPT RPSGT task D1A; current AAST patient assessment guidance; Guild FST3 patient assessment chapters for foundational reasoning.",
+      "note": "Exact prompt repeated with different but compatible correct-answer phrasing and comparable distractors. No observed clinical contradiction; options are not literal copies.",
+      "stageOnly": true,
+      "retentionCandidate": "D1A-019",
+      "proposedExclusionIds": [
+        "D1A-035"
+      ],
+      "ownerApproved": false,
+      "clinicalSignoff": false,
+      "manualDecisionReview": "still required",
+      "learnerHistory": "preserve all original IDs even if later excluded from new sessions"
+    },
+    {
+      "familyId": "spg-dup-d4a-pap-desensitization",
+      "task": "D4A",
+      "category": "same-stem-equivalent-decision",
+      "ids": [
+        "D4A-018",
+        "D4A-028"
+      ],
+      "keep": "D4A-018",
+      "objective": "Recognize when an unsuccessful standard pre-sleep PAP acclimation should trigger planned daytime desensitization and escalation.",
+      "authority": "BRPT D4A; FST3 PAP support chapters and current AAST PAP acclimation/desensitization practice guidance.",
+      "note": "Exact prompt repeated; best answers are paraphrases of the same clinical workflow, not incompatible directives.",
+      "stageOnly": true,
+      "retentionCandidate": "D4A-018",
+      "proposedExclusionIds": [
+        "D4A-028"
+      ],
+      "ownerApproved": false,
+      "clinicalSignoff": false,
+      "manualDecisionReview": "still required",
+      "learnerHistory": "preserve all original IDs even if later excluded from new sessions"
+    },
+    {
+      "familyId": "spg-dup-d4c-oxygen-context",
+      "task": "D4C",
+      "category": "same-stem-equivalent-decision",
+      "ids": [
+        "D4C-009",
+        "D4C-018"
+      ],
+      "keep": "D4C-009",
+      "objective": "Do not make ordered oxygen decisions solely from a saturation number without indication-specific treatment context.",
+      "authority": "BRPT D4C; FST3 supplemental oxygen topics, applicable current AAST oxygen guidance and physician/facility protocol.",
+      "note": "Exact prompt repeated; best answers differ in wording but mean the same thing. Current oxygen management remains order/indication dependent.",
+      "stageOnly": true,
+      "retentionCandidate": "D4C-009",
+      "proposedExclusionIds": [
+        "D4C-018"
+      ],
+      "ownerApproved": false,
+      "clinicalSignoff": false,
+      "manualDecisionReview": "still required",
+      "learnerHistory": "preserve all original IDs even if later excluded from new sessions"
+    }
+  ],
+  "totals": {
+    "families": 6,
+    "originalRecordsInFamilies": 21,
+    "retainCandidates": 6,
+    "proposedExclusionCandidates": 15,
+    "literalExclusions": 12,
+    "sameStemEquivalentDecisionExclusions": 3
+  },
+  "releaseGate": {
+    "eligibleNow": "All listed records are currently source-bank questions; verify status on actual test.",
+    "publish": false,
+    "ownerApproval": "NOT GRANTED",
+    "liveV2MockAndReportQA": "PENDING",
+    "v3StorageProgressHistoryQA": "PENDING",
+    "clinicalEditorialQA": "PENDING",
+    "licensedScoringManualForAgeSensitiveFamilies": "PENDING",
+    "neverDeleteSourceRecords": true,
+    "neverRenumberIds": true
+  },
+  "learnerFacing": "Reference list APA only; do not show internal duplicate-family or mapping labels."
+}
