@@ -29,10 +29,27 @@ for(const p of staged.proposedRuleSensitiveRevisions||[]){
  for(const [field,originalField] of [['prompt','prompt'],['options','options'],['answer','answer'],['rationale','rationale']])
   if(JSON.stringify(a[field])!==JSON.stringify(p.existing[originalField]))
    errors.push('Repair proposal is stale vs canonical original '+p.id+': '+field);
- if(p.proposedAnswer!==a.answer&&p.id!=='mb-pediatric-mixed-4')
+ if(p.proposedAnswer!==a.answer)
    errors.push('Unexpected answer change beyond threshold correction: '+p.id);
- if(p.id==='mb-pediatric-mixed-4'&&(!p.proposedAnswer.includes('more than 25%')||!a.answer.includes('at least 25%')))
-   errors.push('Boundary threshold precision edit not explicitly captured.');
+ if(p.id==='mb-pediatric-mixed-4'){
+   // Separate diagnostic ICSD-3-TR criteria from older scoring-manual wording.
+   // The original obstructive-pattern best answer is NOT automatically incorrect.
+   const comparison=p.boundaryComparison;
+   if(p.proposedAnswer!==a.answer||!p.proposedAnswer.includes('at least 25%')||
+      !p.proposedRationale?.includes('ICSD-3-TR')||
+      !p.proposedRationale?.includes('separate AASM')||
+      !p.proposedPrompt?.includes('ICSD-3-TR')||
+      comparison?.diagnosis?.sourceId!=='icsd-3-tr'||
+      comparison?.diagnosis?.localPdfPage!==3||
+      comparison?.diagnosis?.role!=='diagnostic classification'||
+      !comparison?.diagnosis?.threshold?.includes('at least 25%')||
+      comparison?.scoring?.sourceId!=='fundamentals-sleep-technology-3e'||
+      comparison?.scoring?.localPdfPage!==40||
+      !comparison?.scoring?.threshold?.includes('more than 25%')||
+      comparison?.currentManualChecked!==false||
+      !p.referenceKeyAdditions.includes('icsd-3-tr'))
+     errors.push('Pediatric OSA diagnostic/scoring contexts mixed or original correct answer replaced: '+p.id);
+ }
  if(p.id==='boost-039'&&(!p.proposedPrompt.includes('two missed breaths')||!p.proposedPrompt.includes('less than 20 seconds')))
    errors.push('Missing pediatric central-apnea two-breath duration qualifier.');
  if(p.id==='imp-050'&&(!p.proposedRationale.includes('duration')||p.proposedAnswer!=='3%'))
@@ -82,7 +99,7 @@ const md=['# RPSGT V2/V3 pediatric-source editorial audit','','Original bank rem
 '- Overlapping central-apnea decision family: '+nearby.join(', '),
 '- 2024 pediatric MSLT Box 2 passage link: '+(result.pediatricMsltBox2Located?'present':'MISSING'),
 '- Errors: '+errors.length, ...errors.map(x=>'  - '+x),'',
-'**Editorial cautions:** FST3 Chapter 61 contains older reproduced scoring rules. Its split PDF volume 4 pages 35–40 support a source-concept review but **do not establish Version 3 scoring text**. The threshold case must remain held for licensed AASM v3 confirmation. Avoid retiring duplicate IDs without storage/progress impact review.'].join('\n');
+'**Editorial distinction:** The 2023 ICSD-3-TR pediatric OSA diagnostic criterion (uploaded supplement PDF page 3) gives an obstructive hypoventilation pattern for AT LEAST 25% of TST. FST3 Ch. 61 (vol. 4 p. 40) reproduces an earlier AASM Version 2.5 PSG hypoventilation SCORING rule for MORE THAN 25% of TST. They serve different purposes. Do not replace the currently correct obstructive-diagnostic answer. Current AASM v3 scoring text is not yet directly verified. Four duplicate IDs await storage-safe owner-approved disposition.'].join('\n');
 await writeFile(join(dir,'rpsgt-pediatric-cross-version-review-2026.md'),md+'\n');
 console.log(md+'\n'+JSON.stringify(rows,null,2));
 if(errors.length)process.exitCode=1;
