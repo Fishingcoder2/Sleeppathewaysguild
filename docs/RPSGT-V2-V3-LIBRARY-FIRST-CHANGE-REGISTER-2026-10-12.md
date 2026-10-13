@@ -71,3 +71,20 @@ The [combined owner-release CI validation](https://github.com/Fishingcoder2/Slee
 - `rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs` reads V2 canonical `app-data`, V3 D2B source and the proposed revisions, ensuring the original IDs, text, answers and release holds remain intact before independent clinical/editorial approval.
 
 All source page locators here refer to specific split-PDF **volume pages**, not printed textbook pages. Clinical wording remains pending qualified review. The earlier seven fully new original cases remain held separately.
+
+
+## October 12 pediatric D3B + pediatric MSLT follow-on
+
+**Guild-indexed BRPT sources used:** FST3 Ch. 61 local split PDF volume 4 pp. 35–40, *Pediatric Sleep Pearls* sections 2–3/7 (indexed), *A Clinical Guide to Pediatric Sleep* chapters 4/17 (indexed), current AASM Scoring Manual v3 reference record, and the **directly read** Maski et al. (2024) pediatric MSLT PDF Box 2 Item 2 (PDF page 4).
+
+- **Five confirmed duplicates in eligible original D3B source:** `v1264-0161` through `-0165` have identical prompt, four options, answer and rationale. Propose maintaining a canonical item and reviewing four for controlled owner-approved retirement/replacement; current learner bank unmodified.
+- **Threshold wording conflict:** `mb-pediatric-mixed-4` uses “at least 25%” while FST3 Ch. 61 local p.40 and other D3B items say **“more than 25%”** for pediatric sleep-related hypoventilation. This needs licensed current AASM v3 confirmation, including the obstructive-hypoventilation context, before applying a wording/answer revision.
+- **Precision reviews:** `imp-050` pediatric hypopnea explanation lacks event-duration context; `boost-039` pediatric short central-apnea scenario lacks two-missed-breath detail. `boost-039`, `src32-026`, and `case-d3-010` also test essentially the same case decision.
+- **2024 pediatric MSLT direct authority:** For held `SPG-SPRIGGS-2026-005`, Box 2 Item 2 confirms preceding PSG ≥8 hours in bed, ≥7 hours sleep, and avoiding MSLT after PAP pressure changes.
+
+Development assets:
+- [Pediatric D3B review proposal](../rpsgt-v3/data/question-proposals/pediatric-v2-v3-repair-review-2026-10-12.json)
+- [Evidence and editorial disposition ledger](../rpsgt-v3/data/question-proposals/REVIEW-pediatric-v2-v3-2026-10-12.md)
+- [Cross-version held-revision validation script](../rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs)
+
+**No original V2/V3 question records altered.** All changes are review notes, metadata, and regression tests; future actual content/release edits need qualified clinical scoring review plus explicit owner approval and saved-progress compatibility testing.
