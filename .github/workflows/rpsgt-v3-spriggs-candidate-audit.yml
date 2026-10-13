@@ -8,6 +8,7 @@ on:
       - rpsgt-v3/data/question-proposals/**
       - rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
       - rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+      - rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
       - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
   pull_request:
@@ -17,6 +18,7 @@ on:
       - rpsgt-v3/data/question-proposals/**
       - rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
       - rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+      - rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
       - rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
 
@@ -38,11 +40,14 @@ jobs:
           node --check rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+          node --check rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
           node rpsgt-v3/scripts/test-spriggs-proposal-2026.mjs
       - name: Audit all 3,240 effective RPSGT questions and exact source keys
         run: node rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
       - name: Screen indexed Spriggs topic families across the complete effective bank
         run: node rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
+      - name: Validate two extra original gap questions against the full bank
+        run: node rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
       - name: Upload full audit JSON and Markdown
         if: always()
         uses: actions/upload-artifact@v4
@@ -51,4 +56,5 @@ jobs:
           path: |
             rpsgt-v3/audit-output/spriggs-full-bank-report.*
             rpsgt-v3/audit-output/spriggs-topic-coverage-2026.*
+            rpsgt-v3/audit-output/spriggs-gap-pilot-audit-2026.*
           if-no-files-found: warn
