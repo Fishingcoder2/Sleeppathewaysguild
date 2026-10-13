@@ -13,6 +13,7 @@ on:
       - rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
       - rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
       - rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+      - rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
   pull_request:
     branches:
@@ -26,6 +27,7 @@ on:
       - rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
       - rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
       - rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+      - rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
 
 permissions:
@@ -47,6 +49,7 @@ jobs:
           node --check rpsgt-v3/scripts/test-rpsgt-library-first-proposals-2026.mjs
           node --check rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
           node --check rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
@@ -63,6 +66,8 @@ jobs:
         run: node rpsgt-v3/scripts/audit-rpsgt-v2-v3-source-currency.mjs
       - name: Validate held MSLT rationale revisions match both V2 and V3
         run: node rpsgt-v3/scripts/test-rpsgt-cross-version-mslt-revisions.mjs
+      - name: Verify held pediatric threshold, duplicate and MSLT repairs are cross-version safe
+        run: node rpsgt-v3/scripts/test-rpsgt-pediatric-cross-version-review-2026.mjs
       - name: Upload full audit JSON and Markdown
         if: always()
         uses: actions/upload-artifact@v4
@@ -73,4 +78,5 @@ jobs:
             rpsgt-v3/audit-output/spriggs-topic-coverage-2026.*
             rpsgt-v3/audit-output/spriggs-gap-pilot-audit-2026.*
             rpsgt-v3/audit-output/rpsgt-v2-v3-source-currency-screen.*
+            rpsgt-v3/audit-output/rpsgt-pediatric-cross-version-review-2026.*
           if-no-files-found: warn
