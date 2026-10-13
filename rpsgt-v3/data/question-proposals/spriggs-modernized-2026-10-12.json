@@ -103,11 +103,11 @@
       "rationale": "Restricted or irregular sleep and substances can confound assessment of excessive daytime sleepiness; the clinical evaluation must account for sleep opportunity and schedules.",
       "referenceKeys": [
         "brpt-blueprint",
-        "icsd"
+        "icsd-3-tr"
       ],
       "studyRecommendationKeys": [
         "brpt-handbook",
-        "icsd",
+        "icsd-3-tr",
         "brpt-blueprint"
       ],
       "sourceCredit": {
@@ -129,7 +129,14 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-002",
@@ -177,7 +184,14 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-003",
@@ -225,7 +239,14 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-004",
@@ -273,7 +294,14 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-005",
@@ -315,10 +343,23 @@
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "qaStatus": "Draft reviewed against Maski et al. (2024) Box 2 and uploaded 2024 article: minimum eight hours in bed and seven hours total sleep; clinician/facility protocol decision still required.",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance.",
+        "independentVerification": {
+          "verified": true,
+          "authority": "Maski et al. (2024), Box 2, Item 2",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10985297/",
+          "verifiedFinding": "pediatric MSLT minimum 8 hours time in bed and 7 hours TST"
+        }
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-006",
@@ -339,11 +380,11 @@
       "rationale": "The adult AASM protocol excludes MSLT after a split-night or initial PAP titration because the preceding sleep and treatment conditions can confound interpretation.",
       "referenceKeys": [
         "brpt-blueprint",
-        "aasm-mslt-mwt"
+        "aasm-adult-mslt-mwt-2021"
       ],
       "studyRecommendationKeys": [
         "brpt-handbook",
-        "aasm-mslt-mwt"
+        "aasm-adult-mslt-mwt-2021"
       ],
       "sourceCredit": {
         "sourceFamily": "Original SPG scenario inspired by indexed technician-training topic, NOT copied from Spriggs posttests/questions",
@@ -360,10 +401,23 @@
         "answerInOptions": true,
         "hasReferenceKeys": true,
         "manualReviewRecommended": true,
-        "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
+        "qaStatus": "Draft reviewed against Krahn et al. (2021) Box 2: no adult MSLT immediately after split-night or PAP titration; full editor review remains.",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance.",
+        "independentVerification": {
+          "verified": true,
+          "authority": "Krahn et al. (2021), Box 2",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8726366/",
+          "verifiedFinding": "MSLT should not follow split-night or PAP titration night"
+        }
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-007",
@@ -411,7 +465,14 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-008",
@@ -421,7 +482,7 @@
       "topic": "Pediatric scoring quality",
       "questionType": "Clinical application",
       "difficulty": "Intermediate",
-      "prompt": "A pediatric PSG was scored using adult respiratory criteria merely because the scorer used a default adult software template. What is the best quality-review action?",
+      "prompt": "A nine-year-old child's PSG was scored using adult respiratory criteria merely because the scorer used a default adult software template. What is the best quality-review action?",
       "options": [
         "Keep the template without checking age or the laboratory's approved scoring pathway",
         "Check patient age and the applicable AASM pediatric versus optional adult scoring pathway, then review affected events under the authorized approach",
@@ -429,7 +490,7 @@
         "Convert all pediatric respiratory events to arousals"
       ],
       "answer": "Check patient age and the applicable AASM pediatric versus optional adult scoring pathway, then review affected events under the authorized approach",
-      "rationale": "Pediatric respiratory scoring is age- and rule-pathway-sensitive; software defaults do not establish the applicable authorized scoring criteria.",
+      "rationale": "A nine-year-old requires pediatric respiratory scoring rules. The current AASM FAQ allows—but does not require—adult respiratory rules beginning at age 13; default software settings cannot override the selected age-appropriate rule set.",
       "referenceKeys": [
         "brpt-blueprint",
         "aasm-scoring-current"
@@ -456,7 +517,20 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": true,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Verify 2015 Spriggs pediatric chapter heading; the authoritative AASM v3 pediatric rule and FAQ, not textbook content, control.",
+        "independentVerification": {
+          "verified": true,
+          "authority": "Current AASM Scoring Manual v3 FAQ",
+          "url": "https://learn.aasm.org/AssetListing/The-AASM-Manual-for-the-Scoring-of-Sleep-and-Associated-Events-Series-2-1455/Scoring-of-Sleep-and-Associated-Events-FAQs-6696",
+          "verifiedFinding": "option to use adult respiratory criteria only from age 13"
+        }
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-009",
@@ -504,7 +578,14 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-010",
@@ -552,7 +633,14 @@
         "qaStatus": "Candidate only: professional content/editorial/duplicate review required; not owner-approved or learner eligible",
         "sourceMappingStatus": "indexed chapter level"
       },
-      "publicationStatus": "proposed-not-learner-eligible"
+      "publicationStatus": "proposed-not-learner-eligible",
+      "editorialChecks": {
+        "needsFullBankDuplicateReview": true,
+        "needsIndependentClinicalReview": true,
+        "needsCurrentManualLicensedRuleReview": false,
+        "originalQuestion": true,
+        "sourceLocatorReview": "Chapter heading and page-range corroboration pending; do not claim statement-level Spriggs provenance."
+      }
     }
   ],
   "duplicateAudit": {
@@ -591,5 +679,19 @@
       }
     ],
     "remainingReviewRequired": true
-  }
+  },
+  "currentAuthorityPolicy": {
+    "scoring": "AASM Scoring Manual v3 (2023) with the current online erratum and FAQ; confirm licensed rule before publishing scoring cases.",
+    "daytimeAdult": "Krahn et al., 2021 adult MSLT/MWT protocol including the 2022 erratum",
+    "daytimePediatric": "Maski et al., 2024 pediatric MSLT protocol",
+    "diagnosis": "ICSD-3-TR (2023) for diagnostic taxonomy, with licensing limitations",
+    "technical": "AAST guidelines and manufacturer IFUs / orders / facility policy"
+  },
+  "editorialSourcesApa7": [
+    "Board of Registered Polysomnographic Technologists. (n.d.). RPSGT exam blueprint. https://brpt.org/rpsgt/exam-blueprint/",
+    "Krahn, L. E., Arand, D. L., & Avidan, A. Y. (2021). Recommended protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in adults: Guidance from the American Academy of Sleep Medicine. Journal of Clinical Sleep Medicine, 17(12), 2489–2498. https://doi.org/10.5664/jcsm.9620",
+    "Maski, K. P., Amos, L. B., Carter, J. C., Koch, E. E., Kazmi, U., & Rosen, C. L. (2024). Recommended protocols for the Multiple Sleep Latency Test and Maintenance of Wakefulness Test in children: Guidance from the American Academy of Sleep Medicine. Journal of Clinical Sleep Medicine, 20(4), 631–641. https://doi.org/10.5664/jcsm.10974",
+    "American Association of Sleep Technologists. (2021). Standard polysomnography [Technical guideline]. https://aastweb.org/wp-content/uploads/2025/03/AAST-PSG-Guideline-Final.pdf",
+    "American Academy of Sleep Medicine. (2023). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications (Version 3). https://aasm.org/clinical-resources/scoring-manual/"
+  ]
 }
