@@ -2,7 +2,7 @@
 
 **Status:** Editorial proposal, not published, not owner approved.
 
-The batch contains **16 new original four-choice case-based questions** mapped to the current BRPT RPSGT D1–D4 task framework. Candidate IDs: `SPG-SPRIGGS-2026-001` through `016`.
+The batch contains **10 new original four-choice case-based questions** mapped to the current BRPT RPSGT D1–D4 task framework. Candidate IDs: `SPG-SPRIGGS-2026-001` through `010`.
 
 ## Source boundaries
 
@@ -25,6 +25,10 @@ Repository release documentation (Oct 11, 2026): 2,920 extracted originals + 320
 
 ## Automated gate performed before staging
 
-- 16/16 items: exactly four distinct options, unique answer present once, recognized BRPT task, at least two reference keys, `manualReviewRecommended: true`.
+- 10/10 items: exactly four distinct options, unique answer present once, recognized BRPT task, at least two reference keys, `manualReviewRecommended: true`.
 - Similarity scan of 1886 accessible current task/release prompts (token overlap, **not a substitute for human semantic duplicate review**).
 - Closest neighboring IDs and overlap scores are available in the proposal-generation audit from this work session, but were not treated as pass/fail semantic proof.
+
+## Near-duplicate triage
+
+Six of the initial 16 draft scenarios were removed before review: PAP anxiety (`RPSGT-B3-C022`), ETCO2 kink (`RPSGT-B3-C063`), jaw muscle artifact (`RPSGT-B5-S065`), PAP eye leak (`mine-d1c-003`), oral-appliance referral (`RPSGT-B3-C137`), and poor-pleth desaturation (`RPSGT-B5-S067`). These are editorial analogs, not exact-text duplication. The large D2A/D3A and owner-release files could not be parsed fully via the connector; a complete local review is required before eligibility.
