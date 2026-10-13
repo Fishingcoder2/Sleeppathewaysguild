@@ -80,6 +80,12 @@ export function importRelease(html, release, releaseFileSha256 = hash(JSON.strin
   const additions = [];
   for (const q of release.questions) {
     const id = String(q.id);
+    // Importing question text never constitutes owner or clinical approval.
+    // Keep unreviewed proposals out of V2 even if their ID already exists in its data.
+    if (q.ownerReleaseApproved !== true || q.qa?.manualReviewRecommended === true ||
+        q.qa?.learnerExcluded === true || q.publicationStatus === 'proposed-not-learner-eligible') {
+      throw new Error(`V2 question is not approved for learner release: ${id}`);
+    }
     if (ids.has(id)) {
       if (JSON.stringify(ids.get(id)) !== JSON.stringify(q)) throw new Error(`Release ID collision with different content: ${id}`);
       continue;

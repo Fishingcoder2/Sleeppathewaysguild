@@ -17,7 +17,7 @@
       if(!question||!String(question.id||'').trim()||ids.has(String(question.id))) throw new Error('The owner-approved question release has a duplicate or missing ID.');
       ids.add(String(question.id));
       if(question.ownerReleaseApproved!==true||!DIRECT_TASKS.includes(question.taskCode)||question.domain!==question.taskCode.slice(0,2)||!Array.isArray(question.options)||!question.options.includes(question.answer)||!String(question.prompt||'').trim()||!String(question.rationale||'').trim()||!Array.isArray(question.referenceKeys)||!question.referenceKeys.length||!Array.isArray(question.studyRecommendationKeys)||!question.studyRecommendationKeys.length) throw new Error('An owner-approved question is incomplete: '+question.id);
-      if(question.qa&&question.qa.manualReviewRecommended) throw new Error('An owner-approved addition has not been released for learner practice: '+question.id);
+      if((question.qa&&question.qa.manualReviewRecommended)||question.qa?.learnerExcluded===true||question.publicationStatus==='proposed-not-learner-eligible') throw new Error('An owner-approved addition has not been released for learner practice: '+question.id);
     });
     if(release.questions.length!==Number(release.rpsgtAddedCount)) throw new Error('The owner-approved addition count does not match its questions.');
     return release;
