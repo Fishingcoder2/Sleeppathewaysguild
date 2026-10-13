@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - content/rpsgt-spriggs-modernized-2026-10-12
+      - release/rpsgt-conditional-owner-gate-2026-10-13
+      - main
     paths:
       - rpsgt-v3/data/question-proposals/**
       - rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
@@ -17,6 +19,7 @@ on:
       - rpsgt-v3/scripts/test-rpsgt-pediatric-duplicate-retirement-dry-run-2026.mjs
       - rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
   pull_request:
     branches:
@@ -34,6 +37,7 @@ on:
       - rpsgt-v3/scripts/test-rpsgt-pediatric-duplicate-retirement-dry-run-2026.mjs
       - rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
       - rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+      - rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
       - .github/workflows/rpsgt-v3-spriggs-candidate-audit.yml
 
 permissions:
@@ -59,6 +63,7 @@ jobs:
           node --check rpsgt-v3/scripts/test-rpsgt-pediatric-duplicate-retirement-dry-run-2026.mjs
           node --check rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
           node --check rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+          node --check rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-candidates-full-bank.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-topic-coverage-2026.mjs
           node --check rpsgt-v3/scripts/audit-spriggs-gap-pilot-2026.mjs
@@ -83,6 +88,8 @@ jobs:
         run: node rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs
       - name: Simulate six-family duplicate consolidation across shared V2 V3 question IDs
         run: node rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs
+      - name: Enforce seven conditional owner approvals, five revision holds, fifteen duplicate exclusions prohibited
+        run: node rpsgt-v3/scripts/test-rpsgt-conditional-owner-approval-2026.mjs
       - name: Upload full audit JSON and Markdown
         if: always()
         uses: actions/upload-artifact@v4
@@ -97,4 +104,5 @@ jobs:
             rpsgt-v3/audit-output/rpsgt-pediatric-duplicate-retirement-dry-run-2026.*
             rpsgt-v3/audit-output/rpsgt-v2-v3-exact-duplicate-families-2026.*
             rpsgt-v3/audit-output/rpsgt-v2-v3-six-family-consolidation-dry-run-2026.*
+            rpsgt-v3/audit-output/rpsgt-conditional-owner-approval-release-gate-2026.*
           if-no-files-found: warn

@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "approvalRecordId": "spg-rpsgt-v2-v3-owner-conditional-2026-10-13",
+  "recordedDate": "2026-10-13",
+  "decisionAuthority": "Guild owner — explicit instruction in current conversation (conditional approval only, NOT final clinical signoff)",
+  "scope": [
+    "RPSGT V2 canonical original embedded bank",
+    "RPSGT V3 modular original bank plus previously owner-approved 320-item overlay"
+  ],
+  "decisionSummary": {
+    "newQuestionsConditionallyApproved": 7,
+    "existingQuestionRevisionsAuthorizedToProceed": 5,
+    "duplicateRetirementsAuthorized": 0,
+    "duplicateCandidatesPendingReview": 15,
+    "learnerQuestionAdditionsAuthorizedNow": 0,
+    "learnerQuestionRevisionsAuthorizedNow": 0,
+    "learnerRetirementsAuthorizedNow": 0
+  },
+  "approvalSemantics": "Owner authorization to publish seven NEW questions after validation of every preexisting clinical/source/duplicate/regression gate; authorization for five existing-item revisions to proceed toward release after clinical/manual and regression review; explicit prohibition on retiring 15 duplicate candidates. This manifest alone must never be imported as an owner-approved release overlay.",
+  "newQuestions": [
+    {
+      "id": "SPG-SPRIGGS-2026-003",
+      "taskCode": "D2A",
+      "topic": "EOG physiologic calibration",
+      "controllingReferenceKey": "aast-psg",
+      "sourceReviewLocator": "AAST Standard Polysomnography (2021), physiological calibration §2.2.3",
+      "preflightEvidence": "public guideline supports signal checks; original chapter passage not directly verified",
+      "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
+      "licensedCurrentAasmV3CheckRequired": false,
+      "licensedCurrentAasmV3CheckCompleted": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "completeSemanticDuplicateReview": "PENDING",
+      "crossVersionLearnerAndHistoryRegression": "PENDING",
+      "ownerConditionalPublicationApproved": true,
+      "finalLearnerReleaseApproved": false,
+      "eligibleForLearnerBank": false
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-005",
+      "taskCode": "D2B",
+      "topic": "Pediatric MSLT preceding PSG adequacy",
+      "controllingReferenceKey": "aasm-pediatric-mslt-mwt-2024",
+      "sourceReviewLocator": "Maski et al. (2024), Box 2 item 2; user-uploaded PDF p. 4",
+      "preflightEvidence": "direct article: at least 8 h time in bed, 7 h total sleep before pediatric MSLT",
+      "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
+      "licensedCurrentAasmV3CheckRequired": false,
+      "licensedCurrentAasmV3CheckCompleted": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "completeSemanticDuplicateReview": "PENDING",
+      "crossVersionLearnerAndHistoryRegression": "PENDING",
+      "ownerConditionalPublicationApproved": true,
+      "finalLearnerReleaseApproved": false,
+      "eligibleForLearnerBank": false
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-006",
+      "taskCode": "D2B",
+      "topic": "Adult MSLT after split-night PAP",
+      "controllingReferenceKey": "aasm-adult-mslt-mwt-2021",
+      "sourceReviewLocator": "Krahn et al. (2021), Box 2, general procedures",
+      "preflightEvidence": "no adult MSLT following PAP pressure adjustment night",
+      "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
+      "licensedCurrentAasmV3CheckRequired": false,
+      "licensedCurrentAasmV3CheckCompleted": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "completeSemanticDuplicateReview": "PENDING",
+      "crossVersionLearnerAndHistoryRegression": "PENDING",
+      "ownerConditionalPublicationApproved": true,
+      "finalLearnerReleaseApproved": false,
+      "eligibleForLearnerBank": false
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-008",
+      "taskCode": "D3B",
+      "topic": "Pediatric respiratory scoring for age nine",
+      "controllingReferenceKey": "aasm-scoring-manual-v3",
+      "sourceReviewLocator": "AASM public Scoring Manual 3 FAQ, respiratory scoring > adult-rule option starting age 13",
+      "preflightEvidence": "public FAQ supports age boundary; licensed rule text and errata not directly inspected",
+      "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
+      "licensedCurrentAasmV3CheckRequired": true,
+      "licensedCurrentAasmV3CheckCompleted": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "completeSemanticDuplicateReview": "PENDING",
+      "crossVersionLearnerAndHistoryRegression": "PENDING",
+      "ownerConditionalPublicationApproved": true,
+      "finalLearnerReleaseApproved": false,
+      "eligibleForLearnerBank": false
+    },
+    {
+      "id": "SPG-SPRIGGS-2026-009",
+      "taskCode": "D3C",
+      "topic": "PSG missing nasal-pressure channel documentation",
+      "controllingReferenceKey": "aast-psg",
+      "sourceReviewLocator": "AAST Standard Polysomnography (2021), technical log §§3.3.1–3.3.2",
+      "preflightEvidence": "record technical interruption, correction and data limitation; original textbook passage not directly verified",
+      "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
+      "licensedCurrentAasmV3CheckRequired": false,
+      "licensedCurrentAasmV3CheckCompleted": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "completeSemanticDuplicateReview": "PENDING",
+      "crossVersionLearnerAndHistoryRegression": "PENDING",
+      "ownerConditionalPublicationApproved": true,
+      "finalLearnerReleaseApproved": false,
+      "eligibleForLearnerBank": false
+    },
+    {
+      "id": "SPG-GAP-2026-001",
+      "taskCode": "D1A",
+      "topic": "RLS augmentation history and escalation",
+      "controllingReferenceKey": "aasm-rls-plmd-2025",
+      "sourceReviewLocator": "Winkelman et al. (2025), RLS augmentation; FST3 split PDF vol. 2 p. 14",
+      "preflightEvidence": "onset earlier, spread, reduced rest latency; historical textbook medication treatment advice superseded",
+      "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
+      "licensedCurrentAasmV3CheckRequired": false,
+      "licensedCurrentAasmV3CheckCompleted": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "completeSemanticDuplicateReview": "PENDING",
+      "crossVersionLearnerAndHistoryRegression": "PENDING",
+      "ownerConditionalPublicationApproved": true,
+      "finalLearnerReleaseApproved": false,
+      "eligibleForLearnerBank": false
+    },
+    {
+      "id": "SPG-GAP-2026-002",
+      "taskCode": "D2B",
+      "topic": "Negative HSAT and persistent high clinical suspicion",
+      "controllingReferenceKey": "aasm-adult-osa-diagnostic-testing-2017",
+      "sourceReviewLocator": "Kapur et al. (2017), Recommendation 3; FST3 split PDF vol. 3 p. 185",
+      "preflightEvidence": "PSG after single negative, inconclusive or technically inadequate HSAT, clinician-directed",
+      "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
+      "licensedCurrentAasmV3CheckRequired": false,
+      "licensedCurrentAasmV3CheckCompleted": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "completeSemanticDuplicateReview": "PENDING",
+      "crossVersionLearnerAndHistoryRegression": "PENDING",
+      "ownerConditionalPublicationApproved": true,
+      "finalLearnerReleaseApproved": false,
+      "eligibleForLearnerBank": false
+    }
+  ],
+  "existingRevisions": [
+    {
+      "id": "imp-051",
+      "ownerAuthorizedToProceed": true,
+      "finalLearnerRevisionApproved": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "manualEditorialReview": "PENDING",
+      "crossVersionHistoryAndReportRegression": "PENDING",
+      "currentLicensedAasmScoringCheck": "NOT_REQUIRED_FOR_THIS_REVISION",
+      "eligibleToApply": false,
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+    },
+    {
+      "id": "grow-041",
+      "ownerAuthorizedToProceed": true,
+      "finalLearnerRevisionApproved": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "manualEditorialReview": "PENDING",
+      "crossVersionHistoryAndReportRegression": "PENDING",
+      "currentLicensedAasmScoringCheck": "NOT_REQUIRED_FOR_THIS_REVISION",
+      "eligibleToApply": false,
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+    },
+    {
+      "id": "mb-pediatric-mixed-4",
+      "ownerAuthorizedToProceed": true,
+      "finalLearnerRevisionApproved": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "manualEditorialReview": "PENDING",
+      "crossVersionHistoryAndReportRegression": "PENDING",
+      "currentLicensedAasmScoringCheck": "NOT_REQUIRED_FOR_THIS_REVISION",
+      "eligibleToApply": false,
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+    },
+    {
+      "id": "imp-050",
+      "ownerAuthorizedToProceed": true,
+      "finalLearnerRevisionApproved": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "manualEditorialReview": "PENDING",
+      "crossVersionHistoryAndReportRegression": "PENDING",
+      "currentLicensedAasmScoringCheck": "REQUIRED_AND_PENDING",
+      "eligibleToApply": false,
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+    },
+    {
+      "id": "boost-039",
+      "ownerAuthorizedToProceed": true,
+      "finalLearnerRevisionApproved": false,
+      "independentQualifiedClinicalSignoff": "PENDING",
+      "manualEditorialReview": "PENDING",
+      "crossVersionHistoryAndReportRegression": "PENDING",
+      "currentLicensedAasmScoringCheck": "REQUIRED_AND_PENDING",
+      "eligibleToApply": false,
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+    }
+  ],
+  "duplicateRetirements": {
+    "decision": "DO_NOT_RETIRE",
+    "reviewQueue": "rpsgt-v3/data/question-proposals/v2-v3-duplicate-consolidation-queue-2026-10-12.json",
+    "candidateCount": 15,
+    "allExistingIDsPreserved": true,
+    "continueEligibilityUnmodified": true,
+    "ownerApprovalToRetire": false,
+    "anyRetirementActionAllowed": false
+  },
+  "crossVersionProtections": {
+    "canonicalV2": "RPSGTv2.2026.html",
+    "v3OriginalModules": "rpsgt-v3/data/question-bank/*",
+    "ownerApprovedAdditions": "data/owner-approved-question-release.json",
+    "doNotMutateLiveSource": true,
+    "doNotResetOrRekeyLearnerProgress": true,
+    "requireStorageReplay": true,
+    "requirePracticeMockReportsBrowserTests": true,
+    "keepV3PublicSwitchBlockedUnlessAllReleaseReadinessGatesPass": true
+  },
+  "publicReferencePolicy": "Only learner-facing APA citations; no internal source mapping labels.",
+  "gateDecision": {
+    "sourceConceptPreflight": "PARTIAL_COMPLETED_ACROSS_SEVEN",
+    "directLicensedAasmV3Verification": "INCOMPLETE",
+    "independentClinicalReview": "INCOMPLETE",
+    "semanticDuplicates": "INCOMPLETE",
+    "actualV2V3LearnerProgressHistoryAndReportRegression": "INCOMPLETE",
+    "qualifiedClinicalReleaseEligibility": "NONE_READY",
+    "status": "BLOCKED_FROM_LEARNER_ACTIVATION"
+  },
+  "externalEvidence": [
+    {
+      "sourceId": "aasm-pediatric-mslt-mwt-2024",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10985297/"
+    },
+    {
+      "sourceId": "aasm-adult-mslt-mwt-2021",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8726366/"
+    },
+    {
+      "sourceId": "aasm-rls-plmd-2025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11701286/"
+    },
+    {
+      "sourceId": "aasm-adult-osa-diagnostic-testing-2017",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5337595/"
+    },
+    {
+      "sourceId": "aast-psg",
+      "url": "https://aastweb.org/wp-content/uploads/2025/03/AAST-PSG-Guideline-Final.pdf"
+    },
+    {
+      "sourceId": "aasm-scoring-manual-v3",
+      "url": "https://aasm.org/clinical-resources/scoring-manual/"
+    }
+  ],
+  "notes": [
+    "Some source manuals and FST3 passages were checked in uploaded material, while Spriggs and other mapped book sections remain index-only. Do not represent index matches as passage verification.",
+    "ICSD-3-TR pediatric OSA obstructive-hypoventilation diagnostic criterion says AT LEAST 25%, distinct from older PSG scoring rule MORE THAN 25%; preserve current correct answer in mb-pediatric-mixed-4.",
+    "The owner instructed that duplicate candidates remain active and pending review. Simulation does not authorize a retirement.",
+    "Release of V3 as the public default remains separately blocked by rpsgt-v3/data/release-readiness.json manual gates.",
+    "This is owner conditional approval, not independent qualified clinical signoff or final authority to bypass QA."
+  ]
+}
