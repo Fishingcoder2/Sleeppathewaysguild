@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(root){
   'use strict';
   const RELEASE_ID='spg-owner-question-release-2026-10-11';
-  const RELEASE_PATH='../data/owner-approved-question-release.json';
+  const RELEASE_PATH='data/owner-approved-question-release.json';
   const DIRECT_TASKS=['D1A','D1B','D1C','D2A','D2B','D2C','D3A','D3B','D3C','D4A','D4B','D4C'];
   const clone=value=>JSON.parse(JSON.stringify(value));
   let releasePromise=null;
