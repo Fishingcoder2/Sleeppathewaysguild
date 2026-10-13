@@ -54,3 +54,30 @@ jobs:
         run: node rpsgt-v3/scripts/test-practice-subject-filter.mjs
       - name: Validate difficulty groups across all learner-ready question records
         run: node rpsgt-v3/scripts/test-practice-difficulty-filter.mjs
+
+  hard-filter-chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install browser dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify real Hard filter in desktop and mobile Chromium
+        run: npx playwright test --config=playwright.config.mjs --project=desktop-chromium --project=mobile-chromium tests/browser/practice-hard-difficulty.spec.mjs
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-practice-hard-filter-browser
+          path: |
+            rpsgt-v3/test-results
+            rpsgt-v3/playwright-report
+          if-no-files-found: ignore
