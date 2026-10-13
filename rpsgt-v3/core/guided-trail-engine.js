@@ -62,7 +62,6 @@
   }
   function eligibleQuestion(record,taskCode,filter){
     if(!record||record.taskCode!==taskCode) return false;
-    if(record.qa&&record.qa.manualReviewRecommended||record.manualReviewRecommended) return false;
     if(!completePrompt(record.prompt)) return false;
     if(!Array.isArray(record.options)||record.options.length<2) return false;
     if(record.options.some(option=>!String(option==null?'':option).trim())) return false;
