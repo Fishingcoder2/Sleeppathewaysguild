@@ -28,6 +28,6 @@ test('task-level hard filters disclose smaller available pools without mixing ot
   expect(pool).toBeGreaterThan(0);
   expect(pool).toBeLessThan(10);
   await expect(page.locator('[data-question-number]')).toHaveText('Question 1 of '+pool);
-  await expect(page.locator('[data-question-task]')).toContainText('D3B');
+  await expect(page.locator('[data-question-task]')).toContainText(/pediatric|infant/i);
   await expect(page.locator('[data-question-difficulty]')).toContainText(/Hard|Advanced|Tricky/);
 });
