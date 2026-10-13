@@ -92,3 +92,23 @@ Development assets:
 ## October 12 source-difference safeguard
 
 The uploaded `333828895-Sleep-Stage-Scoring-c3-version.pdf` is a 2015 presentation that cites AASM Scoring Manual Version **2.1**, **not Version 3**. It is historical training material. Neither this deck nor the BRPT-recommended textbook's Version 2.5 table can authorize current AASM Version 3 scoring thresholds. The 2023 **ICSD-3-TR supplemental corrections** directly establish the pediatric OSA obstructive-pattern diagnostic cutoff, *not* the separate PSG-scoring rule. A new automated check blocks an attempted replacement of `mb-pediatric-mixed-4`'s diagnostic answer with the historical scoring threshold. No learner-bank edits were applied.
+
+
+## October 12 cross-version exact/semantic deduplication — all 3,240 records audited
+
+**Source audit:** `rpsgt-v3/scripts/audit-rpsgt-v2-v3-exact-duplicate-families-2026.mjs` read the effective V2 `app-data` and complete V3 modular bank plus 320 owner-approved additions. IDs, prompts, options, answers, rationales and task codes showed **zero V2/V3 mismatches**.
+
+Three **literal five-copy families** were verified, all 15 source records currently learner-eligible: pediatric age-five scoring `v1264-0161`–`-0165` (D3B); adolescent age-sixteen scoring `v1264-0166`–`-0170` (D3A); adult age-sixty scoring `v1264-0171`–`-0175` (D3A). They contain **12 redundant copies**. Adolescent prompts must recognize AASM age/protocol context rather than assume automatic adult respiratory scoring; current licensed v3 manual review remains the content gate.
+
+Three additional **same-stem but paraphrased-answer pairs** were examined in full (choices and rationales):
+- `D1A-019` / `D1A-035`: integrate chart/order, interview and observed clinical needs.
+- `D4A-018` / `D4A-028`: consider planned daytime PAP desensitization after inadequate routine acclimation.
+- `D4C-009` / `D4C-018`: do not make oxygen decisions by SpO₂ alone without context.
+
+**These three are semantic duplicates, NOT confirmed clinically contradictory answer keys.** They are three additional candidates for controlled consolidation, separate from the 12 literal copies. Neither the six-family grouping nor automated answer-string mismatches authorize correction of a clinical answer.
+
+**Consolidation queue:** `rpsgt-v3/data/question-proposals/v2-v3-duplicate-consolidation-queue-2026-10-12.json` proposes retaining six canonical question IDs and examining **15 source copies** for future exclusion from new sessions, but **never deleting or reusing historical IDs**. Qualified review and explicit owner decision remain outstanding.
+
+**Dry run validated:** `rpsgt-v3/scripts/test-rpsgt-v2-v3-duplicate-consolidation-queue-2026.mjs` simulated all 15 exclusions in memory across identical V2/V3 source identities and verified V3 Practice and mock selection. Practice eligibility moved **2,674 → 2,659** only in simulation; ten seeded V3 mock builds retained **175 unique questions, 150 scored/25 pretest, unchanged domain quotas, no repeated mock families**. CI [38339019404](https://github.com/Fishingcoder2/Sleeppathewaysguild/actions/runs/38339019404) passed. This **does not** validate the actual V2 browser session, legacy progress history/report lookup or storage migration, which are future pre-release gates.
+
+The original `RPSGTv2.2026.html`, all V3 source-bank modules/manifest, and `data/owner-approved-question-release.json` are untouched. No questions have been retired or added to learner pools.
