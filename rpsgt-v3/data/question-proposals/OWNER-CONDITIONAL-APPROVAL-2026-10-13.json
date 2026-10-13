@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "approvalRecordId": "spg-rpsgt-v2-v3-owner-conditional-2026-10-13",
   "recordedDate": "2026-10-13",
-  "decisionAuthority": "Guild owner — explicit instruction in current conversation (conditional approval only, NOT final clinical signoff)",
+  "decisionAuthority": "Guild owner and creator; self-reported RPSGT with pediatric badge certificate; conditional publication approval and separate documented professional review for seven revised candidates",
   "scope": [
     "RPSGT V2 canonical original embedded bank",
     "RPSGT V3 modular original bank plus previously owner-approved 320-item overlay"
@@ -16,7 +16,7 @@
     "learnerQuestionRevisionsAuthorizedNow": 0,
     "learnerRetirementsAuthorizedNow": 0
   },
-  "approvalSemantics": "Owner authorization to publish seven NEW questions after validation of every preexisting clinical/source/duplicate/regression gate; authorization for five existing-item revisions to proceed toward release after clinical/manual and regression review; explicit prohibition on retiring 15 duplicate candidates. This manifest alone must never be imported as an owner-approved release overlay.",
+  "approvalSemantics": "The owner personally approved seven current revised stems, keyed answers, all distractors and rationales; by explicit policy amendment no external/independent reviewer is required. Owner's clinical item signoff is COMPLETE for these seven, while source/manual verification where required, human duplicate-family decision and V2/V3 representative learner-history regression remain separately mandatory. Five revisions are not covered by the seven-question clinical signoff; no retirements authorized.",
   "newQuestions": [
     {
       "id": "SPG-SPRIGGS-2026-003",
@@ -28,13 +28,22 @@
       "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
       "licensedCurrentAasmV3CheckRequired": false,
       "licensedCurrentAasmV3CheckCompleted": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
-      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
+      "individualAnswerDistractorRationaleSignoff": "OWNER_RPSGT_APPROVED_2026-10-13",
       "completeSemanticDuplicateReview": "PENDING",
       "crossVersionLearnerAndHistoryRegression": "PENDING",
       "ownerConditionalPublicationApproved": true,
       "finalLearnerReleaseApproved": false,
-      "eligibleForLearnerBank": false
+      "eligibleForLearnerBank": false,
+      "ownerClinicalReview": {
+        "reviewed": true,
+        "reviewerRole": "Guild owner and RPSGT; pediatric badge certificate self-reported",
+        "reviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+        "reviewedContentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+        "reviewedItem": "stem, four options, keyed answer, rationale",
+        "reviewedDate": "2026-10-13",
+        "policyAllowsOwnerAsSoleReviewer": true
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-005",
@@ -46,13 +55,22 @@
       "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
       "licensedCurrentAasmV3CheckRequired": false,
       "licensedCurrentAasmV3CheckCompleted": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
-      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
+      "individualAnswerDistractorRationaleSignoff": "OWNER_RPSGT_APPROVED_2026-10-13",
       "completeSemanticDuplicateReview": "PENDING",
       "crossVersionLearnerAndHistoryRegression": "PENDING",
       "ownerConditionalPublicationApproved": true,
       "finalLearnerReleaseApproved": false,
-      "eligibleForLearnerBank": false
+      "eligibleForLearnerBank": false,
+      "ownerClinicalReview": {
+        "reviewed": true,
+        "reviewerRole": "Guild owner and RPSGT; pediatric badge certificate self-reported",
+        "reviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+        "reviewedContentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+        "reviewedItem": "stem, four options, keyed answer, rationale",
+        "reviewedDate": "2026-10-13",
+        "policyAllowsOwnerAsSoleReviewer": true
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-006",
@@ -64,13 +82,22 @@
       "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
       "licensedCurrentAasmV3CheckRequired": false,
       "licensedCurrentAasmV3CheckCompleted": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
-      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
+      "individualAnswerDistractorRationaleSignoff": "OWNER_RPSGT_APPROVED_2026-10-13",
       "completeSemanticDuplicateReview": "PENDING",
       "crossVersionLearnerAndHistoryRegression": "PENDING",
       "ownerConditionalPublicationApproved": true,
       "finalLearnerReleaseApproved": false,
-      "eligibleForLearnerBank": false
+      "eligibleForLearnerBank": false,
+      "ownerClinicalReview": {
+        "reviewed": true,
+        "reviewerRole": "Guild owner and RPSGT; pediatric badge certificate self-reported",
+        "reviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+        "reviewedContentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+        "reviewedItem": "stem, four options, keyed answer, rationale",
+        "reviewedDate": "2026-10-13",
+        "policyAllowsOwnerAsSoleReviewer": true
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-008",
@@ -82,13 +109,22 @@
       "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
       "licensedCurrentAasmV3CheckRequired": true,
       "licensedCurrentAasmV3CheckCompleted": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
-      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
+      "individualAnswerDistractorRationaleSignoff": "OWNER_RPSGT_APPROVED_2026-10-13",
       "completeSemanticDuplicateReview": "PENDING",
       "crossVersionLearnerAndHistoryRegression": "PENDING",
       "ownerConditionalPublicationApproved": true,
       "finalLearnerReleaseApproved": false,
-      "eligibleForLearnerBank": false
+      "eligibleForLearnerBank": false,
+      "ownerClinicalReview": {
+        "reviewed": true,
+        "reviewerRole": "Guild owner and RPSGT; pediatric badge certificate self-reported",
+        "reviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+        "reviewedContentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+        "reviewedItem": "stem, four options, keyed answer, rationale",
+        "reviewedDate": "2026-10-13",
+        "policyAllowsOwnerAsSoleReviewer": true
+      }
     },
     {
       "id": "SPG-SPRIGGS-2026-009",
@@ -100,13 +136,22 @@
       "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
       "licensedCurrentAasmV3CheckRequired": false,
       "licensedCurrentAasmV3CheckCompleted": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
-      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
+      "individualAnswerDistractorRationaleSignoff": "OWNER_RPSGT_APPROVED_2026-10-13",
       "completeSemanticDuplicateReview": "PENDING",
       "crossVersionLearnerAndHistoryRegression": "PENDING",
       "ownerConditionalPublicationApproved": true,
       "finalLearnerReleaseApproved": false,
-      "eligibleForLearnerBank": false
+      "eligibleForLearnerBank": false,
+      "ownerClinicalReview": {
+        "reviewed": true,
+        "reviewerRole": "Guild owner and RPSGT; pediatric badge certificate self-reported",
+        "reviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+        "reviewedContentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+        "reviewedItem": "stem, four options, keyed answer, rationale",
+        "reviewedDate": "2026-10-13",
+        "policyAllowsOwnerAsSoleReviewer": true
+      }
     },
     {
       "id": "SPG-GAP-2026-001",
@@ -118,13 +163,22 @@
       "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
       "licensedCurrentAasmV3CheckRequired": false,
       "licensedCurrentAasmV3CheckCompleted": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
-      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
+      "individualAnswerDistractorRationaleSignoff": "OWNER_RPSGT_APPROVED_2026-10-13",
       "completeSemanticDuplicateReview": "PENDING",
       "crossVersionLearnerAndHistoryRegression": "PENDING",
       "ownerConditionalPublicationApproved": true,
       "finalLearnerReleaseApproved": false,
-      "eligibleForLearnerBank": false
+      "eligibleForLearnerBank": false,
+      "ownerClinicalReview": {
+        "reviewed": true,
+        "reviewerRole": "Guild owner and RPSGT; pediatric badge certificate self-reported",
+        "reviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+        "reviewedContentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+        "reviewedItem": "stem, four options, keyed answer, rationale",
+        "reviewedDate": "2026-10-13",
+        "policyAllowsOwnerAsSoleReviewer": true
+      }
     },
     {
       "id": "SPG-GAP-2026-002",
@@ -136,13 +190,22 @@
       "publicSourceConceptPreflight": "SUPPORTED_WITH_BOUNDARIES",
       "licensedCurrentAasmV3CheckRequired": false,
       "licensedCurrentAasmV3CheckCompleted": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
-      "individualAnswerDistractorRationaleSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
+      "individualAnswerDistractorRationaleSignoff": "OWNER_RPSGT_APPROVED_2026-10-13",
       "completeSemanticDuplicateReview": "PENDING",
       "crossVersionLearnerAndHistoryRegression": "PENDING",
       "ownerConditionalPublicationApproved": true,
       "finalLearnerReleaseApproved": false,
-      "eligibleForLearnerBank": false
+      "eligibleForLearnerBank": false,
+      "ownerClinicalReview": {
+        "reviewed": true,
+        "reviewerRole": "Guild owner and RPSGT; pediatric badge certificate self-reported",
+        "reviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+        "reviewedContentCommit": "e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+        "reviewedItem": "stem, four options, keyed answer, rationale",
+        "reviewedDate": "2026-10-13",
+        "policyAllowsOwnerAsSoleReviewer": true
+      }
     }
   ],
   "existingRevisions": [
@@ -150,56 +213,61 @@
       "id": "imp-051",
       "ownerAuthorizedToProceed": true,
       "finalLearnerRevisionApproved": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "manualEditorialReview": "PENDING",
       "crossVersionHistoryAndReportRegression": "PENDING",
       "currentLicensedAasmScoringCheck": "NOT_REQUIRED_FOR_THIS_REVISION",
       "eligibleToApply": false,
-      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed",
+      "ownerClinicalReview": "PENDING_SEPARATE_REVISED_ITEM_REVIEW"
     },
     {
       "id": "grow-041",
       "ownerAuthorizedToProceed": true,
       "finalLearnerRevisionApproved": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "manualEditorialReview": "PENDING",
       "crossVersionHistoryAndReportRegression": "PENDING",
       "currentLicensedAasmScoringCheck": "NOT_REQUIRED_FOR_THIS_REVISION",
       "eligibleToApply": false,
-      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed",
+      "ownerClinicalReview": "PENDING_SEPARATE_REVISED_ITEM_REVIEW"
     },
     {
       "id": "mb-pediatric-mixed-4",
       "ownerAuthorizedToProceed": true,
       "finalLearnerRevisionApproved": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "manualEditorialReview": "PENDING",
       "crossVersionHistoryAndReportRegression": "PENDING",
       "currentLicensedAasmScoringCheck": "NOT_REQUIRED_FOR_THIS_REVISION",
       "eligibleToApply": false,
-      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed",
+      "ownerClinicalReview": "PENDING_SEPARATE_REVISED_ITEM_REVIEW"
     },
     {
       "id": "imp-050",
       "ownerAuthorizedToProceed": true,
       "finalLearnerRevisionApproved": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "manualEditorialReview": "PENDING",
       "crossVersionHistoryAndReportRegression": "PENDING",
       "currentLicensedAasmScoringCheck": "REQUIRED_AND_PENDING",
       "eligibleToApply": false,
-      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed",
+      "ownerClinicalReview": "PENDING_SEPARATE_REVISED_ITEM_REVIEW"
     },
     {
       "id": "boost-039",
       "ownerAuthorizedToProceed": true,
       "finalLearnerRevisionApproved": false,
-      "independentQualifiedClinicalSignoff": "PENDING",
+      "independentQualifiedClinicalSignoff": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
       "manualEditorialReview": "PENDING",
       "crossVersionHistoryAndReportRegression": "PENDING",
       "currentLicensedAasmScoringCheck": "REQUIRED_AND_PENDING",
       "eligibleToApply": false,
-      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed"
+      "answerIdPolicy": "Preserve existing question ID and correct answer text; approval of source/rationale edits only unless separately reviewed",
+      "ownerClinicalReview": "PENDING_SEPARATE_REVISED_ITEM_REVIEW"
     }
   ],
   "duplicateRetirements": {
@@ -225,11 +293,12 @@
   "gateDecision": {
     "sourceConceptPreflight": "PARTIAL_COMPLETED_ACROSS_SEVEN",
     "directLicensedAasmV3Verification": "INCOMPLETE",
-    "independentClinicalReview": "INCOMPLETE",
+    "independentClinicalReview": "NOT_REQUIRED_BY_OWNER_POLICY_2026-10-13",
     "semanticDuplicates": "INCOMPLETE",
     "actualV2V3LearnerProgressHistoryAndReportRegression": "INCOMPLETE",
-    "qualifiedClinicalReleaseEligibility": "NONE_READY",
-    "status": "BLOCKED_FROM_LEARNER_ACTIVATION"
+    "qualifiedClinicalReleaseEligibility": "OWNER_CLINICAL_SIGNOFF_COMPLETE__TECHNICAL_GATES_PENDING",
+    "status": "BLOCKED_FROM_LEARNER_ACTIVATION",
+    "ownerClinicalItemReview": "COMPLETED_SEVEN_NEW__FIVE_REVISIONS_PENDING"
   },
   "externalEvidence": [
     {
@@ -262,6 +331,37 @@
     "ICSD-3-TR pediatric OSA obstructive-hypoventilation diagnostic criterion says AT LEAST 25%, distinct from older PSG scoring rule MORE THAN 25%; preserve current correct answer in mb-pediatric-mixed-4.",
     "The owner instructed that duplicate candidates remain active and pending review. Simulation does not authorize a retirement.",
     "Release of V3 as the public default remains separately blocked by rpsgt-v3/data/release-readiness.json manual gates.",
-    "This is owner conditional approval, not independent qualified clinical signoff or final authority to bypass QA."
-  ]
+    "Owner clinical content review is documented for the seven revised new items; the owner explicitly eliminated the former second-reviewer requirement. These items still cannot release until required scoring-source, duplicate-family and real-history regression gates close.",
+    "Owner policy dated 2026-10-13: Sleep Pathways Guild is operated by its creator/owner, an RPSGT with pediatric badge certificate; no external clinical reviewer is available or required by Guild policy. Never describe a third party as having reviewed these items."
+  ],
+  "policyAmendment": {
+    "effectiveDate": "2026-10-13",
+    "decisionBy": "Sleep Pathways Guild creator and owner",
+    "decision": "The Guild's sole owner and qualified RPSGT clinical content reviewer may provide the final content-review signoff. A second or independent third-party clinical reviewer is not a prerequisite for learner publication.",
+    "reviewerQualificationsSelfReported": [
+      "RPSGT",
+      "pediatric badge certificate"
+    ],
+    "independentSecondReviewerRequired": false,
+    "reviewMethod": "The owner directly approves the specific final question stem, every option/distractor, keyed answer and rationale, with revision or commit reference and dated record. Separate clinical-review attestations are required for new questions and for later revisions; owner signoff is not a substitute for source and learner-safety checks.",
+    "appliedToQuestionIds": [
+      "SPG-SPRIGGS-2026-003",
+      "SPG-SPRIGGS-2026-005",
+      "SPG-SPRIGGS-2026-006",
+      "SPG-SPRIGGS-2026-008",
+      "SPG-SPRIGGS-2026-009",
+      "SPG-GAP-2026-001",
+      "SPG-GAP-2026-002"
+    ],
+    "approvedReviewRecord": "rpsgt-v3/data/question-proposals/OWNER-CLINICAL-ITEM-APPROVAL-2026-10-13.json",
+    "approvalScope": "Owner's personal review of final revised versions of seven named questions at commit e7c432de65aeaeb1a1522bf6d4ca1e555c320a17",
+    "doesNotWaive": [
+      "Current controlling source/manual verification for items involving scoring",
+      "Human semantic-duplicate/family decision review (owner may perform this)",
+      "Actual V2/V3 saved learner history and report regression",
+      "Existing learner ID and progress preservation",
+      "Separate V3 public deployment readiness"
+    ],
+    "unaffectedDecisions": "Five existing revisions still await their own owner item-specific clinical/editorial review; all 15 duplicate retirements remain forbidden."
+  }
 }
