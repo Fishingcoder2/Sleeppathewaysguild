@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - build/rpsgt-v3-modular
+      - fix/rpsgt-v3-navigation-review-stabilization-2026-10-21
       - 'release/rpsgt-v3-*'
     paths:
       - 'rpsgt-v3/**'
