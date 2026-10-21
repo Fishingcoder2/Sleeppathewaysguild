@@ -252,6 +252,13 @@
       document.body.classList.remove("rpsgt-menu-open");
       syncMenuButtons();
     });
+    document.addEventListener("keydown",function(event){
+      if(event.key!=="Escape"||!document.body.classList.contains("rpsgt-menu-open")) return;
+      document.body.classList.remove("rpsgt-menu-open");
+      syncMenuButtons();
+      const toggle=document.querySelector("[data-toggle-menu]");
+      if(toggle) toggle.focus();
+    });
     syncMenuButtons();
   }
 
