@@ -67,7 +67,7 @@ map.addEventListener('click',event=>{
   if(first)select(first.id);
  }}
 });
-const observer=new MutationObserver(()=>render());
+const observer=new MutationObserver(mutations=>{if(mutations.some(m=>Array.from(m.addedNodes).some(n=>n.nodeType===1&&(n.matches?.('.domain-map-card')||n.querySelector?.('.domain-map-card')))))render();});
 observer.observe(map,{childList:true,subtree:true});
 render();
 })();
