@@ -1,0 +1,11 @@
+/* Guided Trail level navigation: show one task workspace at a time. */
+[data-blueprint-map].trail-levels-enabled .domain-map-card[hidden],
+[data-blueprint-map].trail-levels-enabled .task-map-card[hidden]{display:none!important}
+.trail-level-nav{padding:18px 20px;margin:0 0 20px;background:var(--surface,#fff);border:1px solid var(--border,#d6e0ea);border-radius:16px}
+.trail-level-nav h2{margin:0 0 6px}.trail-level-nav p{margin:0}
+.trail-domain-open,.trail-task-open{min-height:44px}
+[data-blueprint-map][data-trail-level="domains"] .domain-task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+[data-blueprint-map][data-trail-level="domains"] .task-map-card>:not(.task-map-head):not(.trail-status-row){display:none}
+[data-blueprint-map][data-trail-level="task"] .domain-task-grid{display:block}
+[data-blueprint-map][data-trail-level="task"] .task-map-card{max-width:100%}
+@media(max-width:760px){.trail-level-nav{padding:14px}.trail-domain-open,.trail-task-open{width:100%;margin-top:10px}}
