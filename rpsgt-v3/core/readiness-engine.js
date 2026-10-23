@@ -85,7 +85,7 @@
   }
 
   function isEligible(question){
-    return Boolean(question)&&DIRECT_TASKS.includes(question.taskCode);
+    return Boolean(question)&&DIRECT_TASKS.includes(question.taskCode)&&question.learnerExcluded!==true&&!(question.qa&&question.qa.learnerExcluded===true)&&question.reviewStatus!=='retired';
   }
 
   function dedupeByFamily(pool){
