@@ -213,6 +213,7 @@
         <div class="nav-label">Launchpad</div>\
         <a class="nav-link" data-nav="home" href="index.html"><span>🏠</span>Dashboard</a>\
         <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>\
+        <a class="nav-link" href="lessons.html"><span>📖</span>Lesson Library</a>\
         <a class="nav-link" data-nav="practice" href="practice.html"><span>📝</span>Practice Modes</a>\
         <a class="nav-link" href="review.html?list=missed"><span>🔁</span>Missed Questions</a>\
         <a class="nav-link" data-nav="reports" href="reports.html"><span>📊</span>Reports</a>\
@@ -344,7 +345,7 @@
     const module=currentModule();
     const route=LEARNER_ROUTES[module];
     const main=document.querySelector(".main");
-    if(!route||!main||main.querySelector("[data-learner-route-strip]")) return;
+    if(!route||!main||document.querySelector('[data-lesson-reader], [data-html5-psg-workstation]')||main.querySelector("[data-learner-route-strip]")) return;
     const section=document.createElement("section");
     section.className="section learner-route-strip";
     section.dataset.learnerRouteStrip="true";
