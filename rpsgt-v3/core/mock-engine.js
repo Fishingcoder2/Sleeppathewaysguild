@@ -84,7 +84,7 @@
   }
 
   function baseEligible(question){
-    return Boolean(question)&&DIRECT_TASKS.includes(question.taskCode)&&question.mockEligible!==false&&question.mockExclude!==true&&!(question.qa&&question.qa.mockExclude===true)&&!question.stagingOnly&&!isVisualPlaceholder(question);
+    return Boolean(question)&&DIRECT_TASKS.includes(question.taskCode)&&question.learnerExcluded!==true&&!(question.qa&&question.qa.learnerExcluded===true)&&question.reviewStatus!=='retired'&&question.mockEligible!==false&&question.mockExclude!==true&&!(question.qa&&question.qa.mockExclude===true)&&!question.stagingOnly&&!isVisualPlaceholder(question);
   }
 
   function isSimpleRecall(question){
