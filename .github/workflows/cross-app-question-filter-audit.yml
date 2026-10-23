@@ -1,0 +1,21 @@
+name: Cross-app question filter audit
+on:
+  pull_request:
+    paths:
+      - 'rpsgt-v3/scripts/audit-cross-app-question-filters.mjs'
+      - 'rpsgt-v3/core/practice-subjects.js'
+      - 'rpsgt-v3/core/practice-difficulty.js'
+      - 'rpsgt-v3/data/question-bank/**'
+      - 'data/owner-approved-question-release.json'
+      - '.github/workflows/cross-app-question-filter-audit.yml'
+  workflow_dispatch:
+jobs:
+  rpsgt-v3-item-inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run all-question category inventory
+        run: node rpsgt-v3/scripts/audit-cross-app-question-filters.mjs
