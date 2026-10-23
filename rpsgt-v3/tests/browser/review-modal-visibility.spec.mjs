@@ -31,8 +31,10 @@ test('twenty-item missed review shows only the question modal before the first a
   await expect(active(page)).toBeVisible();
   await expect(result(page)).toBeHidden();
   expect(await result(page).evaluate(el=>getComputedStyle(el).display)).toBe('none');
-  if(test.info().project.name==='mobile-chromium') await expect(page.locator('.session-rail')).toBeHidden();
-  else await expect(page.locator('.session-rail')).toBeVisible();
+  // The compact session layout hides the rail at tablet and phone widths.
+  // Verify the expected responsive state rather than assuming all non-phone views are desktop.
+  if(test.info().project.name==='desktop-chromium') await expect(page.locator('.session-rail')).toBeVisible();
+  else await expect(page.locator('.session-rail')).toBeHidden();
   await expect(page.locator('[data-review-forward]')).toHaveText('Check answer');
   const choices=page.locator('[data-question-choices] .practice-choice');
   await expect(choices).toHaveCount(4);
