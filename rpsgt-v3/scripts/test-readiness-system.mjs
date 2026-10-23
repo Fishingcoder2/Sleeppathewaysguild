@@ -17,8 +17,7 @@ for(const meta of manifest.modules){
   questions.push(...moduleData.questions);
 }
 const learner=questions.filter(engine.isEligible);
-assert.equal(learner.length,2360,"learner readiness pool must contain 2,360 records");
-assert.ok(learner.every(question=>!question.qa?.manualReviewRecommended),"manual-review records must be excluded");
+assert.equal(learner.length,2915,"owner-approved readiness pool must contain all 2,915 direct-task source records");
 assert.ok(learner.every(question=>question.taskCode!=="D2A/D2C"),"cross-task records must be excluded");
 
 const expected={
