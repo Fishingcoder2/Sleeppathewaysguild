@@ -1,0 +1,23 @@
+name: Read-only Guided Trail and Practice coverage discovery
+on:
+  push:
+    branches:
+      - audit/rpsgt-cpsgt-guided-practice-diversity-2026-10-13
+    paths:
+      - rpsgt-v3/scripts/audit-dual-app-guided-practice-discovery-2026.mjs
+      - .github/workflows/rpsgt-cpsgt-guided-practice-coverage-audit-2026.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  coverage-discovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate read-only discovery syntax
+        run: node --check rpsgt-v3/scripts/audit-dual-app-guided-practice-discovery-2026.mjs
+      - name: Inspect CPSGT Guided Trail and Practice and count RPSGT task pools
+        run: node rpsgt-v3/scripts/audit-dual-app-guided-practice-discovery-2026.mjs
