@@ -25,6 +25,7 @@
   function listLabel(){return state.listType==="mastered"?"Mastered Question Review":"Missed Question Review";}
   function sourceLabel(){return state.listType==="mastered"?"v3-review-mastered":"v3-review-missed";}
   function isManualReview(question){return Boolean(question&&question.qa&&question.qa.manualReviewRecommended);}
+  function isLearnerExcluded(question){return Boolean(question&&(question.learnerExcluded===true||(question.qa&&question.qa.learnerExcluded===true)||question.reviewStatus==='retired'));}
   function questionKey(question){return String(question&&question.id||state.index);}
 
   function readIds(){
@@ -50,7 +51,7 @@
     const wanted=new Set(state.ids.map(String)),found=new Map(),taskMap=historyTaskMap(),modules=Array.isArray(state.manifest.modules)?state.manifest.modules:[];
     const inferredCodes=new Set(state.ids.map(id=>taskMap.get(String(id))).filter(Boolean));
     const firstPass=modules.filter(meta=>inferredCodes.has(meta.taskCode)),remaining=modules.filter(meta=>!inferredCodes.has(meta.taskCode));
-    async function scan(batch){for(const meta of batch){if(found.size===wanted.size) break;const questions=await loadModule(meta);questions.forEach(question=>{const key=String(question.id);if(wanted.has(key)) found.set(key,question);});}}
+    async function scan(batch){for(const meta of batch){if(found.size===wanted.size) break;const questions=await loadModule(meta);questions.forEach(question=>{const key=String(question.id);if(wanted.has(key)&&!isLearnerExcluded(question)) found.set(key,question);});}}
     await scan(firstPass);await scan(remaining);
     state.questions=state.ids.map(id=>found.get(String(id))).filter(Boolean);state.unresolved=state.ids.filter(id=>!found.has(String(id)));
   }
