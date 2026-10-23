@@ -24,6 +24,19 @@ test('every primary route renders with no same-origin 404 or page error',async({
  expect(errors,'Page scripts should initialize without exceptions').toEqual([]);
 });
 
+async function navigateByVisibleLink(page, destination){
+ const links=page.locator(`.sidebar a[data-nav="${destination}"], .mobile-nav a[data-nav="${destination}"]`);
+ const count=await links.count();
+ for(let i=0;i<count;i++){
+  const link=links.nth(i);
+  if(await link.isVisible()){
+   await link.click();
+   return;
+  }
+ }
+ throw new Error(`No visible navigation link for ${destination}`);
+}
+
 test('dashboard navigation buttons lead to real routes and load the approved question overlay',async({page})=>{
  const failed=[],jsonResponses=[];
  page.on('response',r=>{
@@ -31,18 +44,18 @@ test('dashboard navigation buttons lead to real routes and load the approved que
   if(r.status()===404 && r.url().startsWith(new URL(test.info().project.use.baseURL).origin))failed.push(r.url());
  });
  await page.goto('index.html');
- await page.locator('.sidebar a[data-nav="study"]').click();
+ await navigateByVisibleLink(page,'study');
  await expect(page).toHaveURL(/study\.html/);
  await expect(page.locator('[data-blueprint-map]')).toBeVisible();
- await page.locator('.sidebar a[data-nav="practice"]').click();
+ await navigateByVisibleLink(page,'practice');
  await expect(page).toHaveURL(/practice\.html/);
  await expect(page.locator('[data-practice-setup]')).toBeVisible();
  await expect.poll(()=>jsonResponses.length).toBeGreaterThan(0);
  expect(jsonResponses.every(x=>x.status===200),'approved questions must load successfully').toBe(true);
- await page.locator('.sidebar a[data-nav="reports"]').click();
+ await navigateByVisibleLink(page,'reports');
  await expect(page).toHaveURL(/reports\.html/);
  await expect(page.locator('h1').first()).toBeVisible();
- await page.locator('.sidebar a[data-nav="labs"]').click();
+ await navigateByVisibleLink(page,'labs');
  await expect(page).toHaveURL(/labs\.html/);
  await expect(page.locator('h1').first()).toBeVisible();
  expect(failed).toEqual([]);
