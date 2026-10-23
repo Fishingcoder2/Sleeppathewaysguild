@@ -37,6 +37,7 @@
     return copy;
   }
   function isManualReview(question){return Boolean(question&&question.qa&&question.qa.manualReviewRecommended);}
+  function isLearnerExcluded(question){return Boolean(question&&(question.learnerExcluded===true||(question.qa&&question.qa.learnerExcluded===true)||question.reviewStatus==='retired'));}
   function taskLabel(code){
     const task=taskMap.get(code);
     if(task) return code+" · "+task.title;
@@ -161,7 +162,7 @@
     status.textContent="Loading "+modules.length+" selected task module"+(modules.length===1?"":"s")+"…";
     const packages=await Promise.all(modules.map(loadModule));
     const pool=packages.flat().filter(function(question){
-      const eligible=state.mode==="quality"?isManualReview(question):true;
+      const eligible=state.mode==="quality"?isManualReview(question):!isLearnerExcluded(question);
       return eligible&&matchesSubject(question,subject)&&matchesDifficulty(question,difficulty);
     });
     state.activePoolSize=pool.length;
