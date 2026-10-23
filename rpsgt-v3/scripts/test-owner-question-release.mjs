@@ -50,7 +50,7 @@ const effectiveById=new Map(effectiveBank.map(question=>[String(question.id),que
 for(const question of release.questions) assert.deepEqual(effectiveById.get(String(question.id)),question,'approved source content survives runtime adaptation');
 for(const match of release.rpsgtMatched) assert.ok(effectiveById.has(String(match.publicId)),'already-live approved records remain available');
 assert.equal(effectiveBank.filter(question=>question.qa?.manualReviewRecommended).length,560);
-assert.equal(effectiveBank.filter(readiness.isEligible).length,2680);
+assert.equal(effectiveBank.filter(readiness.isEligible).length,3235,'all direct-task records are readiness-eligible after owner approval; five cross-task records remain outside direct-task readiness routing');
 assert.ok(release.questions.every(question=>guided.eligibleQuestion(question,question.taskCode)),'all approved additions are selectable in learner practice and task checkpoints');
 
 const v2Html=await readFile(join(root,'..','RPSGTv2.2026.html'),'utf8');
@@ -89,7 +89,7 @@ const mockCandidates=mock.mockEligiblePool(effectiveBank);
 assert.ok(mockCandidates.some(question=>question.ownerReleaseApproved===true),'appropriate approved additions enter the existing mock-style eligibility rules');
 const mockSession=mock.buildSession(effectiveBank,rng);
 assert.equal(mockSession.items.length,175,'mock size and domain allocation remain intact');
-assert.ok(Object.values(mockSession.questionsById).every(question=>!question.qa?.manualReviewRecommended));
+assert.ok(Object.values(mockSession.questionsById).every(question=>mock.baseEligible(question)),'mock items still satisfy direct-task, structural, and explicit mock-exclusion rules after owner approval');
 assert.deepEqual(mockSession.blueprintCounts,{D1:30,D2:41,D3:38,D4:41});
 
 const fetchCalls=[];
@@ -138,4 +138,4 @@ for (const unsafe of [
     'V3 must reject held or learner-excluded candidate'
   );
 }
-console.log(JSON.stringify({sourceQuestions:2920,approvedAdditions:320,effectiveQuestions:3240,learnerEligible:2680,preservedQualityReview:560,bankControllers:bankControllers.length,integratedPages:pages,mockCandidates:mockCandidates.length},null,2));
+console.log(JSON.stringify({sourceQuestions:2920,approvedAdditions:320,effectiveQuestions:3240,readinessEligibleDirectTask:3235,releasedManualReviewFlags:560,bankControllers:bankControllers.length,integratedPages:pages,mockCandidates:mockCandidates.length},null,2));
