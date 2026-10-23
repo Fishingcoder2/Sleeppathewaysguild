@@ -27,8 +27,6 @@ if(new Set(ids).size!==records.length) throw new Error("Practice pools contain d
 if(manual.length!==expectedManual) throw new Error(`Expected ${expectedManual} manual-review records, found ${manual.length}`);
 if(cross.length!==5) throw new Error(`Expected 5 cross-task records, found ${cross.length}`);
 if(cross.some(question=>!question?.qa?.manualReviewRecommended)) throw new Error("A D2A/D2C cross-task record lost its internal-review status");
-if(learnerReady.some(question=>question?.qa?.manualReviewRecommended)) throw new Error("Learner Practice contains a manual-review record");
-if(learnerReady.some(question=>question.taskCode==="D2A/D2C")) throw new Error("Learner Practice contains a cross-task review record");
 if(learnerReady.some(question=>!eligibility.completePrompt(question.prompt))) throw new Error("Learner Practice contains an incomplete prompt");
 if(learnerReady.some(question=>!Array.isArray(question.options)||question.options.length<2||question.options.some(option=>!String(option==null?'':option).trim()))) throw new Error("Learner Practice contains invalid choices");
 if(learnerReady.some(question=>!question.options.includes(question.answer))) throw new Error("Learner Practice contains an answer outside its choices");
@@ -37,12 +35,12 @@ const valid={id:"valid",taskCode:"D1A",prompt:"Which signal is used for this com
 const syntheticCases=[
   [{...valid,prompt:"This prompt trails off..."},"ellipsis-ending prompt"],
   [{...valid,prompt:"Incomplete question"},"placeholder prompt"],
-  [{...valid,qa:{manualReviewRecommended:true}},"manual-review record"],
-  [{...valid,taskCode:"D2A/D2C",qa:{manualReviewRecommended:true}},"cross-task review record"],
   [{...valid,options:["One",""]},"blank choice"],
   [{...valid,answer:"Three"},"answer outside choices"]
 ];
 if(!eligibility.eligibleQuestion(valid,"D1A")) throw new Error("A complete synthetic learner question was rejected");
+if(!eligibility.eligibleQuestion({...valid,qa:{manualReviewRecommended:true}},"D1A")) throw new Error("Owner-approved manual-review metadata still blocks an otherwise complete learner question");
+if(!eligibility.eligibleQuestion({...valid,taskCode:"D2A/D2C",qa:{manualReviewRecommended:true}},"D2A/D2C")) throw new Error("Cross-task records should remain structurally valid; downstream direct-task routing controls readiness/mock use");
 for(const [record,label] of syntheticCases){
   if(eligibility.eligibleQuestion(record,record.taskCode)) throw new Error(`Eligibility helper accepted ${label}`);
 }
@@ -50,7 +48,7 @@ for(const [record,label] of syntheticCases){
 console.log(JSON.stringify({
   total:records.length,
   learnerReady:learnerReady.length,
-  preservedInternalReview:manual.length,
+  releasedManualReviewFlags:manual.length,
   crossTask:cross.length,
   excludedFromLearner:records.length-learnerReady.length,
   uniqueIds:new Set(ids).size
