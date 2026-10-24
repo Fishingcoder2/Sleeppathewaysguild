@@ -130,7 +130,13 @@
     const plans=enriched||reportEngine.studyPlan(state.saved,state.blueprint,state.indexMap,3);
     const host=$("[data-coach-plan]");
     if(!plans.length){host.innerHTML='<div class="empty-report">No weak-area evidence is available yet. Complete a Guided Study checkpoint, Focused Practice, or a Readiness Check for your personalized reading plan.</div>';return;}
+    const weakDomains=priorityEngine&&typeof priorityEngine.weakDomains==='function'?
+      priorityEngine.weakDomains(state.saved,priorityEngine.taskRows(state.saved,state.blueprint,state.index),state.blueprint):[];
+    const domainOrder=weakDomains.length?
+      '<div class="report-weak-domain-order"><strong>Weakest domains to review:</strong> '+
+      weakDomains.map((domain,i)=>'<span>'+(i+1)+'. '+esc(domain.domain)+' · '+esc(domain.focusTasks.map(task=>task.code).join(', '))+'</span>').join('')+'</div>':'';
     host.innerHTML='<p class="report-intro">Priorities reflect missed questions, task accuracy, and your latest Guided Study, Readiness and Mock evidence. They are learning recommendations, not an exam-score prediction. Where the catalog has a verified section locator, the exact chapter, guideline heading or article title is shown.</p>'+
+      domainOrder+
       '<div class="coach-plan-list">'+plans.map((plan,index)=>{
       const code=plan.taskCode||plan.code;
       const topics=(plan.topics||[]).map(item=>item.label);
