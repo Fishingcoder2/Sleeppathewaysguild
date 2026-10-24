@@ -51,9 +51,9 @@
     $("[data-readiness-history-count]").textContent=history.length+" saved";
     const host=$("[data-readiness-history]");
     if(!history.length){host.innerHTML='<div class="empty">No readiness checks are saved yet. Start with the recommended 50-question run.</div>';return;}
-    host.innerHTML='<div class="readiness-history-list">'+history.slice(0,8).map(result=>{
+    host.innerHTML='<div class="readiness-history-list">'+history.slice(0,8).map((result,index)=>{
       const date=result.completedAt?new Date(result.completedAt).toLocaleString():"Saved result";
-      return `<div class="readiness-history-row"><div><strong>${escapeHtml(result.size)}-question readiness</strong><small>${escapeHtml(date)}</small></div><div><strong>${escapeHtml(result.percent)}%</strong><small>raw score</small></div><div><strong>${escapeHtml(result.weightedPercent)}%</strong><small>study-weighted</small></div></div>`;
+      return `<div class="readiness-history-row"><div><strong>${escapeHtml(result.size)}-question readiness</strong><small>${escapeHtml(date)}</small></div><div><strong>${escapeHtml(result.percent)}%</strong><small>raw score</small></div><div><strong>${escapeHtml(result.weightedPercent)}%</strong><small>study-weighted</small></div><button type="button" class="btn secondary" data-view-readiness-history="${index}" aria-label="View saved result from ${escapeHtml(date)}">View results</button></div>`;
     }).join("")+'</div>';
   }
 
@@ -359,10 +359,16 @@
       submitAnswer();
       return;
     }
+    // The last Next button is the completion action. Do not first persist
+    // an out-of-range question index, which can strand a resumed session.
+    if(state.active.index>=state.active.questionIds.length-1){
+      finishReadiness();
+      return;
+    }
     state.active.index+=1;
     state.active.updatedAt=new Date().toISOString();
     saveActive();
-    if(state.active.index>=state.active.questionIds.length) finishReadiness(); else renderQuestion();
+    renderQuestion();
   }
 
   function summaryHistoryRecord(summary){
@@ -382,6 +388,21 @@
       missedIds:state.questions.filter(question=>(state.active.answers||{})[String(question.id)]!==question.answer).map(question=>question.id),
       source:"v3-readiness"
     };
+  }
+
+  function bringResultsIntoView(){
+    const panel=$("[data-readiness-results]");
+    const heading=$("[data-readiness-result-heading]");
+    if(!panel||panel.classList.contains("hidden")) return;
+    // Hiding a tall question panel does not reposition the user's old scroll.
+    // Focus and scroll after layout so results are visible even on a small screen.
+    const reveal=()=>{
+      if(panel.classList.contains("hidden"))return;
+      if(heading&&typeof heading.focus==="function") heading.focus({preventScroll:true});
+      if(typeof panel.scrollIntoView==="function")panel.scrollIntoView({block:"start",behavior:"auto"});
+    };
+    if(typeof requestAnimationFrame==="function")requestAnimationFrame(reveal);
+    else reveal();
   }
 
   function renderResults(summary){
@@ -409,17 +430,39 @@
     }).join("");
   }
 
+  function savedResultSummary(record){
+    const total=Number(record.size)||Number(record.answered)||((record.questionIds||[]).length)||0;
+    return {
+      total,answered:Number(record.answered)||0,correct:Number(record.correct)||0,
+      percent:Number(record.percent)||0,weightedPercent:Number(record.weightedPercent)||0,
+      byDomain:record.byDomain||{},weakestTasks:Array.isArray(record.weakestTasks)?record.weakestTasks:[]
+    };
+  }
+
+  function viewSavedReadiness(index){
+    const history=readinessRecord(storageState()).history;
+    const record=history[index];
+    if(!record)return;
+    renderResults(savedResultSummary(record));
+    bringResultsIntoView();
+  }
+
   function finishReadiness(){
+    if(!state.active)return;
     const summary=engine.summarize(state.questions,state.active.answers||{});
     const record=summaryHistoryRecord(summary);
     const saved=storageState();
     const readiness=readinessRecord(saved);
-    readiness.history.unshift(record);
+    // Repeated taps or an interrupted result transition must not create
+    // duplicate readiness results for the same 25/50/100-question attempt.
+    const existing=readiness.history.find(item=>item.sessionId===record.sessionId);
+    if(!existing)readiness.history.unshift(record);
     readiness.history=readiness.history.slice(0,20);
     readiness.activeSession=null;
     window.RPSGTStorage.save(saved);
-    renderResults(summary);
     state.active=null;
+    renderResults(existing?savedResultSummary(existing):summary);
+    bringResultsIntoView();
   }
 
   async function startReadiness(size){
@@ -475,6 +518,10 @@
       renderAllocations();
       $("[data-readiness-load]").classList.add("hidden");
       $all("[data-start-readiness]").forEach(button=>button.addEventListener("click",()=>startReadiness(Number(button.dataset.startReadiness))));
+      $("[data-readiness-history]").addEventListener("click",event=>{
+        const button=event.target.closest("[data-view-readiness-history]");
+        if(button)viewSavedReadiness(Number(button.dataset.viewReadinessHistory));
+      });
       $("[data-previous-question]").addEventListener("click",previousQuestion);
       $("[data-next-question]").addEventListener("click",nextQuestion);
       $("[data-flag-question]").addEventListener("click",toggleFlag);
