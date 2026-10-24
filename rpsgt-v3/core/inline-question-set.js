@@ -222,8 +222,11 @@
   }
   document.addEventListener('click',event=>{
     const link=event.target.closest&&event.target.closest('a[href]');
-    if(!shouldHandle(link))return;
+    if(!shouldHandle(link)||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button>0)return;
     event.preventDefault();
+    // The app shell remembers clicked navigation links. Do not record a
+    // Practice page visit when this task stays in its original lesson.
+    event.stopPropagation();
     if(state.overlay&&!state.overlay.hidden)return;
     state.source=link;start(link);
   },true);
