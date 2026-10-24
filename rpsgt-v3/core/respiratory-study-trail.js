@@ -5,7 +5,7 @@
   if(!host) return;
   const guidedEngine=window.RPSGTGuidedTrailEngine;
 
-  const state={trail:null,source:null,chapters:new Map(),activeIndex:0,completedThrough:-1,phase:'learn',activityProgress:{},previewIndex:null,taskEntryObserver:null};
+  const state={trail:null,source:null,chapters:new Map(),activeIndex:0,completedThrough:-1,phase:'learn',activityProgress:{},previewIndex:null,showAllLessons:false,taskEntryObserver:null};
   const text=value=>String(value==null?'':value).trim();
   const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -178,7 +178,7 @@
     const previous=index>0?'<button class="respiratory-trail-link" type="button" data-respiratory-prev>← Previous lesson</button>':'';
     const stars=mastery.stars?'<span class="respiratory-mastery-stars" aria-label="'+mastery.stars+' mastery stars">'+('★'.repeat(mastery.stars))+('☆'.repeat(3-mastery.stars))+'</span>':'';
     return '<article class="respiratory-trail-panel" data-active-phase="'+state.phase+'" aria-labelledby="respiratory-trail-title">'+
-      '<div class="respiratory-lesson-kicker"><span class="status '+(complete?'green':'')+'">'+(complete?'Completed lesson':'Current lesson')+'</span><span>Lesson '+(index+1)+' · '+esc(step.taskCode)+'</span>'+stars+'</div>'+
+      '<div class="respiratory-lesson-kicker"><span class="status '+(complete?'green':'')+'">'+(complete?'Completed lesson':'Current lesson')+'</span><span>Lesson '+(index+1)+' · '+esc(step.taskCode)+'</span>'+stars+'<button type="button" class="respiratory-jump-actions" data-respiratory-jump-actions>Find activity buttons ↓</button></div>'+
       '<h3 id="respiratory-trail-title">'+esc(step.title)+'</h3>'+
       '<p class="respiratory-lesson-prompt">Complete this lesson to move one step farther along the Respiratory/PAP path. Work left to right: Learn, Apply, Check.</p>'+
       phaseNavigation()+
@@ -208,7 +208,10 @@
     if(complete) classes.push('is-complete');
     if(current) classes.push('is-current');
     if(locked) classes.push('is-locked');
-    return '<div class="respiratory-path-stop stop-'+((index%3)+1)+'">'+
+    const focusIndex=Number.isInteger(state.previewIndex)?state.previewIndex:state.activeIndex;
+    const start=Math.max(0,Math.min(focusIndex-1,state.trail.steps.length-3));
+    const nearby=index>=start&&index<start+3;
+    return '<div class="respiratory-path-stop stop-'+((index%3)+1)+(nearby?' is-near':'')+'">'+
       '<button type="button" data-respiratory-step="'+index+'" aria-current="'+(current?'step':'false')+'" '+' aria-label="'+(locked?'Preview locked lesson: ':'Open lesson: ')+esc(step.navLabel||step.title)+'" class="'+classes.join(' ')+'">'+
         '<span class="respiratory-path-orb" aria-hidden="true">'+marker+'</span>'+
         '<span class="respiratory-path-copy"><strong>'+esc(step.navLabel||step.title)+'</strong><small>'+stateLabel+'</small></span>'+
@@ -223,8 +226,9 @@
     const active=steps[state.activeIndex]||steps[0];
     const preview=Number.isInteger(state.previewIndex)?steps[state.previewIndex]:null;
     host.innerHTML='<div class="section-head respiratory-trail-head"><div><div class="eyebrow">Featured Study Trail · Respiratory / PAP</div><h2>'+esc(state.trail.title)+'</h2><p>'+esc(state.trail.description)+'</p></div><span class="status">Guided learning path</span></div>'+progressHtml()+
-      '<div class="respiratory-trail-shell">'+
-        '<nav class="respiratory-trail-steps respiratory-learning-path" aria-label="Respiratory and PAP learning path">'+steps.map(stepButton).join('')+'</nav>'+
+      '<div class="respiratory-trail-shell'+(state.showAllLessons?' is-expanded':'')+'">'+
+        '<div class="respiratory-lesson-selector"><strong>Choose a lesson</strong><button class="btn secondary" type="button" data-respiratory-toggle-lessons aria-controls="respiratory-lesson-buttons" aria-expanded="'+(state.showAllLessons?'true':'false')+'">'+(state.showAllLessons?'Show fewer lessons':'Browse all '+steps.length+' lessons')+'</button></div>'+
+        '<nav id="respiratory-lesson-buttons" class="respiratory-trail-steps respiratory-learning-path" aria-label="Respiratory and PAP learning path">'+steps.map(stepButton).join('')+'</nav>'+
         '<div class="respiratory-current-lesson" data-respiratory-trail-panel>'+(preview?lockedPreviewHtml(preview,state.previewIndex):panelHtml(active,state.activeIndex))+'</div>'+
       '</div>'+
       '<p class="respiratory-trail-boundary">'+esc(state.trail.learnerBoundary)+'</p>';
@@ -320,6 +324,22 @@
   }
 
   host.addEventListener('click',event=>{
+    if(event.target.closest('[data-respiratory-toggle-lessons]')){
+      state.showAllLessons=!state.showAllLessons;
+      render();
+      const toggle=host.querySelector('[data-respiratory-toggle-lessons]');
+      if(toggle&&typeof toggle.focus==='function')toggle.focus({preventScroll:true});
+      return;
+    }
+    if(event.target.closest('[data-respiratory-jump-actions]')){
+      const actions=host.querySelector('.respiratory-phase-pager');
+      if(actions&&typeof actions.scrollIntoView==='function'){
+        actions.scrollIntoView({block:'center',behavior:window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+        const action=actions.querySelector('.btn.primary:not([disabled])');
+        if(action&&typeof action.focus==='function')action.focus({preventScroll:true});
+      }
+      return;
+    }
     const checkpoint=event.target.closest('[data-checkpoint-start][data-checkpoint-concept]');
     if(checkpoint&&state.trail&&state.phase==='check'&&activityFor(state.trail.steps[state.activeIndex]).apply&&guidedEngine&&typeof guidedEngine.queueQuestionFilter==='function'){
       const concept=state.trail.steps.find(step=>step.id===checkpoint.dataset.checkpointConcept);
