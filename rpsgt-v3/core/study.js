@@ -149,12 +149,15 @@
   }
   function closeCheckpoint(){
     if(state.achievementOpen) closeAchievement();
+    const finished=state.checkpoint&&state.checkpoint.submitted?state.checkpoint.record:null;
     state.checkpoint=null;
     if(checkpointOverlay) checkpointOverlay.hidden=true;
     if(checkpointHost) checkpointHost.innerHTML='';
     document.body.classList.remove('checkpoint-open');
     if(state.returnFocus&&typeof state.returnFocus.focus==='function') state.returnFocus.focus({preventScroll:true});
     state.returnFocus=null;
+    // Progression happens only after the learner has had a chance to review the score and rationale.
+    if(finished) document.dispatchEvent(new CustomEvent('rpsgt:checkpoint-closed',{detail:{record:finished}}));
   }
   async function startCheckpoint(taskCode,trigger){
     const task=engine.taskMap(state.blueprint).get(taskCode);
