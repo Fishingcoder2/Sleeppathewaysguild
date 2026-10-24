@@ -29,3 +29,14 @@ body[data-report-profile="guided"] .summary-section[data-report-section="trail"]
 body[data-report-profile="guided"] .summary-section[data-report-section="labs"]{break-before:auto}
 @media(max-width:650px){.summary-pathway-row{grid-template-columns:28px 1fr}.summary-pathway-steps{grid-column:2}.summary-competency-table{font-size:.77rem;min-width:550px}.summary-pathway-row strong{font-size:.8rem}}
 @media print{.summary-report-table-scroll{overflow:visible}.summary-competency-table{font-size:7.8pt;min-width:0}.summary-competency-table th,.summary-competency-table td{padding:5px}.summary-guided-domain,.summary-guided-pathway{padding:8px;break-inside:auto}.summary-guided-domain h3{font-size:10pt;break-after:avoid}.summary-pathway-row{grid-template-columns:25px minmax(0,1fr) minmax(0,1fr);padding:6px}.summary-pathway-steps span{font-size:7pt}.summary-competency-table tr{break-inside:avoid}}
+
+/* Weakest-first BRPT domain overview, independent of official exam scoring. */
+.summary-weak-domains{margin:12px 0 17px;padding:12px;border:1px solid var(--summary-line);border-radius:12px;background:var(--summary-soft)}
+.summary-weak-domains h3{margin:0 0 10px;font-size:1rem;color:var(--summary-ink)}
+.summary-weak-domain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.summary-weak-domain-grid>div{padding:10px;background:#fff;border:1px solid var(--summary-line);border-radius:9px}
+.summary-weak-domain-grid strong,.summary-weak-domain-grid small{display:block}
+.summary-weak-domain-grid strong{font-size:.85rem;color:var(--summary-ink)}
+.summary-weak-domain-grid small{margin-top:4px;font-size:.73rem;color:var(--summary-muted)}
+@media(max-width:600px){.summary-weak-domain-grid{grid-template-columns:1fr}}
+@media print{.summary-weak-domains{padding:8px;break-inside:avoid}.summary-weak-domain-grid>div{padding:6px}.summary-weak-domain-grid strong{font-size:8pt}.summary-weak-domain-grid small{font-size:7.5pt}}
