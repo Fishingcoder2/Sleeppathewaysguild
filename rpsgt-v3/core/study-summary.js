@@ -82,7 +82,11 @@
       '<p class="summary-missed-prompt">'+esc(q.question)+'</p><ol class="summary-missed-options" type="A">'+q.options.map(option=>'<li class="'+(option===q.correctAnswer?'is-correct':option===q.selectedAnswer?'is-selected':'')+'">'+esc(option)+'</li>').join('')+'</ol>'+
       '<p><strong>Your answer:</strong> '+(q.selectedAnswer==null?'Not retained in the saved attempt':esc(q.selectedAnswer))+'</p><p><strong>Correct answer:</strong> '+esc(q.correctAnswer)+'</p>'+
       '<div class="summary-missed-reason"><strong>Why:</strong> '+esc(q.rationale)+'</div>'+
-      '<p class="summary-missed-ref">Study guidance for '+esc(q.taskCode)+': see the personalized reading plan above for the verified book chapters and AASM/AAST sections.</p></article>').join('')+
+      '<p class="summary-missed-ref">Study guidance for '+esc(q.taskCode)+': '+
+      ((state.summary.studyPlan||[]).some(item=>item.taskCode===q.taskCode)?
+        '<a href="#summary-plan-'+esc(q.taskCode)+'">View recommended books, chapters, and available printed pages for this task ↑</a>':
+        'Review the BRPT task reference list; no top-five study prescription has been generated for this task.')+
+      '</p></article>').join('')+
       (state.profile==='full'&&review.unresolved?'<p class="summary-section-note">'+review.unresolved+' older missed record'+(review.unresolved===1?'':'s')+' could not be reconstructed from the approved current question bank. No answer was inferred.</p>':'');
   }
   function exportSummary(){
@@ -140,7 +144,7 @@
       ).join('')+'</div></div>':'';
     host.innerHTML=summary.studyPlan.length?'<p class="summary-section-note">Study priority is based on missed items, recorded Practice accuracy, the latest Guided Study checkpoint, and weak-task findings from Readiness and Mock. These are learning priorities, not exam-score predictions.</p>'+
       domainHtml+
-      summary.studyPlan.map((item,index)=>'<article class="summary-plan-item"><span class="summary-rank">'+(index+1)+'</span><div>'+
+      summary.studyPlan.map((item,index)=>'<article class="summary-plan-item" id="summary-plan-'+esc(item.taskCode)+'"><span class="summary-rank">'+(index+1)+'</span><div>'+
       '<h3>'+esc(item.domain)+' · '+esc(item.taskCode)+' · '+esc(item.title)+'</h3>'+
       '<p><strong>Priority:</strong> '+(index===0?'Study this first':'Study after higher-priority needs')+'</p>'+
       (item.evidence.length?'<p><strong>Why this needs review:</strong> '+item.evidence.map(esc).join('; ')+'</p>':'')+
