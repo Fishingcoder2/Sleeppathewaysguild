@@ -191,3 +191,10 @@
   .respiratory-phase-navigation button{font-size:.79rem;padding:6px 4px}
   .respiratory-phase-pager .btn{min-height:44px;font-size:.78rem;padding:9px}
 }
+
+/* Sequential activity states: unavailable stages cannot be skipped. */
+.respiratory-phase-navigation button:disabled{cursor:not-allowed;opacity:.54;background:#eef2f4}
+.respiratory-phase-navigation button:disabled:hover{background:#eef2f4}
+.respiratory-phase-navigation button[aria-pressed="true"]{opacity:1}
+.respiratory-phase-final{flex:1;min-width:170px;color:var(--navy);font-size:.82rem;font-weight:750;text-align:right;line-height:1.4}
+@media(max-width:760px){.respiratory-phase-final{flex-basis:100%;text-align:center}}
