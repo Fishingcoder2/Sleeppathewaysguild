@@ -94,7 +94,26 @@
       return true;
     }).slice(0,max).map(({priority,matchPriority,order,...item})=>item);
   }
-  function groupResources(route){const groups=[];const map=new Map();list(route).forEach(item=>{let group=map.get(item.sourceId);if(!group){group={sourceId:item.sourceId,sourceTitle:item.sourceTitle,sourceType:item.sourceType,bestFor:item.bestFor,sections:[]};map.set(item.sourceId,group);groups.push(group);}group.sections.push({sectionId:item.sectionId,label:item.sectionLabel,reason:item.reason});});return groups;}
+  function groupResources(route,sources,taskCode){
+    const groups=[],map=new Map();
+    list(route).forEach(item=>{
+      let group=map.get(item.sourceId);
+      if(!group){group={sourceId:item.sourceId,sourceTitle:item.sourceTitle,sourceType:item.sourceType,bestFor:item.bestFor,sections:[],verifiedChapters:[]};map.set(item.sourceId,group);groups.push(group);}
+      group.sections.push({sectionId:item.sectionId,label:item.sectionLabel,reason:item.reason});
+    });
+    // A task/source-key mapping does not establish a page. Only the edition-
+    // checked printed starts from this same source's verified locator registry do.
+    const matchedSource=list(sources&&sources.sources).find(source=>source.id==='principles-practice-sleep-medicine-7e');
+    const chapters=list(matchedSource&&matchedSource.verifiedChapterLocators).filter(ch=>list(ch.taskCodes).includes(taskCode)&&
+      Number.isInteger(ch.printedStartPage)&&ch.printedStartPage>0);
+    if(chapters.length){
+      let group=map.get(matchedSource.id);
+      if(!group){group={sourceId:matchedSource.id,sourceTitle:matchedSource.shortTitle,sourceType:matchedSource.sourceType,bestFor:matchedSource.bestFor,sections:[],verifiedChapters:[]};groups.push(group);}
+      group.verifiedChapters=chapters.slice(0,3).map(ch=>({chapter:ch.chapter,label:ch.label,printedStartPage:ch.printedStartPage,
+        reason:'Task-linked chapter; printed starting page verified for the 7th edition (not a question-specific page).'}));
+    }
+    return groups;
+  }
   function studyPlan(saved,rows,questionIndex,limit,studySources){
     const map=indexMap(questionIndex),scores=weakTaskEvidence(saved,rows);
     const ready=list(saved&&saved.readiness&&saved.readiness.history)[0]||null;
@@ -116,7 +135,7 @@
           practiceAnswered:row.answered,practiceCorrect:row.correct,practiceAccuracy:row.accuracy,
           missed:row.missed,mastered:row.mastered,evidenceScore:row.evidenceScore,
           evidence,topics:row.topics,nextAction:row.nextAction,
-          resources:groupResources(resourceRoute(row.code,row.topics,row.keys,studySources,12))};
+          resources:groupResources(resourceRoute(row.code,row.topics,row.keys,studySources,12),studySources,row.code)};
       });
   }
   function weakDomains(saved,rows,blueprint){
@@ -176,7 +195,17 @@
     list(summary.guidedTrail&&summary.guidedTrail.respiratoryPath).forEach(step=>push('respiratory-lesson',step.taskCode,step.title,'stage',step.stage,'Learn '+(step.learnComplete?'complete':'pending')+'; Apply '+(step.applyComplete?'complete':'pending')+'; Check '+(step.checkpointPassed?'passed':'pending')));
     
     list(summary.labs&&summary.labs.rows).forEach(lab=>push('lab',lab.id,lab.title,'status',lab.completed?'completed':lab.started?'started':'not-started',(lab.taskCodes||[]).join(' ')));
-    list(summary.studyPlan).forEach((item,index)=>{push('study-plan',item.taskCode,item.title,'priority',index+1,item.nextAction);list(item.resources).forEach(group=>list(group.sections).forEach(section=>push('study-resource',item.taskCode,group.sourceTitle,group.sourceType,section.label,section.reason)));});
+    list(summary.studyPlan).forEach((item,index)=>{push('study-plan',item.taskCode,item.title,'priority',index+1,item.nextAction);list(item.resources).forEach(group=>{
+      list(group.sections).forEach(section=>push('study-resource',item.taskCode,group.sourceTitle,group.sourceType,section.label,section.reason));
+      list(group.verifiedChapters).forEach(ch=>push('verified-chapter',item.taskCode,group.sourceTitle,'Chapter '+ch.chapter+', printed start p. '+ch.printedStartPage,ch.label,ch.reason));
+    });});
+    list(summary.missedQuestionReview&&summary.missedQuestionReview.items).forEach(q=>{
+      const info=q.modes.join(' / ')+' · '+q.domain+' / '+q.taskCode;
+      push('missed-question',q.taskCode,'Question '+q.questionId,'question',q.question,info);
+      push('missed-question',q.taskCode,'Question '+q.questionId,'selectedAnswer',q.selectedAnswer==null?'Not recorded':q.selectedAnswer,'');
+      push('missed-question',q.taskCode,'Question '+q.questionId,'correctAnswer',q.correctAnswer,'');
+      push('missed-question',q.taskCode,'Question '+q.questionId,'rationale',q.rationale,'');
+    });
     return rows.map(row=>row.map(csvCell).join(',')).join('\n')+'\n';
   }
   return {VERSION,SCHEMA,flattenTasks,indexMap,taskRows,interactionTopics,interactionKeys,resourceRoute,groupResources,studyPlan,weakDomains,readinessHistory,mockHistory,guidedTrail,labSummary,buildSummary,toCsv};
