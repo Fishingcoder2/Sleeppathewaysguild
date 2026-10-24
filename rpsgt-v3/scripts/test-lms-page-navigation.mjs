@@ -61,7 +61,11 @@ for(const token of ['core/study-workspace.js','assets/study-workspace.css']) ass
 for(const token of ['[data-blueprint-map]','spg-study-chapter-button','spg-study-page-pager','spg-study-domain-nav','hashchange']) assert.ok(workspaceJs.includes(token),`Study navigation lacks ${token}`);
 for(const token of ['spg-study-page[hidden]','spg-study-chapter-icon','spg-study-domain-nav']) assert.ok(workspaceCss.includes(token),`Study layout lacks ${token}`);
 for(const token of ['lockedPreviewHtml','data-respiratory-return-current','data-respiratory-phase','data-respiratory-phase-move','completedThrough','conceptMastery']) assert.ok(trailJs.includes(token),`Lesson navigation lacks ${token}`);
-for(const token of ['scroll-snap-type:x','respiratory-phase-navigation','data-active-phase="learn"','data-active-phase="check"']) assert.ok(trailCss.includes(token),`Lesson rail layout lacks ${token}`);
+for(const token of ['scroll-snap-type:none','max-height:none;overflow:visible;overscroll-behavior:auto','respiratory-lesson-selector','respiratory-path-stop.is-near','respiratory-phase-navigation','data-active-phase="learn"','data-active-phase="check"']) assert.ok(trailCss.includes(token),`Single-scroll lesson layout lacks ${token}`);
+assert.ok(!trailCss.includes('scroll-snap-type:x'),'Nine-lesson bar must not use a horizontal snap scrollbar.');
+for(const token of ['showAllLessons:false','data-respiratory-toggle-lessons','is-near','data-respiratory-jump-actions','Find activity buttons']) assert.ok(trailJs.includes(token),`Compact lesson controls lack ${token}`);
+assert.ok(workspaceJs.includes('nav.after(pager)'),'Section navigation must stay above its content.');
+assert.ok(!workspaceCss.includes('position:sticky;bottom:8px'),'Sticky section controls must not obscure lesson actions.');
 for(const token of ['core/respiratory-lab-workspace.js','assets/respiratory-lab-workspace.css']) assert.ok(respLabHtml.includes(token),`Respiratory Lab did not load ${token}`);
 for(const token of ['data-resp-lab-chapter','data-resp-lab-previous','data-resp-lab-next','data-respiratory-start','data-respiratory-visual-start','window.addEventListener']) assert.ok(respLabJs.includes(token),`Respiratory Lab chapter navigation lacks ${token}`);
 for(const token of ['spg-resp-lab-pane[hidden]','spg-resp-lab-chapter-buttons','spg-resp-lab-pager']) assert.ok(respLabCss.includes(token),`Respiratory Lab chapter styling lacks ${token}`);
@@ -105,6 +109,14 @@ vm.runInNewContext(trailJs,contextStage,{filename:'respiratory-study-trail.js'})
 for(let n=0;n<15;n++)await Promise.resolve();
 const stageClick=matches=>stageEvents.click({target:{closest(selector){return matches[selector]||null;}}});
 assert.ok(stageHost.innerHTML.includes('data-active-phase="learn"'),'Study trail must start on Learn');
+assert.ok(stageHost.innerHTML.includes('data-respiratory-toggle-lessons'),'Learner must be able to expand compact lesson selector.');
+assert.ok(stageHost.innerHTML.includes('data-respiratory-jump-actions'),'Learner needs a visible route to activity controls.');
+const compactBefore=(stageHost.innerHTML.match(/class="respiratory-path-stop[^"]* is-near"/g)||[]).length;
+assert.equal(compactBefore,3,'Only three neighboring lessons are visible by default.');
+stageClick({'[data-respiratory-toggle-lessons]':{dataset:{}}});
+assert.ok(stageHost.innerHTML.includes('is-expanded'),'Expanding the lesson selector must reveal the full nine-lesson map.');
+stageClick({'[data-respiratory-toggle-lessons]':{dataset:{}}});
+assert.ok(!stageHost.innerHTML.includes('respiratory-trail-shell is-expanded'),'Collapsed selector must return to focused three-lesson display.');
 assert.ok(stageHost.innerHTML.includes('data-respiratory-phase="apply" aria-pressed="false" disabled'),'Apply cannot be opened before Learn');
 stageClick({'[data-respiratory-phase]':{dataset:{respiratoryPhase:'check'}}});
 assert.ok(stageHost.innerHTML.includes('data-active-phase="learn"'),'Check cannot be skipped to by clicking a locked tab');
