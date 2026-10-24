@@ -106,9 +106,16 @@
     document.body.style.overflow=state.previousOverflow;
     // Progress updates may replace the "Next best action" link while this
     // dialog is open. Restore focus to the current link if the original moved.
-    const focusTarget=state.origin&&document.contains(state.origin)?state.origin:
-      document.querySelector('[data-route-recommendation] a[href], [data-sidebar-next] a[href], .main a[href]');
-    if(focusTarget&&typeof focusTarget.focus==='function')focusTarget.focus({preventScroll:true});
+    const links=[state.origin,...document.querySelectorAll(
+      '[data-route-recommendation] a[href], [data-sidebar-next] a[href], .main a[href], .mobile-nav a[href]'
+    )].filter(Boolean);
+    const visible=links.find(item=>document.contains(item)&&item.getClientRects().length>0&&
+      window.getComputedStyle(item).visibility!=='hidden');
+    const focusTarget=visible||document.querySelector('main');
+    if(focusTarget&&typeof focusTarget.focus==='function'){
+      if(focusTarget.tagName==='MAIN')focusTarget.tabIndex=-1;
+      focusTarget.focus({preventScroll:true});
+    }
     state.source=null;state.loading=false;
   }
   function announce(message){
