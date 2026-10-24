@@ -43,6 +43,7 @@ test('all populated report tables fit a phone without hiding task evidence',asyn
   await expect(taskTable).toBeVisible();
   await expect(taskTable.locator('tbody tr')).toHaveCount(12);
   const firstTask=taskTable.locator('tbody tr').first();
+  await firstTask.scrollIntoViewIfNeeded();
   await expect(firstTask).toBeInViewport({ratio:0});
   const geometry=await page.evaluate(()=>{
     const root=document.documentElement;
