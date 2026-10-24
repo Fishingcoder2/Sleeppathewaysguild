@@ -123,7 +123,9 @@
       '<p class="summary-resource-note">Read the named chapter or section below. Question-linked and topic-linked recommendations come first; broad blueprint readings are labeled separately. APA-style citations use the verified library catalog. These locators are study directions, not copied source text.</p>'+
       item.resources.map((group,index)=>'<div class="summary-resource-group"><div><span class="summary-resource-order">'+(index+1)+'</span><div>'+
       '<strong>'+esc(sourceApa(group))+'</strong><small>'+esc(group.sourceType)+(group.bestFor?' · '+esc(group.bestFor):'')+'</small></div></div>'+
-      '<ul>'+group.sections.map(section=>'<li><strong>'+esc(section.label)+'</strong>'+(section.reason?'<small>'+esc(section.reason)+'</small>':'')+'</li>').join('')+'</ul></div>').join('')+'</div>';
+      (group.sections.length?'<ul>'+group.sections.map(section=>'<li><strong>'+esc(section.label)+'</strong>'+(section.reason?'<small>'+esc(section.reason)+'</small>':'')+'</li>').join('')+'</ul>':'')+
+      (group.verifiedChapters&&group.verifiedChapters.length?'<div class="summary-verified-chapters"><strong>Verified 7th-edition chapter starting pages for '+esc(item.taskCode)+'</strong><ul>'+
+      group.verifiedChapters.map(chapter=>'<li><strong>Chapter '+esc(chapter.chapter)+': '+esc(chapter.label)+' — printed start p. '+esc(chapter.printedStartPage)+'</strong><small>'+esc(chapter.reason)+'</small></li>').join('')+'</ul></div>':'')+'</div>').join('')+'</div>';
   }
   function renderPlan(summary){
     const host=$('[data-summary-plan]');
