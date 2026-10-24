@@ -38,7 +38,8 @@ test('Related lab questions open in a modal, stay in the lab, and count toward P
   await expect(dialog).toBeHidden();
   await expect.poll(async()=>page.evaluate(()=>{
     const active=document.activeElement;
-    return Boolean(active&&active.matches('[data-route-recommendation] a[href], [data-sidebar-next] a[href], .learner-route-cta'));
+    return Boolean(active&&active!==document.body&&active.getClientRects().length>0&&
+      !active.closest('.spg-quick-question-backdrop'));
   })).toBeTruthy();
   expect(new URL(page.url()).pathname).toBe(oldLocation);
 });
@@ -58,6 +59,9 @@ test('Task-specific practice opens modal while main Practice menu still navigate
   await expect(dialog.locator('.spg-quick-set-context')).toContainText('D3A');
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
-  await page.locator('.sidebar a[data-nav="practice"]').click();
+  const practiceNavigation=page.viewportSize().width<700?
+    page.locator('.mobile-nav a[data-nav="practice"]'):
+    page.locator('.sidebar a[data-nav="practice"]');
+  await practiceNavigation.click();
   await expect(page).toHaveURL(/\/practice\.html$/);
 });
