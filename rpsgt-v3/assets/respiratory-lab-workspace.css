@@ -20,3 +20,10 @@ body[data-module="labs"] .spg-resp-lab-pane[hidden]{display:none!important}
 .spg-resp-lab-pager .btn:disabled{opacity:.5;cursor:not-allowed}
 @media(max-width:850px){.spg-resp-lab-chapter-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.spg-resp-lab-nav-title{display:grid}}
 @media(max-width:560px){.spg-resp-lab-pager{bottom:calc(60px + env(safe-area-inset-bottom));padding:6px;gap:5px}.spg-resp-lab-pager .btn{font-size:.72rem;padding:8px 6px}.spg-resp-lab-pager strong{font-size:.7rem;max-width:105px}.spg-resp-lab-chapter-buttons button{padding:7px;min-height:53px}.spg-resp-lab-chapter-buttons button strong{font-size:.76rem}}
+
+/* Reduce wasted vertical space above the first respiratory activity. */
+body[data-module="labs"]:has(.spg-resp-lab-chapter-nav) .main>.hero{padding:15px 18px;gap:12px;min-height:0}
+body[data-module="labs"]:has(.spg-resp-lab-chapter-nav) .main>.hero h1{font-size:clamp(1.5rem,2.6vw,2.15rem)}
+body[data-module="labs"]:has(.spg-resp-lab-chapter-nav) .main>.hero .lead{font-size:.88rem;line-height:1.43}
+body[data-module="labs"]:has(.spg-resp-lab-chapter-nav) .main>.hero .coach-card{padding:12px}
+body[data-module="labs"]:has(.spg-resp-lab-chapter-nav) .main>.hero .coach-card h2{font-size:1rem}
