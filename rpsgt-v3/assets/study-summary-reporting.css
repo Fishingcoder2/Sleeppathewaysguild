@@ -69,3 +69,17 @@ body[data-report-profile="guided"] .summary-section[data-report-section="labs"]{
  .summary-verified-chapters{padding:6px}
  .summary-verified-chapters li{font-size:8pt}
 }
+
+/* Constrain the six-column learning-evidence table to its own horizontal
+   reading area. It must not push the entire report beyond phone width. */
+[data-summary-domain-evidence]{min-width:0;max-width:100%;width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+@media(max-width:720px){
+ .summary-page,.summary-section,[data-summary-content]{min-width:0;max-width:100%}
+ [data-summary-domain-evidence] .summary-domain-table{display:table;min-width:610px;width:100%;white-space:normal}
+ [data-summary-domain-evidence] .summary-domain-table th,
+ [data-summary-domain-evidence] .summary-domain-table td{white-space:normal}
+}
+@media print{
+ [data-summary-domain-evidence]{overflow:visible}
+ [data-summary-domain-evidence] .summary-domain-table{min-width:0;width:100%}
+}
