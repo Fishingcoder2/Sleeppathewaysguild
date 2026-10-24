@@ -7,11 +7,11 @@
   const $all=selector=>Array.from(document.querySelectorAll(selector));
   const esc=value=>String(value==null?'':value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[char]);
   const PROFILES={
-    full:{label:'Full progress report',title:'RPSGT Learning Center Progress Report',sections:['snapshot','domain','trend','plan','tasks','readiness','mock','trail','labs','followup','privacy']},
-    practice:{label:'Practice & remediation report',title:'RPSGT Practice & Remediation Report',sections:['snapshot','domain','trend','plan','tasks','followup','privacy']},
-    readiness:{label:'Readiness report',title:'RPSGT Readiness Check Report',sections:['snapshot','domain','plan','readiness','followup','privacy']},
-    mock:{label:'175-question Mock report',title:'RPSGT 175-Question Mock Report',sections:['snapshot','domain','plan','mock','followup','privacy']},
-    guided:{label:'Guided Study & Skills Report',title:'RPSGT Guided Study & Skills Report',sections:['snapshot','domain','plan','trail','labs','followup','privacy']}
+    full:{label:'Full progress report',title:'RPSGT Learning Center Progress Report',sections:['snapshot','domain','trend','plan','tasks','readiness','mock','trail','labs','privacy']},
+    practice:{label:'Practice & remediation report',title:'RPSGT Practice & Remediation Report',sections:['snapshot','domain','trend','plan','tasks','privacy']},
+    readiness:{label:'Readiness report',title:'RPSGT Readiness Check Report',sections:['snapshot','domain','plan','readiness','privacy']},
+    mock:{label:'175-question Mock report',title:'RPSGT 175-Question Mock Report',sections:['snapshot','domain','plan','mock','privacy']},
+    guided:{label:'Guided Study & Skills Report',title:'RPSGT Guided Study & Skills Report',sections:['snapshot','domain','plan','trail','labs','privacy']}
   };
   async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   async function loadStudySources(){
