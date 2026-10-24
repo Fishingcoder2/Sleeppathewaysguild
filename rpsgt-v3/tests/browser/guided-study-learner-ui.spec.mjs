@@ -15,6 +15,7 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   await expect(page.locator('[data-blueprint-summary]')).toContainText('15 questions per checkpoint');
   await expect(page.locator('[data-blueprint-summary]')).toContainText('80% task-award goal');
 
+  await page.locator('[data-study-page="explorer"]').click();
   const explorer=page.locator('[data-explorer-journey]');
   await expect(explorer).toContainText('Sleep Pathways Explorer Journey');
   await expect(explorer).toContainText('Trail Starter');
@@ -22,8 +23,10 @@ test('Guided Study keeps internal mappings out of the learner view',async({page}
   await expect(explorer.locator('.explorer-patch')).toHaveCount(12);
   await expect(explorer).toContainText('Trailhead Ribbon');
   await expect(explorer).toContainText('Full Expedition Ribbon');
-  await expect(explorer).toContainText('Fresh-question rotation');
+  await expect(explorer).toContainText('Question variety');
 
+  await page.locator('[data-study-page="map"]').click();
+  await expect(page.locator('#D1')).toBeVisible();
   const resources=cards.first().locator('details[data-resource-ready="true"]');
   await expect(resources).toBeVisible();
   const resourceSummary=resources.locator('summary');
