@@ -90,7 +90,14 @@
   }
   function renderPlan(summary){
     const host=$('[data-summary-plan]');
+    const domains=Array.isArray(summary.weakDomains)?summary.weakDomains:[];
+    const domainHtml=domains.length?'<div class="summary-weak-domains"><h3>Weakest BRPT domains</h3>'+
+      '<div class="summary-weak-domain-grid">'+domains.map((domain,index)=>
+        '<div><strong>'+(index+1)+'. '+esc(domain.domain)+' · '+esc(domain.title)+'</strong>'+
+        '<small>Review '+domain.focusTasks.map(task=>esc(task.code)+' · '+esc(task.title)).join('; ')+'</small></div>'
+      ).join('')+'</div></div>':'';
     host.innerHTML=summary.studyPlan.length?'<p class="summary-section-note">Study priority is based on missed items, recorded Practice accuracy, the latest Guided Study checkpoint, and weak-task findings from Readiness and Mock. These are learning priorities, not exam-score predictions.</p>'+
+      domainHtml+
       summary.studyPlan.map((item,index)=>'<article class="summary-plan-item"><span class="summary-rank">'+(index+1)+'</span><div>'+
       '<h3>'+esc(item.domain)+' · '+esc(item.taskCode)+' · '+esc(item.title)+'</h3>'+
       '<p><strong>Priority:</strong> '+(index===0?'Study this first':'Study after higher-priority needs')+'</p>'+
