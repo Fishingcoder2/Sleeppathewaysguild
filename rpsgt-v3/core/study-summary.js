@@ -2,7 +2,7 @@
   'use strict';
   const engine=window.RPSGTStudySummaryEngine;
   const insightsEngine=window.RPSGTReportInsights;
-  const state={saved:null,blueprint:null,index:null,catalog:null,studySources:null,summary:null,insights:null,profile:'full'};
+  const state={saved:null,blueprint:null,index:null,catalog:null,studySources:null,summary:null,insights:null,profile:'full',trailDefinition:null};
   const $=selector=>document.querySelector(selector);
   const $all=selector=>Array.from(document.querySelectorAll(selector));
   const esc=value=>String(value==null?'':value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[char]);
@@ -53,7 +53,7 @@
     if(state.summary)document.title=profile.label+' · '+new Date(state.summary.generatedAt).toLocaleDateString();
   }
   function rebuild(){
-    state.summary=engine.buildSummary({saved:state.saved,blueprint:state.blueprint,questionIndex:state.index,catalog:state.catalog,studySources:state.studySources,includeLearnerName:includeName(),generatedAt:new Date().toISOString()});
+    state.summary=engine.buildSummary({saved:state.saved,blueprint:state.blueprint,questionIndex:state.index,catalog:state.catalog,studySources:state.studySources,trailDefinition:state.trailDefinition,includeLearnerName:includeName(),generatedAt:new Date().toISOString()});
     state.insights=insightsEngine.build(state.saved,state.blueprint);render();
   }
   function statusLabel(item){return item.completed?'Completed':item.started?'Started':'Not started';}
@@ -101,8 +101,58 @@
     const host=$('[data-summary-mock-history]');const rows=summary.mock.history.slice().reverse().slice(0,8);
     host.innerHTML=rows.length?'<h3 class="summary-history-title">Recent Mock history</h3><table class="summary-history-table"><thead><tr><th>Date</th><th>Scored</th><th>Answered</th><th>Timing</th></tr></thead><tbody>'+rows.map(row=>'<tr><td>'+esc(formatShortDate(row.completedAt))+'</td><td>'+esc(row.scoredPercent)+'%</td><td>'+esc(row.answeredTotal)+' / 175</td><td>'+(row.timed?esc(formatDuration(row.elapsedMs)):'Untimed')+'</td></tr>').join('')+'</tbody></table>':'<div class="summary-history-empty">No completed Mock history is saved.</div>';
   }
-  function renderTrail(summary){const host=$('[data-summary-trail]');host.innerHTML='<div class="summary-mini-grid"><div><span>Study marks</span><strong>'+esc(summary.guidedTrail.counts.studyMarks)+'</strong></div><div><span>Task awards</span><strong>'+esc(summary.guidedTrail.counts.taskAwards)+'</strong></div><div><span>Domain awards</span><strong>'+esc(summary.guidedTrail.counts.domainAwards)+'</strong></div><div><span>Checkpoints</span><strong>'+esc(summary.guidedTrail.counts.checkpoints)+'</strong></div></div><div class="summary-domain-list">'+summary.guidedTrail.domains.map(domain=>'<div><strong>'+esc(domain.domain)+' · '+esc(domain.title)+'</strong><span>'+esc(domain.studyMarked)+' / '+esc(domain.taskCount)+' studied · '+esc(domain.taskAwards)+' task awards'+(domain.domainAwardEarned?' · domain award earned':'')+'</span></div>').join('')+'</div>';}
-  function renderLabs(summary){const host=$('[data-summary-labs]');host.innerHTML='<div class="summary-lab-list">'+summary.labs.rows.map(lab=>'<div><span class="summary-check '+(lab.completed?'done':lab.started?'started':'')+'">'+(lab.completed?'✓':lab.started?'•':'○')+'</span><div><strong>'+esc(lab.title)+'</strong><small>'+esc(statusLabel(lab))+' · '+esc(lab.taskCodes.join(', '))+(lab.attempts?' · '+esc(lab.attempts)+' attempts':'')+'</small></div></div>').join('')+'</div>';}
+  // Print-friendly, learner-owned task and skills record. No mentor signature.
+  function reportStatus(completed,started){
+    return completed?'Completed':started?'In progress':'Not started';
+  }
+  function renderTrail(summary){
+    const host=$('[data-summary-trail]');const trail=summary.guidedTrail;
+    host.innerHTML='<div class="summary-mini-grid">'+[
+      ['Tasks studied',trail.counts.studyMarks+' / '+trail.rows.length],
+      ['Task badges',trail.counts.taskAwards+' / '+trail.rows.length],
+      ['Domains earned',trail.counts.domainAwards+' / '+trail.domains.length],
+      ['Checkpoints',trail.counts.checkpoints]
+    ].map(row=>'<div><span>'+esc(row[0])+'</span><strong>'+esc(row[1])+'</strong></div>').join('')+'</div>'+
+    '<p class="summary-section-note">Learner progress is recorded from study activity and scored checkpoints. Study marks and badges are different evidence; no mentor sign-off is required.</p>'+
+    '<div class="summary-guided-domains">'+trail.domains.map(domain=>{
+      const tasks=trail.rows.filter(row=>row.domain===domain.domain);
+      return '<section class="summary-guided-domain"><h3>'+esc(domain.domain)+' · '+esc(domain.title)+
+        '<small>'+esc(domain.studyMarked)+'/'+esc(domain.taskCount)+' studied · '+esc(domain.taskAwards)+' badges'+(domain.domainAwardEarned?' · Domain earned':'')+'</small></h3>'+
+        '<div class="summary-report-table-scroll"><table class="summary-competency-table"><thead><tr><th>Task</th><th>Study</th><th>Checkpoint</th><th>Status</th></tr></thead><tbody>'+
+          tasks.map(task=>{
+            const latest=task.latestCheckpoint;
+            const checkpoint=latest?esc(latest.percent)+'% ('+esc(latest.correct)+'/'+esc(latest.total)+') · '+esc(task.checkpointCount)+' attempt'+(task.checkpointCount===1?'':'s'):'Not attempted';
+            const status=task.awardEarned?'Badge earned':task.studyMarked?'Study recorded':'Not started';
+            return '<tr><th scope="row"><strong>'+esc(task.taskCode)+'</strong><span>'+esc(task.title)+'</span></th>'+
+              '<td>'+esc(task.studyMarked?'Studied':'Pending')+'</td><td>'+checkpoint+'</td><td>'+esc(status)+'</td></tr>';
+          }).join('')+'</tbody></table></div></section>';
+    }).join('')+'</div>'+
+    (trail.respiratoryPath&&trail.respiratoryPath.length?'<section class="summary-guided-pathway"><h3>Respiratory / PAP Guided Pathway</h3>'+
+      '<p>Learn → Apply → Check completion is recorded for each lesson. The next chapter requires a passing concept checkpoint.</p>'+
+      '<div class="summary-pathway-rows">'+trail.respiratoryPath.map((step,index)=>{
+        const stage=step.completed?'Chapter completed':step.checkpointPassed?'Checkpoint passed':step.stage;
+        return '<div class="summary-pathway-row"><span class="summary-pathway-number">'+(index+1)+'</span><div><strong>'+esc(step.title)+'</strong><small>'+esc(step.taskCode)+' · '+esc(stage)+'</small></div>'+
+          '<div class="summary-pathway-steps"><span class="'+(step.learnComplete?'done':'')+'">Learn '+(step.learnComplete?'✓':'○')+'</span><span class="'+(step.applyComplete?'done':'')+'">Apply '+(step.applyComplete?'✓':'○')+'</span><span class="'+(step.checkpointPassed?'done':'')+'">Check '+(step.checkpointPassed?'✓':'○')+'</span></div></div>';
+      }).join('')+'</div></section>':'');
+  }
+  function renderLabs(summary){
+    const host=$('[data-summary-labs]'),labs=summary.labs;
+    host.innerHTML='<div class="summary-mini-grid">'+[
+      ['Labs completed',labs.counts.completed+' / '+labs.counts.total],
+      ['In progress',labs.counts.started],
+      ['Not started',labs.counts.total-labs.counts.completed-labs.counts.started]
+    ].map(row=>'<div><span>'+esc(row[0])+'</span><strong>'+esc(row[1])+'</strong></div>').join('')+'</div>'+
+      '<p class="summary-section-note">Skills evidence comes from activity saved by each laboratory. This educational skills report is self-directed and does not require mentor approval or signing.</p>'+
+      '<div class="summary-report-table-scroll"><table class="summary-competency-table summary-skills-table"><thead><tr><th>Skill / lab</th><th>Blueprint</th><th>Activity</th><th>Status</th></tr></thead><tbody>'+
+      labs.rows.map(lab=>{
+        const attempts=lab.attempts?esc(lab.attempts)+' recorded checkpoint attempt'+(lab.attempts===1?'':'s'):'No recorded checkpoint';
+        const score=lab.lastPercent!==null?' · '+esc(lab.lastPercent)+'% recorded':'';
+        return '<tr><th scope="row"><strong>'+esc(lab.title)+'</strong>'+
+          (lab.href?'<small class="no-print"><a href="'+esc(lab.href)+'">Open lab →</a></small>':'')+
+          '</th><td>'+esc(lab.taskCodes.join(', '))+'</td><td>'+attempts+score+'</td><td>'+
+          esc(reportStatus(lab.completed,lab.started))+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  }
   function renderActivity(){
     const host=$('[data-summary-activity]');if(!host)return;const activity=state.insights&&state.insights.activity;
     if(!activity||!activity.firstAt){host.textContent='Not recorded';return;}
@@ -130,7 +180,7 @@
   async function init(){try{
     if(!window.RPSGTStorage||!engine||!insightsEngine)throw new Error('A required summary module is unavailable.');
     state.profile=profileFromUrl();
-    [state.blueprint,state.index,state.catalog,state.studySources]=await Promise.all([loadJson('data/blueprint.json'),loadJson('data/question-bank/feedback-index.json'),loadJson('data/labs/catalog.json'),loadStudySources()]);
+    [state.blueprint,state.index,state.catalog,state.studySources,state.trailDefinition]=await Promise.all([loadJson('data/blueprint.json'),loadJson('data/question-bank/feedback-index.json'),loadJson('data/labs/catalog.json'),loadStudySources(),loadJson('data/learner-trails/respiratory-pap.json')]);
     state.saved=window.RPSGTStorage.load();bind();setProfile(state.profile,false);rebuild();$('[data-summary-load]').hidden=true;$('[data-summary-content]').hidden=false;
   }catch(error){showError(error);}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
