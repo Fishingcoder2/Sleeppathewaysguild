@@ -98,3 +98,54 @@ body[data-report-profile="guided"] .summary-section[data-report-section="labs"]{
  [data-summary-domain-evidence] .summary-domain-table td:nth-child(3)::before{content:'Readiness';display:block;color:var(--summary-muted);font-size:.66rem}
  [data-summary-domain-evidence] .summary-domain-table td:nth-child(4)::before{content:'Mock';display:block;color:var(--summary-muted);font-size:.66rem}
 }
+
+/* Mobile report tables: rows become self-contained, labeled task cards.
+   This covers the five-column task table and four-column history/skills
+   tables, not just the domain evidence table. Avoid page-level overflow. */
+@media screen and (max-width:720px){
+ .summary-page,.summary-section,[data-summary-content],
+ .summary-table-wrap,.summary-report-table-scroll,.summary-history-block{
+   min-width:0!important;max-width:100%!important;box-sizing:border-box}
+ .summary-table-wrap,.summary-report-table-scroll,.summary-history-block{
+   display:block;width:100%;overflow-x:clip}
+ .summary-section table:not(.summary-domain-table){
+   display:block!important;width:100%!important;max-width:100%!important;
+   min-width:0!important;table-layout:fixed!important;
+   border-collapse:separate;overflow:visible!important}
+ .summary-section table:not(.summary-domain-table) thead{
+   position:absolute!important;width:1px!important;height:1px!important;
+   margin:-1px!important;padding:0!important;overflow:hidden!important;
+   clip-path:inset(50%);white-space:nowrap}
+ .summary-section table:not(.summary-domain-table) tbody{
+   display:grid!important;width:100%!important;min-width:0!important;gap:9px}
+ .summary-section table:not(.summary-domain-table) tr{
+   display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));
+   gap:5px;width:100%!important;max-width:100%!important;min-width:0!important;
+   padding:8px;border:1px solid var(--summary-line);border-radius:10px}
+ .summary-section table:not(.summary-domain-table) td{
+   display:block!important;box-sizing:border-box;min-width:0!important;
+   max-width:100%!important;width:100%!important;
+   padding:6px!important;border:0!important;
+   overflow-wrap:anywhere;word-break:normal;white-space:normal!important}
+ .summary-section table:not(.summary-domain-table) td:first-child{
+   grid-column:1/-1;font-weight:700;color:var(--summary-ink)}
+ .summary-section table:not(.summary-domain-table) td:not(:first-child)::before{
+   display:block;font-size:.68rem;font-weight:700;
+   color:var(--summary-muted);margin-bottom:2px}
+ .summary-table-wrap td:nth-child(2)::before{content:'Practice'}
+ .summary-table-wrap td:nth-child(3)::before{content:'Accuracy'}
+ .summary-table-wrap td:nth-child(4)::before{content:'Missed'}
+ .summary-table-wrap td:nth-child(5)::before{content:'Mastered'}
+ .summary-competency-table:not(.summary-skills-table) td:nth-child(2)::before{content:'Study'}
+ .summary-competency-table:not(.summary-skills-table) td:nth-child(3)::before{content:'Checkpoint'}
+ .summary-competency-table:not(.summary-skills-table) td:nth-child(4)::before{content:'Status'}
+ .summary-skills-table td:nth-child(2)::before{content:'Blueprint'}
+ .summary-skills-table td:nth-child(3)::before{content:'Activity'}
+ .summary-skills-table td:nth-child(4)::before{content:'Status'}
+ [data-summary-readiness-history] .summary-history-table td:nth-child(2)::before{content:'Size'}
+ [data-summary-readiness-history] .summary-history-table td:nth-child(3)::before{content:'Raw'}
+ [data-summary-readiness-history] .summary-history-table td:nth-child(4)::before{content:'Weighted'}
+ [data-summary-mock-history] .summary-history-table td:nth-child(2)::before{content:'Scored'}
+ [data-summary-mock-history] .summary-history-table td:nth-child(3)::before{content:'Answered'}
+ [data-summary-mock-history] .summary-history-table td:nth-child(4)::before{content:'Timing'}
+}
