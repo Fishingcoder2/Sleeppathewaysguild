@@ -59,9 +59,9 @@ test('Task-specific practice opens modal while main Practice menu still navigate
   await expect(dialog.locator('.spg-quick-set-context')).toContainText('D3A');
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
-  const practiceNavigation=page.viewportSize().width<700?
-    page.locator('.mobile-nav a[data-nav="practice"]'):
-    page.locator('.sidebar a[data-nav="practice"]');
+  const desktopNavigation=page.locator('.sidebar a[data-nav="practice"]');
+  const practiceNavigation=await desktopNavigation.isVisible()?desktopNavigation:
+    page.locator('.mobile-nav a[data-nav="practice"]');
   await practiceNavigation.click();
   await expect(page).toHaveURL(/\/practice\.html$/);
 });
