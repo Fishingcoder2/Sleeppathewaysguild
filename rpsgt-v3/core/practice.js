@@ -333,6 +333,14 @@
     renderFeedback(question,response);
     updateQuestionActions(question,response);
     updateSessionStats();
+    // Emit the selected approved question directly. Matching by question stem
+    // alone can be ambiguous when multiple eligible items share wording; the
+    // learner must still have Flag, Review later and Flashcard actions.
+    const actionHost=$('[data-practice-question-actions]');
+    if(actionHost)actionHost.dataset.questionId=String(question.id);
+    document.dispatchEvent(new CustomEvent('rpsgt:practice-question',{
+      detail:{question,context:{taskCode:question.taskCode,sourceContext:'Learner Practice'}}
+    }));
   }
 
   function selectChoice(index){
