@@ -120,3 +120,74 @@
 @media(prefers-reduced-motion:reduce){
   .respiratory-route-meter span,.respiratory-path-orb{transition:none}
 }
+
+
+/* LMS-style pathway: horizontal, compact, and one activity per lesson page. */
+.respiratory-trail-shell{width:100%;max-width:none;gap:12px}
+.respiratory-learning-path{display:flex;flex-flow:row nowrap;align-items:stretch;gap:10px;width:100%;max-width:none;min-width:0;margin:0;padding:12px 6px 14px;overflow-x:auto;overflow-y:visible;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#88acbd transparent}
+.respiratory-path-stop,.respiratory-path-stop.stop-1,.respiratory-path-stop.stop-2,.respiratory-path-stop.stop-3{flex:0 0 clamp(132px,16vw,176px);display:flex;align-items:stretch;justify-content:center;min-height:105px;max-width:190px;padding:0;scroll-snap-align:start}
+.respiratory-path-stop:not(:last-child)::after{content:"";left:auto;right:-11px;top:37px;width:10px;height:3px;transform:none}
+.respiratory-path-node{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;width:100%;max-width:none;padding:7px 8px;border:1px solid #c1d5df;border-radius:13px;background:#fff;text-align:center}
+.respiratory-path-node:hover,.respiratory-path-node:focus-visible{border-color:var(--teal);background:#f1faf9}
+.respiratory-path-orb{flex:0 0 42px;width:42px;height:42px;border-width:3px;box-shadow:none}
+.respiratory-path-copy{width:100%;min-width:0;max-width:none;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent}
+.respiratory-path-copy strong{font-size:.78rem;line-height:1.25;overflow-wrap:anywhere}
+.respiratory-path-copy small{font-size:.66rem;line-height:1.25}
+.respiratory-path-node.is-current{border:2px solid var(--teal);background:#e8f9f6}
+.respiratory-path-node.is-locked{opacity:.76;cursor:pointer}
+.respiratory-path-node.is-locked:hover{opacity:1}
+.respiratory-path-callout{display:none}
+.respiratory-current-lesson{width:100%;max-width:none;min-width:0}
+.respiratory-trail-panel{width:100%;max-width:none;max-height:clamp(380px,calc(100dvh - 220px),790px);overflow-y:auto;overscroll-behavior:contain;padding:clamp(14px,1.5vw,20px)}
+.respiratory-trail-panel h3{font-size:clamp(1.15rem,2.1vw,1.55rem);margin:.45rem 0}
+.respiratory-lesson-prompt{margin-bottom:10px;font-size:.86rem}
+.respiratory-phase-navigation{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:0 0 11px;padding:7px;background:#f5fafd;border:1px solid var(--line);border-radius:12px}
+.respiratory-phase-navigation button{min-height:44px;padding:8px;border:1px solid #bdd1dc;border-radius:9px;background:#fff;color:var(--navy);font:inherit;font-weight:850;cursor:pointer}
+.respiratory-phase-navigation button[aria-pressed="true"]{border:2px solid var(--teal);background:#e3f8f4}
+.respiratory-phase-navigation button:focus-visible{outline:3px solid #157f8a;outline-offset:2px}
+.respiratory-phase-pager{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+.respiratory-phase-pager strong{color:var(--navy);font-size:.82rem}
+.respiratory-phase-pager .btn{min-height:43px}
+.respiratory-phase-pager .btn:disabled{opacity:.48;cursor:not-allowed}
+.respiratory-trail-panel[data-active-phase="learn"] .respiratory-guided-list li:nth-child(n+2),
+.respiratory-trail-panel[data-active-phase="apply"] .respiratory-guided-list li:not(:nth-child(2)),
+.respiratory-trail-panel[data-active-phase="check"] .respiratory-guided-list li:not(:nth-child(3)){display:none}
+.respiratory-trail-panel[data-active-phase="learn"] .respiratory-lesson-finish,
+.respiratory-trail-panel[data-active-phase="apply"] .respiratory-lesson-finish,
+.respiratory-trail-panel[data-active-phase="apply"] .respiratory-trail-learning-grid,
+.respiratory-trail-panel[data-active-phase="apply"] .respiratory-rule-warning,
+.respiratory-trail-panel[data-active-phase="apply"] .respiratory-extra-study,
+.respiratory-trail-panel[data-active-phase="check"] .respiratory-trail-learning-grid,
+.respiratory-trail-panel[data-active-phase="check"] .respiratory-rule-warning,
+.respiratory-trail-panel[data-active-phase="check"] .respiratory-extra-study{display:none}
+.respiratory-guided-sequence{padding:12px;margin:0 0 10px;border-radius:12px}
+.respiratory-guided-title h4{font-size:.98rem}
+.respiratory-guided-title p{font-size:.8rem}
+.respiratory-guided-list{margin-top:9px}
+.respiratory-guided-list li{padding-bottom:7px}
+.respiratory-guided-list li:not(:last-child)::after{display:none}
+.respiratory-trail-learning-grid{gap:8px}
+.respiratory-trail-learning-grid section{padding:10px}
+.respiratory-trail-learning-grid p{font-size:.87rem}
+.respiratory-locked-preview .respiratory-trail-learning-grid{margin:14px 0}
+.respiratory-trail-boundary{max-width:none}
+@media(max-width:760px){
+  .respiratory-learning-path{display:flex;max-width:none;width:100%;gap:8px;padding:10px 4px}
+  .respiratory-path-stop,.respiratory-path-stop.stop-1,.respiratory-path-stop.stop-2,.respiratory-path-stop.stop-3{flex:0 0 140px;max-width:140px;min-height:105px;padding:0}
+  .respiratory-path-node{max-width:none}
+  .respiratory-path-orb{width:38px;height:38px;flex:0 0 38px}
+  .respiratory-path-copy{max-width:none}
+  .respiratory-path-copy strong{font-size:.76rem}
+  .respiratory-path-stop:not(:last-child)::after{top:37px;height:3px;left:auto;right:-9px}
+  .respiratory-path-callout{display:none}
+  .respiratory-trail-panel{max-height:none;overflow:visible;padding:12px}
+  .respiratory-trail-learning-grid{grid-template-columns:1fr}
+  .respiratory-phase-navigation{top:0}
+  .respiratory-phase-pager{flex-wrap:wrap}
+  .respiratory-phase-pager strong{order:-1;width:100%;text-align:center}
+}
+@media(max-width:430px){
+  .respiratory-path-stop,.respiratory-path-stop.stop-1,.respiratory-path-stop.stop-2,.respiratory-path-stop.stop-3{flex-basis:132px}
+  .respiratory-phase-navigation button{font-size:.79rem;padding:6px 4px}
+  .respiratory-phase-pager .btn{min-height:44px;font-size:.78rem;padding:9px}
+}
