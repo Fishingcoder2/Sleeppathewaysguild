@@ -162,10 +162,12 @@
     engine.selectQuestions=function(records,taskCode,count,seed,filter){
       const code=text(taskCode);
       const excluded=state.retakeExclusions.get(code)||[];
-      if(excluded.length){
-        state.retakeExclusions.delete(code);
-        return originalSelect(filterRetakeRecords(records,excluded,count),taskCode,count,seed,filter);
-      }
+      if(excluded.length) state.retakeExclusions.delete(code);
+      // The diversity selector inspects saved checkpoint history and uses all
+      // remaining fresh concept questions first. Hard-removing prior IDs made
+      // narrow 15-question retakes impossible (e.g. 22 eligible CSA items).
+      // When fresh questions are exhausted it may reuse older items, but never
+      // repeat a normalized stem within the same checkpoint.
       return originalSelect(records,taskCode,count,seed,filter);
     };
 
