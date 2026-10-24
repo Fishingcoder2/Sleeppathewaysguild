@@ -82,7 +82,7 @@
   }
   function resourceHtml(item){
     if(!item.resources||!item.resources.length)return '<div class="summary-resource-empty">No related section-level reference is available for this priority yet.</div>';
-    return '<div class="summary-resource-route"><strong>Where to study: books, chapters, articles and guidelines</strong>'+
+    return '<div class="summary-resource-route"><strong>Related study resources — where to study: books, chapters, articles and guidelines</strong>'+
       '<p class="summary-resource-note">Read the named chapter or section below. Question-linked and topic-linked recommendations come first; broad blueprint readings are labeled separately. APA-style citations use the verified library catalog. These locators are study directions, not copied source text.</p>'+
       item.resources.map((group,index)=>'<div class="summary-resource-group"><div><span class="summary-resource-order">'+(index+1)+'</span><div>'+
       '<strong>'+esc(sourceApa(group))+'</strong><small>'+esc(group.sourceType)+(group.bestFor?' · '+esc(group.bestFor):'')+'</small></div></div>'+
