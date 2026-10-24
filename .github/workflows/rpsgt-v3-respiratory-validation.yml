@@ -29,6 +29,8 @@ on:
       - 'rpsgt-v3/scripts/test-respiratory-timeline-shell.mjs'
       - 'rpsgt-v3/scripts/test-lms-page-navigation.mjs'
       - 'rpsgt-v3/core/study-workspace.js'
+      - 'rpsgt-v3/core/respiratory-lab-workspace.js'
+      - 'rpsgt-v3/assets/respiratory-lab-workspace.css'
       - 'rpsgt-v3/assets/study-workspace.css'
       - 'rpsgt-v3/scripts/test-shared-visual-display.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-validation.yml'
@@ -58,6 +60,7 @@ jobs:
           node --check rpsgt-v3/core/respiratory-timeline-engine.js
           node --check rpsgt-v3/core/respiratory-timeline-ui.js
           node --check rpsgt-v3/core/study-workspace.js
+          node --check rpsgt-v3/core/respiratory-lab-workspace.js
           node --check rpsgt-v3/core/lab-respiratory.js
           node --check rpsgt-v3/scripts/test-respiratory-lab-system.mjs
           node --check rpsgt-v3/scripts/test-respiratory-lab-shell.mjs
