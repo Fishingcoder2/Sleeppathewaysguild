@@ -72,7 +72,8 @@ vm.runInContext(diversityJs,context,{filename:'guided-question-diversity.js'});
 const engine=context.globalThis.RPSGTGuidedTrailEngine;
 const diversity=context.globalThis.RPSGTGuidedQuestionDiversity;
 assert.ok(engine&&diversity);
-assert.equal(diversity.VERSION,'1.0.0');
+assert.equal(diversity.VERSION,'1.1.0');
+assert.equal(diversity.RECENT_WINDOW,9,'Fresh-rotation window should cover multiple neighboring concepts.');
 
 assert.equal(diversity.normalizeStem(leakCluster[0].prompt),diversity.normalizeStem(leakCluster[1].prompt),'Practice-item numbering must not make duplicate stems look unique.');
 assert.ok(diversity.similarity(leakCluster[0].prompt,leakCluster[2].prompt)>=diversity.STRICT_SIMILARITY,'Near-identical PAP leak variants should be recognized as similar.');
@@ -85,5 +86,27 @@ assert.ok(selected.every(question=>engine.matchesQuestionFilter(question,filter)
 assert.equal(selected.filter(question=>question.id.startsWith('leak-')).length<=1,true,'Only one member of a near-duplicate leak cluster should appear when enough distinct questions exist.');
 assert.ok(!selected.some(question=>question.id==='recent-a'||question.id==='recent-b'),'Recently served semantic variants should be held back when enough fresh questions exist.');
 assert.equal(new Set(selected.map(question=>diversity.normalizeStem(question.prompt))).size,selected.length,'No normalized duplicate stems should remain in the checkpoint.');
+
+
+const sameStemDifferentIds=Array.from({length:20},(_,i)=>({
+  id:'duplicate-stem-'+i,taskCode:'D4A',topic:'PAP troubleshooting',
+  prompt:'Practice item '+i+': A patient notices a large mouth leak while using PAP; which mask issue should be evaluated first?',
+  options:['A','B','C','D'],answer:'A',rationale:'Evaluate the leak.'
+}));
+const uniqueAndDuplicates=[...sameStemDifferentIds,...distinctScenarios];
+const sameStemRun=engine.selectQuestions(uniqueAndDuplicates,'D4A',15,'same-stem-regression');
+assert.equal(sameStemRun.length,15,'A large bank containing duplicate stems must still yield 15 unique questions when enough unique stems exist.');
+assert.equal(new Set(sameStemRun.map(question=>diversity.normalizeStem(question.prompt))).size,15,
+  'Question ID variation and numbering must never produce repeated wording in a checkpoint.');
+
+const tooSmallFamilyPool=sameStemDifferentIds.slice(0,18).concat(distinctScenarios.slice(0,6));
+const tooSmall=engine.selectQuestions(tooSmallFamilyPool,'D4A',15,'strict-small-concept');
+assert.ok(tooSmall.length<15,'Insufficient distinct wording must not be padded to 15 with duplicate questions.');
+assert.equal(new Set(tooSmall.map(question=>diversity.normalizeStem(question.prompt))).size,tooSmall.length);
+const wideBank=distinctScenarios.slice(0,24);
+const firstWide=engine.selectQuestions(wideBank,'D4A',15,'wide-first');
+const wideHistory=wideBank.slice(0,0);
+assert.equal(firstWide.length,15);
+assert.ok(wideHistory.length===0);
 
 console.log('Guided Study semantic question diversity, practice-item prefix normalization, recent-variant avoidance, concept-filter preservation, and 15-question fallback contracts passed.');
