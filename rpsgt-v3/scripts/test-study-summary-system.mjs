@@ -55,6 +55,37 @@ if(!summary.studyPlan.length||summary.studyPlan[0].taskCode!=='D3A')throw new Er
 if(!summary.studyPlan[0].topics.length)throw new Error('Study plan did not preserve interaction-derived topic evidence.');
 if(!summary.studyPlan[0].resources.length||!summary.studyPlan[0].resources.some(group=>group.sections&&group.sections.length))throw new Error('Study plan did not include mapped study resources.');
 if(!summary.studyPlan[0].resources.some(group=>/AASM/i.test(group.sourceTitle)))throw new Error('Official AASM resource was not prioritized when mapped to the weak task.');
+
+// The recommendations must also work when a learner has only a missed Guided
+// Study checkpoint, before completing ordinary Practice, Readiness, or Mock.
+const guidedOnly={
+  guidedStudy:{checkpointHistory:[{
+    id:'sample-missed-guided-check',task:'D3A',conceptId:'osa-scoring',
+    total:15,correct:7,percent:47,passed:false,
+    responses:[{id:d3a.id,correct:false,selected:0}]
+  }]}
+};
+const guidedPlan=engine.buildSummary({saved:guidedOnly,blueprint,questionIndex:index,catalog,studySources,trailDefinition});
+if(!guidedPlan.studyPlan.length||guidedPlan.studyPlan[0].taskCode!=='D3A')throw new Error('Missed Guided Study answers alone must create a D3A first-priority reading plan.');
+if(!guidedPlan.studyPlan[0].topics.some(row=>row.label===d3a.topic))throw new Error('Missed checkpoint question topic must appear in the study prescription.');
+if(!guidedPlan.studyPlan[0].evidence.some(row=>row.includes('Guided Check')))throw new Error('Ranking should explain the Guided Study checkpoint evidence.');
+
+const sourcesById=new Map(studySources.sources.map(source=>[source.id,source]));
+for(const plan of [...summary.studyPlan,...guidedPlan.studyPlan]){
+  for(const resource of plan.resources){
+    const source=sourcesById.get(resource.sourceId);
+    if(!source)throw new Error('Study plan referenced an unverified source: '+resource.sourceId);
+    if(resource.sections.length>2)throw new Error('Study plan displayed too many chapters from the same source.');
+    for(const section of resource.sections){
+      if(!source.sections.some(item=>item.id===section.sectionId))throw new Error('Study plan invented a chapter/section locator: '+section.sectionId);
+    }
+  }
+}
+const chapterRoute=engine.resourceRoute('D3A',[{label:'adult staging'}],[{key:'fundamentals-scoring',score:5}],studySources,12);
+if(!chapterRoute.some(entry=>entry.sourceId==='fundamentals-sleep-technology-3e'&&/Chapter/i.test(entry.sectionLabel)))throw new Error('Verified Fundamentals textbook chapter mapping was lost.');
+if(!chapterRoute.some(entry=>entry.sourceId==='aasm-scoring-manual-v3'&&/Section/i.test(entry.sectionLabel)))throw new Error('Verified AASM scoring manual section mapping was lost.');
+if(engine.buildSummary({saved:{},blueprint,questionIndex:index,catalog,studySources,trailDefinition}).studyPlan.length!==0)throw new Error('No evidence must not manufacture a weak area.');
+
 const serialized=JSON.stringify(summary);for(const forbidden of ['Private Learner Name','PRIVATE NOTE SENTINEL','PRIVATE SEARCH SENTINEL','private-sentinel','PRIVATE QUESTION PROMPT SENTINEL','PRIVATE ANSWER'])if(serialized.includes(forbidden))throw new Error(`Summary leaked forbidden content: ${forbidden}`);
 for(const field of ['containsQuestionText','containsAnswerText','containsRationales','containsNotes','containsSearches','containsPrivateLinks','containsRawBrowserState'])if(summary.privacy[field]!==false)throw new Error(`Privacy flag ${field} must be false.`);
 const named=engine.buildSummary({saved,blueprint,questionIndex:index,catalog,studySources,generatedAt:'2026-08-03T15:00:00.000Z',includeLearnerName:true});if(named.learner.displayName!=='Private Learner Name'||named.privacy.learnerNameIncluded!==true)throw new Error('Opt-in learner-name inclusion failed.');
