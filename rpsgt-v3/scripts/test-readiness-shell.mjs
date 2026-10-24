@@ -24,6 +24,12 @@ assert.ok(script.includes("function previousQuestion()")&&script.includes("state
 assert.ok(script.includes("questionActions.toggleReview")&&script.includes('"flaggedIds"'),"Readiness flag action is not wired to the saved flagged queue.");
 assert.ok(script.includes("questionActions.saveFlashcard")&&script.includes("RPSGT Flashcard Center"),"Readiness Make flashcard action is not wired.");
 assert.ok(script.includes("feedback.open=false")&&html.includes("<details class=\"answer-feedback hidden\""),"Readiness answer reasoning must be optional/collapsible by default.");
+assert.ok(html.includes('data-readiness-result-heading tabindex="-1"'),'Readiness results heading must receive keyboard focus after completion.');
+assert.ok(script.includes('function bringResultsIntoView()')&&script.includes('panel.scrollIntoView({block:"start",behavior:"auto"})'),'Completion must visibly scroll to result section.');
+assert.ok(script.includes('if(state.active.index>=state.active.questionIds.length-1)')&&script.includes('finishReadiness();'),'Last answered question must finish directly rather than saving an out-of-range cursor.');
+assert.ok(script.includes('const existing=readiness.history.find(item=>item.sessionId===record.sessionId)'),'A double click or interrupted finish must not duplicate saved readiness results.');
+assert.ok(script.includes('function viewSavedReadiness(index)')&&script.includes('data-view-readiness-history'),'Readiness history must reopen a saved result without starting a new attempt.');
+assert.ok(html.includes('aria-labelledby="readiness-result-title"'),'Results should have an accessible section heading.');
 assert.ok(!script.includes("Mapped source keys")&&!script.includes("Mapped study keys")&&!html.includes("mapped reference"),"Readiness must not expose internal mapping terminology.");
 assert.ok(script.includes("Related reference materials"),"Readiness related-reference learner wording is missing.");
 assert.ok(script.includes("readinessRecord(saved)"),"readiness storage path missing");
@@ -33,4 +39,4 @@ assert.ok(practice.includes('href="readiness.html"'),"Practice Center lacks read
 assert.ok(engine.includes("allocateCounts")&&engine.includes("difficultyWeight")&&engine.includes("buildSession"),"readiness engine contract missing");
 assert.ok(questionActions.includes("toggleReview")&&questionActions.includes("saveFlashcard"),"shared question-action helpers are unavailable");
 new Function(script);
-console.log("Readiness single-Next answer check, Previous navigation, flag/flashcard tools, optional reasoning panel, storage separation, and selector checks passed.");
+console.log("Readiness final Next-to-results navigation, focus/scroll, saved-result recovery, no duplicate history, question actions, and storage separation passed.");
