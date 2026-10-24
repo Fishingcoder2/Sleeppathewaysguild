@@ -40,3 +40,32 @@ body[data-report-profile="guided"] .summary-section[data-report-section="labs"]{
 .summary-weak-domain-grid small{margin-top:4px;font-size:.73rem;color:var(--summary-muted)}
 @media(max-width:600px){.summary-weak-domain-grid{grid-template-columns:1fr}}
 @media print{.summary-weak-domains{padding:8px;break-inside:avoid}.summary-weak-domain-grid>div{padding:6px}.summary-weak-domain-grid strong{font-size:8pt}.summary-weak-domain-grid small{font-size:7.5pt}}
+
+
+/* Learner-owned question-level remediation and verified edition-specific reading. */
+.summary-verified-chapters{margin:10px 0 0;padding:11px;border:1px solid #9dc7d0;border-radius:10px;background:#f1fafb}
+.summary-verified-chapters>strong{display:block;color:#15566c;font-size:.88rem;margin-bottom:6px}
+.summary-verified-chapters li{padding:5px 0}
+.summary-verified-chapters li strong,.summary-verified-chapters li small{display:block}
+.summary-verified-chapters li small{font-size:.75rem;color:#45606e}
+[data-summary-missed]{display:grid;gap:12px}
+.summary-missed-item{background:#fff;border:1px solid #cbdce3;border-radius:12px;padding:16px;min-width:0}
+.summary-missed-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:1px solid #dae4e9;padding-bottom:8px;margin-bottom:10px}
+.summary-missed-heading>strong{color:#173b5e}
+.summary-missed-heading>small{color:#53707c}
+.summary-missed-prompt{font-size:1rem;font-weight:750;color:#173b5e;line-height:1.45}
+.summary-missed-options{list-style:upper-alpha;padding-left:25px;display:grid;gap:5px}
+.summary-missed-options li{padding:5px 8px;border-radius:6px;line-height:1.35;overflow-wrap:anywhere}
+.summary-missed-options li.is-correct{background:#e6f6eb;font-weight:750;color:#145b38}
+.summary-missed-options li.is-selected:not(.is-correct){background:#fff0e9}
+.summary-missed-reason{border-left:3px solid #188d8c;background:#f0f7f8;padding:10px 12px;line-height:1.5}
+.summary-missed-ref{color:#54717a;font-size:.83rem}
+@media print{
+ [data-report-section="missed"]{break-inside:auto!important}
+ .summary-missed-item{break-inside:avoid;page-break-inside:avoid;border-radius:4px;padding:10px;margin-top:10px}
+ .summary-missed-item p,.summary-missed-item li{font-size:9pt}
+ .summary-missed-reason{padding:6px 9px}
+ .summary-missed-prompt{font-size:9.5pt}
+ .summary-verified-chapters{padding:6px}
+ .summary-verified-chapters li{font-size:8pt}
+}
