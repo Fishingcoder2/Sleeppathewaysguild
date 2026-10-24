@@ -113,6 +113,7 @@
         if(selectedIds.has(candidate.id)) continue;
         if(options.uniqueFamily!==false&&selectedFamilies.has(candidate.family)) continue;
         if(options.avoidRecent&&conflicts(candidate,recentList,options.recentThreshold||STRICT_SIMILARITY)) continue;
+        if(options.avoidRecentExact&&recentList.some(old=>old.id===candidate.id||old.family===candidate.family)) continue;
         if(options.topicLimit&&Number(topicCounts.get(candidate.topic)||0)>=options.topicLimit) continue;
         if(options.similarityThreshold&&conflicts(candidate,selected,options.similarityThreshold)) continue;
         selected.push(candidate);
@@ -127,6 +128,11 @@
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:topicLimit+2,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:null});
+    // A semantically similar but genuinely new question is preferable to
+    // repeating the identical question from a previous chapter.
+    addPass({avoidRecentExact:true,topicLimit:null,similarityThreshold:STRICT_SIMILARITY});
+    addPass({avoidRecentExact:true,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
+    addPass({avoidRecentExact:true,topicLimit:null,similarityThreshold:null});
     // Exhaust unfamiliar eligible stems across the recent nine checkpoints before recycling.
     // Small concept pools may require older questions on retakes; never reuse an
     // identical normalized stem *within* the same 15-question checkpoint.
