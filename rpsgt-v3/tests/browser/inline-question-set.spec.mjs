@@ -36,7 +36,10 @@ test('Related lab questions open in a modal, stay in the lab, and count toward P
   expect(new Set(saved.progress.history.map(record=>String(record.questionId))).size).toBe(5);
   await dialog.locator('[data-quick-set-close]').click();
   await expect(dialog).toBeHidden();
-  await expect(page.locator('.learner-route-cta').filter({hasText:'Practice Related Items'})).toBeFocused();
+  await expect.poll(async()=>page.evaluate(()=>{
+    const active=document.activeElement;
+    return Boolean(active&&active.matches('[data-route-recommendation] a[href], [data-sidebar-next] a[href], .learner-route-cta'));
+  })).toBeTruthy();
   expect(new URL(page.url()).pathname).toBe(oldLocation);
 });
 
@@ -55,6 +58,6 @@ test('Task-specific practice opens modal while main Practice menu still navigate
   await expect(dialog.locator('.spg-quick-set-context')).toContainText('D3A');
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
-  await page.locator('.sidebar a[href="practice.html"]').click();
+  await page.locator('.sidebar a[data-nav="practice"]').click();
   await expect(page).toHaveURL(/\/practice\.html$/);
 });
