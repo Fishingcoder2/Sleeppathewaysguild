@@ -11,7 +11,7 @@
     practice:{label:'Practice & remediation report',title:'RPSGT Practice & Remediation Report',sections:['snapshot','domain','trend','plan','tasks','followup','privacy']},
     readiness:{label:'Readiness report',title:'RPSGT Readiness Check Report',sections:['snapshot','domain','plan','readiness','followup','privacy']},
     mock:{label:'175-question Mock report',title:'RPSGT 175-Question Mock Report',sections:['snapshot','domain','plan','mock','followup','privacy']},
-    guided:{label:'Guided Study & labs report',title:'RPSGT Guided Study & Skills Report',sections:['snapshot','trail','labs','followup','privacy']}
+    guided:{label:'Guided Study & Skills Report',title:'RPSGT Guided Study & Skills Report',sections:['snapshot','domain','plan','trail','labs','followup','privacy']}
   };
   async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   async function loadStudySources(){
@@ -82,9 +82,24 @@
   }
   function resourceHtml(item){
     if(!item.resources||!item.resources.length)return '<div class="summary-resource-empty">No related section-level reference is available for this priority yet.</div>';
-    return '<div class="summary-resource-route"><strong>Related study resources</strong><p class="summary-resource-note">Selected from your question interactions and weak-task evidence. Current official sources are listed before supporting texts when available.</p>'+item.resources.map((group,index)=>'<div class="summary-resource-group"><div><span class="summary-resource-order">'+(index+1)+'</span><div><strong>'+esc(sourceApa(group))+'</strong><small>'+esc(group.sourceType)+(group.bestFor?' · '+esc(group.bestFor):'')+'</small></div></div><ul>'+group.sections.map(section=>'<li>'+esc(section.label)+(section.reason?'<small>'+esc(section.reason)+'</small>':'')+'</li>').join('')+'</ul></div>').join('')+'</div>';
+    return '<div class="summary-resource-route"><strong>Where to study: books, chapters, articles and guidelines</strong>'+
+      '<p class="summary-resource-note">Read the named chapter or section below. Question-linked and topic-linked recommendations come first; broad blueprint readings are labeled separately. APA-style citations use the verified library catalog. These locators are study directions, not copied source text.</p>'+
+      item.resources.map((group,index)=>'<div class="summary-resource-group"><div><span class="summary-resource-order">'+(index+1)+'</span><div>'+
+      '<strong>'+esc(sourceApa(group))+'</strong><small>'+esc(group.sourceType)+(group.bestFor?' · '+esc(group.bestFor):'')+'</small></div></div>'+
+      '<ul>'+group.sections.map(section=>'<li><strong>'+esc(section.label)+'</strong>'+(section.reason?'<small>'+esc(section.reason)+'</small>':'')+'</li>').join('')+'</ul></div>').join('')+'</div>';
   }
-  function renderPlan(summary){const host=$('[data-summary-plan]');host.innerHTML=summary.studyPlan.length?summary.studyPlan.map((item,index)=>'<article class="summary-plan-item"><span class="summary-rank">'+(index+1)+'</span><div><h3>'+esc(item.taskCode)+' · '+esc(item.title)+'</h3><p>'+esc(item.practiceCorrect)+' / '+esc(item.practiceAnswered)+' practice correct · '+esc(item.practiceAccuracy)+'% · '+esc(item.missed)+' currently missed</p>'+(item.topics.length?'<p><strong>Interaction signals:</strong> '+item.topics.map(topic=>esc(topic.label)+' (evidence '+esc(topic.count)+')').join(', ')+'</p>':'')+'<p><strong>Next move:</strong> '+esc(item.nextAction)+'</p>'+resourceHtml(item)+'</div></article>').join(''):'<div class="summary-empty">Complete Practice, Readiness, or Mock work to generate a prioritized study plan.</div>';}
+  function renderPlan(summary){
+    const host=$('[data-summary-plan]');
+    host.innerHTML=summary.studyPlan.length?'<p class="summary-section-note">Study priority is based on missed items, recorded Practice accuracy, the latest Guided Study checkpoint, and weak-task findings from Readiness and Mock. These are learning priorities, not exam-score predictions.</p>'+
+      summary.studyPlan.map((item,index)=>'<article class="summary-plan-item"><span class="summary-rank">'+(index+1)+'</span><div>'+
+      '<h3>'+esc(item.domain)+' · '+esc(item.taskCode)+' · '+esc(item.title)+'</h3>'+
+      '<p><strong>Priority:</strong> '+(index===0?'Study this first':'Study after higher-priority needs')+'</p>'+
+      (item.evidence.length?'<p><strong>Why this needs review:</strong> '+item.evidence.map(esc).join('; ')+'</p>':'')+
+      (item.topics.length?'<p><strong>Focus on these missed topics:</strong> '+item.topics.map(topic=>esc(topic.label)).join('; ')+'</p>':'')+
+      '<p><strong>After reviewing:</strong> '+esc(item.nextAction||'Return to focused questions for this task and check improvement.')+'</p>'+
+      resourceHtml(item)+'</div></article>').join(''):
+      '<div class="summary-empty">No weak-area evidence is recorded yet. Complete Practice or a Guided Study checkpoint to create a source-specific study plan.</div>';
+  }
   function renderTasks(summary){const host=$('[data-summary-tasks]');host.innerHTML='<table><thead><tr><th>Task</th><th>Practice</th><th>Accuracy</th><th>Missed</th><th>Mastered</th></tr></thead><tbody>'+summary.practice.tasks.map(task=>'<tr><td><strong>'+esc(task.code)+'</strong><span>'+esc(task.title)+'</span></td><td>'+esc(task.correct)+' / '+esc(task.answered)+'</td><td>'+esc(task.accuracy)+'%</td><td>'+esc(task.missed)+'</td><td>'+esc(task.mastered)+'</td></tr>').join('')+'</tbody></table>';}
   function diagnosticCard(title,record,type){
     if(!record)return '<article class="summary-diagnostic"><h3>'+esc(title)+'</h3><p>No completed attempt is saved.</p></article>';
