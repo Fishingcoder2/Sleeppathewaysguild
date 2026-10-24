@@ -65,3 +65,25 @@ test('Task-specific practice opens modal while main Practice menu still navigate
   await practiceNavigation.click();
   await expect(page).toHaveURL(/\/practice\.html$/);
 });
+
+test('Skills Labs overview opens a related set through the approved question loader',async({page})=>{
+  await page.goto('labs.html');
+  await page.evaluate(()=>{
+    const saved=window.RPSGTStorage.load();
+    saved.progress.answered=2;saved.progress.correct=2;
+    saved.review.missedIds=[];saved.review.flaggedIds=[];saved.review.reviewLaterIds=[];
+    saved.guidedStudy.trailFocus={domain:'D2',task:'D2B'};
+    window.RPSGTStorage.save(saved);
+  });
+  await page.reload();
+  const cta=page.locator('.learner-route-cta').filter({hasText:'Practice Related Items'});
+  await expect(cta).toBeVisible();
+  await cta.click();
+  const dialog=page.getByRole('dialog',{name:'Related practice questions'});
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator('.spg-quick-set-context')).toContainText('D2B');
+  await expect(dialog.locator('.spg-quick-set-prompt')).toBeVisible();
+  expect(new URL(page.url()).pathname).toMatch(/\/labs\.html$/);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+});
