@@ -1,0 +1,38 @@
+/* Focused, accessible, task-matched five-question practice without leaving the lesson. */
+.spg-quick-question-backdrop[hidden]{display:none!important}
+.spg-quick-question-backdrop{position:fixed;inset:0;z-index:2500;background:rgba(6,24,45,.76);display:flex;justify-content:center;align-items:center;padding:clamp(6px,2vw,24px)}
+.spg-quick-question-dialog{display:flex;flex-direction:column;min-width:0;width:min(760px,100%);max-height:min(92dvh,900px);min-height:300px;overflow:hidden;border:1px solid #b6d4df;border-radius:16px;background:#fff;box-shadow:0 20px 70px rgba(0,0,0,.35);color:#143047}
+.spg-quick-question-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(14px,2vw,22px);background:linear-gradient(115deg,#152b48,#086a7b);color:#fff}
+.spg-quick-question-header .eyebrow{color:#c5ebea;font-size:.7rem;letter-spacing:.06em}
+.spg-quick-question-header h2{margin:2px 0;font-size:clamp(1.05rem,2.4vw,1.42rem);line-height:1.3;color:white}
+.spg-quick-question-header button{border:1px solid rgba(255,255,255,.5);border-radius:9px;min-height:40px;min-width:42px;background:rgba(255,255,255,.15);color:white;font-size:1.35rem;cursor:pointer}
+.spg-quick-question-body{padding:clamp(14px,2.8vw,25px);overflow-y:auto;overscroll-behavior:contain;flex:1;min-height:0}
+.spg-quick-set-context{color:#376b81;font-size:.81rem;font-weight:750;margin:0 0 12px}
+.spg-quick-set-prompt{color:#152b48;font-size:clamp(1.04rem,2vw,1.28rem);font-weight:800;line-height:1.45;margin:0 0 16px}
+.spg-quick-set-options{display:grid;gap:9px;border:0;padding:0;margin:0}
+.spg-quick-set-option{display:flex;align-items:center;text-align:left;gap:10px;width:100%;min-height:49px;padding:10px 12px;border-radius:10px;border:1px solid #b9c9d5;background:#fff;color:#173249;cursor:pointer;font:inherit;line-height:1.35;overflow-wrap:anywhere}
+.spg-quick-set-option:hover:not(:disabled){border-color:#087e96;background:#f0fbfd}
+.spg-quick-set-option.is-selected{border:2px solid #087e96;background:#ebf9fd}
+.spg-quick-set-option.is-correct{border:2px solid #18865c;background:#e6f7ed}
+.spg-quick-set-option.is-incorrect{border:2px solid #b44c36;background:#fff0eb}
+.spg-quick-set-option:disabled{opacity:1;cursor:default}
+.spg-quick-set-letter{display:grid;place-items:center;flex:0 0 28px;border-radius:50%;min-height:28px;background:#e9f2f7;font-weight:800}
+.spg-quick-set-feedback{padding:14px;margin-top:15px;background:#f2f9f8;border-left:4px solid #07897c;border-radius:10px;line-height:1.5}
+.spg-quick-set-feedback p{margin:7px 0 0}
+.spg-quick-question-footer{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(12px,2vw,22px);border-top:1px solid #c6d9e0;background:#f5fafc}
+.spg-quick-question-footer [data-quick-set-counter]{font-size:.83rem;font-weight:800;color:#265269}
+.spg-quick-question-footer button{min-height:43px;min-width:115px}
+.spg-quick-question-footer [hidden]{display:none!important}
+.spg-quick-question-dialog :focus-visible{outline:3px solid #13a3b6;outline-offset:2px}
+.spg-quick-set-message{padding:22px 0;line-height:1.5}
+.spg-quick-set-results{text-align:center;max-width:590px;margin:25px auto}
+.spg-quick-set-results h3{font-size:1.4rem}
+.spg-quick-set-score{font-size:clamp(1.3rem,4vw,2rem);font-weight:850}
+@media(max-width:620px){
+ .spg-quick-question-backdrop{padding:3px}
+ .spg-quick-question-dialog{height:calc(100dvh - 6px);max-height:none;border-radius:9px}
+ .spg-quick-question-header{padding:11px 12px}
+ .spg-quick-question-footer{padding:10px;gap:6px}
+ .spg-quick-question-footer button{min-width:98px;padding:8px}
+}
+@media(prefers-reduced-motion:reduce){.spg-quick-question-backdrop *{scroll-behavior:auto!important}}
