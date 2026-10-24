@@ -114,3 +114,27 @@ test('Mock discard and replacement confirm preserve the learner session until ap
  saved=await page.evaluate(()=>window.RPSGTStorage.load());
  expect(saved.mock.activeSession).toBeNull();
 });
+
+test('Mock result links and saved history View details open the correct report',async({page})=>{
+ await openExam(page);
+ await page.locator('[data-submit-mock]').click();
+ await expect(page.locator('[data-mock-review]')).toBeVisible();
+ await page.locator('[data-review-submit]').click();
+ await expect(page.locator('[data-mock-results]')).toBeVisible();
+ const stored=await page.evaluate(()=>window.RPSGTStorage.load().mock.history);
+ expect(stored).toHaveLength(1);
+ const sessionId=stored[0].sessionId;
+ const href=await page.locator('[data-result-report-link]').getAttribute('href');
+ expect(href).toContain(encodeURIComponent(sessionId));
+ await page.locator('[data-result-report-link]').click();
+ await expect(page).toHaveURL(/reports\.html\?mock=/);
+ await expect(page.locator('#mock-detail')).toBeVisible({timeout:40000});
+ await expect(page.locator('[data-mock-attempt].active')).toHaveCount(1);
+ await page.goto('mock.html');
+ await expect(page.locator('[data-mock-home]')).toBeVisible({timeout:40000});
+ const historyLink=page.locator('[data-mock-history] .mock-history-row a').first();
+ await expect(historyLink).toHaveAttribute('href',new RegExp(encodeURIComponent(sessionId).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+ await historyLink.click();
+ await expect(page).toHaveURL(/reports\.html\?mock=/);
+ await expect(page.locator('[data-mock-attempt].active')).toHaveCount(1);
+});
