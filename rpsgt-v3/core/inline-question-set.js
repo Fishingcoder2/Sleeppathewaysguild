@@ -44,7 +44,12 @@
     const catalog=await result.json();
     const lab=(catalog.labs||[]).find(item=>item.plannedRoute===path);
     if(lab)return unique(lab.taskCodes||[]);
-    return [];
+    // The Skills Lab landing page has no single task association. Use the
+    // learner's latest recorded task rather than inventing a lab mapping.
+    if(validCode(focused))return [focused];
+    const history=saved&&saved.progress&&Array.isArray(saved.progress.history)?saved.progress.history:[];
+    const recent=codeOf(history.length&&history[history.length-1].taskCode);
+    return validCode(recent)?[recent]:[];
   }
   async function loadQuestions(codes){
     const modules=await Promise.all(codes.map(async code=>{
