@@ -53,9 +53,10 @@
   }
   async function loadQuestions(codes){
     const modules=await Promise.all(codes.map(async code=>{
-      const response=await fetch('data/question-bank/'+code.toLowerCase()+'.json',{cache:'no-store'});
-      if(!response.ok)throw Error('Question data for '+code+' is unavailable.');
-      const data=await response.json();
+      if(!window.RPSGTOwnerQuestionRelease||typeof window.RPSGTOwnerQuestionRelease.loadJson!=='function'){
+        throw Error('The approved practice question bank is not ready.');
+      }
+      const data=await window.RPSGTOwnerQuestionRelease.loadJson('data/question-bank/'+code.toLowerCase()+'.json');
       return (data.questions||[]).filter(question=>eligible(question,code));
     }));
     const pool=modules.flat(),saved=window.RPSGTStorage&&window.RPSGTStorage.load();
