@@ -46,7 +46,7 @@ assert.match(completion,/AudioContext\|\|win\.webkitAudioContext/);
 assert.match(completion,/playFanfare\(win,saved/);
 assert.doesNotMatch(completion,/\bCharge\b|audio\/(?:mpeg|mp3)|\.mp3|\.wav/i,'achievement audio must be an original generated tone, not an embedded recognizable song');
 assert.match(completion,/engine\.selectQuestions=function\(records,taskCode,count,seed,filter\)/);
-assert.match(completion,/originalSelect\(filterRetakeRecords\(records,excluded,count\),taskCode,count,seed,filter\)/);
+assert.match(completion,/return originalSelect\(records,taskCode,count,seed,filter\)/,'Retakes must keep the full eligible concept pool so semantic rotation can avoid duplicates without starving narrow checkpoints.');
 assert.match(completion,/data-checkpoint-concept/);
 assert.match(completion,/conceptId/);
 assert.match(completion,/querySelectorAll\('\[data-trail-mark\]'\)\.forEach\(button=>button\.remove\(\)\)/);

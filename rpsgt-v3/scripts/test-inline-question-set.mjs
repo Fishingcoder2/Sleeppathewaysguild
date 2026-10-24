@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {dirname,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import vm from 'node:vm';
+const root=join(dirname(fileURLToPath(import.meta.url)),'..');
+const [app,modal,css,lab,study]=await Promise.all([
+  'core/app-shell.js','core/inline-question-set.js','assets/inline-question-set.css','lab-respiratory.html','study.html'
+].map(path=>readFile(join(root,path),'utf8')));
+new vm.Script(modal,{filename:'core/inline-question-set.js'});
+new vm.Script(app,{filename:'core/app-shell.js'});
+assert.match(app,/loadInlineQuestionSets\(\)/);
+assert.match(app,/script\.src='core\/inline-question-set\.js'/);
+assert.match(app,/css\.href='assets\/inline-question-set\.css'/);
+assert.match(app,/Practice Related Items/,'Original lab next-action must remain discoverable.');
+assert.match(modal,/event\.preventDefault\(\)/);
+assert.match(modal,/^\s*if\(link\.closest\('\.sidebar,\.mobile-nav,\.top-actions'\)\)/m,'Navigation links must remain normal links.');
+assert.match(modal,/RPSGTOwnerQuestionRelease.loadJson/,'Approved owner-release loader must supply question modules.');
+assert.match(modal,/approvedQuestionModule/,'All contextual question sets must use the same approved runtime bank.');
+assert.doesNotMatch(modal,/await fetch\('data\/question-bank\//,'Direct base-bank fetch would bypass approved additions.');
+assert.match(modal,/recentIdsAndStems/,'Questions should prefer unseen prompts.');
+assert.match(modal,/\!seenStems\.has\(stem\)/,'No same-wording duplicates allowed in an inline session.');
+assert.match(modal,/v3-inline-question-set/,'Inline attempts must update Practice history distinctly.');
+assert.match(modal,/saved\.review\.missedIds/);
+assert.match(modal,/saved\.review\.masteredIds/);
+assert.match(modal,/aria-modal="true"/);
+assert.match(modal,/event\.key==='Escape'/);
+assert.match(modal,/focusTarget\.focus/,'Closing returns focus even if the lab next-action link changed after progress.');
+assert.match(css,/max-height:min\(92dvh,900px\)/);
+assert.match(css,/\[hidden\]\{display:none!important\}/);
+assert.ok(lab.includes('core/app-shell.js')&&study.includes('core/app-shell.js'));
+assert.ok(!app.includes('practice.html?task=ALL'));
+console.log('Inline question-set controller syntax, lesson link interception, source-task selection, progress saving and modal accessibility contracts passed.');

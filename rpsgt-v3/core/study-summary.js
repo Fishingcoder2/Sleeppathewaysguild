@@ -2,16 +2,17 @@
   'use strict';
   const engine=window.RPSGTStudySummaryEngine;
   const insightsEngine=window.RPSGTReportInsights;
-  const state={saved:null,blueprint:null,index:null,catalog:null,studySources:null,summary:null,insights:null,profile:'full'};
+  const questionReviewEngine=window.RPSGTReportQuestionReview;
+  const state={saved:null,blueprint:null,index:null,catalog:null,studySources:null,summary:null,insights:null,profile:'full',trailDefinition:null,missedReview:null};
   const $=selector=>document.querySelector(selector);
   const $all=selector=>Array.from(document.querySelectorAll(selector));
   const esc=value=>String(value==null?'':value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[char]);
   const PROFILES={
-    full:{label:'Full progress report',title:'RPSGT Learning Center Progress Report',sections:['snapshot','domain','trend','plan','tasks','readiness','mock','trail','labs','followup','privacy']},
-    practice:{label:'Practice & remediation report',title:'RPSGT Practice & Remediation Report',sections:['snapshot','domain','trend','plan','tasks','followup','privacy']},
-    readiness:{label:'Readiness report',title:'RPSGT Readiness Check Report',sections:['snapshot','domain','plan','readiness','followup','privacy']},
-    mock:{label:'175-question Mock report',title:'RPSGT 175-Question Mock Report',sections:['snapshot','domain','plan','mock','followup','privacy']},
-    guided:{label:'Guided Study & labs report',title:'RPSGT Guided Study & Skills Report',sections:['snapshot','trail','labs','followup','privacy']}
+    full:{label:'Full progress report',title:'RPSGT Learning Center Progress Report',sections:['snapshot','domain','trend','plan','missed','tasks','readiness','mock','trail','labs']},
+    practice:{label:'Practice & remediation report',title:'RPSGT Practice & Remediation Report',sections:['snapshot','domain','trend','plan','missed','tasks']},
+    readiness:{label:'Readiness report',title:'RPSGT Readiness Check Report',sections:['snapshot','domain','plan','missed','readiness']},
+    mock:{label:'175-question Mock report',title:'RPSGT 175-Question Mock Report',sections:['snapshot','domain','plan','missed','mock']},
+    guided:{label:'Guided Study & Skills Report',title:'RPSGT Guided Study & Skills Report',sections:['snapshot','domain','plan','missed','trail','labs']}
   };
   async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   async function loadStudySources(){
@@ -50,13 +51,56 @@
     const allowed=new Set(profile.sections);$all('[data-report-section]').forEach(section=>{section.hidden=!allowed.has(section.dataset.reportSection);});
     const title=$('[data-summary-title]');if(title)title.textContent=profile.title;
     const label=$('[data-summary-report-label]');if(label)label.textContent=profile.label;
-    if(state.summary)document.title=profile.label+' · '+new Date(state.summary.generatedAt).toLocaleDateString();
+    if(state.summary){document.title=profile.label+' · '+new Date(state.summary.generatedAt).toLocaleDateString();renderMissedReview();}
   }
   function rebuild(){
-    state.summary=engine.buildSummary({saved:state.saved,blueprint:state.blueprint,questionIndex:state.index,catalog:state.catalog,studySources:state.studySources,includeLearnerName:includeName(),generatedAt:new Date().toISOString()});
+    state.summary=engine.buildSummary({saved:state.saved,blueprint:state.blueprint,questionIndex:state.index,catalog:state.catalog,studySources:state.studySources,trailDefinition:state.trailDefinition,includeLearnerName:includeName(),generatedAt:new Date().toISOString()});
+    state.summary.missedQuestionReview=state.missedReview||{items:[],requested:0,unresolved:0};
+    state.summary.privacy.containsQuestionText=Boolean(state.summary.missedQuestionReview.items.length);
+    state.summary.privacy.containsAnswerText=Boolean(state.summary.missedQuestionReview.items.length);
+    state.summary.privacy.containsRationales=Boolean(state.summary.missedQuestionReview.items.length);
     state.insights=insightsEngine.build(state.saved,state.blueprint);render();
   }
   function statusLabel(item){return item.completed?'Completed':item.started?'Started':'Not started';}
+  const modeByProfile={practice:['Practice','Missed review'],readiness:['Readiness'],mock:['Mock'],guided:['Guided Study'],full:null};
+  function visibleQuestions(){
+    const entries=state.summary&&state.summary.missedQuestionReview&&state.summary.missedQuestionReview.items||[];
+    const allowed=modeByProfile[state.profile];
+    return allowed?entries.filter(row=>row.modes.some(mode=>allowed.includes(mode))):entries;
+  }
+  function renderMissedReview(){
+    const host=$('[data-summary-missed]');if(!host||!state.summary)return;
+    const review=state.summary.missedQuestionReview||{items:[],unresolved:0,requested:0};
+    const rows=visibleQuestions().slice().sort((a,b)=>{
+      const priority=(state.summary.studyPlan||[]).map(p=>p.taskCode);
+      const aRank=priority.indexOf(a.taskCode),bRank=priority.indexOf(b.taskCode);
+      return (aRank<0?999:aRank)-(bRank<0?999:bRank)||String(a.taskCode).localeCompare(String(b.taskCode))||String(a.questionId).localeCompare(String(b.questionId));
+    });
+    if(!rows.length){host.innerHTML='<div class="summary-empty">No missed-question responses have been recorded for this report yet.</div>';return;}
+    host.innerHTML='<p class="summary-section-note">'+rows.length+' distinct missed question'+(rows.length===1?'':'s')+' in this report, grouped by weak BRPT task. The selected answer is shown only when it was saved in the original attempt; older results may not have retained it.</p>'+
+      rows.map((q,index)=>'<article class="summary-missed-item"><div class="summary-missed-heading"><strong>'+(index+1)+'. '+esc(q.domain)+' · '+esc(q.taskCode)+' · '+esc(q.taskTitle||'BRPT task')+'</strong><small>'+q.modes.map(esc).join(' · ')+(q.topic?' · '+esc(q.topic):'')+'</small></div>'+
+      '<p class="summary-missed-prompt">'+esc(q.question)+'</p><ol class="summary-missed-options" type="A">'+q.options.map(option=>'<li class="'+(option===q.correctAnswer?'is-correct':option===q.selectedAnswer?'is-selected':'')+'">'+esc(option)+'</li>').join('')+'</ol>'+
+      '<p><strong>Your answer:</strong> '+(q.selectedAnswer==null?'Not retained in the saved attempt':esc(q.selectedAnswer))+'</p><p><strong>Correct answer:</strong> '+esc(q.correctAnswer)+'</p>'+
+      '<div class="summary-missed-reason"><strong>Why:</strong> '+esc(q.rationale)+'</div>'+
+      '<p class="summary-missed-ref">Study guidance for '+esc(q.taskCode)+': '+
+      ((state.summary.studyPlan||[]).some(item=>item.taskCode===q.taskCode)?
+        '<a href="#summary-plan-'+esc(q.taskCode)+'">View recommended books, chapters, and available printed pages for this task ↑</a>':
+        'Review the BRPT task reference list; no top-five study prescription has been generated for this task.')+
+      '</p></article>').join('')+
+      (state.profile==='full'&&review.unresolved?'<p class="summary-section-note">'+review.unresolved+' older missed record'+(review.unresolved===1?'':'s')+' could not be reconstructed from the approved current question bank. No answer was inferred.</p>':'');
+  }
+  function exportSummary(){
+    const src=state.summary,allowed=modeByProfile[state.profile];
+    if(!allowed)return src;
+    return {...src,missedQuestionReview:{...src.missedQuestionReview,items:visibleQuestions()}};
+  }
+  async function loadMissedQuestions(){
+    if(!questionReviewEngine)throw new Error('The missed-question review module is unavailable.');
+    const codes=questionReviewEngine.taskCodes(state.saved,state.index);
+    const modules=await Promise.all(codes.map(code=>loadJson('data/question-bank/'+code.toLowerCase()+'.json')));
+    state.missedReview=questionReviewEngine.build(state.saved,state.index,modules.flatMap(module=>module.questions||[]),state.blueprint);
+  }
+
   function renderSnapshot(summary){
     const s=summary.snapshot;const cards=[['Practice answered',s.practiceAnswered],['Practice accuracy',s.practiceAccuracy+'%'],['Missed queue',s.missedCount],['Mastered queue',s.masteredCount],['Readiness attempts',s.readinessAttempts],['Mock attempts',s.mockAttempts],['Trail awards',s.trailTaskAwards+s.trailDomainAwards],['Labs completed',s.labsCompleted+' / '+s.labsTotal]];
     $('[data-summary-snapshot]').innerHTML=cards.map(card=>'<article class="summary-stat"><span>'+esc(card[0])+'</span><strong>'+esc(card[1])+'</strong></article>').join('');
@@ -82,9 +126,33 @@
   }
   function resourceHtml(item){
     if(!item.resources||!item.resources.length)return '<div class="summary-resource-empty">No related section-level reference is available for this priority yet.</div>';
-    return '<div class="summary-resource-route"><strong>Related study resources</strong><p class="summary-resource-note">Selected from your question interactions and weak-task evidence. Current official sources are listed before supporting texts when available.</p>'+item.resources.map((group,index)=>'<div class="summary-resource-group"><div><span class="summary-resource-order">'+(index+1)+'</span><div><strong>'+esc(sourceApa(group))+'</strong><small>'+esc(group.sourceType)+(group.bestFor?' · '+esc(group.bestFor):'')+'</small></div></div><ul>'+group.sections.map(section=>'<li>'+esc(section.label)+(section.reason?'<small>'+esc(section.reason)+'</small>':'')+'</li>').join('')+'</ul></div>').join('')+'</div>';
+    return '<div class="summary-resource-route"><strong>Related study resources — where to study: books, chapters, articles and guidelines</strong>'+
+      '<p class="summary-resource-note">Read the named chapter or section below. Question-linked and topic-linked recommendations come first; broad blueprint readings are labeled separately. APA-style citations use the verified library catalog. These locators are study directions, not copied source text.</p>'+
+      item.resources.map((group,index)=>'<div class="summary-resource-group"><div><span class="summary-resource-order">'+(index+1)+'</span><div>'+
+      '<strong>'+esc(sourceApa(group))+'</strong><small>'+esc(group.sourceType)+(group.bestFor?' · '+esc(group.bestFor):'')+'</small></div></div>'+
+      (group.sections.length?'<ul>'+group.sections.map(section=>'<li><strong>'+esc(section.label)+'</strong>'+(section.reason?'<small>'+esc(section.reason)+'</small>':'')+'</li>').join('')+'</ul>':'')+
+      (group.verifiedChapters&&group.verifiedChapters.length?'<div class="summary-verified-chapters"><strong>Verified 7th-edition chapter starting pages for '+esc(item.taskCode)+'</strong><ul>'+
+      group.verifiedChapters.map(chapter=>'<li><strong>Chapter '+esc(chapter.chapter)+': '+esc(chapter.label)+' — printed start p. '+esc(chapter.printedStartPage)+'</strong><small>'+esc(chapter.reason)+'</small></li>').join('')+'</ul></div>':'')+'</div>').join('')+'</div>';
   }
-  function renderPlan(summary){const host=$('[data-summary-plan]');host.innerHTML=summary.studyPlan.length?summary.studyPlan.map((item,index)=>'<article class="summary-plan-item"><span class="summary-rank">'+(index+1)+'</span><div><h3>'+esc(item.taskCode)+' · '+esc(item.title)+'</h3><p>'+esc(item.practiceCorrect)+' / '+esc(item.practiceAnswered)+' practice correct · '+esc(item.practiceAccuracy)+'% · '+esc(item.missed)+' currently missed</p>'+(item.topics.length?'<p><strong>Interaction signals:</strong> '+item.topics.map(topic=>esc(topic.label)+' (evidence '+esc(topic.count)+')').join(', ')+'</p>':'')+'<p><strong>Next move:</strong> '+esc(item.nextAction)+'</p>'+resourceHtml(item)+'</div></article>').join(''):'<div class="summary-empty">Complete Practice, Readiness, or Mock work to generate a prioritized study plan.</div>';}
+  function renderPlan(summary){
+    const host=$('[data-summary-plan]');
+    const domains=Array.isArray(summary.weakDomains)?summary.weakDomains:[];
+    const domainHtml=domains.length?'<div class="summary-weak-domains"><h3>Weakest BRPT domains</h3>'+
+      '<div class="summary-weak-domain-grid">'+domains.map((domain,index)=>
+        '<div><strong>'+(index+1)+'. '+esc(domain.domain)+' · '+esc(domain.title)+'</strong>'+
+        '<small>Review '+domain.focusTasks.map(task=>esc(task.code)+' · '+esc(task.title)).join('; ')+'</small></div>'
+      ).join('')+'</div></div>':'';
+    host.innerHTML=summary.studyPlan.length?'<p class="summary-section-note">Study priority is based on missed items, recorded Practice accuracy, the latest Guided Study checkpoint, and weak-task findings from Readiness and Mock. These are learning priorities, not exam-score predictions.</p>'+
+      domainHtml+
+      summary.studyPlan.map((item,index)=>'<article class="summary-plan-item" id="summary-plan-'+esc(item.taskCode)+'"><span class="summary-rank">'+(index+1)+'</span><div>'+
+      '<h3>'+esc(item.domain)+' · '+esc(item.taskCode)+' · '+esc(item.title)+'</h3>'+
+      '<p><strong>Priority:</strong> '+(index===0?'Study this first':'Study after higher-priority needs')+'</p>'+
+      (item.evidence.length?'<p><strong>Why this needs review:</strong> '+item.evidence.map(esc).join('; ')+'</p>':'')+
+      (item.topics.length?'<p><strong>Focus on these missed topics:</strong> '+item.topics.map(topic=>esc(topic.label)).join('; ')+'</p>':'')+
+      '<p><strong>After reviewing:</strong> '+esc(item.nextAction||'Return to focused questions for this task and check improvement.')+'</p>'+
+      resourceHtml(item)+'</div></article>').join(''):
+      '<div class="summary-empty">No weak-area evidence is recorded yet. Complete Practice or a Guided Study checkpoint to create a source-specific study plan.</div>';
+  }
   function renderTasks(summary){const host=$('[data-summary-tasks]');host.innerHTML='<table><thead><tr><th>Task</th><th>Practice</th><th>Accuracy</th><th>Missed</th><th>Mastered</th></tr></thead><tbody>'+summary.practice.tasks.map(task=>'<tr><td><strong>'+esc(task.code)+'</strong><span>'+esc(task.title)+'</span></td><td>'+esc(task.correct)+' / '+esc(task.answered)+'</td><td>'+esc(task.accuracy)+'%</td><td>'+esc(task.missed)+'</td><td>'+esc(task.mastered)+'</td></tr>').join('')+'</tbody></table>';}
   function diagnosticCard(title,record,type){
     if(!record)return '<article class="summary-diagnostic"><h3>'+esc(title)+'</h3><p>No completed attempt is saved.</p></article>';
@@ -101,8 +169,58 @@
     const host=$('[data-summary-mock-history]');const rows=summary.mock.history.slice().reverse().slice(0,8);
     host.innerHTML=rows.length?'<h3 class="summary-history-title">Recent Mock history</h3><table class="summary-history-table"><thead><tr><th>Date</th><th>Scored</th><th>Answered</th><th>Timing</th></tr></thead><tbody>'+rows.map(row=>'<tr><td>'+esc(formatShortDate(row.completedAt))+'</td><td>'+esc(row.scoredPercent)+'%</td><td>'+esc(row.answeredTotal)+' / 175</td><td>'+(row.timed?esc(formatDuration(row.elapsedMs)):'Untimed')+'</td></tr>').join('')+'</tbody></table>':'<div class="summary-history-empty">No completed Mock history is saved.</div>';
   }
-  function renderTrail(summary){const host=$('[data-summary-trail]');host.innerHTML='<div class="summary-mini-grid"><div><span>Study marks</span><strong>'+esc(summary.guidedTrail.counts.studyMarks)+'</strong></div><div><span>Task awards</span><strong>'+esc(summary.guidedTrail.counts.taskAwards)+'</strong></div><div><span>Domain awards</span><strong>'+esc(summary.guidedTrail.counts.domainAwards)+'</strong></div><div><span>Checkpoints</span><strong>'+esc(summary.guidedTrail.counts.checkpoints)+'</strong></div></div><div class="summary-domain-list">'+summary.guidedTrail.domains.map(domain=>'<div><strong>'+esc(domain.domain)+' · '+esc(domain.title)+'</strong><span>'+esc(domain.studyMarked)+' / '+esc(domain.taskCount)+' studied · '+esc(domain.taskAwards)+' task awards'+(domain.domainAwardEarned?' · domain award earned':'')+'</span></div>').join('')+'</div>';}
-  function renderLabs(summary){const host=$('[data-summary-labs]');host.innerHTML='<div class="summary-lab-list">'+summary.labs.rows.map(lab=>'<div><span class="summary-check '+(lab.completed?'done':lab.started?'started':'')+'">'+(lab.completed?'✓':lab.started?'•':'○')+'</span><div><strong>'+esc(lab.title)+'</strong><small>'+esc(statusLabel(lab))+' · '+esc(lab.taskCodes.join(', '))+(lab.attempts?' · '+esc(lab.attempts)+' attempts':'')+'</small></div></div>').join('')+'</div>';}
+  // Print-friendly, learner-owned task and skills record. No mentor signature.
+  function reportStatus(completed,started){
+    return completed?'Completed':started?'In progress':'Not started';
+  }
+  function renderTrail(summary){
+    const host=$('[data-summary-trail]');const trail=summary.guidedTrail;
+    host.innerHTML='<div class="summary-mini-grid">'+[
+      ['Tasks studied',trail.counts.studyMarks+' / '+trail.rows.length],
+      ['Task badges',trail.counts.taskAwards+' / '+trail.rows.length],
+      ['Domains earned',trail.counts.domainAwards+' / '+trail.domains.length],
+      ['Checkpoints',trail.counts.checkpoints]
+    ].map(row=>'<div><span>'+esc(row[0])+'</span><strong>'+esc(row[1])+'</strong></div>').join('')+'</div>'+
+    '<p class="summary-section-note">Learner progress is recorded from study activity and scored checkpoints. Study marks and badges are different evidence; no mentor sign-off is required.</p>'+
+    '<div class="summary-guided-domains">'+trail.domains.map(domain=>{
+      const tasks=trail.rows.filter(row=>row.domain===domain.domain);
+      return '<section class="summary-guided-domain"><h3>'+esc(domain.domain)+' · '+esc(domain.title)+
+        '<small>'+esc(domain.studyMarked)+'/'+esc(domain.taskCount)+' studied · '+esc(domain.taskAwards)+' badges'+(domain.domainAwardEarned?' · Domain earned':'')+'</small></h3>'+
+        '<div class="summary-report-table-scroll"><table class="summary-competency-table"><thead><tr><th>Task</th><th>Study</th><th>Checkpoint</th><th>Status</th></tr></thead><tbody>'+
+          tasks.map(task=>{
+            const latest=task.latestCheckpoint;
+            const checkpoint=latest?esc(latest.percent)+'% ('+esc(latest.correct)+'/'+esc(latest.total)+') · '+esc(task.checkpointCount)+' attempt'+(task.checkpointCount===1?'':'s'):'Not attempted';
+            const status=task.awardEarned?'Badge earned':task.studyMarked?'Study recorded':'Not started';
+            return '<tr><th scope="row"><strong>'+esc(task.taskCode)+'</strong><span>'+esc(task.title)+'</span></th>'+
+              '<td>'+esc(task.studyMarked?'Studied':'Pending')+'</td><td>'+checkpoint+'</td><td>'+esc(status)+'</td></tr>';
+          }).join('')+'</tbody></table></div></section>';
+    }).join('')+'</div>'+
+    (trail.respiratoryPath&&trail.respiratoryPath.length?'<section class="summary-guided-pathway"><h3>Respiratory / PAP Guided Pathway</h3>'+
+      '<p>Learn → Apply → Check completion is recorded for each lesson. The next chapter requires a passing concept checkpoint.</p>'+
+      '<div class="summary-pathway-rows">'+trail.respiratoryPath.map((step,index)=>{
+        const stage=step.completed?'Chapter completed':step.checkpointPassed?'Checkpoint passed':step.stage;
+        return '<div class="summary-pathway-row"><span class="summary-pathway-number">'+(index+1)+'</span><div><strong>'+esc(step.title)+'</strong><small>'+esc(step.taskCode)+' · '+esc(stage)+'</small></div>'+
+          '<div class="summary-pathway-steps"><span class="'+(step.learnComplete?'done':'')+'">Learn '+(step.learnComplete?'✓':'○')+'</span><span class="'+(step.applyComplete?'done':'')+'">Apply '+(step.applyComplete?'✓':'○')+'</span><span class="'+(step.checkpointPassed?'done':'')+'">Check '+(step.checkpointPassed?'✓':'○')+'</span></div></div>';
+      }).join('')+'</div></section>':'');
+  }
+  function renderLabs(summary){
+    const host=$('[data-summary-labs]'),labs=summary.labs;
+    host.innerHTML='<div class="summary-mini-grid">'+[
+      ['Labs completed',labs.counts.completed+' / '+labs.counts.total],
+      ['In progress',labs.counts.started],
+      ['Not started',labs.counts.total-labs.counts.completed-labs.counts.started]
+    ].map(row=>'<div><span>'+esc(row[0])+'</span><strong>'+esc(row[1])+'</strong></div>').join('')+'</div>'+
+      '<p class="summary-section-note">Skills evidence comes from activity saved by each laboratory. This educational skills report is self-directed and does not require mentor approval or signing.</p>'+
+      '<div class="summary-report-table-scroll"><table class="summary-competency-table summary-skills-table"><thead><tr><th>Skill / lab</th><th>Blueprint</th><th>Activity</th><th>Status</th></tr></thead><tbody>'+
+      labs.rows.map(lab=>{
+        const attempts=lab.attempts?esc(lab.attempts)+' recorded checkpoint attempt'+(lab.attempts===1?'':'s'):'No recorded checkpoint';
+        const score=lab.lastPercent!==null?' · '+esc(lab.lastPercent)+'% recorded':'';
+        return '<tr><th scope="row"><strong>'+esc(lab.title)+'</strong>'+
+          (lab.href?'<small class="no-print"><a href="'+esc(lab.href)+'">Open lab →</a></small>':'')+
+          '</th><td>'+esc(lab.taskCodes.join(', '))+'</td><td>'+attempts+score+'</td><td>'+
+          esc(reportStatus(lab.completed,lab.started))+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  }
   function renderActivity(){
     const host=$('[data-summary-activity]');if(!host)return;const activity=state.insights&&state.insights.activity;
     if(!activity||!activity.firstAt){host.textContent='Not recorded';return;}
@@ -114,7 +232,7 @@
     $('[data-summary-name]').textContent=summary.learner.displayName||'Learner name omitted';
     $('[data-summary-name]').classList.toggle('muted',!summary.learner.displayName);
     renderActivity();renderSnapshot(summary);renderDomainEvidence();renderPracticeTrend();renderPlan(summary);renderTasks(summary);renderReadiness(summary);renderMock(summary);renderTrail(summary);renderLabs(summary);
-    $('[data-summary-privacy]').textContent=summary.privacy.learnerNameIncluded?'Learner name included by choice. Notes, searches, question text, answer text, rationales, private links, and raw browser state remain excluded.':'Learner name omitted. Notes, searches, question text, answer text, rationales, private links, and raw browser state are excluded.';
+    renderMissedReview();
     applyProfile();
   }
   function filename(extension){const stamp=new Date().toISOString().slice(0,10);return 'rpsgt-'+state.profile+'-report-'+stamp+'.'+extension;}
@@ -123,15 +241,15 @@
     $('[data-summary-include-name]').addEventListener('change',rebuild);
     $('[data-summary-report-type]').addEventListener('change',event=>setProfile(event.target.value,true));
     $('[data-summary-print]').addEventListener('click',()=>window.print());
-    $('[data-summary-json]').addEventListener('click',()=>download(JSON.stringify({...state.summary,reportProfile:state.profile,reportLabel:PROFILES[state.profile].label},null,2)+'\n','application/json',filename('json')));
-    $('[data-summary-csv]').addEventListener('click',()=>download(engine.toCsv(state.summary),'text/csv;charset=utf-8',filename('csv')));
+    $('[data-summary-json]').addEventListener('click',()=>download(JSON.stringify({...exportSummary(),reportProfile:state.profile,reportLabel:PROFILES[state.profile].label},null,2)+'\n','application/json',filename('json')));
+    $('[data-summary-csv]').addEventListener('click',()=>download(engine.toCsv(exportSummary()),'text/csv;charset=utf-8',filename('csv')));
   }
   function showError(error){const host=$('[data-summary-load]');host.className='summary-notice error';host.textContent='The study summary could not be loaded. '+error.message;}
   async function init(){try{
     if(!window.RPSGTStorage||!engine||!insightsEngine)throw new Error('A required summary module is unavailable.');
     state.profile=profileFromUrl();
-    [state.blueprint,state.index,state.catalog,state.studySources]=await Promise.all([loadJson('data/blueprint.json'),loadJson('data/question-bank/feedback-index.json'),loadJson('data/labs/catalog.json'),loadStudySources()]);
-    state.saved=window.RPSGTStorage.load();bind();setProfile(state.profile,false);rebuild();$('[data-summary-load]').hidden=true;$('[data-summary-content]').hidden=false;
+    [state.blueprint,state.index,state.catalog,state.studySources,state.trailDefinition]=await Promise.all([loadJson('data/blueprint.json'),loadJson('data/question-bank/feedback-index.json'),loadJson('data/labs/catalog.json'),loadStudySources(),loadJson('data/learner-trails/respiratory-pap.json')]);
+    state.saved=window.RPSGTStorage.load();await loadMissedQuestions();bind();setProfile(state.profile,false);rebuild();$('[data-summary-load]').hidden=true;$('[data-summary-content]').hidden=false;
   }catch(error){showError(error);}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

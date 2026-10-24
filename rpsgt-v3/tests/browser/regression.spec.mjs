@@ -201,8 +201,12 @@ test('Readiness starts at the requested size and can end without entering Practi
   await expect(page.locator('[data-readiness-shell]')).toBeVisible();
   await expect(page.locator('[data-session-size]')).toHaveText('25');
   await expect(page.locator('[data-question-prompt]')).not.toBeEmpty();
+  page.once('dialog',dialog=>dialog.accept());
   await page.locator('[data-quit-readiness]').click();
-  await expect(page.locator('[data-readiness-results]')).toBeVisible();
+  await expect(page.locator('[data-readiness-home]')).toBeVisible();
+  await expect(page.locator('[data-readiness-results]')).toBeHidden();
+  const history=await page.evaluate(()=>window.RPSGTStorage.load().readiness.history);
+  expect(history).toHaveLength(0);
 });
 
 test('Mock builds 175 questions, saves, reloads, and resumes', async ({ page }) => {

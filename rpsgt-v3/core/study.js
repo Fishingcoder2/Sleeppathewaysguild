@@ -29,7 +29,15 @@
   const taskFile=code=>'data/question-bank/'+String(code).toLowerCase()+'.json';
   const badgeQuestionCount=()=>Number(engine&&engine.BADGE_QUESTION_COUNT)||15;
   async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
-  function saveTrail(next){state.saved.guidedStudy=next;state.saved=window.RPSGTStorage.save(state.saved);state.trail=engine.summary(state.saved.guidedStudy,state.blueprint);}
+  function saveTrail(next){
+    // Checkpoint and task engines return normalized Guided Study state. Preserve
+    // course-specific stage markers and any other saved properties on every write.
+    const latest=window.RPSGTStorage.load();
+    const prior=latest&&latest.guidedStudy&&typeof latest.guidedStudy==='object'?latest.guidedStudy:{};
+    state.saved={...latest,guidedStudy:{...prior,...next}};
+    state.saved=window.RPSGTStorage.save(state.saved);
+    state.trail=engine.summary(state.saved.guidedStudy,state.blueprint);
+  }
   function taskCard(task){
     const row=state.trail.rows.find(item=>item.code===task.code)||{};
     const targets=(task.studyTargets||[]).map((target,index)=>`<li><span>${index+1}</span><p>${esc(target)}</p></li>`).join('');
@@ -149,12 +157,15 @@
   }
   function closeCheckpoint(){
     if(state.achievementOpen) closeAchievement();
+    const finished=state.checkpoint&&state.checkpoint.submitted?state.checkpoint.record:null;
     state.checkpoint=null;
     if(checkpointOverlay) checkpointOverlay.hidden=true;
     if(checkpointHost) checkpointHost.innerHTML='';
     document.body.classList.remove('checkpoint-open');
     if(state.returnFocus&&typeof state.returnFocus.focus==='function') state.returnFocus.focus({preventScroll:true});
     state.returnFocus=null;
+    // Progression happens only after the learner has had a chance to review the score and rationale.
+    if(finished) document.dispatchEvent(new CustomEvent('rpsgt:checkpoint-closed',{detail:{record:finished}}));
   }
   async function startCheckpoint(taskCode,trigger){
     const task=engine.taskMap(state.blueprint).get(taskCode);
@@ -210,9 +221,14 @@
       renderCheckpoint();
       return;
     }
-    const before=engine.normalizeState(state.saved.guidedStudy);
+    const latestGuided=window.RPSGTStorage.load().guidedStudy;
+    const before=engine.normalizeState(latestGuided);
     const record=engine.gradeCheckpoint({taskCode:state.checkpoint.taskCode,conceptId:state.checkpoint.conceptId,conceptLabel:state.checkpoint.conceptLabel,questions:state.checkpoint.questions,answers:state.checkpoint.answers,completedAt:new Date().toISOString()});
-    const next=engine.applyCheckpoint(state.saved.guidedStudy,record,state.blueprint);
+    const diversity=window.RPSGTGuidedQuestionDiversity;
+    if(diversity&&typeof diversity.familyKey==='function'){
+      record.questionFamilyKeys=state.checkpoint.questions.map(question=>diversity.familyKey(question.prompt));
+    }
+    const next=engine.applyCheckpoint(latestGuided,record,state.blueprint);
     const after=engine.normalizeState(next);
     const taskEarned=Boolean(record.passed&&!before.trailAwards.tasks[record.task]&&after.trailAwards.tasks[record.task]);
     const domainEarned=Boolean(record.domain&&!before.trailAwards.domains[record.domain]&&after.trailAwards.domains[record.domain]);
@@ -239,7 +255,7 @@
     if(event.target.closest('[data-achievement-close]')){closeAchievement();return;}
     if(event.target===achievementOverlay&&state.achievementOpen){closeAchievement();return;}
     if(state.achievementOpen) return;
-    const mark=event.target.closest('[data-trail-mark]');if(mark){saveTrail(engine.markTaskStudy(state.saved.guidedStudy,mark.dataset.trailMark,new Date().toISOString()));renderMap();return;}
+    const mark=event.target.closest('[data-trail-mark]');if(mark){saveTrail(engine.markTaskStudy(window.RPSGTStorage.load().guidedStudy,mark.dataset.trailMark,new Date().toISOString()));renderMap();return;}
     const start=event.target.closest('[data-checkpoint-start]');if(start){startCheckpoint(start.dataset.checkpointStart,start);return;}
     if(event.target.closest('[data-checkpoint-cancel]')){closeCheckpoint();return;}
     if(event.target.closest('[data-checkpoint-prev]')){moveCheckpoint(-1);return;}

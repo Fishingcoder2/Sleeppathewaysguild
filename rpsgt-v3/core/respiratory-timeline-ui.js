@@ -9,7 +9,7 @@
   const ROWS={eeg:72,nasal:140,thermal:208,thorax:276,abdomen:344,spo2:416};
   const LABELS={eeg:'EEG',nasal:'Nasal pressure',thermal:'Thermistor',thorax:'Thorax',abdomen:'Abdomen',spo2:'SpO₂'};
   const PLOT={left:142,right:974};
-  const state={mode:'long',longId:'cheyne-stokes',evidenceIndex:0,taskIndex:0,feedback:null,reveal:false,solved:false,correct:0,misses:0,completed:false};
+  const state={mode:'long',longId:'cheyne-stokes',evidenceIndex:0,taskIndex:0,feedback:null,reveal:false,solved:false,correct:0,misses:0,completed:false,pageSeconds:{long:300,evidence:150},pageStart:{long:0,evidence:0}};
   const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
   const TAU=Math.PI*2;
@@ -17,6 +17,50 @@
   function formatTime(seconds){
     const value=Math.max(0,Math.round(Number(seconds)||0));
     return Math.floor(value/60)+':'+String(value%60).padStart(2,'0');
+  }
+
+  function pageDuration(){return state.mode==='long'?engine.LONG_DURATION:engine.EVIDENCE_DURATION;}
+  function pageStarts(duration,span){
+    const starts=[];
+    for(let offset=0;offset<duration;offset+=span) starts.push(Math.min(offset,duration-span));
+    return [...new Set(starts)];
+  }
+  function currentPage(){
+    const duration=pageDuration();
+    const requested=Number(state.pageSeconds[state.mode]);
+    const span=[30,60,duration].includes(requested)?requested:duration;
+    const starts=pageStarts(duration,span);
+    const saved=Number(state.pageStart[state.mode])||0;
+    const start=starts.reduce((chosen,candidate)=>candidate<=saved?candidate:chosen,starts[0]);
+    return {duration,span,start,end:start+span,starts,index:starts.indexOf(start)};
+  }
+  function pageToolbar(page){
+    const options=[[30,'30 sec · epoch','1'],[60,'60 sec','2'],[page.duration,'Full trace','3']];
+    const lengths=options.map(([seconds,label,key])=>`<button type="button" class="resp-page-length ${page.span===seconds?'active':''}" data-resp-page-span="${seconds}" aria-pressed="${page.span===seconds?'true':'false'}"><kbd>${key}</kbd> ${label}</button>`).join('');
+    return `<div class="resp-page-toolbar" aria-label="Tracing page time controls"><div class="resp-page-topline"><div><strong>Page time</strong><p>Change the visible tracing interval without submitting an answer.</p></div><div class="resp-page-shortcuts"><strong>Keyboard shortcuts</strong><span><kbd>1</kbd> 30 s · <kbd>2</kbd> 60 s · <kbd>3</kbd> Full trace</span><span><kbd>←</kbd> <kbd>→</kbd> Move pages · <kbd>Home</kbd> / <kbd>End</kbd> First / last</span></div></div><div class="resp-page-actions"><div class="resp-page-lengths" role="group" aria-label="Seconds per page">${lengths}</div><div class="resp-page-step"><button type="button" class="btn secondary" data-resp-page-prev ${page.index===0?'disabled':''}>← Previous page</button><button type="button" class="btn secondary" data-resp-page-next ${page.index===page.starts.length-1?'disabled':''}>Next page →</button></div></div><p class="resp-page-status" tabindex="0" data-resp-page-viewport aria-label="Visible trace ${formatTime(page.start)} to ${formatTime(page.end)}, page ${page.index+1} of ${page.starts.length}">Showing <strong>${formatTime(page.start)}–${formatTime(page.end)}</strong> · Page ${page.index+1} of ${page.starts.length}. Focus the tracing or time controls for shortcuts.</p></div>`;
+  }
+  function focusPageControls(){
+    const summary=host.querySelector('[data-resp-page-viewport]');
+    if(summary) summary.focus({preventScroll:true});
+  }
+  function setPageSpan(seconds){
+    const duration=pageDuration();
+    if(![30,60,duration].includes(seconds)) return;
+    state.pageSeconds[state.mode]=seconds;
+    state.pageStart[state.mode]=currentPage().start;
+    render();focusPageControls();
+  }
+  function movePage(direction){
+    const page=currentPage();
+    const next=clamp(page.index+direction,0,page.starts.length-1);
+    if(next===page.index) return;
+    state.pageStart[state.mode]=page.starts[next];
+    render();focusPageControls();
+  }
+  function jumpPage(toEnd){
+    const page=currentPage();
+    state.pageStart[state.mode]=page.starts[toEnd?page.starts.length-1:0];
+    render();focusPageControls();
   }
   function breath(t,phase){return Math.sin(TAU*t/4+(phase||0));}
   function eventContains(event,t){return Boolean(event)&&t>=event.start&&t<=event.end;}
@@ -148,14 +192,14 @@
     return 97-delayedDrop(t,def.event,depth);
   }
 
-  function samplePath(def,channel,duration){
-    if(channel==='spo2') return spo2Path(def,duration);
+  function samplePath(def,channel,duration,start=0,span=duration){
+    if(channel==='spo2') return spo2Path(def,duration,start,span);
     const count=duration===300?920:620;
     const row=ROWS[channel];
     const scale={eeg:3.8,nasal:19,thermal:16,thorax:17,abdomen:17}[channel]||15;
     const parts=[];
     for(let index=0;index<count;index+=1){
-      const t=duration*index/(count-1);
+      const t=start+span*index/(count-1);
       const x=PLOT.left+(PLOT.right-PLOT.left)*index/(count-1);
       const value=duration===300?longSignal(def,channel,t):eventSignal(def,channel,t);
       parts.push(`${index?'L':'M'}${x.toFixed(1)},${(row-value*scale).toFixed(1)}`);
@@ -163,11 +207,11 @@
     return parts.join(' ');
   }
 
-  function spo2Path(def,duration){
+  function spo2Path(def,duration,start=0,span=duration){
     const parts=[];
     const count=duration===300?500:300;
     for(let index=0;index<count;index+=1){
-      const t=duration*index/(count-1);
+      const t=start+span*index/(count-1);
       const x=PLOT.left+(PLOT.right-PLOT.left)*index/(count-1);
       const sat=spo2Percent(def,t);
       const y=ROWS.spo2+(97-sat)*5.2;
@@ -176,48 +220,52 @@
     return parts.join(' ');
   }
 
-  function oxygenLabels(def,duration){
-    return engine.timelineTicks(duration,30).map(seconds=>{
-      const x=PLOT.left+(PLOT.right-PLOT.left)*(seconds/duration);
+  function oxygenLabels(def,duration,start=0,span=duration){
+    return engine.timelineTicks(duration,30).filter(seconds=>seconds>=start&&seconds<=start+span).map(seconds=>{
+      const x=PLOT.left+(PLOT.right-PLOT.left)*((seconds-start)/span);
       const sat=Math.round(spo2Percent(def,seconds));
       return `<text class="resp-timeline-spo2-number" x="${x.toFixed(1)}" y="${ROWS.spo2-15}" text-anchor="middle">${sat}</text>`;
     }).join('');
   }
 
-  function ruler(duration){
-    return engine.timelineTicks(duration,30).map(seconds=>{
-      const x=PLOT.left+(PLOT.right-PLOT.left)*(seconds/duration);
+  function ruler(duration,start=0,span=duration){
+    return engine.timelineTicks(duration,30).filter(seconds=>seconds>=start&&seconds<=start+span).map(seconds=>{
+      const x=PLOT.left+(PLOT.right-PLOT.left)*((seconds-start)/span);
       return `<g class="resp-timeline-tick"><line x1="${x.toFixed(1)}" y1="454" x2="${x.toFixed(1)}" y2="462"></line><text x="${x.toFixed(1)}" y="482" text-anchor="middle">${formatTime(seconds)}</text></g>`;
     }).join('');
   }
 
-  function eventShading(def,duration){
+  function eventShading(def,duration,start=0,span=duration){
     const windows=[];
     if(duration===300&&def.kind==='recurrent-obstructive') windows.push(...[[42,68],[106,132],[170,196],[234,260]]);
     if(duration===300&&def.kind==='recurrent-central') windows.push(...[[48,72],[116,140],[184,208],[250,274]]);
     if(duration===150&&def.event) windows.push([def.event.start,def.event.end]);
     return windows.map(pair=>{
-      const x=PLOT.left+(PLOT.right-PLOT.left)*(pair[0]/duration);
-      const width=(PLOT.right-PLOT.left)*((pair[1]-pair[0])/duration);
+      const visibleStart=Math.max(start,pair[0]),visibleEnd=Math.min(start+span,pair[1]);
+      if(visibleEnd<=visibleStart) return '';
+      const x=PLOT.left+(PLOT.right-PLOT.left)*((visibleStart-start)/span);
+      const width=(PLOT.right-PLOT.left)*((visibleEnd-visibleStart)/span);
       return `<rect class="resp-timeline-event-window" x="${x.toFixed(1)}" y="38" width="${width.toFixed(1)}" height="402" rx="8"></rect>`;
     }).join('');
   }
 
-  function targetHighlight(task,duration){
+  function targetHighlight(task,duration,start=0,span=duration){
     if(!task||(!state.reveal&&!state.solved)) return '';
-    const x=PLOT.left+(PLOT.right-PLOT.left)*(task.start/duration);
-    const width=(PLOT.right-PLOT.left)*((task.end-task.start)/duration);
+    const visibleStart=Math.max(start,task.start),visibleEnd=Math.min(start+span,task.end);
+    if(visibleEnd<=visibleStart) return '';
+    const x=PLOT.left+(PLOT.right-PLOT.left)*((visibleStart-start)/span);
+    const width=(PLOT.right-PLOT.left)*((visibleEnd-visibleStart)/span);
     const y=(ROWS[task.channel]||ROWS.nasal)-26;
     return `<g class="resp-evidence-highlight"><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${width.toFixed(1)}" height="52" rx="10"></rect><text x="${(x+width/2).toFixed(1)}" y="${(y-7).toFixed(1)}" text-anchor="middle">evidence</text></g>`;
   }
 
-  function traceSvg(def,duration,interactive,task){
-    const aria=interactive?'Interactive 2 minute 30 second respiratory teaching tracing. Click the requested waveform evidence.':`Original five-minute respiratory teaching schematic for ${def.title}.`;
+  function traceSvg(def,duration,interactive,task,start=0,span=duration){
+    const aria=(interactive?'Interactive respiratory teaching tracing. Click the requested waveform evidence.':`Original five-minute respiratory teaching schematic for ${def.title}.`)+` Viewing ${formatTime(start)} to ${formatTime(start+span)}.`;
     const guides=Object.entries(ROWS).map(([,y])=>`<line x1="${PLOT.left}" y1="${y}" x2="${PLOT.right}" y2="${y}"></line>`).join('');
     const labels=Object.entries(ROWS).map(([channel,y])=>`<text x="12" y="${y+5}">${LABELS[channel]}</text>`).join('');
-    const paths=['eeg','nasal','thermal','thorax','abdomen','spo2'].map(channel=>`<path class="resp-timeline-line ${channel}" d="${samplePath(def,channel,duration)}"></path>`).join('');
-    const arousal=duration===150&&def.pattern==='rera'&&def.arousal?(()=>{const x=PLOT.left+(PLOT.right-PLOT.left)*(((def.arousal.start+def.arousal.end)/2)/duration);return `<text class="resp-timeline-arousal-label" x="${x.toFixed(1)}" y="28" text-anchor="middle">arousal region</text>`;})():'';
-    return `<svg class="respiratory-timeline-trace ${interactive?'is-interactive':''}" viewBox="0 0 1000 495" role="img" aria-label="${esc(aria)}" ${interactive?'tabindex="0" data-respiratory-evidence-svg':''}>${eventShading(def,duration)}<g class="resp-timeline-guides">${guides}</g><g class="resp-timeline-labels">${labels}</g>${paths}${oxygenLabels(def,duration)}${targetHighlight(task,duration)}${arousal}<g class="resp-timeline-ruler">${ruler(duration)}</g></svg>`;
+    const paths=['eeg','nasal','thermal','thorax','abdomen','spo2'].map(channel=>`<path class="resp-timeline-line ${channel}" d="${samplePath(def,channel,duration,start,span)}"></path>`).join('');
+    const arousal=duration===150&&def.pattern==='rera'&&def.arousal?(()=>{const mid=(def.arousal.start+def.arousal.end)/2;if(mid<start||mid>start+span)return '';const x=PLOT.left+(PLOT.right-PLOT.left)*((mid-start)/span);return `<text class="resp-timeline-arousal-label" x="${x.toFixed(1)}" y="28" text-anchor="middle">arousal region</text>`;})():'';
+    return `<svg class="respiratory-timeline-trace ${interactive?'is-interactive':''}" viewBox="0 0 1000 495" role="img" aria-label="${esc(aria)}" ${interactive?'tabindex="0" data-respiratory-evidence-svg':''}>${eventShading(def,duration,start,span)}<g class="resp-timeline-guides">${guides}</g><g class="resp-timeline-labels">${labels}</g>${paths}${oxygenLabels(def,duration,start,span)}${targetHighlight(task,duration,start,span)}${arousal}<g class="resp-timeline-ruler">${ruler(duration,start,span)}</g></svg>`;
   }
 
   function renderModes(){
@@ -230,8 +278,9 @@
 
   function renderLong(){
     const def=engine.longCaseById(state.longId)||engine.LONG_CASES[0];
+    const page=currentPage();
     const selector=engine.LONG_CASES.map(item=>`<button type="button" class="resp-long-case-button ${item.id===def.id?'active':''}" data-resp-long-case="${esc(item.id)}" aria-pressed="${item.id===def.id?'true':'false'}"><strong>${esc(item.title)}</strong><span>${esc(item.cue)}</span></button>`).join('');
-    host.innerHTML=`<div class="resp-timeline-long-layout"><div class="resp-long-case-list" aria-label="Five-minute respiratory patterns">${selector}</div><div class="resp-timeline-panel"><div class="resp-timeline-panel-head"><div><span class="status gold">5-minute full-pattern view</span><h3>${esc(def.title)}</h3><p>${esc(def.cue)}</p></div><span class="resp-duration-badge">5:00</span></div>${traceSvg(def,300,false,null)}<div class="resp-timeline-teaching"><strong>What to notice</strong><p>${esc(def.teaching)}</p><p class="tiny">Teaching schematic only. Use current official scoring guidance for rule-sensitive clinical decisions.</p></div></div></div>`;
+    host.innerHTML=`<div class="resp-timeline-long-layout"><div class="resp-long-case-list" aria-label="Five-minute respiratory patterns">${selector}</div><div class="resp-timeline-panel"><div class="resp-timeline-panel-head"><div><span class="status gold">5-minute full-pattern view</span><h3>${esc(def.title)}</h3><p>${esc(def.cue)}</p></div><span class="resp-duration-badge">5:00</span></div>${pageToolbar(page)}${traceSvg(def,300,false,null,page.start,page.span)}<div class="resp-timeline-teaching"><strong>What to notice</strong><p>${esc(def.teaching)}</p><p class="tiny">Teaching schematic only. Use current official scoring guidance for rule-sensitive clinical decisions.</p></div></div></div>`;
   }
 
   function currentEvidence(){return engine.EVIDENCE_CASES[state.evidenceIndex]||null;}
@@ -258,10 +307,11 @@
     const item=currentEvidence();
     const task=currentTask();
     if(!item||!task) return;
+    const page=currentPage();
     const progress=completedBefore()+1;
     const total=totalEvidenceTasks();
     const feedback=state.feedback?`<div class="resp-evidence-feedback ${state.solved?'correct':'retry'}" role="status" aria-live="polite"><strong>${state.solved?'Evidence found':'Try again'}</strong><p>${esc(state.feedback)}</p></div>`:'';
-    host.innerHTML=`<div class="resp-evidence-shell"><div class="resp-evidence-head"><div><span class="status gold">2:30 click-the-evidence</span><h3>${esc(item.title)}</h3><p><strong>Prompt ${state.taskIndex+1} of ${item.tasks.length}:</strong> ${esc(task.prompt)}</p></div><div class="resp-evidence-progress"><strong>${progress}/${total}</strong><span>evidence targets</span></div></div>${traceSvg(item,150,true,task)}${feedback}<div class="resp-evidence-help"><div><strong>How to answer</strong><p>Click or tap the requested feature directly on the tracing. The hit area is intentionally generous enough for phones and tablets. An incorrect attempt stays on this same target and gives a persistent hint.</p></div><button class="btn secondary" type="button" data-resp-evidence-show>Show me</button></div><details class="resp-evidence-keyboard"><summary>Keyboard / alternate time targets</summary><p>The prompt already tells you which channel to inspect. Choose the 30-second interval containing the requested feature.</p><div class="resp-evidence-time-grid">${timeTargetButtons(item,task)}</div></details><div class="resp-evidence-actions"><button class="btn secondary" type="button" data-resp-evidence-prev ${state.evidenceIndex===0&&state.taskIndex===0?'disabled':''}>Previous target</button><button class="btn primary" type="button" data-resp-evidence-next ${state.solved||state.reveal?'':'disabled'}>${progress===total?'Finish evidence lab':'Next target'}</button></div></div>`;
+    host.innerHTML=`<div class="resp-evidence-shell"><div class="resp-evidence-head"><div><span class="status gold">2:30 click-the-evidence</span><h3>${esc(item.title)}</h3><p><strong>Prompt ${state.taskIndex+1} of ${item.tasks.length}:</strong> ${esc(task.prompt)}</p></div><div class="resp-evidence-progress"><strong>${progress}/${total}</strong><span>evidence targets</span></div></div>${pageToolbar(page)}${traceSvg(item,150,true,task,page.start,page.span)}${feedback}<div class="resp-evidence-help"><div><strong>How to answer</strong><p>Adjust Page time above, then click or tap the evidence on the tracing. Incorrect answers remain on the same target with a persistent hint.</p></div><button class="btn secondary" type="button" data-resp-evidence-show>Show me</button></div><details class="resp-evidence-keyboard"><summary>Alternate answer: choose a 30-second interval</summary><p>This submits an answer; it does not change Page time. The prompt tells you which channel to inspect. Choose a 30-second interval containing the requested feature.</p><div class="resp-evidence-time-grid">${timeTargetButtons(item,task)}</div></details><div class="resp-evidence-actions"><button class="btn secondary" type="button" data-resp-evidence-prev ${state.evidenceIndex===0&&state.taskIndex===0?'disabled':''}>Previous target</button><button class="btn primary" type="button" data-resp-evidence-next ${state.solved||state.reveal?'':'disabled'}>${progress===total?'Finish evidence lab':'Next target'}</button></div></div>`;
   }
 
   function render(){renderModes();if(state.mode==='long') renderLong();else renderEvidence();}
@@ -311,22 +361,61 @@
     if(svg&&state.mode==='evidence'){
       const rect=svg.getBoundingClientRect();
       if(!rect.width||!rect.height) return;
-      const x=(event.clientX-rect.left)/rect.width*1000;
-      const y=(event.clientY-rect.top)/rect.height*495;
+      // SVG coordinates must account for letterboxing when the chart is height-constrained.
+      const matrix=typeof svg.getScreenCTM==='function'?svg.getScreenCTM():null;
+      let x,y;
+      if(matrix&&typeof svg.createSVGPoint==='function'){
+        const point=svg.createSVGPoint();
+        point.x=event.clientX;point.y=event.clientY;
+        const local=point.matrixTransform(matrix.inverse());
+        x=local.x;y=local.y;
+      }else{
+        x=(event.clientX-rect.left)/rect.width*1000;
+        y=(event.clientY-rect.top)/rect.height*495;
+      }
       if(x<PLOT.left||x>PLOT.right) return;
       const item=currentEvidence();
       const channel=channelFromY(y);
       if(!channel||!item) return;
-      const time=(x-PLOT.left)/(PLOT.right-PLOT.left)*item.duration;
+      const page=currentPage();
+      const time=page.start+(x-PLOT.left)/(PLOT.right-PLOT.left)*page.span;
       handleGuess(channel,time);
       return;
     }
+    const spanButton=event.target.closest('[data-resp-page-span]');
+    if(spanButton){setPageSpan(Number(spanButton.dataset.respPageSpan));return;}
+    if(event.target.closest('[data-resp-page-prev]')){movePage(-1);return;}
+    if(event.target.closest('[data-resp-page-next]')){movePage(1);return;}
     const timeButton=event.target.closest('[data-resp-evidence-time]');
     if(timeButton){const task=currentTask();if(task) handleGuess(task.channel,Number(timeButton.dataset.respEvidenceTime));return;}
-    if(event.target.closest('[data-resp-evidence-show]')){const task=currentTask();state.reveal=true;state.solved=false;state.feedback=task?`Shown: ${task.explanation}`:'Evidence shown.';renderEvidence();return;}
+    if(event.target.closest('[data-resp-evidence-show]')){
+      const task=currentTask();state.reveal=true;state.solved=false;state.feedback=task?`Shown: ${task.explanation}`:'Evidence shown.';
+      if(task){
+        const page=currentPage(),mid=(task.start+task.end)/2;
+        const visible=page.starts.find(start=>mid>=start&&mid<=start+page.span);
+        if(visible!==undefined) state.pageStart.evidence=visible;
+      }
+      renderEvidence();return;
+    }
     if(event.target.closest('[data-resp-evidence-next]')){advanceEvidence(1);return;}
     if(event.target.closest('[data-resp-evidence-prev]')){advanceEvidence(-1);return;}
     if(event.target.closest('[data-resp-evidence-restart]')){state.evidenceIndex=0;state.taskIndex=0;state.feedback=null;state.reveal=false;state.solved=false;state.correct=0;state.misses=0;state.completed=false;renderEvidence();}
+  });
+
+  // Shortcuts only affect the focused lab, not other page controls or text fields.
+  host.addEventListener('keydown',event=>{
+    if(event.defaultPrevented||event.altKey||event.ctrlKey||event.metaKey||event.isComposing) return;
+    if(event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
+    const key=event.key;
+    if(key==='1'||key==='2'||key==='3'){
+      event.preventDefault();setPageSpan(key==='1'?30:key==='2'?60:pageDuration());
+    }else if(key==='ArrowLeft'||key==='PageUp'){
+      event.preventDefault();movePage(-1);
+    }else if(key==='ArrowRight'||key==='PageDown'){
+      event.preventDefault();movePage(1);
+    }else if(key==='Home'||key==='End'){
+      event.preventDefault();jumpPage(key==='End');
+    }
   });
 
   render();

@@ -412,6 +412,22 @@
     });
   }
 
+  function loadInlineQuestionSets(){
+    // Preserve full Practice Center navigation in the global menu. Contextual
+    // question-set buttons open a lightweight scored modal on the current page.
+    if(currentModule()==='practice')return;
+    if(!document.querySelector('link[data-rpsgt-inline-question-set-style]')){
+      const css=document.createElement('link');
+      css.rel='stylesheet';css.href='assets/inline-question-set.css';
+      css.dataset.rpsgtInlineQuestionSetStyle='true';document.head.appendChild(css);
+    }
+    if(window.RPSGTInlineQuestionSet||document.querySelector('script[data-rpsgt-inline-question-set]'))return;
+    const script=document.createElement('script');
+    script.src='core/inline-question-set.js';
+    script.dataset.rpsgtInlineQuestionSet='true';
+    document.head.appendChild(script);
+  }
+
   function loadLearnerFlowNavigation(){
     if(window.RPSGTLearnerFlowNavigation||document.querySelector("script[data-rpsgt-learner-flow-navigation]")) return;
     const script=document.createElement("script");
@@ -609,6 +625,7 @@
     renderSnapshot();
     rememberClicks();
     loadLearnerFlowNavigation();
+    loadInlineQuestionSets();
     ensureDisclosureLinks();
     refreshCoachBobImage();
     renderHomeEnhancements();

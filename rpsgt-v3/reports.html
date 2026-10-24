@@ -35,7 +35,7 @@
 <div class="hidden" data-reports-content>
 <section class="section report-command-bar" aria-label="Report actions">
   <div><div class="eyebrow">Report actions</div><h2>Choose what you want to review or print</h2><p data-report-activity-range>No dated learning activity is stored yet.</p></div>
-  <div class="actions report-command-actions"><a class="btn primary" href="study-summary.html?report=full">Print full progress report</a><a class="btn secondary" href="#domain-evidence">Compare domains</a><a class="btn secondary" href="#study-plan">Open study plan</a></div>
+  <div class="actions report-command-actions"><a class="btn primary" href="study-summary.html?report=full">Print full progress report</a><a class="btn secondary" href="study-summary.html?report=guided">Guided Study &amp; Skills Report</a><a class="btn secondary" href="#domain-evidence">Compare domains</a><a class="btn secondary" href="#study-plan">Open study plan</a></div>
 </section>
 <section class="section" aria-labelledby="snapshot-title">
   <div class="section-head"><div><div class="eyebrow">Current learner record</div><h2 id="snapshot-title">Progress snapshot</h2></div><span class="status green">Separate histories preserved</span></div>
@@ -65,7 +65,7 @@
   <article class="card report-family"><span class="status quality">Guided Study</span><h2>Trail and laboratory progress</h2><p>Study marks, task badges, domain medals, checkpoints, and laboratory completion remain separate learning records.</p><div class="report-family-metrics" data-trail-family></div><div class="report-family-actions"><a class="btn secondary" href="#guided-trail-report">View report</a><a class="btn secondary" href="study-summary.html?report=guided">Print</a></div></article>
 </section>
 <section class="section card coach-plan" id="study-plan">
-  <div class="section-head"><div><div class="eyebrow">Reference-backed feedback</div><h2>Coach Bob’s next study plan</h2></div><span class="status gold">Official rule → core reference → practice</span></div>
+  <div class="section-head"><div><div class="eyebrow">Reference-backed feedback</div><h2>Start with your weakest domain and task</h2></div><span class="status gold">Official rule → core reference → practice</span></div>
   <p class="report-intro">Recommendations use task performance, the active missed queue, and the most recent Readiness and Mock weak-task findings. Suggested reading comes from curated study resources. Reports show APA-style bibliographic references and section locators where available; copyrighted prose, figures, tables, and proprietary questions are not displayed.</p>
   <div data-coach-plan></div>
 </section>
@@ -88,9 +88,9 @@
   <div data-mock-drilldown><div class="empty-report">Loading completed Mock history…</div></div>
 </section>
 <section class="section card export-summary-card" id="export-summary">
-  <div class="section-head"><div><div class="eyebrow">Portable progress record</div><h2>Professional print and export reports</h2></div><span class="status green">Privacy-conscious</span></div>
-  <p class="report-intro">Choose a full report or a focused Practice, Readiness, Mock, or Guided Study report. Learner name inclusion remains optional and off by default. Notes, searches, question text, answer text, rationales, private links, and raw browser storage are excluded.</p>
-  <div class="report-print-grid"><a class="btn primary" href="study-summary.html?report=full">Full progress report</a><a class="btn secondary" href="study-summary.html?report=practice">Practice report</a><a class="btn secondary" href="study-summary.html?report=readiness">Readiness report</a><a class="btn secondary" href="study-summary.html?report=mock">Mock report</a><a class="btn secondary" href="study-summary.html?report=guided">Guided Study report</a></div>
+  <div class="section-head"><div><div class="eyebrow">Portable progress record</div><h2>Professional print and export reports</h2></div><span class="status green">Question-level review</span></div>
+  <p class="report-intro">Choose a full or focused report. Each report shows recorded missed questions, correct answers, explanations, and weakest-first study directions using verified reference chapters and pages where available.</p>
+  <div class="report-print-grid"><a class="btn primary" href="study-summary.html?report=full">Full progress report</a><a class="btn secondary" href="study-summary.html?report=full#missed-review">Missed questions &amp; explanations</a><a class="btn secondary" href="study-summary.html?report=practice">Practice report</a><a class="btn secondary" href="study-summary.html?report=readiness">Readiness report</a><a class="btn secondary" href="study-summary.html?report=mock">Mock report</a><a class="btn secondary" href="study-summary.html?report=guided">Guided Study report</a></div>
 </section>
 <section class="section card"><div class="section-head"><div><div class="eyebrow">Migration preview</div><h2>Existing browser progress</h2></div><span class="status green">Read only</span></div><div data-migration-preview></div></section>
 </div>
@@ -104,6 +104,7 @@
 <script src="core/app-shell.js"></script>
 <script src="core/learner-surface-guard.js"></script>
 <script src="core/study-feedback-engine.js"></script>
+<script src="core/study-summary-engine.js"></script>
 <script src="core/reports-engine.js"></script>
 <script src="core/report-insights-engine.js"></script>
 <script src="core/guided-trail-engine.js"></script>

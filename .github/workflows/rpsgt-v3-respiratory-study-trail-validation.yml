@@ -24,6 +24,7 @@ on:
       - 'rpsgt-v3/scripts/test-guided-trail-system.mjs'
       - 'rpsgt-v3/scripts/test-guided-question-diversity.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-study-trail.mjs'
+      - 'rpsgt-v3/scripts/test-respiratory-question-rotation.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-study-trail-validation.yml'
   push:
     branches:
@@ -48,6 +49,7 @@ on:
       - 'rpsgt-v3/data/study-sources/topic-families-pap-modalities.json'
       - 'rpsgt-v3/scripts/test-guided-trail-system.mjs'
       - 'rpsgt-v3/scripts/test-respiratory-study-trail.mjs'
+      - 'rpsgt-v3/scripts/test-respiratory-question-rotation.mjs'
       - '.github/workflows/rpsgt-v3-respiratory-study-trail-validation.yml'
 
 permissions:
@@ -73,3 +75,5 @@ jobs:
         run: node rpsgt-v3/scripts/test-guided-question-diversity.mjs
       - name: Validate Respiratory/PAP Study Trail
         run: node rpsgt-v3/scripts/test-respiratory-study-trail.mjs
+      - name: Validate respiratory checkpoint question rotation and no duplicate stems
+        run: node rpsgt-v3/scripts/test-respiratory-question-rotation.mjs

@@ -29,3 +29,5 @@ jobs:
           node-version: '24'
       - name: Audit learner-facing ISR and AASM-interface wording
         run: node rpsgt-v3/scripts/test-learner-isr-language.mjs
+      - name: Check learner-friendly PSG titles and developer-only copy
+        run: node rpsgt-v3/scripts/test-learner-copy-cleanup.mjs

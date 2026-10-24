@@ -1,0 +1,48 @@
+name: Validate RPSGT v3 inline question sets
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rpsgt-v3/core/inline-question-set.js'
+      - 'rpsgt-v3/assets/inline-question-set.css'
+      - 'rpsgt-v3/core/app-shell.js'
+      - 'rpsgt-v3/scripts/test-inline-question-set.mjs'
+      - 'rpsgt-v3/tests/browser/inline-question-set.spec.mjs'
+      - '.github/workflows/rpsgt-v3-inline-question-sets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inline-question-set:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Validate modal controller and task routing
+        run: |
+          node --check rpsgt-v3/core/inline-question-set.js
+          node rpsgt-v3/scripts/test-inline-question-set.mjs
+      - name: Install browser test dependencies
+        working-directory: rpsgt-v3
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        working-directory: rpsgt-v3
+        run: npx playwright install --with-deps chromium
+      - name: Test question sets within lab and study pages
+        working-directory: rpsgt-v3
+        run: npx playwright test --config=playwright.config.mjs --project=desktop-chromium --project=mobile-chromium tests/browser/inline-question-set.spec.mjs
+      - name: Save browser failure traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inline-question-set-modal-evidence
+          path: |
+            rpsgt-v3/test-results
+            rpsgt-v3/playwright-report
+          if-no-files-found: ignore

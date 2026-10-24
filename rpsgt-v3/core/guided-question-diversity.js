@@ -4,8 +4,8 @@
   const engine=root&&root.RPSGTGuidedTrailEngine;
   if(!engine||typeof engine.selectQuestions!=='function'||engine.__semanticDiversityWrapped) return;
 
-  const VERSION='1.0.0';
-  const RECENT_WINDOW=3;
+  const VERSION='1.1.0';
+  const RECENT_WINDOW=9;
   const EXPANSION_FACTOR=8;
   const STRICT_SIMILARITY=.70;
   const RELAXED_SIMILARITY=.82;
@@ -26,6 +26,16 @@
       .replace(/[^a-z0-9#]+/g,' ')
       .replace(/\s+/g,' ')
       .trim();
+  }
+
+  // Compact, deterministic signatures let history avoid identical stems even
+  // when two chapters use different task banks or question IDs.
+  function familyKey(value){
+    const stem=normalizeStem(value);
+    if(!stem) return '';
+    let hash=2166136261;
+    for(let i=0;i<stem.length;i+=1){hash^=stem.charCodeAt(i);hash=Math.imul(hash,16777619);}
+    return (hash>>>0).toString(16).padStart(8,'0');
   }
 
   function stemToken(token){
@@ -62,6 +72,7 @@
     return {
       id:text(question&&question.id),
       family:normalizeStem(question&&question.prompt),
+      familyKey:familyKey(question&&question.prompt),
       tokens:tokenSet(question&&question.prompt),
       topic:normalizeStem(question&&question.topic)||'other',
       question
@@ -75,15 +86,20 @@
       const saved=storage.load();
       const history=saved&&saved.guidedStudy&&Array.isArray(saved.guidedStudy.checkpointHistory)?saved.guidedStudy.checkpointHistory:[];
       const ids=new Set(history.filter(item=>item&&item.task===taskCode).slice(0,RECENT_WINDOW).flatMap(item=>Array.isArray(item.questionIds)?item.questionIds:[]).map(String));
-      if(!ids.size) return [];
-      return (records||[]).filter(question=>ids.has(String(question&&question.id))).map(profile);
+      const keys=new Set(history.slice(0,RECENT_WINDOW).flatMap(item=>Array.isArray(item&&item.questionFamilyKeys)?item.questionFamilyKeys:[]).map(String));
+      const profiles=(records||[]).filter(question=>ids.has(String(question&&question.id))).map(profile);
+      // Older records only contain question IDs; newly scored attempts also
+      // contain short stem signatures that work across neighboring task banks.
+      keys.forEach(key=>profiles.push({id:'',family:'',familyKey:key,tokens:new Set()}));
+      return profiles;
     }catch(error){
       return [];
     }
   }
 
   function conflicts(candidate,profiles,threshold){
-    return profiles.some(existing=>candidate.family===existing.family||similarity(candidate.tokens,existing.tokens)>=threshold);
+    return profiles.some(existing=>(candidate.familyKey&&candidate.familyKey===existing.familyKey)||
+      (candidate.family&&candidate.family===existing.family)||similarity(candidate.tokens,existing.tokens)>=threshold);
   }
 
   function selectDiverse(candidates,count,recent){
@@ -97,7 +113,8 @@
       seenIds.add(item.id);
       profiles.push(item);
     });
-    if(profiles.length<=desired) return profiles.map(item=>clone(item.question));
+    // Even small concept pools must pass through normalized-stem and ID safeguards.
+    // A shortage of genuinely distinct stems is reported to the checkpoint, not padded with copies.
 
     const selected=[];
     const selectedIds=new Set();
@@ -112,6 +129,9 @@
         if(selectedIds.has(candidate.id)) continue;
         if(options.uniqueFamily!==false&&selectedFamilies.has(candidate.family)) continue;
         if(options.avoidRecent&&conflicts(candidate,recentList,options.recentThreshold||STRICT_SIMILARITY)) continue;
+        if(options.avoidRecentExact&&recentList.some(old=>old.id===candidate.id||
+          (old.family&&old.family===candidate.family)||
+          (old.familyKey&&old.familyKey===candidate.familyKey))) continue;
         if(options.topicLimit&&Number(topicCounts.get(candidate.topic)||0)>=options.topicLimit) continue;
         if(options.similarityThreshold&&conflicts(candidate,selected,options.similarityThreshold)) continue;
         selected.push(candidate);
@@ -126,11 +146,17 @@
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:topicLimit+2,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:null});
-    // Only if the concept pool cannot supply the full checkpoint do we relax recent-history protection.
+    // A semantically similar but genuinely new question is preferable to
+    // repeating the identical question from a previous chapter.
+    addPass({avoidRecentExact:true,topicLimit:null,similarityThreshold:STRICT_SIMILARITY});
+    addPass({avoidRecentExact:true,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
+    addPass({avoidRecentExact:true,topicLimit:null,similarityThreshold:null});
+    // Exhaust unfamiliar eligible stems across the recent nine checkpoints before recycling.
+    // Small concept pools may require older questions on retakes; never reuse an
+    // identical normalized stem *within* the same 15-question checkpoint.
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:STRICT_SIMILARITY});
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:null});
-    addPass({avoidRecent:false,topicLimit:null,similarityThreshold:null,uniqueFamily:false});
 
     return selected.slice(0,desired).map(item=>clone(item.question));
   }
@@ -140,9 +166,10 @@
     const desired=Math.max(0,Math.floor(Number(count)||Number(engine.BADGE_QUESTION_COUNT)||15));
     if(!desired) return [];
     const source=Array.isArray(records)?records:[];
-    const expanded=Math.min(source.length,Math.max(desired,desired*EXPANSION_FACTOR));
+    // Inspect the entire concept-filtered pool; a capped random sample can miss
+    // fresh questions and wrongly force repetition in narrow related chapters.
+    const expanded=Math.max(desired,source.length);
     const candidates=originalSelect(records,taskCode,expanded,seed,filter);
-    if(candidates.length<=desired) return candidates.slice(0,desired).map(clone);
     return selectDiverse(candidates,desired,recentProfiles(source,taskCode));
   };
   engine.__semanticDiversityWrapped=true;
@@ -154,6 +181,7 @@
     STRICT_SIMILARITY,
     RELAXED_SIMILARITY,
     normalizeStem,
+    familyKey,
     tokenSet,
     similarity,
     selectDiverse

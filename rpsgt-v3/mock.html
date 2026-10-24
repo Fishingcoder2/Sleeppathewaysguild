@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/practice.css">
 <link rel="stylesheet" href="assets/mock.css">
 </head>
-<body data-module="practice">
+<body data-module="practice" data-mock-view="loading">
 <div class="app-shell">
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">SPG</span><span class="brand-copy"><strong>RPSGT Mock-Style Practice</strong><span>175-question full-length study run</span></span></a>
@@ -25,11 +25,11 @@
   <a class="nav-link" data-nav="reports" href="reports.html"><span>▤</span>Reports</a>
 </aside>
 <main class="main">
-<section class="hero mock-hero">
+<section class="hero mock-hero" data-mock-intro>
   <div><div class="eyebrow">Module 2 · full-length mock milestone</div><h1>175-Question Mock-Style Practice</h1><p class="lead">A text-only, randomized study run with <strong>150 scored-style questions</strong> and <strong>25 mixed unscored-style questions</strong>. The scored set follows D1 30, D2 41, D3 38, and D4 41.</p></div>
   <aside class="card coach-card"><span class="status gold">Coach Bob</span><h2>Treat every item the same.</h2><p>The 25 unscored-style items are mixed into the session and are not identified during the attempt. One unusual question should not change your pace or confidence.</p></aside>
 </section>
-<section class="section notice"><strong>Development boundary:</strong> This is mock-style study practice, not an official BRPT examination or score prediction. It uses only the validated learner pool and excludes all manual-review and visual-placeholder records.</section>
+<section class="section notice" data-mock-notice><strong>Development boundary:</strong> This is mock-style study practice, not an official BRPT examination or score prediction. It uses only the validated learner pool and excludes all manual-review and visual-placeholder records.</section>
 <section class="section notice" data-mock-load>Loading the complete modular question bank…</section>
 <section class="section hidden" data-mock-home>
   <div class="grid grid-2">
@@ -44,22 +44,40 @@
     <div class="readiness-progress"><span data-mock-progress></span></div>
     <div class="card question-card" data-question-panel>
       <div class="question-meta"><span class="status gold" data-question-difficulty>Difficulty</span><button class="btn secondary compact" type="button" data-flag-question>Flag for review</button></div>
-      <div class="question-prompt" data-question-prompt></div>
+      <div class="question-prompt" data-question-prompt tabindex="-1"></div>
       <div class="practice-choices" data-question-choices></div>
       <div class="question-actions mock-question-actions"><button class="btn secondary" type="button" data-prev-question>Previous</button><button class="btn secondary" type="button" data-pause-mock>Save and exit</button><button class="btn primary" type="button" data-next-question>Next</button></div>
     </div>
   </div>
   <aside class="mock-rail">
     <div class="card"><h3>Attempt status</h3><div class="session-stat-grid"><div class="session-stat"><span>Answered</span><strong data-mock-answered>0</strong></div><div class="session-stat"><span>Unanswered</span><strong data-mock-unanswered>175</strong></div><div class="session-stat"><span>Flagged</span><strong data-mock-flagged>0</strong></div><div class="session-stat"><span>Questions</span><strong>175</strong></div></div><button class="btn primary full" type="button" data-submit-mock>Submit attempt</button></div>
-    <div class="card mock-palette-card"><h3>Question navigator</h3><div class="mock-palette-legend"><span><i class="answered"></i>Answered</span><span><i class="flagged"></i>Flagged</span><span><i class="current"></i>Current</span></div><div class="mock-palette" data-mock-palette></div></div>
+    <div class="card mock-palette-card"><details data-mock-nav-details><summary class="mock-palette-summary">Question navigator · jump to a question</summary><div class="mock-palette-legend"><span><i class="answered"></i>Answered</span><span><i class="flagged"></i>Flagged</span><span><i class="current"></i>Current</span></div><div class="mock-palette" data-mock-palette></div></details></div>
   </aside>
+</section>
+<section class="section mock-review-screen hidden" data-mock-review tabindex="-1" aria-labelledby="mock-review-title">
+  <div class="card">
+    <span class="status gold">Final review</span>
+    <h2 id="mock-review-title" data-mock-review-heading>Review before submitting</h2>
+    <p>Review unanswered or flagged questions. Your attempt is not graded until you choose <strong>Submit and view results</strong>.</p>
+    <div class="mock-review-summary" aria-live="polite">
+      <div><strong data-review-answered>0</strong><span>Answered</span></div>
+      <div><strong data-review-unanswered>175</strong><span>Unanswered</span></div>
+      <div><strong data-review-flagged>0</strong><span>Flagged</span></div>
+    </div>
+    <div class="mock-review-actions">
+      <button class="btn secondary" type="button" data-review-back>Return to questions</button>
+      <button class="btn secondary" type="button" data-review-unanswered-first>Go to first unanswered</button>
+      <button class="btn secondary" type="button" data-review-flagged-first>Go to first flagged</button>
+      <button class="btn primary" type="button" data-review-submit>Submit and view results</button>
+    </div>
+  </div>
 </section>
 <section class="section hidden" data-mock-results>
   <div class="card"><span class="status green">Mock attempt complete</span><h2>175-question mock-style study summary</h2><div class="mock-result-grid"><div><span>Scored set</span><strong data-result-correct>0 / 150</strong></div><div><span>Scored percent</span><strong data-result-percent>0%</strong></div><div><span>Study-weighted</span><strong data-result-weighted>0%</strong></div><div><span>Timer</span><strong data-result-time>Not timed</strong></div><div><span>Answered</span><strong data-result-answered>0 / 175</strong></div><div><span>Unscored-style mix</span><strong>25</strong></div></div><p class="tiny">Study-weighted is an internal learning gauge. It is not an official scaled score or passing prediction.</p></div>
   <section class="card"><h2>Scored domain breakdown</h2><div class="grid grid-2" data-mock-domain-results></div></section>
   <section class="card"><h2>Weak-task study recommendations</h2><div class="readiness-target-list" data-mock-weak-results></div><div class="actions"><a class="btn primary" href="practice.html">Open focused practice</a><a class="btn secondary" href="readiness.html">Run a readiness check</a><a class="btn secondary" data-result-report-link href="reports.html#mock-detail">Open detailed result</a><button class="btn secondary" type="button" data-new-mock>Return to mock home</button></div></section>
 </section>
-<footer class="footer">Development branch only · Interactive desktop/mobile browser regression is required before merge</footer>
+<footer class="footer">Sleep Pathways Guild · Educational mock exam practice, not an official BRPT exam or score prediction.</footer>
 </main>
 </div>
 <nav class="mobile-nav" aria-label="Mobile navigation"><a data-nav="home" href="index.html"><span>⌂</span><small>Home</small></a><a data-nav="study" href="study.html"><span>🧭</span><small>Study</small></a><a data-nav="practice" href="practice.html"><span>✓</span><small>Practice</small></a><a data-nav="labs" href="labs.html"><span>⚗</span><small>Labs</small></a><a data-nav="reports" href="reports.html"><span>▤</span><small>Reports</small></a></nav>
