@@ -1,0 +1,53 @@
+name: Validate RPSGT missed-question reports
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rpsgt-v3/core/report-question-review.js'
+      - 'rpsgt-v3/core/study-summary.js'
+      - 'rpsgt-v3/core/study-summary-engine.js'
+      - 'rpsgt-v3/study-summary.html'
+      - 'rpsgt-v3/reports.html'
+      - 'rpsgt-v3/assets/study-summary-reporting.css'
+      - 'rpsgt-v3/scripts/test-report-question-review.mjs'
+      - 'rpsgt-v3/tests/browser/printable-missed-question-report.spec.mjs'
+      - '.github/workflows/rpsgt-v3-missed-question-reports.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Verify report reconstruction and source integrity
+        run: |
+          node --check rpsgt-v3/core/report-question-review.js
+          node --check rpsgt-v3/core/study-summary.js
+          node --check rpsgt-v3/core/study-summary-engine.js
+          node rpsgt-v3/scripts/test-report-question-review.mjs
+          node rpsgt-v3/scripts/test-study-summary-shell.mjs
+          node rpsgt-v3/scripts/test-study-summary-system.mjs
+          node rpsgt-v3/scripts/test-study-source-authority.mjs
+      - name: Install browser dependencies
+        working-directory: rpsgt-v3
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        working-directory: rpsgt-v3
+        run: npx playwright install --with-deps chromium
+      - name: Verify printable missed-question report on desktop and mobile
+        working-directory: rpsgt-v3
+        run: npx playwright test --config=playwright.config.mjs --project=desktop-chromium --project=mobile-chromium tests/browser/printable-missed-question-report.spec.mjs
+      - name: Capture failed browser traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: missed-question-report-evidence
+          path: |
+            rpsgt-v3/test-results
+            rpsgt-v3/playwright-report
+          if-no-files-found: ignore
