@@ -122,7 +122,7 @@
       <div class="explorer-xp"><div><strong>Explorer XP</strong><span>${p.xp.toLocaleString()} / ${p.maxXp.toLocaleString()}</span></div><div class="explorer-xp-track" aria-label="${xpPercent}% of Guided Study Explorer XP earned"><span style="width:${xpPercent}%"></span></div><small>First-time task badges earn ${XP_REWARDS.taskBadge} XP and domain medals earn ${XP_REWARDS.domainMedal} XP. Retakes can strengthen mastery without farming XP.</small></div>
       <div class="explorer-uniform"><div class="explorer-uniform-label"><strong>Your virtual Explorer vest</strong><span>Next uniform upgrade: ${next}</span></div><div class="explorer-patch-rack">${patches}</div></div>
       <div class="explorer-award-grid"><section><h3>Domain medals</h3><div class="explorer-medal-grid">${medals}</div></section><section><h3>Trail ribbons</h3><div class="explorer-ribbon-grid">${ribbons}</div></section></div>
-      <div class="explorer-rotation-note"><strong>Fresh-question rotation:</strong> Guided Trail holds back recently used questions when enough unseen questions are available, and identical question wording is kept out of the same checkpoint.</div>
+      <div class="explorer-rotation-note"><strong>Question variety:</strong> When possible, each checkpoint includes questions you have not recently seen. Questions with identical wording are not repeated in the same checkpoint.</div>
       <p class="explorer-boundary">Sleep Pathways Explorer XP, ranks, patches, ribbons, and medals are fun educational achievements from Sleep Pathways Guild. They are not BRPT credentials or exam results.</p>
     </div>`;
   }
