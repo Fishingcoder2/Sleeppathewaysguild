@@ -4,8 +4,8 @@
   const engine=root&&root.RPSGTGuidedTrailEngine;
   if(!engine||typeof engine.selectQuestions!=='function'||engine.__semanticDiversityWrapped) return;
 
-  const VERSION='1.0.0';
-  const RECENT_WINDOW=3;
+  const VERSION='1.1.0';
+  const RECENT_WINDOW=9;
   const EXPANSION_FACTOR=8;
   const STRICT_SIMILARITY=.70;
   const RELAXED_SIMILARITY=.82;
@@ -97,7 +97,8 @@
       seenIds.add(item.id);
       profiles.push(item);
     });
-    if(profiles.length<=desired) return profiles.map(item=>clone(item.question));
+    // Even small concept pools must pass through normalized-stem and ID safeguards.
+    // A shortage of genuinely distinct stems is reported to the checkpoint, not padded with copies.
 
     const selected=[];
     const selectedIds=new Set();
@@ -126,11 +127,12 @@
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:topicLimit+2,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:true,recentThreshold:RELAXED_SIMILARITY,topicLimit:null,similarityThreshold:null});
-    // Only if the concept pool cannot supply the full checkpoint do we relax recent-history protection.
+    // Exhaust unfamiliar eligible stems across the recent nine checkpoints before recycling.
+    // Small concept pools may require older questions on retakes; never reuse an
+    // identical normalized stem *within* the same 15-question checkpoint.
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:STRICT_SIMILARITY});
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:RELAXED_SIMILARITY});
     addPass({avoidRecent:false,topicLimit:null,similarityThreshold:null});
-    addPass({avoidRecent:false,topicLimit:null,similarityThreshold:null,uniqueFamily:false});
 
     return selected.slice(0,desired).map(item=>clone(item.question));
   }
@@ -140,9 +142,10 @@
     const desired=Math.max(0,Math.floor(Number(count)||Number(engine.BADGE_QUESTION_COUNT)||15));
     if(!desired) return [];
     const source=Array.isArray(records)?records:[];
-    const expanded=Math.min(source.length,Math.max(desired,desired*EXPANSION_FACTOR));
+    // Inspect the entire concept-filtered pool; a capped random sample can miss
+    // fresh questions and wrongly force repetition in narrow related chapters.
+    const expanded=Math.max(desired,source.length);
     const candidates=originalSelect(records,taskCode,expanded,seed,filter);
-    if(candidates.length<=desired) return candidates.slice(0,desired).map(clone);
     return selectDiverse(candidates,desired,recentProfiles(source,taskCode));
   };
   engine.__semanticDiversityWrapped=true;
