@@ -28,6 +28,16 @@
       .trim();
   }
 
+  // Compact, deterministic signatures let history avoid identical stems even
+  // when two chapters use different task banks or question IDs.
+  function familyKey(value){
+    const stem=normalizeStem(value);
+    if(!stem) return '';
+    let hash=2166136261;
+    for(let i=0;i<stem.length;i+=1){hash^=stem.charCodeAt(i);hash=Math.imul(hash,16777619);}
+    return (hash>>>0).toString(16).padStart(8,'0');
+  }
+
   function stemToken(token){
     if(token==='#') return token;
     let value=token;
@@ -62,6 +72,7 @@
     return {
       id:text(question&&question.id),
       family:normalizeStem(question&&question.prompt),
+      familyKey:familyKey(question&&question.prompt),
       tokens:tokenSet(question&&question.prompt),
       topic:normalizeStem(question&&question.topic)||'other',
       question
@@ -75,15 +86,20 @@
       const saved=storage.load();
       const history=saved&&saved.guidedStudy&&Array.isArray(saved.guidedStudy.checkpointHistory)?saved.guidedStudy.checkpointHistory:[];
       const ids=new Set(history.filter(item=>item&&item.task===taskCode).slice(0,RECENT_WINDOW).flatMap(item=>Array.isArray(item.questionIds)?item.questionIds:[]).map(String));
-      if(!ids.size) return [];
-      return (records||[]).filter(question=>ids.has(String(question&&question.id))).map(profile);
+      const keys=new Set(history.slice(0,RECENT_WINDOW).flatMap(item=>Array.isArray(item&&item.questionFamilyKeys)?item.questionFamilyKeys:[]).map(String));
+      const profiles=(records||[]).filter(question=>ids.has(String(question&&question.id))).map(profile);
+      // Older records only contain question IDs; newly scored attempts also
+      // contain short stem signatures that work across neighboring task banks.
+      keys.forEach(key=>profiles.push({id:'',family:'',familyKey:key,tokens:new Set()}));
+      return profiles;
     }catch(error){
       return [];
     }
   }
 
   function conflicts(candidate,profiles,threshold){
-    return profiles.some(existing=>candidate.family===existing.family||similarity(candidate.tokens,existing.tokens)>=threshold);
+    return profiles.some(existing=>(candidate.familyKey&&candidate.familyKey===existing.familyKey)||
+      (candidate.family&&candidate.family===existing.family)||similarity(candidate.tokens,existing.tokens)>=threshold);
   }
 
   function selectDiverse(candidates,count,recent){
@@ -113,7 +129,9 @@
         if(selectedIds.has(candidate.id)) continue;
         if(options.uniqueFamily!==false&&selectedFamilies.has(candidate.family)) continue;
         if(options.avoidRecent&&conflicts(candidate,recentList,options.recentThreshold||STRICT_SIMILARITY)) continue;
-        if(options.avoidRecentExact&&recentList.some(old=>old.id===candidate.id||old.family===candidate.family)) continue;
+        if(options.avoidRecentExact&&recentList.some(old=>old.id===candidate.id||
+          (old.family&&old.family===candidate.family)||
+          (old.familyKey&&old.familyKey===candidate.familyKey))) continue;
         if(options.topicLimit&&Number(topicCounts.get(candidate.topic)||0)>=options.topicLimit) continue;
         if(options.similarityThreshold&&conflicts(candidate,selected,options.similarityThreshold)) continue;
         selected.push(candidate);
@@ -163,6 +181,7 @@
     STRICT_SIMILARITY,
     RELAXED_SIMILARITY,
     normalizeStem,
+    familyKey,
     tokenSet,
     similarity,
     selectDiverse
