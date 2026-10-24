@@ -51,7 +51,7 @@ if(summary.labs.counts.total!==13||summary.labs.counts.completed!==1||summary.la
 if(!summary.labs.rows.some(row=>row.id==='visual'))throw new Error('Visual Skills Lab is missing from the printable laboratory summary.');
 if(!summary.labs.rows.some(row=>row.id==='artifact'))throw new Error('Artifact Recognition Lab is missing from the printable laboratory summary.');
 if(!summary.labs.rows.some(row=>row.id==='mentoring-diagnostic'))throw new Error('Mentoring Diagnostic is missing from the printable laboratory summary.');
-if(!summary.studyPlan.length||summary.studyPlan[0].taskCode!=='D4A')throw new Error('Combined study-plan weighting failed to prioritize the latest Mock weakness.');
+if(!summary.studyPlan.length||summary.studyPlan[0].taskCode!=='D3A')throw new Error('Study plan must prioritize the combined missed-question and latest Guided/Readiness weak-task evidence.');
 if(!summary.studyPlan[0].topics.length)throw new Error('Study plan did not preserve interaction-derived topic evidence.');
 if(!summary.studyPlan[0].resources.length||!summary.studyPlan[0].resources.some(group=>group.sections&&group.sections.length))throw new Error('Study plan did not include mapped study resources.');
 if(!summary.studyPlan[0].resources.some(group=>/AASM/i.test(group.sourceTitle)))throw new Error('Official AASM resource was not prioritized when mapped to the weak task.');
