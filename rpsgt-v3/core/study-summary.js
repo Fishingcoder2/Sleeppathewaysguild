@@ -56,6 +56,9 @@
   function rebuild(){
     state.summary=engine.buildSummary({saved:state.saved,blueprint:state.blueprint,questionIndex:state.index,catalog:state.catalog,studySources:state.studySources,trailDefinition:state.trailDefinition,includeLearnerName:includeName(),generatedAt:new Date().toISOString()});
     state.summary.missedQuestionReview=state.missedReview||{items:[],requested:0,unresolved:0};
+    state.summary.privacy.containsQuestionText=Boolean(state.summary.missedQuestionReview.items.length);
+    state.summary.privacy.containsAnswerText=Boolean(state.summary.missedQuestionReview.items.length);
+    state.summary.privacy.containsRationales=Boolean(state.summary.missedQuestionReview.items.length);
     state.insights=insightsEngine.build(state.saved,state.blueprint);render();
   }
   function statusLabel(item){return item.completed?'Completed':item.started?'Started':'Not started';}
