@@ -224,6 +224,10 @@
     const latestGuided=window.RPSGTStorage.load().guidedStudy;
     const before=engine.normalizeState(latestGuided);
     const record=engine.gradeCheckpoint({taskCode:state.checkpoint.taskCode,conceptId:state.checkpoint.conceptId,conceptLabel:state.checkpoint.conceptLabel,questions:state.checkpoint.questions,answers:state.checkpoint.answers,completedAt:new Date().toISOString()});
+    const diversity=window.RPSGTGuidedQuestionDiversity;
+    if(diversity&&typeof diversity.familyKey==='function'){
+      record.questionFamilyKeys=state.checkpoint.questions.map(question=>diversity.familyKey(question.prompt));
+    }
     const next=engine.applyCheckpoint(latestGuided,record,state.blueprint);
     const after=engine.normalizeState(next);
     const taskEarned=Boolean(record.passed&&!before.trailAwards.tasks[record.task]&&after.trailAwards.tasks[record.task]);
