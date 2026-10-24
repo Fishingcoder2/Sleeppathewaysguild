@@ -80,7 +80,7 @@
     const meta=document.querySelector('[data-question-task]');
     if(meta){const label=taskTitle(question.taskCode)+(question.topic?' · '+question.topic:'');if(meta.textContent!==label) meta.textContent=label;}
     const host=document.querySelector('[data-practice-question-actions]');
-    if(host&&host.dataset.questionId!==String(question.id)){
+    if(host&&(host.dataset.questionId!==String(question.id)||!host.querySelector('[data-practice-flag]'))){
       host.dataset.questionId=String(question.id);
       document.dispatchEvent(new CustomEvent('rpsgt:practice-question',{detail:{question,context:{
         domainTitle:taskMap.get(question.taskCode)?.domainName||question.domain,
