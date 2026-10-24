@@ -157,8 +157,18 @@ function decorateStations(){
   const intro=section?.querySelector('.report-intro');
   const status=section?.querySelector('.section-head .status');
   if(heading)heading.textContent='Walk through the respiratory signal pathway';
-  if(intro)intro.textContent='Open each guided station. Study the signal relationship, apply it to a short scenario, review what you should now understand, and use the suggested references for deeper self-guided study. Stations are recorded automatically as you complete the walkthrough.';
+  if(intro)intro.textContent='Start the guided walkthrough once. Continue from Learn to Apply to Recap, then the next station opens automatically. Your seven station reviews are recorded as you progress.';
   if(status)status.textContent='Guided review';
+  let launcher=section?.querySelector('[data-respiratory-study-start]');
+  if(!launcher){
+    launcher=document.createElement('button');
+    launcher.className='btn primary respiratory-study-start';
+    launcher.type='button';
+    launcher.dataset.respiratoryStudyStart='true';
+    stationHost.before(launcher);
+  }
+  const firstPending=stations().find(station=>!isComplete(station.id));
+  launcher.textContent=firstPending?'Start / Continue guided walkthrough →':'Review seven-station walkthrough →';
   stationHost.querySelectorAll('[data-respiratory-station]').forEach((button,index)=>{
     button.disabled=false;
     const action=button.querySelector('.respiratory-station-action');
@@ -286,6 +296,12 @@ stationHost.addEventListener('click',event=>{
 },true);
 
 document.addEventListener('click',event=>{
+  const start=event.target.closest('[data-respiratory-study-start]');
+  if(start){
+    const next=stations().find(station=>!isComplete(station.id))||stations()[0];
+    if(next)openStation(next.id,start);
+    return;
+  }
   const tab=event.target.closest('[data-respiratory-study-station]');
   if(tab){state.stationId=tab.dataset.respiratoryStudyStation;state.step=0;state.finished=false;render();return;}
   if(event.target.closest('[data-respiratory-study-close]')){close();return;}
