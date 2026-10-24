@@ -19,8 +19,9 @@
   const pager=document.createElement('nav');
   pager.className='spg-study-page-pager';
   pager.setAttribute('aria-label','Chapter navigation');
-  pager.innerHTML='<button class="btn secondary" type="button" data-study-previous>← Previous chapter</button><strong data-study-current-label aria-live="polite">Guided pathway</strong><button class="btn primary" type="button" data-study-next>Next chapter →</button>';
-  views[views.length-1].node.after(pager);
+  pager.innerHTML='<button class="btn secondary" type="button" data-study-previous>← Previous section</button><strong data-study-current-label aria-live="polite">Guided pathway</strong><button class="btn primary" type="button" data-study-next>Next section →</button>';
+  // Section navigation belongs beside the chapter selector, not under a long lesson.
+  nav.after(pager);
   let active='trail',activeDomain=0;
 
   function navigate(key,opts={}){
