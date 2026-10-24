@@ -51,12 +51,26 @@
     const recent=codeOf(history.length&&history[history.length-1].taskCode);
     return validCode(recent)?[recent]:[];
   }
+  let approvedLoaderPromise=null;
+  async function approvedQuestionModule(path){
+    if(!approvedLoaderPromise){
+      approvedLoaderPromise=window.RPSGTOwnerQuestionRelease?Promise.resolve():new Promise((resolve,reject)=>{
+        const script=document.createElement('script');
+        script.src='core/owner-question-release.js';
+        script.onload=resolve;
+        script.onerror=()=>reject(Error('Unable to load the approved question bank.'));
+        document.head.appendChild(script);
+      });
+    }
+    await approvedLoaderPromise;
+    if(!window.RPSGTOwnerQuestionRelease||typeof window.RPSGTOwnerQuestionRelease.loadJson!=='function'){
+      throw Error('The approved practice question bank is not ready.');
+    }
+    return window.RPSGTOwnerQuestionRelease.loadJson(path);
+  }
   async function loadQuestions(codes){
     const modules=await Promise.all(codes.map(async code=>{
-      if(!window.RPSGTOwnerQuestionRelease||typeof window.RPSGTOwnerQuestionRelease.loadJson!=='function'){
-        throw Error('The approved practice question bank is not ready.');
-      }
-      const data=await window.RPSGTOwnerQuestionRelease.loadJson('data/question-bank/'+code.toLowerCase()+'.json');
+      const data=await approvedQuestionModule('data/question-bank/'+code.toLowerCase()+'.json');
       return (data.questions||[]).filter(question=>eligible(question,code));
     }));
     const pool=modules.flat(),saved=window.RPSGTStorage&&window.RPSGTStorage.load();
