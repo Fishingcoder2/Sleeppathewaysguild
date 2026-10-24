@@ -5,11 +5,13 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'..');
-const [engineJs,uiJs,css,workspaceJs,workspaceCss,studyHtml,trailJs,trailCss,respLabJs,respLabCss,respLabHtml]=await Promise.all([
+const [engineJs,uiJs,css,workspaceJs,workspaceCss,studyHtml,trailJs,trailCss,respLabJs,respLabCss,respLabHtml,studyController,studyGuideJs,studyGuideCss,trailData,bookData]=await Promise.all([
   'core/respiratory-timeline-engine.js','core/respiratory-timeline-ui.js','assets/respiratory-timeline.css',
   'core/study-workspace.js','assets/study-workspace.css','study.html',
   'core/respiratory-study-trail.js','assets/respiratory-study-trail.css',
-  'core/respiratory-lab-workspace.js','assets/respiratory-lab-workspace.css','lab-respiratory.html'
+  'core/respiratory-lab-workspace.js','assets/respiratory-lab-workspace.css','lab-respiratory.html',
+  'core/study.js','core/respiratory-study-guide.js','assets/respiratory-study-guide.css',
+  'data/learner-trails/respiratory-pap.json','data/study-sources/principles-practice-sleep-medicine-7e.json'
 ].map(file=>readFile(join(root,file),'utf8')));
 const context={};
 vm.createContext(context);
@@ -66,4 +68,64 @@ for(const token of ['spg-resp-lab-pane[hidden]','spg-resp-lab-chapter-buttons','
 new Function(respLabJs);
 new Function(workspaceJs);
 new Function(trailJs);
-console.log('RPSGT V3 compact learning pages, interactive pathway, 30s/60s/full tracing time, arrow navigation, and evidence time mapping passed.');
+
+assert.ok(studyController.includes("new CustomEvent('rpsgt:checkpoint-closed'"),'Scored checkpoint must emit completion after results are closed');
+assert.ok(studyGuideJs.includes('data-respiratory-study-start')&&studyGuideJs.includes('Start / Continue guided walkthrough'),'Seven-station guide must have one-click start / resume');
+assert.ok(studyGuideCss.includes('.respiratory-study-start'),'Walkthrough launcher must be styled');
+
+const dataMap={
+  'data/learner-trails/respiratory-pap.json':JSON.parse(trailData),
+  'data/study-sources/principles-practice-sleep-medicine-7e.json':JSON.parse(bookData)
+};
+let saved={guidedStudy:{checkpointHistory:[]}};
+const stageEvents={},documentEvents={},queued=[];
+const stageHost={
+  innerHTML:'',
+  addEventListener(type,callback){stageEvents[type]=callback;},
+  querySelector(selector){return selector==='#respiratory-trail-title'?{setAttribute(){},focus(){}}:null;}
+};
+const doc={
+  querySelector(selector){return selector==='[data-respiratory-study-trail]'?stageHost:null;},
+  getElementById(){return null;},
+  addEventListener(type,callback){documentEvents[type]=callback;},
+  body:{}
+};
+const storage={
+  load(){return saved;},
+  save(next){saved=next;return next;}
+};
+const contextStage={
+  document:doc,
+  window:{RPSGTStorage:storage,RPSGTGuidedTrailEngine:{queueQuestionFilter(...args){queued.push(args);return {};}}},
+  fetch:async path=>({ok:true,json:async()=>dataMap[path]}),
+  URLSearchParams,
+  console
+};
+vm.runInNewContext(trailJs,contextStage,{filename:'respiratory-study-trail.js'});
+for(let n=0;n<15;n++)await Promise.resolve();
+const stageClick=matches=>stageEvents.click({target:{closest(selector){return matches[selector]||null;}}});
+assert.ok(stageHost.innerHTML.includes('data-active-phase="learn"'),'Study trail must start on Learn');
+assert.ok(stageHost.innerHTML.includes('data-respiratory-phase="apply" aria-pressed="false" disabled'),'Apply cannot be opened before Learn');
+stageClick({'[data-respiratory-phase]':{dataset:{respiratoryPhase:'check'}}});
+assert.ok(stageHost.innerHTML.includes('data-active-phase="learn"'),'Check cannot be skipped to by clicking a locked tab');
+stageClick({'[data-respiratory-phase-move]':{dataset:{respiratoryPhaseMove:'1'}}});
+assert.ok(stageHost.innerHTML.includes('data-active-phase="apply"'),'Finishing Learn should automatically open Apply');
+assert.equal(saved.guidedStudy.respiratoryStudyTrail.activityProgress['osa-scoring'].learn,true,'Learn completion must be saved');
+stageClick({'[data-respiratory-phase-move]':{dataset:{respiratoryPhaseMove:'1'}}});
+assert.ok(stageHost.innerHTML.includes('data-active-phase="check"'),'Finishing Apply should automatically open Check');
+assert.equal(saved.guidedStudy.respiratoryStudyTrail.activityProgress['osa-scoring'].apply,true,'Apply completion must be saved');
+const first=dataMap['data/learner-trails/respiratory-pap.json'].steps[0];
+stageClick({'[data-checkpoint-start][data-checkpoint-concept]':{dataset:{checkpointConcept:first.id}}});
+assert.equal(queued.length,1,'Check must launch the concept-matched 15-question checkpoint');
+documentEvents['rpsgt:checkpoint-closed']({detail:{record:{conceptId:first.id,task:first.taskCode,passed:false}}});
+assert.ok(stageHost.innerHTML.includes('Lesson 1 of 9'),'Failed check stays on this chapter');
+documentEvents['rpsgt:checkpoint-closed']({detail:{record:{conceptId:'not-this-lesson',task:first.taskCode,passed:true}}});
+assert.ok(stageHost.innerHTML.includes('Lesson 1 of 9'),'Unrelated checkpoint never changes chapter');
+saved.guidedStudy.checkpointHistory=[{conceptId:first.id,task:first.taskCode,passed:true,total:15,score:87}];
+documentEvents['rpsgt:checkpoint-closed']({detail:{record:{conceptId:first.id,task:first.taskCode,passed:true}}});
+assert.ok(stageHost.innerHTML.includes('Lesson 2 of 9'),'Passed Check advances after results close');
+assert.equal(saved.guidedStudy.respiratoryStudyTrail.completedThroughStepId,first.id,'The completed chapter must be persisted');
+assert.ok(stageHost.innerHTML.includes('data-active-phase="learn"'),'Next chapter must restart at Learn');
+
+console.log('RPSGT V3 LMS navigation checks passed: responsive tracing, one-click station start, gated Learn → Apply → Check, persisted stages, concept-matched checkpoint, failure stays on Check and pass automatically unlocks the next chapter.');
+
