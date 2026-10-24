@@ -53,7 +53,7 @@
     const notice=document.querySelector('[data-mode-notice]');
     if(notice){
       if(notice.className!=='mode-notice learner') notice.className='mode-notice learner';
-      const message='<strong>Learner-ready questions only:</strong> Incomplete prompts, invalid answer sets, and records reserved for internal repair are excluded without changing the preserved source bank.';
+      const message='<strong>Practice question quality:</strong> Only complete questions with validated answer choices appear in your practice sessions.';
       if(notice.innerHTML!==message) notice.innerHTML=message;
     }
     const domain=document.querySelector('[data-practice-domain]');
