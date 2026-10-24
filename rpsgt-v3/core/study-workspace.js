@@ -47,10 +47,16 @@
 
   function routeHash(){
     const hash=decodeURIComponent(location.hash||'');
-    if(/^#D[1-4][A-C]$/i.test(hash)){
+    // Both domain anchors (#D1-#D4) and individual task anchors
+    // (#D1A-#D4C) open the one-at-a-time task map and select the correct card.
+    if(/^#D[1-4](?:[A-C])?$/i.test(hash)){
       const n=Number(hash[2])-1;
-      if(n>=0) selectDomain(n);
+      if(n>=0)selectDomain(n);
       navigate('map',{history:false,scroll:false});
+      requestAnimationFrame(()=>{
+        const destination=document.querySelector(hash);
+        if(destination&&!destination.hidden)destination.scrollIntoView({block:'start',behavior:'instant'});
+      });
       return;
     }
     const key=hash==='#guided-study-progress'?'progress':hash==='#explorer-journey'?'explorer':hash==='#rpsgt-domain-map'?'map':'trail';
@@ -79,7 +85,7 @@
       cards[0].before(rail);
     }
     const hash=location.hash;
-    const match=/^#D([1-4])[A-C]$/i.exec(hash);
+    const match=/^#D([1-4])(?:[A-C])?$/i.exec(hash);
     if(match) activeDomain=Number(match[1])-1;
     selectDomain(activeDomain);
   }
@@ -109,7 +115,7 @@
     if(href==='#guided-study-progress') navigate('progress',{history:false,scroll:false});
     if(href==='#explorer-journey') navigate('explorer',{history:false,scroll:false});
     if(href==='#rpsgt-domain-map') navigate('map',{history:false,scroll:false});
-    if(/^#D[1-4][A-C]$/i.test(href)){selectDomain(Number(href[2])-1);navigate('map',{history:false,scroll:false});}
+    if(/^#D[1-4](?:[A-C])?$/i.test(href)){selectDomain(Number(href[2])-1);navigate('map',{history:false,scroll:false});}
   },true);
   window.addEventListener('hashchange',routeHash);
   routeHash();
