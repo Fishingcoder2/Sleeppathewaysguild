@@ -2,6 +2,7 @@
   "use strict";
   const reportEngine=window.RPSGTReportsEngine;
   const feedbackEngine=window.RPSGTStudyFeedback;
+  const priorityEngine=window.RPSGTStudySummaryEngine;
   const insightsEngine=window.RPSGTReportInsights;
   const subjectEngine=window.RPSGTPracticeSubjects||null;
   const state={saved:null,blueprint:null,outlines:null,index:null,indexMap:null,taskMap:new Map(),sourceMap:new Map(),sectionMap:new Map(),insights:null};
@@ -106,12 +107,37 @@
     params.set("start","1");
     return "practice.html?"+params.toString();
   }
+  function referenceCitation(group){
+    const source=(state.outlines.sources||[]).find(item=>item.id===group.sourceId)||{};
+    if(source.apaCitation)return source.apaCitation;
+    const author=source.author||source.organization||source.publisher||group.sourceTitle||'Study resource';
+    const title=source.fullTitle||source.title||source.shortTitle||group.sourceTitle||'Study resource';
+    const year=source.year||'n.d.';
+    return author+'. ('+year+'). '+title+(source.edition?' ('+source.edition+' ed.)':'')+'.';
+  }
+  function detailedRouteHtml(groups){
+    if(!groups.length)return '<p>Exact chapter/section guidance is not yet available for this topic. Return to the verified task reference list.</p>';
+    return '<div class="study-route">'+groups.map(group=>
+      '<div class="study-route-group"><strong>'+esc(referenceCitation(group))+'</strong>'+
+      '<small>'+esc(group.sourceType||'Study reference')+'</small>'+
+      '<div class="study-section-row">'+group.sections.map(section=>'<span class="study-section">'+esc(section.label)+'</span>').join('')+'</div>'+
+      '<small>'+group.sections.map(section=>esc(section.reason)).filter(Boolean).join('; ')+'</small></div>'
+    ).join('')+'</div>';
+  }
   function renderCoachPlan(){
-    const plans=reportEngine.studyPlan(state.saved,state.blueprint,state.indexMap,3);const host=$("[data-coach-plan]");
-    if(!plans.length){host.innerHTML='<div class="empty-report">No weak-area evidence is available yet. Complete focused practice or a Readiness Check to create a personalized plan.</div>';return;}
-    host.innerHTML='<div class="coach-plan-list">'+plans.map((plan,index)=>{
-      const topics=plan.topics.map(item=>item.label);const route=feedbackEngine.taskRoute(plan.code,topics,state.outlines,7);
-      return `<article class="coach-plan-item"><div class="coach-plan-heading"><div class="coach-plan-rank">${index+1}</div><div><h3>${esc(plan.code)} · ${esc(plan.title)}</h3><p>${plan.answered?`${plan.correct}/${plan.answered} practice correct · ${plan.percent}%`:"No ordinary practice attempts yet"} · ${plan.missed} currently missed</p></div><span class="status ${index===0?"gold":""}">${index===0?"Start here":"Then study"}</span></div>${topics.length?`<div class="topic-chip-row">${plan.topics.map(topic=>`<span class="topic-chip">${esc(topic.label)} · ${topic.count}</span>`).join("")}</div>`:""}<p><strong>After reading:</strong> ${esc(plan.nextAction||"Return to focused practice and confirm the weak concept with a new question set.")}</p>${routeHtml(route)}<div class="actions compact"><a class="btn secondary" href="study.html#${esc(plan.code)}">Open Guided Study</a><a class="btn primary" href="${esc(focusedPracticeHref(plan))}">Run focused practice</a></div></article>`;
+    const enriched=priorityEngine&&typeof priorityEngine.studyPlan==='function'?
+      priorityEngine.studyPlan(state.saved,priorityEngine.taskRows(state.saved,state.blueprint,state.index),state.index,5,state.outlines):null;
+    const plans=enriched||reportEngine.studyPlan(state.saved,state.blueprint,state.indexMap,3);
+    const host=$("[data-coach-plan]");
+    if(!plans.length){host.innerHTML='<div class="empty-report">No weak-area evidence is available yet. Complete a Guided Study checkpoint, Focused Practice, or a Readiness Check for your personalized reading plan.</div>';return;}
+    host.innerHTML='<p class="report-intro">Priorities reflect missed questions, task accuracy, and your latest Guided Study, Readiness and Mock evidence. They are learning recommendations, not an exam-score prediction. Where the catalog has a verified section locator, the exact chapter, guideline heading or article title is shown.</p>'+
+      '<div class="coach-plan-list">'+plans.map((plan,index)=>{
+      const code=plan.taskCode||plan.code;
+      const topics=(plan.topics||[]).map(item=>item.label);
+      const route=feedbackEngine.taskRoute(code,topics,state.outlines,7);
+      const sources=enriched?detailedRouteHtml(plan.resources||[]):routeHtml(route);
+      const evidence=Array.isArray(plan.evidence)?plan.evidence:[];
+      return `<article class="coach-plan-item"><div class="coach-plan-heading"><div class="coach-plan-rank">${index+1}</div><div><h3>${esc(plan.domain||code.slice(0,2))} · ${esc(code)} · ${esc(plan.title)}</h3><p>${evidence.length?evidence.map(esc).join(' · '):(plan.answered?`${plan.correct}/${plan.answered} practice correct · ${plan.percent}%`:"No ordinary practice attempts yet")}</p></div><span class="status ${index===0?"gold":""}">${index===0?"Study this first":"Then study"}</span></div>${topics.length?`<div class="topic-chip-row">${topics.map(topic=>`<span class="topic-chip">${esc(topic)}</span>`).join("")}</div>`:""}<p><strong>Where to study:</strong> Use the source and exact section below when available.</p>${sources}<p><strong>After reading:</strong> ${esc(plan.nextAction||"Return to focused practice and confirm the weak concept with new questions.")}</p><div class="actions compact"><a class="btn secondary" href="study.html#${esc(code)}">Open Guided Study</a><a class="btn primary" href="${esc(focusedPracticeHref({...plan,code}))}">Run focused practice</a></div></article>`;
     }).join("")+'</div>';
   }
   function renderSources(){
