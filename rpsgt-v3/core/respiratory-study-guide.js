@@ -157,7 +157,7 @@ function decorateStations(){
   const intro=section?.querySelector('.report-intro');
   const status=section?.querySelector('.section-head .status');
   if(heading)heading.textContent='Walk through the respiratory signal pathway';
-  if(intro)intro.textContent='Start the guided walkthrough once. Continue from Learn to Apply to Recap, then the next station opens automatically. Your seven station reviews are recorded as you progress.';
+  if(intro)intro.textContent='Start the guided walkthrough once. Continue from Learn to Apply to Recap, then the next station opens automatically. Stations are recorded automatically as you complete the walkthrough.';
   if(status)status.textContent='Guided review';
   let launcher=section?.querySelector('[data-respiratory-study-start]');
   if(!launcher){
