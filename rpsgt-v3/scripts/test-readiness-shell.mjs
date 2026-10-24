@@ -25,7 +25,7 @@ assert.ok(script.includes("function previousQuestion()")&&script.includes("state
 assert.ok(script.includes("questionActions.toggleReview")&&script.includes('"flaggedIds"'),"Readiness flag action is not wired to the saved flagged queue.");
 assert.ok(script.includes("questionActions.saveFlashcard")&&script.includes("RPSGT Flashcard Center"),"Readiness Make flashcard action is not wired.");
 assert.ok(script.includes("feedback.open=false")&&html.includes("<details class=\"answer-feedback hidden\""),"Readiness answer reasoning must be optional/collapsible by default.");
-assert.ok(readinessCss.includes("[data-readiness-shell].hidden{display:none!important}"),"Completed readiness must fully hide old question/modal view despite shared Practice display rules.");
+assert.match(readinessCss,/\[data-readiness-home\]\.hidden,\s*\[data-readiness-shell\]\.hidden,\s*\[data-readiness-results\]\.hidden\{display:none!important\}/,"Completed readiness must fully hide old question/modal view despite shared Practice display rules.");
 assert.ok(html.includes('data-readiness-result-heading tabindex="-1"'),'Readiness results heading must receive keyboard focus after completion.');
 assert.ok(script.includes('function bringResultsIntoView()')&&script.includes('panel.scrollIntoView({block:"start",behavior:"auto"})'),'Completion must visibly scroll to result section.');
 assert.ok(script.includes('if(state.active.index>=state.active.questionIds.length-1)')&&script.includes('finishReadiness();'),'Last answered question must finish directly rather than saving an out-of-range cursor.');
