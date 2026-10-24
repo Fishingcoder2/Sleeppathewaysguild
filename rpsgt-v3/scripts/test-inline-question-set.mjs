@@ -22,7 +22,7 @@ assert.match(modal,/saved\.review\.missedIds/);
 assert.match(modal,/saved\.review\.masteredIds/);
 assert.match(modal,/aria-modal="true"/);
 assert.match(modal,/event\.key==='Escape'/);
-assert.match(modal,/state\.origin\.focus/);
+assert.match(modal,/focusTarget\.focus/,'Closing returns focus even if the lab next-action link changed after progress.');
 assert.match(css,/max-height:min\(92dvh,900px\)/);
 assert.match(css,/\[hidden\]\{display:none!important\}/);
 assert.ok(lab.includes('core/app-shell.js')&&study.includes('core/app-shell.js'));
