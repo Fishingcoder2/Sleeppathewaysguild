@@ -49,7 +49,15 @@
  }
  function taskCodes(saved,questionIndex){
    const map=index(questionIndex);
-   return [...new Set(collect(saved).map(item=>item.taskCode||map.get(item.id)?.taskCode).filter(code=>/^D[1-4][A-D]$/.test(text(code))))];
+   const missed=collect(saved);
+   const resolved=missed.map(item=>item.taskCode||map.get(item.id)?.taskCode);
+   // Owner-approved additions and older saved question IDs may not appear
+   // in the compact legacy feedback index; search approved task modules
+   // rather than silently omitting their question and answer.
+   if(missed.length&&resolved.some(code=>!/^D[1-4][A-D]$/.test(text(code)))){
+     return ['D1A','D1B','D1C','D2A','D2B','D2C','D3A','D3B','D3C','D4A','D4B','D4C'];
+   }
+   return [...new Set(resolved.filter(code=>/^D[1-4][A-D]$/.test(text(code))))];
  }
  function selectedLabel(observations,question){
    const sourceOrder=['Practice','Guided Study','Readiness','Mock'];
@@ -72,7 +80,9 @@
    let unresolved=0;
    const rows=collect(saved).map(item=>{
      const q=questions.get(item.id),info=map.get(item.id),code=item.taskCode||q?.taskCode||info?.taskCode||null;
-     if(!q||!list(q.options).includes(q.answer)||!text(q.prompt).trim()||!text(q.rationale).trim()){unresolved++;return null;}
+     if(!q||q.qa?.manualReviewRecommended===true||q.qa?.learnerExcluded===true||
+       q.learnerExcluded===true||q.reviewStatus==='retired'||q.publicationStatus==='proposed-not-learner-eligible'||
+       !list(q.options).includes(q.answer)||!text(q.prompt).trim()||!text(q.rationale).trim()){unresolved++;return null;}
      return {
        questionId:item.id,taskCode:code,domain:code?code.slice(0,2):q.domain||null,
        taskTitle:tasks.get(code)?.title||null,domainName:tasks.get(code)?.domainName||null,
