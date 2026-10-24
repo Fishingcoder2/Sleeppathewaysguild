@@ -46,6 +46,8 @@ test('dashboard navigation buttons lead to real routes and load the approved que
  await page.goto('index.html');
  await navigateByVisibleLink(page,'study');
  await expect(page).toHaveURL(/study\.html/);
+ await expect(page.locator('[data-study-page="trail"]')).toHaveAttribute('aria-pressed','true');
+ await page.locator('[data-study-page="map"]').click();
  await expect(page.locator('[data-blueprint-map]')).toBeVisible();
  await navigateByVisibleLink(page,'practice');
  await expect(page).toHaveURL(/practice\.html/);
