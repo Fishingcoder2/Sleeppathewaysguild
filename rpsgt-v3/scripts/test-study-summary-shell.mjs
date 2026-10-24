@@ -28,7 +28,7 @@ if(!controller.includes('loadStudySources')||!controller.includes('Related study
 if(/Mapped study resources|route is mapped|verified task\/topic crosswalk/i.test(controller))throw new Error('Study summary controller still exposes internal mapping terminology.');
 if(!engine.includes("containsQuestionText:false")||!engine.includes("containsNotes:false")||!engine.includes("containsRawBrowserState:false"))throw new Error('Study summary engine privacy contract is incomplete.');
 if(!engine.includes('interactionTopics')||!engine.includes('resourceRoute'))throw new Error('Interaction-based recommendation engine is missing.');
-if(!css.includes('@media print')||!css.includes('@page')||!css.includes('.no-print')||!resourceCss.includes('@media print')||!resourceCss.includes('.summary-resource-group')||!reportingCss.includes('@media print')||!reportingCss.includes('.summary-domain-table')||!reportingCss.includes('.summary-followup-grid'))throw new Error('Professional print stylesheet contract is incomplete.');
+if(!css.includes('@media print')||!css.includes('@page')||!css.includes('.no-print')||!resourceCss.includes('@media print')||!resourceCss.includes('.summary-resource-group')||!reportingCss.includes('@media print')||!reportingCss.includes('.summary-domain-table'))throw new Error('Professional print stylesheet contract is incomplete.');
 for(const profile of ['full','practice','readiness','mock','guided']){
   if(!html.includes(`value="${profile}"`))throw new Error(`Study summary is missing the ${profile} report profile option.`);
   if(!controller.includes(`${profile}:`))throw new Error(`Study summary controller is missing the ${profile} report profile.`);
@@ -38,5 +38,11 @@ if(!controller.includes('renderDomainEvidence')||!controller.includes('renderPra
 if(!reports.includes('study-summary.html?report=full')||!reports.includes('Professional print and export reports'))throw new Error('Reports Center is not linked to focused print reports.');
 for(const token of ['summary-guided-domains','summary-competency-table','summary-pathway-rows','summary-skills-table'])if(!reportingCss.includes(token)||!controller.includes(token))throw new Error('Detailed Guided Study / Skills Report missing: '+token);
 if(/Mentor\s*\/\s*learner notes|Mentor signature|Mentor approval/i.test(html))throw new Error('Mentor sign-off is not part of the learner-owned skills report.');
-if(!html.includes('Learner reflection')||!reports.includes('study-summary.html?report=guided'))throw new Error('Learner-owned skills reporting is not discoverable.');
-console.log('Printable report profiles, learner-owned Guided Study and Skills matrices, nine-lesson progression, no mentor signature requirement, privacy, APA sources, CSV, print styles and reporting links passed.');
+if(!reports.includes('study-summary.html?report=guided'))throw new Error('Learner-owned skills reporting is not discoverable.');
+// All five printable reports share a single template. The handwritten follow-up
+// form must remain absent on screen, in print, and in responsive styles.
+const retired=['Study follow-up','Next learning cycle','Priority to review next','Practice target','Next check date','Learner reflection / next steps','summary-followup','data-report-section="followup"'];
+for(const token of retired)if(html.includes(token))throw new Error('Retired follow-up form still appears in printable report: '+token);
+if(controller.includes("'followup'"))throw new Error('A report profile still enables the retired follow-up form.');
+if(reportingCss.includes('summary-followup'))throw new Error('Unused follow-up form CSS still exists.');
+console.log('Printable report profiles, learner-owned Guided Study and Skills matrices, nine-lesson progression, no blank study follow-up forms, no mentor signature requirement, privacy, APA sources, CSV, print styles and reporting links passed.');
