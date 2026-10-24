@@ -5,10 +5,11 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'..');
-const [engineJs,uiJs,css,workspaceJs,workspaceCss,studyHtml,trailJs,trailCss]=await Promise.all([
+const [engineJs,uiJs,css,workspaceJs,workspaceCss,studyHtml,trailJs,trailCss,respLabJs,respLabCss,respLabHtml]=await Promise.all([
   'core/respiratory-timeline-engine.js','core/respiratory-timeline-ui.js','assets/respiratory-timeline.css',
   'core/study-workspace.js','assets/study-workspace.css','study.html',
-  'core/respiratory-study-trail.js','assets/respiratory-study-trail.css'
+  'core/respiratory-study-trail.js','assets/respiratory-study-trail.css',
+  'core/respiratory-lab-workspace.js','assets/respiratory-lab-workspace.css','lab-respiratory.html'
 ].map(file=>readFile(join(root,file),'utf8')));
 const context={};
 vm.createContext(context);
@@ -59,6 +60,10 @@ for(const token of ['[data-blueprint-map]','spg-study-chapter-button','spg-study
 for(const token of ['spg-study-page[hidden]','spg-study-chapter-icon','spg-study-domain-nav']) assert.ok(workspaceCss.includes(token),`Study layout lacks ${token}`);
 for(const token of ['lockedPreviewHtml','data-respiratory-return-current','data-respiratory-phase','data-respiratory-phase-move','completedThrough','conceptMastery']) assert.ok(trailJs.includes(token),`Lesson navigation lacks ${token}`);
 for(const token of ['scroll-snap-type:x','respiratory-phase-navigation','data-active-phase="learn"','data-active-phase="check"']) assert.ok(trailCss.includes(token),`Lesson rail layout lacks ${token}`);
+for(const token of ['core/respiratory-lab-workspace.js','assets/respiratory-lab-workspace.css']) assert.ok(respLabHtml.includes(token),`Respiratory Lab did not load ${token}`);
+for(const token of ['data-resp-lab-chapter','data-resp-lab-previous','data-resp-lab-next','data-respiratory-start','data-respiratory-visual-start','window.addEventListener']) assert.ok(respLabJs.includes(token),`Respiratory Lab chapter navigation lacks ${token}`);
+for(const token of ['spg-resp-lab-pane[hidden]','spg-resp-lab-chapter-buttons','spg-resp-lab-pager']) assert.ok(respLabCss.includes(token),`Respiratory Lab chapter styling lacks ${token}`);
+new Function(respLabJs);
 new Function(workspaceJs);
 new Function(trailJs);
 console.log('RPSGT V3 compact learning pages, interactive pathway, 30s/60s/full tracing time, arrow navigation, and evidence time mapping passed.');
