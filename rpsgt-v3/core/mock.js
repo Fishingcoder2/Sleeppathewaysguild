@@ -10,6 +10,17 @@
   function setText(selector,value){$all(selector).forEach(node=>node.textContent=value);}
   function show(selector){const node=$(selector);if(node) node.classList.remove("hidden");}
   function hide(selector){const node=$(selector);if(node) node.classList.add("hidden");}
+  function setView(view){document.body.dataset.mockView=view;}
+  function focusPanel(selector){
+    const panel=$(selector);if(!panel)return;
+    const heading=panel.querySelector('[data-question-prompt],h2')||panel;
+    heading.tabIndex=-1;
+    // Questions update in-place. Anchor the question under the sticky header so
+    // Next, Previous and palette controls never appear to do nothing.
+    const top=Math.max(0,window.scrollY+panel.getBoundingClientRect().top-85);
+    window.scrollTo({top,behavior:'instant'});
+    heading.focus({preventScroll:true});
+  }
   async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
   function savedState(){return window.RPSGTStorage.load();}
   function saveRoot(root){window.RPSGTStorage.save(root);if(window.RPSGTApp) window.RPSGTApp.refresh();}
@@ -59,12 +70,17 @@
   }
 
   function renderHome(){
-    stopTimer();state.session=null;hide("[data-mock-shell]");hide("[data-mock-results]");show("[data-mock-home]");renderResume();renderHistory();
+    stopTimer();state.session=null;hide("[data-mock-shell]");hide("[data-mock-review]");hide("[data-mock-results]");show("[data-mock-home]");setView('home');renderResume();renderHistory();
   }
 
   function startNew(){
+    const active=mockStore().mock.activeSession;
+    if(active&&Array.isArray(active.items)&&active.items.length===175&&
+       !window.confirm('You have an unfinished mock exam. Replace it with a new randomized attempt?'))return;
     const timed=Boolean($("[data-mock-timed]").checked);
-    const built=window.RPSGTMockEngine.buildSession(state.bank);
+    let built;
+    try{built=window.RPSGTMockEngine.buildSession(state.bank);}
+    catch(error){showError(error);return;}
     state.session={version:1,sessionId:"mock-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),items:built.items,index:0,answers:{},flags:[],timed:timed,startedAt:Date.now(),completedAt:null,timeLimitMinutes:built.timeLimitMinutes,blueprintCounts:built.blueprintCounts,scoredCount:built.scoredCount,pretestCount:built.pretestCount};
     saveActive();openSession();
   }
@@ -73,7 +89,12 @@
   function discard(){if(!window.confirm("Discard the saved mock attempt?")) return;clearActive();renderHome();}
 
   function openSession(){
-    hide("[data-mock-home]");hide("[data-mock-results]");show("[data-mock-shell]");renderQuestion();startTimer();
+    if(!state.session)return;
+    hide("[data-mock-home]");hide("[data-mock-review]");hide("[data-mock-results]");show("[data-mock-shell]");
+    setView('session');
+    const nav=$("[data-mock-nav-details]");
+    if(nav)nav.open=window.matchMedia('(min-width: 1200px)').matches;
+    renderQuestion();startTimer();focusPanel("[data-question-panel]");
   }
 
   function createChoice(option,index,selected){
@@ -83,7 +104,11 @@
   }
 
   function renderQuestion(){
-    const item=currentItem();const question=currentQuestion();if(!item||!question){submitMock(true);return;}
+    const item=currentItem();const question=currentQuestion();
+    if(!item||!question){
+      saveActive();renderHome();showError(new Error('A saved question cannot be restored from the approved question bank. Your attempt is saved; resume after the question bank is repaired.'));
+      return;
+    }
     const selected=state.session.answers[String(item.id)]||"";
     $("[data-question-number]").textContent="Question "+(state.session.index+1)+" of 175";
     $("[data-question-task]").textContent=taskLabel(question);
@@ -99,19 +124,51 @@
   }
 
   function selectAnswer(index){
-    const item=currentItem();const question=currentQuestion();if(!item||!question) return;
-    state.session.answers[String(item.id)]=question.options[index];saveActive();renderQuestion();
+    const item=currentItem();const question=currentQuestion();if(!item||!question||!question.options[index])return;
+    state.session.answers[String(item.id)]=question.options[index];
+    saveActive();
+    // Do not replace the focused answer button when a choice is selected.
+    $all('[data-question-choices] [data-choice-index]').forEach(button=>{
+      const selected=Number(button.dataset.choiceIndex)===index;
+      button.classList.toggle('selected',selected);
+      button.setAttribute('aria-pressed',String(selected));
+    });
+    renderStats();renderPalette();
   }
 
-  function move(delta){state.session.index=Math.max(0,Math.min(174,state.session.index+delta));saveActive();renderQuestion();}
-  function goTo(index){state.session.index=Math.max(0,Math.min(174,Number(index)||0));saveActive();renderQuestion();}
-  function toggleFlag(){const item=currentItem();if(!item) return;state.session.flags=Array.isArray(state.session.flags)?state.session.flags:[];const exists=state.session.flags.some(id=>sameId(id,item.id));state.session.flags=exists?state.session.flags.filter(id=>!sameId(id,item.id)):state.session.flags.concat([item.id]);saveActive();renderQuestion();}
-  function pause(){saveActive();renderHome();}
+  function move(delta){if(!state.session)return;goTo(state.session.index+delta);}
+  function goTo(index){
+    if(!state.session)return;
+    state.session.index=Math.max(0,Math.min(174,Number(index)||0));
+    saveActive();renderQuestion();
+    const nav=$('[data-mock-nav-details]');
+    if(nav&&window.matchMedia('(max-width: 1050px)').matches)nav.open=false;
+    focusPanel('[data-question-panel]');
+  }
+  function toggleFlag(){
+    const item=currentItem();if(!item)return;
+    state.session.flags=Array.isArray(state.session.flags)?state.session.flags:[];
+    const exists=state.session.flags.some(id=>sameId(id,item.id));
+    state.session.flags=exists?state.session.flags.filter(id=>!sameId(id,item.id)):state.session.flags.concat([item.id]);
+    saveActive();
+    const flag=$('[data-flag-question]');flag.classList.toggle('flag-active',!exists);
+    flag.textContent=exists?'Flag for review':'Flagged for review';
+    renderStats();renderPalette();
+  }
+  function pause(){
+    if(!state.session)return;
+    saveActive();renderHome();
+    const resume=$('[data-resume-mock]');if(resume)resume.focus({preventScroll:true});
+    focusPanel('[data-resume-card]');
+  }
 
   function renderStats(){const answered=Object.keys(state.session.answers||{}).length;setText("[data-mock-answered]",answered);setText("[data-mock-unanswered]",175-answered);setText("[data-mock-flagged]",(state.session.flags||[]).length);}
   function renderPalette(){
     const host=$("[data-mock-palette]");host.innerHTML="";
-    state.session.items.forEach((item,index)=>{const button=document.createElement("button");button.type="button";button.textContent=String(index+1);button.classList.toggle("answered",Boolean(state.session.answers[String(item.id)]));button.classList.toggle("flagged",(state.session.flags||[]).some(id=>sameId(id,item.id)));button.classList.toggle("current",index===state.session.index);button.setAttribute("aria-label","Question "+(index+1));button.addEventListener("click",()=>goTo(index));host.appendChild(button);});
+    state.session.items.forEach((item,index)=>{const button=document.createElement("button");button.type="button";button.textContent=String(index+1);button.classList.toggle("answered",Boolean(state.session.answers[String(item.id)]));button.classList.toggle("flagged",(state.session.flags||[]).some(id=>sameId(id,item.id)));button.classList.toggle("current",index===state.session.index);button.setAttribute("aria-label","Question "+(index+1)+(state.session.answers[String(item.id)]?", answered":"")+
+      ((state.session.flags||[]).some(id=>sameId(id,item.id))?", flagged for review":""));
+      if(index===state.session.index)button.setAttribute('aria-current','step');
+      button.addEventListener("click",()=>goTo(index));host.appendChild(button);});
   }
 
   function startTimer(){stopTimer();renderTimer();if(state.session&&state.session.timed) state.timerId=setInterval(renderTimer,1000);}
@@ -121,9 +178,34 @@
     setText("[data-mock-timer-label]","Elapsed · 180-minute reference");setText("[data-mock-timer]",formatElapsed(elapsedMs(state.session)));
   }
 
-  function submitMock(forced){
-    const unanswered=175-Object.keys(state.session.answers||{}).length;
-    if(!forced){const message=unanswered?"Submit with "+unanswered+" unanswered question"+(unanswered===1?"":"s")+"?":"Submit this mock attempt?";if(!window.confirm(message)) return;}
+  function openReview(){
+    if(!state.session)return;
+    const answered=Object.keys(state.session.answers||{}).length;
+    setText('[data-review-answered]',answered);
+    setText('[data-review-unanswered]',175-answered);
+    setText('[data-review-flagged]',(state.session.flags||[]).length);
+    const unfinished=state.session.items.find(item=>!state.session.answers[String(item.id)]);
+    const flagged=state.session.items.find(item=>(state.session.flags||[]).some(id=>sameId(id,item.id)));
+    $('[data-review-unanswered-first]').disabled=!unfinished;
+    $('[data-review-flagged-first]').disabled=!flagged;
+    saveActive();
+    hide('[data-mock-home]');hide('[data-mock-shell]');hide('[data-mock-results]');show('[data-mock-review]');
+    setView('review');focusPanel('[data-mock-review]');
+  }
+  function reviewToQuestion(kind){
+    if(!state.session)return;
+    const index=kind==='unanswered'?
+      state.session.items.findIndex(item=>!state.session.answers[String(item.id)]):
+      state.session.items.findIndex(item=>(state.session.flags||[]).some(id=>sameId(id,item.id)));
+    hide('[data-mock-review]');show('[data-mock-shell]');setView('session');
+    if(index>=0)state.session.index=index;
+    saveActive();renderQuestion();startTimer();focusPanel('[data-question-panel]');
+  }
+  function submitMock(){
+    if(!state.session)return;
+    if(mockStore().mock.history.some(row=>row.sessionId===state.session.sessionId)){
+      renderHome();return;
+    }
     state.session.completedAt=Date.now();
     const questionsById=Object.fromEntries(state.session.items.map(item=>[String(item.id),state.questionMap.get(String(item.id))]));
     const summary=window.RPSGTMockEngine.summarize(state.session.items,questionsById,state.session.answers);
@@ -136,16 +218,22 @@
   }
 
   function renderResults(result){
-    hide("[data-mock-home]");hide("[data-mock-shell]");show("[data-mock-results]");
+    hide("[data-mock-home]");hide("[data-mock-shell]");hide("[data-mock-review]");show("[data-mock-results]");setView('results');
     setText("[data-result-correct]",result.scoredCorrect+" / 150");setText("[data-result-percent]",result.scoredPercent+"%");setText("[data-result-weighted]",result.weightedPercent+"%");setText("[data-result-time]",result.timed?formatElapsed(result.elapsedMs):"Not timed");setText("[data-result-answered]",result.answeredTotal+" / 175");
     const reportLink=$("[data-result-report-link]");if(reportLink) reportLink.href=detailHref(result);
     const domainHost=$("[data-mock-domain-results]");domainHost.innerHTML=["D1","D2","D3","D4"].map(code=>{const row=result.byDomain[code]||{correct:0,total:0,percent:0};return '<div class="readiness-domain-card"><strong>'+code+'</strong><div class="progress"><span style="width:'+row.percent+'%"></span></div><span>'+row.correct+' / '+row.total+' scored correct · '+row.percent+'%</span></div>';}).join("");
     const weakHost=$("[data-mock-weak-results]");
     weakHost.innerHTML=(result.weakestTasks||[]).map((task,index)=>{const blueprintTask=state.taskMap.get(task.taskCode);const next=blueprintTask&&blueprintTask.nextAction?blueprintTask.nextAction:"Review this task, then run focused practice.";const keys=(task.recommendationKeys||[]).slice(0,4).join(", ");return '<article class="readiness-target"><div class="readiness-target-rank">'+(index+1)+'</div><div><h3>'+task.taskCode+' · '+(blueprintTask?blueprintTask.title:task.title)+'</h3><p>'+task.correct+' / '+task.total+' correct · '+task.percent+'% · '+task.missed+' missed</p><p>'+next+'</p>'+(keys?'<small>Study keys: '+keys+'</small>':'')+'</div></article>';}).join("")||'<div class="empty">No weak-task pattern was available from the scored answers.</div>';
+    focusPanel('[data-mock-results]');
   }
 
   function bind(){
-    $("[data-start-mock]").addEventListener("click",startNew);$("[data-resume-mock]").addEventListener("click",resume);$("[data-discard-mock]").addEventListener("click",discard);$("[data-prev-question]").addEventListener("click",()=>move(-1));$("[data-next-question]").addEventListener("click",()=>state.session.index===174?submitMock(false):move(1));$("[data-flag-question]").addEventListener("click",toggleFlag);$("[data-pause-mock]").addEventListener("click",pause);$("[data-submit-mock]").addEventListener("click",()=>submitMock(false));$("[data-new-mock]").addEventListener("click",renderHome);
+    $("[data-start-mock]").addEventListener("click",startNew);$("[data-resume-mock]").addEventListener("click",resume);$("[data-discard-mock]").addEventListener("click",discard);$("[data-prev-question]").addEventListener("click",()=>move(-1));$("[data-next-question]").addEventListener("click",()=>{if(!state.session)return;state.session.index===174?openReview():move(1);});$("[data-flag-question]").addEventListener("click",toggleFlag);$("[data-pause-mock]").addEventListener("click",pause);$("[data-submit-mock]").addEventListener("click",openReview);
+    $("[data-review-back]").addEventListener("click",()=>reviewToQuestion('current'));
+    $("[data-review-unanswered-first]").addEventListener("click",()=>reviewToQuestion('unanswered'));
+    $("[data-review-flagged-first]").addEventListener("click",()=>reviewToQuestion('flagged'));
+    $("[data-review-submit]").addEventListener("click",submitMock);
+    $("[data-new-mock]").addEventListener("click",()=>{renderHome();focusPanel('[data-mock-home]');});
   }
 
   function showError(error){const host=$("[data-mock-load]");host.className="section notice error";host.textContent="The mock system could not be loaded. "+error.message;}
