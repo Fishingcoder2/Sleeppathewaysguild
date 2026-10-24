@@ -4,13 +4,14 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,"..");
-const [html,script,engine,storage,practice,questionActions]=await Promise.all([
+const [html,script,engine,storage,practice,questionActions,readinessCss]=await Promise.all([
   readFile(join(root,"readiness.html"),"utf8"),
   readFile(join(root,"core","readiness.js"),"utf8"),
   readFile(join(root,"core","readiness-engine.js"),"utf8"),
   readFile(join(root,"core","storage.js"),"utf8"),
   readFile(join(root,"practice.html"),"utf8"),
-  readFile(join(root,"core","practice-question-actions.js"),"utf8")
+  readFile(join(root,"core","practice-question-actions.js"),"utf8"),
+  readFile(join(root,"assets","readiness.css"),"utf8")
 ]);
 const selectors=["readiness-load","readiness-home","readiness-shell","readiness-results","question-panel","question-number","question-task","question-difficulty","question-prompt","question-choices","answer-feedback","answer-feedback-summary","answer-feedback-body","previous-question","next-question","flag-question","make-flashcard","readiness-action-status","quit-readiness","session-answered","session-correct","session-accuracy","session-size","result-score","result-weighted","result-correct","result-answered","domain-results","weak-task-results","new-readiness","readiness-history","readiness-history-count"];
 for(const name of selectors) assert.ok(html.includes(`data-${name}`),`readiness.html missing data-${name}`);
@@ -24,6 +25,7 @@ assert.ok(script.includes("function previousQuestion()")&&script.includes("state
 assert.ok(script.includes("questionActions.toggleReview")&&script.includes('"flaggedIds"'),"Readiness flag action is not wired to the saved flagged queue.");
 assert.ok(script.includes("questionActions.saveFlashcard")&&script.includes("RPSGT Flashcard Center"),"Readiness Make flashcard action is not wired.");
 assert.ok(script.includes("feedback.open=false")&&html.includes("<details class=\"answer-feedback hidden\""),"Readiness answer reasoning must be optional/collapsible by default.");
+assert.ok(readinessCss.includes("[data-readiness-shell].hidden{display:none!important}"),"Completed readiness must fully hide old question/modal view despite shared Practice display rules.");
 assert.ok(html.includes('data-readiness-result-heading tabindex="-1"'),'Readiness results heading must receive keyboard focus after completion.');
 assert.ok(script.includes('function bringResultsIntoView()')&&script.includes('panel.scrollIntoView({block:"start",behavior:"auto"})'),'Completion must visibly scroll to result section.');
 assert.ok(script.includes('if(state.active.index>=state.active.questionIds.length-1)')&&script.includes('finishReadiness();'),'Last answered question must finish directly rather than saving an out-of-range cursor.');
