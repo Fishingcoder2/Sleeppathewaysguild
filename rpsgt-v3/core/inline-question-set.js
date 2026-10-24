@@ -32,7 +32,12 @@
     if(validCode(targeted))return [targeted];
     const saved=window.RPSGTStorage&&window.RPSGTStorage.load();
     const focused=codeOf(saved&&saved.guidedStudy&&saved.guidedStudy.trailFocus&&saved.guidedStudy.trailFocus.task);
-    if(document.body.dataset.module==='study'&&validCode(focused))return [focused];
+    if(document.body.dataset.module==='study'){
+      if(validCode(focused))return [focused];
+      const awards=saved&&saved.guidedStudy&&saved.guidedStudy.trailAwards&&saved.guidedStudy.trailAwards.tasks||{};
+      const completed=unique(Object.keys(awards));
+      if(completed.length)return completed.slice(-3);
+    }
     const path=location.pathname.split('/').pop();
     const result=await fetch('data/labs/catalog.json',{cache:'no-store'});
     if(!result.ok)throw Error('Unable to load the skill-to-task map.');
@@ -112,7 +117,7 @@
   async function start(link){
     if(state.loading)return;
     state.loading=true;state.origin=link;
-    ensureModal();state.overlay.hidden=false;lockScroll();
+    ensureModal();if(state.overlay.hidden){state.overlay.hidden=false;lockScroll();}state.selected=null;
     state.card.focus();announce('Loading related questions…');
     try{
       const codes=await resolveTasks(link);
@@ -141,13 +146,13 @@
     const answer=question.options[selected],correct=answer===question.answer;
     saved.progress.answered=Number(saved.progress.answered||0)+1;
     saved.progress.correct=Number(saved.progress.correct||0)+(correct?1:0);
-    for(const [code,key] of [[question.domain,'byDomain'],[question.taskCode,'byTask']]){
+    for(const [code,key] of [[question.domain||String(question.taskCode).slice(0,2),'byDomain'],[question.taskCode,'byTask']]){
       const bucket=saved.progress[key][code]||{answered:0,correct:0};
       bucket.answered=Number(bucket.answered||0)+1;
       bucket.correct=Number(bucket.correct||0)+(correct?1:0);
       saved.progress[key][code]=bucket;
     }
-    saved.progress.history.push({questionId:question.id,domain:question.domain,taskCode:question.taskCode,difficulty:question.difficulty||null,correct,selectedAnswer:answer,answeredAt:new Date().toISOString(),source:'v3-inline-question-set',pool:'learner'});
+    saved.progress.history.push({questionId:question.id,domain:question.domain||String(question.taskCode).slice(0,2),taskCode:question.taskCode,difficulty:question.difficulty||null,correct,selectedAnswer:answer,answeredAt:new Date().toISOString(),source:'v3-inline-question-set',pool:'learner'});
     if(saved.progress.history.length>2500)saved.progress.history=saved.progress.history.slice(-2500);
     const id=String(question.id);
     saved.review.missedIds=saved.review.missedIds.filter(item=>String(item)!==id);
