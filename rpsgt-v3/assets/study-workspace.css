@@ -26,3 +26,6 @@ body[data-module="study"] .main>.hero .coach-card{padding:12px}
 body[data-module="study"] .main>.hero .coach-card h2{font-size:1.03rem}
 @media(max-width:850px){.spg-study-chapter-items{grid-template-columns:repeat(2,minmax(0,1fr))}.spg-study-domain-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:550px){.spg-study-nav-heading{display:block}.spg-study-nav-heading span{display:block;margin-top:4px}.spg-study-chapter-button{min-height:58px;padding:7px}.spg-study-chapter-icon{width:30px;height:30px;flex-basis:30px}.spg-study-chapter-button strong{font-size:.79rem}.spg-study-chapter-button small{padding-left:39px}.spg-study-page-pager{bottom:calc(62px + env(safe-area-inset-bottom));padding:7px;gap:5px}.spg-study-page-pager strong{font-size:.72rem;max-width:100px}.spg-study-page-pager .btn{padding:9px 7px;font-size:.75rem;min-height:42px}}
+
+/* The chapter rail replaces the earlier duplicate direct-destinations chooser. */
+body[data-module="study"]:has(.spg-study-chapter-nav) .guided-study-area-chooser{display:none!important}
