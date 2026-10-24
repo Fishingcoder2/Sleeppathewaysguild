@@ -5,7 +5,7 @@
   if(!host) return;
   const guidedEngine=window.RPSGTGuidedTrailEngine;
 
-  const state={trail:null,source:null,chapters:new Map(),activeIndex:0,completedThrough:-1,phase:'learn',previewIndex:null,taskEntryObserver:null};
+  const state={trail:null,source:null,chapters:new Map(),activeIndex:0,completedThrough:-1,phase:'learn',activityProgress:{},previewIndex:null,taskEntryObserver:null};
   const text=value=>String(value==null?'':value).trim();
   const esc=value=>text(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -60,6 +60,22 @@
     return index>=0?index:null;
   }
 
+  function activityFor(step){
+    const value=step&&state.activityProgress[step.id];
+    return value&&typeof value==='object'?value:{learn:false,apply:false};
+  }
+  function activityUnlocked(step,phase,index){
+    if(index<=state.completedThrough||conceptMastery(step).passed) return true;
+    const progress=activityFor(step);
+    return phase==='learn'||phase==='apply'&&progress.learn||phase==='check'&&progress.learn&&progress.apply;
+  }
+  function restorePhase(){
+    const step=state.trail&&state.trail.steps[state.activeIndex];
+    if(!step){state.phase='learn';return;}
+    const progress=activityFor(step);
+    state.phase=progress.apply?'check':progress.learn?'apply':'learn';
+  }
+
   function loadProgress(){
     if(!window.RPSGTStorage||!state.trail) return;
     const guided=guidedStudy();
@@ -69,6 +85,8 @@
     state.completedThrough=completed==null?-1:completed;
     const unlocked=Math.min(state.completedThrough+1,state.trail.steps.length-1);
     state.activeIndex=active==null?Math.max(0,unlocked):Math.min(active,Math.max(0,unlocked));
+    state.activityProgress=progress.activityProgress&&typeof progress.activityProgress==='object'&&!Array.isArray(progress.activityProgress)?progress.activityProgress:{};
+    restorePhase();
   }
 
   function saveProgress(){
@@ -80,6 +98,7 @@
     saved.guidedStudy.respiratoryStudyTrail={
       activeStepId:active&&active.id||null,
       completedThroughStepId:completed&&completed.id||null,
+      activityProgress:state.activityProgress,
       updatedAt:new Date().toISOString()
     };
     window.RPSGTStorage.save(saved);
@@ -106,10 +125,11 @@
     const labLink=step.lab&&text(step.lab.href)?'<a class="btn secondary" href="'+esc(step.lab.href)+'">Open '+esc(labLabel)+'</a>':'';
     const lockedByCheckpoint=!alreadyComplete&&!mastery.passed;
     const nextLabel=lockedByCheckpoint?'Pass checkpoint to unlock next lesson':last?(alreadyComplete?'Trail complete ✓':'Finish respiratory trail'):'Finish lesson → Unlock '+esc(next.navLabel||next.title);
-    const continueButton='<button class="btn '+(last&&alreadyComplete?'secondary':'primary')+'" type="button" data-respiratory-next '+((last&&alreadyComplete)||lockedByCheckpoint?'disabled aria-disabled="true"':'')+'>'+nextLabel+'</button>';
+    const readyToFinish=activityFor(step).learn&&activityFor(step).apply;
+    const continueButton='<button class="btn '+(last&&alreadyComplete?'secondary':'primary')+'" type="button" data-respiratory-next '+((last&&alreadyComplete)||lockedByCheckpoint||(!alreadyComplete&&!readyToFinish)?'disabled aria-disabled="true"':'')+'>'+nextLabel+'</button>';
     const masteryCopy=mastery.attempted?(mastery.passed?'Checkpoint passed · best '+mastery.best+'%':'Keep practicing · best '+mastery.best+'%'):'Pass the concept checkpoint to unlock the next lesson.';
     return '<section class="respiratory-guided-sequence" aria-label="What to do in this lesson">'+
-      '<div class="respiratory-guided-title"><span class="eyebrow">Lesson route</span><h4>Learn → Apply → Check</h4><p>Finish these three activities, then unlock the next lesson.</p></div>'+
+      '<div class="respiratory-guided-title"><span class="eyebrow">Lesson route</span><h4>Learn → Apply → Check</h4><p>Complete Learn, then Apply, then the 15-question Check. Each finished stage is saved automatically; passing Check unlocks the next lesson.</p></div>'+
       '<ol class="respiratory-guided-list">'+
         '<li><span>1</span><div><strong>Learn this first</strong><p>Read why this matters, the primary authority, the textbook study support, and the current-rule warning below.</p></div></li>'+
         '<li><span>2</span><div><strong>Apply it</strong><p>Use the related skills lab to see the concept in a practical sleep-tech workflow.</p>'+labLink+'</div></li>'+
@@ -120,17 +140,25 @@
   }
 
   function phaseNavigation(){
+    const step=state.trail.steps[state.activeIndex];
+    const progress=activityFor(step);
     return '<nav class="respiratory-phase-navigation" aria-label="Lesson activities">'+
-      [['learn','1 · Learn'],['apply','2 · Apply'],['check','3 · Check']].map(pair=>
-        '<button type="button" data-respiratory-phase="'+pair[0]+'" aria-pressed="'+(state.phase===pair[0]?'true':'false')+'">'+pair[1]+'</button>'
-      ).join('')+'</nav>';
+      [['learn','1 · Learn'],['apply','2 · Apply'],['check','3 · Check']].map(pair=>{
+        const done=Boolean(progress[pair[0]]);
+        const available=activityUnlocked(step,pair[0],state.activeIndex);
+        return '<button type="button" data-respiratory-phase="'+pair[0]+'" aria-pressed="'+(state.phase===pair[0]?'true':'false')+'" '+(available?'':'disabled aria-disabled="true"')+'>'+(done?'✓ ':'')+pair[1]+'</button>';
+      }).join('')+'</nav>';
   }
 
   function phasePager(){
     const phases=['learn','apply','check'],index=phases.indexOf(state.phase);
+    const step=state.trail.steps[state.activeIndex];
+    const passed=conceptMastery(step).passed;
+    const nextLabel=state.phase==='learn'?'I reviewed Learn → Apply':'I practiced Apply → Check';
     return '<div class="respiratory-phase-pager"><button type="button" class="btn secondary" data-respiratory-phase-move="-1" '+(index===0?'disabled':'')+'>← Previous activity</button>'+
       '<strong>Activity '+(index+1)+' of 3</strong>'+
-      '<button type="button" class="btn primary" data-respiratory-phase-move="1" '+(index===2?'disabled':'')+'>Next activity →</button></div>';
+      (index===2?'<span class="respiratory-phase-final">'+(passed?'Checkpoint passed. Continue to the next chapter.':'Complete the 15-question checkpoint above. Passing at 80% unlocks the next chapter.')+'</span>':
+      '<button type="button" class="btn primary" data-respiratory-phase-move="1">'+nextLabel+' →</button>')+'</div>';
   }
 
   function lockedPreviewHtml(step,index){
@@ -212,7 +240,7 @@
     if(!Number.isInteger(index)||index<0||index>unlocked||index>=state.trail.steps.length) return;
     state.activeIndex=index;
     state.previewIndex=null;
-    state.phase='learn';
+    restorePhase();
     saveProgress();
     render();
     focusPanel();
@@ -222,14 +250,29 @@
     const last=state.trail.steps.length-1;
     const active=state.trail.steps[state.activeIndex];
     if(!active||state.activeIndex>state.completedThrough&&!conceptMastery(active).passed) return;
+    if(state.activeIndex>state.completedThrough&&(!activityFor(active).learn||!activityFor(active).apply)) return;
     if(state.activeIndex===last&&state.completedThrough===last) return;
     state.completedThrough=Math.max(state.completedThrough,state.activeIndex);
     if(state.activeIndex<last) state.activeIndex+=1;
     state.previewIndex=null;
-    state.phase='learn';
+    restorePhase();
     saveProgress();
     render();
     focusPanel();
+  }
+
+  function completePhaseAndAdvance(){
+    const step=state.trail&&state.trail.steps[state.activeIndex];
+    if(!step||state.previewIndex!==null||state.phase==='check') return;
+    const progress=activityFor(step);
+    if(state.phase==='learn'){
+      state.activityProgress[step.id]={...progress,learn:true};
+      state.phase='apply';
+    }else if(state.phase==='apply'&&progress.learn){
+      state.activityProgress[step.id]={...progress,learn:true,apply:true};
+      state.phase='check';
+    }else return;
+    saveProgress();render();focusPanel();
   }
 
   function addD4AEntryPoint(){
@@ -278,7 +321,7 @@
 
   host.addEventListener('click',event=>{
     const checkpoint=event.target.closest('[data-checkpoint-start][data-checkpoint-concept]');
-    if(checkpoint&&state.trail&&guidedEngine&&typeof guidedEngine.queueQuestionFilter==='function'){
+    if(checkpoint&&state.trail&&state.phase==='check'&&activityFor(state.trail.steps[state.activeIndex]).apply&&guidedEngine&&typeof guidedEngine.queueQuestionFilter==='function'){
       const concept=state.trail.steps.find(step=>step.id===checkpoint.dataset.checkpointConcept);
       if(concept) guidedEngine.queueQuestionFilter(concept.taskCode,concept.checkpointFilter,{conceptId:concept.id,conceptLabel:concept.title});
       return;
@@ -291,7 +334,11 @@
     if(phaseButton||phaseMove){
       const phases=['learn','apply','check'];
       const wanted=phaseButton?phaseButton.dataset.respiratoryPhase:phases[Math.max(0,Math.min(2,phases.indexOf(state.phase)+Number(phaseMove.dataset.respiratoryPhaseMove)))];
-      if(phases.includes(wanted)){state.phase=wanted;render();focusPanel();}
+      if(phaseMove&&Number(phaseMove.dataset.respiratoryPhaseMove)>0){completePhaseAndAdvance();return;}
+      const step=state.trail.steps[state.activeIndex];
+      if(phases.includes(wanted)&&activityUnlocked(step,wanted,state.activeIndex)){
+        state.phase=wanted;render();focusPanel();
+      }
       return;
     }
     const next=event.target.closest('[data-respiratory-next]');
@@ -307,6 +354,17 @@
     }
     if(index===state.activeIndex&&state.previewIndex===null) return;
     setActive(index);
+  });
+
+  document.addEventListener('rpsgt:checkpoint-closed',event=>{
+    if(!state.trail||state.previewIndex!==null) return;
+    const record=event.detail&&event.detail.record;
+    const step=state.trail.steps[state.activeIndex];
+    if(!record||!step||record.conceptId!==step.id||record.task!==step.taskCode)return;
+    if(record.passed===true&&state.phase==='check'&&activityFor(step).learn&&activityFor(step).apply){
+      // Keep score and answer review available until the learner closes the results.
+      completeAndContinue();
+    }else{render();focusPanel();}
   });
 
   document.addEventListener('click',event=>{
