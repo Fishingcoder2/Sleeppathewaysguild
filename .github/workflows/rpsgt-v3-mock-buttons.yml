@@ -1,0 +1,46 @@
+name: Validate RPSGT V3 Mock exam buttons
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rpsgt-v3/mock.html'
+      - 'rpsgt-v3/core/mock.js'
+      - 'rpsgt-v3/assets/mock.css'
+      - 'rpsgt-v3/tests/browser/mock-buttons-navigation.spec.mjs'
+      - 'rpsgt-v3/scripts/test-mock-shell.mjs'
+      - '.github/workflows/rpsgt-v3-mock-buttons.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mock-buttons:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Check Mock controller and layout contracts
+        run: |
+          node --check rpsgt-v3/core/mock.js
+          node rpsgt-v3/scripts/test-mock-shell.mjs
+          node rpsgt-v3/scripts/test-mock-system.mjs
+      - name: Install Playwright
+        working-directory: rpsgt-v3
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        working-directory: rpsgt-v3
+        run: npx playwright install --with-deps chromium
+      - name: Exercise every Mock control and final submission
+        working-directory: rpsgt-v3
+        run: npx playwright test --config=playwright.config.mjs --project=desktop-chromium --project=mobile-chromium tests/browser/mock-buttons-navigation.spec.mjs
+      - name: Save failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-mock-button-failures
+          path: |
+            rpsgt-v3/test-results
+            rpsgt-v3/playwright-report
+          if-no-files-found: ignore
