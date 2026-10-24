@@ -1,0 +1,22 @@
+/* Slide-style activity switching for RPSGT V3 Respiratory Lab */
+body[data-module="labs"] .spg-resp-lab-pane[hidden]{display:none!important}
+.spg-resp-lab-chapter-nav{scroll-margin-top:85px;margin:14px 0 12px;padding:12px;border:1px solid #bcd5df;border-radius:15px;background:#f2f9fc}
+.spg-resp-lab-nav-title{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.spg-resp-lab-nav-title strong{color:var(--navy)}
+.spg-resp-lab-nav-title span{font-size:.8rem;color:var(--muted)}
+.spg-resp-lab-chapter-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.spg-resp-lab-chapter-buttons button{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:9px;min-height:60px;border:1px solid #b7cedb;border-radius:11px;background:#fff;color:var(--navy);text-align:left;cursor:pointer;touch-action:manipulation}
+.spg-resp-lab-chapter-buttons button.active{border:2px solid var(--teal);background:#e6f8f5}
+.spg-resp-lab-chapter-buttons button span{font-size:1.12rem}
+.spg-resp-lab-chapter-buttons button strong{font-size:.82rem}
+.spg-resp-lab-chapter-buttons button small{width:100%;font-size:.68rem;color:var(--muted);padding-left:26px}
+.spg-resp-lab-chapter-buttons button:focus-visible{outline:3px solid #15858a;outline-offset:2px}
+.spg-resp-lab-pane,.spg-resp-lab-station-page{min-width:0;max-width:100%}
+.spg-resp-lab-station-page>.section{margin-top:0}
+.spg-resp-lab-station-page>[data-respiratory-workspace]{margin-top:12px}
+.spg-resp-lab-pager{position:sticky;bottom:8px;z-index:6;display:flex;justify-content:space-between;align-items:center;gap:9px;margin:12px 0;padding:9px;border:1px solid #bbcfda;border-radius:13px;background:rgba(255,255,255,.97);box-shadow:0 8px 24px rgba(8,43,87,.12)}
+.spg-resp-lab-pager strong{font-size:.82rem;color:var(--navy);text-align:center}
+.spg-resp-lab-pager .btn{min-height:44px}
+.spg-resp-lab-pager .btn:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:850px){.spg-resp-lab-chapter-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.spg-resp-lab-nav-title{display:grid}}
+@media(max-width:560px){.spg-resp-lab-pager{bottom:calc(60px + env(safe-area-inset-bottom));padding:6px;gap:5px}.spg-resp-lab-pager .btn{font-size:.72rem;padding:8px 6px}.spg-resp-lab-pager strong{font-size:.7rem;max-width:105px}.spg-resp-lab-chapter-buttons button{padding:7px;min-height:53px}.spg-resp-lab-chapter-buttons button strong{font-size:.76rem}}
