@@ -6,3 +6,9 @@
 .readiness-history-row .btn{white-space:nowrap;min-height:40px}
 @media(max-width:900px){.readiness-history-row{grid-template-columns:minmax(0,1fr) auto auto auto}.readiness-history-row>div:first-child{grid-column:auto}}
 @media(max-width:660px){.readiness-history-row{grid-template-columns:1fr 1fr}.readiness-history-row>div:first-child{grid-column:1/-1}.readiness-history-row .btn{grid-column:1/-1;width:100%}}
+
+/* Readiness uses the shared Practice layout but its three panels are mutually exclusive.
+   Explicit display:none wins over .practice-session{display:grid} and responsive modal styles. */
+[data-readiness-home].hidden,
+[data-readiness-shell].hidden,
+[data-readiness-results].hidden{display:none!important}
