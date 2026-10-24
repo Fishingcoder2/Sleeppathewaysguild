@@ -194,7 +194,7 @@
   }
   function reviewToQuestion(kind){
     if(!state.session)return;
-    const index=kind==='unanswered'?
+    const index=kind==='current'?-1:kind==='unanswered'?
       state.session.items.findIndex(item=>!state.session.answers[String(item.id)]):
       state.session.items.findIndex(item=>(state.session.flags||[]).some(id=>sameId(id,item.id)));
     hide('[data-mock-review]');show('[data-mock-shell]');setView('session');
