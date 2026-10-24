@@ -361,8 +361,18 @@
     if(svg&&state.mode==='evidence'){
       const rect=svg.getBoundingClientRect();
       if(!rect.width||!rect.height) return;
-      const x=(event.clientX-rect.left)/rect.width*1000;
-      const y=(event.clientY-rect.top)/rect.height*495;
+      // SVG coordinates must account for letterboxing when the chart is height-constrained.
+      const matrix=typeof svg.getScreenCTM==='function'?svg.getScreenCTM():null;
+      let x,y;
+      if(matrix&&typeof svg.createSVGPoint==='function'){
+        const point=svg.createSVGPoint();
+        point.x=event.clientX;point.y=event.clientY;
+        const local=point.matrixTransform(matrix.inverse());
+        x=local.x;y=local.y;
+      }else{
+        x=(event.clientX-rect.left)/rect.width*1000;
+        y=(event.clientY-rect.top)/rect.height*495;
+      }
       if(x<PLOT.left||x>PLOT.right) return;
       const item=currentEvidence();
       const channel=channelFromY(y);
