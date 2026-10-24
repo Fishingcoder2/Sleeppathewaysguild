@@ -42,17 +42,14 @@ test('labeled study, report, and Guild-resource deep links land on their visible
 
 test('Guided Study exposes direct area choices instead of making learners scroll through unrelated sections',async({page})=>{
   await page.goto('study.html');
-  const chooser=page.locator('#guided-study-area-chooser');
-  await expect(chooser).toBeVisible();
-  await expect(chooser).toContainText('Go straight to the learning area you need');
-  const links=chooser.locator('.guided-study-area-link');
-  await expect(links).toHaveCount(4);
-  await expect(links.nth(0)).toHaveAttribute('href','#respiratory-pap-trail');
-  await expect(links.nth(1)).toHaveAttribute('href','#guided-study-progress');
-  await expect(links.nth(2)).toHaveAttribute('href','#explorer-journey');
-  await expect(links.nth(3)).toHaveAttribute('href','#rpsgt-domain-map');
-
-  await links.nth(3).click();
+  // The old duplicated chooser is hidden in the horizontal chapter layout.
+  const nav=page.locator('.spg-study-chapter-nav');
+  await expect(nav).toBeVisible();
+  await expect(page.locator('#guided-study-area-chooser')).toBeHidden();
+  const buttons=nav.locator('[data-study-page]');
+  await expect(buttons).toHaveCount(4);
+  for(const key of ['trail','progress','explorer','map'])await expect(nav.locator('[data-study-page="'+key+'"]')).toBeVisible();
+  await nav.locator('[data-study-page="map"]').click();
   await expectTargetNearTop(page,'#rpsgt-domain-map');
 });
 
@@ -61,6 +58,8 @@ test('sidebar blueprint labels resolve to real D1-D4 containers and Readiness us
   await page.goto('study.html');
   for(const code of ['D1','D2','D3','D4']){
     await expect(page.locator(`.sidebar a[href="study.html#${code}"]`)).toBeVisible();
+    await page.locator(`.sidebar a[href="study.html#${code}"]`).click();
+    await expect(page.locator('[data-study-page="map"]')).toHaveAttribute('aria-pressed','true');
     await expect(page.locator(`#${code}`)).toBeVisible();
   }
   await expect(page.locator('.sidebar a[href="readiness.html"]')).toContainText('Readiness Check');
@@ -100,6 +99,7 @@ test('Practice keeps the question, choices, and primary submit/next control usab
 
 test('Guided Study checkpoint keeps prompt, answer choices, and navigation controls reachable',async({page})=>{
   await page.goto('study.html');
+  await page.locator('[data-study-page="map"]').click();
   const task=page.locator('.task-map-card').first();
   await expect(task).toBeVisible();
   await task.locator('[data-checkpoint-start]').click();
