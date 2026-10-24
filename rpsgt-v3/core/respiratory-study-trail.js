@@ -65,7 +65,7 @@
     return value&&typeof value==='object'?value:{learn:false,apply:false};
   }
   function activityUnlocked(step,phase,index){
-    if(index<=state.completedThrough||conceptMastery(step).passed) return true;
+    if(index<=state.completedThrough) return true;
     const progress=activityFor(step);
     return phase==='learn'||phase==='apply'&&progress.learn||phase==='check'&&progress.learn&&progress.apply;
   }
