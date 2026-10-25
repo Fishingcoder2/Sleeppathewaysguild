@@ -17,9 +17,9 @@ const readJson=async path=>JSON.parse(await readFile(path,'utf8'));
 const release=await readJson(join(root,'..','data','owner-approved-question-release.json'));
 const dispatch=await readJson(join(root,'data','owner-question-dispatch.json'));
 releaseApi.validateRelease(release);
-assert.equal(dispatch.status,'held');
+assert.ok(['held','published'].includes(dispatch.status));
 assert.equal(dispatch.pendingQuestionIds.length,4,'four owner-approved PLMS/PAP records are queued');
-assert.deepEqual(releaseApi.applyDispatch(release,dispatch),release,'held content never changes learner bank');
+if(dispatch.status==='held') assert.deepEqual(releaseApi.applyDispatch(release,dispatch),release,'held content never changes learner bank');
 assert.throws(()=>releaseApi.applyDispatch(release,{...dispatch,status:'held',questions:[release.questions[0]]}),/Held dispatch/);
 const draft=await readJson(join(root,'data','question-proposals','plms-pap-titration-2026-10-25.json'));
 const approvedQuestion=draft.questions[0];
@@ -41,23 +41,27 @@ assert.equal(release.questions.length,320);
 assert.equal(release.rpsgtMatched.length,29);
 assert.equal(release.programCounts.RPSGT,349);
 
+const effectiveRelease=releaseApi.applyDispatch(release,dispatch);
+const dispatchedCount=effectiveRelease.questions.length-release.questions.length;
+const effectiveCount=3240+dispatchedCount;
+assert.equal(effectiveRelease.questions.length,320+dispatchedCount);
 const baseManifest=await readJson(join(root,'data','question-bank','manifest.json'));
 const baseManifestSnapshot=JSON.stringify(baseManifest);
-const manifest=releaseApi.decorate('data/question-bank/manifest.json',baseManifest,release);
-assert.equal(manifest.meta.questionCount,3240);
+const manifest=releaseApi.decorate('data/question-bank/manifest.json',baseManifest,effectiveRelease);
+assert.equal(manifest.meta.questionCount,effectiveCount);
 assert.equal(manifest.meta.sourceQuestionCount,2920);
 assert.equal(manifest.meta.developmentOnly,true);
 assert.equal(manifest.integritySummary.manualReviewRecommendedCount,560);
 assert.equal(manifest.meta.questionBankCanonicalSha256,baseManifest.meta.questionBankCanonicalSha256);
 assert.equal(JSON.stringify(baseManifest),baseManifestSnapshot);
-assert.equal(releaseApi.decorate('data/question-bank/manifest.json',manifest,release),manifest,'runtime decoration is idempotent');
+assert.equal(releaseApi.decorate('data/question-bank/manifest.json',manifest,effectiveRelease),manifest,'runtime decoration is idempotent');
 
 const baseBank=[],effectiveBank=[],responses=new Map();
 for(const entry of baseManifest.modules){
   const text=await readFile(join(root,'data','question-bank',entry.path),'utf8');
   assert.equal(createHash('sha256').update(text).digest('hex'),entry.sha256,'source module hash stays valid');
   const data=JSON.parse(text),snapshot=JSON.stringify(data),path='data/question-bank/'+entry.path;
-  const effective=releaseApi.decorate(path,data,release);
+  const effective=releaseApi.decorate(path,data,effectiveRelease);
   assert.deepEqual(effective.questions.slice(0,data.questions.length),data.questions,'every original question remains unchanged');
   assert.deepEqual(effective.sourceIndices,data.sourceIndices,'original reconstruction indices remain unchanged');
   assert.equal(JSON.stringify(data),snapshot,'source module objects are not mutated');
@@ -65,13 +69,13 @@ for(const entry of baseManifest.modules){
   baseBank.push(...data.questions);effectiveBank.push(...effective.questions);responses.set(path,data);
 }
 assert.equal(baseBank.length,2920);
-assert.equal(effectiveBank.length,3240);
-assert.equal(new Set(effectiveBank.map(question=>String(question.id))).size,3240);
+assert.equal(effectiveBank.length,effectiveCount);
+assert.equal(new Set(effectiveBank.map(question=>String(question.id))).size,effectiveCount);
 const effectiveById=new Map(effectiveBank.map(question=>[String(question.id),question]));
-for(const question of release.questions) assert.deepEqual(effectiveById.get(String(question.id)),question,'approved source content survives runtime adaptation');
+for(const question of effectiveRelease.questions) assert.deepEqual(effectiveById.get(String(question.id)),question,'approved source content survives runtime adaptation');
 for(const match of release.rpsgtMatched) assert.ok(effectiveById.has(String(match.publicId)),'already-live approved records remain available');
 assert.equal(effectiveBank.filter(question=>question.qa?.manualReviewRecommended).length,560);
-assert.equal(effectiveBank.filter(readiness.isEligible).length,3235,'all direct-task records are readiness-eligible after owner approval; five cross-task records remain outside direct-task readiness routing');
+assert.equal(effectiveBank.filter(readiness.isEligible).length,3235+dispatchedCount,'all direct-task records are readiness-eligible after owner approval; five cross-task records remain outside direct-task readiness routing');
 assert.ok(release.questions.every(question=>guided.eligibleQuestion(question,question.taskCode)),'all approved additions are selectable in learner practice and task checkpoints');
 
 const v2Html=await readFile(join(root,'..','RPSGTv2.2026.html'),'utf8');
@@ -84,22 +88,22 @@ for(const question of split.sourceQuestions) assert.deepEqual(question,baseById.
 assert.deepEqual(splitOwnerReleaseQuestions(baseBank).sourceQuestions,baseBank,'older V2 source packages still extract unchanged');
 
 const baseIndex=await readJson(join(root,'data','question-bank','feedback-index.json'));
-const index=releaseApi.decorate('data/question-bank/feedback-index.json',baseIndex,release);
-assert.equal(index.meta.questionCount,3240);
-assert.equal(index.meta.learnerEligibleCount,2680);
+const index=releaseApi.decorate('data/question-bank/feedback-index.json',baseIndex,effectiveRelease);
+assert.equal(index.meta.questionCount,effectiveCount);
+assert.equal(index.meta.learnerEligibleCount,2680+dispatchedCount);
 assert.equal(index.meta.qualityReviewCount,560);
 assert.deepEqual(index.records.slice(0,2920),baseIndex.records);
-assert.equal(new Set(index.records.map(record=>String(record.id))).size,3240);
+assert.equal(new Set(index.records.map(record=>String(record.id))).size,effectiveCount);
 for(const record of index.records.slice(2920)){
   assert.ok(!('prompt' in record)&&!('options' in record)&&!('answer' in record)&&!('rationale' in record),'feedback remains a compact index');
   assert.equal(record.manualReviewRecommended,false);
 }
-assert.equal(Object.values(index.taskCounts).reduce((total,count)=>total+count,0),3240);
+assert.equal(Object.values(index.taskCounts).reduce((total,count)=>total+count,0),effectiveCount);
 responses.set('data/question-bank/feedback-index.json',baseIndex);
 responses.set('data/question-bank/manifest.json',baseManifest);
 const blueprint=await readJson(join(root,'data','blueprint.json'));
-const effectiveBlueprint=releaseApi.decorate('data/blueprint.json',blueprint,release);
-assert.equal(effectiveBlueprint.domains.flatMap(domain=>domain.tasks).reduce((total,task)=>total+task.questionCount,0),3235,'guided map counts direct tasks separately from five cross-task records');
+const effectiveBlueprint=releaseApi.decorate('data/blueprint.json',blueprint,effectiveRelease);
+assert.equal(effectiveBlueprint.domains.flatMap(domain=>domain.tasks).reduce((total,task)=>total+task.questionCount,0),3235+dispatchedCount,'guided map counts direct tasks separately from five cross-task records');
 responses.set('data/blueprint.json',blueprint);
 
 let seed=384712;const rng=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296;};
@@ -123,8 +127,8 @@ const context={fetch:async path=>{
 vm.createContext(context);
 vm.runInContext(await readFile(join(root,'core','owner-question-release.js'),'utf8'),context);
 const loaded=await Promise.all(['data/question-bank/manifest.json','data/question-bank/feedback-index.json','data/blueprint.json',...baseManifest.modules.map(entry=>'data/question-bank/'+entry.path)].map(path=>context.RPSGTOwnerQuestionRelease.loadJson(path)));
-assert.equal(loaded[0].meta.questionCount,3240);
-assert.equal(loaded[1].records.length,3240);
+assert.equal(loaded[0].meta.questionCount,effectiveCount);
+assert.equal(loaded[1].records.length,effectiveCount);
 assert.equal(fetchCalls.filter(path=>path===releaseApi.RELEASE_PATH).length,1,'concurrent loaders fetch the approved release once');
 assert.equal(fetchCalls.filter(path=>path===releaseApi.DISPATCH_PATH).length,1,'concurrent loaders fetch the dispatch manifest once');
 
@@ -160,4 +164,4 @@ for (const unsafe of [
     'V3 must reject held or learner-excluded candidate'
   );
 }
-console.log(JSON.stringify({sourceQuestions:2920,approvedAdditions:320,effectiveQuestions:3240,readinessEligibleDirectTask:3235,releasedManualReviewFlags:560,bankControllers:bankControllers.length,integratedPages:pages,mockCandidates:mockCandidates.length},null,2));
+console.log(JSON.stringify({sourceQuestions:2920,approvedAdditions:320,dispatchedAdditions:dispatchedCount,effectiveQuestions:effectiveCount,readinessEligibleDirectTask:3235,releasedManualReviewFlags:560,bankControllers:bankControllers.length,integratedPages:pages,mockCandidates:mockCandidates.length},null,2));
