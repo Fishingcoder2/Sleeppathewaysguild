@@ -164,4 +164,5 @@ for (const unsafe of [
     'V3 must reject held or learner-excluded candidate'
   );
 }
+await import('./test-plms-pap-owner-approval-2026.mjs');
 console.log(JSON.stringify({sourceQuestions:2920,approvedAdditions:320,dispatchedAdditions:dispatchedCount,effectiveQuestions:effectiveCount,readinessEligibleDirectTask:3235,releasedManualReviewFlags:560,bankControllers:bankControllers.length,integratedPages:pages,mockCandidates:mockCandidates.length},null,2));
