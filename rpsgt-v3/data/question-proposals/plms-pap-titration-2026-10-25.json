@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-25",
+  "title": "Sleep Pathways Guild — PLMS versus PAP pressure escalation (RPSGT Domain 2)",
+  "status": "DEVELOPMENT PROPOSAL — NOT LEARNER ELIGIBLE",
+  "questionCount": 4,
+  "exam": "RPSGT",
+  "domain": "D2",
+  "taskCodes": [
+    "D2B",
+    "D2C"
+  ],
+  "sourceReview": {
+    "book": "Mattice, Brooks, & Lee-Chiong (Eds.), Fundamentals of Sleep Technology (3rd ed., 2020), Chapter 48 and Chapter 41",
+    "clinicalGuideline": "Kushida et al. (2008), JCSM 4(2), 157–171, DOI 10.5664/jcsm.27133",
+    "verifiedOn": "2026-10-25",
+    "note": "Primary PAP titration goals are obstructive apneas, hypopneas, RERAs and snoring. Exploratory adjustment may address flow limitation; PLMS alone do not authorize pressure increase."
+  },
+  "duplicateScreening": "Compared conceptually with D2B/D2C/D3A task modules and October 11 owner-release PLMS prompts. Complete 3,240-record semantic family review and learner-history regression remain pending.",
+  "releaseGate": "Per October 13 Guild clinical-content policy, these exact final stems/options/answers/rationales require owner item-specific approval before promotion. Do not modify the legacy source-bank modules or owner-approved overlay from this proposal.",
+  "questions": [
+    {
+      "id": "SPG-RPSGT-D2B-PLMS-PAP-001",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Perform procedures and follow practice guidelines",
+      "topic": "PAP titration—isolated PLMS",
+      "questionType": "Case-based clinical judgment",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "An adult's obstructive apneas, hypopneas, RERAs and snoring are controlled during CPAP titration, with no remaining inspiratory flow flattening. Periodic leg movements and some associated EEG arousals continue. What should the technologist do next?",
+      "options": [
+        "Increase CPAP whenever a series of leg movements appears",
+        "Keep pressure stable, document the limb movements and arousals, and follow the laboratory's titration protocol",
+        "Switch immediately to bilevel PAP to suppress the leg movements",
+        "Add supplemental oxygen because periodic leg movements persist"
+      ],
+      "answer": "Keep pressure stable, document the limb movements and arousals, and follow the laboratory's titration protocol",
+      "rationale": "Manual PAP titration targets obstructive apneas, hypopneas, RERAs and snoring. Isolated PLMS, even when accompanied by arousals, are not independent pressure-escalation criteria. Record the movements, arousals, respiratory control and pressure; follow the physician-approved laboratory protocol. Excess pressure can itself cause arousals or central respiratory events.",
+      "distractorRationales": {
+        "Increase CPAP whenever a series of leg movements appears": "A leg-movement series is not a listed PAP escalation criterion.",
+        "Switch immediately to bilevel PAP to suppress the leg movements": "Bilevel PAP changes are based on respiratory treatment and tolerance indications, not PLMS alone.",
+        "Add supplemental oxygen because periodic leg movements persist": "Oxygen is not a treatment for isolated PLMS and is not indicated solely by their presence."
+      },
+      "referenceKeys": [
+        "brpt-blueprint",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-pap",
+        "aasm-manual-pap-titration"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "brpt-blueprint",
+        "brpt-refs",
+        "fundamentals",
+        "fundamentals-pap",
+        "aasm-pap-titration",
+        "aasm-scoring-movement"
+      ],
+      "referencesAPA": [
+        "Thomas-Yvanauskas, C., Whitmore, H., & Rosenberg, R. S. (2020). Titration of continuous positive airway pressure and bilevel positive airway pressure. In C. D. Mattice, R. Brooks, & T. L. Lee-Chiong (Eds.), Fundamentals of sleep technology (3rd ed., Chapter 48). Wolters Kluwer.",
+        "Kushida, C. A., Chediak, A., Berry, R. B., Brown, L. K., Gozal, D., Iber, C., Parthasarathy, S., Quan, S. F., & Rowley, J. A. (2008). Clinical guidelines for the manual titration of positive airway pressure in patients with obstructive sleep apnea. Journal of Clinical Sleep Medicine, 4(2), 157–171. https://doi.org/10.5664/jcsm.27133"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Fundamentals of Sleep Technology (3rd ed.), Chapter 48, Recognizing Inadequate Titration and Increasing Pressure; Chapter 41, Scoring Movement Rules; AASM manual PAP titration guideline (2008)",
+        "verifiedBookLocator": "Uploaded Fundamentals volume 3: Chapter 48, Introduction; Recognizing Inadequate Titration; Increasing Pressure; Chapter 41, Periodic Limb Movements in Sleep",
+        "verifiedGuidelineLocator": "Kushida et al. (2008), abstract and section 4; DOI:10.5664/jcsm.27133",
+        "evidenceBoundary": "PAP adjustments follow obstructive respiratory indications and lab protocol. These sources do not identify isolated PLMS as a trigger for PAP escalation. Original SPG-authored scenarios, not copied review questions."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "ownerProfessionalClinicalReviewApproved": false,
+        "needsSemanticFamilyReview": true,
+        "fullBankComparisonPending": true,
+        "learnerHistoryRegressionPending": true,
+        "sourcePassageReviewCompleted": true,
+        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+      },
+      "mockEligible": false,
+      "ownerReleaseApproved": false
+    },
+    {
+      "id": "SPG-RPSGT-D2B-PLMS-PAP-002",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Perform procedures and follow practice guidelines",
+      "topic": "PAP titration—RERA versus limb movement",
+      "questionType": "Case-based clinical judgment",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "During PAP titration, a leg movement occurs at the end of several flow-limited breaths with increasing respiratory effort and an EEG arousal. The breath sequence does not meet apnea or hypopnea criteria. Which finding could support a protocol-based increase in PAP?",
+      "options": [
+        "The tibialis EMG burst itself",
+        "A qualifying respiratory effort-related arousal (RERA), after reviewing the respiratory signals and applicable titration thresholds",
+        "The number of leg movements regardless of respiratory signals",
+        "The patient's periodic limb movement index alone"
+      ],
+      "answer": "A qualifying respiratory effort-related arousal (RERA), after reviewing the respiratory signals and applicable titration thresholds",
+      "rationale": "A RERA is a respiratory disturbance associated with arousal and is a recognized PAP titration target. Evaluate the flow contour, respiratory effort and arousal before attributing the event to an independent limb movement. Pressure is increased when qualifying obstructive respiratory findings meet the physician-approved protocol, not because leg EMG activity is present.",
+      "distractorRationales": {
+        "The tibialis EMG burst itself": "A limb movement is not by itself a respiratory titration trigger.",
+        "The number of leg movements regardless of respiratory signals": "Periodic leg movements cannot replace respiratory-event assessment.",
+        "The patient's periodic limb movement index alone": "The PLM index documents movement frequency, not the PAP pressure needed to open the airway."
+      },
+      "referenceKeys": [
+        "brpt-blueprint",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-pap",
+        "aasm-manual-pap-titration"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "brpt-blueprint",
+        "brpt-refs",
+        "fundamentals",
+        "fundamentals-pap",
+        "aasm-pap-titration",
+        "aasm-scoring-movement"
+      ],
+      "referencesAPA": [
+        "Thomas-Yvanauskas, C., Whitmore, H., & Rosenberg, R. S. (2020). Titration of continuous positive airway pressure and bilevel positive airway pressure. In C. D. Mattice, R. Brooks, & T. L. Lee-Chiong (Eds.), Fundamentals of sleep technology (3rd ed., Chapter 48). Wolters Kluwer.",
+        "Fordyce, L. J. (2020). Scoring movement rules. In C. D. Mattice, R. Brooks, & T. L. Lee-Chiong (Eds.), Fundamentals of sleep technology (3rd ed., Chapter 41). Wolters Kluwer.",
+        "Kushida, C. A., Chediak, A., Berry, R. B., Brown, L. K., Gozal, D., Iber, C., Parthasarathy, S., Quan, S. F., & Rowley, J. A. (2008). Clinical guidelines for the manual titration of positive airway pressure in patients with obstructive sleep apnea. Journal of Clinical Sleep Medicine, 4(2), 157–171. https://doi.org/10.5664/jcsm.27133"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Fundamentals of Sleep Technology (3rd ed.), Chapter 48, Recognizing Inadequate Titration and Increasing Pressure; Chapter 41, Scoring Movement Rules; AASM manual PAP titration guideline (2008)",
+        "verifiedBookLocator": "Uploaded Fundamentals volume 3: Chapter 48, Introduction; Recognizing Inadequate Titration; Increasing Pressure; Chapter 41, Periodic Limb Movements in Sleep",
+        "verifiedGuidelineLocator": "Kushida et al. (2008), abstract and section 4; DOI:10.5664/jcsm.27133",
+        "evidenceBoundary": "PAP adjustments follow obstructive respiratory indications and lab protocol. These sources do not identify isolated PLMS as a trigger for PAP escalation. Original SPG-authored scenarios, not copied review questions."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "ownerProfessionalClinicalReviewApproved": false,
+        "needsSemanticFamilyReview": true,
+        "fullBankComparisonPending": true,
+        "learnerHistoryRegressionPending": true,
+        "sourcePassageReviewCompleted": true,
+        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+      },
+      "mockEligible": false,
+      "ownerReleaseApproved": false
+    },
+    {
+      "id": "SPG-RPSGT-D2B-PLMS-PAP-003",
+      "domain": "D2",
+      "taskCode": "D2B",
+      "task": "Perform procedures and follow practice guidelines",
+      "topic": "PAP titration—flow limitation exploration",
+      "questionType": "Case-based clinical judgment",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "Obstructive apneas, hypopneas, RERAs and snoring have been eliminated during CPAP titration. The PAP flow waveform still shows inspiratory flattening, and intermittent PLMS are also present. If limited exploratory pressure increases are permitted by the laboratory protocol, what is the appropriate rationale to document?",
+      "options": [
+        "The patient has any leg movements during sleep",
+        "Persistent inspiratory flow flattening indicating possible residual upper-airway resistance, rather than the PLMS",
+        "Each PLM-associated arousal requires an automatic CPAP increase",
+        "PAP pressure should always rise until no arousals of any cause remain"
+      ],
+      "answer": "Persistent inspiratory flow flattening indicating possible residual upper-airway resistance, rather than the PLMS",
+      "rationale": "The AASM titration guidance allows limited exploration above the pressure controlling obstructive events for residual flow limitation and sleep continuity. That is an airway-related assessment, not treatment of PLMS. Document the respiratory finding, response and physician-approved protocol limits; do not frame isolated limb movements as a pressure criterion.",
+      "distractorRationales": {
+        "The patient has any leg movements during sleep": "Presence of PLMS does not determine PAP pressure.",
+        "Each PLM-associated arousal requires an automatic CPAP increase": "Arousals due to nonrespiratory causes do not establish residual obstruction.",
+        "PAP pressure should always rise until no arousals of any cause remain": "Unnecessary pressure can worsen comfort or create sleep disruption; titration follows defined respiratory goals."
+      },
+      "referenceKeys": [
+        "brpt-blueprint",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-pap",
+        "aasm-manual-pap-titration"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "brpt-blueprint",
+        "brpt-refs",
+        "fundamentals",
+        "fundamentals-pap",
+        "aasm-pap-titration",
+        "aasm-scoring-movement"
+      ],
+      "referencesAPA": [
+        "Thomas-Yvanauskas, C., Whitmore, H., & Rosenberg, R. S. (2020). Titration of continuous positive airway pressure and bilevel positive airway pressure. In C. D. Mattice, R. Brooks, & T. L. Lee-Chiong (Eds.), Fundamentals of sleep technology (3rd ed., Chapter 48). Wolters Kluwer.",
+        "Kushida, C. A., Chediak, A., Berry, R. B., Brown, L. K., Gozal, D., Iber, C., Parthasarathy, S., Quan, S. F., & Rowley, J. A. (2008). Clinical guidelines for the manual titration of positive airway pressure in patients with obstructive sleep apnea. Journal of Clinical Sleep Medicine, 4(2), 157–171. https://doi.org/10.5664/jcsm.27133"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Fundamentals of Sleep Technology (3rd ed.), Chapter 48, Recognizing Inadequate Titration and Increasing Pressure; Chapter 41, Scoring Movement Rules; AASM manual PAP titration guideline (2008)",
+        "verifiedBookLocator": "Uploaded Fundamentals volume 3: Chapter 48, Introduction; Recognizing Inadequate Titration; Increasing Pressure; Chapter 41, Periodic Limb Movements in Sleep",
+        "verifiedGuidelineLocator": "Kushida et al. (2008), abstract and section 4; DOI:10.5664/jcsm.27133",
+        "evidenceBoundary": "PAP adjustments follow obstructive respiratory indications and lab protocol. These sources do not identify isolated PLMS as a trigger for PAP escalation. Original SPG-authored scenarios, not copied review questions."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "ownerProfessionalClinicalReviewApproved": false,
+        "needsSemanticFamilyReview": true,
+        "fullBankComparisonPending": true,
+        "learnerHistoryRegressionPending": true,
+        "sourcePassageReviewCompleted": true,
+        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+      },
+      "mockEligible": false,
+      "ownerReleaseApproved": false
+    },
+    {
+      "id": "SPG-RPSGT-D2C-PLMS-PAP-004",
+      "domain": "D2",
+      "taskCode": "D2C",
+      "task": "Identify, respond, and document",
+      "topic": "PAP titration—documentation",
+      "questionType": "Case-based clinical judgment",
+      "difficulty": "Applied",
+      "publicationStatus": "proposed-not-learner-eligible",
+      "prompt": "A patient has frequent periodic leg movements with arousals while breathing remains adequately controlled on stable CPAP. Which technologist note best supports interpretation of the titration?",
+      "options": [
+        "'CPAP increased for every limb movement; no respiratory details needed'",
+        "'At stable CPAP, obstructive respiratory events remained controlled; periodic leg movements and associated arousals continued and were documented for physician review'",
+        "'The patient has confirmed periodic limb movement disorder; no further assessment needed'",
+        "'Leg EMG activity was ignored because CPAP was working'"
+      ],
+      "answer": "'At stable CPAP, obstructive respiratory events remained controlled; periodic leg movements and associated arousals continued and were documented for physician review'",
+      "rationale": "The technologist should record the effective pressure, respiratory findings and persistent limb movements/arousals without diagnosing PLMD or adjusting PAP solely for PLMS. Accurate notes help the interpreting clinician distinguish residual respiratory sleep fragmentation from a coexisting movement finding.",
+      "distractorRationales": {
+        "'CPAP increased for every limb movement; no respiratory details needed'": "Pressure changes require justified respiratory or protocol indications and clear documentation.",
+        "'The patient has confirmed periodic limb movement disorder; no further assessment needed'": "A PLMS finding on PSG alone does not establish PLMD, and diagnosis is outside this technologist action.",
+        "'Leg EMG activity was ignored because CPAP was working'": "Persistent movements and associated arousals are clinically relevant observations to document."
+      },
+      "referenceKeys": [
+        "brpt-blueprint",
+        "brpt-handbook",
+        "brpt-refs",
+        "fundamentals-pap",
+        "aasm-manual-pap-titration",
+        "fundamentals-scoring"
+      ],
+      "studyRecommendationKeys": [
+        "brpt-handbook",
+        "brpt-blueprint",
+        "brpt-refs",
+        "fundamentals",
+        "fundamentals-pap",
+        "aasm-pap-titration",
+        "aasm-scoring-movement"
+      ],
+      "referencesAPA": [
+        "Thomas-Yvanauskas, C., Whitmore, H., & Rosenberg, R. S. (2020). Titration of continuous positive airway pressure and bilevel positive airway pressure. In C. D. Mattice, R. Brooks, & T. L. Lee-Chiong (Eds.), Fundamentals of sleep technology (3rd ed., Chapter 48). Wolters Kluwer.",
+        "Fordyce, L. J. (2020). Scoring movement rules. In C. D. Mattice, R. Brooks, & T. L. Lee-Chiong (Eds.), Fundamentals of sleep technology (3rd ed., Chapter 41). Wolters Kluwer.",
+        "Kushida, C. A., Chediak, A., Berry, R. B., Brown, L. K., Gozal, D., Iber, C., Parthasarathy, S., Quan, S. F., & Rowley, J. A. (2008). Clinical guidelines for the manual titration of positive airway pressure in patients with obstructive sleep apnea. Journal of Clinical Sleep Medicine, 4(2), 157–171. https://doi.org/10.5664/jcsm.27133"
+      ],
+      "sourceCredit": {
+        "sourceFamily": "Fundamentals of Sleep Technology (3rd ed.), Chapter 48, Recognizing Inadequate Titration and Increasing Pressure; Chapter 41, Scoring Movement Rules; AASM manual PAP titration guideline (2008)",
+        "verifiedBookLocator": "Uploaded Fundamentals volume 3: Chapter 48, Introduction; Recognizing Inadequate Titration; Increasing Pressure; Chapter 41, Periodic Limb Movements in Sleep",
+        "verifiedGuidelineLocator": "Kushida et al. (2008), abstract and section 4; DOI:10.5664/jcsm.27133",
+        "evidenceBoundary": "PAP adjustments follow obstructive respiratory indications and lab protocol. These sources do not identify isolated PLMS as a trigger for PAP escalation. Original SPG-authored scenarios, not copied review questions."
+      },
+      "qa": {
+        "blueprintTaskMapped": true,
+        "answerInOptions": true,
+        "manualReviewRecommended": true,
+        "ownerProfessionalClinicalReviewApproved": false,
+        "needsSemanticFamilyReview": true,
+        "fullBankComparisonPending": true,
+        "learnerHistoryRegressionPending": true,
+        "sourcePassageReviewCompleted": true,
+        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+      },
+      "mockEligible": false,
+      "ownerReleaseApproved": false
+    }
+  ]
+}
