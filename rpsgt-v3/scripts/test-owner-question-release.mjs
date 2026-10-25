@@ -15,7 +15,28 @@ const mock=require(join(root,'core','mock-engine.js'));
 const guided=require(join(root,'core','guided-trail-engine.js'));
 const readJson=async path=>JSON.parse(await readFile(path,'utf8'));
 const release=await readJson(join(root,'..','data','owner-approved-question-release.json'));
+const dispatch=await readJson(join(root,'data','owner-question-dispatch.json'));
 releaseApi.validateRelease(release);
+assert.equal(dispatch.status,'held');
+assert.equal(dispatch.pendingQuestionIds.length,4,'four owner-approved PLMS/PAP records are queued');
+assert.deepEqual(releaseApi.applyDispatch(release,dispatch),release,'held content never changes learner bank');
+assert.throws(()=>releaseApi.applyDispatch(release,{...dispatch,status:'held',questions:[release.questions[0]]}),/Held dispatch/);
+const draft=await readJson(join(root,'data','question-proposals','plms-pap-titration-2026-10-25.json'));
+const approvedQuestion=draft.questions[0];
+const publishedQuestion={...approvedQuestion,publicationStatus:'published-learner-eligible',
+  ownerReleaseApproved:true,qa:{...approvedQuestion.qa,manualReviewRecommended:false,
+    needsSemanticFamilyReview:false,fullBankComparisonPending:false,learnerHistoryRegressionPending:false,
+    needsBlueprintTaskReview:false,ownerProfessionalClinicalReviewApproved:true}};
+const gates=Object.fromEntries(Object.keys(dispatch.qaGates).map(key=>[key,true]));
+const published={...dispatch,status:'published',qaGates:gates,questions:[publishedQuestion]};
+const simulated=releaseApi.applyDispatch(release,published);
+assert.equal(simulated.questions.length,321,'published dispatch reaches release loader');
+assert.equal(simulated.rpsgtAddedCount,321);
+assert.equal(simulated.effectiveRpsgtCount,3241);
+assert.ok(simulated.questions.some(question=>question.id===approvedQuestion.id));
+assert.ok(!release.questions.some(question=>question.id===approvedQuestion.id),'simulation never edits base release');
+assert.throws(()=>releaseApi.applyDispatch(release,{...published,qaGates:{...gates,representativeLearnerHistoryRegressionPassed:false}}),/unmet QA/);
+assert.throws(()=>releaseApi.applyDispatch(release,{...published,questions:[approvedQuestion]}),/Unreleased or conflicting/);
 assert.equal(release.questions.length,320);
 assert.equal(release.rpsgtMatched.length,29);
 assert.equal(release.programCounts.RPSGT,349);
@@ -95,7 +116,7 @@ assert.deepEqual(mockSession.blueprintCounts,{D1:30,D2:41,D3:38,D4:41});
 const fetchCalls=[];
 const context={fetch:async path=>{
   fetchCalls.push(path);
-  const payload=path===releaseApi.RELEASE_PATH?release:responses.get(path);
+  const payload=path===releaseApi.RELEASE_PATH?release:path===releaseApi.DISPATCH_PATH?dispatch:responses.get(path);
   assert.ok(payload,'unexpected runtime fetch '+path);
   return {ok:true,status:200,json:async()=>structuredClone(payload)};
 }};
@@ -105,6 +126,7 @@ const loaded=await Promise.all(['data/question-bank/manifest.json','data/questio
 assert.equal(loaded[0].meta.questionCount,3240);
 assert.equal(loaded[1].records.length,3240);
 assert.equal(fetchCalls.filter(path=>path===releaseApi.RELEASE_PATH).length,1,'concurrent loaders fetch the approved release once');
+assert.equal(fetchCalls.filter(path=>path===releaseApi.DISPATCH_PATH).length,1,'concurrent loaders fetch the dispatch manifest once');
 
 const bankControllers=[];
 for(const file of await readdir(join(root,'core'))){
