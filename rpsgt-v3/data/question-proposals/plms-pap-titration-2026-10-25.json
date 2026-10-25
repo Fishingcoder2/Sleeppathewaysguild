@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "createdAt": "2026-10-25",
   "title": "Sleep Pathways Guild — PLMS versus PAP pressure escalation (RPSGT Domain 2)",
-  "status": "DEVELOPMENT PROPOSAL — NOT LEARNER ELIGIBLE",
+  "status": "OWNER CLINICAL APPROVAL RECORDED — RELEASE QA PENDING; NOT LEARNER ELIGIBLE",
   "questionCount": 4,
   "exam": "RPSGT",
   "domain": "D2",
@@ -16,8 +16,8 @@
     "verifiedOn": "2026-10-25",
     "note": "Primary PAP titration goals are obstructive apneas, hypopneas, RERAs and snoring. Exploratory adjustment may address flow limitation; PLMS alone do not authorize pressure increase."
   },
-  "duplicateScreening": "Compared conceptually with D2B/D2C/D3A task modules and October 11 owner-release PLMS prompts. Complete 3,240-record semantic family review and learner-history regression remain pending.",
-  "releaseGate": "Per October 13 Guild clinical-content policy, these exact final stems/options/answers/rationales require owner item-specific approval before promotion. Do not modify the legacy source-bank modules or owner-approved overlay from this proposal.",
+  "duplicateScreening": "All 3,240 existing effective bank prompts were screened; no exact or near-identical stem collisions in the four approved items. Closest items address RERA scoring or respiratory PAP response. Human semantic-family review still pending.",
+  "releaseGate": "Owner clinical approval granted for the four item versions in the attestation. Do not publish until task-code fit, semantic novelty and representative V2/V3 saved-history regression pass; preserve legacy source records.",
   "questions": [
     {
       "id": "SPG-RPSGT-D2B-PLMS-PAP-001",
@@ -72,12 +72,16 @@
         "blueprintTaskMapped": true,
         "answerInOptions": true,
         "manualReviewRecommended": true,
-        "ownerProfessionalClinicalReviewApproved": false,
+        "ownerProfessionalClinicalReviewApproved": true,
         "needsSemanticFamilyReview": true,
         "fullBankComparisonPending": true,
         "learnerHistoryRegressionPending": true,
         "sourcePassageReviewCompleted": true,
-        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+        "qaStatus": "Owner clinical signoff recorded 2026-10-25; semantic-family, blueprint task review and saved learner-history regression remain pending. Not learner eligible.",
+        "ownerApprovalDate": "2026-10-25",
+        "ownerClinicalApprovalId": "SPG-OWNER-PLMS-PAP-2026-10-25-01",
+        "approvedContentSHA256": "feda2f933d4f74591a3a894f4b7f64caece6fe399ac12d41be8aed87abc6c148",
+        "needsBlueprintTaskReview": true
       },
       "mockEligible": false,
       "ownerReleaseApproved": false
@@ -136,12 +140,16 @@
         "blueprintTaskMapped": true,
         "answerInOptions": true,
         "manualReviewRecommended": true,
-        "ownerProfessionalClinicalReviewApproved": false,
+        "ownerProfessionalClinicalReviewApproved": true,
         "needsSemanticFamilyReview": true,
         "fullBankComparisonPending": true,
         "learnerHistoryRegressionPending": true,
         "sourcePassageReviewCompleted": true,
-        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+        "qaStatus": "Owner clinical signoff recorded 2026-10-25; semantic-family, blueprint task review and saved learner-history regression remain pending. Not learner eligible.",
+        "ownerApprovalDate": "2026-10-25",
+        "ownerClinicalApprovalId": "SPG-OWNER-PLMS-PAP-2026-10-25-01",
+        "approvedContentSHA256": "b5aaba2d7c46af0451114cf9a44a13cfc9a3f877d369d36d1da2ab51b834e91e",
+        "needsBlueprintTaskReview": true
       },
       "mockEligible": false,
       "ownerReleaseApproved": false
@@ -199,12 +207,16 @@
         "blueprintTaskMapped": true,
         "answerInOptions": true,
         "manualReviewRecommended": true,
-        "ownerProfessionalClinicalReviewApproved": false,
+        "ownerProfessionalClinicalReviewApproved": true,
         "needsSemanticFamilyReview": true,
         "fullBankComparisonPending": true,
         "learnerHistoryRegressionPending": true,
         "sourcePassageReviewCompleted": true,
-        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+        "qaStatus": "Owner clinical signoff recorded 2026-10-25; semantic-family, blueprint task review and saved learner-history regression remain pending. Not learner eligible.",
+        "ownerApprovalDate": "2026-10-25",
+        "ownerClinicalApprovalId": "SPG-OWNER-PLMS-PAP-2026-10-25-01",
+        "approvedContentSHA256": "50110c30a13e1a4ef2752336a1d186d31a040cb9138b668f89533f76f0d0ce63",
+        "needsBlueprintTaskReview": true
       },
       "mockEligible": false,
       "ownerReleaseApproved": false
@@ -264,15 +276,31 @@
         "blueprintTaskMapped": true,
         "answerInOptions": true,
         "manualReviewRecommended": true,
-        "ownerProfessionalClinicalReviewApproved": false,
+        "ownerProfessionalClinicalReviewApproved": true,
         "needsSemanticFamilyReview": true,
         "fullBankComparisonPending": true,
         "learnerHistoryRegressionPending": true,
         "sourcePassageReviewCompleted": true,
-        "qaStatus": "Development proposal only; owner review of exact stem/options/answer/rationale, semantic family review, and learner-history regression pending"
+        "qaStatus": "Owner clinical signoff recorded 2026-10-25; semantic-family, blueprint task review and saved learner-history regression remain pending. Not learner eligible.",
+        "ownerApprovalDate": "2026-10-25",
+        "ownerClinicalApprovalId": "SPG-OWNER-PLMS-PAP-2026-10-25-01",
+        "approvedContentSHA256": "bbb8d777db332e32a36d5d7a8b85c0d063bfdd4873f26503ca63783839b742e3",
+        "needsBlueprintTaskReview": false
       },
       "mockEligible": false,
       "ownerReleaseApproved": false
     }
-  ]
+  ],
+  "ownerApproval": {
+    "approvalId": "SPG-OWNER-PLMS-PAP-2026-10-25-01",
+    "approvedOn": "2026-10-25",
+    "attestationPath": "rpsgt-v3/data/question-proposals/OWNER-PLMS-PAP-CLINICAL-APPROVAL-2026-10-25.json",
+    "originalProposalGitBlobSha": "8c9b35e74686ba49c142a9dceba1c2c2e53b19d5",
+    "ids": [
+      "SPG-RPSGT-D2B-PLMS-PAP-001",
+      "SPG-RPSGT-D2B-PLMS-PAP-002",
+      "SPG-RPSGT-D2B-PLMS-PAP-003",
+      "SPG-RPSGT-D2C-PLMS-PAP-004"
+    ]
+  }
 }
