@@ -274,6 +274,39 @@
     rationaleLabel.textContent="Reasoning: ";
     rationale.append(rationaleLabel,document.createTextNode(question.rationale||"Review the question stem and compare each option with the concept being tested."));
     feedback.replaceChildren(status,heading,answers,rationale);
+    if(question.distractorRationales&&typeof question.distractorRationales==='object'){
+      const entries=question.options.filter(option=>option!==question.answer&&question.distractorRationales[option]);
+      if(entries.length){
+        const details=document.createElement('details');
+        details.className='practice-distractor-reasons';
+        const summary=document.createElement('summary');
+        summary.textContent='Why the other answers are incorrect';
+        const list=document.createElement('ul');
+        entries.forEach(option=>{
+          const item=document.createElement('li');
+          const name=document.createElement('strong');
+          name.textContent=option+': ';
+          item.append(name,document.createTextNode(question.distractorRationales[option]));
+          list.appendChild(item);
+        });
+        details.append(summary,list);
+        feedback.appendChild(details);
+      }
+    }
+    if(Array.isArray(question.referencesAPA)&&question.referencesAPA.length){
+      const references=document.createElement('section');
+      references.className='practice-apa-references';
+      const title=document.createElement('strong');
+      title.textContent='References (APA)';
+      const list=document.createElement('ul');
+      question.referencesAPA.forEach(citation=>{
+        const item=document.createElement('li');
+        item.textContent=String(citation);
+        list.appendChild(item);
+      });
+      references.append(title,list);
+      feedback.appendChild(references);
+    }
     appendQualityDetails(feedback,question);
   }
 
