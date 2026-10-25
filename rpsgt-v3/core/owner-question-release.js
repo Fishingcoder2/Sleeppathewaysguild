@@ -6,6 +6,7 @@
   'use strict';
   const RELEASE_ID='spg-owner-question-release-2026-10-11';
   const RELEASE_PATH='data/owner-approved-question-release.json';
+  const DISPATCH_PATH='data/owner-question-dispatch.json';
   const DIRECT_TASKS=['D1A','D1B','D1C','D2A','D2B','D2C','D3A','D3B','D3C','D4A','D4B','D4C'];
   const clone=value=>JSON.parse(JSON.stringify(value));
   let releasePromise=null;
@@ -82,13 +83,53 @@
     if(!response.ok) throw new Error(path+' HTTP '+response.status);
     return response.json();
   }
+  // D1/GitHub proposal records are an editorial inbox, not a public feed.
+  // This explicitly gated published manifest is the only additional learner-serving path.
+  function applyDispatch(base,dispatch){
+    validateRelease(base);
+    if(!dispatch||dispatch.schemaVersion!==1||dispatch.program!=='RPSGT'||
+       !String(dispatch.dispatchId||'').trim()||!Array.isArray(dispatch.questions)||
+       !Array.isArray(dispatch.pendingQuestionIds)) throw new Error('RPSGT dispatch manifest is invalid.');
+    if(dispatch.status==='held'){
+      if(dispatch.questions.length) throw new Error('Held dispatch must not expose learner questions.');
+      return base;
+    }
+    if(dispatch.status!=='published') throw new Error('Unknown RPSGT dispatch state.');
+    const gates=dispatch.qaGates||{};
+    const mandatory=['ownerClinicalApproved','sourcePassagesReviewed','semanticFamilyReviewCompleted',
+      'blueprintTaskPlacementConfirmed','representativeLearnerHistoryRegressionPassed','ownerPublicationAuthorized'];
+    if(mandatory.some(key=>gates[key]!==true)||!dispatch.questions.length||
+       !String(dispatch.approvalId||'').trim()) throw new Error('RPSGT dispatch still has unmet QA or publication gates.');
+    const baseIds=new Set(base.questions.map(question=>String(question.id)));
+    const dispatchedIds=new Set();
+    dispatch.questions.forEach(question=>{
+      const id=String(question&&question.id||'');
+      if(!id||baseIds.has(id)||dispatchedIds.has(id)||!dispatch.pendingQuestionIds.includes(id)||
+         question.ownerReleaseApproved!==true||question.publicationStatus!=='published-learner-eligible'||
+         question.qa?.ownerProfessionalClinicalReviewApproved!==true||
+         question.qa?.manualReviewRecommended===true||question.qa?.learnerHistoryRegressionPending===true||
+         question.qa?.needsSemanticFamilyReview===true||question.qa?.needsBlueprintTaskReview===true||
+         !Array.isArray(question.referencesAPA)||question.referencesAPA.length<2||
+         !String(question.qa?.approvedContentSHA256||'').trim()) throw new Error('Unreleased or conflicting dispatch question: '+id);
+      dispatchedIds.add(id);
+    });
+    const added=dispatch.questions.length;
+    const merged={...base,questions:base.questions.concat(clone(dispatch.questions)),
+      rpsgtAddedCount:Number(base.rpsgtAddedCount)+added,
+      effectiveRpsgtCount:Number(base.effectiveRpsgtCount)+added,
+      programCounts:{...base.programCounts,RPSGT:Number(base.programCounts.RPSGT)+added},
+      dispatchedQuestionCount:added,
+      dispatchMetadata:{dispatchId:dispatch.dispatchId,approvalId:dispatch.approvalId,status:'published',count:added}};
+    return validateRelease(merged);
+  }
   function loadRelease(){
-    if(!releasePromise) releasePromise=fetchJson(RELEASE_PATH).then(validateRelease);
+    if(!releasePromise) releasePromise=Promise.all([fetchJson(RELEASE_PATH),fetchJson(DISPATCH_PATH)])
+      .then(([base,dispatch])=>applyDispatch(base,dispatch));
     return releasePromise;
   }
   async function loadJson(path){
     const data=await fetchJson(path);
     return resourceKind(path)?decorate(path,data,await loadRelease()):data;
   }
-  return {RELEASE_ID,RELEASE_PATH,validateRelease,resourceKind,decorate,loadJson};
+  return {RELEASE_ID,RELEASE_PATH,DISPATCH_PATH,validateRelease,applyDispatch,resourceKind,decorate,loadJson};
 });
