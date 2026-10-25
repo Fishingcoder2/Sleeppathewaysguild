@@ -9,6 +9,8 @@ const read=async relative=>JSON.parse(await readFile(join(root,relative),'utf8')
 const approved=await read('data/question-proposals/OWNER-PLMS-PAP-CLINICAL-APPROVAL-2026-10-25.json');
 const draft=await read('data/question-proposals/plms-pap-titration-2026-10-25.json');
 const release=await read('data/owner-approved-question-release.json');
+const dispatch=await read('data/owner-question-dispatch.json');
+assert.equal(dispatch.approvalId,approved.approvalId);
 
 assert.equal(approved.ownerClinicalApprovalStatus,'OWNER_RPSGT_APPROVED');
 assert.equal(approved.approvedOn,'2026-10-25');
@@ -50,4 +52,25 @@ for(const question of draft.questions){
   assert.equal(question.qa.learnerHistoryRegressionPending,true,'Saved-history regression remains an independent release gate');
 }
 assert.match(draft.status,/RELEASE QA PENDING/i);
-console.log('Validated four version-pinned clinical approvals, APA references, correct answers, distractor rationales, and active publication holds.');
+if(dispatch.status==='held'){
+  assert.deepEqual(dispatch.questions,[],'No public question payload until release gates pass');
+  assert.ok(Object.values(dispatch.qaGates).some(value=>value!==true),'Held queue must still show a named release blocker');
+}else if(dispatch.status==='published'){
+  assert.equal(dispatch.questions.length,4,'Only these four version-approved questions may be dispatched');
+  assert.ok(Object.values(dispatch.qaGates).every(value=>value===true),'Published batch requires every QA gate');
+  for(const question of dispatch.questions){
+    const item=approvals.get(question.id);
+    assert.ok(item,'Unapproved question in learner dispatch: '+question.id);
+    const content=Object.fromEntries(frozenFields.map(key=>[key,question[key]]));
+    const digest=createHash('sha256').update(JSON.stringify(content)).digest('hex');
+    assert.equal(digest,item.approvedContentSHA256,'Published content drift requires fresh owner approval');
+    assert.equal(question.qa.approvedContentSHA256,digest);
+    assert.equal(question.publicationStatus,'published-learner-eligible');
+    assert.equal(question.ownerReleaseApproved,true);
+    assert.equal(question.qa.manualReviewRecommended,false);
+    assert.equal(question.qa.learnerHistoryRegressionPending,false);
+    assert.equal(question.qa.needsSemanticFamilyReview,false);
+    assert.equal(question.qa.needsBlueprintTaskReview,false);
+  }
+}else throw new Error('Unknown PLMS/PAP dispatch status: '+dispatch.status);
+console.log('Validated four version-pinned clinical approvals and separately gated '+dispatch.status+' dispatch.');
