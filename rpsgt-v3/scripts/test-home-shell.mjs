@@ -11,35 +11,35 @@ const shell=await readFile(join(root,'core','app-shell.js'),'utf8');
 const disclosures=await readFile(join(root,'sources-disclosures.html'),'utf8');
 const referenceCss=await readFile(join(root,'assets','reference-center.css'),'utf8');
 const referenceJs=await readFile(join(root,'core','reference-center.js'),'utf8');
+const guide=await readFile(join(root,'learner-guide.html'),'utf8');
 
+// The simplified dashboard keeps learning destinations prominent and moves guidance to Help.
 for(const marker of [
-  'id="exam-map"',
-  'id="official-brpt-resources"',
-  'data-brpt-resource-board',
-  'data-brpt-verified-date',
-  'data-home-question-count',
-  'Coach Bob Exam Reasoning Compass',
-  'Patient First',
-  'Signal Family',
-  'Cross-Check',
-  'Proof Clue',
-  'sources-disclosures.html',
-  'core/home-dashboard.js',
-  'assets/home.css'
+  'data-continue', 'data-home-recommendation', 'data-stat="answered"',
+  'data-stat="accuracy"', 'data-stat="missed"', 'data-stat="awards"',
+  'front-door-destinations', 'home-destination-grid', 'home-shortcuts',
+  'sources-disclosures.html', 'core/home-dashboard.js', 'assets/home.css'
 ]){
   if(!html.includes(marker)) throw new Error(`RPSGT V3 home is missing ${marker}`);
 }
-
+const destinations=Array.from(html.matchAll(/<article\b[^>]*class="[^"]*\bmodule-card\b[^"]*"[^>]*>([\s\S]*?)<\/article>/g),match=>match[1]);
+if(destinations.length!==5) throw new Error('Dashboard must expose five focused learning destinations.');
+for(const route of ['study.html','practice.html','labs.html','mock.html','reports.html']){
+  if(!destinations.some(card=>card.includes(`href="${route}"`))) throw new Error(`Dashboard learning destination is missing ${route}.`);
+}
+for(const route of ['learner-guide.html','study.html#respiratory-pap-trail','scoring-workstation.html']){
+  if(!html.includes(`href="${route}"`)) throw new Error(`Dashboard support route is missing ${route}.`);
+}
+for(const boundary of ['teaching schematics','not an official BRPT score or prediction','facility policy','supervised clinical competency']){
+  if(!guide.includes(boundary)) throw new Error(`Learner Guide is missing ${boundary}.`);
+}
 if(!html.includes('coach-bob-avatar.jpg')) throw new Error('The RPSGT V3 front door does not use the Coach Bob character asset.');
 if(!html.includes('meta name="robots" content="noindex,nofollow"')) throw new Error('Development noindex protection is missing from the RPSGT V3 front door.');
-if(!js.includes("data/brpt-official-resources.json")) throw new Error('Home dashboard does not load the verified BRPT resource catalog.');
-if(!js.includes("data/question-bank/manifest.json")) throw new Error('Home dashboard does not refresh the deployed question-bank count from the manifest.');
-if(!js.includes('promotePrimaryDestinations')||!js.includes("insertAdjacentElement('afterend',destinationSection)")) throw new Error('Primary learning destinations are not promoted directly below the hero.');
-if(!js.includes('normalizeAchievementCopy')||!js.includes('Task badges and domain medals')||!js.includes('Sleep Pathways Guild educational achievements')) throw new Error('Home dashboard does not normalize Guild task-badge and domain-medal terminology.');
+if(!js.includes('normalizeAchievementCopy')||!js.includes('Task badges and domain medals')) throw new Error('Home dashboard does not normalize Guild task-badge and domain-medal terminology.');
 if(!js.includes('suppressOptionalBookShelf')||!js.includes("getElementById('rpsgt-book-shelf')")||!js.includes('MutationObserver')) throw new Error('Learner-facing optional book shelf suppression is not protected.');
-if(!css.includes('.official-resource-grid')||!css.includes('.reasoning-compass')) throw new Error('BRPT resource board or Coach Bob compass styles are missing.');
 if(!css.includes('.front-door-destinations')||!css.includes('@media(min-width:821px) and (max-width:1050px)')) throw new Error('Compact tablet/desktop front-door destination layout is missing.');
 if(!css.includes('.brpt-hero{grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);align-items:start;min-height:0')) throw new Error('Home hero is not explicitly content-height and compact.');
+new Function(js);
 
 const forbiddenLearnerGovernance=[
   'How answers are governed',
@@ -118,13 +118,13 @@ if(/RPSGTStorage|localStorage\s*\.\s*(?:setItem|removeItem|clear)\s*\(/.test(ref
 new Function(referenceJs);
 
 console.log(JSON.stringify({
-  brptFrontDoor:true,
+  focusedLearningDestinations:true,
   compactHero:true,
   primaryDestinationsPromoted:true,
   tabletTwoColumnHero:true,
-  officialResourceBoard:true,
+  learnerGuideBoundaries:true,
   coachBobCharacter:true,
-  reasoningCompass:true,
+  respiratoryAndWorkstationShortcuts:true,
   sourceGovernanceInternalOnly:true,
   apaStyleReferenceSurface:true,
   referencesSearchByDomainTaskTopic:true,
