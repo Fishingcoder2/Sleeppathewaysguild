@@ -3757,6 +3757,9 @@ function makePrepared(q,shuffleChoices=false){
 
 const TASK_FILTER_STOP_WORDS=new Set(["and","the","for","with","from","into","under","according","appropriate","perform","follow","identify","review","recognize","support","technical","procedure","procedures","protocol","protocols"]);
 function taskQuestionPool(taskId,pool){
+  const officialCode=taskCodeFromGuidedTaskId(taskId);
+  if(!OFFICIAL_CPSGT_TASK_CODES.includes(officialCode))return [];
+  pool=pool.filter(q=>q.handbookAlignment?.taskCode===officialCode);
   const details=taskDetailsFromId(taskId);
   const tokens=String(details.label).toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/)
     .filter(token=>token.length>=4&&!TASK_FILTER_STOP_WORDS.has(token));
