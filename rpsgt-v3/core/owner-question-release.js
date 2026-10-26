@@ -85,6 +85,14 @@
     if(match[1]==='d2a-d2c') return 'D2A/D2C';
     return match[1].toUpperCase();
   }
+  function shouldTryD1(){
+    const location=root&&root.location;
+    if(!location) return false;
+    const protocol=String(location.protocol||'');
+    const host=String(location.hostname||'').toLowerCase();
+    if(protocol!=='https:'&&protocol!=='http:') return false;
+    return host==='sleeppathwaysguild.com'||host.endsWith('.sleeppathwaysguild.com')||host.endsWith('.workers.dev');
+  }
   async function loadD1Module(path,staticData,release){
     const code=taskCodeFromModulePath(path);
     if(!code) throw new Error('Not a question module path.');
@@ -164,7 +172,7 @@
     const kind=resourceKind(path);
     if(!kind) return data;
     const release=await loadRelease();
-    if(kind==='module'){
+    if(kind==='module'&&shouldTryD1()){
       try{return await loadD1Module(path,data,release);}
       catch(error){
         if(root.console&&typeof root.console.warn==='function') root.console.warn('RPSGT D1 question-bank fallback:',error&&error.message||error);
@@ -172,5 +180,5 @@
     }
     return decorate(path,data,release);
   }
-  return {RELEASE_ID,RELEASE_PATH,DISPATCH_PATH,validateRelease,applyDispatch,resourceKind,decorate,taskCodeFromModulePath,loadD1Module,loadJson};
+  return {RELEASE_ID,RELEASE_PATH,DISPATCH_PATH,validateRelease,applyDispatch,resourceKind,decorate,taskCodeFromModulePath,shouldTryD1,loadD1Module,loadJson};
 });
