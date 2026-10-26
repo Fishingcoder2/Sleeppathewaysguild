@@ -15,6 +15,7 @@ function makeApi(apiOk){
   const calls=[];
   const context={
     console:{warn:(...args)=>calls.push(['warn',...args])},
+    location:{protocol:'https:',hostname:'sleeppathwaysguild.com'},
     fetch:async path=>{
       calls.push(['fetch',String(path)]);
       if(path==='data/question-bank/d2b.json') return response(200,staticModule);
