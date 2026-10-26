@@ -21,7 +21,8 @@ for(const file of ['RPSGTv2.2026.html']){
   const start=html.indexOf('function examEligibleQuestions(pool)');
   const guard=html.slice(start,start+500);
   assert.ok(start>=0,`${file} is missing examEligibleQuestions.`);
-  assert.ok(guard.includes('q.qa.manualReviewRecommended === true'),`${file} allows manual-review records into learner sessions.`);
+  assert.ok(html.includes('SPG_SESSION_EXCLUDED_IDS_V20261026'),`${file} is missing the owner-approved new-session exclusion registry.`);
+  assert.ok(guard.includes('SPG_SESSION_EXCLUDED_IDS_V20261026'),`${file} does not apply explicit learner exclusions before exam selection.`);
   assert.ok(html.includes('const pretestBlueprintCounts = spgAllocateBlueprintCountsV1266(pretestCount);'),`${file} does not allocate the 25 pretest-style items by domain.`);
   assert.ok(html.includes('q=>q.domain===def.id')&&html.includes('D1 35, D2 48, D3 44, D4 48'),`${file} does not protect the complete 175-item domain allocation.`);
   assert.ok(html.includes('<script src="assets/guild-resource-commerce-registry.js"></script>'),`${file} does not load the shared commerce registry.`);
