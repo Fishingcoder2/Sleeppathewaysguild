@@ -15,6 +15,97 @@
           prompt.includes('should be scored as');
       }
     }
+,
+    {
+      id:'spg-dup-child-age-five',
+      questionId:'v1264-0162',
+      reason:'Duplicate family consolidation: canonical item v1264-0161 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0162';}
+    },
+    {
+      id:'spg-dup-child-age-five',
+      questionId:'v1264-0163',
+      reason:'Duplicate family consolidation: canonical item v1264-0161 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0163';}
+    },
+    {
+      id:'spg-dup-child-age-five',
+      questionId:'v1264-0164',
+      reason:'Duplicate family consolidation: canonical item v1264-0161 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0164';}
+    },
+    {
+      id:'spg-dup-child-age-five',
+      questionId:'v1264-0165',
+      reason:'Duplicate family consolidation: canonical item v1264-0161 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0165';}
+    },
+    {
+      id:'spg-dup-adolescent-age-sixteen',
+      questionId:'v1264-0167',
+      reason:'Duplicate family consolidation: canonical item v1264-0166 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0167';}
+    },
+    {
+      id:'spg-dup-adolescent-age-sixteen',
+      questionId:'v1264-0168',
+      reason:'Duplicate family consolidation: canonical item v1264-0166 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0168';}
+    },
+    {
+      id:'spg-dup-adolescent-age-sixteen',
+      questionId:'v1264-0169',
+      reason:'Duplicate family consolidation: canonical item v1264-0166 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0169';}
+    },
+    {
+      id:'spg-dup-adolescent-age-sixteen',
+      questionId:'v1264-0170',
+      reason:'Duplicate family consolidation: canonical item v1264-0166 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0170';}
+    },
+    {
+      id:'spg-dup-adult-age-sixty',
+      questionId:'v1264-0172',
+      reason:'Duplicate family consolidation: canonical item v1264-0171 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0172';}
+    },
+    {
+      id:'spg-dup-adult-age-sixty',
+      questionId:'v1264-0173',
+      reason:'Duplicate family consolidation: canonical item v1264-0171 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0173';}
+    },
+    {
+      id:'spg-dup-adult-age-sixty',
+      questionId:'v1264-0174',
+      reason:'Duplicate family consolidation: canonical item v1264-0171 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0174';}
+    },
+    {
+      id:'spg-dup-adult-age-sixty',
+      questionId:'v1264-0175',
+      reason:'Duplicate family consolidation: canonical item v1264-0171 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='v1264-0175';}
+    },
+    {
+      id:'spg-dup-d1a-multisource-assessment',
+      questionId:'D1A-035',
+      reason:'Semantic duplicate consolidation: canonical item D1A-019 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='D1A-035';}
+    },
+    {
+      id:'spg-dup-d4a-pap-desensitization',
+      questionId:'D4A-028',
+      reason:'Semantic duplicate consolidation: canonical item D4A-018 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='D4A-028';}
+    },
+    {
+      id:'spg-dup-d4c-oxygen-context',
+      questionId:'D4C-018',
+      reason:'Semantic duplicate consolidation: canonical item D4C-009 retained for new sessions.',
+      matches(question){return String(question&&question.id||'')==='D4C-018';}
+    }
   ];
 
   function retirementFor(question){
