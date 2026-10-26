@@ -103,7 +103,7 @@
   function safeEligible(question){
     if(!question||!questionId(question)||!conceptFamilyId(question)) return false;
     if(question.reviewStatus==="retired"||question.status==="retired") return false;
-    if(question.qa&&question.qa.manualReviewRecommended||question.manualReviewRecommended) return false;
+    if(question.learnerExcluded===true||(question.qa&&question.qa.learnerExcluded===true)) return false;
     if(!String(question.prompt||"").trim()) return false;
     if(!Array.isArray(question.options)||question.options.length<2) return false;
     if(!String(question.answer||"").trim()||!question.options.includes(question.answer)) return false;
