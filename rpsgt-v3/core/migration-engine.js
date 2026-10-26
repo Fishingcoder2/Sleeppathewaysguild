@@ -172,7 +172,7 @@
     const key=String(rawId).trim();
     const record=lookup.get(key)||null;
     if(!record) return {classification:"unknown",canonicalId:key,record:null};
-    const manual=Boolean(record.manualReviewRecommended)||String(record.taskCode||"")===AMBIGUOUS_TASK_CODE;
+    const manual=String(record.taskCode||"")===AMBIGUOUS_TASK_CODE||record.learnerExcluded===true||(record.qa&&record.qa.learnerExcluded===true)||record.reviewStatus==="retired"||record.publicationStatus==="proposed-not-learner-eligible";
     return {classification:manual?"manual-review":"learner-practice",canonicalId:record.id,record:record};
   }
 
