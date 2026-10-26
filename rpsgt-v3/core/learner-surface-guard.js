@@ -14,7 +14,18 @@
           prompt.includes('more than 15 seconds')&&
           prompt.includes('should be scored as');
       }
-    }
+    },
+    ...[
+      ['v1264-0162','v1264-0161'],['v1264-0163','v1264-0161'],['v1264-0164','v1264-0161'],['v1264-0165','v1264-0161'],
+      ['v1264-0167','v1264-0166'],['v1264-0168','v1264-0166'],['v1264-0169','v1264-0166'],['v1264-0170','v1264-0166'],
+      ['v1264-0172','v1264-0171'],['v1264-0173','v1264-0171'],['v1264-0174','v1264-0171'],['v1264-0175','v1264-0171'],
+      ['D1A-035','D1A-019'],['D4A-028','D4A-018'],['D4C-018','D4C-009']
+    ].map(([questionId,canonicalId])=>({
+      id:'owner-approved-duplicate-consolidation',
+      questionId,
+      reason:'Excluded from new learner sessions as a redundant duplicate; canonical item '+canonicalId+' is retained. Historical IDs remain preserved.',
+      matches(question){return String(question&&question.id||'')===questionId;}
+    }))
   ];
 
   function retirementFor(question){
