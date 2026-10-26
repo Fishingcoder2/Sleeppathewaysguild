@@ -1,12 +1,24 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "sleeppathewaysguild",
-  "compatibility_date": "2026-04-13",
+  "main": "./worker/index.js",
+  "compatibility_date": "2026-10-26",
   "observability": {
     "enabled": true
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sleep_pathways_tutor_dev",
+      "database_id": "006451f6-6002-4731-86a9-6654a2fee62f"
+    }
+  ],
   "assets": {
     "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*"
+    ],
     "exclude": [
       "node_modules",
       "wrangler.jsonc",
