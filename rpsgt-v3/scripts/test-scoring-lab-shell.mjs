@@ -68,6 +68,8 @@ for(const style of ['.scoring-multi-scroll-guide','.scoring-multi-sequence','.sc
 if(multiCss.includes('.scoring-multi-trace{overflow:hidden')) throw new Error('Phase 3 must not hide horizontal overflow.');
 
 const lab=catalog.labs.find(item=>item.id==='scoring');
-if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='lab-scoring.html') throw new Error('The laboratory catalog does not route the v3-ready Scoring lab.');
+if(!lab||lab.status!=='v3-ready'||lab.plannedRoute!=='scoring-workstation.html') throw new Error('The laboratory catalog does not route the v3-ready Scoring lab through the PSG Skills Workstation.');
+const workstation=await readFile(join(root,'scoring-workstation.html'),'utf8');
+if(!workstation.includes('href="lab-scoring.html"')) throw new Error('The PSG Skills Workstation no longer links to the full Scoring Lab.');
 
 console.log('Scoring page, five-stage skill, Phase 3 four-run consecutive-epoch practice with synchronized touch/mouse horizontal scrolling, five-case respiratory event-evidence skill, eight-case scoring-context skill with sixteen supporting clues, biologic respiratory variability, canonical checkpoint capture, AASM Version 3-first authority, atlas visual corroboration, storage isolation, script order, and catalog route contracts passed.');
