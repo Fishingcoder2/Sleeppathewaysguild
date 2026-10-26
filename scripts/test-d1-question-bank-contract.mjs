@@ -12,7 +12,7 @@ assert.ok(migration.includes('lms_sync_eligible'),'D2 LMS eligibility field miss
 assert.ok(migration.includes('duplicate_family'),'Duplicate-family field missing');
 assert.ok(worker.includes("/api/question-bank/version"),'Version endpoint missing');
 assert.ok(worker.includes("/api/questions"),'Question-list endpoint missing');
-assert.ok(worker.includes("/api/question/"),'Question detail endpoint missing');
+assert.ok(worker.includes("url.pathname.match(/^\\/api\\/question\\/([^/]+)$/)"),'Question detail endpoint missing');
 assert.ok(worker.includes("surface==='lms-d2'"),'LMS D2 read contract missing');
 assert.ok(!/\b(?:POST|PUT|PATCH|DELETE)\b/.test(worker.replace("request.method!=='GET'",'')),'Worker must remain read-only');
 assert.ok(wrangler.includes('"binding": "DB"'),'D1 binding missing');
