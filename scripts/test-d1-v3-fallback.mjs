@@ -11,11 +11,12 @@ const staticModule={meta:{taskCode:'D2B',questionCount:1},questions:[baseQuestio
 const apiPayload={program:'RPSGT',taskCode:'D2B',format:'source',questions:[baseQuestion,addQuestion]};
 
 function response(status,data){return {ok:status>=200&&status<300,status,json:async()=>data};}
-function makeApi(apiOk,sourcePayload=apiPayload){
+function makeApi(apiOk,sourcePayload=apiPayload,enabled=true){
   const calls=[];
   const context={
     console:{warn:(...args)=>calls.push(['warn',...args])},
     location:{protocol:'https:',hostname:'sleeppathwaysguild.com'},
+    RPSGT_D1_SOURCE_ENABLED:enabled,
     fetch:async path=>{
       calls.push(['fetch',String(path)]);
       if(path==='data/question-bank/d2b.json') return response(200,staticModule);
@@ -61,4 +62,10 @@ for(const [label,payload] of malformedCases){
   assert.ok(altered.calls.some(row=>row[0]==='warn'),label+' must explain the fallback');
 }
 
-console.log('RPSGT V3 D1-first loader passed: exact approved source, offline fallback, and seven malformed or drifted API cases.');
+const disabled=makeApi(true,apiPayload,false);
+const staticOnly=await disabled.api.loadJson('data/question-bank/d2b.json');
+assert.equal(Boolean(staticOnly.d1QuestionBank),false,'Opt-out must remain static-only');
+assert.equal(staticOnly.questions.length,2);
+assert.ok(!disabled.calls.some(row=>String(row[1]).startsWith('/api/questions?')),'Opt-out must make zero D1 calls');
+
+console.log('RPSGT V3 D1-first loader passed: opt-in source parity, static-by-default, outage fallback, and seven drift/error cases.');
