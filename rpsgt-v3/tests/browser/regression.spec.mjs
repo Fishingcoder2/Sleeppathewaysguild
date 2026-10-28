@@ -230,15 +230,30 @@ test('Mock builds 175 questions, saves, reloads, and resumes', async ({ page }) 
   await expect(page.locator('[data-question-number]')).toContainText('2');
 });
 
-test('Skills Lab catalog exposes exactly the eleven native v3 routes', async ({ page }) => {
+test('Skills Lab catalog exposes all thirteen destinations and preserves full Scoring Lab access', async ({ page }) => {
   await page.goto('labs.html');
-  await expect(page.locator('[data-lab-catalog]')).toBeVisible();
-  await expect(page.locator('[data-lab-catalog] a[href^="lab-"]')).toHaveCount(11);
-
-  const hrefs = await page.locator('[data-lab-catalog] a[href^="lab-"]').evaluateAll((links) =>
-    links.map((link) => link.getAttribute('href')).sort()
-  );
-  expect(hrefs).toEqual([...LAB_ROUTES].sort());
+  const cards=page.locator('[data-lab-catalog] .lab-card');
+  await expect(cards).toHaveCount(13);
+  const links=cards.locator('a.btn.primary');
+  await expect(links).toHaveCount(13);
+  const hrefs=await links.evaluateAll(nodes=>nodes.map(node=>node.getAttribute('href')).sort());
+  expect(hrefs).toEqual([
+    ...LAB_ROUTES.filter(route=>route!=='lab-scoring.html'),
+    'scoring-workstation.html','mentoring-diagnostic.html','math-coach.html'
+  ].sort());
+  await page.locator('main a[href="learner-guide.html"]').click();
+  await expect(page).toHaveURL(/learner-guide\.html$/);
+  await expect(page.locator('#visuals')).toContainText('teaching schematics');
+  await expect(page.locator('#progress')).toContainText('not an official BRPT score or prediction');
+  await expect(page.locator('#references')).toContainText('supervised clinical competency');
+  await page.goBack();
+  await expect(cards).toHaveCount(13);
+  await cards.locator('a[href="scoring-workstation.html"]').click();
+  await expect(page).toHaveURL(/scoring-workstation\.html$/);
+  await expect(page.locator('[data-html5-start]')).toBeVisible();
+  await page.locator('.hero').getByRole('link',{name:'Open full Scoring Lab',exact:true}).click();
+  await expect(page).toHaveURL(/lab-scoring\.html$/);
+  await expect(page.locator('[data-scoring-start]')).toBeVisible();
 });
 
 test('Reports and Study Summary render from an empty learner record', async ({ page }) => {

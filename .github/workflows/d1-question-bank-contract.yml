@@ -1,0 +1,27 @@
+name: D1 Question Bank Contract
+
+on:
+  pull_request:
+    paths:
+      - 'worker/**'
+      - 'migrations/**'
+      - 'wrangler.jsonc'
+      - 'scripts/test-d1-question-bank-contract.mjs'
+      - 'docs/D1-QUESTION-BANK-MIGRATION-2026-10-26.md'
+  push:
+    branches: [main]
+    paths:
+      - 'worker/**'
+      - 'migrations/**'
+      - 'wrangler.jsonc'
+      - 'scripts/test-d1-question-bank-contract.mjs'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/test-d1-question-bank-contract.mjs
