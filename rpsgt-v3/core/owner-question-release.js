@@ -100,6 +100,10 @@
     const baseQuestions=Array.isArray(staticData&&staticData.questions)?staticData.questions:[];
     const additions=DIRECT_TASKS.includes(code)?additionsForTask(release,code):[];
     const expected=baseQuestions.length+additions.length;
+    // An equal count is not enough: a stale or substituted D1 item must not alter
+    // learner-facing questions or orphan saved question IDs during this migration.
+    const approved=new Map([...baseQuestions,...additions].map(question=>[String(question.id),question]));
+    if(approved.size!==expected) throw new Error('Approved static module contains duplicate IDs for '+code+'.');
     const apiPath='/api/questions?program=RPSGT&taskCode='+encodeURIComponent(code)+'&format=source&limit=1000';
     const payload=await fetchJson(apiPath);
     if(!payload||payload.program!=='RPSGT'||payload.taskCode!==code||payload.format!=='source'||!Array.isArray(payload.questions)) throw new Error('D1 module response is invalid for '+code+'.');
@@ -108,6 +112,12 @@
     payload.questions.forEach(question=>{
       const id=String(question&&question.id||'');
       if(!id||ids.has(id)||String(question.taskCode||'')!==code||!String(question.prompt||'').trim()||!Array.isArray(question.options)||!question.options.includes(question.answer)) throw new Error('D1 returned an invalid '+code+' question.');
+      const source=approved.get(id);
+      if(!source) throw new Error('D1 returned an unexpected '+code+' question ID: '+id+'.');
+      if(question.prompt!==source.prompt||question.answer!==source.answer||
+         !Array.isArray(source.options)||question.options.length!==source.options.length||
+         question.options.some((choice,index)=>choice!==source.options[index]))
+        throw new Error('D1 question content differs from the approved source for '+id+'.');
       ids.add(id);
     });
     return {...staticData,
