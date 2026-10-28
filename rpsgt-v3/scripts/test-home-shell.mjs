@@ -11,34 +11,35 @@ const shell=await readFile(join(root,'core','app-shell.js'),'utf8');
 const disclosures=await readFile(join(root,'sources-disclosures.html'),'utf8');
 const referenceCss=await readFile(join(root,'assets','reference-center.css'),'utf8');
 const referenceJs=await readFile(join(root,'core','reference-center.js'),'utf8');
+const guide=await readFile(join(root,'learner-guide.html'),'utf8');
 
+// The simplified dashboard keeps learning destinations prominent and moves guidance to Help.
 for(const marker of [
-  'class="hero brpt-hero home-welcome"',
-  'data-continue',
-  'data-stat="answered"',
-  'data-stat="accuracy"',
-  'class="section front-door-destinations"',
-  'href="study.html"',
-  'href="practice.html"',
-  'href="labs.html"',
-  'href="mock.html"',
-  'href="reports.html"',
-  'href="scoring-workstation.html"',
-  'href="learner-guide.html"',
-  'href="sources-disclosures.html"',
-  'core/home-dashboard.js',
-  'assets/home.css'
+  'data-continue', 'data-home-recommendation', 'data-stat="answered"',
+  'data-stat="accuracy"', 'data-stat="missed"', 'data-stat="awards"',
+  'front-door-destinations', 'home-destination-grid', 'home-shortcuts',
+  'sources-disclosures.html', 'core/home-dashboard.js', 'assets/home.css'
 ]){
   if(!html.includes(marker)) throw new Error(`RPSGT V3 home is missing ${marker}`);
 }
-
+const destinations=Array.from(html.matchAll(/<article\b[^>]*class="[^"]*\bmodule-card\b[^"]*"[^>]*>([\s\S]*?)<\/article>/g),match=>match[1]);
+if(destinations.length!==5) throw new Error('Dashboard must expose five focused learning destinations.');
+for(const route of ['study.html','practice.html','labs.html','mock.html','reports.html']){
+  if(!destinations.some(card=>card.includes(`href="${route}"`))) throw new Error(`Dashboard learning destination is missing ${route}.`);
+}
+for(const route of ['learner-guide.html','study.html#respiratory-pap-trail','scoring-workstation.html']){
+  if(!html.includes(`href="${route}"`)) throw new Error(`Dashboard support route is missing ${route}.`);
+}
+for(const boundary of ['teaching schematics','not an official BRPT score or prediction','facility policy','supervised clinical competency']){
+  if(!guide.includes(boundary)) throw new Error(`Learner Guide is missing ${boundary}.`);
+}
 if(!html.includes('coach-bob-avatar.jpg')) throw new Error('The RPSGT V3 front door does not use the Coach Bob character asset.');
 if(!html.includes('meta name="robots" content="noindex,nofollow"')) throw new Error('Development noindex protection is missing from the RPSGT V3 front door.');
-if(!js.includes('loadLearnerFlowNavigation')||!js.includes('core/learner-flow-navigation.js')) throw new Error('Home dashboard does not load shared learner-flow navigation.');
-if(!js.includes('normalizeAchievementCopy')||!js.includes('Task badges and domain medals')||!js.includes('Task badges earned in this domain.')) throw new Error('Home dashboard does not normalize Guild task-badge and domain-medal terminology.');
+if(!js.includes('normalizeAchievementCopy')||!js.includes('Task badges and domain medals')) throw new Error('Home dashboard does not normalize Guild task-badge and domain-medal terminology.');
 if(!js.includes('suppressOptionalBookShelf')||!js.includes("getElementById('rpsgt-book-shelf')")||!js.includes('MutationObserver')) throw new Error('Learner-facing optional book shelf suppression is not protected.');
-if(!css.includes('.home-destination-grid')||!css.includes('.front-door-destinations')||!css.includes('@media(min-width:821px) and (max-width:1050px)')) throw new Error('Responsive simplified front-door destination layout is missing.');
+if(!css.includes('.front-door-destinations')||!css.includes('@media(min-width:821px) and (max-width:1050px)')) throw new Error('Compact tablet/desktop front-door destination layout is missing.');
 if(!css.includes('.brpt-hero{grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);align-items:start;min-height:0')) throw new Error('Home hero is not explicitly content-height and compact.');
+new Function(js);
 
 const forbiddenLearnerGovernance=[
   'How answers are governed',
@@ -117,11 +118,13 @@ if(/RPSGTStorage|localStorage\s*\.\s*(?:setItem|removeItem|clear)\s*\(/.test(ref
 new Function(referenceJs);
 
 console.log(JSON.stringify({
-  simplifiedFrontDoor:true,
+  focusedLearningDestinations:true,
   compactHero:true,
-  primaryDestinationsVisible:true,
-  tabletResponsiveHero:true,
+  primaryDestinationsPromoted:true,
+  tabletTwoColumnHero:true,
+  learnerGuideBoundaries:true,
   coachBobCharacter:true,
+  respiratoryAndWorkstationShortcuts:true,
   sourceGovernanceInternalOnly:true,
   apaStyleReferenceSurface:true,
   referencesSearchByDomainTaskTopic:true,

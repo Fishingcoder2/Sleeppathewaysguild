@@ -7,7 +7,11 @@ if(/RPSGTStorage\.save|localStorage\.(?:setItem|removeItem|clear)/.test(js))thro
 if(!js.includes("data/labs/catalog.json")||!js.includes('validateCatalog')||!js.includes('engine.summarize'))throw new Error('Laboratory controller is not driven by the canonical catalog engine.');
 const catalog=JSON.parse(catalogText);if(!Array.isArray(catalog.labs)||catalog.labs.length!==13)throw new Error('Skills Lab catalog must retain all thirteen current lab families.');
 for(const label of ['Hookup','EKG','Visual','Artifact','Scoring','Respiratory','Instrumentation','PAP','Troubleshooting','Pediatric','MSLT','Mentoring','Math'])if(!catalogText.toLowerCase().includes(label.toLowerCase()))throw new Error(`Skills Lab catalog is missing ${label}.`);
-for(const learnerMarker of ['RPSGT Skills Laboratory','Applied RPSGT learning pathways','Choose one skill to practice.','No prior lab activity yet.','Need help?'])if(!html.includes(learnerMarker))throw new Error(`Skills Labs learner presentation is missing ${learnerMarker}.`);
+for(const learnerMarker of ['Choose one skill to practice.','Your Skills Lab progress','Skills Lab sections','No prior lab activity yet.'])if(!html.includes(learnerMarker))throw new Error(`Skills Labs learner presentation is missing ${learnerMarker}.`);
+// Boundary explanations now live in the linked Learner Guide.
+if(!/<a\b[^>]*href="learner-guide\.html"[^>]*>/.test(html)) throw new Error('Skills Labs must link to the Learner Guide.');
+const guide=await readFile(join(root,'learner-guide.html'),'utf8');
+for(const boundary of ['teaching schematics','not an official BRPT score or prediction','facility policy','supervised clinical competency'])if(!guide.includes(boundary))throw new Error(`Learner Guide is missing ${boundary}.`);
 for(const displayLabel of ['Completed','In progress','Interactive labs','Review + checkpoint','Interactive lab · expanding','Last activity','Not started'])if(!js.includes(displayLabel))throw new Error(`Skills Lab catalog is missing learner-facing status language: ${displayLabel}.`);
 for(const internalTerm of ['stable identifiers','versioned progress keys','native laboratory parity','validated completion contracts','browser regression','Mapped complete','Mapped progress','No mapped completion yet','Last mapped position','No prior laboratory position is mapped','task mappings','source map','source key']){
   const exposed=`${html}\n${js}`.toLowerCase();if(exposed.includes(internalTerm.toLowerCase()))throw new Error(`Skills Labs exposes engineering terminology: ${internalTerm}.`);
