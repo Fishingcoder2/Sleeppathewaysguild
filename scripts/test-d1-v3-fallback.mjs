@@ -11,7 +11,7 @@ const staticModule={meta:{taskCode:'D2B',questionCount:1},questions:[baseQuestio
 const apiPayload={program:'RPSGT',taskCode:'D2B',format:'source',questions:[baseQuestion,addQuestion]};
 
 function response(status,data){return {ok:status>=200&&status<300,status,json:async()=>data};}
-function makeApi(apiOk){
+function makeApi(apiOk,sourcePayload=apiPayload){
   const calls=[];
   const context={
     console:{warn:(...args)=>calls.push(['warn',...args])},
@@ -21,7 +21,7 @@ function makeApi(apiOk){
       if(path==='data/question-bank/d2b.json') return response(200,staticModule);
       if(path==='data/owner-approved-question-release.json') return response(200,release);
       if(path==='data/owner-question-dispatch.json') return response(200,dispatch);
-      if(String(path).startsWith('/api/questions?')) return apiOk?response(200,apiPayload):response(503,{error:'offline'});
+      if(String(path).startsWith('/api/questions?')) return apiOk?response(200,sourcePayload):response(503,{error:'offline'});
       return response(404,{});
     }
   };
@@ -44,4 +44,21 @@ assert.equal(fallback.questions.length,2,'Static base plus approved overlay must
 assert.equal(Boolean(fallback.d1QuestionBank),false);
 assert.ok(offline.calls.some(row=>row[0]==='warn'),'D1 failure should be observable while falling back');
 
-console.log('RPSGT V3 D1-first loader passed: exact task payload with validated static fallback.');
+const malformedCases=[
+  ['wrong response count',{...apiPayload,questions:[baseQuestion]}],
+  ['unexpected question ID',{...apiPayload,questions:[baseQuestion,{...addQuestion,id:'unexpected-d2b'}]}],
+  ['altered answer',{...apiPayload,questions:[{...baseQuestion,answer:'B'},addQuestion]}],
+  ['altered prompt',{...apiPayload,questions:[{...baseQuestion,prompt:'Unapproved change'},addQuestion]}],
+  ['altered options',{...apiPayload,questions:[{...baseQuestion,options:['B','A']},addQuestion]}],
+  ['wrong task',{...apiPayload,taskCode:'D3A'}],
+  ['duplicate ID',{...apiPayload,questions:[baseQuestion,baseQuestion]}]
+];
+for(const [label,payload] of malformedCases){
+  const altered=makeApi(true,payload);
+  const result=await altered.api.loadJson('data/question-bank/d2b.json');
+  assert.equal(Boolean(result.d1QuestionBank),false,label+' must force static fallback');
+  assert.equal(result.questions.length,2,label+' must retain approved static and owner additions');
+  assert.ok(altered.calls.some(row=>row[0]==='warn'),label+' must explain the fallback');
+}
+
+console.log('RPSGT V3 D1-first loader passed: exact approved source, offline fallback, and seven malformed or drifted API cases.');
