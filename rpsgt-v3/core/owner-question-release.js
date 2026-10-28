@@ -86,6 +86,9 @@
     return match[1].toUpperCase();
   }
   function shouldTryD1(){
+    // Explicit owner-controlled opt-in. Merging this loader must not silently
+    // switch the live learner bank before a separate source-cutover approval.
+    if(root.RPSGT_D1_SOURCE_ENABLED!==true) return false;
     const location=root&&root.location;
     if(!location) return false;
     const protocol=String(location.protocol||'');
