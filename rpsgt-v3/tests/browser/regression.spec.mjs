@@ -248,7 +248,11 @@ test('Skills Lab catalog exposes all thirteen destinations and preserves full Sc
   await expect(page.locator('#references')).toContainText('supervised clinical competency');
   await page.goBack();
   await expect(cards).toHaveCount(13);
-  await cards.locator('a[href="scoring-workstation.html"]').click();
+  // Restored scroll positions on tablet can leave the card beneath sticky navigation.
+  // Center the actual link in the viewport, then keep Playwright's normal click checks.
+  const scoringLink=cards.locator('a[href="scoring-workstation.html"]');
+  await scoringLink.evaluate(node=>node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+  await scoringLink.click();
   await expect(page).toHaveURL(/scoring-workstation\.html$/);
   await expect(page.locator('[data-html5-start]')).toBeVisible();
   await page.locator('.hero').getByRole('link',{name:'Open full Scoring Lab',exact:true}).click();
