@@ -1,11 +1,16 @@
-/* Guided Trail level navigation: show one task workspace at a time. */
-[data-blueprint-map].trail-levels-enabled .domain-map-card[hidden],
-[data-blueprint-map].trail-levels-enabled .task-map-card[hidden]{display:none!important}
-.trail-level-nav{padding:18px 20px;margin:0 0 20px;background:var(--surface,#fff);border:1px solid var(--border,#d6e0ea);border-radius:16px}
-.trail-level-nav h2{margin:0 0 6px}.trail-level-nav p{margin:0}
-.trail-domain-open,.trail-task-open{min-height:44px}
-[data-blueprint-map][data-trail-level="domains"] .domain-task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-[data-blueprint-map][data-trail-level="domains"] .task-map-card>:not(.task-map-head):not(.trail-status-row){display:none}
+/* Guided Study: one active area per screen, no long-page chapter navigation. */
+.main > [hidden], [data-blueprint-map] [hidden]{display:none!important}
+.study-screen-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#fff;border:1px solid #cbdbe6;border-radius:16px;padding:16px 20px;margin-bottom:18px;box-shadow:0 3px 14px #0a34520b}
+.study-screen-title{display:flex;flex-direction:column;gap:4px;color:#173d57}
+.study-screen-title strong{font-size:1.2rem}
+.study-screen-actions{display:flex;gap:8px;flex-wrap:wrap}
+.study-screen-actions .btn{min-height:44px}
+.trail-level-nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:18px 20px;margin-bottom:20px;background:#fff;border:1px solid #d6e0ea;border-radius:16px}
+.trail-level-nav h2{margin:0}.trail-level-nav p{margin:0}
+[data-blueprint-map][data-trail-level="domains"] .domain-task-grid{display:none!important}
+[data-blueprint-map][data-trail-level="domain"] .task-map-card>:not(.task-map-head):not(.trail-status-row){display:none}
+[data-blueprint-map][data-trail-level="domain"] .domain-task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 [data-blueprint-map][data-trail-level="task"] .domain-task-grid{display:block}
 [data-blueprint-map][data-trail-level="task"] .task-map-card{max-width:100%}
-@media(max-width:760px){.trail-level-nav{padding:14px}.trail-domain-open,.trail-task-open{width:100%;margin-top:10px}}
+.trail-domain-open,.trail-task-open{min-height:44px}
+@media(max-width:760px){.study-screen-bar{padding:12px}.study-screen-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.study-screen-actions .btn{white-space:normal}.trail-level-nav{padding:14px}.trail-domain-open,.trail-task-open{width:100%;margin-top:10px}}
