@@ -9,6 +9,7 @@ const journey=document.querySelector('[data-explorer-journey]');
 const intro=main&&main.querySelector('.hero');
 const notices=Array.from(main?main.querySelectorAll('.section.notice,.section:has(>.notice)'):[]);
 const valid=/^D[1-4][A-C]$/;
+const domainValid=/^D[1-4]$/;
 let screen='home',domain=null,task=null;
 const saved=()=>{try{return JSON.parse(sessionStorage.getItem('rpsgt-v3-study-screen')||'{}')}catch(_){return {}}};
 function persist(){try{sessionStorage.setItem('rpsgt-v3-study-screen',JSON.stringify({screen,domain,task}))}catch(_){}}
@@ -54,9 +55,9 @@ function render(){
  map.dataset.trailLevel=screen;
 }
 function go(target){
- if(target.startsWith('domain:')){domain=target.split(':')[1];task=null;screen='domain';}
- else if(target.startsWith('task:')){task=target.split(':')[1];domain=task.slice(0,2);screen='task';}
- else {screen=target;if(target==='domains'||target==='home')domain=task=null;}
+ if(target.startsWith('domain:')&&domainValid.test(target.slice(7))){domain=target.slice(7);task=null;screen='domain';}
+ else if(target.startsWith('task:')&&valid.test(target.slice(5))){task=target.slice(5);domain=task.slice(0,2);screen='task';}
+ else if(['home','respiratory','progress','rewards','domains'].includes(target)){screen=target;if(target==='domains'||target==='home')domain=task=null;}else return;
  persist();render();focusTop();
 }
 main.addEventListener('click',event=>{
@@ -66,8 +67,7 @@ main.addEventListener('click',event=>{
  if(d){go('domain:'+d.dataset.trailDomainOpen);return;}
  const t=event.target.closest('[data-trail-task-open]');
  if(t){go('task:'+t.dataset.trailTaskOpen);return;}
- const chapter=event.target.closest('[data-study-chapter]');
- if(chapter){const label=(chapter.textContent||'').toLowerCase();if(label.includes('progress'))go('progress');else if(label.includes('reward'))go('rewards');else if(label.includes('task')||label.includes('d1'))go('domains');else go('respiratory');}
+
 });
 const previous=saved();
 if(['home','respiratory','progress','rewards','domains','domain','task'].includes(previous.screen)){
