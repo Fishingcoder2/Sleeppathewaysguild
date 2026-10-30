@@ -79,9 +79,20 @@ if(['home','respiratory','progress','rewards','domains','domain','task'].include
  if(screen==='task'&&!task)screen='domains';
  if(screen==='domain'&&!domain)screen='domains';
 }
+function routeHash(){
+ const hash=decodeURIComponent(location.hash.slice(1));
+ if(hash==='respiratory-pap-trail')go('respiratory');
+ else if(hash==='guided-study-progress')go('progress');
+ else if(hash==='explorer-journey')go('rewards');
+ else if(hash==='rpsgt-domain-map')go('domains');
+ else if(/^D[1-4]$/.test(hash))go('domain:'+hash);
+ else if(valid.test(hash))go('task:'+hash);
+}
+window.addEventListener('hashchange',routeHash);
 const observer=new MutationObserver(records=>{
  if(records.some(record=>Array.from(record.addedNodes).some(n=>n.nodeType===1&&(n.matches?.('.domain-map-card')||n.querySelector?.('.domain-map-card')))))render();
 });
 observer.observe(map,{childList:true,subtree:true});
 render();
+if(location.hash)routeHash();
 })();
