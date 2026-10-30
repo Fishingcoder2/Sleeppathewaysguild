@@ -108,10 +108,10 @@
     section.innerHTML=`
       <div class="section-head"><div><div class="eyebrow">Choose your Guided Study area</div><h2 id="guided-study-area-title">Go straight to the learning area you need</h2><p>Use the guided respiratory path, check your progress, view Explorer rewards, or open the complete four-domain learning map.</p></div><span class="status green">Direct destinations</span></div>
       <nav class="guided-study-area-grid" aria-label="Guided Study areas">
-        <a class="guided-study-area-link" href="#respiratory-pap-trail"><strong>Respiratory / PAP Trail</strong><span>Follow the ordered respiratory and therapy pathway.</span></a>
-        <a class="guided-study-area-link" href="#guided-study-progress"><strong>My Guided Study progress</strong><span>See completed areas, checkpoints, and the next focus.</span></a>
-        <a class="guided-study-area-link" href="#explorer-journey"><strong>Explorer rewards</strong><span>See XP, patches, ribbons, medals, and rank progress.</span></a>
-        <a class="guided-study-area-link" href="#rpsgt-domain-map"><strong>All RPSGT domains</strong><span>Open the complete D1–D4 task map and choose a task.</span></a>
+        <a class="guided-study-area-link" href="#respiratory-pap-trail" data-study-go="respiratory"><strong>Respiratory / PAP Trail</strong><span>Follow the ordered respiratory and therapy pathway.</span></a>
+        <a class="guided-study-area-link" href="#guided-study-progress" data-study-go="progress"><strong>My Guided Study progress</strong><span>See completed areas, checkpoints, and the next focus.</span></a>
+        <a class="guided-study-area-link" href="#explorer-journey" data-study-go="rewards"><strong>Explorer rewards</strong><span>See XP, patches, ribbons, medals, and rank progress.</span></a>
+        <a class="guided-study-area-link" href="#rpsgt-domain-map" data-study-go="domains"><strong>All RPSGT domains</strong><span>Open the complete D1–D4 task map and choose a task.</span></a>
       </nav>`;
     respiratory.insertAdjacentElement('beforebegin',section);
   }
