@@ -2,72 +2,84 @@
 'use strict';
 const map=document.querySelector('[data-blueprint-map]');
 if(!map)return;
-const taskCodes=['D1A','D1B','D1C','D2A','D2B','D2C','D3A','D3B','D3C','D4A','D4B','D4C'];
-const valid=code=>taskCodes.includes(code);
-let selected=null;
+const main=map.closest('main');
+const respiratory=document.querySelector('[data-respiratory-study-trail]');
+const dashboard=document.querySelector('[data-guided-trail-dashboard]');
+const journey=document.querySelector('[data-explorer-journey]');
+const intro=main&&main.querySelector('.hero');
+const notices=Array.from(main?main.querySelectorAll('.section.notice,.section:has(>.notice)'):[]);
+const valid=/^D[1-4][A-C]$/;
+let screen='home',domain=null,task=null;
+const saved=()=>{try{return JSON.parse(sessionStorage.getItem('rpsgt-v3-study-screen')||'{}')}catch(_){return {}}};
+function persist(){try{sessionStorage.setItem('rpsgt-v3-study-screen',JSON.stringify({screen,domain,task}))}catch(_){}}
+function focusTop(){
+ const target=main.querySelector('[data-study-screen-bar]');
+ if(target){target.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
+}
+function button(label,action,active){return '<button type="button" class="btn '+(active?'primary':'secondary')+'" data-study-go="'+action+'" aria-current="'+(active?'page':'false')+'">'+label+'</button>';}
+function ensureBar(){
+ let bar=main.querySelector('[data-study-screen-bar]');
+ if(!bar){bar=document.createElement('nav');bar.dataset.studyScreenBar='';bar.className='study-screen-bar';bar.setAttribute('aria-label','Guided Study areas');bar.tabIndex=-1;main.insertBefore(bar,main.firstElementChild);}
+ return bar;
+}
 function render(){
- const domains=[...map.querySelectorAll('.domain-map-card')];
+ const bar=ensureBar();
+ bar.innerHTML='<div class="study-screen-title"><strong>Guided Study</strong><span>'+({home:'Choose your learning area',respiratory:'Respiratory and PAP Trail',progress:'My progress',rewards:'Explorer rewards',domains:'Four-domain task map',domain:'Domain '+domain,task:'Task '+task}[screen]||'Choose your learning area')+'</span></div><div class="study-screen-actions">'+button('Home','home',screen==='home')+button('Respiratory / PAP','respiratory',screen==='respiratory')+button('Progress','progress',screen==='progress')+button('Rewards','rewards',screen==='rewards')+button('D1–D4 Map','domains',screen==='domains'||screen==='domain'||screen==='task')+'</div>';
+ const show=(node,on)=>{if(node)node.hidden=!on;};
+ show(intro,screen==='home');
+ notices.forEach(n=>show(n,screen==='home'));
+ show(respiratory,screen==='respiratory');
+ show(dashboard,screen==='progress');
+ show(journey,screen==='rewards');
+ show(map,['domains','domain','task'].includes(screen));
+ const domains=Array.from(map.querySelectorAll('.domain-map-card'));
  if(domains.length!==4)return;
- const cards=[...map.querySelectorAll('.task-map-card')];
- if(cards.length!==12)return;
- const remembered=sessionStorage.getItem('rpsgt-v3-trail-task');
- if(!selected&&valid(remembered))selected=remembered;
- const focus=selected&&cards.find(card=>card.id===selected);
- const level=focus?'task':'domains';
- map.classList.add('trail-levels-enabled');
  let nav=map.querySelector('[data-trail-level-nav]');
- if(!nav){
-  nav=document.createElement('div');nav.dataset.trailLevelNav='';nav.className='trail-level-nav';
-  map.prepend(nav);
- }
- nav.innerHTML=focus?'<button type="button" class="btn secondary" data-trail-back>← All four domains</button><span class="status">Task '+selected+'</span>':'<h2>Choose a domain, then a trail stop</h2><p>Open a learning task without scrolling through the entire map.</p>';
- domains.forEach((domain,index)=>{
+ if(!nav){nav=document.createElement('div');nav.dataset.trailLevelNav='';nav.className='trail-level-nav';map.prepend(nav);}
+ nav.innerHTML=screen==='domains'?'<h2>Select a domain</h2><p>Choose one domain to see its trail stops.</p>':screen==='domain'?button('← All domains','domains',false)+' <strong>Choose a task in '+domain+'</strong>':screen==='task'?button('← Tasks in '+domain,'domain:'+domain,false)+' '+button('All domains','domains',false):'';
+ domains.forEach((node,index)=>{
   const code='D'+(index+1);
-  const active=focus&&selected.startsWith(code);
-  domain.hidden=Boolean(focus&&!active);
-  let opener=domain.querySelector('[data-trail-domain-open]');
-  if(!opener){
-   opener=document.createElement('button');opener.type='button';opener.className='btn secondary trail-domain-open';
-   opener.dataset.trailDomainOpen=code;
-   const head=domain.querySelector('.domain-map-head');
-   if(head)head.append(opener);
-  }
-  opener.textContent=focus?'← Choose another task':'Explore '+code+' →';
-  opener.setAttribute('aria-label','Explore domain '+code);
-  domain.querySelectorAll('.task-map-card').forEach(card=>{
-   card.hidden=Boolean(focus&&card!==focus);
-   let button=card.querySelector('[data-trail-task-open]');
-   if(!button){
-    button=document.createElement('button');button.type='button';button.className='btn primary trail-task-open';
-    button.dataset.trailTaskOpen=card.id;
-    const head=card.querySelector('.task-map-head');
-    if(head)head.append(button);
-   }
-   button.textContent=focus?'Current trail stop':'Open task →';
-   button.hidden=Boolean(focus);
+  node.hidden=screen==='domains'?false:!((screen==='domain'||screen==='task')&&domain===code);
+  let opener=node.querySelector('[data-trail-domain-open]');
+  if(!opener){opener=document.createElement('button');opener.type='button';opener.className='btn primary trail-domain-open';opener.dataset.trailDomainOpen=code;node.querySelector('.domain-map-head')?.append(opener);}
+  opener.textContent='Enter '+code+' →';opener.hidden=screen!=='domains';
+  node.querySelectorAll('.task-map-card').forEach(card=>{
+   card.hidden=screen==='domains'||(screen==='task'&&card.id!==task);
+   let open=card.querySelector('[data-trail-task-open]');
+   if(!open){open=document.createElement('button');open.type='button';open.className='btn primary trail-task-open';open.dataset.trailTaskOpen=card.id;card.querySelector('.task-map-head')?.append(open);}
+   open.textContent='Open '+card.id+' →';open.hidden=screen!=='domain';
   });
  });
- map.dataset.trailLevel=level;
+ map.classList.add('trail-levels-enabled');
+ map.dataset.trailLevel=screen;
 }
-function select(code){
- selected=valid(code)?code:null;
- if(selected)sessionStorage.setItem('rpsgt-v3-trail-task',selected);
- else sessionStorage.removeItem('rpsgt-v3-trail-task');
- render();
- const destination=selected?document.getElementById(selected):map.querySelector('[data-trail-level-nav]');
- if(destination){destination.setAttribute('tabindex','-1');destination.focus({preventScroll:true});destination.scrollIntoView({block:'start',behavior:'instant'});}
+function go(target){
+ if(target.startsWith('domain:')){domain=target.split(':')[1];task=null;screen='domain';}
+ else if(target.startsWith('task:')){task=target.split(':')[1];domain=task.slice(0,2);screen='task';}
+ else {screen=target;if(target==='domains'||target==='home')domain=task=null;}
+ persist();render();focusTop();
 }
-map.addEventListener('click',event=>{
- const task=event.target.closest('[data-trail-task-open]');
- if(task){select(task.dataset.trailTaskOpen);return;}
- if(event.target.closest('[data-trail-back]')){select(null);return;}
- const domain=event.target.closest('[data-trail-domain-open]');
- if(domain){if(selected)select(null);else{
-  const first=map.querySelector('.domain-'+domain.dataset.trailDomainOpen.toLowerCase()+' .task-map-card');
-  if(first)select(first.id);
- }}
+main.addEventListener('click',event=>{
+ const action=event.target.closest('[data-study-go]');
+ if(action){go(action.dataset.studyGo);return;}
+ const d=event.target.closest('[data-trail-domain-open]');
+ if(d){go('domain:'+d.dataset.trailDomainOpen);return;}
+ const t=event.target.closest('[data-trail-task-open]');
+ if(t){go('task:'+t.dataset.trailTaskOpen);return;}
+ const chapter=event.target.closest('[data-study-chapter]');
+ if(chapter){const label=(chapter.textContent||'').toLowerCase();if(label.includes('progress'))go('progress');else if(label.includes('reward'))go('rewards');else if(label.includes('task')||label.includes('d1'))go('domains');else go('respiratory');}
 });
-const observer=new MutationObserver(mutations=>{if(mutations.some(m=>Array.from(m.addedNodes).some(n=>n.nodeType===1&&(n.matches?.('.domain-map-card')||n.querySelector?.('.domain-map-card')))))render();});
+const previous=saved();
+if(['home','respiratory','progress','rewards','domains','domain','task'].includes(previous.screen)){
+ screen=previous.screen;
+ if(/^D[1-4]$/.test(previous.domain||''))domain=previous.domain;
+ if(valid.test(previous.task||'')){task=previous.task;domain=task.slice(0,2);}
+ if(screen==='task'&&!task)screen='domains';
+ if(screen==='domain'&&!domain)screen='domains';
+}
+const observer=new MutationObserver(records=>{
+ if(records.some(record=>Array.from(record.addedNodes).some(n=>n.nodeType===1&&(n.matches?.('.domain-map-card')||n.querySelector?.('.domain-map-card')))))render();
+});
 observer.observe(map,{childList:true,subtree:true});
 render();
 })();
