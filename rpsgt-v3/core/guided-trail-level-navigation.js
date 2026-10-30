@@ -6,6 +6,7 @@ const main=map.closest('main');
 const respiratory=document.querySelector('[data-respiratory-study-trail]');
 const dashboard=document.querySelector('[data-guided-trail-dashboard]');
 const journey=document.querySelector('[data-explorer-journey]');
+const chooser=document.getElementById('guided-study-area-chooser');
 const intro=main&&main.querySelector('.hero');
 const notices=Array.from(main?main.querySelectorAll('.section.notice,.section:has(>.notice)'):[]);
 const valid=/^D[1-4][A-C]$/;
@@ -28,6 +29,7 @@ function render(){
  bar.innerHTML='<div class="study-screen-title"><strong>Guided Study</strong><span>'+({home:'Choose your learning area',respiratory:'Respiratory and PAP Trail',progress:'My progress',rewards:'Explorer rewards',domains:'Four-domain task map',domain:'Domain '+domain,task:'Task '+task}[screen]||'Choose your learning area')+'</span></div><div class="study-screen-actions">'+button('Home','home',screen==='home')+button('Respiratory / PAP','respiratory',screen==='respiratory')+button('Progress','progress',screen==='progress')+button('Rewards','rewards',screen==='rewards')+button('D1–D4 Map','domains',screen==='domains'||screen==='domain'||screen==='task')+'</div>';
  const show=(node,on)=>{if(node)node.hidden=!on;};
  show(intro,screen==='home');
+ show(chooser,screen==='home');
  notices.forEach(n=>show(n,screen==='home'));
  show(respiratory,screen==='respiratory');
  show(dashboard,screen==='progress');
@@ -62,7 +64,7 @@ function go(target){
 }
 main.addEventListener('click',event=>{
  const action=event.target.closest('[data-study-go]');
- if(action){go(action.dataset.studyGo);return;}
+ if(action){event.preventDefault();go(action.dataset.studyGo);return;}
  const d=event.target.closest('[data-trail-domain-open]');
  if(d){go('domain:'+d.dataset.trailDomainOpen);return;}
  const t=event.target.closest('[data-trail-task-open]');
