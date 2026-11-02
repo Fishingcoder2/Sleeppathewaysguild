@@ -62,7 +62,7 @@ assert.match(html, /id="mentorship-request-email" href="mailto:admin@sleeppathwa
 assert.match(html, /<strong>short essay<\/strong>/);
 assert.match(html, /administrator will explain any next steps and provide a request form when appropriate/);
 assert.match(html, /Mentorship is free/);
-assert.match(html, /separate program from.*paid tutoring/);
+assert.doesNotMatch(html, /paid tutoring|\/tutoring\.html/i);
 assert.match(html, /Limited seats currently/);
 assert.match(html, /Volunteering is unpaid/);
 const volunteerSection = html.match(/<section\b[^>]*id="volunteer"[^>]*>[\s\S]*?<\/section>/)?.[0];
