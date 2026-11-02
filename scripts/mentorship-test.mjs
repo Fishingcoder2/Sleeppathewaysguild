@@ -70,11 +70,9 @@ const requestSection = html.match(/<section\b[^>]*id="request"[^>]*>[\s\S]*?<\/s
 assert.ok(volunteerSection && requestSection, 'Volunteer eligibility and learner requests have separate sections.');
 assert.match(volunteerSection, /current eligible credential.*current professional registration.*applicable state license.*current standing/);
 assert.match(volunteerSection, /administrator verifies current standing before accepting a mentor/);
-assert.match(volunteerSection, /Background screening is required before mentor approval, student contact or access to student information/);
-assert.match(volunteerSection, /individualized review of convictions relevant to student safety and trust/);
-assert.match(volunteerSection, /no blanket automatic exclusion/);
-assert.match(volunteerSection, /opportunity to clarify or correct records before a decision/);
-assert.match(volunteerSection, /Keep background reports and criminal-history details out of your initial email and public posts/);
+assert.match(volunteerSection, /A background check is required\./);
+assert.equal((volunteerSection.match(/background check/gi) || []).length, 1, 'Volunteer requirements mention the background check once.');
+assert.doesNotMatch(volunteerSection, /convictions|criminal.history|individualized review|blanket automatic exclusion/i);
 assert.doesNotMatch(volunteerSection, /screening (?:has been|is) completed|(?:you|mentors) (?:have|has) passed (?:a )?background/i);
 assert.doesNotMatch(requestSection, /registration|state license|screening|conviction/i, 'Volunteer eligibility does not impose new restrictions on mentorship applicants.');
 assert.equal((volunteerSection.match(/<li>/g) || []).length, 4, 'The four eligible credential categories are preserved.');
