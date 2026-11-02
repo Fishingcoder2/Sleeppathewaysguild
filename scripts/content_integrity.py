@@ -18,6 +18,8 @@ forbidden_home = {
     "stale development claim": "in final development",
     "stale upcoming wording": "upcoming CPSGT webapp",
     "obsolete contact email": "admin@sleeppathsguild.com",
+    "inactive tutoring link": "/tutoring.html",
+    "inactive tutoring offer": "Sign up for CPSGT or RPSGT tutoring",
 }
 required_sitemap = {
     "homepage": "https://sleeppathwaysguild.com/",
@@ -32,6 +34,10 @@ for label, value in required_home.items():
 for label, value in forbidden_home.items():
     if value.casefold() in HOME.casefold():
         errors.append(f"index.html still contains {label}: {value}")
+if "https://sleeppathwaysguild.com/tutoring.html" in SITEMAP:
+    errors.append("sitemap.xml still lists the paused tutoring page")
+if (ROOT / "tutoring.html").exists():
+    errors.append("tutoring.html is still published")
 for label, value in required_sitemap.items():
     if value not in SITEMAP:
         errors.append(f"sitemap.xml is missing {label}: {value}")
