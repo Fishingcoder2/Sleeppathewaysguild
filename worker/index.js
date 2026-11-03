@@ -16,6 +16,31 @@ function clampLimit(value){
   if(!Number.isFinite(n)) return 100;
   return Math.max(1,Math.min(1000,Math.trunc(n)));
 }
+function sourceQuestion(row){
+  let question={};
+  try{question=JSON.parse(row.payload_json||'{}');}catch{}
+  const qa=question&&question.qa&&typeof question.qa==='object'&&!Array.isArray(question.qa)?{...question.qa}:{};
+  if(Boolean(row.learner_excluded)){
+    qa.learnerExcluded=true;
+    question={...question,learnerExcluded:true,reviewStatus:row.review_status||'retired',qa};
+  }else{
+    question={...question,reviewStatus:row.review_status||question.reviewStatus,qa};
+  }
+  return {
+    ...question,
+    d1Eligibility:{
+      practice:Boolean(row.practice_eligible),
+      readiness:Boolean(row.readiness_eligible),
+      mock:Boolean(row.mock_eligible),
+      reportResolvable:Boolean(row.report_resolvable),
+      learnerExcluded:Boolean(row.learner_excluded),
+      exclusionReason:row.exclusion_reason||'',
+      duplicateFamily:row.duplicate_family||'',
+      eligibilityVersion:row.eligibility_version
+    },
+    d1ContentHash:row.content_hash
+  };
+}
 function publicQuestion(row){
   return {
     id:row.question_id,
@@ -75,6 +100,8 @@ async function handleApi(request,env){
     const domain=String(url.searchParams.get('domain')||'').trim();
     const taskCode=String(url.searchParams.get('taskCode')||'').trim();
     const surface=String(url.searchParams.get('surface')||'').trim().toLowerCase();
+    const format=String(url.searchParams.get('format')||'public').trim().toLowerCase();
+    if(!['public','source'].includes(format)) return json({error:'invalid_format',allowed:['public','source']},400);
     const limit=clampLimit(url.searchParams.get('limit'));
     const offset=Math.max(0,Number.parseInt(url.searchParams.get('offset')||'0',10)||0);
 
@@ -95,18 +122,21 @@ async function handleApi(request,env){
       LIMIT ? OFFSET ?`;
     params.push(limit,offset);
     const result=await env.DB.prepare(sql).bind(...params).all();
-    return json({program,domain:domain||null,taskCode:taskCode||null,surface:surface||null,limit,offset,questions:(result.results||[]).map(publicQuestion)});
+    const render=format==='source'?sourceQuestion:publicQuestion;
+    return json({program,domain:domain||null,taskCode:taskCode||null,surface:surface||null,format,limit,offset,questions:(result.results||[]).map(render)});
   }
 
   const match=url.pathname.match(/^\/api\/question\/([^/]+)$/);
   if(match){
     const id=decodeURIComponent(match[1]);
+    const format=String(url.searchParams.get('format')||'public').trim().toLowerCase();
+    if(!['public','source'].includes(format)) return json({error:'invalid_format',allowed:['public','source']},400);
     const row=await env.DB.prepare(
       `SELECT q.*,e.practice_eligible,e.readiness_eligible,e.mock_eligible,e.report_resolvable,e.exclusion_reason,e.duplicate_family,e.eligibility_version
        FROM spg_questions q LEFT JOIN spg_question_eligibility e ON e.question_id=q.question_id
        WHERE q.question_id=? AND q.active=1 LIMIT 1`
     ).bind(id).first();
-    return row?json(publicQuestion(row)):json({error:'not_found'},404);
+    return row?json(format==='source'?sourceQuestion(row):publicQuestion(row)):json({error:'not_found'},404);
   }
 
   return json({error:'not_found'},404);
