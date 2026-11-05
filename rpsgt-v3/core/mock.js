@@ -2,6 +2,7 @@
   "use strict";
 
   const drilldown=window.RPSGTMockDrilldown;
+  const versionedRegistry=window.RPSGTVersionedQuestionRegistry;
   const state={manifest:null,blueprint:null,bank:[],questionMap:new Map(),taskMap:new Map(),session:null,timerId:null};
   const $=selector=>document.querySelector(selector);
   const $all=selector=>Array.from(document.querySelectorAll(selector));
@@ -40,8 +41,14 @@
     buildTaskMap();
     const metas=(state.manifest.modules||[]).filter(meta=>meta.taskCode!=="D2A/D2C");
     const packages=await Promise.all(metas.map(meta=>loadJson("data/question-bank/"+meta.path)));
-    state.bank=packages.flatMap(data=>Array.isArray(data.questions)?data.questions:[]);
-    state.questionMap=new Map(state.bank.map(question=>[String(question.id),question]));
+    if(!versionedRegistry || typeof versionedRegistry.buildView!=='function')
+      throw new Error('Question history resolver failed to load.');
+    // Issue #30 review branch: no revisions are activated. A future gated,
+    // published revision may leave a previous version only in the history map.
+    const views=versionedRegistry.buildView(
+      packages.flatMap(data=>Array.isArray(data.questions)?data.questions:[]),[]);
+    state.bank=views.newSessionBank;
+    state.questionMap=new Map(views.historicalBank.map(question=>[String(question.id),question]));
   }
 
   function mockStore(){const root=savedState();root.mock=root.mock&&typeof root.mock==="object"?root.mock:{history:[],activeSession:null};root.mock.history=Array.isArray(root.mock.history)?root.mock.history:[];return root;}
