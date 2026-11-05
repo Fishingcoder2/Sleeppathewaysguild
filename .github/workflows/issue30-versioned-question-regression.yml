@@ -1,0 +1,74 @@
+name: Issue 30 RPSGT question versioning regression
+
+on:
+  push:
+    branches:
+      - audit/issue30-versioning-regression-2026-11-05
+    paths:
+      - 'rpsgt-v3/core/versioned-question-registry.js'
+      - 'rpsgt-v3/core/readiness.js'
+      - 'rpsgt-v3/core/mock.js'
+      - 'rpsgt-v3/readiness.html'
+      - 'rpsgt-v3/mock.html'
+      - 'rpsgt-v3/scripts/test-versioned-*.mjs'
+      - 'rpsgt-v3/tests/browser/question-version-history.spec.mjs'
+      - '.github/workflows/issue30-versioned-question-regression.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: issue30-version-regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  version-history:
+    name: Fictional learner session regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - name: Checkout review branch without any deployment
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax-check the non-serving versioning work
+        run: |
+          node --check core/versioned-question-registry.js
+          node --check core/readiness.js
+          node --check core/mock.js
+          node --check scripts/test-versioned-question-registry-issue30.mjs
+          node --check scripts/test-versioned-loader-wiring-issue30.mjs
+          node --check tests/browser/question-version-history.spec.mjs
+
+      - name: Run immutable history regression on original items
+        run: node scripts/test-versioned-question-registry-issue30.mjs
+
+      - name: Run full 2920-question review-branch regression
+        run: node scripts/test-versioned-loader-wiring-issue30.mjs
+
+      - name: Install Playwright dev dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run fictional browser-localStorage tests on all three viewports
+        run: npx playwright test --config=playwright.config.mjs tests/browser/question-version-history.spec.mjs
+
+      - name: Retain browser-test failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue30-rpsgt-versioning-playwright-failures
+          path: |
+            rpsgt-v3/test-results
+            rpsgt-v3/playwright-report
+          if-no-files-found: ignore
+          retention-days: 7
