@@ -5,7 +5,8 @@
   const questionActions=window.RPSGTPracticeQuestionActions;
   const flashcards=window.RPSGTFlashcardStore;
   const flashcardEngine=window.RPSGTFlashcardEngine;
-  const state={manifest:null,blueprint:null,moduleCache:new Map(),taskMap:new Map(),bank:[],questions:[],active:null,selected:null,answered:false,correct:0,answeredCount:0};
+  const versionedRegistry=window.RPSGTVersionedQuestionRegistry;
+  const state={manifest:null,blueprint:null,moduleCache:new Map(),taskMap:new Map(),bank:[],historicalQuestionMap:new Map(),questions:[],active:null,selected:null,answered:false,correct:0,answeredCount:0};
   const $=selector=>document.querySelector(selector);
   const $all=selector=>Array.from(document.querySelectorAll(selector));
   const escapeHtml=value=>String(value==null?"":value).replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
@@ -76,13 +77,21 @@
     if(state.bank.length) return state.bank;
     const directModules=(state.manifest.modules||[]).filter(meta=>engine.DIRECT_TASKS.includes(meta.taskCode));
     const packages=await Promise.all(directModules.map(loadModule));
-    state.bank=packages.flat().filter(engine.isEligible);
+    if(!versionedRegistry || typeof versionedRegistry.buildView!=='function')
+      throw new Error('Question history resolver failed to load.');
+    // Issue #30 review-branch integration: there are NO approved published revision
+    // requests. This preserves today's selection exactly while establishing an
+    // independent historical lookup for saved attempts and reports.
+    const views=versionedRegistry.buildView(packages.flat(),[]);
+    state.historicalQuestionMap=new Map(views.historicalBank.map(question=>[String(question.id),question]));
+    state.bank=views.newSessionBank.filter(engine.isEligible);
     return state.bank;
   }
 
   function sessionQuestionsFromIds(ids){
-    const wanted=new Map((ids||[]).map((id,index)=>[String(id),index]));
-    return state.bank.filter(question=>wanted.has(String(question.id))).sort((a,b)=>wanted.get(String(a.id))-wanted.get(String(b.id)));
+    // An original question may eventually leave NEW selection without becoming
+    // unavailable to an already-started readiness session. Preserve saved order.
+    return (ids||[]).map(id=>state.historicalQuestionMap.get(String(id))).filter(Boolean);
   }
 
   function calculateSessionStats(){
