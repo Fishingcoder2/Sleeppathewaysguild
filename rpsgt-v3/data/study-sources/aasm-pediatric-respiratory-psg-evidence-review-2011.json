@@ -1,0 +1,58 @@
+{
+  "id": "aasm-pediatric-respiratory-psg-evidence-review-2011",
+  "shortTitle": "Pediatric Respiratory PSG Indications — Evidence-Based Review (2011)",
+  "title": "Executive Summary of Respiratory Indications for Polysomnography in Children: An Evidence-Based Review",
+  "publisher": "SLEEP / Associated Professional Sleep Societies",
+  "sourceType": "AASM-commissioned evidence-based review",
+  "sourceRole": "historicalEvidenceReview",
+  "currentAuthority": false,
+  "publicationYear": 2011,
+  "verifiedAt": "2026-11-06",
+  "citation": "Wise, M. S., Nichols, C. D., Grigg-Damberger, M. M., Marcus, C. L., Witmans, M. B., Kirk, V. G., D'Andrea, L. A., & Hoban, T. F. (2011). Executive summary of respiratory indications for polysomnography in children: An evidence-based review. Sleep, 34(3), 389–398. https://doi.org/10.1093/sleep/34.3.389",
+  "doi": "10.1093/sleep/34.3.389",
+  "pmcid": "PMC3041716",
+  "pubmedId": "21359088",
+  "officialUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3041716/",
+  "driveFileId": "1DIDxpfNWvk751aup9c78N6LNDmn3mctF",
+  "driveFileName": "aasm.34.3.389.pdf",
+  "libraryStatus": "Exact-named PDF located in Guild Drive; bibliographic identity verified against PubMed, publisher, and supplied title-page image on 2026-11-06. No in-depth full-file content audit completed in this pass.",
+  "companionSourceId": "aasm-pediatric-respiratory-psg-2011",
+  "bestFor": "Historical evidence about clinical indications, validity, reliability, and utility of respiratory polysomnography in children, including complex pediatric populations and perioperative adenotonsillectomy context.",
+  "mappedTaskCodes": [
+    "D1A",
+    "D2B"
+  ],
+  "mappingRationale": {
+    "D1A": "Context for recognizing clinical histories, comorbidities, and indications leading to pediatric respiratory PSG referral.",
+    "D2B": "Explains why pediatric respiratory PSG may be indicated, its evidence base, and limitations; not a procedural or scoring-rule authority."
+  },
+  "authorityBoundary": "This 2011 review is evidence for indications and clinical utility, not a current scoring or ETCO2/TcCO2 technical manual. AASM Scoring Manual Version 3 (including current errata) controls pediatric staging, respiratory event scoring, and hypoventilation thresholds. AAST technical guidance supports CO2 sensor setup, calibration, signal-quality assessment, troubleshooting, and documentation. Verify newer pediatric diagnostic and treatment guidance before relying on historical recommendations. Do not interpret isolated ETCO2 numbers without reliable signal context.",
+  "editorialGuardrails": "A source-key match is not question-level evidence. No answer-key, learner-score, quiz eligibility, or production content changes are authorized by registering this source. Any question-level mapping requires independent review and approval.",
+  "copyrightUse": "Use bibliographic metadata, public headings, original topic summaries, and teaching objectives. Do not reproduce substantial passages, evidence tables, figures, scoring-rule language, or questions.",
+  "sections": [
+    {
+      "id": "peds-resp-evidence-scope",
+      "label": "Purpose, indications, and review methods"
+    },
+    {
+      "id": "peds-resp-evidence-validity",
+      "label": "Validity and reliability of pediatric respiratory PSG"
+    },
+    {
+      "id": "peds-resp-evidence-clinical",
+      "label": "Clinical utility and high-risk pediatric populations"
+    },
+    {
+      "id": "peds-resp-evidence-at",
+      "label": "Adenotonsillectomy: preoperative assessment and follow-up"
+    },
+    {
+      "id": "peds-resp-evidence-pap",
+      "label": "Evidence related to PAP initiation and titration"
+    },
+    {
+      "id": "peds-resp-evidence-limitations",
+      "label": "Study limitations and distinction from current scoring/technical guidance"
+    }
+  ]
+}
