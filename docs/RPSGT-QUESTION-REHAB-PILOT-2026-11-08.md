@@ -207,3 +207,13 @@ must use appropriate pediatric, PAP titration, or other domain-specific guidance
 
 None of these drafts have replaced a canonical question or been incorporated into a
 student-facing release. **Do not merge this draft PR as a question-content release.**
+
+### APA 7 citation QA hold
+
+An additional citation-quality sweep found eight pilot drafts with candidate
+bibliographies containing abbreviated author lists (`et al.`). All 25 draft
+payloads now carry `citation_qa = pending-formal-apa7-and-exact-locator-check`
+and each record has `review_findings_json.apa7_final_check_completed = false`.
+A source is **not** approved merely because it has a URL or topic mapping.
+Verify author lists, publication year, volume/issue/pages/DOI, exact section,
+version and applicability to the patient group before learner publication.
