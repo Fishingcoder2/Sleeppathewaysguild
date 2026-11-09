@@ -138,3 +138,23 @@ Clinical review and owner approval remain pending for all three.
 - Review all 25 against duplicated questions and evidence anchors.
 - After owner approval, use the existing release/parity process, and confirm
   static V2/V3, CPSGT, Mock, Readiness and learner reports do not regress.
+
+## Additional staged draft progress — November 9, 2026
+
+The D1 shadow-bank review table now also contains non-published rewrite proposals for:
+
+- `RPSGT-B2-M023`, D1 B: PAP education and interface acclimatization.
+- `RPSGT-B2-M024`, D1 C: PAP desensitization.
+- `RPSGT-B2-M038`, D2 A: adult diagnostic PSG montage.
+- `RPSGT-MOCK-D2-051`, unresolved D2 A/C: physiological calibration; D2-C6 is proposed **only**, not an automatic remap.
+- `RPSGT-B2-M101`, D3 C: calculating total sleep time from 500 sleep epochs at 30 seconds each (250 minutes).
+- `RPSGT-B2-M102`, D3 C: calculating sleep latency from 22:00:00 lights out to 22:17:30 sleep onset (17.5 minutes).
+
+These join the three original proposals, totaling **9 draft rewrites**, while 16 pilot
+questions remain in triage and 514 flagged questions remain queued.
+
+**All nine rewrites remain pending independent clinical, exact-section citation,
+and owner review.** Some reference locations remain provisionally mapped,
+particularly in the licensed AASM Scoring Manual Version 3; mapping does not
+constitute direct passage-level verification. No published/eligible record was
+replaced or excluded, and learner-facing scoring remains unchanged.
