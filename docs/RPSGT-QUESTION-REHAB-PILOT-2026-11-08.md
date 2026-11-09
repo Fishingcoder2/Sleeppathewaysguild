@@ -44,17 +44,33 @@ live learner exposure solely from D1 eligibility columns.
 - The existing `spg_question_editor_drafts` is owner/user-attributed. The
   rehab table avoids falsely assigning AI-generated work to a user.
 
-## Pilot identifiers (stable question IDs)
+## Balanced pilot identifiers (stable source IDs)
 
-- **D1 (5):** `101`, `RPSGT-B2-M003`, `RPSGT-B2-M008`,
-  `RPSGT-B2-M014`, `RPSGT-B2-M020`
-- **D2 (7):** `RPSGT-B2-M038`, `RPSGT-B2-M040`,
-  `RPSGT-B2-M041`, `RPSGT-B2-M042`, `RPSGT-B2-M044`,
-  `RPSGT-B2-M045`, `RPSGT-B2-M048`
-- **D3 (7):** `RPSGT-B2-M072` through `RPSGT-B2-M078`
-- **D4 (6):** `RPSGT-B2-M110`, `RPSGT-B2-M111`,
-  `RPSGT-B2-M112`, `RPSGT-B2-M114`, `RPSGT-B2-M115`,
-  `RPSGT-B2-M116`
+All 12 current BRPT RPSGT tasks are represented, plus an unresolved D2A/D2C
+cross-task item. The cross-task record remains unassigned for LMS purposes.
+
+- **D1 (5):** A: `RPSGT-B2-M003`, `RPSGT-B2-M008`; B:
+  `RPSGT-B2-M020`, `RPSGT-B2-M023`; C: `RPSGT-B2-M024`
+- **D2 (7):** A: `RPSGT-B2-M038`, `RPSGT-B2-M041`; B:
+  `RPSGT-B2-M048`, `RPSGT-B2-M049`; C: `RPSGT-B2-M063`,
+  `RPSGT-B2-M064`; unresolved A/C: `RPSGT-MOCK-D2-051`
+- **D3 (7):** A: `RPSGT-B2-M072`, `RPSGT-B2-M073`,
+  `RPSGT-B2-M074`; B: `RPSGT-B3-C099`, `RPSGT-B3-C101`;
+  C: `RPSGT-B2-M101`, `RPSGT-B2-M102`
+- **D4 (6):** A: `RPSGT-B2-M110`, `RPSGT-B2-M112`;
+  B: `RPSGT-B2-M138`, `RPSGT-B2-M140`;
+  C: `RPSGT-B2-M146`, `RPSGT-B2-M147`
+
+## Automated first-pass audit
+
+- 25 of 25: four answer options and matching keyed answer.
+- 24 of 25: original rationale shorter than 120 characters.
+- 25 of 25: no individual distractor rationales.
+- 3 of 25: proposed rewrite JSON present; still non-published drafts.
+- 22 of 25: editorial issues triaged, source passages/clinical conclusions
+  **not yet manually verified**.
+- All 539 review source hashes match the existing D1 canonical question hashes.
+- No source answer, publication status, eligibility, or learner records changed.
 
 ## First three proposed rewrites (D1 draft records)
 
@@ -116,7 +132,7 @@ Clinical review and owner approval remain pending for all three.
 
 ## Next checks
 
-- Record structured distractor/blueprint/clinical triage for the other 22.
+- Complete independent source, distractor, and blueprint review of the remaining 22 pilot items.
 - Obtain exact, versioned AASM scoring-source passages before approving D2/D3
   scoring-rule items.
 - Review all 25 against duplicated questions and evidence anchors.
