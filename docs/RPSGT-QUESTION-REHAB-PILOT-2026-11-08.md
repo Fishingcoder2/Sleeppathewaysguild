@@ -158,3 +158,52 @@ and owner review.** Some reference locations remain provisionally mapped,
 particularly in the licensed AASM Scoring Manual Version 3; mapping does not
 constitute direct passage-level verification. No published/eligible record was
 replaced or excluded, and learner-facing scoring remains unchanged.
+
+## Completed 25-question draft pilot — November 9, 2026
+
+The remaining 16 flagged items were reviewed and rewritten into **non-published**
+`spg_question_rehab_reviews.proposed_rewrite_json` records, covering:
+
+- **D1:** `RPSGT-B2-M003` — OSA symptoms, diagnostic role;
+  `RPSGT-B2-M020` — pediatric family-centered preparation.
+- **D2:** `RPSGT-B2-M048` — adult diagnostic PSG parameters;
+  `RPSGT-B2-M049` — pediatric PSG setup;
+  `RPSGT-B2-M063` — airflow/effort event classification;
+  `RPSGT-B2-M064` — ECG finding and escalation.
+- **D3:** `RPSGT-B2-M072` — wake alpha;
+  `RPSGT-B2-M073` — typical N1 transition;
+  `RPSGT-B2-M074` — spindle morphology;
+  `RPSGT-B3-C099` — pediatric SpO2 artifact;
+  `RPSGT-B3-C101` — pediatric ECG concern.
+- **D4:** `RPSGT-B2-M110` — CPAP versus BPAP;
+  `RPSGT-B2-M138` — physician-dentist oral-appliance treatment;
+  `RPSGT-B2-M140` — adenotonsillectomy in appropriate pediatric OSA;
+  `RPSGT-B2-M146` — oxygenation versus ventilation;
+  `RPSGT-B2-M147` — protocol-directed supplemental O2 during PAP titration.
+
+**Reproducible read-only database QA:** `scripts/rpsgt-question-rehab-qa.sql`.
+
+### Validated D1 state
+
+- **539** flagged RPSGT question IDs tracked: **25 rewrite-drafted**, **514 queued**.
+- **25 / 25** draft JSON payloads valid; four choices and four explanations.
+- **25 / 25** correct-answer strings match the specified answer index.
+- **25 / 25** drafts explicitly marked `draft-not-learner-eligible`.
+- **539 / 539** original D1 question hashes still match their rehabilitation intake hashes.
+- **25 / 25** clinical approvals outstanding.
+- **8** drafts have a review status explicitly identifying AASM Scoring Manual Version 3
+  passage verification as pending. Other drafts still require independent verification
+  and owner approval even where a primary guideline section has been located.
+- **1** unresolved cross-task D2A/D2C record remains blocked from automatic remapping.
+
+### Primary reference boundary
+
+The AASM Scoring Manual Version 3 is licensed and read-only through the AASM portal.
+Accessible summaries, reference keys, and auxiliary sources are **not** the same
+as verifying the exact licensed text. No rule-sensitive question can be approved
+until a qualified reviewer checks that passage. The AAST *Standard Polysomnography*
+guideline explicitly excludes pediatric PSG and therapeutic titration; those topics
+must use appropriate pediatric, PAP titration, or other domain-specific guidance.
+
+None of these drafts have replaced a canonical question or been incorporated into a
+student-facing release. **Do not merge this draft PR as a question-content release.**
