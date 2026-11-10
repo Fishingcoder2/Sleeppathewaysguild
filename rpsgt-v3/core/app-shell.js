@@ -222,7 +222,7 @@
         "<a class=\"nav-link\" href=\"readiness.html\"><span>🎯</span>Readiness Check</a>",
         "<a class=\"nav-link\" href=\"mock.html\"><span>🧭</span>Mock Exam</a>",
         "<div class=\"nav-label\">Explore More</div>",
-        "<a class=\"nav-link nav-all-tools\" data-nav=\"tools\" href=\"learning-tools.html\"><span>▦</span>All Learning Tools</a>"
+        "<a class=\"nav-link nav-all-tools\" href=\"learning-tools.html\"><span>▦</span>All Learning Tools</a>"
       ].join('');
     }
     document.querySelectorAll("[data-open-settings]").forEach(function(button){button.addEventListener("click",openSettings);});
