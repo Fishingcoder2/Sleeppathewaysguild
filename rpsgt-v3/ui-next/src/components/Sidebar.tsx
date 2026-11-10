@@ -84,7 +84,7 @@ export function Sidebar({
           ))}
         </nav>
         <div className="border-t border-slate-800 p-3">
-          <a href="../learning-tools.html" title="All Learning Tools"
+          <a href="/learning-tools.html" title="All Learning Tools"
             className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold text-slate-200 hover:bg-slate-800">
             <BookOpen size={20} aria-hidden="true" className="shrink-0" />
             {(!collapsed || mobileOpen) && <>All Learning Tools <ChevronRight size={15} className="ml-auto"/></>}
