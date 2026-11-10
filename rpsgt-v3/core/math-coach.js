@@ -43,7 +43,16 @@
     if(event.target.closest('[data-math-whiteboard-close]')){state.whiteboardPinned=false;setWhiteboardVisibility(false);return;}
     const explanation=event.target.closest('[data-math-whiteboard-question]');if(explanation){const skill=app.skillById(state.currentSkill);const question=skill&&app.questionById(skill,explanation.dataset.mathWhiteboardQuestion);const response=state.setFeedback&&(state.setFeedback.responses||[]).find(item=>String(item.id)===String(explanation.dataset.mathWhiteboardQuestion));if(question&&response){pinWhiteboard(question,response,explanation.dataset.mathWhiteboardKind);app.renderWorkspace();}return;}
     if(event.target.closest('[data-math-continue-independent]')){clearQuestionUi();app.refresh();return;}
-    if(event.target.closest('[data-math-retry-set]')){state.setFeedback=null;state.questionReviewKind=null;app.resetQuestionHelp();app.refresh();return;}
+    const retry=event.target.closest('[data-math-retry-set]');
+    if(retry && state.currentSkill){
+      const kind=retry.dataset.mathRetrySet;
+      if(kind!=='independent'&&kind!=='mastery')return;
+      state.setFeedback=null;state.questionReviewKind=null;app.resetQuestionHelp();
+      // Explicitly restore the target stage. A learner who already earned
+      // the medal may retry mastery without losing the previous achievement.
+      saveMath(engine.setStage(state.saved.mathCoach,state.catalog,state.currentSkill,kind,new Date().toISOString()));
+      app.refresh();return;
+    }
     if(event.target.closest('[data-math-finish-skill]')){
       const award=state.pendingMathAward;
       clearQuestionUi();app.refresh();
