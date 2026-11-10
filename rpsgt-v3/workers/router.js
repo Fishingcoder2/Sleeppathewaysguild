@@ -40,7 +40,8 @@ export default {
     const url = new URL(request.url);
     if (['GET', 'HEAD'].includes(request.method) && SHORTCUTS.has(url.pathname)) {
       url.pathname = SHORTCUTS.get(url.pathname);
-      return Response.redirect(url.toString(), 308);
+      // Temporary during migration; do not cache a permanent legacy route.
+      return Response.redirect(url.toString(), 307);
     }
 
     // Always check the exact path first: real files win over SPA routes.
