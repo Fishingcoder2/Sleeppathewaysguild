@@ -88,4 +88,5 @@ for(const token of [
 }
 assert.match(controller,/saveMath\(engine\.setStage\(state\.saved\.mathCoach,state\.catalog,state\.currentSkill,kind/,'Retries must restore correct stage');
 assert.match(controller,/state\.pendingMathAward/,'Award should wait until feedback is reviewed');
+assert.match(read('core/math-question-navigation.js'),/sync\(form,0,false\)/,'A new independent or mastery attempt must restart at Question 1');
 console.log('Math Coach: verified '+tested+' calculation questions, overnight clocks, rounded efficiency, invalid keys, duplicate IDs, answer review and retry contracts.');
