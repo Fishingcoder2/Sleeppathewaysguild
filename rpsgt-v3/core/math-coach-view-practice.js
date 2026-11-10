@@ -38,9 +38,26 @@
 
   app.answerForm=function(questions,kind){return `<form data-math-set-form="${app.esc(kind)}"><div class="math-question-list">${questions.map((question,index)=>`<fieldset class="math-set-question"><legend><span>${index+1}</span>${app.esc(question.prompt)}</legend><label><span>Answer</span><div><input type="number" step="any" inputmode="decimal" name="${app.esc(question.id)}" ${index===0?'data-math-modal-focus':''}><strong>${app.esc(question.unit)}</strong></div></label>${kind==='independent'&&question.hint?`<p class="math-clue"><strong>Coach Bob clue:</strong> ${app.esc(question.hint)}</p>`:''}</fieldset>`).join('')}</div><button class="btn primary" type="submit">${kind==='mastery'?'Score mastery check':'Check independent practice'}</button></form>`;};
 
+
   app.setReview=function(skill,feedback,kind){
-    if(!feedback)return'';
-    return `<section class="math-set-result ${feedback.passed?'pass':'retry'}" role="status"><h3>${feedback.heading}</h3><strong>${feedback.correct}/${feedback.total} correct · ${feedback.percent}%</strong><p>${feedback.message}</p></section><div class="math-answer-review">${feedback.responses.map((response,index)=>`<details class="${response.correct?'correct':'retry'}" ${!response.correct&&String(response.id)===String(app.state.whiteboardQuestionId)?'open':''}><summary>${index+1}. ${response.correct?'Correct':'Review'} · ${app.esc(response.unit)}</summary><p><strong>Expected:</strong> ${app.esc(response.answer)} ${app.esc(response.unit)}</p>${response.correct?'':`<p>${app.esc(response.message)}</p><button class="btn secondary math-pin-explanation" type="button" data-math-whiteboard-question="${app.esc(response.id)}" data-math-whiteboard-kind="${app.esc(kind)}">📌 Pin explanation</button>`}</details>`).join('')}</div>`;
+    if(!feedback)return '';
+    const cards=feedback.responses.map((response,index)=>{
+      const selected=response.selected===null||response.selected===undefined?'No answer entered':app.esc(response.selected)+' '+app.esc(response.unit);
+      const expected=app.esc(response.answer)+' '+app.esc(response.unit);
+      return `<article class="math-review-card ${response.correct?'correct':'retry'}">
+        <div class="math-review-card-header"><strong>Question ${index+1}</strong><span class="status ${response.correct?'green':'gold'}">${response.correct?'Correct':'Review calculation'}</span></div>
+        <p class="math-review-question">${app.esc(response.prompt)}</p>
+        <div class="math-review-values"><div><span>Your answer</span><strong>${selected}</strong></div><div><span>Correct answer</span><strong>${expected}</strong></div></div>
+        <div class="math-worked-equation"><strong>Worked equation</strong><p>${app.esc(response.equation||'Check the formula and units in the lesson.')} ${app.esc(response.unit)}</p></div>
+        ${response.correct?'':`<p class="math-review-message"><strong>Coach Bob:</strong> ${app.esc(response.message)}</p>`}
+        <button class="btn secondary math-pin-explanation" type="button" data-math-whiteboard-question="${app.esc(response.id)}" data-math-whiteboard-kind="${app.esc(kind)}">Show this problem on Coach Bob's whiteboard</button>
+      </article>`;
+    }).join('');
+    return `<section class="math-set-result ${feedback.passed?'pass':'retry'}" role="status" aria-label="Math answer review">
+       <h3>${app.esc(feedback.heading)}</h3>
+       <strong>${feedback.correct}/${feedback.total} correct · ${feedback.percent}%</strong>
+       <p>${app.esc(feedback.message)}</p>
+     </section><div class="math-answer-review" aria-label="Worked solutions for every question">${cards}</div>`;
   };
 
   app.reviewWhiteboard=function(skill,feedback){
