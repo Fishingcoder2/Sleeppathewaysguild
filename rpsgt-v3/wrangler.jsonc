@@ -3,19 +3,30 @@
   // Deployment marker: interaction-based printed study recommendations, 2026-08-07.
   "name": "rpsgt-v3-learning-center",
   "compatibility_date": "2026-04-13",
+  "main": "workers/router.js",
   "observability": {
     "enabled": true
   },
   "assets": {
     "directory": ".",
+    "binding": "ASSETS",
+    // Run the Worker only for React case routes and the two explicit shortcuts.
+    // Deliberately omit site-wide SPA not_found_handling; legacy 404s must remain 404.
+    "run_worker_first": ["/case-review", "/case-review/*", "/notebook", "/notebook/", "/practice"],
     "exclude": [
       "node_modules",
+      "ui-next",
+      "workers",
+      "scripts",
+      "audits",
+      "docs",
       "tests",
       "test-results",
       "playwright-report",
       "README.md",
       "browser-regression-matrix.md",
       "package.json",
+      "wrangler.jsonc",
       "package-lock.json",
       "playwright.config.js",
       "wrangler.jsonc",
