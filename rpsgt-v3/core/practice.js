@@ -490,6 +490,7 @@
       renderQuestion();
       const shell=$("[data-practice-shell]");
       if(shell&&typeof shell.scrollTo==="function") shell.scrollTo({top:0,behavior:window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+      $("[data-question-prompt]")?.focus({preventScroll:true});
     }
   }
 
