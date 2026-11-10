@@ -88,10 +88,16 @@ export function QuestionPane({
           <ArrowLeft size={16} aria-hidden="true"/>Previous
         </button>
         {index === total - 1 && graded
-          ? <button type="button" onClick={onReviewMissed}
-              className="inline-flex items-center gap-2 rounded-lg bg-cyan-800 px-3 py-2.5 text-sm font-semibold text-white hover:bg-cyan-700">
-              Review missed questions <ArrowRight size={16} aria-hidden="true"/>
-            </button>
+          ? <div className="flex flex-wrap gap-2">
+              <button type="button" onClick={onReviewMissed}
+                className="rounded-lg border border-slate-300 px-3 py-2.5 text-xs font-semibold hover:bg-slate-100">
+                Review saved Practice misses
+              </button>
+              <a href={'../practice.html?task=' + encodeURIComponent(caseData.domain) + '&start=1'}
+                className="inline-flex items-center gap-2 rounded-lg bg-cyan-800 px-3 py-2.5 text-sm font-semibold text-white hover:bg-cyan-700">
+                Practice {caseData.domain} next <ArrowRight size={16} aria-hidden="true"/>
+              </a>
+            </div>
           : <button type="button" disabled={!graded} onClick={() => move(index + 1)}
               className="inline-flex items-center gap-2 rounded-lg bg-cyan-800 px-3 py-2.5 text-sm font-semibold text-white hover:bg-cyan-700 disabled:opacity-40">
               Next question <ArrowRight size={16} aria-hidden="true"/>
