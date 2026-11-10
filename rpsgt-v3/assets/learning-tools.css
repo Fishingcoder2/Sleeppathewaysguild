@@ -1,0 +1,13 @@
+body[data-module="tools"] .main{padding-top:16px}
+body[data-module="tools"] .hero{min-height:0}
+body[data-module="tools"] .tool-group{margin-top:18px}
+body[data-module="tools"] .tool-group .section-head{margin-bottom:12px}
+body[data-module="tools"] .tool-group .section-head p{margin:.3rem 0 0;color:var(--muted)}
+body[data-module="tools"] .tool-link-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+body[data-module="tools"] .tool-link{display:flex;flex-direction:column;gap:6px;min-height:106px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);text-decoration:none;box-shadow:0 4px 14px rgba(8,43,87,.06)}
+body[data-module="tools"] .tool-link strong{color:var(--navy)}
+body[data-module="tools"] .tool-link span{font-size:.85rem;color:var(--muted);line-height:1.42}
+body[data-module="tools"] .tool-link:hover,body[data-module="tools"] .tool-link:focus-visible{border-color:var(--teal);outline:2px solid var(--teal);outline-offset:2px;background:var(--sky)}
+body[data-module="tools"] .sidebar .nav-all-tools{border-color:var(--teal);background:var(--sky)}
+@media(max-width:1020px){body[data-module="tools"] .tool-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){body[data-module="tools"] .tool-link-grid{grid-template-columns:1fr}body[data-module="tools"] .tool-link{min-height:0}}
