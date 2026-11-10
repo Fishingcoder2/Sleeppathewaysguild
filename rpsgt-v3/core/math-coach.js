@@ -5,7 +5,7 @@
   if(!app||!summaryHost||!catalogHost||!workspace)return;app.configure({engine,summaryHost,catalogHost,workspace,awardOverlay,awardHost});const state=app.state;
   async function loadJson(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
   function saveMath(next){state.saved.mathCoach=next;state.saved=window.RPSGTStorage.save(state.saved);}
-  function clearQuestionUi(){state.guidedFeedback=null;state.setFeedback=null;state.guidedQuestionId=null;state.questionReviewKind=null;app.resetQuestionHelp();}
+  function clearQuestionUi(){state.guidedFeedback=null;state.setFeedback=null;state.guidedQuestionId=null;state.questionReviewKind=null;state.pendingMathAward=null;app.resetQuestionHelp();}
   function openSkill(skillId){if(!app.skillById(skillId))return;state.returnFocus=document.activeElement;state.currentSkill=skillId;clearQuestionUi();saveMath(engine.startSkill(state.saved.mathCoach,state.catalog,skillId,new Date().toISOString()));app.refresh();}
   function changeStage(stage){if(!state.currentSkill)return;clearQuestionUi();saveMath(engine.setStage(state.saved.mathCoach,state.catalog,state.currentSkill,stage,new Date().toISOString()));app.refresh();}
   function closeWorkspace(){state.currentSkill=null;clearQuestionUi();workspace.hidden=true;workspace.innerHTML='';document.body.classList.remove('math-question-modal-open');app.renderCatalog();if(state.returnFocus&&typeof state.returnFocus.focus==='function')state.returnFocus.focus({preventScroll:true});state.returnFocus=null;}
@@ -13,13 +13,13 @@
   function pinWhiteboard(question,response,kind){state.whiteboardOpen=true;state.whiteboardPinned=true;state.whiteboardQuestionId=question&&question.id||response&&response.id||null;state.whiteboardResponse=response||null;state.whiteboardKind=kind||null;}
   function submitGuided(form){
     const skill=app.skillById(state.currentSkill);const record=app.recordFor(skill.id);const question=app.guidedQuestion(skill,record);const result=engine.numericResult(question,form.elements.answer.value);state.guidedFeedback={...result,questionId:question.id};
-    if(result.answered){saveMath(engine.recordGuided(state.saved.mathCoach,state.catalog,skill.id,state.guidedFeedback,new Date().toISOString()));if(!result.correct)pinWhiteboard(question,state.guidedFeedback,'guided');else{state.guidedQuestionId=null;app.resetQuestionHelp();}}
+    if(result.answered){saveMath(engine.recordGuided(state.saved.mathCoach,state.catalog,skill.id,state.guidedFeedback,new Date().toISOString()));if(!result.correct)pinWhiteboard(question,state.guidedFeedback,'guided');else{state.guidedQuestionId=question.id;state.questionReviewKind='guided';app.resetQuestionHelp();}}
     app.renderSummary();app.renderCatalog();app.renderWorkspace();
   }
   function submitSet(form,kind){
     const skill=app.skillById(state.currentSkill);const questions=kind==='mastery'?skill.mastery:skill.independent;const grade=engine.gradeSet(questions,collectAnswers(form,questions));const firstMissed=grade.responses.find(response=>!response.correct)||null;
     if(kind==='mastery'){
-      const outcome=engine.recordMastery(state.saved.mathCoach,state.catalog,skill.id,grade,new Date().toISOString(),state.catalog.passPercent);saveMath(outcome.state);state.setFeedback={...grade,passed:outcome.passed,heading:outcome.passed?'Mastery demonstrated':'Review and retry',message:outcome.passed?'You reached the mastery standard.':'Use the answer review to find the formula or unit step that needs another pass.'};state.questionReviewKind=outcome.passed?null:'mastery';if(firstMissed&&!outcome.passed)pinWhiteboard(app.questionById(skill,firstMissed.id),firstMissed,'mastery');else if(outcome.passed)app.resetQuestionHelp();app.renderSummary();app.renderCatalog();app.renderWorkspace();if(outcome.earnedNow&&outcome.award)showAward(outcome.award);
+      const outcome=engine.recordMastery(state.saved.mathCoach,state.catalog,skill.id,grade,new Date().toISOString(),state.catalog.passPercent);saveMath(outcome.state);state.setFeedback={...grade,passed:outcome.passed,heading:outcome.passed?'Mastery demonstrated':'Review and retry',message:outcome.passed?'You reached the mastery standard.':'Use the answer review to find the formula or unit step that needs another pass.'};state.questionReviewKind='mastery';if(firstMissed&&!outcome.passed)pinWhiteboard(app.questionById(skill,firstMissed.id),firstMissed,'mastery');else if(outcome.passed)app.resetQuestionHelp();app.renderSummary();app.renderCatalog();app.renderWorkspace();state.pendingMathAward=outcome.earnedNow?outcome.award:null;
     }else{
       const threshold=Number(state.catalog.independentAdvancePercent||engine.INDEPENDENT_ADVANCE_PERCENT);saveMath(engine.recordIndependent(state.saved.mathCoach,state.catalog,skill.id,grade,new Date().toISOString(),threshold));state.setFeedback={...grade,passed:grade.percent>=threshold,heading:grade.percent>=threshold?'Ready for the mastery check':'Practice this pathway again',message:grade.percent>=threshold?'Review your result, then continue when you are ready.':'Review the missed setups, keep the whiteboard pinned, then repeat independent practice.'};state.questionReviewKind='independent';if(firstMissed)pinWhiteboard(app.questionById(skill,firstMissed.id),firstMissed,'independent');else app.resetQuestionHelp();app.renderSummary();app.renderCatalog();app.renderWorkspace();
     }
@@ -42,6 +42,14 @@
     if(event.target.closest('[data-math-whiteboard-pin]')){state.whiteboardPinned=!state.whiteboardPinned;state.whiteboardOpen=true;const board=workspace.querySelector('[data-math-whiteboard]');if(board){board.classList.toggle('pinned',state.whiteboardPinned);board.hidden=false;}const pin=workspace.querySelector('[data-math-whiteboard-pin]');if(pin){pin.setAttribute('aria-pressed',state.whiteboardPinned?'true':'false');pin.textContent=state.whiteboardPinned?'📌 Pinned':'Pin board';}return;}
     if(event.target.closest('[data-math-whiteboard-close]')){state.whiteboardPinned=false;setWhiteboardVisibility(false);return;}
     const explanation=event.target.closest('[data-math-whiteboard-question]');if(explanation){const skill=app.skillById(state.currentSkill);const question=skill&&app.questionById(skill,explanation.dataset.mathWhiteboardQuestion);const response=state.setFeedback&&(state.setFeedback.responses||[]).find(item=>String(item.id)===String(explanation.dataset.mathWhiteboardQuestion));if(question&&response){pinWhiteboard(question,response,explanation.dataset.mathWhiteboardKind);app.renderWorkspace();}return;}
+    if(event.target.closest('[data-math-continue-independent]')){clearQuestionUi();app.refresh();return;}
+    if(event.target.closest('[data-math-retry-set]')){state.setFeedback=null;state.questionReviewKind=null;app.resetQuestionHelp();app.refresh();return;}
+    if(event.target.closest('[data-math-finish-skill]')){
+      const award=state.pendingMathAward;
+      clearQuestionUi();app.refresh();
+      if(award)showAward(award);
+      return;
+    }
     if(event.target.closest('[data-math-continue-mastery]')){state.questionReviewKind=null;state.setFeedback=null;app.resetQuestionHelp();app.refresh();return;}
     if(event.target.closest('[data-math-practice-again]')&&state.currentSkill){saveMath(engine.resetForPractice(state.saved.mathCoach,state.catalog,state.currentSkill,new Date().toISOString()));clearQuestionUi();app.refresh();return;}
     if(event.target.closest('[data-math-review-skill]')&&state.currentSkill){saveMath(engine.reviewSkill(state.saved.mathCoach,state.catalog,state.currentSkill,new Date().toISOString()));clearQuestionUi();app.refresh();return;}
