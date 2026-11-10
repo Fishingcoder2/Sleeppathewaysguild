@@ -128,9 +128,7 @@
       if(feedback&&!feedback.classList.contains('hidden')) renderScored({focus:false});
       else renderPre(question);
     });
-    document.addEventListener('click',event=>{
-      if(event.target.closest('[data-submit-answer]')) queueMicrotask(()=>renderScored({focus:true}));
-    });
+    document.addEventListener('rpsgt:practice-answer',()=>renderScored({focus:false}));
     if(resources) resources.load().catch(()=>null);
     return true;
   }
