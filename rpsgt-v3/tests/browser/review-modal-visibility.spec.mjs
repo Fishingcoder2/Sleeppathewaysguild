@@ -70,4 +70,7 @@ test('results replace the question only after all selected missed items are revi
   expect(saved.progress.answered).toBe(3);
   expect(saved.review.missedIds).toEqual([]);
   expect(saved.review.masteredIds.map(String)).toEqual(questions.map(q=>String(q.id)));
+  await expect(page.locator('[data-review-next-title]')).toContainText('next study task');
+  await expect(page.locator('[data-review-next-link]')).toHaveAttribute('href','study.html#rpsgt-domain-map');
+  await expect(page.locator('[data-review-complete] .completion-recommendation .btn.primary')).toHaveCount(1);
 });
