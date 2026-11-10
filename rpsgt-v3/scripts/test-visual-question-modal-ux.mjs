@@ -117,7 +117,7 @@ if(!labVisual.includes("if(state.retryRequired&&state.retryRequired===currentQue
 
 for(const token of ['role="dialog"','aria-modal="true"','data-previous-question','data-next-question','practice-modal-footer']) if(!practiceHtml.includes(token)) throw new Error(`Practice modal contract is missing ${token}.`);
 for(const token of ['role="dialog"','aria-modal="true"','data-previous-question','data-review-forward','data-review-close','practice-modal-footer','assets/practice-navigation.css']) if(!reviewHtml.includes(token)) throw new Error(`Review modal contract is missing ${token}.`);
-for(const token of ['selections:new Map()','responses:new Map()','function previousQuestion()','function forward()','"Check answer"','"Next question"','renderFeedback(question,response)','practice-answer-review']) if(!reviewJs.includes(token)) throw new Error(`Review navigation state is missing ${token}.`);
+for(const token of ['selections:new Map()','responses:new Map()','function previousQuestion()','function forward()','submitAnswer()','"Next question"','renderFeedback(question,response)','practice-answer-review']) if(!reviewJs.includes(token)) throw new Error(`Review navigation state is missing ${token}.`);
 for(const forbidden of ['Mapped source keys','referenceKeys']) if(reviewJs.includes(forbidden)||reviewHtml.includes(forbidden)) throw new Error(`Learner-facing Review must not expose ${forbidden}.`);
 if(!reviewJs.includes('state.responses.has(key)')) throw new Error('Review must preserve answered state when navigating backward.');
 
