@@ -44,7 +44,7 @@
   "guided": [
     {
       "id": "waso-guided-1",
-      "prompt": "TRT 480 min, sleep latency 20 min, TST 405 min. Find WASO.",
+      "prompt": "TRT is 480 minutes, sleep onset latency is 20 minutes, and TST is 405 minutes. Calculate WASO through lights on in minutes.",
       "answer": 55,
       "tolerance": 0.01,
       "unit": "minutes",
@@ -68,7 +68,7 @@
     },
     {
       "id": "waso-guided-retry",
-      "prompt": "Sleep period 420 min, TST 370 min. Find WASO.",
+      "prompt": "The recording interval from sleep onset to lights on is 420 minutes, including post-onset wake, and TST is 370 minutes. Calculate WASO in minutes.",
       "answer": 50,
       "tolerance": 0.01,
       "unit": "minutes",
