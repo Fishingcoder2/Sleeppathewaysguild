@@ -120,8 +120,15 @@
     const selectedIndex=state.selections.get(key),selectedAnswer=question.options[selectedIndex],isCorrect=selectedAnswer===question.answer,response={selectedIndex,selectedAnswer,isCorrect};state.responses.set(key,response);state.answeredCount+=1;if(isCorrect)state.correct+=1;
     recordAnswer(question,isCorrect,selectedAnswer);renderCounts();renderQuestion();
   }
-  function previousQuestion(){if(state.index<=0)return;state.index-=1;renderQuestion();}
-  function forward(){const question=state.questions[state.index],key=questionKey(question);if(!state.responses.has(key))return;state.index+=1;state.index>=state.questions.length?renderComplete():renderQuestion();}
+  function focusQuestion(){
+    const shell=$("[data-review-shell]");
+    const prompt=$("[data-question-prompt]");
+    const behavior=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+    if(shell&&typeof shell.scrollTo==="function") shell.scrollTo({top:0,behavior});
+    if(prompt) prompt.focus({preventScroll:true});
+  }
+  function previousQuestion(){if(state.index<=0)return;state.index-=1;renderQuestion();focusQuestion();}
+  function forward(){const question=state.questions[state.index],key=questionKey(question);if(!state.responses.has(key))return;state.index+=1;if(state.index>=state.questions.length)renderComplete();else{renderQuestion();focusQuestion();}}
   function renderComplete(){
     const shell=$("[data-review-shell]");
     $("[data-question-panel]").classList.add("hidden");
