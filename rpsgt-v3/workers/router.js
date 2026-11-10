@@ -8,11 +8,12 @@
  * Only /case-review/** is a React SPA at this phase of the migration.
  */
 const SPA_ROOT = '/case-review';
-const SPA_ENTRY = '/case-review/index.html';
+// Cloudflare's default HTML handling redirects /case-review/index.html to /case-review/.
+// Fetch the canonical directory URL to avoid another redirect inside the fallback.
+const SPA_ENTRY = '/case-review/';
 const SHORTCUTS = new Map([
   ['/notebook', '/case-review/'],
   ['/notebook/', '/case-review/'],
-  ['/practice', '/practice.html'],
 ]);
 
 function isSpaPath(path) {
