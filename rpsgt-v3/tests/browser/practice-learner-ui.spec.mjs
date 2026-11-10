@@ -99,7 +99,10 @@ test('Practice completion recommends the next activity from this session, withou
   await expect(completion.locator('[data-recommendation-title]')).toBeVisible();
   const saved=await page.evaluate(()=>window.RPSGTStorage.load());
   const missed=saved.progress.history.filter(answer=>answer.correct===false).length;
-  const href=missed?'review.html?list=missed':'study.html#rpsgt-domain-map';
+  const sequence=['D1A','D1B','D1C','D2A','D2B','D2C','D3A','D3B','D3C','D4A','D4B','D4C'];
+  const tasks=[...new Set(saved.progress.history.map(answer=>answer.taskCode))];
+  const position=tasks.length===1?sequence.indexOf(tasks[0]):-1;
+  const href=missed?'review.html?list=missed':position>=0&&sequence[position+1]?'study.html#'+sequence[position+1]:'reports.html';
   await expect(completion.locator('[data-recommendation-link]')).toHaveAttribute('href',href);
   await expect(completion.locator('.completion-recommendation .btn.primary')).toHaveCount(1);
   await expect(page).toHaveURL(/practice\.html$/);
