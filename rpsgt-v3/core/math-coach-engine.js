@@ -14,15 +14,78 @@
   const safeNumber=(value,fallback=0)=>Number.isFinite(Number(value))?Number(value):fallback;
   const nowValue=value=>value||new Date().toISOString();
 
+
+  // Every catalog problem has structured operands. Keys are checked against
+  // these calculations when the catalog loads, not trusted as arbitrary text.
+  function calculationResult(question){
+    const c=question&&question.calculation;
+    if(!isObject(c))return {valid:false,code:'missing-calculation'};
+    const finite=key=>typeof c[key]==='number'&&Number.isFinite(c[key]);
+    const valid=(...keys)=>keys.every(finite);
+    let raw;
+    switch(c.kind){
+      case 'rate':
+        if(!valid('count','sleepMinutes')||c.count<0||c.sleepMinutes<=0)return {valid:false,code:'invalid-rate-inputs'};
+        raw=c.count*60/c.sleepMinutes;break;
+      case 'percent':
+        if(!valid('part','whole')||c.part<0||c.whole<=0||c.part>c.whole)return {valid:false,code:'invalid-percent-inputs'};
+        raw=c.part/c.whole*100;break;
+      case 'epoch':
+        if(!valid('epochs')||c.epochs<0||!['hours','minutes'].includes(c.output))return {valid:false,code:'invalid-epoch-inputs'};
+        raw=c.epochs/(c.output==='hours'?120:2);break;
+      case 'clock':{
+        const clock=value=>/^([01]\\d|2[0-3]):[0-5]\\d$/.test(String(value||''));
+        if(!clock(c.start)||!clock(c.end)||c.start===c.end)return {valid:false,code:'invalid-clock-inputs'};
+        const mins=value=>Number(value.slice(0,2))*60+Number(value.slice(3,5));
+        raw=(mins(c.end)-mins(c.start)+1440)%1440;break;
+      }
+      case 'trt-balance':
+        if(!valid('trt')||c.trt<0)return {valid:false,code:'invalid-trt'};
+        if(c.solve==='tst'&&valid('latency','waso'))raw=c.trt-c.latency-c.waso;
+        else if(c.solve==='latency'&&valid('tst','waso'))raw=c.trt-c.tst-c.waso;
+        else if(c.solve==='waso'&&valid('latency','tst'))raw=c.trt-c.latency-c.tst;
+        else return {valid:false,code:'invalid-trt-components'};
+        break;
+      case 'period':
+        if(!valid('trt','latency'))return {valid:false,code:'invalid-period-inputs'};
+        raw=c.trt-c.latency;break;
+      case 'sum':
+        if(!valid('a','b')||!['wake','period'].includes(c.solve))return {valid:false,code:'invalid-sum-inputs'};
+        raw=c.a+c.b;break;
+      case 'waso-period':
+        if(!valid('period','tst'))return {valid:false,code:'invalid-waso-inputs'};
+        raw=c.period-c.tst;break;
+      case 'wake':
+        if(!valid('trt','tst'))return {valid:false,code:'invalid-wake-inputs'};
+        raw=c.trt-c.tst;break;
+      case 'pressure':
+        if(!valid('ipap','epap')||c.ipap<c.epap||c.epap<0)return {valid:false,code:'invalid-pressure-inputs'};
+        raw=c.ipap-c.epap;break;
+      default:return {valid:false,code:'unknown-calculation'};
+    }
+    if(!Number.isFinite(raw)||raw<0)return {valid:false,code:'impossible-result'};
+    const digits=c.roundTo;
+    if(digits!==undefined&&(!Number.isInteger(digits)||digits<0||digits>3))return {valid:false,code:'invalid-rounding'};
+    const value=digits===undefined?raw:Math.round((raw+Number.EPSILON)*10**digits)/10**digits;
+    if(!String(c.equation||'').trim())return {valid:false,code:'missing-equation'};
+    return {valid:true,value,raw,unit:question.unit,equation:String(c.equation)};
+  }
   function validateQuestion(question,path,issues){
     if(!isObject(question)){issues.push({code:'invalid-question',path});return;}
     if(!String(question.id||'').trim()) issues.push({code:'missing-question-id',path});
     if(!String(question.prompt||'').trim()) issues.push({code:'missing-question-prompt',path});
     if(!Number.isFinite(Number(question.answer))) issues.push({code:'invalid-question-answer',path});
     if(!String(question.unit||'').trim()) issues.push({code:'missing-question-unit',path});
+    const calculation=calculationResult(question);
+    if(!calculation.valid)issues.push({code:calculation.code,path});
+    else{
+      if(Math.abs(Number(question.answer)-calculation.value)>0.000001)issues.push({code:'answer-key-mismatch',path,key:question.answer,calculated:calculation.value});
+      if(question.calculation.kind==='epoch'&&question.calculation.output!==question.unit)issues.push({code:'calculation-unit-mismatch',path});
+      if(!String(question.prompt||'').toLowerCase().includes(question.unit==='%'?'percent':question.unit==='hours'?'hour':question.unit==='minutes'?'min':question.unit==='cm H2O'?'pressure':question.unit==='events/hour'?'ahi':'arousal')&&path.includes('mastery['))issues.push({code:'unclear-question-unit',path});
+    }
   }
   function validateCatalog(catalog){
-    const issues=[];const skills=Array.isArray(catalog&&catalog.skills)?catalog.skills:[];const ids=new Set();
+    const issues=[];const skills=Array.isArray(catalog&&catalog.skills)?catalog.skills:[];const ids=new Set();const questionIds=new Set();
     if(!skills.length) issues.push({code:'missing-skills',path:'skills'});
     skills.forEach((skill,index)=>{
       const path='skills['+index+']';const id=String(skill&&skill.id||'');
@@ -35,7 +98,14 @@
         if(group==='guided'&&rows.length<2) issues.push({code:'guided-retry-required',path});
         if(group==='independent'&&rows.length<3) issues.push({code:'independent-practice-too-small',path});
         if(group==='mastery'&&rows.length<5) issues.push({code:'mastery-check-too-small',path});
-        rows.forEach((question,qIndex)=>validateQuestion(question,path+'.'+group+'['+qIndex+']',issues));
+        rows.forEach((question,qIndex)=>{
+          const location=path+'.'+group+'['+qIndex+']';
+          validateQuestion(question,location,issues);
+          if(question&&question.id){
+            const id=String(question.id);
+            if(questionIds.has(id))issues.push({code:'duplicate-question-id',path:location,id});else questionIds.add(id);
+          }
+        });
       });
       if(!Array.isArray(skill&&skill.studyResources)||!skill.studyResources.length) issues.push({code:'missing-study-resources',path});
     });
@@ -79,15 +149,17 @@
     if(!raw) return {answered:false,correct:false,value:null,message:'Enter a number before checking your work.'};
     const value=Number(raw.replace(/,/g,''));
     if(!Number.isFinite(value)) return {answered:true,correct:false,value:null,message:'Use numbers only. Add the unit after the calculation, not inside the answer box.'};
-    const answer=Number(question.answer);const tolerance=Math.max(0,safeNumber(question.tolerance,0.01));
-    if(Math.abs(value-answer)<=tolerance) return {answered:true,correct:true,value,answer,unit:question.unit,message:question.success||'Correct. Your setup and unit match the expected result.'};
+    const expected=calculationResult(question);
+    const answer=expected.valid?expected.value:Number(question.answer);
+    const tolerance=Math.max(0,safeNumber(question.tolerance,0.01));
+    if(Math.abs(value-answer)<=tolerance) return {answered:true,correct:true,value,answer,unit:question.unit,equation:expected.valid?expected.equation:null,message:question.success||'Correct. Your setup and unit match the expected result.'};
     const match=(question.commonErrors||[]).find(item=>Number.isFinite(Number(item.value))&&Math.abs(value-Number(item.value))<=Math.max(0,safeNumber(item.tolerance,tolerance)));
-    return {answered:true,correct:false,value,answer,unit:question.unit,message:match&&match.message||question.hint||'Recheck the formula, denominator, unit conversion, and rounding.'};
+    return {answered:true,correct:false,value,answer,unit:question.unit,equation:expected.valid?expected.equation:null,message:match&&match.message||question.hint||'Recheck the formula, denominator, unit conversion, and rounding.'};
   }
   function gradeSet(questions,answers){
     const rows=(Array.isArray(questions)?questions:[]).map(question=>{
       const result=numericResult(question,isObject(answers)?answers[question.id]:undefined);
-      return {id:question.id,prompt:question.prompt,selected:result.value,answer:Number(question.answer),unit:question.unit,correct:result.correct,message:result.message};
+      return {id:question.id,prompt:question.prompt,selected:result.value,answer:result.answer??Number(question.answer),unit:question.unit,equation:question.calculation?.equation||null,correct:result.correct,message:result.message};
     });
     const correct=rows.filter(row=>row.correct).length;const total=rows.length;const percent=total?Math.round(correct/total*100):0;
     return {correct,total,percent,responses:rows};
@@ -125,5 +197,5 @@
     const state=normalizeState(value,catalog);const rows=(catalog&&catalog.skills||[]).map(skill=>({id:skill.id,title:skill.title,shortTitle:skill.shortTitle,category:skill.category,...clone(state.skills[skill.id])}));
     return {state,rows,counts:{total:rows.length,started:rows.filter(row=>row.status!=='not-started').length,mastered:rows.filter(row=>row.status==='mastered').length,attempts:rows.reduce((sum,row)=>sum+row.masteryAttempts,0)},current:state.currentSkill};
   }
-  return {VERSION,PASS_PERCENT,INDEPENDENT_ADVANCE_PERCENT,HISTORY_LIMIT,STAGES,validateCatalog,skillMap,normalizeSkill,normalizeState,startSkill,setStage,numericResult,gradeSet,recordGuided,recordIndependent,recordMastery,resetForPractice,reviewSkill,nextSkillId,summary};
+  return {VERSION,PASS_PERCENT,INDEPENDENT_ADVANCE_PERCENT,HISTORY_LIMIT,STAGES,calculationResult,validateCatalog,skillMap,normalizeSkill,normalizeState,startSkill,setStage,numericResult,gradeSet,recordGuided,recordIndependent,recordMastery,resetForPractice,reviewSkill,nextSkillId,summary};
 });
