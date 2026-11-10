@@ -10,3 +10,7 @@ body[data-module="home"] .main{padding-top:16px}.brpt-hero{grid-template-columns
 .home-more-tools>summary:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 .home-more-tools-content{padding:0 16px 16px}
 .home-more-tools-content p{margin:0 0 10px;color:var(--muted);font-size:.85rem}
+
+/* Keep tools discoverable without requiring a collapsed disclosure. */
+body[data-module="home"] .front-door-destinations .section-head{gap:12px;align-items:center;flex-wrap:wrap}
+body[data-module="home"] .front-door-destinations .section-head>.btn{white-space:normal}
