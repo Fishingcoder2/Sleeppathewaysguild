@@ -45,7 +45,9 @@ function enhance(form){
     if(event.target.closest('[data-math-set-prev]')){sync(form,current-1,true);return;}
     if(event.target.closest('[data-math-set-next]')){sync(form,current+1,true);}
   });
-  sync(form,activeByKind.get(kind)||0,false);
+  // Each new attempt starts at Question 1. The previous attempt's active
+  // index must not carry into a retry or a newly opened skill.
+  sync(form,0,false);
 }
 function scan(){
   scheduled=false;
