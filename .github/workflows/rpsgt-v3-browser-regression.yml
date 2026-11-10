@@ -8,6 +8,12 @@ on:
     paths:
       - 'rpsgt-v3/**'
       - '.github/workflows/rpsgt-v3-browser-regression.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/**'
+      - '.github/workflows/rpsgt-v3-browser-regression.yml'
   workflow_dispatch:
 
 permissions:
