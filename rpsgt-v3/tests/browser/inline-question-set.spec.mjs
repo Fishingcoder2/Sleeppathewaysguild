@@ -24,7 +24,6 @@ test('Related lab questions open in a modal, stay in the lab, and count toward P
   expect(taskContext).toMatch(/D2A|D2B|D3B/);
   for(let i=0;i<5;i++){
     await dialog.locator('[data-quick-set-option]').first().click();
-    await dialog.locator('[data-quick-set-next]').click();
     await expect(dialog.locator('.spg-quick-set-feedback')).toBeVisible();
     await expect(dialog.locator('.spg-quick-set-feedback')).toContainText('Correct answer:');
     await dialog.locator('[data-quick-set-next]').click();
