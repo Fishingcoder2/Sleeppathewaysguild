@@ -135,7 +135,7 @@ curl -I https://webapp.sleeppathwaysguild.com/case-review/assets/missing-chunk.j
 
 Expected: legacy URLs and both case links are 200; missing JS remains 404.
 Also test `/notebook` and `/practice` aliases (308) and verify query
-strings survive. In a browser, navigate to a case, refresh, use Back,
+strings survive. These temporary aliases return 307 (not a cached permanent 308) so future React route migration is possible. In a browser, navigate to a case, refresh, use Back,
 open the command palette, resize the notebook, and inspect the report.
 Verify existing learner progress survives.
 
