@@ -20,8 +20,15 @@ async function submitSet(page,kind,id) {
   const questions=skill[kind];
   const form=page.locator('[data-math-set-form="'+kind+'"]');
   await expect(form).toBeVisible();
-  for(const question of questions){
+  await expect(form.locator('[data-math-set-navigation]')).toBeVisible();
+  for(let index=0;index<questions.length;index+=1){
+    const question=questions[index];
+    await expect(form.locator('.math-set-question').nth(index)).toBeVisible();
+    await expect(form.locator('[data-math-set-count]')).toContainText('Question '+(index+1)+' of '+questions.length);
     await form.locator('input[name="'+question.id+'"]').fill(String(question.answer));
+    if(index<questions.length-1){
+      await form.locator('[data-math-set-next]').click();
+    }
   }
   await form.locator('button[type="submit"]').click();
   await expect(page.locator('.math-answer-review .math-review-card')).toHaveCount(questions.length);
