@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // RELEASE-ONLY: used by manually approved GitHub production workflow.\n  // Default wrangler.jsonc remains asset-only so accidental deploys do not enable the router.
+  "name": "rpsgt-v3-learning-center",
+  "compatibility_date": "2026-04-13",
+  "main": "workers/router.js",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    // Cloudflare auto-canonicalizes practice.html to /practice. NEVER redirect
+    // /practice back to practice.html: that creates an infinite 307 loop.
+    // Only the React notebook and its deliberate aliases require Worker code.
+    "run_worker_first": ["/case-review", "/case-review/*", "/notebook", "/notebook/"],
+    "exclude": [
+      "node_modules",
+      "ui-next",
+      "workers",
+      "scripts",
+      "audits",
+      "docs",
+      "tests",
+      "test-results",
+      "playwright-report",
+      "README.md",
+      "browser-regression-matrix.md",
+      "package.json",
+      "package-lock.json",
+      "playwright.config.js",
+      "wrangler.jsonc",\n      "wrangler.case-review-release.jsonc",
+      ".gitignore"
+    ]
+  }
+}
