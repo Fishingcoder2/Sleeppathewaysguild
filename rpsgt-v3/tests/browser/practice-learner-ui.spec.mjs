@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('Learner Practice hides internal metadata, uses Next to check, and preserves reviewed questions', async ({ page }) => {
+test('Learner Practice hides internal metadata, checks on option click, and preserves reviewed questions', async ({ page }) => {
   await page.goto('practice.html');
   await expect(page.locator('[data-practice-setup]')).toBeVisible();
   await expect(page.locator('body')).not.toContainText('Quality review');
@@ -30,7 +30,6 @@ test('Learner Practice hides internal metadata, uses Next to check, and preserve
 
   await page.locator('[data-choice-index]').first().click();
   await expect(page.locator('[data-next-question]')).toBeEnabled();
-  await page.locator('[data-next-question]').click();
   const feedback=page.locator('[data-answer-feedback]');
   await expect(feedback).toBeVisible();
   await expect(feedback).toContainText('Answer & reasoning');
@@ -70,7 +69,7 @@ test('ECG subject stays locked for the full focused Practice session', async ({ 
   for(let index=0;index<4;index+=1){
     await expect(shell).toHaveAttribute('data-question-subject-match','true');
     await page.locator('[data-choice-index]').first().click();
-    await page.locator('[data-next-question]').click();
+    await expect(page.locator('[data-answer-feedback]')).toBeVisible();
     await page.locator('[data-next-question]').click();
   }
   await expect(page.locator('[data-question-number]')).toContainText('Question 5 of 5');
