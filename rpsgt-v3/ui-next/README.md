@@ -6,7 +6,7 @@ This is a **staged, isolated** React + TypeScript + Tailwind CSS implementation 
 
 - **Global command palette:** Cmd+K/Ctrl+K or search button; search case studies, practice task codes D1A–D4C, and Coach Bob. Arrow-key navigation, Enter selection, Escape dismissal, and focus trapping.
 - **Intent-based sidebar:** Dashboard, Practice Center, Case Review Notebook, and Coach Bob are top-level options. Collapse/expand on desktop and overlay navigation on small devices. Sidebar preference is stored under its own UI-only key, not the learner record.
-- **Breadcrumbs + sticky return:** Dashboard > Case Review > category > case. Case deep links use `?case=...` with browser Back/Forward support.
+- **Breadcrumbs + sticky return:** Dashboard > Case Review > category > case. Canonical deep links use `/case-review/case/<case-id>` with browser Back/Forward support; `?case=` links remain readable.
 - **Split-pane notebook:** Present the *available* static teaching report beside one-click concept checks and a Coach Bob guidance tab. Resizable splitter supports drag and arrow keys; panes stack on tablet/mobile.
 - **Missed Review modal:** Reads the existing `spg_rpsgt_v3.review.missedIds` count **without writing anything**, keeps missed questions separate from flagged items, and links to `../review.html?list=missed`. Escape, focus trap, background dismissal, focus return, and empty-list handling are included.
 
@@ -31,7 +31,7 @@ npm run build
 npm run dev
 ```
 
-The Vite build writes static assets to `rpsgt-v3/case-review/` with relative asset URLs. The output **must be built and tested before any deployment**; the source directory is not itself a deployable production React app. Production review assets must be served from the existing same-origin V3 site. Existing teaching report links (`../sample-psg-report.html`, `../sample-pap-titration-report.html`) resolve in the built route.
+The Vite build writes static assets to `rpsgt-v3/case-review/` with a stable `/case-review/` Vite asset base. The output **must be built and tested before any deployment**; the source directory is not itself a deployable production React app. Production review assets must be served from the existing same-origin V3 site. Existing teaching report links (`/sample-psg-report.html`, `/sample-pap-titration-report.html`) resolve from any nested case URL on the existing V3 site.
 
 The new workspace is intentionally separate from the legacy static JS modules. Do not rename, delete, or change `core/storage.js`, `core/review.js`, the BRPT question bank, or the old public V2 application to use it. A release integration step would build the React page and include the generated `case-review` folder in the Worker asset upload.
 
@@ -54,3 +54,13 @@ The bundled concept checks are original example questions **not derived from pat
 7. Do not remove V3's existing `noindex,nofollow` before approval.
 
 This branch is a **code prototype**, not a confirmed production deployment.
+
+## Cloudflare release model
+
+The repo's authoritative `rpsgt-v3/wrangler.jsonc` continues to publish **all existing standalone V3 pages** from its asset directory `.`. The Worker `rpsgt-v3/workers/router.js` provides a carefully scoped fallback for `/case-review/*` and aliases `/notebook` and `/practice` without hijacking legacy routes or missing JS/JSON.
+
+Build/PR validation is configured in `.github/workflows/rpsgt-v3-case-review-react.yml`. A manual, approval-gated production workflow is staged in `.github/workflows/rpsgt-v3-production-release.yml`; **do not enable production release until the GitHub environment requires reviewers and Cloudflare's existing automatic publisher has been reconciled**.
+
+Full release and rollback checklist: `rpsgt-v3/docs/case-review-cloudflare-release.md`.
+
+**This draft branch is not merged or deployed.**
