@@ -13,8 +13,8 @@ interface Props {
 
 const groups = [
   { label: 'Study', entries: [
-    { id: 'dashboard', label: 'Dashboard', description: 'Learning overview', href: '../index.html', icon: House },
-    { id: 'practice', label: 'Practice Center', description: 'Focused board questions', href: '../practice.html', icon: Brain },
+    { id: 'dashboard', label: 'Dashboard', description: 'Learning overview', href: '/index.html', icon: House },
+    { id: 'practice', label: 'Practice Center', description: 'Focused board questions', href: '/practice.html', icon: Brain },
   ] },
   { label: 'Clinical review', entries: [
     { id: 'cases', label: 'Case Review Notebook', description: 'Evidence beside decisions', icon: NotebookTabs },
@@ -40,7 +40,7 @@ export function Sidebar({
         className={`${mobileOpen ? 'fixed inset-y-0 left-0 z-40 flex w-[280px]' : 'hidden'} ${widths} flex-col border-r border-slate-800 bg-slate-950 text-white lg:sticky lg:top-0 lg:flex lg:h-dvh lg:shrink-0`}>
         <div className="flex items-center justify-between gap-2 border-b border-slate-800 px-3 py-4">
           {(!collapsed || mobileOpen) && (
-            <a href="../index.html" className="min-w-0 text-sm font-bold leading-tight text-white">
+            <a href="/index.html" className="min-w-0 text-sm font-bold leading-tight text-white">
               Sleep Pathways Guild
               <span className="mt-1 block text-xs font-medium text-cyan-300">RPSGT Learning Center</span>
             </a>
@@ -89,7 +89,7 @@ export function Sidebar({
             <BookOpen size={20} aria-hidden="true" className="shrink-0" />
             {(!collapsed || mobileOpen) && <>All Learning Tools <ChevronRight size={15} className="ml-auto"/></>}
           </a>
-          {(!collapsed || mobileOpen) && <a href="../reports.html" className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800"><FileText size={20}/>My Reports</a>}
+          {(!collapsed || mobileOpen) && <a href="/reports.html className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800"><FileText size={20}/>My Reports</a>}
         </div>
       </aside>
     </>
