@@ -9,14 +9,20 @@ import { Sidebar } from './components/Sidebar';
 import MissedReviewModal from './components/MissedReviewModal';
 import { readMissedQuestionsCount } from './reviewCount';
 
+// Canonical path-based routes survive a hard refresh through the scoped
+// Cloudflare /case-review/* fallback. Keep the older ?case= URL readable.
 function caseIdFromUrl(): string | null {
-  const id = new URLSearchParams(window.location.search).get('case');
-  return DEMO_CASES.some(item => item.id === id) ? id : null;
+  const path = window.location.pathname;
+  const match = path.match(/^\/case-review\/case\/([^/]+)\/?$/);
+  if (match) {
+    try { return decodeURIComponent(match[1]); } catch { return null; }
+  }
+  return new URLSearchParams(window.location.search).get('case');
 }
 function navigateCase(id: string | null) {
   const url = new URL(window.location.href);
-  if (id) url.searchParams.set('case', id);
-  else url.searchParams.delete('case');
+  url.pathname = id ? '/case-review/case/' + encodeURIComponent(id) : '/case-review/';
+  url.searchParams.delete('case');
   window.history.pushState({ caseId: id }, '', url);
 }
 function readCollapsed(): boolean {
