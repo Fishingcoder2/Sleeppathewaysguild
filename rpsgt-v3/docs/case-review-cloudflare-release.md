@@ -22,13 +22,14 @@ change live traffic precedence.
 
 - `/practice.html`, `/review.html`, `/data/**`, and existing static files
   continue to come directly from the same asset collection.
-- `/practice?task=D3C&start=1` redirects to
-  `/practice.html?task=D3C&start=1` (preserving the existing Practice engine).
+- Cloudflare's default HTML handling canonicalizes `/practice.html` to `/practice`.
+  There is **no Worker redirect** from `/practice` back to `/practice.html`,
+  because that pair of redirects caused the November 10 outage.
 - `/notebook` redirects to `/case-review/`.
 - React case URLs use `/case-review/case/<case-id>` and survive refresh.
   The older `/case-review/?case=<case-id>` link is still understood by React.
 - An unmatched, extensionless *HTML navigation* inside `/case-review/` gets
-  `/case-review/index.html` (200).
+  `/case-review/` (200).
 - Missing `.js`, `.css`, `.json`, font, image, and other files stay genuine
   404s. Unknown legacy URLs are also 404s. The Worker never changes the
   learner's storage or question bank.
@@ -134,7 +135,7 @@ curl -I https://webapp.sleeppathwaysguild.com/case-review/assets/missing-chunk.j
 ```
 
 Expected: legacy URLs and both case links are 200; missing JS remains 404.
-Also test `/notebook` and `/practice` aliases (307) and verify query
+Also test `/notebook` and `/practice` notebook aliases (307) and verify query
 strings survive. These temporary redirects avoid permanently binding users to legacy routes during the future React migration. In a browser, navigate to a case, refresh, use Back,
 open the command palette, resize the notebook, and inspect the report.
 Verify existing learner progress survives.
@@ -155,3 +156,7 @@ Cloudflare references:
 - https://developers.cloudflare.com/workers/static-assets/routing/single-page-application/
 - https://developers.cloudflare.com/workers/configuration/routing/
 - https://developers.cloudflare.com/workers/ci-cd/builds/
+
+## November 10 emergency rollback and routing regression
+
+An experimental version of this Worker (versions 1641–1649) was published while this work remained in a draft PR. Cloudflare canonicalized `/practice.html` to `/practice` (307), and the draft router sent `/practice` back to `/practice.html` (307), producing `ERR_TOO_MANY_REDIRECTS`. The Worker was rolled back to the last pre-router version **1640** (`43e87c1e-177c-44b5-bae0-8168d9da4a63`), restoring the existing Practice Center. The staged router now removes the `/practice` alias and loads the SPA HTML shell from `/case-review/` (canonical) instead of `/case-review/index.html`. Regression checks simulate the Cloudflare canonicalization sequence. **Never publish this draft routing change to production before PR tests, browser QA, and owner approval.** Also identify and stop any external tool redeploying the draft Worker in the meantime.
