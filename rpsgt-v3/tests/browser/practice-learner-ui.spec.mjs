@@ -89,9 +89,15 @@ test('a task-specific recommendation opens the intended Practice session',async(
 
 test('Practice completion recommends the next activity from this session, without auto-redirect',async({page})=>{
   await page.goto('practice.html');
+  await expect(page.locator('[data-practice-setup]')).toBeVisible();
+  // A single task avoids loading the entire bank for a completion-UI test.
+  await page.locator('[data-practice-domain]').selectOption('D3');
+  await page.locator('[data-practice-task]').selectOption('D3A');
   await page.locator('[data-practice-size]').selectOption('5');
   await page.locator('[data-start-practice]').click();
+  await expect(page.locator('[data-question-panel]')).toBeVisible();
   for(let index=0;index<5;index+=1){
+    await expect(page.locator('[data-question-number]')).toContainText('Question '+(index+1)+' of 5');
     await page.locator('[data-choice-index]').first().click();
     await expect(page.locator('[data-answer-feedback]')).toBeVisible();
     await page.locator('[data-next-question]').click();
