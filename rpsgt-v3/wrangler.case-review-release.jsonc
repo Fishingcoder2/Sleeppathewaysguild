@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  // RELEASE-ONLY: used by manually approved GitHub production workflow.\n  // Default wrangler.jsonc remains asset-only so accidental deploys do not enable the router.
+  // RELEASE-ONLY: used by manually approved GitHub production workflow.
+  // Default wrangler.jsonc remains asset-only so accidental deploys do not enable the router.
   "name": "rpsgt-v3-learning-center",
   "compatibility_date": "2026-04-13",
   "main": "workers/router.js",
@@ -29,7 +30,8 @@
       "package.json",
       "package-lock.json",
       "playwright.config.js",
-      "wrangler.jsonc",\n      "wrangler.case-review-release.jsonc",
+      "wrangler.jsonc",
+      "wrangler.case-review-release.jsonc",
       ".gitignore"
     ]
   }
