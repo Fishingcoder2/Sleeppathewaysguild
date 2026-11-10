@@ -75,3 +75,32 @@ test('ECG subject stays locked for the full focused Practice session', async ({ 
   await expect(page.locator('[data-question-number]')).toContainText('Question 5 of 5');
   await expect(shell).toHaveAttribute('data-question-subject-match','true');
 });
+
+
+test('a task-specific recommendation opens the intended Practice session',async({page})=>{
+  await page.goto('practice.html?task=D3A&start=1');
+  await expect(page.locator('[data-practice-shell]')).toBeVisible();
+  await expect(page.locator('[data-practice-task]')).toHaveValue('D3A');
+  await expect(page.locator('[data-question-task]')).toContainText('D3A');
+  await expect(page.locator('[data-question-panel]')).toBeVisible();
+});
+
+test('Practice completion recommends the next activity from this session, without auto-redirect',async({page})=>{
+  await page.goto('practice.html');
+  await page.locator('[data-practice-size]').selectOption('5');
+  await page.locator('[data-start-practice]').click();
+  for(let index=0;index<5;index+=1){
+    await page.locator('[data-choice-index]').first().click();
+    await expect(page.locator('[data-answer-feedback]')).toBeVisible();
+    await page.locator('[data-next-question]').click();
+  }
+  const completion=page.locator('[data-session-complete]');
+  await expect(completion).toBeVisible();
+  await expect(completion.locator('[data-recommendation-title]')).toBeVisible();
+  const saved=await page.evaluate(()=>window.RPSGTStorage.load());
+  const missed=saved.progress.history.filter(answer=>answer.correct===false).length;
+  const href=missed?'review.html?list=missed':'study.html#rpsgt-domain-map';
+  await expect(completion.locator('[data-recommendation-link]')).toHaveAttribute('href',href);
+  await expect(completion.locator('.completion-recommendation .btn.primary')).toHaveCount(1);
+  await expect(page).toHaveURL(/practice\.html$/);
+});
