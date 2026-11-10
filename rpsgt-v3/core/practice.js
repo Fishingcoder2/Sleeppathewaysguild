@@ -313,18 +313,13 @@
   function updateQuestionActions(question,response){
     const previous=$("[data-previous-question]");
     const next=$("[data-next-question]");
-    const compatibility=$("[data-submit-answer]");
     if(previous) previous.disabled=state.index===0;
-    if(compatibility){
-      compatibility.disabled=state.selected===null||Boolean(response);
-      compatibility.classList.add("hidden");
-    }
     if(next){
       next.classList.remove("hidden");
-      next.disabled=!response&&state.selected===null;
+      next.disabled=!response;
       next.textContent=response
         ?(state.index===state.session.length-1?"Finish practice":"Next question")
-        :"Next";
+        :"Next question";
     }
   }
 
@@ -386,10 +381,8 @@
       button.classList.toggle("selected",selected);
       button.setAttribute("aria-pressed",selected?"true":"false");
     });
-    const compatibility=$("[data-submit-answer]");
-    if(compatibility) compatibility.disabled=false;
-    const next=$("[data-next-question]");
-    if(next) next.disabled=false;
+    // The selected answer is graded at once; submitAnswer guards repeat taps.
+    submitAnswer();
   }
 
   function ensureBucket(parent,key){
@@ -489,12 +482,8 @@
   }
 
   function nextQuestion(){
-    if(!state.answered){
-      const compatibility=$("[data-submit-answer]");
-      if(compatibility&&!compatibility.disabled) compatibility.click();
-      else submitAnswer();
-      return;
-    }
+    // The Next control only advances after selecting an answer.
+    if(!state.answered) return;
     state.index+=1;
     if(state.index>=state.session.length) renderComplete(); else renderQuestion();
   }
@@ -560,7 +549,6 @@
       $("[data-practice-mode]").addEventListener("change",updateModeUi);
       $("[data-practice-domain]").addEventListener("change",refreshTasks);
       $("[data-start-practice]").addEventListener("click",startSession);
-      $("[data-submit-answer]").addEventListener("click",submitAnswer);
       $("[data-previous-question]").addEventListener("click",previousQuestion);
       $("[data-next-question]").addEventListener("click",nextQuestion);
       $all("[data-change-filters]").forEach(function(button){button.addEventListener("click",changeFilters);});
