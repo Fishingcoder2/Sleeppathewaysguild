@@ -7,6 +7,7 @@ on:
       - 'rpsgt-v3/workers/**'
       - 'rpsgt-v3/scripts/test-spa-router.mjs'
       - 'rpsgt-v3/wrangler.jsonc'
+      - 'rpsgt-v3/wrangler.case-review-release.jsonc'
       - 'rpsgt-v3/.assetsignore'
       - '.github/workflows/rpsgt-v3-case-review-react.yml'
   workflow_dispatch:
