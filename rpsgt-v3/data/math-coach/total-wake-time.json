@@ -49,7 +49,7 @@
   "guided": [
     {
       "id": "wake-guided-1",
-      "prompt": "TRT 480 min and TST 405 min. Find total wake time.",
+      "prompt": "TRT is 480 minutes and TST is 405 minutes. Calculate the total time scored as wake during the recording in minutes.",
       "answer": 75,
       "tolerance": 0.01,
       "unit": "minutes",
@@ -71,7 +71,7 @@
     },
     {
       "id": "wake-guided-retry",
-      "prompt": "Initial sleep latency 20 min and WASO 45 min. Find total wake time.",
+      "prompt": "Initial sleep latency is 20 minutes and WASO through lights on is 45 minutes. Calculate total wake time during the recording in minutes.",
       "answer": 65,
       "tolerance": 0.01,
       "unit": "minutes",
