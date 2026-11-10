@@ -86,4 +86,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: rpsgt-v3
-          command: deploy --config wrangler.jsonc
+          command: deploy --config wrangler.case-review-release.jsonc
