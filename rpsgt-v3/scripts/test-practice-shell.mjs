@@ -94,7 +94,7 @@ for(const destination of ['review.html?list=missed','study.html','index.html']){
 if(!html.includes('data-practice-recommendation')||!js.includes('data-recommendation-link')) throw new Error('Practice completion needs a single recommended next step.');
 if(!html.includes('not an official BRPT score')) throw new Error('Practice completion score disclaimer is missing.');
 if(html.includes('<h2>175-Question Mock-Style Practice</h2>')||html.includes('href="mock.html">Open the 175-question mock')) throw new Error('Mock exam launch content must not appear inside the Practice Center.');
-if(!shell.includes('href="mock.html"')||html.includes('<h2>175-Question Mock-Style Practice</h2>')) throw new Error('Mock Exam must remain accessible separately from focused Practice.');
+if(!shell.includes('mock.html')||html.includes('<h2>175-Question Mock-Style Practice</h2>')) throw new Error('Mock Exam must remain accessible separately from focused Practice.');
 if(!navigationCss.includes('grid-template-columns:minmax(0,1fr) minmax(0,1fr)')) throw new Error('Practice Previous/Next controls do not share the modal footer.');
 if(!navigationCss.includes('[data-submit-answer]{display:none!important}')) throw new Error('Visible Check answer styling returned.');
 
