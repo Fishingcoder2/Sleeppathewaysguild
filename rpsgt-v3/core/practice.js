@@ -133,7 +133,7 @@
     notice.className="mode-notice "+(quality?"quality":"learner");
     notice.innerHTML=quality
       ?"<strong>Quality-review pool:</strong> Only records marked <code>manualReviewRecommended</code> are included. Answers are shown for editorial inspection, but attempts do not change learner totals, missed questions, mastery, readiness, or reports."
-       :"<strong>Learner-practice pool:</strong> All original questions are available, including the 560 previously held for editorial review. Answers update your learner record.";
+       :"<strong>Learner-ready practice:</strong> Only eligible reviewed questions are used; held editorial items remain excluded. Answers update your learner record.";
   }
 
   function selectedModuleMetadata(){
@@ -470,6 +470,10 @@
     renderFeedback(question,response);
     updateQuestionActions(question,response);
     recordAnswer(question,isCorrect,selectedAnswer);
+    // Coach Bob and other listeners react to the actual one-tap grading event.
+    document.dispatchEvent(new CustomEvent("rpsgt:practice-answer",{
+      detail:{question,isCorrect,selectedAnswer}
+    }));
     if(window.RPSGTApp&&typeof window.RPSGTApp.playFeedbackSound==="function") window.RPSGTApp.playFeedbackSound(isCorrect?"correct":"incorrect");
     updateSessionStats();
   }
@@ -562,24 +566,6 @@
     setText("[data-module-total]",Number(state.manifest.meta.moduleCount||0).toLocaleString());
   }
 
-  function applyPracticeDeepLink(){
-    const params=new URLSearchParams(window.location.search);
-    const code=String(params.get("task")||"").toUpperCase();
-    if(!/^D[1-4][A-D]$/.test(code)) return;
-    const domain=$("[data-practice-domain]");
-    const task=$("[data-practice-task]");
-    const parent=code.slice(0,2);
-    if(!Array.from(domain.options).some(function(option){return option.value===parent;})) return;
-    domain.value=parent;
-    refreshTasks();
-    if(!Array.from(task.options).some(function(option){return option.value===code;})) return;
-    task.value=code;
-    const subject=params.get("subject");
-    const subjectPicker=$("[data-practice-subject]");
-    if(subject&&subjectPicker&&Array.from(subjectPicker.options).some(function(option){return option.value===subject;})) subjectPicker.value=subject;
-    if(params.get("start")==="1") startSession();
-  }
-
   async function init(){
     try{
       [state.manifest,state.blueprint]=await Promise.all([
@@ -601,7 +587,6 @@
       $("[data-start-practice]").addEventListener("click",startSession);
       $("[data-previous-question]").addEventListener("click",previousQuestion);
       $("[data-next-question]").addEventListener("click",nextQuestion);
-      applyPracticeDeepLink();
       $all("[data-change-filters]").forEach(function(button){button.addEventListener("click",changeFilters);});
       $all("[data-restart-session]").forEach(function(button){button.addEventListener("click",startSession);});
     }catch(error){showLoadError(error);}
