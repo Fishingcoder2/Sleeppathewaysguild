@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - 'rpsgt-v3/ui-next/**'
+      - 'rpsgt-v3/workers/**'
+      - 'rpsgt-v3/scripts/test-spa-router.mjs'
+      - 'rpsgt-v3/wrangler.jsonc'
+      - 'rpsgt-v3/.assetsignore'
       - '.github/workflows/rpsgt-v3-case-review-react.yml'
   workflow_dispatch:
 
@@ -22,10 +26,17 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Typecheck and build the isolated case-review workspace
         run: npm run build
+      - name: Check scoped Worker SPA routes and legacy 404 behavior
+        run: node ../scripts/test-spa-router.mjs
+      - name: Check existing Practice and Review shell contracts
+        run: |
+          node ../scripts/test-practice-shell.mjs
+          node ../scripts/test-review-system.mjs
       - name: Check static artifact was generated
         run: |
           test -f ../case-review/index.html
           test -d ../case-review/assets
+          test -f ../.assetsignore
       - uses: actions/upload-artifact@v4
         with:
           name: rpsgt-v3-case-review-preview
