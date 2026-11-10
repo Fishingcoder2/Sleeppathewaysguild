@@ -74,4 +74,17 @@ test('Math Coach flags wrong answers and offers a retry with visible reasoning',
   // Incorrect attempts stay on the same problem so the learner can retry.
   await page.locator('[data-math-guided-form] button[type="submit"]').click();
   await expect(page.locator('.math-feedback.correct')).toContainText('Verified calculation');
+  await page.locator('[data-math-continue-independent]').click();
+  const form=page.locator('[data-math-set-form="independent"]');
+  await expect(form.locator('[data-math-set-navigation]')).toBeVisible();
+  for(let index=0;index<skill.independent.length;index+=1){
+    await form.locator('input[name="'+skill.independent[index].id+'"]').fill('0');
+    if(index<skill.independent.length-1) await form.locator('[data-math-set-next]').click();
+  }
+  await form.locator('button[type="submit"]').click();
+  await expect(page.locator('[data-math-retry-set="independent"]')).toBeVisible();
+  await page.locator('[data-math-retry-set="independent"]').click();
+  const retryForm=page.locator('[data-math-set-form="independent"]');
+  await expect(retryForm.locator('[data-math-set-count]')).toContainText('Question 1 of '+skill.independent.length);
+  await expect(retryForm.locator('.math-set-question').first()).toBeVisible();
 });
