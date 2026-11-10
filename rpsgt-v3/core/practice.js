@@ -485,7 +485,12 @@
     // The Next control only advances after selecting an answer.
     if(!state.answered) return;
     state.index+=1;
-    if(state.index>=state.session.length) renderComplete(); else renderQuestion();
+    if(state.index>=state.session.length) renderComplete();
+    else{
+      renderQuestion();
+      const shell=$("[data-practice-shell]");
+      if(shell&&typeof shell.scrollTo==="function") shell.scrollTo({top:0,behavior:window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    }
   }
 
   function updateSessionStats(){
@@ -503,7 +508,25 @@
     $("[data-complete-policy]").textContent=state.mode==="quality"
       ?"This quality-review session was not added to learner progress, missed questions, mastery, readiness, or reports."
       :"These answers were recorded only in the new RPSGT v3 learner record.";
-    if(typeof complete.focus==="function") complete.focus({preventScroll:false});
+    const recommendation=$("[data-practice-recommendation]");
+    if(recommendation){
+      const missed=Array.from(state.responses.values()).filter(function(response){return !response.isCorrect;}).length;
+      const quality=state.mode==="quality";
+      const action=quality
+        ?{title:"Choose your next practice activity",detail:"Quality-review attempts are excluded from learner results. Return to Practice to choose your next activity.",href:"practice.html",label:"Open Practice Center"}
+        :missed>0
+          ?{title:"Review the questions you missed",detail:"You missed "+missed+" question"+(missed===1?"":"s")+" in this session. Review your saved missed items and their explanations before continuing.",href:"review.html?list=missed",label:"Review missed questions"}
+          :{title:"Choose your next RPSGT task",detail:"You answered every question correctly in this session. Continue through the Guided Study task map or explore another domain.",href:"study.html#rpsgt-domain-map",label:"Continue Guided Study"};
+      recommendation.querySelector("[data-recommendation-title]").textContent=action.title;
+      recommendation.querySelector("[data-recommendation-detail]").textContent=action.detail;
+      const link=recommendation.querySelector("[data-recommendation-link]");
+      link.href=action.href;
+      link.textContent=action.label;
+    }
+    // The completion view is already on screen; focus without a disorienting jump.
+    if(typeof complete.focus==="function") complete.focus({preventScroll:true});
+    const motion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+    complete.scrollIntoView({block:"start",behavior:motion});
   }
 
   function changeFilters(){
@@ -530,6 +553,24 @@
     setText("[data-module-total]",Number(state.manifest.meta.moduleCount||0).toLocaleString());
   }
 
+  function applyPracticeDeepLink(){
+    const params=new URLSearchParams(window.location.search);
+    const code=String(params.get("task")||"").toUpperCase();
+    if(!/^D[1-4][A-D]$/.test(code)) return;
+    const domain=$("[data-practice-domain]");
+    const task=$("[data-practice-task]");
+    const parent=code.slice(0,2);
+    if(!Array.from(domain.options).some(function(option){return option.value===parent;})) return;
+    domain.value=parent;
+    refreshTasks();
+    if(!Array.from(task.options).some(function(option){return option.value===code;})) return;
+    task.value=code;
+    const subject=params.get("subject");
+    const subjectPicker=$("[data-practice-subject]");
+    if(subject&&subjectPicker&&Array.from(subjectPicker.options).some(function(option){return option.value===subject;})) subjectPicker.value=subject;
+    if(params.get("start")==="1") startSession();
+  }
+
   async function init(){
     try{
       [state.manifest,state.blueprint]=await Promise.all([
@@ -551,6 +592,7 @@
       $("[data-start-practice]").addEventListener("click",startSession);
       $("[data-previous-question]").addEventListener("click",previousQuestion);
       $("[data-next-question]").addEventListener("click",nextQuestion);
+      applyPracticeDeepLink();
       $all("[data-change-filters]").forEach(function(button){button.addEventListener("click",changeFilters);});
       $all("[data-restart-session]").forEach(function(button){button.addEventListener("click",startSession);});
     }catch(error){showLoadError(error);}
