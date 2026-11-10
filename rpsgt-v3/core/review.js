@@ -129,6 +129,20 @@
     $("[data-review-complete]").classList.remove("hidden");
     $("[data-complete-score]").textContent=state.correct+" / "+state.answeredCount;
     $("[data-complete-percent]").textContent=(state.answeredCount?Math.round(state.correct/state.answeredCount*100):0)+"%";
+    const saved=window.RPSGTStorage.load();
+    const outstanding=Array.isArray(saved.review&&saved.review.missedIds)?saved.review.missedIds.length:0;
+    const next=outstanding
+      ?{title:"Keep working through missed questions",detail:"Your saved review list has "+outstanding+" question"+(outstanding===1?"":"s")+" to revisit. Continue reinforcing the explanations.",href:"review.html?list=missed",label:"Review remaining misses"}
+      :{title:"Move to your next study task",detail:"Your missed-question list is clear. Choose the next RPSGT task to learn or practice.",href:"study.html#rpsgt-domain-map",label:"Open Guided Study map"};
+    $("[data-review-next-title]").textContent=next.title;
+    $("[data-review-next-detail]").textContent=next.detail;
+    const link=$("[data-review-next-link]");
+    link.href=next.href;
+    link.textContent=next.label;
+    const complete=$("[data-review-complete]");
+    complete.focus({preventScroll:true});
+    const motion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+    complete.scrollIntoView({block:"start",behavior:motion});
   }
   function renderEmpty(){
     $("[data-review-shell]").classList.add("hidden");$("[data-review-empty]").classList.remove("hidden");const copy=state.listType==="mastered"?"No mastered questions are stored yet. Correctly answer a missed question to move it here.":"No missed questions are stored. Continue learner practice to build a focused review list.";$("[data-empty-message]").textContent=copy;
