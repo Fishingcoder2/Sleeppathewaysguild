@@ -36,3 +36,11 @@
  .spg-quick-question-footer button{min-width:98px;padding:8px}
 }
 @media(prefers-reduced-motion:reduce){.spg-quick-question-backdrop *{scroll-behavior:auto!important}}
+
+/* Completion handoff is fully visible; no disclosure arrow is required. */
+.spg-quick-set-next{margin:16px auto 18px;padding:17px 18px;max-width:540px;text-align:left;background:#eef8fb;border:1px solid #a2c8d7;border-radius:14px}
+.spg-quick-set-next .eyebrow{display:block;margin-bottom:6px}
+.spg-quick-set-next p{margin:0 0 12px;line-height:1.5;color:#35556c}
+.spg-quick-set-next .btn.primary{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:48px}
+.spg-quick-set-results .actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.spg-quick-set-results [data-quick-set-results-title]:focus{outline:none}
