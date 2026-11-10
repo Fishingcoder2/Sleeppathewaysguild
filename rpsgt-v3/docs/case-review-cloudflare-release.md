@@ -10,8 +10,9 @@ The live Worker is `rpsgt-v3-learning-center` on the **existing** custom domain
 The new React app is a **sub-application** built from `rpsgt-v3/ui-next/`
 into `rpsgt-v3/case-review/`. Do not change the Worker asset directory to
 `./dist` until the *entire* V3 site has migrated and all legacy pages/assets
-have been explicitly included in the build. The current production config is
-`rpsgt-v3/wrangler.jsonc`, not an additional `wrangler.toml`.
+have been explicitly included in the build. The default `rpsgt-v3/wrangler.jsonc` is intentionally **asset-only**.
+The experimental Worker router is in the separate, explicitly selected
+`rpsgt-v3/wrangler.case-review-release.jsonc`. No `wrangler.toml` is needed.
 
 Cloudflare already routes the custom domain to this Worker. Do **not** add a
 second `webapp.sleeppathwaysguild.com/*` route on top of that Custom Domain:
@@ -41,8 +42,8 @@ regression checks live in `rpsgt-v3/scripts/test-spa-router.mjs`.
 
 ## Equivalent Wrangler TOML (illustrative — DO NOT add alongside JSONC)
 
-The current JSONC config is authoritative. Equivalent required settings
-for the existing *hybrid* Worker would be:
+The **release-specific** JSONC is authoritative for the future hybrid Worker.
+The equivalent targeted settings would be:
 
 ```toml
 name = "rpsgt-v3-learning-center"
@@ -52,7 +53,7 @@ main = "workers/router.js"
 [assets]
 directory = "."
 binding = "ASSETS"
-run_worker_first = ["/case-review", "/case-review/*", "/notebook", "/notebook/", "/practice"]
+run_worker_first = ["/case-review", "/case-review/*", "/notebook", "/notebook/"]
 ```
 
 Do not enable global `not_found_handling = "single-page-application"` here.
@@ -82,7 +83,8 @@ A successful build creates `rpsgt-v3/case-review/index.html` and
 TypeScript sources, internal test suites, and Worker code from accidentally
 being served as static files.
 
-Pull requests automatically run `Validate RPSGT V3 React Case Review`.
+Pull requests automatically run `Validate RPSGT V3 React Case Review`,
+including 12 Playwright tests across desktop, tablet, and mobile.
 The release must not ship before desktop/tablet/phone browser UX and
 clinical content review have also passed. The app remains `noindex,nofollow`
 during staged rollout.
@@ -114,7 +116,7 @@ same build for the final Worker deployment.
 Manual Wrangler equivalent **after review**, from `rpsgt-v3/`:
 
 ```sh
-npx wrangler deploy --config wrangler.jsonc
+npx wrangler deploy --config wrangler.case-review-release.jsonc
 ```
 
 **Do not deploy from `ui-next/` using only `./dist`**, because that would
@@ -135,7 +137,7 @@ curl -I https://webapp.sleeppathwaysguild.com/case-review/assets/missing-chunk.j
 ```
 
 Expected: legacy URLs and both case links are 200; missing JS remains 404.
-Also test `/notebook` and `/practice` notebook aliases (307) and verify query
+Also test `/notebook` aliases (307) and verify query
 strings survive. These temporary redirects avoid permanently binding users to legacy routes during the future React migration. In a browser, navigate to a case, refresh, use Back,
 open the command palette, resize the notebook, and inspect the report.
 Verify existing learner progress survives.
