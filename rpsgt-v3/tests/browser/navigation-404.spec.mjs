@@ -8,7 +8,8 @@ const pages=[
   ['Practice Center','practice.html'],
   ['Skills Labs','labs.html'],
   ['Reports','reports.html'],
-  ['Reference Center','sources-disclosures.html']
+  ['Reference Center','sources-disclosures.html'],
+  ['All Learning Tools','learning-tools.html']
 ];
 test('every primary route renders with no same-origin 404 or page error',async({page})=>{
  const failures=[],errors=[];
@@ -74,4 +75,19 @@ test('Settings works as a button and References loads the local shared registry'
  await expect(page.locator('h1').first()).toBeVisible();
  await expect.poll(()=>page.evaluate(()=>Boolean(document.querySelector('script[src="assets/guild-resource-commerce-registry.js"]')))).toBe(true);
  expect(failed).toEqual([]);
+});
+
+
+test('All Learning Tools is reachable from dashboard without opening a dropdown',async({page})=>{
+  await page.goto('index.html');
+  const link=page.locator('main a[href="learning-tools.html"]');
+  await expect(link.first()).toBeVisible();
+  await link.first().click();
+  await expect(page).toHaveURL(/learning-tools\.html$/);
+  await expect(page.locator('main details')).toHaveCount(0);
+  for(const code of ['D1','D2','D3','D4']){
+    await expect(page.locator('main a[href="study.html#'+code+'"]')).toBeVisible();
+  }
+  await expect(page.locator('main a[href="readiness.html"]')).toBeVisible();
+  await expect(page.locator('main a[href="mock.html"]')).toBeVisible();
 });

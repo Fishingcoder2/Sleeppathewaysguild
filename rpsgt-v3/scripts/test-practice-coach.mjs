@@ -15,7 +15,7 @@ if(typeof coach.priorPracticeMisses!=='function') throw new Error('Practice Coac
 if(source.includes('MutationObserver')) throw new Error('Practice Coach must remain event-driven and must not use MutationObserver.');
 for(const token of [
   "addEventListener('rpsgt:practice-question'",
-  "closest('[data-submit-answer]')",
+  "addEventListener('rpsgt:practice-answer'",
   'RPSGTCoachBobEngine',
   'RPSGTStudyResourceCatalog',
   'resources.resolveQuestion(question)',

@@ -133,7 +133,7 @@
     notice.className="mode-notice "+(quality?"quality":"learner");
     notice.innerHTML=quality
       ?"<strong>Quality-review pool:</strong> Only records marked <code>manualReviewRecommended</code> are included. Answers are shown for editorial inspection, but attempts do not change learner totals, missed questions, mastery, readiness, or reports."
-       :"<strong>Learner-practice pool:</strong> All original questions are available, including the 560 previously held for editorial review. Answers update your learner record.";
+       :"<strong>Learner-ready practice:</strong> Only eligible reviewed questions are used; held editorial items remain excluded. Answers update your learner record.";
   }
 
   function selectedModuleMetadata(){
@@ -313,18 +313,13 @@
   function updateQuestionActions(question,response){
     const previous=$("[data-previous-question]");
     const next=$("[data-next-question]");
-    const compatibility=$("[data-submit-answer]");
     if(previous) previous.disabled=state.index===0;
-    if(compatibility){
-      compatibility.disabled=state.selected===null||Boolean(response);
-      compatibility.classList.add("hidden");
-    }
     if(next){
       next.classList.remove("hidden");
-      next.disabled=!response&&state.selected===null;
+      next.disabled=!response;
       next.textContent=response
         ?(state.index===state.session.length-1?"Finish practice":"Next question")
-        :"Next";
+        :"Next question";
     }
   }
 
@@ -386,10 +381,8 @@
       button.classList.toggle("selected",selected);
       button.setAttribute("aria-pressed",selected?"true":"false");
     });
-    const compatibility=$("[data-submit-answer]");
-    if(compatibility) compatibility.disabled=false;
-    const next=$("[data-next-question]");
-    if(next) next.disabled=false;
+    // The selected answer is graded at once; submitAnswer guards repeat taps.
+    submitAnswer();
   }
 
   function ensureBucket(parent,key){
@@ -477,6 +470,10 @@
     renderFeedback(question,response);
     updateQuestionActions(question,response);
     recordAnswer(question,isCorrect,selectedAnswer);
+    // Coach Bob and other listeners react to the actual one-tap grading event.
+    document.dispatchEvent(new CustomEvent("rpsgt:practice-answer",{
+      detail:{question,isCorrect,selectedAnswer}
+    }));
     if(window.RPSGTApp&&typeof window.RPSGTApp.playFeedbackSound==="function") window.RPSGTApp.playFeedbackSound(isCorrect?"correct":"incorrect");
     updateSessionStats();
   }
@@ -489,14 +486,16 @@
   }
 
   function nextQuestion(){
-    if(!state.answered){
-      const compatibility=$("[data-submit-answer]");
-      if(compatibility&&!compatibility.disabled) compatibility.click();
-      else submitAnswer();
-      return;
-    }
+    // The Next control only advances after selecting an answer.
+    if(!state.answered) return;
     state.index+=1;
-    if(state.index>=state.session.length) renderComplete(); else renderQuestion();
+    if(state.index>=state.session.length) renderComplete();
+    else{
+      renderQuestion();
+      const shell=$("[data-practice-shell]");
+      if(shell&&typeof shell.scrollTo==="function") shell.scrollTo({top:0,behavior:window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+      $("[data-question-prompt]")?.focus({preventScroll:true});
+    }
   }
 
   function updateSessionStats(){
@@ -514,7 +513,33 @@
     $("[data-complete-policy]").textContent=state.mode==="quality"
       ?"This quality-review session was not added to learner progress, missed questions, mastery, readiness, or reports."
       :"These answers were recorded only in the new RPSGT v3 learner record.";
-    if(typeof complete.focus==="function") complete.focus({preventScroll:false});
+    const recommendation=$("[data-practice-recommendation]");
+    if(recommendation){
+      const missed=Array.from(state.responses.values()).filter(function(response){return !response.isCorrect;}).length;
+      const quality=state.mode==="quality";
+      const taskCodes=Array.from(new Set(state.session.map(function(question){return question.taskCode;}).filter(Boolean)));
+      const eligibleTasks=taskOrder.filter(function(code){
+        return code!=="D2A/D2C"&&(state.manifest.modules||[]).some(function(meta){return meta.taskCode===code;});
+      });
+      const position=taskCodes.length===1?eligibleTasks.indexOf(taskCodes[0]):-1;
+      const nextCode=position>=0?eligibleTasks[position+1]:null;
+      const action=quality
+        ?{title:"Choose your next practice activity",detail:"Quality-review attempts are excluded from learner results. Return to Practice to choose your next activity.",href:"practice.html",label:"Open Practice Center"}
+        :missed>0
+          ?{title:"Review the questions you missed",detail:"You missed "+missed+" question"+(missed===1?"":"s")+" in this session. Review your saved missed items and their explanations before continuing.",href:"review.html?list=missed",label:"Review missed questions"}
+          :nextCode
+            ?{title:"Continue with "+nextCode,detail:"You completed this focused session without misses. The next task in blueprint order is "+taskLabel(nextCode)+".",href:"study.html#"+nextCode,label:"Study "+nextCode+" next"}
+            :{title:"Choose your next study target",detail:"You completed this practice session without misses. Open Reports to choose a new area from your recorded progress.",href:"reports.html",label:"See recommended study targets"};
+      recommendation.querySelector("[data-recommendation-title]").textContent=action.title;
+      recommendation.querySelector("[data-recommendation-detail]").textContent=action.detail;
+      const link=recommendation.querySelector("[data-recommendation-link]");
+      link.href=action.href;
+      link.textContent=action.label;
+    }
+    // The completion view is already on screen; focus without a disorienting jump.
+    if(typeof complete.focus==="function") complete.focus({preventScroll:true});
+    const motion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+    complete.scrollIntoView({block:"start",behavior:motion});
   }
 
   function changeFilters(){
@@ -560,7 +585,6 @@
       $("[data-practice-mode]").addEventListener("change",updateModeUi);
       $("[data-practice-domain]").addEventListener("change",refreshTasks);
       $("[data-start-practice]").addEventListener("click",startSession);
-      $("[data-submit-answer]").addEventListener("click",submitAnswer);
       $("[data-previous-question]").addEventListener("click",previousQuestion);
       $("[data-next-question]").addEventListener("click",nextQuestion);
       $all("[data-change-filters]").forEach(function(button){button.addEventListener("click",changeFilters);});

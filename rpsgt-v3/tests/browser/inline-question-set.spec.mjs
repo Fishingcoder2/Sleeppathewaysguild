@@ -24,12 +24,14 @@ test('Related lab questions open in a modal, stay in the lab, and count toward P
   expect(taskContext).toMatch(/D2A|D2B|D3B/);
   for(let i=0;i<5;i++){
     await dialog.locator('[data-quick-set-option]').first().click();
-    await dialog.locator('[data-quick-set-next]').click();
     await expect(dialog.locator('.spg-quick-set-feedback')).toBeVisible();
     await expect(dialog.locator('.spg-quick-set-feedback')).toContainText('Correct answer:');
     await dialog.locator('[data-quick-set-next]').click();
   }
   await expect(dialog.locator('.spg-quick-set-results')).toBeVisible();
+  await expect(dialog.locator('[data-quick-set-recommendation-link]')).toBeVisible();
+  const recommended=await dialog.locator('[data-quick-set-recommendation-link]').getAttribute('href');
+  expect(['review.html?list=missed','study.html#rpsgt-domain-map']).toContain(recommended);
   const saved=await page.evaluate(()=>window.RPSGTStorage.load());
   expect(saved.progress.answered).toBe(6);
   expect(saved.progress.history.filter(record=>record.source==='v3-inline-question-set')).toHaveLength(5);

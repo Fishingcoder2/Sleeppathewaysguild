@@ -25,9 +25,10 @@ if(!reviewCss.includes("[data-review-shell].is-complete [data-question-panel]"))
 if(!js.includes('shell.classList.add("is-complete")')||!js.includes('shell.classList.remove("is-complete")')) throw new Error("Review completion view state must be explicit and reversible.");
 if(!html.includes("assets/practice-navigation.css")) throw new Error("review.html does not load the unified practice-navigation styles");
 if(!js.includes('v3-review-missed')||!js.includes('v3-review-mastered')) throw new Error("review history sources are missing");
-for(const token of ["function previousQuestion","function forward","Check answer","Next question"]){
+for(const token of ["function previousQuestion","function forward","function submitAnswer","Next question"]){
   if(!js.includes(token)) throw new Error(`Unified review navigation is missing ${token}`);
 }
+if(!js.includes("submitAnswer();")) throw new Error("Review selection must grade immediately.");
 if(!js.includes("manualReviewRecommended")) throw new Error("manual-review exclusion is missing");
 if(!js.includes("saved.review.missedIds=removeValue")||!js.includes("saved.review.masteredIds=addUnique")) throw new Error("missed-to-mastered transition is missing");
 if(!js.includes("saved.review.missedIds=addUnique")||!js.includes("saved.review.masteredIds=removeValue")) throw new Error("mastered-to-missed transition is missing");

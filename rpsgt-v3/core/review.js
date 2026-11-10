@@ -87,7 +87,7 @@
   function updateNavigation(question,response){
     const previous=$("[data-previous-question]"),forward=$("[data-review-forward]");if(!previous||!forward)return;
     previous.disabled=state.index<=0;forward.disabled=!response&&!state.selections.has(questionKey(question));
-    forward.textContent=response?(state.index===state.questions.length-1?"View review result":"Next question"):"Check answer";
+    forward.textContent=response?(state.index===state.questions.length-1?"View review result":"Next question"):"Next question";
   }
   function renderQuestion(){
     const question=state.questions[state.index];if(!question){renderComplete();return;}
@@ -101,7 +101,9 @@
   }
   function selectChoice(index){
     const question=state.questions[state.index],key=questionKey(question);if(state.responses.has(key))return;state.selected=index;state.selections.set(key,index);
-    $all("[data-choice-index]").forEach(button=>{const selected=Number(button.dataset.choiceIndex)===index;button.classList.toggle("selected",selected);button.setAttribute("aria-pressed",selected?"true":"false");});updateNavigation(question,null);
+    $all("[data-choice-index]").forEach(button=>{const selected=Number(button.dataset.choiceIndex)===index;button.classList.toggle("selected",selected);button.setAttribute("aria-pressed",selected?"true":"false");});
+    // A single selection grades the item and updates missed/mastered status once.
+    submitAnswer();
   }
 
   function ensureBucket(parent,key){if(!parent[key]||typeof parent[key]!=="object") parent[key]={answered:0,correct:0};parent[key].answered=Number(parent[key].answered||0);parent[key].correct=Number(parent[key].correct||0);return parent[key];}
@@ -118,8 +120,15 @@
     const selectedIndex=state.selections.get(key),selectedAnswer=question.options[selectedIndex],isCorrect=selectedAnswer===question.answer,response={selectedIndex,selectedAnswer,isCorrect};state.responses.set(key,response);state.answeredCount+=1;if(isCorrect)state.correct+=1;
     recordAnswer(question,isCorrect,selectedAnswer);renderCounts();renderQuestion();
   }
-  function previousQuestion(){if(state.index<=0)return;state.index-=1;renderQuestion();}
-  function forward(){const question=state.questions[state.index],key=questionKey(question);if(!state.responses.has(key)){submitAnswer();return;}state.index+=1;state.index>=state.questions.length?renderComplete():renderQuestion();}
+  function focusQuestion(){
+    const shell=$("[data-review-shell]");
+    const prompt=$("[data-question-prompt]");
+    const behavior=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+    if(shell&&typeof shell.scrollTo==="function") shell.scrollTo({top:0,behavior});
+    if(prompt) prompt.focus({preventScroll:true});
+  }
+  function previousQuestion(){if(state.index<=0)return;state.index-=1;renderQuestion();focusQuestion();}
+  function forward(){const question=state.questions[state.index],key=questionKey(question);if(!state.responses.has(key))return;state.index+=1;if(state.index>=state.questions.length)renderComplete();else{renderQuestion();focusQuestion();}}
   function renderComplete(){
     const shell=$("[data-review-shell]");
     $("[data-question-panel]").classList.add("hidden");
@@ -127,6 +136,20 @@
     $("[data-review-complete]").classList.remove("hidden");
     $("[data-complete-score]").textContent=state.correct+" / "+state.answeredCount;
     $("[data-complete-percent]").textContent=(state.answeredCount?Math.round(state.correct/state.answeredCount*100):0)+"%";
+    const saved=window.RPSGTStorage.load();
+    const outstanding=Array.isArray(saved.review&&saved.review.missedIds)?saved.review.missedIds.length:0;
+    const next=outstanding
+      ?{title:"Keep working through missed questions",detail:"Your saved review list has "+outstanding+" question"+(outstanding===1?"":"s")+" to revisit. Continue reinforcing the explanations.",href:"review.html?list=missed",label:"Review remaining misses"}
+      :{title:"Move to your next study task",detail:"Your missed-question list is clear. Choose the next RPSGT task to learn or practice.",href:"study.html#rpsgt-domain-map",label:"Open Guided Study map"};
+    $("[data-review-next-title]").textContent=next.title;
+    $("[data-review-next-detail]").textContent=next.detail;
+    const link=$("[data-review-next-link]");
+    link.href=next.href;
+    link.textContent=next.label;
+    const complete=$("[data-review-complete]");
+    complete.focus({preventScroll:true});
+    const motion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+    complete.scrollIntoView({block:"start",behavior:motion});
   }
   function renderEmpty(){
     $("[data-review-shell]").classList.add("hidden");$("[data-review-empty]").classList.remove("hidden");const copy=state.listType==="mastered"?"No mastered questions are stored yet. Correctly answer a missed question to move it here.":"No missed questions are stored. Continue learner practice to build a focused review list.";$("[data-empty-message]").textContent=copy;

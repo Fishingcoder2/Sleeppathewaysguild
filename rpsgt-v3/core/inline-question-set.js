@@ -103,12 +103,12 @@
     if(state.overlay)return;
     const overlay=document.createElement('div');
     overlay.className='spg-quick-question-backdrop';overlay.hidden=true;
-    overlay.innerHTML='<section class="spg-quick-question-dialog" role="dialog" aria-modal="true" aria-labelledby="spg-quick-question-title" tabindex="-1"><header class="spg-quick-question-header"><div><span class="eyebrow">Guided question set</span><h2 id="spg-quick-question-title">Related practice questions</h2></div><button type="button" data-quick-set-close aria-label="Close question set">✕</button></header><div class="spg-quick-question-body" data-quick-set-body aria-live="polite"></div><footer class="spg-quick-question-footer"><button type="button" class="btn secondary" data-quick-set-previous>Previous</button><span data-quick-set-counter></span><button type="button" class="btn primary" data-quick-set-next>Check answer</button></footer></section>';
+    overlay.innerHTML='<section class="spg-quick-question-dialog" role="dialog" aria-modal="true" aria-labelledby="spg-quick-question-title" tabindex="-1"><header class="spg-quick-question-header"><div><span class="eyebrow">Guided question set</span><h2 id="spg-quick-question-title">Related practice questions</h2></div><button type="button" data-quick-set-close aria-label="Close question set">✕</button></header><div class="spg-quick-question-body" data-quick-set-body aria-live="polite"></div><footer class="spg-quick-question-footer"><button type="button" class="btn secondary" data-quick-set-previous>Previous</button><span data-quick-set-counter></span><button type="button" class="btn primary" data-quick-set-next>Next question</button></footer></section>';
     document.body.appendChild(overlay);
     state.overlay=overlay;state.card=overlay.querySelector('.spg-quick-question-dialog');
     overlay.addEventListener('click',event=>{
       if(event.target===overlay){close();return;}
-      if(event.target.closest('[data-quick-set-close]')){close();return;}
+      if(event.target.closest('[data-quick-set-close], [data-quick-set-return]')){close();return;}
       const select=event.target.closest('[data-quick-set-option]');
       if(select){selectAnswer(Number(select.dataset.quickSetOption));return;}
       if(event.target.closest('[data-quick-set-next]')){next();return;}
@@ -164,6 +164,9 @@
     const question=state.questions[state.index];
     if(!question||state.answers.has(String(question.id))||index<0||index>=question.options.length)return;
     state.selected=index;
+    // Immediately score this question once; Next only advances.
+    state.answers.set(String(question.id),index);
+    record(question,index);
     render();
   }
   function record(question,selected){
@@ -197,12 +200,7 @@
     const question=state.questions[state.index];
     if(!question){close();return;}
     const id=String(question.id);
-    if(!state.answers.has(id)){
-      if(!Number.isInteger(state.selected))return;
-      state.answers.set(id,state.selected);
-      record(question,state.selected);
-      render();return;
-    }
+    if(!state.answers.has(id))return;
     if(state.index===state.questions.length-1){state.index=state.questions.length;render();return;}
     state.index++;state.selected=null;render();
   }
@@ -214,8 +212,14 @@
     previous.hidden=false;nextButton.hidden=false;
     if(state.index>=state.questions.length){
       const correct=state.questions.filter(q=>state.answers.get(String(q.id))!==undefined&&q.options[state.answers.get(String(q.id))]===q.answer).length;
-      body.innerHTML='<div class="spg-quick-set-results"><h3>Question set complete</h3><p class="spg-quick-set-score">'+correct+' / '+state.questions.length+' correct · '+Math.round(100*correct/state.questions.length)+'%</p><p>Your answers have been added to Practice progress and Missed Question Review.</p><button class="btn secondary" type="button" data-quick-set-restart>Another question set</button></div>';
+      const missed=state.questions.length-correct;
+      const next=missed
+        ?{href:'review.html?list=missed',label:'Review missed questions',detail:'You missed '+missed+' question'+(missed===1?'':'s')+' in this set. Work through your saved missed-question explanations next.'}
+        :{href:'study.html#rpsgt-domain-map',label:'Choose next study task',detail:'You answered every item correctly. Choose a new RPSGT task to continue learning.'};
+      body.innerHTML='<div class="spg-quick-set-results"><h3 tabindex="-1" data-quick-set-results-title>Question set complete</h3><p class="spg-quick-set-score">'+correct+' / '+state.questions.length+' correct · '+Math.round(100*correct/state.questions.length)+'%</p><p>Your answers have been added to Practice progress and Missed Question Review.</p><section class="spg-quick-set-next" aria-label="Recommended next activity"><span class="eyebrow">Recommended next</span><p>'+esc(next.detail)+'</p><a class="btn primary" data-quick-set-recommendation-link href="'+esc(next.href)+'">'+esc(next.label)+'</a></section><div class="actions"><button class="btn secondary" type="button" data-quick-set-return>Return to this lesson or lab</button><button class="btn secondary" type="button" data-quick-set-restart>Another question set</button></div></div>';
       counter.textContent='Completed';previous.hidden=true;nextButton.hidden=true;
+      body.scrollTop=0;
+      body.querySelector('[data-quick-set-results-title]')?.focus({preventScroll:true});
       return;
     }
     const question=state.questions[state.index],saved=state.answers.get(String(question.id)),graded=saved!==undefined;
@@ -223,8 +227,8 @@
     const correct=graded&&question.options[saved]===question.answer;
     const rationale=String(question.rationale||'Review the relevant textbook or current guideline for this task.');
     counter.textContent=(state.index+1)+' / '+state.questions.length;
-    nextButton.textContent=graded?(state.index===state.questions.length-1?'View results':'Next question'):'Check answer';
-    nextButton.disabled=!graded&&!Number.isInteger(state.selected);
+    nextButton.textContent=graded?(state.index===state.questions.length-1?'View results':'Next question'):'Next question';
+    nextButton.disabled=!graded;
     previous.disabled=state.index===0;
     body.innerHTML='<div class="spg-quick-set-context">'+esc(state.title)+' · Question '+(state.index+1)+' of '+state.questions.length+'</div>'+
       '<p class="spg-quick-set-prompt">'+esc(question.prompt)+'</p><fieldset class="spg-quick-set-options"><legend class="sr-only">Choose one answer</legend>'+

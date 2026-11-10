@@ -167,7 +167,7 @@ test('migration export remains read-only and does not create v3 storage', async 
   expect(state.v3).toBeNull();
 });
 
-test('Practice uses Next to check an answer and supports Previous review', async ({ page }) => {
+test('Practice checks an answer on selection and supports Previous review', async ({ page }) => {
   await page.goto('practice.html');
   await expect(page.locator('[data-practice-setup]')).toBeVisible();
   await page.locator('[data-practice-size]').selectOption('5');
@@ -181,7 +181,6 @@ test('Practice uses Next to check an answer and supports Previous review', async
   await options.first().click();
   const next=page.locator('[data-next-question]');
   await expect(next).toBeEnabled();
-  await next.click();
   await expect(page.locator('[data-answer-feedback]')).toBeVisible();
   await expect(page.locator('[data-answer-feedback]')).toContainText('Answer & reasoning');
   await expect(next).toHaveText('Next question');

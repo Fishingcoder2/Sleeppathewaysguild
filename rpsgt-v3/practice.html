@@ -52,14 +52,14 @@
     <label>Difficulty<select data-practice-difficulty><option value="all" selected>All difficulty levels</option><option value="easy">Easy / Foundations</option><option value="intermediate">Intermediate</option><option value="hard">Hard / Advanced</option><option value="exam">Exam-tagged (separate)</option></select></label>
     <label>Session size<select data-practice-size><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="25">25 questions</option><option value="50">50 questions</option><option value="100">100 questions</option><option value="all">All filtered questions</option></select></label>
   </div>
-  <div class="mode-notice learner" data-mode-notice><strong>Full original bank:</strong> All 2,920 original questions, including 560 previously held for editorial review, are available in learner practice. Editorial review remains separate.</div>
+  <div class="mode-notice learner" data-mode-notice><strong>Learner-ready practice:</strong> Questions are drawn from the approved learner-eligible bank. Items still held for editorial review are excluded.</div>
   <p class="rail-note" data-difficulty-help>Difficulty uses existing source tags: Easy includes Beginner, Foundation and Core; Hard includes Advanced and Tricky. Exam-tagged questions are separate because “Exam” is not a difficulty rating. Choosing a domain, task or subject can reduce the available pool.</p>
   <div class="actions"><button class="btn primary" type="button" data-start-practice>Start practice</button></div>
 </section>
 <section class="section practice-session hidden" data-practice-shell role="dialog" aria-modal="true" aria-label="Practice session" tabindex="-1">
   <div class="card question-card" data-question-panel>
     <div class="question-meta"><div class="question-meta-group"><span class="status" data-question-number>Question</span><span class="status green" data-question-task>Task</span><span class="status gold hidden" data-question-review></span></div><span class="status gold" data-question-difficulty>Difficulty</span><button class="practice-close" type="button" data-change-filters aria-label="Close practice session">×</button></div>
-    <div class="question-prompt" data-question-prompt></div>
+    <div class="question-prompt" data-question-prompt tabindex="-1"></div>
     <div class="practice-choices" data-question-choices></div>
     <div class="answer-feedback hidden" data-answer-feedback aria-live="polite"></div>
     <div class="practice-coach" data-practice-coach aria-live="polite"></div>
@@ -67,9 +67,8 @@
       <div class="practice-question-tools" data-practice-question-actions></div>
       <div class="question-actions" aria-label="Question navigation">
         <button class="btn secondary" type="button" data-previous-question disabled>Previous</button>
-        <button class="btn primary" type="button" data-next-question disabled>Next</button>
-        <button type="button" data-submit-answer hidden tabindex="-1" aria-hidden="true">Check answer</button>
-      </div>
+        <button class="btn primary" type="button" data-next-question disabled>Next question</button>
+        </div>
     </footer>
   </div>
   <aside class="session-rail">
@@ -115,12 +114,17 @@
     </div>
     <p data-complete-policy></p>
     <p class="completion-note">Use this result to choose your next learning action. Practice results are educational feedback, not an official BRPT score, credential decision, or passing prediction.</p>
-    <div class="completion-next-actions">
-      <button class="btn primary" type="button" data-restart-session>Practice this selection again</button>
-      <a class="btn secondary" href="review.html?list=missed">Review missed questions</a>
-      <a class="btn secondary" href="study.html">Continue Guided Study</a>
-      <a class="btn secondary" href="index.html">Return to dashboard</a>
+    <section class="completion-recommendation" data-practice-recommendation aria-labelledby="practice-next-title">
+      <div class="eyebrow">Recommended next</div>
+      <h3 id="practice-next-title" data-recommendation-title>Choose your next study step</h3>
+      <p data-recommendation-detail>Use your results to decide what to work on next.</p>
+      <a class="btn primary" href="study.html#rpsgt-domain-map" data-recommendation-link>Continue Guided Study</a>
+    </section>
+    <div class="completion-other-actions" aria-label="Other practice options">
+      <button class="btn secondary" type="button" data-restart-session>Practice this selection again</button>
       <button class="btn secondary" type="button" data-change-filters>Choose different filters</button>
+      <a class="btn secondary" href="reports.html">View reports</a>
+      <a class="btn secondary" href="index.html">Dashboard</a>
     </div>
   </div>
 </section>

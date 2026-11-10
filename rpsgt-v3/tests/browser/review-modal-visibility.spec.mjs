@@ -35,11 +35,10 @@ test('twenty-item missed review shows only the question modal before the first a
   // Verify the expected responsive state rather than assuming all non-phone views are desktop.
   if(test.info().project.name==='desktop-chromium') await expect(page.locator('.session-rail')).toBeVisible();
   else await expect(page.locator('.session-rail')).toBeHidden();
-  await expect(page.locator('[data-review-forward]')).toHaveText('Check answer');
+  await expect(page.locator('[data-review-forward]')).toHaveText('Next question');
   const choices=page.locator('[data-question-choices] .practice-choice');
   await expect(choices).toHaveCount(4);
   await choices.first().click();
-  await page.locator('[data-review-forward]').click();
   await expect(page.locator('[data-answer-feedback]')).toBeVisible();
   await expect(result(page)).toBeHidden();
   await expect(active(page)).toBeVisible();
@@ -58,7 +57,6 @@ test('results replace the question only after all selected missed items are revi
     const choice=page.locator('[data-question-choices] .practice-choice').filter({has:page.getByText(questions[i].answer,{exact:true})});
     await expect(choice).toHaveCount(1);
     await choice.click();
-    await page.locator('[data-review-forward]').click();
     await expect(page.locator('[data-answer-feedback]')).toBeVisible();
     await expect(result(page)).toBeHidden();
     await page.locator('[data-review-forward]').click();
@@ -72,4 +70,7 @@ test('results replace the question only after all selected missed items are revi
   expect(saved.progress.answered).toBe(3);
   expect(saved.review.missedIds).toEqual([]);
   expect(saved.review.masteredIds.map(String)).toEqual(questions.map(q=>String(q.id)));
+  await expect(page.locator('[data-review-next-title]')).toContainText('next study task');
+  await expect(page.locator('[data-review-next-link]')).toHaveAttribute('href','study.html#rpsgt-domain-map');
+  await expect(page.locator('[data-review-complete] .completion-recommendation .btn.primary')).toHaveCount(1);
 });

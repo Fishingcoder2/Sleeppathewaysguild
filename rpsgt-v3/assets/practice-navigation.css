@@ -1,4 +1,4 @@
-/* Focused Practice question flow: one Next control checks first, then advances. */
+/* Focused Practice question flow: selecting an answer grades immediately; Next advances. */
 .practice-modal-footer{display:grid;gap:12px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 .practice-modal-footer .practice-question-tools{margin-top:0}
 .practice-modal-footer .practice-question-action-row{margin:0;padding-top:0;border-top:0}

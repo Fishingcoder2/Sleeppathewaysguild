@@ -21,7 +21,7 @@ const requiredAttributes=[
   'data-practice-task','data-practice-subject','data-practice-difficulty','data-practice-size','data-mode-notice','data-start-practice',
   'data-practice-shell','data-question-panel','data-question-number','data-question-task',
   'data-question-difficulty','data-question-review','data-question-prompt','data-question-choices','data-practice-question-actions',
-  'data-practice-coach','data-answer-feedback','data-submit-answer','data-previous-question','data-next-question','data-session-answered',
+  'data-practice-coach','data-answer-feedback','data-previous-question','data-next-question','data-session-answered',
   'data-session-correct','data-session-accuracy','data-session-pool','data-session-subject','data-active-mode',
   'data-progress-policy','data-session-complete','data-complete-score','data-complete-percent',
   'data-complete-policy','data-bank-total','data-module-total'
@@ -66,20 +66,22 @@ for(const hook of ['flaggedIds','reviewLaterIds','addQuestion','aria-live']){if(
 
 // Coach Bob Practice regression contract.
 if(practiceCoach.includes('MutationObserver')) throw new Error('Practice Coach Bob regressed to MutationObserver rendering.');
-for(const token of ["rpsgt:practice-question","[data-submit-answer]","RPSGTCoachBobEngine","RPSGTStudyResourceCatalog","priorPracticeMisses","Verified study resources","Reasoning Compass"]){
+for(const token of ["rpsgt:practice-question","rpsgt:practice-answer","RPSGTCoachBobEngine","RPSGTStudyResourceCatalog","priorPracticeMisses","Verified study resources","Reasoning Compass"]){
   if(!practiceCoach.includes(token)) throw new Error(`Practice Coach Bob is missing ${token}.`);
 }
 if(!coachCss.includes('.practice-coach-panel')||!coachCss.includes('@media(max-width:800px)')) throw new Error('Practice Coach Bob responsive styling is missing.');
 
 // Optional sound stays user-controlled and defaults off.
 if(!shell.includes('soundEffects:false')||!shell.includes('playFeedbackSound')) throw new Error('Shared optional sound controls are missing.');
+if(!js.includes('rpsgt:practice-answer')||!practiceCoach.includes('rpsgt:practice-answer')) throw new Error('Immediate grading does not notify Coach Bob.');
 if(!js.includes('RPSGTApp.playFeedbackSound')) throw new Error('Practice does not honor the shared optional feedback sound setting.');
 
 // Practice navigation and reasoning regression contract.
-if(!/data-submit-answer hidden/.test(html)) throw new Error('The legacy Check answer compatibility control must remain hidden from learners.');
+if(html.includes('data-submit-answer')) throw new Error('Practice should not include a separate submit control.');
 if(!html.includes('data-previous-question')||!html.includes('>Previous</button>')) throw new Error('Practice Previous navigation is missing.');
 if(!js.includes('responses:new Map()')||!js.includes('selections:new Map()')) throw new Error('Practice does not preserve per-question answer state for Previous navigation.');
-if(!/function nextQuestion\(\)[\s\S]*?if\(!state\.answered\)[\s\S]*?compatibility\.click\(\)/.test(js)) throw new Error('Practice Next no longer checks the current answer before advancing.');
+if(!/function selectChoice\(index\)[\s\S]*?submitAnswer\(\)/.test(js)) throw new Error('Choosing an answer must submit and grade immediately.');
+if(!/function nextQuestion\(\)[\s\S]*?if\(!state\.answered\) return;[\s\S]*?state\.index\+=1;/.test(js)) throw new Error('Next must advance only after the answer is graded.');
 if(!/function previousQuestion\(\)[\s\S]*?state\.index-=1;[\s\S]*?renderQuestion\(\)/.test(js)) throw new Error('Practice Previous navigation is not wired.');
 for(const learnerCopy of ['Answer & reasoning','Correct answer','Reasoning: ']){if(!js.includes(learnerCopy)) throw new Error(`Practice reasoning panel is missing ${learnerCopy}.`);}
 if(!js.includes('?"Finish practice":"Next question"')) throw new Error('The final answered Practice question does not expose a clear Finish practice action.');
@@ -89,10 +91,11 @@ if(!html.includes('<h2>Practice Complete</h2>')||!html.includes('aria-label="Pra
 for(const destination of ['review.html?list=missed','study.html','index.html']){
   if(!html.includes(`href="${destination}"`)) throw new Error(`Practice completion is missing next-action destination ${destination}.`);
 }
+if(!html.includes('data-practice-recommendation')||!js.includes('data-recommendation-link')) throw new Error('Practice completion needs a single recommended next step.');
 if(!html.includes('not an official BRPT score')) throw new Error('Practice completion score disclaimer is missing.');
 if(html.includes('<h2>175-Question Mock-Style Practice</h2>')||html.includes('href="mock.html">Open the 175-question mock')) throw new Error('Mock exam launch content must not appear inside the Practice Center.');
-const candidateCenter=shell.indexOf('<div class="nav-label">Candidate Center</div>');const mockLink=shell.indexOf('href="mock.html"');if(candidateCenter<0||mockLink<candidateCenter) throw new Error('Mock-Style Exam must live under Candidate Center navigation, not the Practice launch area.');
+if(!shell.includes('mock.html')||html.includes('<h2>175-Question Mock-Style Practice</h2>')) throw new Error('Mock Exam must remain accessible separately from focused Practice.');
 if(!navigationCss.includes('grid-template-columns:minmax(0,1fr) minmax(0,1fr)')) throw new Error('Practice Previous/Next controls do not share the modal footer.');
 if(!navigationCss.includes('[data-submit-answer]{display:none!important}')) throw new Error('Visible Check answer styling returned.');
 
-console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,subjectFilter:true,subjectLocked:true,subjectDeepLinks:true,mockIsolated:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,nextChecksAnswer:true,previousNavigation:true,reasoningPanel:true,focusedCompletion:true,nextActions:true},null,2));
+console.log(JSON.stringify({requiredSelectors:requiredAttributes.length,learnerOnly:true,learnerPresentation:true,difficultyFilter:true,subjectFilter:true,subjectLocked:true,subjectDeepLinks:true,mockIsolated:true,rawSourceKeysHidden:true,questionActions:true,verifiedResourceTitles:true,coachBobPractice:true,coachBobEventDriven:true,optionalSound:true,mobileModal:true,answerSelectSubmits:true,previousNavigation:true,reasoningPanel:true,focusedCompletion:true,nextActions:true},null,2));

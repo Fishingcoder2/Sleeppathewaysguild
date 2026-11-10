@@ -110,3 +110,29 @@ test('Guided Trail fresh rotation removes duplicate wording and holds back recen
   expect(result.ids).not.toContain('duplicate-q1');
   expect(new Set(result.prompts).size).toBe(15);
 });
+
+
+test('a scored Guided Study checkpoint offers the relevant next learning action',async({page})=>{
+  await page.goto('study.html');
+  await page.locator('[data-study-page="map"]').click();
+  await page.locator('.task-map-card').first().locator('[data-checkpoint-start]').click();
+  const workspace=page.locator('[data-checkpoint-workspace]');
+  await expect(workspace.locator('#checkpoint-title')).toBeVisible();
+  for(let index=0;index<15;index+=1){
+    await workspace.locator('[data-checkpoint-option="0"]').check();
+    if(index<14) await workspace.locator('[data-checkpoint-next]').click();
+  }
+  await workspace.locator('[data-checkpoint-score]').click();
+  await expect(workspace.locator('.checkpoint-result')).toBeVisible();
+  await expect(workspace.locator('.checkpoint-recommended')).toBeVisible();
+  const saved=await page.evaluate(()=>window.RPSGTStorage.load());
+  const attempts=saved.guidedStudy.checkpointHistory;
+  expect(attempts.length).toBeGreaterThan(0);
+  const latest=attempts[attempts.length-1];
+  if(latest.passed){
+    await expect(workspace.locator('[data-checkpoint-recommended]')).toBeVisible();
+    await expect(workspace.locator('[data-checkpoint-recommended]')).toHaveAttribute('data-checkpoint-recommended',latest.task);
+  }else{
+    await expect(workspace.locator('.checkpoint-recommended [data-checkpoint-cancel]')).toBeVisible();
+  }
+});
