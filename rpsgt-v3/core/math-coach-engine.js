@@ -34,7 +34,7 @@
         if(!valid('epochs')||c.epochs<0||!['hours','minutes'].includes(c.output))return {valid:false,code:'invalid-epoch-inputs'};
         raw=c.epochs/(c.output==='hours'?120:2);break;
       case 'clock':{
-        const clock=value=>/^([01]\\d|2[0-3]):[0-5]\\d$/.test(String(value||''));
+        const clock=value=>/^([01]\d|2[0-3]):[0-5]\d$/.test(String(value||''));
         if(!clock(c.start)||!clock(c.end)||c.start===c.end)return {valid:false,code:'invalid-clock-inputs'};
         const mins=value=>Number(value.slice(0,2))*60+Number(value.slice(3,5));
         raw=(mins(c.end)-mins(c.start)+1440)%1440;break;
