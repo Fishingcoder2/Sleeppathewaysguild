@@ -1,1 +1,211 @@
-{"id":"total-wake-time","title":"Total Wake Time","shortTitle":"Wake time","category":"Report math & indexes","topic":"Sleep timing","formula":"total wake time = initial sleep latency + WASO","alternateFormula":"total wake time = TRT − TST","unit":"minutes","lesson":"Total wake time across the recording includes wake before sleep onset plus wake after sleep onset. It can also be found by subtracting total sleep time from total recording time.","memoryClue":"Total wake combines the wake before sleep and the wake after sleep begins.","coachBobNote":"If the problem asks for WASO only, do not include initial sleep latency. If it asks for total wake, include both.","variables":[{"symbol":"Total wake","meaning":"All wake time within TRT","unit":"minutes"},{"symbol":"ISL","meaning":"Initial sleep latency","unit":"minutes"},{"symbol":"WASO","meaning":"Wake after sleep onset","unit":"minutes"},{"symbol":"TRT","meaning":"Total recording time","unit":"minutes"},{"symbol":"TST","meaning":"Total sleep time","unit":"minutes"}],"workedExample":{"prompt":"Initial sleep latency is 25 minutes and WASO is 50 minutes. Find total wake time.","steps":["Use total wake = ISL + WASO.","Add 25 + 50.","Report 75 minutes."],"answer":"75 minutes"},"guided":[{"id":"wake-guided-1","prompt":"TRT 480 min and TST 405 min. Find total wake time.","answer":75,"tolerance":0.01,"unit":"minutes","hint":"TRT − TST.","success":"Correct. 480 − 405 = 75 minutes.","commonErrors":[{"value":55,"tolerance":0.01,"message":"That may represent WASO alone. Total wake also includes wake before sleep onset."}]},{"id":"wake-guided-retry","prompt":"Initial sleep latency 20 min and WASO 45 min. Find total wake time.","answer":65,"tolerance":0.01,"unit":"minutes","hint":"Add the two wake components.","success":"Correct. 20 + 45 = 65 minutes."}],"independent":[{"id":"wake-independent-1","prompt":"TRT 450, TST 380. Total wake?","answer":70,"tolerance":0.01,"unit":"minutes","hint":"TRT − TST."},{"id":"wake-independent-2","prompt":"ISL 30, WASO 40. Total wake?","answer":70,"tolerance":0.01,"unit":"minutes","hint":"ISL + WASO."},{"id":"wake-independent-3","prompt":"TRT 500, TST 425. Total wake?","answer":75,"tolerance":0.01,"unit":"minutes","hint":"TRT − TST."}],"mastery":[{"id":"wake-mastery-1","prompt":"ISL 20, WASO 50","answer":70,"tolerance":0.01,"unit":"minutes"},{"id":"wake-mastery-2","prompt":"TRT 480, TST 410","answer":70,"tolerance":0.01,"unit":"minutes"},{"id":"wake-mastery-3","prompt":"ISL 35, WASO 45","answer":80,"tolerance":0.01,"unit":"minutes"},{"id":"wake-mastery-4","prompt":"TRT 460, TST 390","answer":70,"tolerance":0.01,"unit":"minutes"},{"id":"wake-mastery-5","prompt":"ISL 15, WASO 60","answer":75,"tolerance":0.01,"unit":"minutes"}],"studyResources":[{"title":"Polysomnography for the Sleep Technologist","section":"Appendix II: Common Report Parameters and Recommended Settings"}]}
+{
+  "id": "total-wake-time",
+  "title": "Total Wake Time",
+  "shortTitle": "Wake time",
+  "category": "Report math & indexes",
+  "topic": "Sleep timing",
+  "formula": "total wake time = initial sleep latency + WASO",
+  "alternateFormula": "total wake time = TRT − TST",
+  "unit": "minutes",
+  "lesson": "Total recorded wake time includes wake before sleep onset plus wake after sleep onset through lights on. It equals TRT − TST, or initial sleep latency + WASO, when all values cover the same recording interval.",
+  "memoryClue": "Total wake combines the wake before sleep and the wake after sleep begins.",
+  "coachBobNote": "If the problem asks for WASO only, do not include initial sleep latency. If it asks for total wake, include both.",
+  "variables": [
+    {
+      "symbol": "Total wake",
+      "meaning": "All wake time within TRT",
+      "unit": "minutes"
+    },
+    {
+      "symbol": "ISL",
+      "meaning": "Initial sleep latency",
+      "unit": "minutes"
+    },
+    {
+      "symbol": "WASO",
+      "meaning": "Wake after sleep onset",
+      "unit": "minutes"
+    },
+    {
+      "symbol": "TRT",
+      "meaning": "Total recording time",
+      "unit": "minutes"
+    },
+    {
+      "symbol": "TST",
+      "meaning": "Total sleep time",
+      "unit": "minutes"
+    }
+  ],
+  "workedExample": {
+    "prompt": "Initial sleep latency is 25 minutes and WASO is 50 minutes. Find total wake time.",
+    "steps": [
+      "Use total wake = ISL + WASO.",
+      "Add 25 + 50.",
+      "Report 75 minutes."
+    ],
+    "answer": "75 minutes"
+  },
+  "guided": [
+    {
+      "id": "wake-guided-1",
+      "prompt": "TRT 480 min and TST 405 min. Find total wake time.",
+      "answer": 75,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "TRT − TST.",
+      "success": "Correct. 480 − 405 = 75 minutes.",
+      "commonErrors": [
+        {
+          "value": 55,
+          "tolerance": 0.01,
+          "message": "That may represent WASO alone. Total wake also includes wake before sleep onset."
+        }
+      ],
+      "calculation": {
+        "kind": "wake",
+        "trt": 480,
+        "tst": 405,
+        "equation": "480 − 405 = 75"
+      }
+    },
+    {
+      "id": "wake-guided-retry",
+      "prompt": "Initial sleep latency 20 min and WASO 45 min. Find total wake time.",
+      "answer": 65,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "Add the two wake components.",
+      "success": "Correct. 20 + 45 = 65 minutes.",
+      "calculation": {
+        "kind": "sum",
+        "a": 20,
+        "b": 45,
+        "solve": "wake",
+        "equation": "20 + 45 = 65"
+      }
+    }
+  ],
+  "independent": [
+    {
+      "id": "wake-independent-1",
+      "prompt": "TRT is 450 minutes and TST is 380 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 70,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "TRT − TST.",
+      "calculation": {
+        "kind": "wake",
+        "trt": 450,
+        "tst": 380,
+        "equation": "450 − 380 = 70"
+      }
+    },
+    {
+      "id": "wake-independent-2",
+      "prompt": "Initial sleep latency is 30 minutes and WASO through lights on is 40 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 70,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "ISL + WASO.",
+      "calculation": {
+        "kind": "sum",
+        "a": 30,
+        "b": 40,
+        "solve": "wake",
+        "equation": "30 + 40 = 70"
+      }
+    },
+    {
+      "id": "wake-independent-3",
+      "prompt": "TRT is 500 minutes and TST is 425 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 75,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "TRT − TST.",
+      "calculation": {
+        "kind": "wake",
+        "trt": 500,
+        "tst": 425,
+        "equation": "500 − 425 = 75"
+      }
+    }
+  ],
+  "mastery": [
+    {
+      "id": "wake-mastery-1",
+      "prompt": "Initial sleep latency is 20 minutes and WASO through lights on is 50 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 70,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "sum",
+        "a": 20,
+        "b": 50,
+        "solve": "wake",
+        "equation": "20 + 50 = 70"
+      }
+    },
+    {
+      "id": "wake-mastery-2",
+      "prompt": "TRT is 480 minutes and TST is 410 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 70,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "wake",
+        "trt": 480,
+        "tst": 410,
+        "equation": "480 − 410 = 70"
+      }
+    },
+    {
+      "id": "wake-mastery-3",
+      "prompt": "Initial sleep latency is 35 minutes and WASO through lights on is 45 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 80,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "sum",
+        "a": 35,
+        "b": 45,
+        "solve": "wake",
+        "equation": "35 + 45 = 80"
+      }
+    },
+    {
+      "id": "wake-mastery-4",
+      "prompt": "TRT is 460 minutes and TST is 390 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 70,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "wake",
+        "trt": 460,
+        "tst": 390,
+        "equation": "460 − 390 = 70"
+      }
+    },
+    {
+      "id": "wake-mastery-5",
+      "prompt": "Initial sleep latency is 15 minutes and WASO through lights on is 60 minutes. Calculate total wake time during the recording in minutes.",
+      "answer": 75,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "sum",
+        "a": 15,
+        "b": 60,
+        "solve": "wake",
+        "equation": "15 + 60 = 75"
+      }
+    }
+  ],
+  "studyResources": [
+    {
+      "title": "Polysomnography for the Sleep Technologist",
+      "section": "Appendix II: Common Report Parameters and Recommended Settings"
+    }
+  ],
+  "definitionNote": "These PSG calculations use the lights-out to lights-on interval and include post-sleep-onset wake through lights on (AAST, 2021, §3.3.3.1)."
+}
