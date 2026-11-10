@@ -29,6 +29,9 @@ test('Related lab questions open in a modal, stay in the lab, and count toward P
     await dialog.locator('[data-quick-set-next]').click();
   }
   await expect(dialog.locator('.spg-quick-set-results')).toBeVisible();
+  await expect(dialog.locator('[data-quick-set-recommendation-link]')).toBeVisible();
+  const recommended=await dialog.locator('[data-quick-set-recommendation-link]').getAttribute('href');
+  expect(['review.html?list=missed','study.html#rpsgt-domain-map']).toContain(recommended);
   const saved=await page.evaluate(()=>window.RPSGTStorage.load());
   expect(saved.progress.answered).toBe(6);
   expect(saved.progress.history.filter(record=>record.source==='v3-inline-question-set')).toHaveLength(5);
