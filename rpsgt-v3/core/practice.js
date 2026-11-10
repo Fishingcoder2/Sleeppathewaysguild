@@ -512,11 +512,19 @@
     if(recommendation){
       const missed=Array.from(state.responses.values()).filter(function(response){return !response.isCorrect;}).length;
       const quality=state.mode==="quality";
+      const taskCodes=Array.from(new Set(state.session.map(function(question){return question.taskCode;}).filter(Boolean)));
+      const eligibleTasks=taskOrder.filter(function(code){
+        return code!=="D2A/D2C"&&(state.manifest.modules||[]).some(function(meta){return meta.taskCode===code;});
+      });
+      const position=taskCodes.length===1?eligibleTasks.indexOf(taskCodes[0]):-1;
+      const nextCode=position>=0?eligibleTasks[position+1]:null;
       const action=quality
         ?{title:"Choose your next practice activity",detail:"Quality-review attempts are excluded from learner results. Return to Practice to choose your next activity.",href:"practice.html",label:"Open Practice Center"}
         :missed>0
           ?{title:"Review the questions you missed",detail:"You missed "+missed+" question"+(missed===1?"":"s")+" in this session. Review your saved missed items and their explanations before continuing.",href:"review.html?list=missed",label:"Review missed questions"}
-          :{title:"Choose your next RPSGT task",detail:"You answered every question correctly in this session. Continue through the Guided Study task map or explore another domain.",href:"study.html#rpsgt-domain-map",label:"Continue Guided Study"};
+          :nextCode
+            ?{title:"Continue with "+nextCode,detail:"You completed this focused session without misses. The next task in blueprint order is "+taskLabel(nextCode)+".",href:"study.html#"+nextCode,label:"Study "+nextCode+" next"}
+            :{title:"Choose your next study target",detail:"You completed this practice session without misses. Open Reports to choose a new area from your recorded progress.",href:"reports.html",label:"See recommended study targets"};
       recommendation.querySelector("[data-recommendation-title]").textContent=action.title;
       recommendation.querySelector("[data-recommendation-detail]").textContent=action.detail;
       const link=recommendation.querySelector("[data-recommendation-link]");
