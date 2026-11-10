@@ -53,25 +53,27 @@ test('Guided Study exposes direct area choices instead of making learners scroll
   await expectTargetNearTop(page,'#rpsgt-domain-map');
 });
 
-test('sidebar blueprint labels resolve to real D1-D4 containers and Readiness uses the same name as its destination',async({page},testInfo)=>{
-  test.skip(testInfo.project.name!=='desktop-chromium','Sidebar is checked once on desktop; mobile uses the compact navigation shell.');
+test('visible All Learning Tools destination provides all four RPSGT domain links',async({page},testInfo)=>{
+  test.skip(testInfo.project.name!=='desktop-chromium','Sidebar density checked once on desktop.');
   await page.goto('study.html');
-  await page.locator('.sidebar-toolbox summary').click();
-  for(const code of ['D1','D2','D3','D4']){
-    await expect(page.locator(`.sidebar a[href="study.html#${code}"]`)).toBeVisible();
-    await page.locator(`.sidebar a[href="study.html#${code}"]`).click();
-    await expect(page.locator('[data-study-page="map"]')).toHaveAttribute('aria-pressed','true');
-    await expect(page.locator(`#${code}`)).toBeVisible();
-  }
+  const directory=page.locator('.sidebar a[href="learning-tools.html"]');
+  await expect(directory).toBeVisible();
   await expect(page.locator('.sidebar a[href="readiness.html"]')).toContainText('Readiness Check');
-  await expect(page.locator('.sidebar a[href="readiness.html"]')).not.toContainText('Targeted Review');
+  await directory.click();
+  await expect(page).toHaveURL(/learning-tools\.html$/);
+  for(const code of ['D1','D2','D3','D4']){
+    const anchor=page.locator('main a[href="study.html#'+code+'"]');
+    await expect(anchor).toBeVisible();
+    await anchor.click();
+    await expectTargetNearTop(page,'#'+code);
+    await page.goto('learning-tools.html');
+  }
+  await expect(page.locator('main details')).toHaveCount(0);
 });
 
 test('Continue where I left off preserves the learner section rather than dropping the study anchor',async({page})=>{
-  await page.goto('study.html');
-  const domainLink=page.locator('.sidebar a[href="study.html#D3"]');
-  if(!(await page.locator('.sidebar').isVisible())) await page.locator('[data-toggle-menu]').click();
-  if(!(await domainLink.isVisible())) await page.locator('.sidebar-toolbox summary').click();
+  await page.goto('learning-tools.html');
+  const domainLink=page.locator('main a[href="study.html#D3"]');
   await expect(domainLink).toBeVisible();
   await domainLink.click();
   await expectTargetNearTop(page,'#D3');
@@ -80,7 +82,7 @@ test('Continue where I left off preserves the learner section rather than droppi
   await expect(page.locator('[data-continue]')).toHaveAttribute('href','study.html#D3');
 });
 
-test('Practice keeps the question, choices, and primary submit/next control usable on the learner screen',async({page})=>{
+test('Practice keeps the question, choices, and primary Next control usable on the learner screen',async({page})=>{
   await page.goto('practice.html');
   await page.locator('[data-practice-size]').selectOption('5');
   await page.locator('[data-start-practice]').click();
@@ -91,7 +93,6 @@ test('Practice keeps the question, choices, and primary submit/next control usab
 
   await page.locator('[data-question-choices] .practice-choice').first().click();
   await expect(page.locator('[data-next-question]')).toBeEnabled();
-  await page.locator('[data-next-question]').click();
   await expect(page.locator('[data-answer-feedback]')).toBeVisible();
   await expectBoxInsideViewport(page,'[data-next-question]');
   await expect(page.locator('[data-next-question]')).toHaveText('Next question');
