@@ -81,7 +81,9 @@ test('a task-specific recommendation opens the intended Practice session',async(
   await page.goto('practice.html?task=D3A&start=1');
   await expect(page.locator('[data-practice-shell]')).toBeVisible();
   await expect(page.locator('[data-practice-task]')).toHaveValue('D3A');
-  await expect(page.locator('[data-question-task]')).toContainText('D3A');
+  // Task identifiers are intentionally hidden on learner-facing question screens.
+  await expect(page.locator('[data-practice-domain]')).toHaveValue('D3');
+  await expect(page.locator('[data-question-task]')).not.toBeEmpty();
   await expect(page.locator('[data-question-panel]')).toBeVisible();
 });
 
