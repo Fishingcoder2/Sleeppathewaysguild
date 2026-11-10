@@ -95,7 +95,7 @@ export default function App({ coachAdapter, cases = DEMO_CASES }: AppProps) {
   }
 
   const breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Dashboard', href: '../index.html' },
+    { label: 'Dashboard', href: '/index.html' },
     { label: 'Case Review', ...(currentCase ? { onClick: showOverview } : {}) },
     ...(currentCase ? [{ label: currentCase.category }, { label: currentCase.title }] : []),
   ];
@@ -120,7 +120,7 @@ export default function App({ coachAdapter, cases = DEMO_CASES }: AppProps) {
             <button className="rounded-lg p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
               type="button" aria-label="Open navigation" aria-expanded={mobileOpen}
               onClick={() => setMobileOpen(true)}><Menu size={21}/></button>
-            <a href="../index.html" className="hidden text-sm font-bold text-slate-900 sm:block">
+            <a href="/index.html" className="hidden text-sm font-bold text-slate-900 sm:block">
               Sleep Pathways Guild <span className="text-cyan-800">/ RPSGT V3</span>
             </a>
             <span className="truncate text-sm font-semibold text-slate-900 sm:hidden">Case Review</span>
@@ -193,7 +193,7 @@ export default function App({ coachAdapter, cases = DEMO_CASES }: AppProps) {
         items={commands} onSelect={navigateCommand}/>
       <MissedReviewModal isOpen={reviewOpen} onClose={() => setReviewOpen(false)}
         missedQuestionsCount={missedCount}
-        onStartReviewSession={() => window.location.assign(new URL('../review.html?list=missed', document.baseURI).href)}/>
+        onStartReviewSession={() => window.location.assign(new URL('/review.html?list=missed', document.baseURI).href)}/>
     </div>
   );
 }
