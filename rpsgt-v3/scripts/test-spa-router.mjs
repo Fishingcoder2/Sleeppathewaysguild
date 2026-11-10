@@ -22,8 +22,10 @@ function createEnv({hasShell=true}={}){
     env:{ASSETS:{async fetch(request){
       const pathname=new URL(request.url).pathname;
       paths.push(pathname);
-      if(pathname==='/case-review/index.html' && hasShell) return new Response(request.method==='HEAD'?null:HTML,{status:200,headers:{'Content-Type':'text/html'}});
-      if(pathname==='/practice.html') return new Response('Legacy Practice Center',{status:200,headers:{'Content-Type':'text/html'}});
+      if(pathname==='/case-review/' && hasShell) return new Response(request.method==='HEAD'?null:HTML,{status:200,headers:{'Content-Type':'text/html'}});
+      if(pathname==='/case-review/index.html') return Response.redirect('https://webapp.sleeppathwaysguild.com/case-review/',307);
+      if(pathname==='/practice.html') return Response.redirect('https://webapp.sleeppathwaysguild.com/practice',307);
+      if(pathname==='/practice') return new Response('Legacy Practice Center',{status:200,headers:{'Content-Type':'text/html'}});
       if(pathname==='/case-review/assets/main.js') return new Response('console.log("app")',{status:200,headers:{'Content-Type':'application/javascript'}});
       if(pathname==='/case-review/logo.png') return new Response('image',{status:200,headers:{'Content-Type':'image/png'}});
       return new Response('Not found',{status:404});
@@ -53,14 +55,14 @@ test('missing scoped React navigation gets case-review HTML, not the legacy root
   assert.equal(response.headers.get('X-SPG-Route'),'case-review-spa');
   assert.equal(response.headers.get('Cache-Control'),'no-cache');
   assert.match(await response.text(),/Case Review Notebook/);
-  assert.deepEqual(paths,['/case-review/notebook/case-4','/case-review/index.html']);
+  assert.deepEqual(paths,['/case-review/notebook/case-4','/case-review/']);
 });
 
 test('real case-review index keeps its own normal asset response',async()=>{
   const {env,paths}=createEnv();
-  const response=await router.fetch(req('/case-review/index.html'),env);
+  const response=await router.fetch(req('/case-review/'),env);
   assert.equal(response.status,200);
-  assert.deepEqual(paths,['/case-review/index.html']);
+  assert.deepEqual(paths,['/case-review/']);
   assert.equal(response.headers.get('X-SPG-Route'),null);
 });
 
@@ -112,14 +114,22 @@ test('HEAD fallback has no body',async()=>{
   assert.equal(response.body,null);
 });
 
-test('shortcuts preserve query strings and keep Practice in the legacy app',async()=>{
+test('notebook shortcut preserves its case query without touching Practice',async()=>{
   const {env}=createEnv();
   const a=await router.fetch(req('/notebook?case=psg-report-intro'),env);
   assert.equal(a.status,307);
   assert.equal(a.headers.get('Location'),'https://webapp.sleeppathwaysguild.com/case-review/?case=psg-report-intro');
-  const b=await router.fetch(req('/practice?task=D3C&start=1'),env);
-  assert.equal(b.status,307);
-  assert.equal(b.headers.get('Location'),'https://webapp.sleeppathwaysguild.com/practice.html?task=D3C&start=1');
+});
+
+test('regression: Cloudflare practice.html canonical redirect cannot loop',async()=>{
+  const {env}=createEnv();
+  const first=await router.fetch(req('/practice.html?task=D3C&start=1'),env);
+  assert.equal(first.status,307);
+  assert.equal(first.headers.get('Location'),'https://webapp.sleeppathwaysguild.com/practice');
+  const second=await router.fetch(req('/practice?task=D3C&start=1'),env);
+  assert.equal(second.status,200);
+  assert.equal(await second.text(),'Legacy Practice Center');
+  assert.notEqual(second.headers.get('Location'),'https://webapp.sleeppathwaysguild.com/practice.html');
 });
 
 test('deployment file retains existing site and selective routing',()=>{
@@ -129,6 +139,8 @@ test('deployment file retains existing site and selective routing',()=>{
   assert.match(configText,/"binding": "ASSETS"/);
   assert.match(configText,/"run_worker_first": \[/);
   assert.doesNotMatch(configText,/"not_found_handling": "single-page-application"/);
+  assert.doesNotMatch(configText,/"\/practice"/);
+  assert.doesNotMatch(routerText,/\['\/practice',\s*'\/practice\.html'\]/);
   // This condition is only required after npm run build in CI; otherwise a
   // developer can run the routing test before building the React project.
   const output=resolve(root,'case-review/index.html');
