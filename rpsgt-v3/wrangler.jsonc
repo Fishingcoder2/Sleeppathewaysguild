@@ -9,7 +9,12 @@
   "assets": {
     "directory": ".",
     "exclude": [
-      "node_modules",\n      "ui-next",\n      "workers",\n      "scripts",\n      "docs",\n      "audits",
+      "node_modules",
+      "ui-next",
+      "workers",
+      "scripts",
+      "docs",
+      "audits",
       "tests",
       "test-results",
       "playwright-report",
@@ -18,7 +23,8 @@
       "package.json",
       "package-lock.json",
       "playwright.config.js",
-      "wrangler.jsonc",\n      "wrangler.case-review-release.jsonc",
+      "wrangler.jsonc",
+      "wrangler.case-review-release.jsonc",
       ".gitignore"
     ]
   }
