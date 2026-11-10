@@ -133,7 +133,9 @@ test('regression: Cloudflare practice.html canonical redirect cannot loop',async
 });
 
 test('deployment file retains existing site and selective routing',()=>{
-  const configText=readFileSync(resolve(root,'wrangler.jsonc'),'utf8');
+  const configText=readFileSync(resolve(root,'wrangler.case-review-release.jsonc'),'utf8');
+  const defaultConfig=readFileSync(resolve(root,'wrangler.jsonc'),'utf8');
+  assert.doesNotMatch(defaultConfig,/"main": "workers\/router\.js"/,'Default deploy must never activate draft Worker router.');
   assert.match(configText,/"directory": "\."/);
   assert.match(configText,/"main": "workers\/router\.js"/);
   assert.match(configText,/"binding": "ASSETS"/);
