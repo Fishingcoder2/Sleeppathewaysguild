@@ -63,8 +63,8 @@ test('Math Coach flags wrong answers and offers a retry with visible reasoning',
   const response=await page.request.get('data/math-coach/pressure-support.json');
   expect(response.ok()).toBeTruthy();
   const skill=await response.json();
-  await page.locator('[data-math-guided-form] input[name="answer"]').fill(String(skill.guided[1].answer));
-  // Guided retry advances to the next guided question after an incorrect attempt.
+  await page.locator('[data-math-guided-form] input[name="answer"]').fill(String(skill.guided[0].answer));
+  // Incorrect attempts stay on the same problem so the learner can retry.
   await page.locator('[data-math-guided-form] button[type="submit"]').click();
   await expect(page.locator('.math-feedback.correct')).toContainText('Verified calculation');
 });
