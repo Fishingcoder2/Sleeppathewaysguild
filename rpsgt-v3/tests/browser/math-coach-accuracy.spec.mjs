@@ -33,7 +33,7 @@ async function submitSet(page,kind,id) {
 test('Math Coach accepts overnight TRT correctly and holds every graded explanation before advancing',async({page})=>{
   await openSkill(page,'total-recording-time');
   await beginGuided(page);
-  await expect(page.locator('[data-math-guided-form]')).toContainText('23:00');
+  await expect(page.locator('.math-practice-panel')).toContainText('23:00');
   await page.locator('[data-math-guided-form] input[name="answer"]').fill('480');
   await page.locator('[data-math-guided-form] button[type="submit"]').click();
   await expect(page.locator('.math-feedback.correct')).toContainText('Verified calculation');
