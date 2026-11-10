@@ -34,7 +34,7 @@
   "guided": [
     {
       "id": "epoch-guided-1",
-      "prompt": "Convert 120 epochs to minutes.",
+      "prompt": "A PSG scores 120 standard 30-second epochs. Convert the duration to minutes.",
       "answer": 60,
       "tolerance": 0.01,
       "unit": "minutes",
@@ -56,7 +56,7 @@
     },
     {
       "id": "epoch-guided-retry",
-      "prompt": "Convert 48 epochs to minutes.",
+      "prompt": "A PSG scores 48 standard 30-second epochs. Convert the duration to minutes.",
       "answer": 24,
       "tolerance": 0.01,
       "unit": "minutes",
