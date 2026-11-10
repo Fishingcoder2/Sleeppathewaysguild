@@ -25,9 +25,18 @@
   app.renderGuided=function(skill,record){
     const question=app.guidedQuestion(skill,record);const feedback=app.state.guidedFeedback;const sameFeedback=feedback&&String(feedback.questionId)===String(question.id)?feedback:null;const previousValue=sameFeedback&&!sameFeedback.correct&&sameFeedback.value!=null?String(sameFeedback.value):'';
     app.workspace.innerHTML=`<div class="math-question-modal-frame">${app.stageHeader(skill,record,'Try it with help')}<div class="math-question-modal-grid"><div class="math-question-column"><article class="card math-practice-panel"><span class="math-question-label">Guided question</span><h3>${app.esc(question.prompt)}</h3><form data-math-guided-form><label class="math-answer-field"><span>Your answer</span><div><input type="number" step="any" inputmode="decimal" name="answer" value="${app.esc(previousValue)}" aria-describedby="math-guided-unit" data-math-modal-focus><strong id="math-guided-unit">${app.esc(question.unit)}</strong></div></label><div class="math-inline-actions"><button class="btn secondary" type="button" data-math-hint aria-expanded="${app.state.whiteboardOpen?'true':'false'}">${app.state.whiteboardOpen?'Hide whiteboard help':'Open whiteboard help'}</button><button class="btn primary" type="submit">Check my work</button></div></form>${sameFeedback?`<div class="math-feedback ${sameFeedback.correct?'correct':'retry'}" role="status"><strong>${sameFeedback.correct?'That pathway works.':'Recheck this step.'}</strong><p>${app.esc(sameFeedback.message)}</p>${!sameFeedback.correct?'<p><strong>Your problem will stay here while you review the whiteboard and retry.</strong></p>':''}</div>`:''}</article><div class="math-stage-actions"><button class="btn secondary" type="button" data-math-stage="worked">Review worked example</button></div></div><aside class="math-question-toolrail" aria-label="Math question tools">${app.calculatorMarkup('guided')}${app.whiteboardMarkup(skill,question,sameFeedback,false)}</aside></div></div>`;
+
+    if(sameFeedback&&sameFeedback.correct){
+      const form=app.workspace.querySelector('[data-math-guided-form]');
+      if(form)form.hidden=true;
+      const feedbackNode=app.workspace.querySelector('.math-feedback.correct');
+      if(feedbackNode)feedbackNode.insertAdjacentHTML('beforeend',
+        '<div class="math-worked-equation"><strong>Verified calculation</strong><p>'+app.esc(sameFeedback.equation||question.calculation?.equation||'')+' '+app.esc(question.unit)+'</p></div>'+
+        '<button class="btn primary math-next-recommendation" type="button" data-math-continue-independent>Continue to independent practice</button>');
+    }
   };
 
-  app.answerForm=function(questions,kind){return `<form data-math-set-form="${app.esc(kind)}"><div class="math-question-list">${questions.map((question,index)=>`<fieldset class="math-set-question"><legend><span>${index+1}</span>${app.esc(question.prompt)}</legend><label><span>Answer</span><div><input type="number" step="any" inputmode="decimal" name="${app.esc(question.id)}" ${index===0?'data-math-modal-focus':''}><strong>${app.esc(question.unit)}</strong></div></label>${question.hint?`<details><summary>Coach Bob clue</summary><p>${app.esc(question.hint)}</p></details>`:''}</fieldset>`).join('')}</div><button class="btn primary" type="submit">${kind==='mastery'?'Score mastery check':'Check independent practice'}</button></form>`;};
+  app.answerForm=function(questions,kind){return `<form data-math-set-form="${app.esc(kind)}"><div class="math-question-list">${questions.map((question,index)=>`<fieldset class="math-set-question"><legend><span>${index+1}</span>${app.esc(question.prompt)}</legend><label><span>Answer</span><div><input type="number" step="any" inputmode="decimal" name="${app.esc(question.id)}" ${index===0?'data-math-modal-focus':''}><strong>${app.esc(question.unit)}</strong></div></label>${kind==='independent'&&question.hint?`<p class="math-clue"><strong>Coach Bob clue:</strong> ${app.esc(question.hint)}</p>`:''}</fieldset>`).join('')}</div><button class="btn primary" type="submit">${kind==='mastery'?'Score mastery check':'Check independent practice'}</button></form>`;};
 
   app.setReview=function(skill,feedback,kind){
     if(!feedback)return'';
@@ -43,11 +52,27 @@
   app.renderIndependent=function(skill,record){
     const feedback=app.state.setFeedback;
     app.workspace.innerHTML=`<div class="math-question-modal-frame">${app.stageHeader(skill,record,'Independent practice')}<div class="math-question-modal-grid"><div class="math-question-column"><article class="card"><h3>Work these without step-by-step help</h3><p>Coach Bob clues remain available, but set up each formula independently before opening them.</p>${app.answerForm(skill.independent,'independent')}${app.setReview(skill,feedback,'independent')}</article><div class="math-stage-actions"><button class="btn secondary" type="button" data-math-stage="learn">Review this skill</button>${feedback&&feedback.passed?'<button class="btn primary" type="button" data-math-continue-mastery>Continue to mastery check</button>':''}</div></div><aside class="math-question-toolrail" aria-label="Math question tools">${app.calculatorMarkup('independent')}${app.reviewWhiteboard(skill,feedback)}</aside></div></div>`;
+    if(feedback){
+      const form=app.workspace.querySelector('[data-math-set-form]');
+      if(form)form.remove();
+      if(!feedback.passed){
+        const actions=app.workspace.querySelector('.math-stage-actions');
+        if(actions)actions.insertAdjacentHTML('beforeend','<button class="btn primary" type="button" data-math-retry-set="independent">Try these practice questions again</button>');
+      }
+    }
   };
 
   app.renderMastery=function(skill,record){
     const feedback=app.state.setFeedback;
     app.workspace.innerHTML=`<div class="math-question-modal-frame">${app.stageHeader(skill,record,'Mastery check')}<div class="math-question-modal-grid"><div class="math-question-column"><article class="card"><h3>Complete the mastery check</h3><p>Score ${Number(app.state.catalog.passPercent||app.engine.PASS_PERCENT)}% or higher to earn the ${app.esc(skill.shortTitle)} mastery medal.</p>${app.answerForm(skill.mastery,'mastery')}${app.setReview(skill,feedback,'mastery')}</article><div class="math-stage-actions"><button class="btn secondary" type="button" data-math-stage="learn">Review this skill</button></div></div><aside class="math-question-toolrail" aria-label="Math question tools">${app.calculatorMarkup('mastery')}${app.reviewWhiteboard(skill,feedback)}</aside></div></div>`;
+    if(feedback){
+      const form=app.workspace.querySelector('[data-math-set-form]');
+      if(form)form.remove();
+      const actions=app.workspace.querySelector('.math-stage-actions');
+      if(actions)actions.insertAdjacentHTML('beforeend',feedback.passed
+        ?'<button class="btn primary" type="button" data-math-finish-skill>Finish this skill and continue</button>'
+        :'<button class="btn primary" type="button" data-math-retry-set="mastery">Retry the mastery check</button>');
+    }
   };
 
   app.renderComplete=function(skill,record){
@@ -57,7 +82,7 @@
 
   app.renderWorkspace=function(){
     const skill=app.state.currentSkill&&app.skillById(app.state.currentSkill);if(!skill){app.workspace.hidden=true;app.workspace.innerHTML='';document.body.classList.remove('math-question-modal-open');return;}
-    const storedRecord=app.recordFor(skill.id);const displayStage=app.state.questionReviewKind==='independent'&&app.state.setFeedback?'independent':storedRecord.stage;const record=displayStage===storedRecord.stage?storedRecord:{...storedRecord,stage:displayStage};const questionStage=['guided','independent','mastery'].includes(displayStage);
+    const storedRecord=app.recordFor(skill.id);const displayStage=app.state.questionReviewKind==='guided'&&app.state.guidedFeedback?.correct?'guided':app.state.questionReviewKind==='independent'&&app.state.setFeedback?'independent':app.state.questionReviewKind==='mastery'&&app.state.setFeedback?'mastery':storedRecord.stage;const record=displayStage===storedRecord.stage?storedRecord:{...storedRecord,stage:displayStage};const questionStage=['guided','independent','mastery'].includes(displayStage);
     app.workspace.hidden=false;app.workspace.setAttribute('data-stage',displayStage);
     if(questionStage){app.workspace.dataset.questionModal='true';app.workspace.setAttribute('role','dialog');app.workspace.setAttribute('aria-modal','true');app.workspace.setAttribute('aria-label',`${app.stageLabel(displayStage)} · ${skill.title}`);app.workspace.tabIndex=-1;document.body.classList.add('math-question-modal-open');}
     else{delete app.workspace.dataset.questionModal;app.workspace.removeAttribute('role');app.workspace.removeAttribute('aria-modal');app.workspace.removeAttribute('aria-label');app.workspace.removeAttribute('tabindex');document.body.classList.remove('math-question-modal-open');}
