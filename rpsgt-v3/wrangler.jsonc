@@ -26,7 +26,6 @@
       "README.md",
       "browser-regression-matrix.md",
       "package.json",
-      "wrangler.jsonc",
       "package-lock.json",
       "playwright.config.js",
       "wrangler.jsonc",
