@@ -87,7 +87,7 @@
   function updateNavigation(question,response){
     const previous=$("[data-previous-question]"),forward=$("[data-review-forward]");if(!previous||!forward)return;
     previous.disabled=state.index<=0;forward.disabled=!response&&!state.selections.has(questionKey(question));
-    forward.textContent=response?(state.index===state.questions.length-1?"View review result":"Next question"):"Check answer";
+    forward.textContent=response?(state.index===state.questions.length-1?"View review result":"Next question"):"Next question";
   }
   function renderQuestion(){
     const question=state.questions[state.index];if(!question){renderComplete();return;}
@@ -101,7 +101,9 @@
   }
   function selectChoice(index){
     const question=state.questions[state.index],key=questionKey(question);if(state.responses.has(key))return;state.selected=index;state.selections.set(key,index);
-    $all("[data-choice-index]").forEach(button=>{const selected=Number(button.dataset.choiceIndex)===index;button.classList.toggle("selected",selected);button.setAttribute("aria-pressed",selected?"true":"false");});updateNavigation(question,null);
+    $all("[data-choice-index]").forEach(button=>{const selected=Number(button.dataset.choiceIndex)===index;button.classList.toggle("selected",selected);button.setAttribute("aria-pressed",selected?"true":"false");});
+    // A single selection grades the item and updates missed/mastered status once.
+    submitAnswer();
   }
 
   function ensureBucket(parent,key){if(!parent[key]||typeof parent[key]!=="object") parent[key]={answered:0,correct:0};parent[key].answered=Number(parent[key].answered||0);parent[key].correct=Number(parent[key].correct||0);return parent[key];}
@@ -119,7 +121,7 @@
     recordAnswer(question,isCorrect,selectedAnswer);renderCounts();renderQuestion();
   }
   function previousQuestion(){if(state.index<=0)return;state.index-=1;renderQuestion();}
-  function forward(){const question=state.questions[state.index],key=questionKey(question);if(!state.responses.has(key)){submitAnswer();return;}state.index+=1;state.index>=state.questions.length?renderComplete():renderQuestion();}
+  function forward(){const question=state.questions[state.index],key=questionKey(question);if(!state.responses.has(key))return;state.index+=1;state.index>=state.questions.length?renderComplete():renderQuestion();}
   function renderComplete(){
     const shell=$("[data-review-shell]");
     $("[data-question-panel]").classList.add("hidden");
