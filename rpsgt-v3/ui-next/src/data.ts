@@ -22,7 +22,7 @@ export const DEMO_CASES: readonly CaseData[] = [
     artifacts: [
       { id: 'psg-report', type: 'psg_report', title: 'Sample PSG report',
         description: 'Existing Sleep Pathways Guild fictional diagnostic teaching report',
-        src: '../sample-psg-report.html', format: 'html' },
+        src: '/sample-psg-report.html', format: 'html' },
     ],
     questions: [
       {
@@ -68,7 +68,7 @@ export const DEMO_CASES: readonly CaseData[] = [
     artifacts: [
       { id: 'pap-report', type: 'psg_report', title: 'Sample PAP titration report',
         description: 'Existing Sleep Pathways Guild fictional PAP teaching report',
-        src: '../sample-pap-titration-report.html', format: 'html' },
+        src: '/sample-pap-titration-report.html', format: 'html' },
     ],
     questions: [
       {
@@ -104,15 +104,15 @@ export const PRACTICE_TASKS: readonly { code: string; label: string }[] = [
 
 export const COMMANDS: readonly CommandItem[] = [
   { id: 'dashboard', label: 'Dashboard', description: 'Your learner overview',
-    category: 'Navigation', keywords: 'home progress', action: { type: 'href', href: '../index.html' } },
+    category: 'Navigation', keywords: 'home progress', action: { type: 'href', href: '/index.html' } },
   { id: 'practice', label: 'Practice Center', description: 'Build a focused question session',
-    category: 'Navigation', keywords: 'questions domains', action: { type: 'href', href: '../practice.html' } },
+    category: 'Navigation', keywords: 'questions domains', action: { type: 'href', href: '/practice.html' } },
   { id: 'case-index', label: 'Case Review Notebook', description: 'Browse original teaching cases',
     category: 'Navigation', keywords: 'reports cases artifacts notebook', action: { type: 'case', caseId: '' } },
   { id: 'coach', label: 'Coach Bob', description: 'Open contextual case-review guidance',
     category: 'Navigation', keywords: 'mentor help chat tips', action: { type: 'coach' } },
   { id: 'reports', label: 'Progress Reports', description: 'Review your existing study results',
-    category: 'Navigation', keywords: 'progress history scores', action: { type: 'href', href: '../reports.html' } },
+    category: 'Navigation', keywords: 'progress history scores', action: { type: 'href', href: '/reports.html' } },
   ...DEMO_CASES.map(c => ({
     id: c.id, label: c.title, description: c.category + ' · ' + c.domain,
     category: 'Case studies' as const, keywords: c.title + ' ' + c.domain + ' ' + c.category,
@@ -124,6 +124,6 @@ export const COMMANDS: readonly CommandItem[] = [
     description: 'Open this task directly in the existing Practice Center',
     category: 'Practice tasks' as const,
     keywords: task.label + ' ' + task.code + ' RPSGT',
-    action: { type: 'href' as const, href: '../practice.html?task=' + task.code + '&start=1' },
+    action: { type: 'href' as const, href: '/practice.html?task=' + task.code + '&start=1' },
   })),
 ];
