@@ -1,0 +1,89 @@
+name: RPSGT V3 guarded production release
+
+# Deliberately no push trigger. Existing live pages must never be replaced by
+# an accidental React-only build. This action deploys the EXISTING V3 Worker
+# with the compiled Case Review subdirectory added to its static assets.
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type DEPLOY_RPSGT_V3 to validate and request production release"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/main' && inputs.confirmation == 'DEPLOY_RPSGT_V3'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Case Review dependencies
+        working-directory: rpsgt-v3/ui-next
+        run: npm install --no-audit --no-fund
+      - name: Typecheck and build Case Review route
+        working-directory: rpsgt-v3/ui-next
+        run: npm run build
+      - name: Verify SPA fallback and legacy Practice and Review contracts
+        run: |
+          node rpsgt-v3/scripts/test-spa-router.mjs
+          node rpsgt-v3/scripts/test-practice-shell.mjs
+          node rpsgt-v3/scripts/test-review-system.mjs
+          test -f rpsgt-v3/case-review/index.html
+          test -d rpsgt-v3/case-review/assets
+          test -f rpsgt-v3/index.html
+          test -f rpsgt-v3/practice.html
+          test -f rpsgt-v3/review.html
+          test -f rpsgt-v3/data/math-coach/manifest.json
+      - name: Preserve exact tested SPA build
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-case-review-release
+          path: rpsgt-v3/case-review/
+          if-no-files-found: error
+          retention-days: 14
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    # In GitHub: Settings > Environments > rpsgt-v3-production
+    # MUST require reviewer approval; restrict deployment branches to main.
+    environment:
+      name: rpsgt-v3-production
+      url: https://webapp.sleeppathwaysguild.com/
+    concurrency:
+      group: rpsgt-v3-production-worker
+      cancel-in-progress: false
+    steps:
+      - name: Checkout same reviewed commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Restore tested React build
+        uses: actions/download-artifact@v4
+        with:
+          name: rpsgt-v3-case-review-release
+          path: rpsgt-v3/case-review
+      - name: Confirm both old and new pages exist before publishing
+        run: |
+          test -f rpsgt-v3/index.html
+          test -f rpsgt-v3/practice.html
+          test -f rpsgt-v3/review.html
+          test -f rpsgt-v3/case-review/index.html
+          test -f rpsgt-v3/.assetsignore
+      - name: Deploy the verified V3 Worker with all existing static assets
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: rpsgt-v3
+          command: deploy --config wrangler.jsonc
