@@ -39,7 +39,7 @@
   "guided": [
     {
       "id": "ps-guided-1",
-      "prompt": "IPAP 16 cm H2O and EPAP 10 cm H2O. Find PS.",
+      "prompt": "A bilevel PAP setting has inspiratory positive airway pressure (IPAP) 16 cm H2O and expiratory positive airway pressure (EPAP) 10 cm H2O. Calculate pressure support (IPAP minus EPAP) in cm H2O.",
       "answer": 6,
       "tolerance": 0.01,
       "unit": "cm H2O",
@@ -61,7 +61,7 @@
     },
     {
       "id": "ps-guided-retry",
-      "prompt": "IPAP 18 cm H2O and EPAP 12 cm H2O. Find PS.",
+      "prompt": "A bilevel PAP setting has inspiratory positive airway pressure (IPAP) 18 cm H2O and expiratory positive airway pressure (EPAP) 12 cm H2O. Calculate pressure support (IPAP minus EPAP) in cm H2O.",
       "answer": 6,
       "tolerance": 0.01,
       "unit": "cm H2O",
