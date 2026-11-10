@@ -114,12 +114,17 @@
     </div>
     <p data-complete-policy></p>
     <p class="completion-note">Use this result to choose your next learning action. Practice results are educational feedback, not an official BRPT score, credential decision, or passing prediction.</p>
-    <div class="completion-next-actions">
-      <button class="btn primary" type="button" data-restart-session>Practice this selection again</button>
-      <a class="btn secondary" href="review.html?list=missed">Review missed questions</a>
-      <a class="btn secondary" href="study.html">Continue Guided Study</a>
-      <a class="btn secondary" href="index.html">Return to dashboard</a>
+    <section class="completion-recommendation" data-practice-recommendation aria-labelledby="practice-next-title">
+      <div class="eyebrow">Recommended next</div>
+      <h3 id="practice-next-title" data-recommendation-title>Choose your next study step</h3>
+      <p data-recommendation-detail>Use your results to decide what to work on next.</p>
+      <a class="btn primary" href="study.html#rpsgt-domain-map" data-recommendation-link>Continue Guided Study</a>
+    </section>
+    <div class="completion-other-actions" aria-label="Other practice options">
+      <button class="btn secondary" type="button" data-restart-session>Practice this selection again</button>
       <button class="btn secondary" type="button" data-change-filters>Choose different filters</button>
+      <a class="btn secondary" href="reports.html">View reports</a>
+      <a class="btn secondary" href="index.html">Dashboard</a>
     </div>
   </div>
 </section>
