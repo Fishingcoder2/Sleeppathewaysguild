@@ -56,6 +56,7 @@ test('Guided Study exposes direct area choices instead of making learners scroll
 test('sidebar blueprint labels resolve to real D1-D4 containers and Readiness uses the same name as its destination',async({page},testInfo)=>{
   test.skip(testInfo.project.name!=='desktop-chromium','Sidebar is checked once on desktop; mobile uses the compact navigation shell.');
   await page.goto('study.html');
+  await page.locator('.sidebar-toolbox summary').click();
   for(const code of ['D1','D2','D3','D4']){
     await expect(page.locator(`.sidebar a[href="study.html#${code}"]`)).toBeVisible();
     await page.locator(`.sidebar a[href="study.html#${code}"]`).click();
@@ -69,10 +70,9 @@ test('sidebar blueprint labels resolve to real D1-D4 containers and Readiness us
 test('Continue where I left off preserves the learner section rather than dropping the study anchor',async({page})=>{
   await page.goto('study.html');
   const domainLink=page.locator('.sidebar a[href="study.html#D3"]');
-  if(!(await domainLink.isVisible())){
-    await page.locator('[data-toggle-menu]').click();
-    await expect(domainLink).toBeVisible();
-  }
+  if(!(await page.locator('.sidebar').isVisible())) await page.locator('[data-toggle-menu]').click();
+  if(!(await domainLink.isVisible())) await page.locator('.sidebar-toolbox summary').click();
+  await expect(domainLink).toBeVisible();
   await domainLink.click();
   await expectTargetNearTop(page,'#D3');
   await page.locator('.brand').click();
@@ -126,4 +126,21 @@ test('compact navigation leaves room for learning content on phone-sized screens
   await expect(page.locator('body')).toHaveClass(/rpsgt-menu-open/);
   await expect(page.locator('[data-toggle-menu]')).toHaveAttribute('aria-expanded','true');
   await expect(page.locator('.sidebar')).toBeVisible();
+});
+
+
+test('dashboard exposes one primary resume action and five top-level destinations',async({page})=>{
+  await page.goto('index.html');
+  await expect(page.locator('.sidebar > a[data-nav]')).toHaveCount(5);
+  await expect(page.locator('.home-current-focus')).toBeVisible();
+  await expect(page.locator('.main .learner-route-strip')).toHaveCount(0);
+  await expect(page.locator('[data-continue]')).toHaveAttribute('href','study.html');
+  await page.evaluate(()=>{
+    const saved=window.RPSGTStorage.load();
+    saved.lastLocation='study.html#D3';
+    window.RPSGTStorage.save(saved);
+  });
+  await page.reload();
+  await expect(page.locator('[data-continue]')).toHaveAttribute('href','study.html#D3');
+  await expect(page.locator('[data-home-resume-title]')).toContainText('study spot');
 });
