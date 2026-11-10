@@ -146,6 +146,11 @@
     const style=document.createElement("style");
     style.id="rpsgt-v3-experience-styles";
     style.textContent=`
+      .sidebar-toolbox{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+      .sidebar-toolbox>summary{cursor:pointer;display:list-item;margin:2px 4px 8px;padding:10px 12px;border-radius:11px;color:var(--navy);font-size:.88rem;font-weight:850;background:var(--sky)}
+      .sidebar-toolbox>summary:hover,.sidebar-toolbox>summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+      .sidebar-toolbox .nav-label{margin-top:12px}
+      .sidebar-toolbox .nav-link{font-size:.88rem}
       .brand-mark{overflow:hidden;background:linear-gradient(145deg,#0a356a,#0d8298);font-size:1.32rem;text-shadow:0 1px 2px rgba(0,0,0,.25)}
       .brand-copy strong{font-size:.98rem}.brand-copy span{max-width:36ch}
       .learner-route-strip{border:1px solid #c9dce6;border-top:6px solid var(--teal);border-radius:18px;background:linear-gradient(135deg,#fff,#f5fbfd);box-shadow:0 8px 24px rgba(8,43,87,.07);padding:16px}
@@ -209,35 +214,39 @@
     }
     const sidebar=document.querySelector(".sidebar");
     if(sidebar){
-      sidebar.innerHTML='\
-        <div class="nav-label">Launchpad</div>\
-        <a class="nav-link" data-nav="home" href="index.html"><span>🏠</span>Dashboard</a>\
-        <a class="nav-link" data-nav="study" href="study.html"><span>🧭</span>Guided Study</a>\
-        <a class="nav-link" href="lessons.html"><span>📖</span>Lesson Library</a>\
-        <a class="nav-link" data-nav="practice" href="practice.html"><span>📝</span>Practice Modes</a>\
-        <a class="nav-link" href="review.html?list=missed"><span>🔁</span>Missed Questions</a>\
-        <a class="nav-link" data-nav="reports" href="reports.html"><span>📊</span>Reports</a>\
-        <div class="nav-label">RPSGT Blueprint</div>\
-        <a class="nav-link" href="study.html#D1"><span>1️⃣</span>Clinical Overview &amp; Support</a>\
-        <a class="nav-link" href="study.html#D2"><span>2️⃣</span>Study Preparation &amp; Performance</a>\
-        <a class="nav-link" href="study.html#D3"><span>3️⃣</span>Scoring, Reporting &amp; Verification</a>\
-        <a class="nav-link" href="study.html#D4"><span>4️⃣</span>Treatment &amp; Intervention</a>\
-        <div class="nav-label">Applied Learning</div>\
-        <a class="nav-link" data-nav="labs" href="labs.html"><span>🧪</span>Labs &amp; Coaches</a>\
-        <a class="nav-link" href="lab-instrumentation.html"><span>🩺</span>Equipment &amp; Measurements</a>\
-        <a class="nav-link" href="math-coach.html"><span>➗</span>Math Coach</a>\
-        <a class="nav-link" href="flashcards.html"><span>🗂️</span>RPSGT Flashcards</a>\
-        <a class="nav-link" href="scoring-workstation.html"><span>🧠</span>PSG Skills Workstation</a>\
-        <a class="nav-link" href="lab-respiratory.html"><span>🫁</span>Respiratory Lab</a>\
-        <div class="nav-label">Candidate Center</div>\
-        <a class="nav-link" href="learner-guide.html"><span>❓</span>Learner Guide</a>\
-        <a class="nav-link" href="readiness.html"><span>🎯</span>Readiness Check</a>\
-        <a class="nav-link" href="mock.html"><span>🧭</span>Mock-Style Exam</a>\
-        <a class="nav-link" href="sources-disclosures.html"><span>📚</span>References &amp; Scope</a>\
-        <div class="nav-label">Guild Resources</div>\
-        <a class="nav-external-link" href="https://sleeppathwaysguild.com/ekg.2026.html" target="_blank" rel="noopener"><span>❤️</span><span>EKG Skills Lab</span><b>↗</b></a>\
-        <a class="nav-external-link" href="https://sleeppathwaysguild.com/" target="_blank" rel="noopener"><span>⌂</span><span>Guild Home</span><b>↗</b></a>\
-        <a class="sidebar-site-link" href="https://sleeppathwaysguild.com/" target="_blank" rel="noopener">sleeppathwaysguild.com ↗</a>';
+      sidebar.innerHTML=[
+        "<div class=\"nav-label\">Learning Center</div>",
+        "<a class=\"nav-link\" data-nav=\"home\" href=\"index.html\"><span>🏠</span>Dashboard</a>",
+        "<a class=\"nav-link\" data-nav=\"study\" href=\"study.html\"><span>🧭</span>Guided Study</a>",
+        "<a class=\"nav-link\" data-nav=\"practice\" href=\"practice.html\"><span>📝</span>Practice Center</a>",
+        "<a class=\"nav-link\" data-nav=\"labs\" href=\"labs.html\"><span>🧪</span>Skills Labs</a>",
+        "<a class=\"nav-link\" data-nav=\"reports\" href=\"reports.html\"><span>📊</span>Reports</a>",
+        "<details class=\"sidebar-toolbox\"><summary>More learning tools</summary><div class=\"sidebar-toolbox-links\">",
+        "<div class=\"nav-label\">Study &amp; Review</div>",
+        "<a class=\"nav-link\" href=\"lessons.html\"><span>📖</span>Lesson Library</a>",
+        "<a class=\"nav-link\" href=\"review.html?list=missed\"><span>🔁</span>Missed Questions</a>",
+        "<a class=\"nav-link\" href=\"flashcards.html\"><span>🗂️</span>RPSGT Flashcards</a>",
+        "<div class=\"nav-label\">RPSGT Blueprint</div>",
+        "<a class=\"nav-link\" href=\"study.html#D1\"><span>1️⃣</span>Clinical Overview &amp; Support</a>",
+        "<a class=\"nav-link\" href=\"study.html#D2\"><span>2️⃣</span>Study Preparation &amp; Performance</a>",
+        "<a class=\"nav-link\" href=\"study.html#D3\"><span>3️⃣</span>Scoring, Reporting &amp; Verification</a>",
+        "<a class=\"nav-link\" href=\"study.html#D4\"><span>4️⃣</span>Treatment &amp; Intervention</a>",
+        "<div class=\"nav-label\">Applied Learning</div>",
+        "<a class=\"nav-link\" href=\"lab-instrumentation.html\"><span>🩺</span>Equipment &amp; Measurements</a>",
+        "<a class=\"nav-link\" href=\"math-coach.html\"><span>➗</span>Math Coach</a>",
+        "<a class=\"nav-link\" href=\"scoring-workstation.html\"><span>🧠</span>PSG Skills Workstation</a>",
+        "<a class=\"nav-link\" href=\"lab-respiratory.html\"><span>🫁</span>Respiratory Lab</a>",
+        "<div class=\"nav-label\">Exam Preparation</div>",
+        "<a class=\"nav-link\" href=\"readiness.html\"><span>🎯</span>Readiness Check</a>",
+        "<a class=\"nav-link\" href=\"mock.html\"><span>🧭</span>Mock-Style Exam</a>",
+        "<div class=\"nav-label\">Help &amp; Resources</div>",
+        "<a class=\"nav-link\" href=\"learner-guide.html\"><span>❓</span>Learner Guide</a>",
+        "<a class=\"nav-link\" href=\"sources-disclosures.html\"><span>📚</span>References &amp; Scope</a>",
+        "<a class=\"nav-external-link\" href=\"https://sleeppathwaysguild.com/ekg.2026.html\" target=\"_blank\" rel=\"noopener\"><span>❤️</span><span>EKG Skills Lab</span><b>↗</b></a>",
+        "<a class=\"nav-external-link\" href=\"https://sleeppathwaysguild.com/\" target=\"_blank\" rel=\"noopener\"><span>⌂</span><span>Guild Home</span><b>↗</b></a>",
+        "<a class=\"sidebar-site-link\" href=\"https://sleeppathwaysguild.com/\" target=\"_blank\" rel=\"noopener\">sleeppathwaysguild.com ↗</a>",
+        "</div></details>"
+      ].join('');
     }
     document.querySelectorAll("[data-open-settings]").forEach(function(button){button.addEventListener("click",openSettings);});
     document.querySelectorAll("[data-toggle-menu]").forEach(function(button){
@@ -283,9 +292,9 @@
     const destination=normalizedInternalDestination(raw);
     if(!destination||destination==="index.html") return null;
     if(/^study\.html#/.test(destination)) return {href:destination,label:"Resume Guided Study",title:"Resume your exact study spot",detail:"The app saved your last study section, so you can continue without hunting through the map."};
-    if(/^practice\.html/.test(destination)) return {href:destination,label:"Resume Practice",title:"Resume the Practice Center",detail:"Pick up from your last practice workflow, then review misses or check reports."};
+    if(/^practice\.html/.test(destination)) return {href:destination,label:"Return to Practice",title:"Return to the Practice Center",detail:"Your answered questions are recorded. A new practice session may be needed."};
     if(/^review/.test(destination)) return {href:destination,label:"Resume Review",title:"Resume your review queue",detail:"Return to the question list you were working through."};
-    if(/^(?:labs\.html|scoring-workstation\.html|lab-)/.test(destination)) return {href:destination,label:"Resume Lab",title:"Resume applied lab work",detail:"Continue the technical skill path you opened last."};
+    if(/^(?:labs\.html|scoring-workstation\.html|lab-)/.test(destination)) return {href:destination,label:"Return to Skills Lab",title:"Return to your Skills Lab",detail:"Open the last lab you visited. Saved progress and active-session behavior vary by lab."};
     if(/^reports\.html/.test(destination)) return {href:destination,label:"Open Reports",title:"Return to your reports",detail:"Use your learner evidence to decide the next task."};
     return {href:destination,label:"Resume",title:"Resume where you left off",detail:"Continue from the last learning screen saved in this browser."};
   }
@@ -332,10 +341,19 @@
       node.textContent=(Object.keys(tasks).length+Object.keys(domains).length).toLocaleString();
     });
     document.querySelectorAll("[data-progress=accuracy]").forEach(function(node){node.style.width=percent(correct,answered)+"%";});
+    const resume=displayDestination(state.lastLocation);
     document.querySelectorAll("[data-continue]").forEach(function(link){
-      const destination=state.lastLocation&&state.lastLocation!=="index.html"?state.lastLocation:"study.html";
-      link.setAttribute("href",destination);
+      link.setAttribute("href",resume?resume.href:"study.html");
+      link.textContent=resume?resume.label:"Start Guided Study";
     });
+    document.querySelectorAll("[data-home-resume-title]").forEach(function(node){
+      node.textContent=resume?resume.title:"Start your RPSGT learning path";
+    });
+    document.querySelectorAll("[data-home-resume-detail]").forEach(function(node){
+      node.textContent=resume?resume.detail:"Begin with one domain and one task. Your recorded progress is stored in this browser.";
+    });
+    const coach=document.querySelector("[data-home-recommendation] p");
+    if(coach) coach.textContent=resume?"Continue your recent learning area, then use its feedback to choose the next task.":"Choose one learning task first. Practice and Skills Labs will help you apply what you study.";
     renderLearnerRouteRecommendation();
     renderSidebarNextLinks();
     renderGuildAchievements();
@@ -345,7 +363,7 @@
     const module=currentModule();
     const route=LEARNER_ROUTES[module];
     const main=document.querySelector(".main");
-    if(!route||!main||document.querySelector('[data-lesson-reader], [data-html5-psg-workstation]')||main.querySelector("[data-learner-route-strip]")) return;
+    if(module==="home"||!route||!main||document.querySelector('[data-lesson-reader], [data-html5-psg-workstation]')||main.querySelector("[data-learner-route-strip]")) return;
     const section=document.createElement("section");
     section.className="section learner-route-strip";
     section.dataset.learnerRouteStrip="true";
@@ -378,7 +396,7 @@
   function renderSidebarNextLinks(){
     const sidebar=document.querySelector(".sidebar");
     const route=LEARNER_ROUTES[currentModule()];
-    if(!sidebar||!route) return;
+    if(currentModule()==="home"||!sidebar||!route) return;
     let host=sidebar.querySelector("[data-sidebar-next]");
     if(!host){
       host=document.createElement("section");
