@@ -12,7 +12,6 @@ test('dashboard respiratory shortcut restores saved lesson without changing asse
     window.RPSGTStorage.save(saved);
     return {trail:saved.guidedStudy.respiratoryStudyTrail,progress:saved.progress,mock:saved.mock,readiness:saved.readiness};
   });
-  await page.locator('.home-more-tools summary').click();
   await page.getByRole('link',{name:'Respiratory/PAP Study Trail',exact:true}).click();
   await expect(page).toHaveURL(/study\.html#respiratory-pap-trail$/);
   const trail=page.locator('[data-respiratory-study-trail]');
@@ -35,7 +34,6 @@ test('dashboard PSG shortcut opens moving and frozen epochs and retains full Sco
     return {progress:saved.progress,guidedStudy:saved.guidedStudy,labs:saved.labs,mock:saved.mock,readiness:saved.readiness};
   });
   const before=await learningState();
-  await page.locator('.home-more-tools summary').click();
   await page.getByRole('link',{name:'PSG Skills Workstation',exact:true}).click();
   await expect(page).toHaveURL(/scoring-workstation\.html$/);
   const host=page.locator('[data-html5-psg-workstation]');
