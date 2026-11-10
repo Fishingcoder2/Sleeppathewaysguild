@@ -89,7 +89,7 @@ export function Sidebar({
             <BookOpen size={20} aria-hidden="true" className="shrink-0" />
             {(!collapsed || mobileOpen) && <>All Learning Tools <ChevronRight size={15} className="ml-auto"/></>}
           </a>
-          {(!collapsed || mobileOpen) && <a href="/reports.html className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800"><FileText size={20}/>My Reports</a>}
+          {(!collapsed || mobileOpen) && <a href="/reports.html" className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800"><FileText size={20}/>My Reports</a>}
         </div>
       </aside>
     </>
