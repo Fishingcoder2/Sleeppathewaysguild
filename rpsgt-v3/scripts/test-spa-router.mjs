@@ -115,10 +115,10 @@ test('HEAD fallback has no body',async()=>{
 test('shortcuts preserve query strings and keep Practice in the legacy app',async()=>{
   const {env}=createEnv();
   const a=await router.fetch(req('/notebook?case=psg-report-intro'),env);
-  assert.equal(a.status,308);
+  assert.equal(a.status,307);
   assert.equal(a.headers.get('Location'),'https://webapp.sleeppathwaysguild.com/case-review/?case=psg-report-intro');
   const b=await router.fetch(req('/practice?task=D3C&start=1'),env);
-  assert.equal(b.status,308);
+  assert.equal(b.status,307);
   assert.equal(b.headers.get('Location'),'https://webapp.sleeppathwaysguild.com/practice.html?task=D3C&start=1');
 });
 
