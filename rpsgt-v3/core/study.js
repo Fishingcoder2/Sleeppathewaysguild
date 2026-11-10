@@ -101,7 +101,12 @@
     const isLast=checkpoint.currentIndex===checkpoint.questions.length-1;
     const result=checkpoint.record;
     const response=feedbackFor(question);
-    const resultBanner=checkpoint.submitted?`<div class="checkpoint-result ${result.passed?'pass':'retry'}" aria-live="polite"><h3>${result.passed?'Checkpoint passed':'Checkpoint saved—review and retry'}</h3><strong>${result.correct}/${result.total} correct · ${result.score}%</strong><p>${result.passed?'This checkpoint result is now part of your Guided Trail progress.':`Complete all ${badgeQuestionCount()} questions and score at least 80% to pass this checkpoint. Your attempt remains in checkpoint history.`}</p></div>`:'';
+    const nextStep=checkpoint.submitted
+      ?(result.passed
+        ?`<div class="checkpoint-recommended"><span class="eyebrow">Recommended next</span><p>Apply what you learned in a focused ${esc(checkpoint.taskCode)} practice session.</p><button class="btn primary" type="button" data-checkpoint-recommended="${esc(checkpoint.taskCode)}">Practice this task next</button></div>`
+        :`<div class="checkpoint-recommended"><span class="eyebrow">Recommended next</span><p>Review the task and explanations before trying this checkpoint again.</p><button class="btn primary" type="button" data-checkpoint-cancel>Return to study map</button></div>`)
+      :'';
+    const resultBanner=checkpoint.submitted?`<div class="checkpoint-result ${result.passed?'pass':'retry'}" aria-live="polite"><h3>${result.passed?'Checkpoint passed':'Checkpoint saved—review and retry'}</h3><strong>${result.correct}/${result.total} correct · ${result.score}%</strong><p>${result.passed?'This checkpoint result is now part of your Guided Trail progress.':`Complete all ${badgeQuestionCount()} questions and score at least 80% to pass this checkpoint. Your attempt remains in checkpoint history.`}</p>${nextStep}</div>`:'';
     const options=(question.options||[]).map((option,index)=>{
       const checked=selected===option;
       const correctClass=checkpoint.submitted&&option===question.answer?' correct-option':'';
@@ -257,6 +262,12 @@
     if(state.achievementOpen) return;
     const mark=event.target.closest('[data-trail-mark]');if(mark){saveTrail(engine.markTaskStudy(window.RPSGTStorage.load().guidedStudy,mark.dataset.trailMark,new Date().toISOString()));renderMap();return;}
     const start=event.target.closest('[data-checkpoint-start]');if(start){startCheckpoint(start.dataset.checkpointStart,start);return;}
+    const nextTask=event.target.closest('[data-checkpoint-recommended]');
+    if(nextTask&&state.checkpoint&&state.checkpoint.submitted&&state.checkpoint.record&&state.checkpoint.record.passed){
+      const code=nextTask.dataset.checkpointRecommended;
+      if(code===state.checkpoint.taskCode&&/^D[1-4][A-D]$/.test(code)) window.location.assign('practice.html?task='+encodeURIComponent(code)+'&start=1');
+      return;
+    }
     if(event.target.closest('[data-checkpoint-cancel]')){closeCheckpoint();return;}
     if(event.target.closest('[data-checkpoint-prev]')){moveCheckpoint(-1);return;}
     if(event.target.closest('[data-checkpoint-next]')){moveCheckpoint(1);return;}
