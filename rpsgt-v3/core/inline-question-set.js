@@ -108,7 +108,7 @@
     state.overlay=overlay;state.card=overlay.querySelector('.spg-quick-question-dialog');
     overlay.addEventListener('click',event=>{
       if(event.target===overlay){close();return;}
-      if(event.target.closest('[data-quick-set-close]')){close();return;}
+      if(event.target.closest('[data-quick-set-close], [data-quick-set-return]')){close();return;}
       const select=event.target.closest('[data-quick-set-option]');
       if(select){selectAnswer(Number(select.dataset.quickSetOption));return;}
       if(event.target.closest('[data-quick-set-next]')){next();return;}
@@ -216,7 +216,7 @@
       const next=missed
         ?{href:'review.html?list=missed',label:'Review missed questions',detail:'You missed '+missed+' question'+(missed===1?'':'s')+' in this set. Work through your saved missed-question explanations next.'}
         :{href:'study.html#rpsgt-domain-map',label:'Choose next study task',detail:'You answered every item correctly. Choose a new RPSGT task to continue learning.'};
-      body.innerHTML='<div class="spg-quick-set-results"><h3 tabindex="-1" data-quick-set-results-title>Question set complete</h3><p class="spg-quick-set-score">'+correct+' / '+state.questions.length+' correct · '+Math.round(100*correct/state.questions.length)+'%</p><p>Your answers have been added to Practice progress and Missed Question Review.</p><section class="spg-quick-set-next" aria-label="Recommended next activity"><span class="eyebrow">Recommended next</span><p>'+esc(next.detail)+'</p><a class="btn primary" data-quick-set-recommendation-link href="'+esc(next.href)+'">'+esc(next.label)+'</a></section><div class="actions"><button class="btn secondary" type="button" data-quick-set-close>Return to this lesson or lab</button><button class="btn secondary" type="button" data-quick-set-restart>Another question set</button></div></div>';
+      body.innerHTML='<div class="spg-quick-set-results"><h3 tabindex="-1" data-quick-set-results-title>Question set complete</h3><p class="spg-quick-set-score">'+correct+' / '+state.questions.length+' correct · '+Math.round(100*correct/state.questions.length)+'%</p><p>Your answers have been added to Practice progress and Missed Question Review.</p><section class="spg-quick-set-next" aria-label="Recommended next activity"><span class="eyebrow">Recommended next</span><p>'+esc(next.detail)+'</p><a class="btn primary" data-quick-set-recommendation-link href="'+esc(next.href)+'">'+esc(next.label)+'</a></section><div class="actions"><button class="btn secondary" type="button" data-quick-set-return>Return to this lesson or lab</button><button class="btn secondary" type="button" data-quick-set-restart>Another question set</button></div></div>';
       counter.textContent='Completed';previous.hidden=true;nextButton.hidden=true;
       body.scrollTop=0;
       body.querySelector('[data-quick-set-results-title]')?.focus({preventScroll:true});
