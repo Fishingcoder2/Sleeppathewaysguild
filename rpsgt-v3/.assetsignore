@@ -18,6 +18,7 @@ playwright.config.js
 playwright.config.mjs
 wrangler.jsonc
 wrangler.toml
+wrangler.case-review-release.jsonc
 
 # Keep case-review/index.html and case-review/assets/** from the verified build.
 # Keep data/**, core/**, assets/** and the existing *.html routes intact.
