@@ -3,24 +3,13 @@
   // Deployment marker: interaction-based printed study recommendations, 2026-08-07.
   "name": "rpsgt-v3-learning-center",
   "compatibility_date": "2026-04-13",
-  "main": "workers/router.js",
   "observability": {
     "enabled": true
   },
   "assets": {
     "directory": ".",
-    "binding": "ASSETS",
-    // Cloudflare auto-canonicalizes practice.html to /practice. NEVER redirect
-    // /practice back to practice.html: that creates an infinite 307 loop.
-    // Only the React notebook and its deliberate aliases require Worker code.
-    "run_worker_first": ["/case-review", "/case-review/*", "/notebook", "/notebook/"],
     "exclude": [
-      "node_modules",
-      "ui-next",
-      "workers",
-      "scripts",
-      "audits",
-      "docs",
+      "node_modules",\n      "ui-next",\n      "workers",\n      "scripts",\n      "docs",\n      "audits",
       "tests",
       "test-results",
       "playwright-report",
@@ -29,7 +18,7 @@
       "package.json",
       "package-lock.json",
       "playwright.config.js",
-      "wrangler.jsonc",
+      "wrangler.jsonc",\n      "wrangler.case-review-release.jsonc",
       ".gitignore"
     ]
   }
