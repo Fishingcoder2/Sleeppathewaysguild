@@ -174,3 +174,9 @@ body.guided-award-open{overflow:hidden}
   .guided-award-dialog,.guided-award-dialog:after,.guided-award-xp{animation:none}
   .guided-award-medal{transition:none}
 }
+/* Learner-controlled next-step recommendation after a scored badge checkpoint. */
+.checkpoint-recommended{margin-top:14px;padding:15px;border:1px solid #9ac4d1;border-radius:13px;background:#f4fbfd;text-align:left;color:#173249}
+.checkpoint-recommended .eyebrow{display:block;margin-bottom:6px}
+.checkpoint-recommended p{margin:0 0 12px;line-height:1.5}
+.checkpoint-recommended .btn.primary{min-height:46px}
+@media(max-width:620px){.checkpoint-recommended .btn.primary{width:100%}}
