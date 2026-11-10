@@ -8,7 +8,7 @@ This is a **staged, isolated** React + TypeScript + Tailwind CSS implementation 
 - **Intent-based sidebar:** Dashboard, Practice Center, Case Review Notebook, and Coach Bob are top-level options. Collapse/expand on desktop and overlay navigation on small devices. Sidebar preference is stored under its own UI-only key, not the learner record.
 - **Breadcrumbs + sticky return:** Dashboard > Case Review > category > case. Canonical deep links use `/case-review/case/<case-id>` with browser Back/Forward support; `?case=` links remain readable.
 - **Split-pane notebook:** Present the *available* static teaching report beside one-click concept checks and a Coach Bob guidance tab. Resizable splitter supports drag and arrow keys; panes stack on tablet/mobile.
-- **Missed Review modal:** Reads the existing `spg_rpsgt_v3.review.missedIds` count **without writing anything**, keeps missed questions separate from flagged items, and links to `../review.html?list=missed`. Escape, focus trap, background dismissal, focus return, and empty-list handling are included.
+- **Missed Review modal:** Reads the existing `spg_rpsgt_v3.review.missedIds` count **without writing anything**, keeps missed questions separate from flagged items, and links to `/review.html?list=missed`. Escape, focus trap, background dismissal, focus return, and empty-list handling are included.
 
 ## Paths
 
@@ -57,7 +57,7 @@ This branch is a **code prototype**, not a confirmed production deployment.
 
 ## Cloudflare release model
 
-The repo's authoritative `rpsgt-v3/wrangler.jsonc` continues to publish **all existing standalone V3 pages** from its asset directory `.`. The Worker `rpsgt-v3/workers/router.js` provides a carefully scoped fallback for `/case-review/*` and aliases `/notebook` and `/practice` without hijacking legacy routes or missing JS/JSON.
+The repo's authoritative `rpsgt-v3/wrangler.jsonc` continues to publish **all existing standalone V3 pages** and stays asset-only. The scoped Worker router at `rpsgt-v3/workers/router.js` is enabled **only** by the explicit `wrangler.case-review-release.jsonc` in a reviewed release. The experimental Worker handles `/case-review/*` and `/notebook`, but never rewrites `/practice`.
 
 Build/PR validation is configured in `.github/workflows/rpsgt-v3-case-review-react.yml`. A manual, approval-gated production workflow is staged in `.github/workflows/rpsgt-v3-production-release.yml`; **do not enable production release until the GitHub environment requires reviewers and Cloudflare's existing automatic publisher has been reconciled**.
 
