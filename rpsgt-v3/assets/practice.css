@@ -17,3 +17,12 @@
 .completion-next-actions .btn.primary{grid-column:1/-1;min-height:50px}
 @media(max-width:800px){.practice-session:not(.hidden) .question-actions{grid-template-columns:1fr}.practice-session:not(.hidden) .question-actions .btn.primary{width:100%;min-height:52px;margin:0}.practice-session:not(.hidden) .practice-question-action-row{grid-template-columns:repeat(2,minmax(0,1fr))}.practice-session:not(.hidden) .practice-question-action-row .btn{min-height:42px}.completion-next-actions{grid-template-columns:1fr}.completion-next-actions .btn.primary{grid-column:1}}
 @media(max-width:560px){.practice-session:not(.hidden) .question-actions{grid-template-columns:1fr}.practice-session:not(.hidden) .practice-question-action-row{grid-template-columns:repeat(2,minmax(0,1fr))}.completion-score-grid{grid-template-columns:1fr 1fr}.completion-score-grid .complete-score,.completion-score-grid .complete-percent{font-size:1.65rem}}
+/* One recommended handoff, with secondary choices kept visible and subdued. */
+.completion-recommendation{width:min(580px,100%);margin:18px auto;padding:20px;border:1px solid #a2c8d7;border-radius:18px;background:#eef8fb;text-align:left}
+.completion-recommendation .eyebrow{margin:0 0 4px}
+.completion-recommendation h3{font-size:clamp(1.25rem,3vw,1.55rem);margin:0 0 7px;color:var(--navy)}
+.completion-recommendation p{margin:0 0 14px;color:var(--muted);line-height:1.5}
+.completion-recommendation .btn.primary{display:inline-flex;width:100%;min-height:50px;justify-content:center;align-items:center}
+.completion-other-actions{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;max-width:720px;margin:14px auto 0}
+.completion-other-actions .btn{min-height:42px;font-size:.85rem}
+@media(max-width:620px){.completion-recommendation{padding:17px}.completion-other-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.completion-other-actions .btn{white-space:normal;padding:9px 10px}}
