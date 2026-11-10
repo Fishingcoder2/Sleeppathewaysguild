@@ -44,7 +44,7 @@
   "guided": [
     {
       "id": "isl-guided-1",
-      "prompt": "TRT 480 min, TST 410 min, WASO 50 min. Find sleep onset latency.",
+      "prompt": "The PSG has total recording time (TRT) 480 minutes, total sleep time (TST) 410 minutes, and wake after sleep onset (WASO) 50 minutes through lights on. Calculate sleep onset latency in minutes.",
       "answer": 20,
       "tolerance": 0.01,
       "unit": "minutes",
@@ -68,7 +68,7 @@
     },
     {
       "id": "isl-guided-retry",
-      "prompt": "TRT 450 min, TST 375 min, WASO 45 min. Find sleep onset latency.",
+      "prompt": "The PSG has total recording time (TRT) 450 minutes, total sleep time (TST) 375 minutes, and wake after sleep onset (WASO) 45 minutes through lights on. Calculate sleep onset latency in minutes.",
       "answer": 30,
       "tolerance": 0.01,
       "unit": "minutes",
