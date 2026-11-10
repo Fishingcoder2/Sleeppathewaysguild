@@ -212,8 +212,14 @@
     previous.hidden=false;nextButton.hidden=false;
     if(state.index>=state.questions.length){
       const correct=state.questions.filter(q=>state.answers.get(String(q.id))!==undefined&&q.options[state.answers.get(String(q.id))]===q.answer).length;
-      body.innerHTML='<div class="spg-quick-set-results"><h3>Question set complete</h3><p class="spg-quick-set-score">'+correct+' / '+state.questions.length+' correct · '+Math.round(100*correct/state.questions.length)+'%</p><p>Your answers have been added to Practice progress and Missed Question Review.</p><button class="btn secondary" type="button" data-quick-set-restart>Another question set</button></div>';
+      const missed=state.questions.length-correct;
+      const next=missed
+        ?{href:'review.html?list=missed',label:'Review missed questions',detail:'You missed '+missed+' question'+(missed===1?'':'s')+' in this set. Work through your saved missed-question explanations next.'}
+        :{href:'study.html#rpsgt-domain-map',label:'Choose next study task',detail:'You answered every item correctly. Choose a new RPSGT task to continue learning.'};
+      body.innerHTML='<div class="spg-quick-set-results"><h3 tabindex="-1" data-quick-set-results-title>Question set complete</h3><p class="spg-quick-set-score">'+correct+' / '+state.questions.length+' correct · '+Math.round(100*correct/state.questions.length)+'%</p><p>Your answers have been added to Practice progress and Missed Question Review.</p><section class="spg-quick-set-next" aria-label="Recommended next activity"><span class="eyebrow">Recommended next</span><p>'+esc(next.detail)+'</p><a class="btn primary" data-quick-set-recommendation-link href="'+esc(next.href)+'">'+esc(next.label)+'</a></section><div class="actions"><button class="btn secondary" type="button" data-quick-set-close>Return to this lesson or lab</button><button class="btn secondary" type="button" data-quick-set-restart>Another question set</button></div></div>';
       counter.textContent='Completed';previous.hidden=true;nextButton.hidden=true;
+      body.scrollTop=0;
+      body.querySelector('[data-quick-set-results-title]')?.focus({preventScroll:true});
       return;
     }
     const question=state.questions[state.index],saved=state.answers.get(String(question.id)),graded=saved!==undefined;
