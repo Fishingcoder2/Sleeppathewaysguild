@@ -1,1 +1,215 @@
-{"id":"stage-percentage","title":"Sleep Stage Percentage","shortTitle":"Stage %","category":"Sleep architecture","topic":"Stage percentage of total sleep time","formula":"Stage percentage = stage minutes ÷ TST minutes × 100","alternateFormula":"Use the same time unit for the stage and total sleep time","unit":"%","lesson":"A stage percentage describes how much of total sleep time was spent in that stage. The stage duration is the numerator and total sleep time is the denominator; wake time is not included in a sleep-stage percentage.","memoryClue":"Stage minutes are a slice of total sleep time.","coachBobNote":"Do not divide stage minutes by time in bed. For stage percentages, the denominator is total sleep time.","variables":[{"symbol":"Stage minutes","meaning":"Minutes scored in N1, N2, N3, or R","unit":"minutes"},{"symbol":"TST","meaning":"All minutes scored as sleep","unit":"minutes"},{"symbol":"Stage %","meaning":"Share of total sleep time in the selected stage","unit":"%"}],"workedExample":{"prompt":"N3 sleep totals 72 minutes and TST is 360 minutes.","steps":["Divide 72 stage minutes by 360 total sleep minutes.","The decimal is 0.20.","Multiply by 100 and report 20%."],"answer":"20%"},"guided":[{"id":"stage-guided-1","prompt":"REM sleep is 90 minutes and TST is 450 minutes. What percentage of TST is REM?","answer":20,"tolerance":0.01,"unit":"%","hint":"Divide REM minutes by total sleep minutes, then multiply by 100.","success":"Correct. 90 ÷ 450 × 100 = 20%.","commonErrors":[{"value":0.2,"tolerance":0.01,"message":"You found the decimal fraction. Multiply by 100 to report a percentage."},{"value":500,"tolerance":0.1,"message":"The fraction appears inverted. Stage minutes belong in the numerator."}]},{"id":"stage-guided-retry","prompt":"Try a similar one: N3 is 60 minutes and TST is 400 minutes. What is the N3 percentage?","answer":15,"tolerance":0.01,"unit":"%","hint":"Use 60 ÷ 400 × 100.","success":"Correct. N3 accounts for 15% of TST.","commonErrors":[]}],"independent":[{"id":"stage-independent-1","prompt":"N2 is 240 minutes and TST is 400 minutes. Calculate N2 percentage.","answer":60,"tolerance":0.01,"unit":"%","hint":"Stage minutes ÷ TST × 100."},{"id":"stage-independent-2","prompt":"N1 is 30 minutes and TST is 375 minutes. Calculate N1 percentage.","answer":8,"tolerance":0.01,"unit":"%","hint":"Use total sleep time as the denominator."},{"id":"stage-independent-3","prompt":"REM is 105 minutes and TST is 420 minutes. Calculate REM percentage.","answer":25,"tolerance":0.01,"unit":"%","hint":"Keep both time values in minutes."}],"mastery":[{"id":"stage-mastery-1","prompt":"N3 80 minutes; TST 400 minutes","answer":20,"tolerance":0.01,"unit":"%"},{"id":"stage-mastery-2","prompt":"REM 96 minutes; TST 480 minutes","answer":20,"tolerance":0.01,"unit":"%"},{"id":"stage-mastery-3","prompt":"N1 36 minutes; TST 360 minutes","answer":10,"tolerance":0.01,"unit":"%"},{"id":"stage-mastery-4","prompt":"N2 210 minutes; TST 350 minutes","answer":60,"tolerance":0.01,"unit":"%"},{"id":"stage-mastery-5","prompt":"N3 54 minutes; TST 360 minutes","answer":15,"tolerance":0.01,"unit":"%"}],"studyResources":[{"title":"Polysomnography for the Sleep Technologist","section":"Chapter 9: Poststudy scoring and report data tabulation"},{"title":"Fundamentals of Sleep Technology","section":"Chapter 42: Generating the Polysomnography Report"}]}
+{
+  "id": "stage-percentage",
+  "title": "Sleep Stage Percentage",
+  "shortTitle": "Stage %",
+  "category": "Sleep architecture",
+  "topic": "Stage percentage of total sleep time",
+  "formula": "Stage percentage = stage minutes ÷ TST minutes × 100",
+  "alternateFormula": "Use the same time unit for the stage and total sleep time",
+  "unit": "%",
+  "lesson": "A stage percentage describes how much of total sleep time was spent in that stage. The stage duration is the numerator and total sleep time is the denominator; wake time is not included in a sleep-stage percentage.",
+  "memoryClue": "Stage minutes are a slice of total sleep time.",
+  "coachBobNote": "Do not divide stage minutes by time in bed. For stage percentages, the denominator is total sleep time.",
+  "variables": [
+    {
+      "symbol": "Stage minutes",
+      "meaning": "Minutes scored in N1, N2, N3, or R",
+      "unit": "minutes"
+    },
+    {
+      "symbol": "TST",
+      "meaning": "All minutes scored as sleep",
+      "unit": "minutes"
+    },
+    {
+      "symbol": "Stage %",
+      "meaning": "Share of total sleep time in the selected stage",
+      "unit": "%"
+    }
+  ],
+  "workedExample": {
+    "prompt": "N3 sleep totals 72 minutes and TST is 360 minutes.",
+    "steps": [
+      "Divide 72 stage minutes by 360 total sleep minutes.",
+      "The decimal is 0.20.",
+      "Multiply by 100 and report 20%."
+    ],
+    "answer": "20%"
+  },
+  "guided": [
+    {
+      "id": "stage-guided-1",
+      "prompt": "REM sleep is 90 minutes and TST is 450 minutes. What percentage of TST is REM?",
+      "answer": 20,
+      "tolerance": 0.01,
+      "unit": "%",
+      "hint": "Divide REM minutes by total sleep minutes, then multiply by 100.",
+      "success": "Correct. 90 ÷ 450 × 100 = 20%.",
+      "commonErrors": [
+        {
+          "value": 0.2,
+          "tolerance": 0.01,
+          "message": "You found the decimal fraction. Multiply by 100 to report a percentage."
+        },
+        {
+          "value": 500,
+          "tolerance": 0.1,
+          "message": "The fraction appears inverted. Stage minutes belong in the numerator."
+        }
+      ],
+      "calculation": {
+        "kind": "percent",
+        "part": 90,
+        "whole": 450,
+        "stage": "REM",
+        "equation": "90 ÷ 450 × 100 = 20"
+      }
+    },
+    {
+      "id": "stage-guided-retry",
+      "prompt": "Try a similar one: N3 is 60 minutes and TST is 400 minutes. What is the N3 percentage?",
+      "answer": 15,
+      "tolerance": 0.01,
+      "unit": "%",
+      "hint": "Use 60 ÷ 400 × 100.",
+      "success": "Correct. N3 accounts for 15% of TST.",
+      "commonErrors": [],
+      "calculation": {
+        "kind": "percent",
+        "part": 60,
+        "whole": 400,
+        "stage": "N3",
+        "equation": "60 ÷ 400 × 100 = 15"
+      }
+    }
+  ],
+  "independent": [
+    {
+      "id": "stage-independent-1",
+      "prompt": "N2 sleep totals 240 minutes out of 400 minutes of total sleep time. What percentage of TST is N2?",
+      "answer": 60,
+      "tolerance": 0.01,
+      "unit": "%",
+      "hint": "Stage minutes ÷ TST × 100.",
+      "calculation": {
+        "kind": "percent",
+        "part": 240,
+        "whole": 400,
+        "stage": "N2",
+        "equation": "240 ÷ 400 × 100 = 60"
+      }
+    },
+    {
+      "id": "stage-independent-2",
+      "prompt": "N1 sleep totals 30 minutes out of 375 minutes of total sleep time. What percentage of TST is N1?",
+      "answer": 8,
+      "tolerance": 0.01,
+      "unit": "%",
+      "hint": "Use total sleep time as the denominator.",
+      "calculation": {
+        "kind": "percent",
+        "part": 30,
+        "whole": 375,
+        "stage": "N1",
+        "equation": "30 ÷ 375 × 100 = 8"
+      }
+    },
+    {
+      "id": "stage-independent-3",
+      "prompt": "REM sleep totals 105 minutes out of 420 minutes of total sleep time. What percentage of TST is REM?",
+      "answer": 25,
+      "tolerance": 0.01,
+      "unit": "%",
+      "hint": "Keep both time values in minutes.",
+      "calculation": {
+        "kind": "percent",
+        "part": 105,
+        "whole": 420,
+        "stage": "REM",
+        "equation": "105 ÷ 420 × 100 = 25"
+      }
+    }
+  ],
+  "mastery": [
+    {
+      "id": "stage-mastery-1",
+      "prompt": "N3 sleep totals 80 minutes out of 400 minutes of total sleep time. What percentage of TST is N3?",
+      "answer": 20,
+      "tolerance": 0.01,
+      "unit": "%",
+      "calculation": {
+        "kind": "percent",
+        "part": 80,
+        "whole": 400,
+        "stage": "N3",
+        "equation": "80 ÷ 400 × 100 = 20"
+      }
+    },
+    {
+      "id": "stage-mastery-2",
+      "prompt": "REM sleep totals 96 minutes out of 480 minutes of total sleep time. What percentage of TST is REM?",
+      "answer": 20,
+      "tolerance": 0.01,
+      "unit": "%",
+      "calculation": {
+        "kind": "percent",
+        "part": 96,
+        "whole": 480,
+        "stage": "REM",
+        "equation": "96 ÷ 480 × 100 = 20"
+      }
+    },
+    {
+      "id": "stage-mastery-3",
+      "prompt": "N1 sleep totals 36 minutes out of 360 minutes of total sleep time. What percentage of TST is N1?",
+      "answer": 10,
+      "tolerance": 0.01,
+      "unit": "%",
+      "calculation": {
+        "kind": "percent",
+        "part": 36,
+        "whole": 360,
+        "stage": "N1",
+        "equation": "36 ÷ 360 × 100 = 10"
+      }
+    },
+    {
+      "id": "stage-mastery-4",
+      "prompt": "N2 sleep totals 210 minutes out of 350 minutes of total sleep time. What percentage of TST is N2?",
+      "answer": 60,
+      "tolerance": 0.01,
+      "unit": "%",
+      "calculation": {
+        "kind": "percent",
+        "part": 210,
+        "whole": 350,
+        "stage": "N2",
+        "equation": "210 ÷ 350 × 100 = 60"
+      }
+    },
+    {
+      "id": "stage-mastery-5",
+      "prompt": "N3 sleep totals 54 minutes out of 360 minutes of total sleep time. What percentage of TST is N3?",
+      "answer": 15,
+      "tolerance": 0.01,
+      "unit": "%",
+      "calculation": {
+        "kind": "percent",
+        "part": 54,
+        "whole": 360,
+        "stage": "N3",
+        "equation": "54 ÷ 360 × 100 = 15"
+      }
+    }
+  ],
+  "studyResources": [
+    {
+      "title": "Polysomnography for the Sleep Technologist",
+      "section": "Chapter 9: Poststudy scoring and report data tabulation"
+    },
+    {
+      "title": "Fundamentals of Sleep Technology",
+      "section": "Chapter 42: Generating the Polysomnography Report"
+    }
+  ]
+}
