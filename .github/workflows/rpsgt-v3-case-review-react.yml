@@ -1,0 +1,34 @@
+name: Validate RPSGT V3 React Case Review
+
+on:
+  pull_request:
+    paths:
+      - 'rpsgt-v3/ui-next/**'
+      - '.github/workflows/rpsgt-v3-case-review-react.yml'
+  workflow_dispatch:
+
+jobs:
+  build-case-review:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rpsgt-v3/ui-next
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install React and Tailwind build dependencies
+        run: npm install --no-audit --no-fund
+      - name: Typecheck and build the isolated case-review workspace
+        run: npm run build
+      - name: Check static artifact was generated
+        run: |
+          test -f ../case-review/index.html
+          test -d ../case-review/assets
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpsgt-v3-case-review-preview
+          path: rpsgt-v3/case-review/
+          if-no-files-found: error
+          retention-days: 7
