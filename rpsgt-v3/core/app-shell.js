@@ -146,11 +146,8 @@
     const style=document.createElement("style");
     style.id="rpsgt-v3-experience-styles";
     style.textContent=`
-      .sidebar-toolbox{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
-      .sidebar-toolbox>summary{cursor:pointer;display:list-item;margin:2px 4px 8px;padding:10px 12px;border-radius:11px;color:var(--navy);font-size:.88rem;font-weight:850;background:var(--sky)}
-      .sidebar-toolbox>summary:hover,.sidebar-toolbox>summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-      .sidebar-toolbox .nav-label{margin-top:12px}
-      .sidebar-toolbox .nav-link{font-size:.88rem}
+      .sidebar .nav-all-tools{background:var(--sky);border:1px solid var(--line);border-radius:11px;margin-top:7px;font-weight:900;color:var(--navy)}
+      .sidebar .nav-all-tools:hover,.sidebar .nav-all-tools:focus-visible{border-color:var(--teal);outline:2px solid var(--teal);outline-offset:2px}
       .brand-mark{overflow:hidden;background:linear-gradient(145deg,#0a356a,#0d8298);font-size:1.32rem;text-shadow:0 1px 2px rgba(0,0,0,.25)}
       .brand-copy strong{font-size:.98rem}.brand-copy span{max-width:36ch}
       .learner-route-strip{border:1px solid #c9dce6;border-top:6px solid var(--teal);border-radius:18px;background:linear-gradient(135deg,#fff,#f5fbfd);box-shadow:0 8px 24px rgba(8,43,87,.07);padding:16px}
@@ -221,31 +218,11 @@
         "<a class=\"nav-link\" data-nav=\"practice\" href=\"practice.html\"><span>📝</span>Practice Center</a>",
         "<a class=\"nav-link\" data-nav=\"labs\" href=\"labs.html\"><span>🧪</span>Skills Labs</a>",
         "<a class=\"nav-link\" data-nav=\"reports\" href=\"reports.html\"><span>📊</span>Reports</a>",
-        "<details class=\"sidebar-toolbox\"><summary>More learning tools</summary><div class=\"sidebar-toolbox-links\">",
-        "<div class=\"nav-label\">Study &amp; Review</div>",
-        "<a class=\"nav-link\" href=\"lessons.html\"><span>📖</span>Lesson Library</a>",
-        "<a class=\"nav-link\" href=\"review.html?list=missed\"><span>🔁</span>Missed Questions</a>",
-        "<a class=\"nav-link\" href=\"flashcards.html\"><span>🗂️</span>RPSGT Flashcards</a>",
-        "<div class=\"nav-label\">RPSGT Blueprint</div>",
-        "<a class=\"nav-link\" href=\"study.html#D1\"><span>1️⃣</span>Clinical Overview &amp; Support</a>",
-        "<a class=\"nav-link\" href=\"study.html#D2\"><span>2️⃣</span>Study Preparation &amp; Performance</a>",
-        "<a class=\"nav-link\" href=\"study.html#D3\"><span>3️⃣</span>Scoring, Reporting &amp; Verification</a>",
-        "<a class=\"nav-link\" href=\"study.html#D4\"><span>4️⃣</span>Treatment &amp; Intervention</a>",
-        "<div class=\"nav-label\">Applied Learning</div>",
-        "<a class=\"nav-link\" href=\"lab-instrumentation.html\"><span>🩺</span>Equipment &amp; Measurements</a>",
-        "<a class=\"nav-link\" href=\"math-coach.html\"><span>➗</span>Math Coach</a>",
-        "<a class=\"nav-link\" href=\"scoring-workstation.html\"><span>🧠</span>PSG Skills Workstation</a>",
-        "<a class=\"nav-link\" href=\"lab-respiratory.html\"><span>🫁</span>Respiratory Lab</a>",
-        "<div class=\"nav-label\">Exam Preparation</div>",
+        "<div class=\"nav-label\">Exam Practice</div>",
         "<a class=\"nav-link\" href=\"readiness.html\"><span>🎯</span>Readiness Check</a>",
-        "<a class=\"nav-link\" href=\"mock.html\"><span>🧭</span>Mock-Style Exam</a>",
-        "<div class=\"nav-label\">Help &amp; Resources</div>",
-        "<a class=\"nav-link\" href=\"learner-guide.html\"><span>❓</span>Learner Guide</a>",
-        "<a class=\"nav-link\" href=\"sources-disclosures.html\"><span>📚</span>References &amp; Scope</a>",
-        "<a class=\"nav-external-link\" href=\"https://sleeppathwaysguild.com/ekg.2026.html\" target=\"_blank\" rel=\"noopener\"><span>❤️</span><span>EKG Skills Lab</span><b>↗</b></a>",
-        "<a class=\"nav-external-link\" href=\"https://sleeppathwaysguild.com/\" target=\"_blank\" rel=\"noopener\"><span>⌂</span><span>Guild Home</span><b>↗</b></a>",
-        "<a class=\"sidebar-site-link\" href=\"https://sleeppathwaysguild.com/\" target=\"_blank\" rel=\"noopener\">sleeppathwaysguild.com ↗</a>",
-        "</div></details>"
+        "<a class=\"nav-link\" href=\"mock.html\"><span>🧭</span>Mock Exam</a>",
+        "<div class=\"nav-label\">Explore More</div>",
+        "<a class=\"nav-link nav-all-tools\" data-nav=\"tools\" href=\"learning-tools.html\"><span>▦</span>All Learning Tools</a>"
       ].join('');
     }
     document.querySelectorAll("[data-open-settings]").forEach(function(button){button.addEventListener("click",openSettings);});
