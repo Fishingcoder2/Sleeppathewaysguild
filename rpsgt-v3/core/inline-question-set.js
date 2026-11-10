@@ -103,7 +103,7 @@
     if(state.overlay)return;
     const overlay=document.createElement('div');
     overlay.className='spg-quick-question-backdrop';overlay.hidden=true;
-    overlay.innerHTML='<section class="spg-quick-question-dialog" role="dialog" aria-modal="true" aria-labelledby="spg-quick-question-title" tabindex="-1"><header class="spg-quick-question-header"><div><span class="eyebrow">Guided question set</span><h2 id="spg-quick-question-title">Related practice questions</h2></div><button type="button" data-quick-set-close aria-label="Close question set">✕</button></header><div class="spg-quick-question-body" data-quick-set-body aria-live="polite"></div><footer class="spg-quick-question-footer"><button type="button" class="btn secondary" data-quick-set-previous>Previous</button><span data-quick-set-counter></span><button type="button" class="btn primary" data-quick-set-next>Check answer</button></footer></section>';
+    overlay.innerHTML='<section class="spg-quick-question-dialog" role="dialog" aria-modal="true" aria-labelledby="spg-quick-question-title" tabindex="-1"><header class="spg-quick-question-header"><div><span class="eyebrow">Guided question set</span><h2 id="spg-quick-question-title">Related practice questions</h2></div><button type="button" data-quick-set-close aria-label="Close question set">✕</button></header><div class="spg-quick-question-body" data-quick-set-body aria-live="polite"></div><footer class="spg-quick-question-footer"><button type="button" class="btn secondary" data-quick-set-previous>Previous</button><span data-quick-set-counter></span><button type="button" class="btn primary" data-quick-set-next>Next question</button></footer></section>';
     document.body.appendChild(overlay);
     state.overlay=overlay;state.card=overlay.querySelector('.spg-quick-question-dialog');
     overlay.addEventListener('click',event=>{
@@ -164,6 +164,9 @@
     const question=state.questions[state.index];
     if(!question||state.answers.has(String(question.id))||index<0||index>=question.options.length)return;
     state.selected=index;
+    // Immediately score this question once; Next only advances.
+    state.answers.set(String(question.id),index);
+    record(question,index);
     render();
   }
   function record(question,selected){
@@ -197,12 +200,7 @@
     const question=state.questions[state.index];
     if(!question){close();return;}
     const id=String(question.id);
-    if(!state.answers.has(id)){
-      if(!Number.isInteger(state.selected))return;
-      state.answers.set(id,state.selected);
-      record(question,state.selected);
-      render();return;
-    }
+    if(!state.answers.has(id))return;
     if(state.index===state.questions.length-1){state.index=state.questions.length;render();return;}
     state.index++;state.selected=null;render();
   }
@@ -223,8 +221,8 @@
     const correct=graded&&question.options[saved]===question.answer;
     const rationale=String(question.rationale||'Review the relevant textbook or current guideline for this task.');
     counter.textContent=(state.index+1)+' / '+state.questions.length;
-    nextButton.textContent=graded?(state.index===state.questions.length-1?'View results':'Next question'):'Check answer';
-    nextButton.disabled=!graded&&!Number.isInteger(state.selected);
+    nextButton.textContent=graded?(state.index===state.questions.length-1?'View results':'Next question'):'Next question';
+    nextButton.disabled=!graded;
     previous.disabled=state.index===0;
     body.innerHTML='<div class="spg-quick-set-context">'+esc(state.title)+' · Question '+(state.index+1)+' of '+state.questions.length+'</div>'+
       '<p class="spg-quick-set-prompt">'+esc(question.prompt)+'</p><fieldset class="spg-quick-set-options"><legend class="sr-only">Choose one answer</legend>'+
