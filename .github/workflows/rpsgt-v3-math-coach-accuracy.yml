@@ -1,0 +1,34 @@
+name: Validate RPSGT V3 Math Coach accuracy
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'rpsgt-v3/data/math-coach/**'
+      - 'rpsgt-v3/core/math-coach*.js'
+      - 'rpsgt-v3/scripts/test-math-coach*.mjs'
+      - 'rpsgt-v3/tests/browser/math-coach-accuracy.spec.mjs'
+      - '.github/workflows/rpsgt-v3-math-coach-accuracy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  math-coach-accuracy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rpsgt-v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate all 120 original numerical teaching questions
+        run: node scripts/test-math-coach-accuracy.mjs
+      - name: Validate staged learning and durable mastery
+        run: node scripts/test-math-coach-system.mjs
+      - name: Validate Math Coach module syntax, markup and question controls
+        run: node scripts/test-math-coach-shell.mjs

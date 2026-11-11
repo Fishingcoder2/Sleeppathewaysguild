@@ -1,1 +1,190 @@
-{"id":"epoch-time","title":"Epoch Time Conversion","shortTitle":"Epochs","category":"Report math & indexes","topic":"Epoch and minute conversion","formula":"minutes = epochs × 0.5","alternateFormula":"epochs = minutes × 2","unit":"minutes","lesson":"A standard sleep-staging epoch is 30 seconds, which is 0.5 minute. Convert epochs to minutes by multiplying by 0.5; convert minutes to epochs by multiplying by 2.","memoryClue":"Two 30-second epochs make one minute.","coachBobNote":"Before calculating, decide which direction you are converting: epochs to minutes or minutes to epochs.","variables":[{"symbol":"epochs","meaning":"Number of 30-second scoring epochs","unit":"epochs"},{"symbol":"minutes","meaning":"Elapsed time represented by the epochs","unit":"minutes"}],"workedExample":{"prompt":"A sleep stage occupies 84 epochs. How many minutes is that?","steps":["Each epoch is 0.5 minute.","Multiply 84 epochs by 0.5 minute per epoch.","Report 42 minutes."],"answer":"42 minutes"},"guided":[{"id":"epoch-guided-1","prompt":"Convert 120 epochs to minutes.","answer":60,"tolerance":0.01,"unit":"minutes","hint":"Multiply the number of epochs by 0.5.","success":"Correct. 120 × 0.5 = 60 minutes.","commonErrors":[{"value":240,"tolerance":0.01,"message":"That conversion went in the opposite direction. Epochs to minutes means multiply by 0.5, not 2."}]},{"id":"epoch-guided-retry","prompt":"Convert 48 epochs to minutes.","answer":24,"tolerance":0.01,"unit":"minutes","hint":"Two epochs equal one minute.","success":"Correct. 48 epochs represent 24 minutes."}],"independent":[{"id":"epoch-independent-1","prompt":"Convert 70 epochs to minutes.","answer":35,"tolerance":0.01,"unit":"minutes","hint":"Use epochs × 0.5."},{"id":"epoch-independent-2","prompt":"Convert 150 epochs to minutes.","answer":75,"tolerance":0.01,"unit":"minutes","hint":"Use epochs × 0.5."},{"id":"epoch-independent-3","prompt":"Convert 96 epochs to minutes.","answer":48,"tolerance":0.01,"unit":"minutes","hint":"Use epochs × 0.5."}],"mastery":[{"id":"epoch-mastery-1","prompt":"64 epochs","answer":32,"tolerance":0.01,"unit":"minutes"},{"id":"epoch-mastery-2","prompt":"180 epochs","answer":90,"tolerance":0.01,"unit":"minutes"},{"id":"epoch-mastery-3","prompt":"54 epochs","answer":27,"tolerance":0.01,"unit":"minutes"},{"id":"epoch-mastery-4","prompt":"210 epochs","answer":105,"tolerance":0.01,"unit":"minutes"},{"id":"epoch-mastery-5","prompt":"88 epochs","answer":44,"tolerance":0.01,"unit":"minutes"}],"studyResources":[{"title":"Polysomnography for the Sleep Technologist","section":"Chapter 7: Data Acquisition Systems"}]}
+{
+  "id": "epoch-time",
+  "title": "Epoch Time Conversion",
+  "shortTitle": "Epochs",
+  "category": "Report math & indexes",
+  "topic": "Epoch and minute conversion",
+  "formula": "minutes = epochs × 0.5",
+  "alternateFormula": "epochs = minutes × 2",
+  "unit": "minutes",
+  "lesson": "A standard sleep-staging epoch is 30 seconds, which is 0.5 minute. Convert epochs to minutes by multiplying by 0.5; convert minutes to epochs by multiplying by 2.",
+  "memoryClue": "Two 30-second epochs make one minute.",
+  "coachBobNote": "Before calculating, decide which direction you are converting: epochs to minutes or minutes to epochs.",
+  "variables": [
+    {
+      "symbol": "epochs",
+      "meaning": "Number of 30-second scoring epochs",
+      "unit": "epochs"
+    },
+    {
+      "symbol": "minutes",
+      "meaning": "Elapsed time represented by the epochs",
+      "unit": "minutes"
+    }
+  ],
+  "workedExample": {
+    "prompt": "A sleep stage occupies 84 epochs. How many minutes is that?",
+    "steps": [
+      "Each epoch is 0.5 minute.",
+      "Multiply 84 epochs by 0.5 minute per epoch.",
+      "Report 42 minutes."
+    ],
+    "answer": "42 minutes"
+  },
+  "guided": [
+    {
+      "id": "epoch-guided-1",
+      "prompt": "A PSG scores 120 standard 30-second epochs. Convert the duration to minutes.",
+      "answer": 60,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "Multiply the number of epochs by 0.5.",
+      "success": "Correct. 120 × 0.5 = 60 minutes.",
+      "commonErrors": [
+        {
+          "value": 240,
+          "tolerance": 0.01,
+          "message": "That conversion went in the opposite direction. Epochs to minutes means multiply by 0.5, not 2."
+        }
+      ],
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 120,
+        "output": "minutes",
+        "equation": "120 × 0.5 = 60"
+      }
+    },
+    {
+      "id": "epoch-guided-retry",
+      "prompt": "A PSG scores 48 standard 30-second epochs. Convert the duration to minutes.",
+      "answer": 24,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "Two epochs equal one minute.",
+      "success": "Correct. 48 epochs represent 24 minutes.",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 48,
+        "output": "minutes",
+        "equation": "48 × 0.5 = 24"
+      }
+    }
+  ],
+  "independent": [
+    {
+      "id": "epoch-independent-1",
+      "prompt": "Convert 70 standard 30-second epochs to minutes.",
+      "answer": 35,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "Use epochs × 0.5.",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 70,
+        "output": "minutes",
+        "equation": "70 × 0.5 = 35"
+      }
+    },
+    {
+      "id": "epoch-independent-2",
+      "prompt": "Convert 150 standard 30-second epochs to minutes.",
+      "answer": 75,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "Use epochs × 0.5.",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 150,
+        "output": "minutes",
+        "equation": "150 × 0.5 = 75"
+      }
+    },
+    {
+      "id": "epoch-independent-3",
+      "prompt": "Convert 96 standard 30-second epochs to minutes.",
+      "answer": 48,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "hint": "Use epochs × 0.5.",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 96,
+        "output": "minutes",
+        "equation": "96 × 0.5 = 48"
+      }
+    }
+  ],
+  "mastery": [
+    {
+      "id": "epoch-mastery-1",
+      "prompt": "Convert 64 standard 30-second epochs to minutes.",
+      "answer": 32,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 64,
+        "output": "minutes",
+        "equation": "64 × 0.5 = 32"
+      }
+    },
+    {
+      "id": "epoch-mastery-2",
+      "prompt": "Convert 180 standard 30-second epochs to minutes.",
+      "answer": 90,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 180,
+        "output": "minutes",
+        "equation": "180 × 0.5 = 90"
+      }
+    },
+    {
+      "id": "epoch-mastery-3",
+      "prompt": "Convert 54 standard 30-second epochs to minutes.",
+      "answer": 27,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 54,
+        "output": "minutes",
+        "equation": "54 × 0.5 = 27"
+      }
+    },
+    {
+      "id": "epoch-mastery-4",
+      "prompt": "Convert 210 standard 30-second epochs to minutes.",
+      "answer": 105,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 210,
+        "output": "minutes",
+        "equation": "210 × 0.5 = 105"
+      }
+    },
+    {
+      "id": "epoch-mastery-5",
+      "prompt": "Convert 88 standard 30-second epochs to minutes.",
+      "answer": 44,
+      "tolerance": 0.01,
+      "unit": "minutes",
+      "calculation": {
+        "kind": "epoch",
+        "epochs": 88,
+        "output": "minutes",
+        "equation": "88 × 0.5 = 44"
+      }
+    }
+  ],
+  "studyResources": [
+    {
+      "title": "Polysomnography for the Sleep Technologist",
+      "section": "Chapter 7: Data Acquisition Systems"
+    }
+  ]
+}

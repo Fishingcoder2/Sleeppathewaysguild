@@ -1,1 +1,195 @@
-{"id":"pressure-support","title":"Bilevel Pressure Support (PS)","shortTitle":"Pressure support","category":"PAP & oxygen therapy","topic":"Bilevel PAP math","formula":"PS = IPAP − EPAP","alternateFormula":"IPAP = EPAP + PS","unit":"cm H2O","lesson":"In bilevel PAP, pressure support is the difference between inspiratory positive airway pressure and expiratory positive airway pressure. Subtract EPAP from IPAP.","memoryClue":"Pressure support is the gap between IPAP and EPAP.","coachBobNote":"Keep the direction straight: IPAP is normally the higher pressure, so PS is IPAP minus EPAP.","variables":[{"symbol":"PS","meaning":"Pressure support","unit":"cm H2O"},{"symbol":"IPAP","meaning":"Inspiratory positive airway pressure","unit":"cm H2O"},{"symbol":"EPAP","meaning":"Expiratory positive airway pressure","unit":"cm H2O"}],"workedExample":{"prompt":"IPAP is 14 cm H2O and EPAP is 8 cm H2O. Find pressure support.","steps":["Use PS = IPAP − EPAP.","Subtract 8 from 14.","Report 6 cm H2O."],"answer":"6 cm H2O"},"guided":[{"id":"ps-guided-1","prompt":"IPAP 16 cm H2O and EPAP 10 cm H2O. Find PS.","answer":6,"tolerance":0.01,"unit":"cm H2O","hint":"Subtract EPAP from IPAP.","success":"Correct. 16 − 10 = 6 cm H2O.","commonErrors":[{"value":26,"tolerance":0.01,"message":"Pressure support is a difference, not the sum of the two pressures."}]},{"id":"ps-guided-retry","prompt":"IPAP 18 cm H2O and EPAP 12 cm H2O. Find PS.","answer":6,"tolerance":0.01,"unit":"cm H2O","hint":"IPAP − EPAP.","success":"Correct. Pressure support is 6 cm H2O."}],"independent":[{"id":"ps-independent-1","prompt":"IPAP 15, EPAP 9. PS?","answer":6,"tolerance":0.01,"unit":"cm H2O","hint":"IPAP − EPAP."},{"id":"ps-independent-2","prompt":"IPAP 13, EPAP 8. PS?","answer":5,"tolerance":0.01,"unit":"cm H2O","hint":"IPAP − EPAP."},{"id":"ps-independent-3","prompt":"IPAP 20, EPAP 12. PS?","answer":8,"tolerance":0.01,"unit":"cm H2O","hint":"IPAP − EPAP."}],"mastery":[{"id":"ps-mastery-1","prompt":"IPAP 14, EPAP 9","answer":5,"tolerance":0.01,"unit":"cm H2O"},{"id":"ps-mastery-2","prompt":"IPAP 17, EPAP 11","answer":6,"tolerance":0.01,"unit":"cm H2O"},{"id":"ps-mastery-3","prompt":"IPAP 19, EPAP 13","answer":6,"tolerance":0.01,"unit":"cm H2O"},{"id":"ps-mastery-4","prompt":"IPAP 22, EPAP 14","answer":8,"tolerance":0.01,"unit":"cm H2O"},{"id":"ps-mastery-5","prompt":"IPAP 12, EPAP 7","answer":5,"tolerance":0.01,"unit":"cm H2O"}],"studyResources":[{"title":"Polysomnography for the Sleep Technologist","section":"Chapter 13: Diagnosis, Treatment, and Outcome Management of Sleep-Disordered Breathing"}]}
+{
+  "id": "pressure-support",
+  "title": "Bilevel Pressure Support (PS)",
+  "shortTitle": "Pressure support",
+  "category": "PAP & oxygen therapy",
+  "topic": "Bilevel PAP math",
+  "formula": "PS = IPAP − EPAP",
+  "alternateFormula": "IPAP = EPAP + PS",
+  "unit": "cm H2O",
+  "lesson": "In bilevel PAP, pressure support is the difference between inspiratory positive airway pressure and expiratory positive airway pressure. Subtract EPAP from IPAP.",
+  "memoryClue": "Pressure support is the gap between IPAP and EPAP.",
+  "coachBobNote": "Keep the direction straight: IPAP is normally the higher pressure, so PS is IPAP minus EPAP.",
+  "variables": [
+    {
+      "symbol": "PS",
+      "meaning": "Pressure support",
+      "unit": "cm H2O"
+    },
+    {
+      "symbol": "IPAP",
+      "meaning": "Inspiratory positive airway pressure",
+      "unit": "cm H2O"
+    },
+    {
+      "symbol": "EPAP",
+      "meaning": "Expiratory positive airway pressure",
+      "unit": "cm H2O"
+    }
+  ],
+  "workedExample": {
+    "prompt": "IPAP is 14 cm H2O and EPAP is 8 cm H2O. Find pressure support.",
+    "steps": [
+      "Use PS = IPAP − EPAP.",
+      "Subtract 8 from 14.",
+      "Report 6 cm H2O."
+    ],
+    "answer": "6 cm H2O"
+  },
+  "guided": [
+    {
+      "id": "ps-guided-1",
+      "prompt": "A bilevel PAP setting has inspiratory positive airway pressure (IPAP) 16 cm H2O and expiratory positive airway pressure (EPAP) 10 cm H2O. Calculate pressure support (IPAP minus EPAP) in cm H2O.",
+      "answer": 6,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "hint": "Subtract EPAP from IPAP.",
+      "success": "Correct. 16 − 10 = 6 cm H2O.",
+      "commonErrors": [
+        {
+          "value": 26,
+          "tolerance": 0.01,
+          "message": "Pressure support is a difference, not the sum of the two pressures."
+        }
+      ],
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 16,
+        "epap": 10,
+        "equation": "16 − 10 = 6"
+      }
+    },
+    {
+      "id": "ps-guided-retry",
+      "prompt": "A bilevel PAP setting has inspiratory positive airway pressure (IPAP) 18 cm H2O and expiratory positive airway pressure (EPAP) 12 cm H2O. Calculate pressure support (IPAP minus EPAP) in cm H2O.",
+      "answer": 6,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "hint": "IPAP − EPAP.",
+      "success": "Correct. Pressure support is 6 cm H2O.",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 18,
+        "epap": 12,
+        "equation": "18 − 12 = 6"
+      }
+    }
+  ],
+  "independent": [
+    {
+      "id": "ps-independent-1",
+      "prompt": "IPAP is 15 cm H2O and EPAP is 9 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 6,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "hint": "IPAP − EPAP.",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 15,
+        "epap": 9,
+        "equation": "15 − 9 = 6"
+      }
+    },
+    {
+      "id": "ps-independent-2",
+      "prompt": "IPAP is 13 cm H2O and EPAP is 8 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 5,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "hint": "IPAP − EPAP.",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 13,
+        "epap": 8,
+        "equation": "13 − 8 = 5"
+      }
+    },
+    {
+      "id": "ps-independent-3",
+      "prompt": "IPAP is 20 cm H2O and EPAP is 12 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 8,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "hint": "IPAP − EPAP.",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 20,
+        "epap": 12,
+        "equation": "20 − 12 = 8"
+      }
+    }
+  ],
+  "mastery": [
+    {
+      "id": "ps-mastery-1",
+      "prompt": "IPAP is 14 cm H2O and EPAP is 9 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 5,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 14,
+        "epap": 9,
+        "equation": "14 − 9 = 5"
+      }
+    },
+    {
+      "id": "ps-mastery-2",
+      "prompt": "IPAP is 17 cm H2O and EPAP is 11 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 6,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 17,
+        "epap": 11,
+        "equation": "17 − 11 = 6"
+      }
+    },
+    {
+      "id": "ps-mastery-3",
+      "prompt": "IPAP is 19 cm H2O and EPAP is 13 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 6,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 19,
+        "epap": 13,
+        "equation": "19 − 13 = 6"
+      }
+    },
+    {
+      "id": "ps-mastery-4",
+      "prompt": "IPAP is 22 cm H2O and EPAP is 14 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 8,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 22,
+        "epap": 14,
+        "equation": "22 − 14 = 8"
+      }
+    },
+    {
+      "id": "ps-mastery-5",
+      "prompt": "IPAP is 12 cm H2O and EPAP is 7 cm H2O. Calculate pressure support in cm H2O.",
+      "answer": 5,
+      "tolerance": 0.01,
+      "unit": "cm H2O",
+      "calculation": {
+        "kind": "pressure",
+        "ipap": 12,
+        "epap": 7,
+        "equation": "12 − 7 = 5"
+      }
+    }
+  ],
+  "studyResources": [
+    {
+      "title": "Polysomnography for the Sleep Technologist",
+      "section": "Chapter 13: Diagnosis, Treatment, and Outcome Management of Sleep-Disordered Breathing"
+    }
+  ]
+}
