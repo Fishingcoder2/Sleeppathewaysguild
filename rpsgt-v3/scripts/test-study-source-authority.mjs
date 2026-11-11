@@ -97,6 +97,10 @@ if(pearls3Source.edition!=='3rd ed.'||pearls3Source.isbn13!=='9781455770519'||pe
 if(pearls3Source.contentVerifiedByV3!==false||pearls3Source.structuredForLearnerMapping!==false||pearls3Source.mappingEnabled!==false) throw new Error('Sleep Medicine Pearls 3e must not be learner-mapped before direct content verification.');
 if((pearls3Source.referenceKeys||[]).length||(pearls3Source.mappedTaskCodes||[]).length||(pearls3Source.sections||[]).length) throw new Error('Sleep Medicine Pearls 3e inherited mappings before third-edition content verification.');
 if(!/Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators/i.test(pearls3Source.editionBoundary||'')) throw new Error('Sleep Medicine Pearls 3e edition-migration boundary is missing.');
+const pearls3Outline=pearls3Source.publicOutlineSections||[];
+if(pearls3Outline.length!==22||new Set(pearls3Outline.map(item=>item.id)).size!==22) throw new Error('Sleep Medicine Pearls 3e public fundamentals outline must contain 22 distinct headings.');
+if(!/^https:\/\/www\.us\.elsevierhealth\.com\/sleep-medicine-pearls-9781455770519\.html$/.test(pearls3Source.publicOutlineSourceUrl||'')) throw new Error('Sleep Medicine Pearls 3e public outline provenance is missing.');
+if(pearls3Outline.some(item=>!item.label||!Array.isArray(item.discoveryTaskCodes)||item.discoveryTaskCodes.some(code=>!/^D[1-4][A-C]$/.test(code))||item.taskCodes?.length||item.page||item.pageRange)) throw new Error('Sleep Medicine Pearls 3e public headings must not claim verified page or canonical question mappings.');
 
 const principles7=sourceDocs['principles-practice-sleep-medicine-7e'];
 if(!principles7||principles7.currentAuthority!==false||principles7.sourceRole!=='studySupport'||principles7.isbn13!=='9780323661898') throw new Error('Principles and Practice 7e identity/support boundary is incomplete.');
