@@ -1,0 +1,28 @@
+@import "tailwindcss";
+:root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+.case-split-layout {
+  display: grid;
+  min-height: min(780px, calc(100dvh - 230px));
+  grid-template-columns: minmax(0, calc(var(--case-split, 56%) - 6px)) 10px minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+.case-evidence-pane, .case-reasoning-pane { min-width: 0; min-height: 0; }
+.case-split-handle { min-height: 100%; }
+.case-tab-panel { min-height: 0; height: 100%; overflow: hidden; }
+.case-tab-panel[hidden] { display: none !important; }
+.case-reasoning-pane { min-height: min(640px, calc(100dvh - 300px)); }
+.case-artifact-canvas { min-height: 460px; }
+.case-split-handle:focus-visible { box-shadow: 0 0 0 3px rgba(14, 116, 144, .25); }
+@media (max-width: 1000px) {
+  .case-split-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; min-height: 0; }
+  .case-split-handle { display: none; }
+  .case-evidence-pane { min-height: 340px; }
+  .case-artifact-canvas { height: min(52dvh, 560px); min-height: 300px; }
+  .case-reasoning-pane { min-height: 540px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

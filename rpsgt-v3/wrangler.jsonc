@@ -10,6 +10,11 @@
     "directory": ".",
     "exclude": [
       "node_modules",
+      "ui-next",
+      "workers",
+      "scripts",
+      "docs",
+      "audits",
       "tests",
       "test-results",
       "playwright-report",
@@ -19,6 +24,7 @@
       "package-lock.json",
       "playwright.config.js",
       "wrangler.jsonc",
+      "wrangler.case-review-release.jsonc",
       ".gitignore"
     ]
   }

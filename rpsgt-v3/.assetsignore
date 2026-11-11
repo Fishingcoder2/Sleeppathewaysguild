@@ -1,0 +1,24 @@
+# Published RPSGT V3 Worker serves teaching assets only.
+# Do not publish source, scripts, tests, or private build fixtures.
+ui-next/
+workers/
+scripts/
+tests/
+audits/
+docs/
+node_modules/
+test-results/
+playwright-report/
+.gitignore
+README.md
+browser-regression-matrix.md
+package.json
+package-lock.json
+playwright.config.js
+playwright.config.mjs
+wrangler.jsonc
+wrangler.toml
+wrangler.case-review-release.jsonc
+
+# Keep case-review/index.html and case-review/assets/** from the verified build.
+# Keep data/**, core/**, assets/** and the existing *.html routes intact.
