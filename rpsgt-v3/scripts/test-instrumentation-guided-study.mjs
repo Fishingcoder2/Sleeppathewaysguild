@@ -47,6 +47,15 @@ for(const token of [
   'requestFullscreen','data-instrumentation-exit-fullscreen','data/instrumentation/guided-stations.json'
 ])assert.ok(controller.includes(token),`Guided Instrumentation controller is missing ${token}.`);
 
+const sensitivityStation=pack.stations.find(item=>item.id==='sensitivity-calibration');
+assert.ok(sensitivityStation,'Sensitivity and acquisition gain station must remain available.');
+assert.match(sensitivityStation.study.points.join(' '),/display sensitivity.*without changing previously acquired EEG samples/i,'Explain display-only scaling separately from stored acquisition.');
+assert.match(sensitivityStation.study.points.join(' '),/front-end gain.*digital conversion/i,'Explain front-end acquisition gain and its potential effect on recorded data.');
+assert.ok(controller.includes("'RPSGT-B5-S073'"),'The approved clarification must retain the original question ID.');
+assert.ok(controller.includes(".map(clarifyCheckpointQuestion)"),'Instrumentation checkpoint must use the clarified question without altering immutable bank records.');
+assert.ok(controller.includes('The acquisition settings and stored EEG samples are unchanged.'),'Clarified question must specify display-only sensitivity.');
+assert.ok(controller.includes('Analog/front-end amplifier gain is a separate acquisition setting'),'Rationale must distinguish acquisition gain from display-only scaling.');
+
 assert.equal(controller.includes('type="checkbox"'),false,'Guided Instrumentation stations must not use learner self-attestation checkboxes.');
 assert.equal(controller.includes("type='checkbox'"),false,'Guided Instrumentation stations must not use learner self-attestation checkboxes.');
 assert.equal(controller.includes('MutationObserver'),false,'Guided Instrumentation controller must remain event-driven.');
