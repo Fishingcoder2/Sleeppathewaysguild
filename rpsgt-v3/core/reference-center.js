@@ -155,7 +155,7 @@
     return true;
   }
 
-  function relevantSections(source,taskCode,topic){
+  function relevantSections(source,taskCode,topic,domain){
     let sections=allSections(source);
     if(taskCode&&taskCode!=='all'){
       const selected=state.sourceSectionsByTask.get(text(source.id))?.get(taskCode);
@@ -164,6 +164,12 @@
          const codes=Array.isArray(section.taskCodes)?section.taskCodes:section.discoveryTaskCodes;
          return !Array.isArray(codes)||!codes.length||codes.includes(taskCode);
        });
+    }
+    if(domain&&domain!=='all'&&(!taskCode||taskCode==='all')){
+      sections=sections.filter(section=>{
+        const codes=Array.isArray(section.taskCodes)?section.taskCodes:section.discoveryTaskCodes;
+        return !Array.isArray(codes)||!codes.length||codes.some(code=>code.startsWith(domain));
+      });
     }
     if(topic){
       const matching=sections.filter(section=>normalize(section.label).includes(topic));
@@ -177,7 +183,7 @@
     const title=sourceTitle(source);
     const citation=cleanCitation(source);
     const tasks=taskCodesFor(source);
-    const sections=relevantSections(source,filters.task,filters.topic);
+    const sections=relevantSections(source,filters.task,filters.topic,filters.domain);
     const url=externalUrl(source);
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
@@ -190,7 +196,7 @@
       (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
       outlineNote+
       (tasks.length?'<div class="reference-task-list" aria-label="RPSGT tasks"><span class="sr-only">RPSGT tasks: </span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
-      (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Publisher contents: 22 fundamentals topics':'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
+      (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Publisher contents: '+sections.length+' fundamentals topic'+(sections.length===1?'':'s'):'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
       (actions?'<div class="reference-actions">'+actions+'</div>':'')+
       '</article>';
   }
