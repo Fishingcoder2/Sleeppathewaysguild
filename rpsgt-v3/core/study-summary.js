@@ -241,7 +241,6 @@
     $('[data-summary-include-name]').addEventListener('change',rebuild);
     $('[data-summary-report-type]').addEventListener('change',event=>setProfile(event.target.value,true));
     $('[data-summary-print]').addEventListener('click',()=>window.print());
-    $('[data-summary-json]').addEventListener('click',()=>download(JSON.stringify({...exportSummary(),reportProfile:state.profile,reportLabel:PROFILES[state.profile].label},null,2)+'\n','application/json',filename('json')));
     $('[data-summary-csv]').addEventListener('click',()=>download(engine.toCsv(exportSummary()),'text/csv;charset=utf-8',filename('csv')));
   }
   function showError(error){const host=$('[data-summary-load]');host.className='summary-notice error';host.textContent='The study summary could not be loaded. '+error.message;}
