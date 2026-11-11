@@ -187,8 +187,8 @@
     const url=externalUrl(source);
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
-    const outlineOnly=Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length>0&&source.mappingEnabled===false;
-    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>About this outline:</strong> These topics are from the publisher\'s table of contents. Page numbers, cases, and clinical statements have not been independently verified.</p>':'';
+    const outlineOnly=source.referenceCenterActive===true&&Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length>0&&source.mappingEnabled===false;
+    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>Included for study:</strong> This third-edition reference is active for publisher-listed topic discovery. Page numbers, cases, and clinical statements have not been independently verified.</p>':'';
     const actions=affiliate||(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'');
     return '<article class="card reference-card">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
@@ -278,7 +278,7 @@
       registerTaskPlanMappings();
       const files=Array.isArray(manifest.sourceFiles)?manifest.sourceFiles:[];
       const settled=await Promise.allSettled(files.map(file=>loadJson('data/study-sources/'+file)));
-      state.sources=settled.filter(item=>item.status==='fulfilled'&&item.value&&item.value.id).map(item=>item.value);
+      state.sources=settled.filter(item=>item.status==='fulfilled'&&item.value&&item.value.id&&item.value.referenceCenterActive!==false).map(item=>item.value);
       const failed=settled.filter(item=>item.status==='rejected').length;
       populateDomains();
       populateTasks();
