@@ -14,7 +14,7 @@
     return response.json();
   }
 
-  function sourceTitle(source){return text(source.fullTitle||source.shortTitle||source.title||source.name||source.label||'Reference');}
+  function sourceTitle(source){return text(source.displayTitle||source.fullTitle||source.shortTitle||source.title||source.name||source.label||'Reference');}
 
   // INTERNAL ONLY: the authority registry remains part of source ordering and routing.
   // Do not expose registry levels, precedence rules, provenance notes, source keys, or audit wording to learners.
@@ -86,6 +86,8 @@
       ...(Array.isArray(source.mappedTaskCodes)?source.mappedTaskCodes:[]),
       ...(Array.isArray(source.taskCodes)?source.taskCodes:[]),
       ...(Array.isArray(source.sections)?source.sections.flatMap(section=>Array.isArray(section.taskCodes)?section.taskCodes:[]):[]),
+      // A public contents outline supports discovery, never source/passages approval.
+      ...(Array.isArray(source.publicOutlineSections)?source.publicOutlineSections.flatMap(section=>Array.isArray(section.discoveryTaskCodes)?section.discoveryTaskCodes:[]):[]),
       ...(Array.isArray(source.appendices)?source.appendices.flatMap(section=>Array.isArray(section.taskCodes)?section.taskCodes:[]):[]),
       ...(state.sourceTasks.has(text(source.id))?[...state.sourceTasks.get(text(source.id))]:[])
     ];
@@ -95,7 +97,8 @@
   function allSections(source){
     return [
       ...(Array.isArray(source.sections)?source.sections:[]),
-      ...(Array.isArray(source.appendices)?source.appendices:[])
+      ...(Array.isArray(source.appendices)?source.appendices:[]),
+      ...(Array.isArray(source.publicOutlineSections)?source.publicOutlineSections:[])
     ].filter(item=>item&&item.hiddenFromLearner!==true&&text(item.label));
   }
 
@@ -157,14 +160,17 @@
     if(taskCode&&taskCode!=='all'){
       const selected=state.sourceSectionsByTask.get(text(source.id))?.get(taskCode);
       if(selected&&selected.size) sections=sections.filter(section=>selected.has(text(section.id)));
-      else sections=sections.filter(section=>!Array.isArray(section.taskCodes)||!section.taskCodes.length||section.taskCodes.includes(taskCode));
+      else sections=sections.filter(section=>{
+         const codes=Array.isArray(section.taskCodes)?section.taskCodes:section.discoveryTaskCodes;
+         return !Array.isArray(codes)||!codes.length||codes.includes(taskCode);
+       });
     }
     if(topic){
       const matching=sections.filter(section=>normalize(section.label).includes(topic));
       const remaining=sections.filter(section=>!normalize(section.label).includes(topic));
       sections=matching.concat(remaining);
     }
-    return sections.slice(0,12);
+    return sections.slice(0,Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length?22:12);
   }
 
   function cardHtml(source,filters){
@@ -175,13 +181,16 @@
     const url=externalUrl(source);
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
+    const outlineOnly=Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length>0&&source.mappingEnabled===false;
+    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>About this outline:</strong> These topics are from the publisher\'s table of contents. Page numbers, cases, and clinical statements have not been independently verified.</p>':'';
     const actions=affiliate||(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'');
     return '<article class="card reference-card">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
       '<div class="reference-citation"><span class="reference-citation-label">APA-style reference</span><em>'+escapeHtml(citation)+'</em></div>'+
       (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
+      outlineNote+
       (tasks.length?'<div class="reference-task-list" aria-label="RPSGT tasks"><span class="sr-only">RPSGT tasks: </span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
-      (sections.length?'<details class="reference-sections"><summary>Relevant sections / chapters</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
+      (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Publisher contents: 22 fundamentals topics':'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
       (actions?'<div class="reference-actions">'+actions+'</div>':'')+
       '</article>';
   }
