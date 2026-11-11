@@ -270,14 +270,12 @@ test('Reports and Study Summary render from an empty learner record', async ({ p
   await expectNoHorizontalPageOverflow(page);
 });
 
-test('Study Summary triggers JSON and CSV downloads', async ({ page }) => {
+test('Study Summary offers CSV and print/PDF without JSON download', async ({ page }) => {
   await page.goto('study-summary.html');
   await expect(page.locator('[data-summary-content]')).toBeVisible();
-
-  const jsonDownloadPromise = page.waitForEvent('download');
-  await page.locator('[data-summary-json]').click();
-  const jsonDownload = await jsonDownloadPromise;
-  expect(jsonDownload.suggestedFilename()).toMatch(/\.json$/i);
+  await expect(page.locator('[data-summary-json]')).toHaveCount(0);
+  await expect(page.getByText('Download JSON')).toHaveCount(0);
+  await expect(page.locator('[data-summary-print]')).toBeVisible();
 
   const csvDownloadPromise = page.waitForEvent('download');
   await page.locator('[data-summary-csv]').click();
