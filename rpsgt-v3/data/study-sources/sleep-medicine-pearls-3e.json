@@ -3,7 +3,10 @@
   "shortTitle": "Sleep Medicine Pearls",
   "fullTitle": "Sleep Medicine Pearls",
   "edition": "3rd ed.",
-  "authors": ["Richard B. Berry", "Mary H. Wagner"],
+  "authors": [
+    "Richard B. Berry",
+    "Mary H. Wagner"
+  ],
   "publicationYear": 2014,
   "copyrightYear": 2015,
   "publisher": "Saunders/Elsevier",
@@ -25,10 +28,193 @@
   "usageStatus": "bibliographic identity verified; learner-facing content mapping intentionally pending",
   "referenceKeys": [],
   "mappedTaskCodes": [],
-  "publicOutlineStatus": "Elsevier publishes a public table of contents, but V3 has not yet reviewed the owner's Kindle content or built a verified third-edition chapter/page locator map.",
-  "bestFor": "Future case-based reinforcement after selected third-edition content is lawfully reviewed and mapped. The verified identity may be shown in the Reference Center now, but the book must not silently inherit second-edition page/case mappings.",
+  "publicOutlineStatus": "Publisher-listed fundamentals headings verified. Domain/task discovery is inferred from section titles only; chapter pages, case contents and claims have not been reviewed in the third-edition book.",
+  "bestFor": "Case-based study of PSG and recording signals, sleep testing, sleep disorders and treatment approaches. Consult current AASM and AAST publications for version-sensitive rules and clinical decisions.",
   "authorityBoundary": "BRPT-listed study support only. Current AASM Scoring Manual Version 3 controls scoring and technical rules; ICSD-3-TR controls current diagnostic classification; current AASM/AAST guidance controls version-sensitive testing, treatment, and technologist-practice content.",
   "editionBoundary": "Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators to this record. Third-edition learner mappings require direct verification from the lawful third-edition copy or another reliable exact-edition source.",
   "copyrightUse": "Store bibliographic metadata, public table-of-contents headings, verified locators, and original Sleep Pathways Guild summaries only. Do not reproduce proprietary cases, questions, figures, tracings, tables, or substantial textbook prose.",
-  "sections": []
+  "sections": [],
+  "displayTitle": "Sleep Medicine Pearls (3rd ed.)",
+  "apaCitation": "Berry, R. B., & Wagner, M. H. (2014). Sleep medicine pearls (3rd ed.). Saunders.",
+  "publicOutlineSourceUrl": "https://www.us.elsevierhealth.com/sleep-medicine-pearls-9781455770519.html",
+  "publicOutlineVerifiedAt": "2026-11-11",
+  "publicOutlineSections": [
+    {
+      "id": "SMP3-PUBLIC-F01",
+      "label": "Fundamentals of Sleep Medicine 1: Sleep Stages and Electroencephalographic Patterns",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F02",
+      "label": "Fundamentals of Sleep Medicine 2: Electroencephalographic Lead Placement",
+      "discoveryTaskCodes": [
+        "D2A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F03",
+      "label": "Fundamentals of Sleep Medicine 3: Eye Movement Monitoring",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F04",
+      "label": "Fundamentals of Sleep Medicine 4: Eye Movement Patterns",
+      "discoveryTaskCodes": [
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F05",
+      "label": "Fundamentals of Sleep Medicine 5: Chin (Submental) Electromyography",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F06",
+      "label": "Fundamentals of Sleep Medicine 6: Additional Sleep Staging Rules",
+      "discoveryTaskCodes": [
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F07",
+      "label": "Fundamentals of Sleep Medicine 7: Sleep Architecture Definitions",
+      "discoveryTaskCodes": [
+        "D3A",
+        "D3C"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F08",
+      "label": "Fundamentals of Sleep Medicine 8: Polysomnography",
+      "discoveryTaskCodes": [
+        "D2B",
+        "D2C"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F09",
+      "label": "Fundamentals of Sleep Medicine 9: Multiple Sleep Latency Test and Maintenance of Wakefulness Test",
+      "discoveryTaskCodes": [
+        "D2B",
+        "D3C"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F10",
+      "label": "Fundamentals of Sleep Medicine 10: Monitoring Respiration During Sleep",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D2C",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F11",
+      "label": "Fundamentals of Sleep Medicine 11: Excessive Daytime Sleepiness",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F12",
+      "label": "Fundamentals of Sleep Medicine 12: Respiratory Arousals",
+      "discoveryTaskCodes": [
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F13",
+      "label": "Fundamentals of Sleep Medicine 13: Treatment of Obstructive Sleep Apnea",
+      "discoveryTaskCodes": [
+        "D1C",
+        "D4A",
+        "D4B"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F14",
+      "label": "Fundamentals of Sleep Medicine 14: Positive Airway Pressure Titration",
+      "discoveryTaskCodes": [
+        "D4A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F15",
+      "label": "Fundamentals of Sleep Medicine 15: Positive Pressure Airway Treatment: Improving Acceptance & Adherence",
+      "discoveryTaskCodes": [
+        "D1B",
+        "D1C",
+        "D4A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F16",
+      "label": "Fundamentals of Sleep Medicine 16: Central Sleep Apnea",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D3A",
+        "D4A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F17",
+      "label": "Fundamentals of Sleep Medicine 17: The Restless Leg Syndrome and Periodic Leg Movements in Sleep",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F18",
+      "label": "Fundamentals of Sleep Medicine 18: Narcolepsy",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D2B",
+        "D3C"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F19",
+      "label": "Fundamentals of Sleep Medicine 19: Parasomnias",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F20",
+      "label": "Fundamentals of Sleep Medicine 20: Monitoring for Nocturnal Seizures",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D2C"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F21",
+      "label": "Fundamentals of Sleep Medicine 21: Evaluation of Insomnia",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D1B"
+      ]
+    },
+    {
+      "id": "SMP3-PUBLIC-F22",
+      "label": "Fundamentals of Sleep Medicine 22: Circadian Sleep Disorders",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D1B"
+      ]
+    }
+  ],
+  "publicOutlineScope": "Public publisher table of contents only. Navigation hints are not source-content or rule validation. No copied case text, page numbers, inherited second-edition locators or question-bank mapping.",
+  "publicOutlineChapters": 22,
+  "publicOutlineIncludesCaseText": false
 }
