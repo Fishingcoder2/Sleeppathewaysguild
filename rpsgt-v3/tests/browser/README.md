@@ -39,7 +39,7 @@ npm run test:browser:ui
 - Readiness startup and early completion.
 - Mock creation, 175-item navigator, save, reload, and resume.
 - Reports and Study Summary rendering.
-- JSON and CSV browser downloads.
+- CSV browser download and learner-facing JSON export removal; print/PDF report rendering.
 - A sampled headless Chromium print-media PDF generation check.
 
 ## What this suite does not prove
