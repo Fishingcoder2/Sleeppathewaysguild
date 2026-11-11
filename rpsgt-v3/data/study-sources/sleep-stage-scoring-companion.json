@@ -1,1 +1,30 @@
-{"id":"sleep-stage-scoring-companion","shortTitle":"Sleep Stage Scoring Companion","year":"library edition","sourceType":"visual scoring companion","bestFor":"Adult, pediatric, and infant stage-pattern recognition after checking the current AASM rule source.","copyrightUse":"Use only to design original explanations and visual-learning directions; do not reproduce proprietary examples or figures.","sections":[{"id":"stage-companion-foundations","label":"Scoring foundations and signal recognition"},{"id":"stage-companion-adult","label":"Adult sleep-stage pattern review"},{"id":"stage-companion-pediatric","label":"Pediatric and infant pattern review"},{"id":"stage-companion-examples","label":"Worked visual examples and self-check"}]}
+{
+  "id": "sleep-stage-scoring-companion",
+  "shortTitle": "Sleep Stage Scoring Companion",
+  "year": "n.d.",
+  "sourceType": "visual scoring companion",
+  "bestFor": "Adult, pediatric, and infant stage-pattern recognition after checking the current AASM rule source.",
+  "copyrightUse": "Use only to design original explanations and visual-learning directions; do not reproduce proprietary examples or figures.",
+  "sections": [
+    {
+      "id": "stage-companion-foundations",
+      "label": "Scoring foundations and signal recognition"
+    },
+    {
+      "id": "stage-companion-adult",
+      "label": "Adult sleep-stage pattern review"
+    },
+    {
+      "id": "stage-companion-pediatric",
+      "label": "Pediatric and infant pattern review"
+    },
+    {
+      "id": "stage-companion-examples",
+      "label": "Worked visual examples and self-check"
+    }
+  ],
+  "apaCitation": "Sleep stage scoring companion [Unattributed instructional slide deck]. (n.d.).",
+  "bibliographicStatus": "Author and publication date not verified; undated attribution-neutral description rather than a documented edition.",
+  "sourceRole": "studySupport",
+  "currentAuthority": false
+}
