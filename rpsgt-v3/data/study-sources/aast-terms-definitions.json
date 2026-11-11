@@ -1,13 +1,23 @@
 {
-  "id":"aast-terms-definitions",
-  "shortTitle":"AAST Terms and Definitions",
-  "publisher":"American Association of Sleep Technologists",
-  "year":"library edition",
-  "sourceType":"professional terminology reference",
-  "sourceRole":"studySupport",
-  "currentAuthority":false,
-  "authorityBoundary":"Terminology support only. This resource must not be substituted for an AAST technical guideline, technical standard, AASM scoring rule, BRPT exam policy, or other controlling professional guidance.",
-  "bestFor":"Terminology repair, abbreviations, instrumentation vocabulary, testing language, and therapy language.",
-  "copyrightUse":"Use as a terminology cross-check. Public learner content must use original definitions or properly attributed brief quotations only.",
-  "sections":[{"id":"aast-terms-core","label":"Alphabetical terminology reference"}]
+  "id": "aast-terms-definitions",
+  "shortTitle": "AAST Terms and Definitions",
+  "publisher": "American Association of Sleep Technologists",
+  "year": "2016",
+  "sourceType": "professional terminology reference",
+  "sourceRole": "studySupport",
+  "currentAuthority": false,
+  "authorityBoundary": "Terminology support only. This resource must not be substituted for an AAST technical guideline, technical standard, AASM scoring rule, BRPT exam policy, or other controlling professional guidance.",
+  "bestFor": "Terminology repair, abbreviations, instrumentation vocabulary, testing language, and therapy language.",
+  "copyrightUse": "Use as a terminology cross-check. Public learner content must use original definitions or properly attributed brief quotations only.",
+  "sections": [
+    {
+      "id": "aast-terms-core",
+      "label": "Alphabetical terminology reference"
+    }
+  ],
+  "fullTitle": "Sleep Technology Terms and Definitions",
+  "edition": "2nd ed.",
+  "publicationYear": 2016,
+  "apaCitation": "American Association of Sleep Technologists. (2016). Sleep technology terms and definitions (2nd ed.).",
+  "verifiedBibliography": "Verified against the supplied AAST handbook title and recommended-citation pages; 2016 second edition."
 }
