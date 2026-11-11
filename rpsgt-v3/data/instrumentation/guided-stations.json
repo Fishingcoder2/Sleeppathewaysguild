@@ -14,7 +14,10 @@
           "Separate a display-only change from a change that alters acquired or stored data; the same screen appearance can have very different consequences for later review."
         ]
       },
-      "visual": {"kind":"signal-path","label":"Original SPG schematic tracing a physiologic signal through patient interface, acquisition hardware, software, display, and storage."},
+      "visual": {
+        "kind": "signal-path",
+        "label": "Original SPG schematic tracing a physiologic signal through patient interface, acquisition hardware, software, display, and storage."
+      },
       "apply": {
         "prompt": "One EEG channel becomes flat while neighboring EEG channels and the rest of the study remain stable. What is the best first troubleshooting direction?",
         "options": [
@@ -44,7 +47,10 @@
           "Use channel relationships to localize the problem: shared-reference contamination should follow the reference, not every channel in the montage."
         ]
       },
-      "visual": {"kind":"shared-reference","label":"Original SPG reference-tree schematic comparing M2-referenced channels with independent M1 and bipolar pathways."},
+      "visual": {
+        "kind": "shared-reference",
+        "label": "Original SPG reference-tree schematic comparing M2-referenced channels with independent M1 and bipolar pathways."
+      },
       "apply": {
         "prompt": "F3-M2, C3-M2, E1-M2, and E2-M2 develop the same disturbance, while F4-M1, C4-M1, chin EMG, and ECG remain comparatively clean. Which pathway should be inspected first?",
         "options": [
@@ -74,7 +80,10 @@
           "Correct the patient-electrode and lead pathway before using a notch filter or other setting to cosmetically hide preventable interference."
         ]
       },
-      "visual": {"kind":"common-mode","label":"Original SPG schematic showing two inputs carrying shared noise plus a smaller differential physiologic signal."},
+      "visual": {
+        "kind": "common-mode",
+        "label": "Original SPG schematic showing two inputs carrying shared noise plus a smaller differential physiologic signal."
+      },
       "apply": {
         "prompt": "A derivation develops strong line-frequency interference and its two electrode impedances are markedly unequal. What should the technologist do first?",
         "options": [
@@ -96,30 +105,33 @@
       "id": "sensitivity-calibration",
       "title": "Sensitivity, gain, calibration, and display scale",
       "study": {
-        "intro": "The height of a waveform on the screen is not the same thing as the size of the physiologic signal. Sensitivity, gain, scale, and calibration determine how recorded voltage is represented visually.",
+        "intro": "An EEG waveform's height on the screen depends on how voltage is displayed. Distinguish the display-only sensitivity scale (µV/mm) from amplifier gain during acquisition and from the patient's actual voltage.",
         "points": [
-          "Changing sensitivity, gain, or display scale can make the same underlying signal appear taller or shorter without changing the patient.",
-          "Calibration provides a known reference response that helps verify the relationship between signal amplitude and the recording system.",
-          "When amplitude changes abruptly, check whether a setting changed before assuming the patient's physiology changed by the same amount.",
-          "Know whether the system applies a change only to the current display or commits it to acquisition or stored data."
+          "Changing only the software display sensitivity rescales waveform height without changing previously acquired EEG samples or the patient's physiology.",
+          "Analog/front-end gain applied before digital conversion is a different adjustment; depending on the PSG system it can affect dynamic range, saturation, and the stored signal.",
+          "Calibration uses a known reference signal to verify the displayed amplitude relationship and appropriate operation of the recording channel.",
+          "Check the equipment manual and recorded setting history to determine whether a control changes only the view, ongoing acquisition, or saved signal data."
         ]
       },
-      "visual": {"kind":"display-scale","label":"Original SPG schematic showing the same underlying waveform displayed at two different vertical scales."},
+      "visual": {
+        "kind": "display-scale",
+        "label": "Original SPG schematic showing the same underlying waveform displayed at two different vertical scales."
+      },
       "apply": {
-        "prompt": "An EEG waveform suddenly appears much taller immediately after the display sensitivity was changed, but timing and morphology are otherwise unchanged. What should be checked before calling this a physiologic amplitude increase?",
+        "prompt": "During review of a digital PSG, the EEG waveform appears taller after a display-only sensitivity adjustment. Which check best distinguishes a display change from a physiologic or acquisition change?",
         "options": [
-          "The sensitivity or gain/display-scale setting and whether the change was display-only or stored",
-          "Whether the patient entered REM solely because the waveform is taller",
-          "Whether the pulse oximeter needs a new sampling rate",
-          "Whether every electrode should be replaced"
+          "Confirm the display amplitude scale changed and that acquisition gain and stored samples stayed unchanged",
+          "Assume the patient generated higher EEG voltage because the tracing is taller",
+          "Increase the sampling rate to restore the original waveform height",
+          "Change electrode impedance values to match the new display scale"
         ],
-        "answer": "The sensitivity or gain/display-scale setting and whether the change was display-only or stored",
-        "hint": "Displayed height depends on both the recorded signal and the scale used to show it.",
-        "rationale": "A settings change can alter displayed amplitude without an equivalent physiologic change. Verify the scale and how the system applies that change before interpreting amplitude."
+        "answer": "Confirm the display amplitude scale changed and that acquisition gain and stored samples stayed unchanged",
+        "hint": "A software display scale and pre-ADC amplifier gain are not necessarily the same control.",
+        "rationale": "A display-only µV/mm change alters the vertical rendering of already acquired EEG data, not the raw recorded voltages. A pre-ADC gain change may affect recording and should be evaluated separately. Refer to Fundamentals of Sleep Technology (3rd ed.), Chapter 34."
       },
       "recap": {
-        "reviewed": "Displayed amplitude, sensitivity/gain, calibration, and display-only versus stored changes.",
-        "canDo": "Separate a true signal-amplitude change from a change caused by the way the system displays the signal."
+        "reviewed": "Display sensitivity and vertical scale, analog acquisition gain, calibration, and preserved signal samples.",
+        "canDo": "Distinguish a display-only change from acquisition gain or a true physiologic amplitude change."
       }
     },
     {
@@ -134,7 +146,10 @@
           "Do not use filtering as the first response to an electrode, movement, sweat, or hardware problem that can be corrected at its source."
         ]
       },
-      "visual": {"kind":"filter-effect","label":"Original SPG frequency schematic comparing a mixed signal with slow components attenuated and fast components attenuated."},
+      "visual": {
+        "kind": "filter-effect",
+        "label": "Original SPG frequency schematic comparing a mixed signal with slow components attenuated and fast components attenuated."
+      },
       "apply": {
         "prompt": "A channel develops large slow baseline drift after the patient becomes warm and sweaty. What is the best first response?",
         "options": [
@@ -164,7 +179,10 @@
           "Higher sampling increases data volume, so channel settings should follow current technical guidance, manufacturer capability, and facility policy rather than simply using the maximum value everywhere."
         ]
       },
-      "visual": {"kind":"sampling","label":"Original SPG schematic comparing dense digital samples with undersampling of the same continuous waveform."},
+      "visual": {
+        "kind": "sampling",
+        "label": "Original SPG schematic comparing dense digital samples with undersampling of the same continuous waveform."
+      },
       "apply": {
         "prompt": "A digital channel is configured with a sampling rate below twice the highest frequency the channel is expected to represent. What is the primary signal-integrity risk?",
         "options": [
@@ -194,7 +212,10 @@
           "Document what changed, what was checked or corrected, whether data quality was affected, and any unresolved limitation that matters to later review."
         ]
       },
-      "visual": {"kind":"troubleshooting-tree","label":"Original SPG decision schematic separating one-channel, shared-reference, and broader acquisition failures."},
+      "visual": {
+        "kind": "troubleshooting-tree",
+        "label": "Original SPG decision schematic separating one-channel, shared-reference, and broader acquisition failures."
+      },
       "apply": {
         "prompt": "Several related bioelectric channels fail together while respiratory device channels continue normally. Which approach is most efficient?",
         "options": [
