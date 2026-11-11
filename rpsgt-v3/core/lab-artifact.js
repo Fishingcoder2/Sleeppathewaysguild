@@ -304,7 +304,7 @@ document.addEventListener('error',event=>{
   const target=event.target;
   if(!target||!target.matches||!target.matches('[data-artifact-atlas-image]'))return;
   target.hidden=true;
-  if(!workspace.hidden&&!state.finished)requestAnimationFrame(renderCanvas);
+  if(!workspace.hidden&&!state.finished)renderCanvas();
 },true);
 
 startButton.addEventListener('click',start);
