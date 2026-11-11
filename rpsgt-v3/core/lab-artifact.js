@@ -71,9 +71,13 @@ function nextUnfinishedIndex(){
 }
 
 function renderCanvas(){
+  // The approved original SVG strip is the primary learner visual.
+  // Retain the deterministic PSG renderer only as a fallback for asset errors.
+  const graphic=workspace.querySelector('[data-artifact-atlas-image]');
+  if(graphic&&!graphic.hidden)return;
   const canvas=workspace.querySelector('[data-artifact-canvas]');
   const study=currentStudy();
-  if(canvas&&study)renderer.render(canvas,study);
+  if(canvas&&study){canvas.hidden=false;renderer.render(canvas,study);}
 }
 
 function optionMarkup(question){
@@ -195,7 +199,7 @@ function renderViewer(){
   state.questionOpen=false;
   state.confirming=false;
   state.questionHint=false;
-  workspace.innerHTML=`<button class="artifact-modal-close" type="button" data-artifact-close aria-label="Close Artifact Recognition Lab">×</button><div class="artifact-rotate" role="status"><div class="artifact-rotate-icon" aria-hidden="true">↻</div><strong>Rotate your phone sideways</strong><span>The Artifact Recognition Lab uses landscape mode so the PSG channels and troubleshooting controls fit together.</span></div><div class="section-head"><div><div class="eyebrow">Artifact Recognition · Case ${pos.caseIndex+1} of ${pos.caseTotal}</div><h2>${esc(study.title)}</h2></div>${statusPanelMarkup(question,pos)}</div>${caseNavMarkup()}<div class="artifact-viewer"><div class="artifact-viewer-head"><div><strong>PSG signal window</strong><small>Compare affected and neighboring channels before answering.</small></div><span class="status green">Original schematic · No patient data</span></div><div class="artifact-scroll"><canvas data-artifact-canvas aria-label="Original schematic PSG artifact tracing"></canvas></div></div>`;
+  workspace.innerHTML=`<button class="artifact-modal-close" type="button" data-artifact-close aria-label="Close Artifact Recognition Lab">×</button><div class="artifact-rotate" role="status"><div class="artifact-rotate-icon" aria-hidden="true">↻</div><strong>Rotate your phone sideways</strong><span>The Artifact Recognition Lab uses landscape mode so the PSG channels and troubleshooting controls fit together.</span></div><div class="section-head"><div><div class="eyebrow">Artifact Recognition · Case ${pos.caseIndex+1} of ${pos.caseTotal}</div><h2>${esc(study.title)}</h2></div>${statusPanelMarkup(question,pos)}</div>${caseNavMarkup()}<div class="artifact-viewer"><div class="artifact-viewer-head"><div><strong>PSG signal window</strong><small>Compare affected and neighboring channels before answering.</small></div><span class="status green">Original figure · Synthetic signal</span></div><div class="artifact-scroll">${study.visualAsset?`<img class="artifact-psg-illustration" data-artifact-atlas-image src="${esc(study.visualAsset)}" alt="${esc(study.visualAlt||'Original synthetic multi-channel PSG comparison.')}" width="1560" height="752" decoding="async" loading="eager"><canvas data-artifact-canvas hidden aria-label="Fallback synthetic PSG waveform"></canvas>`:`<canvas data-artifact-canvas aria-label="Original schematic PSG artifact tracing"></canvas>`}</div><p class="artifact-atlas-caption">Original teaching strip · ${esc(study.visualWindowSeconds||study.durationSeconds)}-second view · Not a patient recording. Inspect channel distribution, timing, and independent references before making your decision.</p></div>`;
   requestAnimationFrame(renderCanvas);
 }
 
@@ -294,6 +298,14 @@ async function init(){
     startButton.disabled=true;
   }
 }
+
+// Image loading errors must not block a learner's attempt or alter completion.
+document.addEventListener('error',event=>{
+  const target=event.target;
+  if(!target||!target.matches||!target.matches('[data-artifact-atlas-image]'))return;
+  target.hidden=true;
+  if(!workspace.hidden&&!state.finished)requestAnimationFrame(renderCanvas);
+},true);
 
 startButton.addEventListener('click',start);
 
