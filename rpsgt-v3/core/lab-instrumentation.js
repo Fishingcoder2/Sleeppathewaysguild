@@ -9,6 +9,31 @@ const checkpointButtons=[...document.querySelectorAll('[data-instrumentation-sta
 if(!engine||!storage||!workspace||!summaryHost||!stationHost||!checkpointButtons.length)return;
 
 const state={saved:null,bank:[],pack:null,mode:null,stationIndex:0,stationStep:'study',applySelected:null,applyFeedback:null,showHint:false,confirming:null,questions:[],checkpointIndex:0,answers:{},checkpointNotice:'',record:null};
+
+// Owner-approved instrumentation checkpoint clarification (2026-11-11).
+// Preserve the immutable extracted bank record and its stable question ID;
+// clarify only this lab's learner-facing version pending a controlled cross-app release.
+const checkpointClarifications={
+  'RPSGT-B5-S073':{
+    topic:'Display sensitivity versus acquisition gain',
+    prompt:'During review of a digital PSG, a technologist changes only the EEG display sensitivity (vertical amplitude scale in µV/mm). The acquisition settings and stored EEG samples are unchanged. What is the effect?',
+    options:[
+      'The waveform appears taller or shorter on screen while the recorded EEG samples remain unchanged.',
+      'The patient\'s physiologic EEG voltage is changed by the display control.',
+      'The EEG sampling rate and frequency content are automatically altered.',
+      'The input amplifier\'s analog gain must also have changed.'
+    ],
+    answer:'The waveform appears taller or shorter on screen while the recorded EEG samples remain unchanged.',
+    rationale:'A display-only sensitivity setting rescales the vertical representation of acquired voltage; it does not modify the patient\'s signal or the stored samples. Analog/front-end amplifier gain is a separate acquisition setting and may affect recorded dynamic range or clipping, depending on the PSG system. Verify whether a control affects display, acquisition, or stored settings. See Fundamentals of Sleep Technology (3rd ed.), Chapter 34, Signal Measurement.',
+    coachBobNote:'Ask whether the setting changes only the displayed scale or affects signal acquisition. Gain and sensitivity labels vary by PSG manufacturer.',
+    studyRedirect:'Review display sensitivity (µV/mm) versus analog amplifier gain, acquisition and stored-signal integrity.'
+  }
+};
+function clarifyCheckpointQuestion(question){
+  const revision=checkpointClarifications[String(question&&question.id)];
+  return revision?{...question,...revision}:question;
+}
+
 const esc=value=>String(value==null?'':value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const formatDate=value=>value?new Date(value).toLocaleString():'Not recorded';
 async function loadJson(path){return window.RPSGTOwnerQuestionRelease.loadJson(path);}
@@ -90,7 +115,7 @@ async function init(){
     const [d2a,d2b,d2c,pack]=await Promise.all(['data/question-bank/d2a.json','data/question-bank/d2b.json','data/question-bank/d2c.json','data/instrumentation/guided-stations.json'].map(loadJson));
     if(!pack||pack.version!=='1.0.0'||!Array.isArray(pack.stations)||pack.stations.length!==engine.STATIONS.length)throw new Error('The guided Instrumentation station pack failed its metadata contract.');
     const engineIds=engine.STATIONS.map(item=>item.id);const packIds=pack.stations.map(item=>item.id);if(JSON.stringify(engineIds)!==JSON.stringify(packIds))throw new Error('The guided Instrumentation station order does not match the durable progress record.');
-    state.pack=pack;state.bank=[...(d2a.questions||[]),...(d2b.questions||[]),...(d2c.questions||[])];
+    state.pack=pack;state.bank=[...(d2a.questions||[]),...(d2b.questions||[]),...(d2c.questions||[])].map(clarifyCheckpointQuestion);
     const eligible=engine.eligibleQuestions(state.bank);if(eligible.length<engine.SESSION_SIZE)throw new Error('The validated D2A/D2B/D2C banks do not contain enough eligible instrumentation questions.');
     if(!engine.TASK_CODES.every(code=>eligible.some(item=>item.taskCode===code)))throw new Error('Instrumentation checkpoint task coverage is incomplete.');
     renderSummary();renderStations();
