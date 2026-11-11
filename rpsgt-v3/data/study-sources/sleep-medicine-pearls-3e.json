@@ -25,10 +25,10 @@
   "contentVerifiedByV3": false,
   "structuredForLearnerMapping": false,
   "mappingEnabled": false,
-  "usageStatus": "bibliographic identity verified; learner-facing content mapping intentionally pending",
+  "usageStatus": "active in RPSGT Reference Center for public table-of-contents study discovery; exact third-edition case/page and question mappings remain pending",
   "referenceKeys": [],
   "mappedTaskCodes": [],
-  "publicOutlineStatus": "Publisher-listed fundamentals headings verified. Domain/task discovery is inferred from section titles only; chapter pages, case contents and claims have not been reviewed in the third-edition book.",
+  "publicOutlineStatus": "Active Reference Center contents outline using publisher-listed fundamentals headings. Domain/task discovery is inferred from public section titles; chapter pages, case contents and clinical claims have not been verified in the third-edition book.",
   "bestFor": "Case-based study of PSG and recording signals, sleep testing, sleep disorders and treatment approaches. Consult current AASM and AAST publications for version-sensitive rules and clinical decisions.",
   "authorityBoundary": "BRPT-listed study support only. Current AASM Scoring Manual Version 3 controls scoring and technical rules; ICSD-3-TR controls current diagnostic classification; current AASM/AAST guidance controls version-sensitive testing, treatment, and technologist-practice content.",
   "editionBoundary": "Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators to this record. Third-edition learner mappings require direct verification from the lawful third-edition copy or another reliable exact-edition source.",
@@ -216,5 +216,8 @@
   ],
   "publicOutlineScope": "Public publisher table of contents only. Navigation hints are not source-content or rule validation. No copied case text, page numbers, inherited second-edition locators or question-bank mapping.",
   "publicOutlineChapters": 22,
-  "publicOutlineIncludesCaseText": false
+  "publicOutlineIncludesCaseText": false,
+  "referenceCenterActive": true,
+  "referenceCenterActivationDate": "2026-11-11",
+  "referenceCenterActivationScope": "Published bibliographic record and publisher public fundamentals outline; searchable by subject, RPSGT domain and task"
 }
