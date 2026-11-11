@@ -98,6 +98,7 @@
     ].filter(item=>item&&item.hiddenFromLearner!==true&&text(item.label));
   }
 
+  function learnerSectionLabel(value){return text(value).replace(/\blocal[\s-]+PDF\s+(?=pp?\.)/gi,'digital copy, ');}
   function searchableText(source){
     const sections=allSections(source).map(item=>item.label).join(' | ');
     return normalize([
@@ -179,7 +180,7 @@
       '<div class="reference-citation"><span class="reference-citation-label">APA-style reference</span><em>'+escapeHtml(citation)+'</em></div>'+
       (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
       (tasks.length?'<div class="reference-task-list" aria-label="RPSGT tasks"><span class="sr-only">RPSGT tasks: </span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
-      (sections.length?'<details class="reference-sections"><summary>Relevant sections / chapters</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(section.label)+'</li>').join('')+'</ul></details>':'')+
+      (sections.length?'<details class="reference-sections"><summary>Relevant sections / chapters</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
       (actions?'<div class="reference-actions">'+actions+'</div>':'')+
       '</article>';
   }
