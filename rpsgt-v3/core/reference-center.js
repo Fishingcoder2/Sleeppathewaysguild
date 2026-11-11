@@ -34,12 +34,13 @@
     if(text(source.apaCitation)) return text(source.apaCitation);
     if(text(source.citation)) return text(source.citation);
     const title=sourceTitle(source);
-    const year=text(source.year||source.publicationYear);
+    const rawYear=text(source.year||source.publicationYear);
+    const year=/^(?:\d{4}[a-z]?|n\.d\.)$/i.test(rawYear)?rawYear:'n.d.';
     const organization=text(source.publisher||source.organization||source.author);
     const edition=text(source.edition);
     const parts=[];
     if(organization) parts.push(organization.replace(/[.]$/,'')+'.');
-    if(year) parts.push('('+year+').');
+    parts.push('('+year+').');
     let titlePart=title;
     if(edition&&!normalize(title).includes(normalize(edition))) titlePart+=' ('+edition+')';
     if(titlePart) parts.push(titlePart.replace(/[.]$/,'')+'.');
