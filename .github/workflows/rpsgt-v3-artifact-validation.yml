@@ -7,6 +7,7 @@ on:
     paths:
       - 'rpsgt-v3/lab-artifact.html'
       - 'rpsgt-v3/assets/artifact.css'
+      - 'rpsgt-v3/assets/artifact-atlas/**'
       - 'rpsgt-v3/assets/artifact-modal.css'
       - 'rpsgt-v3/assets/artifact-display-controls.css'
       - 'rpsgt-v3/assets/artifact-navigation-flow.css'
@@ -17,6 +18,8 @@ on:
       - 'rpsgt-v3/core/artifact-navigation-flow.js'
       - 'rpsgt-v3/data/visual/artifact-pack-1.json'
       - 'rpsgt-v3/scripts/test-artifact-lab-system.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-atlas-assets.mjs'
+      - 'rpsgt-v3/scripts/test-artifact-modal-ux.mjs'
       - 'rpsgt-v3/scripts/test-artifact-lab-shell.mjs'
       - 'rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs'
       - 'rpsgt-v3/scripts/test-artifact-shared-reference.mjs'
@@ -46,16 +49,22 @@ jobs:
           node --check rpsgt-v3/core/artifact-display-controls.js
           node --check rpsgt-v3/core/artifact-navigation-flow.js
           node --check rpsgt-v3/scripts/test-artifact-lab-system.mjs
+          node --check rpsgt-v3/scripts/test-artifact-atlas-assets.mjs
+          node --check rpsgt-v3/scripts/test-artifact-modal-ux.mjs
           node --check rpsgt-v3/scripts/test-artifact-lab-shell.mjs
           node --check rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs
           node --check rpsgt-v3/scripts/test-artifact-shared-reference.mjs
           node --check rpsgt-v3/scripts/test-artifact-navigation-flow.mjs
+      - name: Validate original PSG atlas visuals, case matching, and gallery
+        run: node rpsgt-v3/scripts/test-artifact-atlas-assets.mjs
       - name: Validate artifact answer order, physiology, and progress engine
         run: node rpsgt-v3/scripts/test-artifact-lab-system.mjs
       - name: Validate shared-reference artifact physiology
         run: node rpsgt-v3/scripts/test-artifact-shared-reference.mjs
       - name: Validate artifact learner shell
         run: node rpsgt-v3/scripts/test-artifact-lab-shell.mjs
+      - name: Validate Artifact modal and responsive viewing controls
+        run: node rpsgt-v3/scripts/test-artifact-modal-ux.mjs
       - name: Validate Artifact desktop workstation
         run: node rpsgt-v3/scripts/test-artifact-desktop-workstation.mjs
       - name: Validate Artifact desktop navigation flow
