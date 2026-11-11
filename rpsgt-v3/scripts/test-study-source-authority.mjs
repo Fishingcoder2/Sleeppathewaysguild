@@ -99,6 +99,8 @@ if((pearls3Source.referenceKeys||[]).length||(pearls3Source.mappedTaskCodes||[])
 if(!/Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators/i.test(pearls3Source.editionBoundary||'')) throw new Error('Sleep Medicine Pearls 3e edition-migration boundary is missing.');
 const pearls3Outline=pearls3Source.publicOutlineSections||[];
 if(pearls3Outline.length!==22||new Set(pearls3Outline.map(item=>item.id)).size!==22) throw new Error('Sleep Medicine Pearls 3e public fundamentals outline must contain 22 distinct headings.');
+if(pearls3Source.referenceCenterActive!==true||pearls3Source.referenceCenterActivationDate!=='2026-11-11') throw new Error('Sleep Medicine Pearls 3e must be active for reference-center study discovery.');
+if(!/publisher-listed/i.test(pearls3Source.referenceCenterActivationScope||'')&&!/publisher public/i.test(pearls3Source.referenceCenterActivationScope||'')) throw new Error('Sleep Medicine Pearls 3e activation must be limited to publisher contents.');
 if(!/^https:\/\/www\.us\.elsevierhealth\.com\/sleep-medicine-pearls-9781455770519\.html$/.test(pearls3Source.publicOutlineSourceUrl||'')) throw new Error('Sleep Medicine Pearls 3e public outline provenance is missing.');
 if(pearls3Outline.some(item=>!item.label||!Array.isArray(item.discoveryTaskCodes)||item.discoveryTaskCodes.some(code=>!/^D[1-4][A-C]$/.test(code))||item.taskCodes?.length||item.page||item.pageRange)) throw new Error('Sleep Medicine Pearls 3e public headings must not claim verified page or canonical question mappings.');
 
