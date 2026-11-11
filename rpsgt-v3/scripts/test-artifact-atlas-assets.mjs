@@ -37,11 +37,31 @@ async function inspect(path){
   const digest=createHash('sha256').update(svg).digest('hex');
   assert.ok(!hashes.has(digest),'Avoid duplicated pictures across different teaching patterns.');
   hashes.add(digest);
-  const amplitudes=traces.map(trace=>{
+  const series=traces.map(trace=>{
     const values=[...trace.matchAll(/(?:M|L)[\d.]+,([\d.]+)/g)].map(match=>Number(match[1]));
     assert.ok(values.length>=900,'Each trace needs a substantial waveform, not a stylized placeholder.');
-    return Math.max(...values)-Math.min(...values);
+    return values;
   });
+  const amplitudes=series.map(values=>Math.max(...values)-Math.min(...values));
+  const correlation=(a,b)=>{
+    const mean=v=>v.reduce((sum,x)=>sum+x,0)/v.length;
+    const ma=mean(a),mb=mean(b);
+    let cov=0,va=0,vb=0;
+    for(let i=0;i<Math.min(a.length,b.length);i++){
+      const x=a[i]-ma,y=b[i]-mb;cov+=x*y;va+=x*x;vb+=y*y;
+    }
+    return cov/Math.sqrt(va*vb);
+  };
+  if(path.endsWith('/ecg-contamination.svg')){
+    assert.ok(correlation(series[0],series[7])>.75,'Contamination must be synchronous with ECG.');
+    assert.ok(Math.abs(correlation(series[1],series[7]))<.30,'Independent neighboring EEG must not have ECG-locked contamination.');
+  }
+  if(path.endsWith('/shared-m2.svg')){
+    const start=Math.floor(series[0].length*4.5/12),end=Math.floor(series[0].length*7.75/12);
+    const middle=i=>series[i].slice(start,end);
+    assert.ok(correlation(middle(0),middle(2))>.92&&correlation(middle(0),middle(4))>.92,'M2-referenced waveforms must share temporal artifact morphology.');
+    assert.ok(Math.abs(correlation(middle(0),middle(1)))<.45,'Independent M1-referenced waveform should remain distinct.');
+  }
   return amplitudes;
 }
 for(const study of pack.studies){
