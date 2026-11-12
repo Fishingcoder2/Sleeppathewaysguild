@@ -37,14 +37,12 @@ for(const token of [
 
 for(const token of [
   'requestFullscreen','navigationUI','hide','data-artifact-fullscreen','artifact-split-view',
-  'data-artifact-split-toggle','phoneQuestionMode','Split view','Full question','fullscreenchange',
-  'AI-generated teaching schematic · Not a patient recording','Real PSG tracings vary','authentic tracings','ensureTeachingDisclosure','data-artifact-ai-disclosure'
+  'data-artifact-split-toggle','phoneQuestionMode','Split view','Full question','fullscreenchange'
 ]) if(!displayLogic.includes(token)) throw new Error(`Artifact display controls missing ${token}`);
 
 for(const token of [
   '.artifact-workspace:fullscreen','.artifact-question-view-controls','artifact-split-view',
-  'grid-template-areas:"head head" "cases cases" "viewer question"','minmax(0,58fr)','minmax(300px,42fr)',
-  '.artifact-ai-visual-disclosure'
+  'grid-template-areas:"head head" "cases cases" "viewer question"','minmax(0,58fr)','minmax(300px,42fr)'
 ]) if(!displayCss.includes(token)) throw new Error(`Artifact display-control CSS missing ${token}`);
 
 for(const token of [
@@ -55,8 +53,16 @@ for(const token of [
   'traceColor(ch)'
 ]) if(!renderer.includes(token)) throw new Error(`Artifact PSG palette missing ${token}`);
 
+// Keep long teaching/source notices outside the modal's PSG image viewport.
+if(displayLogic.includes('ensureTeachingDisclosure')||displayLogic.includes('viewer.appendChild(note)')||displayCss.includes('.artifact-ai-visual-disclosure'))
+  throw new Error('The duplicate teaching notice must not be inserted inside the PSG viewer.');
+if(!html.includes('<strong>Visual learning boundary:</strong>')||!logic.includes('artifact-atlas-caption')||!logic.includes('Not a patient recording.'))
+  throw new Error('Keep disclosure on the page and a short non-overlay image caption.');
+if(!css.includes('.artifact-workspace.artifact-modal-active .artifact-scroll{flex:1 1 auto;min-height:0;overflow:auto'))
+  throw new Error('The PSG strip must retain its own scrollable viewport.');
+
 if(!logic.includes('state.retryRequired=correct?null:key')) throw new Error('Incorrect Artifact answers must block progression until corrected.');
 if(!logic.includes('if(!allLocked()||state.retryRequired)return')) throw new Error('Artifact pack must not save before all required corrections are complete.');
 if((logic.match(/requestAnimationFrame\(renderCanvas\)/g)||[]).length>2) throw new Error('Artifact PSG redraws must remain limited to viewer render and one settled orientation redraw path.');
 
-console.log('Artifact modal UX passed: workspace layering, stable event-driven phone rendering, browser fullscreen request, landscape split view, full-screen native questions, case navigation, confirmation, hint/retry mastery flow, first-pass score preservation, PSG-style signal colors, and the AI teaching-schematic disclosure are present.');
+console.log('Artifact modal UX passed: unobstructed PSG epoch, page-level teaching disclosure, stable phone rendering, fullscreen controls, split view, question and case navigation, corrections, first-pass scoring, and tracing palette.');
