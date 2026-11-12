@@ -80,3 +80,29 @@
   .artifact-workspace.artifact-modal-active.artifact-split-view .artifact-dialog h2{font-size:.84rem}
   .artifact-workspace.artifact-modal-active.artifact-split-view .artifact-dialog p,.artifact-workspace.artifact-modal-active.artifact-split-view .artifact-dialog-actions .btn{font-size:.66rem}
 }
+
+/* Landscape mobile epoch-first viewing: do not crop six of eight PSG channels. */
+.artifact-viewer-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:0}
+.artifact-viewer-actions .status{white-space:nowrap}
+.artifact-epoch-focus-toggle,.artifact-epoch-zoom-toggle,.artifact-focus-answer{display:none}
+@media(max-width:900px) and (orientation:landscape){
+  .artifact-workspace.artifact-modal-active .artifact-atlas-caption{display:none!important}
+  .artifact-workspace.artifact-modal-active .artifact-viewer-head{display:flex;flex:0 0 auto;align-items:center;justify-content:space-between;gap:6px;padding:3px 7px;min-height:35px}
+  .artifact-workspace.artifact-modal-active .artifact-viewer-head>div:first-child strong{font-size:.82rem}
+  .artifact-workspace.artifact-modal-active .artifact-viewer-head>div:first-child small{display:none}
+  .artifact-workspace.artifact-modal-active .artifact-viewer-actions{gap:5px;flex-wrap:nowrap}
+  .artifact-workspace.artifact-modal-active .artifact-viewer-actions>.status{display:none}
+  .artifact-workspace.artifact-modal-active .artifact-viewer-actions .btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;min-height:30px;padding:4px 7px;font-size:.66rem}
+  .artifact-workspace.artifact-modal-active .artifact-viewer-actions .artifact-focus-answer{display:none}
+  .artifact-workspace.artifact-modal-active .artifact-scroll{flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-height:0;min-width:0;overflow:hidden;padding:0}
+  .artifact-workspace.artifact-modal-active .artifact-psg-illustration{display:block;flex:1 1 auto;min-width:0!important;max-width:100%!important;max-height:100%!important;width:100%!important;height:100%!important;object-fit:contain;border:0;border-radius:0}
+  .artifact-workspace.artifact-modal-active .artifact-scroll>canvas:not([hidden]){max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain}
+  .artifact-workspace.artifact-modal-active.artifact-epoch-zoom .artifact-scroll{display:block;overflow:auto;padding:4px}
+  .artifact-workspace.artifact-modal-active.artifact-epoch-zoom .artifact-psg-illustration{display:block;min-width:1160px!important;max-width:none!important;max-height:none!important;width:1160px!important;height:auto!important;object-fit:fill;flex:none}
+  .artifact-workspace.artifact-modal-active.artifact-epoch-focus{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"viewer";gap:0;padding:3px}
+  .artifact-workspace.artifact-modal-active.artifact-epoch-focus>.section-head,
+  .artifact-workspace.artifact-modal-active.artifact-epoch-focus>.artifact-case-nav,
+  .artifact-workspace.artifact-modal-active.artifact-epoch-focus>.artifact-modal-close{display:none}
+  .artifact-workspace.artifact-modal-active.artifact-epoch-focus>.artifact-viewer{grid-area:viewer;min-height:0;min-width:0;height:100%;margin:0;border-radius:10px}
+  .artifact-workspace.artifact-modal-active.artifact-epoch-focus .artifact-viewer-actions .artifact-focus-answer{display:inline-flex}
+}
