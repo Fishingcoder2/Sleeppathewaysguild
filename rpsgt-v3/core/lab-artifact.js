@@ -318,7 +318,7 @@ document.addEventListener('click',event=>{
   const focusButton=event.target.closest('[data-artifact-epoch-focus]');
   if(focusButton&&workspace.contains(focusButton)&&!workspace.hidden){
     const focused=workspace.classList.toggle('artifact-epoch-focus');
-    focusButton.textContent=focused?'Show cases':'Full epoch';
+    focusButton.textContent=focused?'Show cases':'All channels';
     focusButton.setAttribute('aria-pressed',String(focused));
     workspace.classList.remove('artifact-epoch-zoom');
     const zoomControl=workspace.querySelector('[data-artifact-epoch-zoom]');
@@ -337,7 +337,7 @@ document.addEventListener('click',event=>{
   const zoomButton=event.target.closest('[data-artifact-epoch-zoom]');
   if(!zoomButton||!workspace.contains(zoomButton)||workspace.hidden)return;
   const zoomed=workspace.classList.toggle('artifact-epoch-zoom');
-  zoomButton.textContent=zoomed?'Fit full epoch':'Zoom to inspect';
+  zoomButton.textContent=zoomed?'Fit all channels':'Zoom to inspect';
   zoomButton.setAttribute('aria-pressed',String(zoomed));
   zoomButton.setAttribute('aria-label',zoomed?'Fit all eight PSG channels on screen':'Zoom in to inspect PSG channels');
   const scroll=workspace.querySelector('.artifact-scroll');
