@@ -61,8 +61,32 @@ if(!html.includes('<strong>Visual learning boundary:</strong>')||!logic.includes
 if(!css.includes('.artifact-workspace.artifact-modal-active .artifact-scroll{flex:1 1 auto;min-height:0;overflow:auto'))
   throw new Error('The PSG strip must retain its own scrollable viewport.');
 
+// The small landscape-phone viewport must present all eight channels, not
+// only the first two above a caption or notice. Zoom is a deliberate option.
+for(const token of [
+  "artifact-epoch-focus","artifact-epoch-zoom","data-artifact-epoch-focus",
+  "data-artifact-epoch-zoom","data-artifact-focus-answer",
+  "workspace.classList.toggle('artifact-epoch-focus'",
+  "workspace.classList.remove('artifact-epoch-focus','artifact-epoch-zoom')",
+  "zoomButton.setAttribute('aria-pressed'",
+  "workspace.classList.remove('artifact-epoch-zoom')"
+])if(!logic.includes(token))throw new Error('Epoch-first mobile controls missing '+token);
+for(const token of [
+  '@media(max-width:900px) and (orientation:landscape)',
+  '.artifact-workspace.artifact-modal-active .artifact-atlas-caption{display:none!important}',
+  '.artifact-workspace.artifact-modal-active .artifact-scroll{flex:1 1 auto;display:flex;',
+  'object-fit:contain',
+  'min-width:0!important',
+  '.artifact-workspace.artifact-modal-active.artifact-epoch-zoom .artifact-scroll{display:block;overflow:auto',
+  '.artifact-workspace.artifact-modal-active.artifact-epoch-focus{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"viewer"',
+  '.artifact-workspace.artifact-modal-active.artifact-epoch-focus>.artifact-case-nav',
+  '.artifact-workspace.artifact-modal-active.artifact-epoch-focus .artifact-viewer-actions .artifact-focus-answer{display:inline-flex}'
+])if(!displayCss.includes(token))throw new Error('Mobile whole-epoch CSS missing '+token);
+if(!logic.includes('Every new case opens with all eight channels'))
+  throw new Error('Each case must reset to an all-channel overview on phones.');
+
 if(!logic.includes('state.retryRequired=correct?null:key')) throw new Error('Incorrect Artifact answers must block progression until corrected.');
 if(!logic.includes('if(!allLocked()||state.retryRequired)return')) throw new Error('Artifact pack must not save before all required corrections are complete.');
 if((logic.match(/requestAnimationFrame\(renderCanvas\)/g)||[]).length>2) throw new Error('Artifact PSG redraws must remain limited to viewer render and one settled orientation redraw path.');
 
-console.log('Artifact modal UX passed: unobstructed PSG epoch, page-level teaching disclosure, stable phone rendering, fullscreen controls, split view, question and case navigation, corrections, first-pass scoring, and tracing palette.');
+console.log('Artifact modal UX passed: landscape full-epoch overview, focus/zoom controls and image navigation, no image-blocking notice, preserved phone/desktop questions and first-pass scoring.');
