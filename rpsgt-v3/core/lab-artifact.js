@@ -198,10 +198,13 @@ function renderViewer(){
   workspace.classList.add('artifact-modal-active');
   // Every new case opens with all eight channels in view on landscape phones.
   workspace.classList.remove('artifact-epoch-zoom');
+  // Landscape phones open an image-first view instead of hiding six channels
+  // under stacked case navigation and teaching captions.
+  workspace.classList.toggle('artifact-epoch-focus',Boolean(window.matchMedia&&window.matchMedia('(max-width:900px) and (orientation:landscape)').matches));
   state.questionOpen=false;
   state.confirming=false;
   state.questionHint=false;
-  workspace.innerHTML=`<button class="artifact-modal-close" type="button" data-artifact-close aria-label="Close Artifact Recognition Lab">×</button><div class="artifact-rotate" role="status"><div class="artifact-rotate-icon" aria-hidden="true">↻</div><strong>Rotate your phone sideways</strong><span>The Artifact Recognition Lab uses landscape mode so the PSG channels and troubleshooting controls fit together.</span></div><div class="section-head"><div><div class="eyebrow">Artifact Recognition · Case ${pos.caseIndex+1} of ${pos.caseTotal}</div><h2>${esc(study.title)}</h2></div>${statusPanelMarkup(question,pos)}</div>${caseNavMarkup()}<div class="artifact-viewer"><div class="artifact-viewer-head"><div><strong>PSG signal window</strong><small>Compare affected and neighboring channels before answering.</small></div><div class="artifact-viewer-actions"><span class="status green">Synthetic · No patient data</span><button class="btn secondary artifact-epoch-zoom-toggle" type="button" data-artifact-epoch-zoom aria-pressed="false" aria-label="Zoom in to inspect PSG channels">Zoom to inspect</button></div></div><div class="artifact-scroll">${study.visualAsset?`<img class="artifact-psg-illustration" data-artifact-atlas-image src="${esc(study.visualAsset)}" alt="${esc(study.visualAlt||'Original synthetic multi-channel PSG comparison.')}" width="1560" height="752" decoding="async" loading="eager"><canvas data-artifact-canvas hidden aria-label="Fallback synthetic PSG waveform"></canvas>`:`<canvas data-artifact-canvas aria-label="Original schematic PSG artifact tracing"></canvas>`}</div><p class="artifact-atlas-caption">Original teaching strip · ${esc(study.visualWindowSeconds||study.durationSeconds)}-second view · Not a patient recording. Inspect channel distribution, timing, and independent references before making your decision.</p></div>`;
+  workspace.innerHTML=`<button class="artifact-modal-close" type="button" data-artifact-close aria-label="Close Artifact Recognition Lab">×</button><div class="artifact-rotate" role="status"><div class="artifact-rotate-icon" aria-hidden="true">↻</div><strong>Rotate your phone sideways</strong><span>The Artifact Recognition Lab uses landscape mode so the PSG channels and troubleshooting controls fit together.</span></div><div class="section-head"><div><div class="eyebrow">Artifact Recognition · Case ${pos.caseIndex+1} of ${pos.caseTotal}</div><h2>${esc(study.title)}</h2></div>${statusPanelMarkup(question,pos)}</div>${caseNavMarkup()}<div class="artifact-viewer"><div class="artifact-viewer-head"><div><strong>PSG signal window</strong><small>Compare affected and neighboring channels before answering.</small></div><div class="artifact-viewer-actions"><span class="status green">Synthetic · No patient data</span><button class="btn secondary artifact-epoch-focus-toggle" type="button" data-artifact-epoch-focus aria-pressed="true">Show cases</button><button class="btn secondary artifact-epoch-zoom-toggle" type="button" data-artifact-epoch-zoom aria-pressed="false" aria-label="Zoom in to inspect PSG channels">Zoom to inspect</button><button class="btn primary artifact-focus-answer" type="button" data-artifact-focus-answer>Answer question</button></div></div><div class="artifact-scroll">${study.visualAsset?`<img class="artifact-psg-illustration" data-artifact-atlas-image src="${esc(study.visualAsset)}" alt="${esc(study.visualAlt||'Original synthetic multi-channel PSG comparison.')}" width="1560" height="752" decoding="async" loading="eager"><canvas data-artifact-canvas hidden aria-label="Fallback synthetic PSG waveform"></canvas>`:`<canvas data-artifact-canvas aria-label="Original schematic PSG artifact tracing"></canvas>`}</div><p class="artifact-atlas-caption">Original teaching strip · ${esc(study.visualWindowSeconds||study.durationSeconds)}-second view · Not a patient recording. Inspect channel distribution, timing, and independent references before making your decision.</p></div>`;
   requestAnimationFrame(renderCanvas);
 }
 
@@ -312,6 +315,25 @@ document.addEventListener('error',event=>{
 // Landscape PSG viewer: begin with the full eight-channel figure, then allow
 // a deliberate zoom for inspecting fine signal details without hiding channels.
 document.addEventListener('click',event=>{
+  const focusButton=event.target.closest('[data-artifact-epoch-focus]');
+  if(focusButton&&workspace.contains(focusButton)&&!workspace.hidden){
+    const focused=workspace.classList.toggle('artifact-epoch-focus');
+    focusButton.textContent=focused?'Show cases':'Full epoch';
+    focusButton.setAttribute('aria-pressed',String(focused));
+    workspace.classList.remove('artifact-epoch-zoom');
+    const zoomControl=workspace.querySelector('[data-artifact-epoch-zoom]');
+    if(zoomControl){zoomControl.textContent='Zoom to inspect';zoomControl.setAttribute('aria-pressed','false');}
+    const scroll=workspace.querySelector('.artifact-scroll');
+    if(scroll){scroll.scrollTop=0;scroll.scrollLeft=0;}
+    return;
+  }
+  const focusAnswer=event.target.closest('[data-artifact-focus-answer]');
+  if(focusAnswer&&workspace.contains(focusAnswer)&&!workspace.hidden){
+    workspace.classList.remove('artifact-epoch-focus','artifact-epoch-zoom');
+    const answer=workspace.querySelector('.artifact-status-panel [data-artifact-open-question]');
+    if(answer&&!answer.disabled)answer.click();
+    return;
+  }
   const zoomButton=event.target.closest('[data-artifact-epoch-zoom]');
   if(!zoomButton||!workspace.contains(zoomButton)||workspace.hidden)return;
   const zoomed=workspace.classList.toggle('artifact-epoch-zoom');
@@ -353,6 +375,7 @@ document.addEventListener('click',event=>{
   }
 
   if(event.target.closest('[data-artifact-open-question]')){
+    workspace.classList.remove('artifact-epoch-focus','artifact-epoch-zoom');
     state.questionOpen=true;
     state.confirming=false;
     state.questionHint=false;
