@@ -149,12 +149,13 @@ test("ID in missed and mastered",()=>{
   assert.equal(report.unresolved.crossListQuestionIds[0].manualReviewRequired,true);
 });
 
-test("manual-review IDs excluded from remediation",()=>{
+test("explicit cross-task hold excluded while approved review provenance remains usable",()=>{
   const primary=basePrimary();primary.missedIds=["manual-1"];primary.masteredIds=["manual-2"];
   const report=harness({[PRIMARY]:json(primary)}).report();
   assert.deepEqual(plain(report.draft.review.missedIds),[]);
-  assert.deepEqual(plain(report.draft.review.masteredIds),[]);
-  assert.equal(report.unresolved.manualReviewQuestionIds.length,2);
+  assert.deepEqual(plain(report.draft.review.masteredIds),["manual-2"]);
+  assert.equal(report.unresolved.manualReviewQuestionIds.length,1);
+  assert.equal(report.unresolved.manualReviewQuestionIds[0].id,"manual-1");
   assert.ok(hasCode(report,"manual-review-remediation-id"));
 });
 

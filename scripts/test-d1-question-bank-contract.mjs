@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const migration=await readFile('migrations/0001_question_bank.sql','utf8');
+const payloadMigration=await readFile('migrations/0002_question_payload.sql','utf8');
 const worker=await readFile('worker/index.js','utf8');
 const wrangler=await readFile('wrangler.jsonc','utf8');
 
@@ -10,10 +11,13 @@ for(const table of ['spg_questions','spg_question_eligibility','spg_question_ver
 }
 assert.ok(migration.includes('lms_sync_eligible'),'D2 LMS eligibility field missing');
 assert.ok(migration.includes('duplicate_family'),'Duplicate-family field missing');
+assert.ok(payloadMigration.includes('payload_json'),'Exact source payload migration missing');
 assert.ok(worker.includes("/api/question-bank/version"),'Version endpoint missing');
 assert.ok(worker.includes("/api/questions"),'Question-list endpoint missing');
 assert.ok(worker.includes("url.pathname.match(/^\\/api\\/question\\/([^/]+)$/)"),'Question detail endpoint missing');
 assert.ok(worker.includes("surface==='lms-d2'"),'LMS D2 read contract missing');
+assert.ok(worker.includes("format==='source'?sourceQuestion"),'Exact source-payload API mode missing');
+assert.ok(worker.includes('payload_json'),'Worker does not read exact D1 payloads');
 assert.ok(!/\b(?:POST|PUT|PATCH|DELETE)\b/.test(worker.replace("request.method!=='GET'",'')),'Worker must remain read-only');
 assert.ok(wrangler.includes('"binding": "DB"'),'D1 binding missing');
 assert.ok(wrangler.includes('sleep_pathways_tutor_dev'),'Expected D1 database binding missing');

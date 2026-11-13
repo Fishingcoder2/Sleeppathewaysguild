@@ -78,6 +78,59 @@
     validateRelease(release);
     return {module:decorateModule,manifest:decorateManifest,feedback:decorateFeedback,blueprint:decorateBlueprint}[kind](data,release);
   }
+  function taskCodeFromModulePath(path){
+    const clean=String(path).split(/[?#]/)[0].replace(/^\.\//,'');
+    const match=clean.match(/^data\/question-bank\/(d[1-4][abc](?:-d2c)?)\.json$/);
+    if(!match) return null;
+    if(match[1]==='d2a-d2c') return 'D2A/D2C';
+    return match[1].toUpperCase();
+  }
+  function shouldTryD1(){
+    // Explicit owner-controlled opt-in. Merging this loader must not silently
+    // switch the live learner bank before a separate source-cutover approval.
+    if(root.RPSGT_D1_SOURCE_ENABLED!==true) return false;
+    const location=root&&root.location;
+    if(!location) return false;
+    const protocol=String(location.protocol||'');
+    const host=String(location.hostname||'').toLowerCase();
+    if(protocol!=='https:'&&protocol!=='http:') return false;
+    return host==='sleeppathwaysguild.com'||host.endsWith('.sleeppathwaysguild.com')||host.endsWith('.workers.dev');
+  }
+  async function loadD1Module(path,staticData,release){
+    const code=taskCodeFromModulePath(path);
+    if(!code) throw new Error('Not a question module path.');
+    validateRelease(release);
+    const baseQuestions=Array.isArray(staticData&&staticData.questions)?staticData.questions:[];
+    const additions=DIRECT_TASKS.includes(code)?additionsForTask(release,code):[];
+    const expected=baseQuestions.length+additions.length;
+    // An equal count is not enough: a stale or substituted D1 item must not alter
+    // learner-facing questions or orphan saved question IDs during this migration.
+    const approved=new Map([...baseQuestions,...additions].map(question=>[String(question.id),question]));
+    if(approved.size!==expected) throw new Error('Approved static module contains duplicate IDs for '+code+'.');
+    const apiPath='/api/questions?program=RPSGT&taskCode='+encodeURIComponent(code)+'&format=source&limit=1000';
+    const payload=await fetchJson(apiPath);
+    if(!payload||payload.program!=='RPSGT'||payload.taskCode!==code||payload.format!=='source'||!Array.isArray(payload.questions)) throw new Error('D1 module response is invalid for '+code+'.');
+    if(payload.questions.length!==expected) throw new Error('D1 module count mismatch for '+code+': expected '+expected+', received '+payload.questions.length+'.');
+    const ids=new Set();
+    payload.questions.forEach(question=>{
+      const id=String(question&&question.id||'');
+      if(!id||ids.has(id)||String(question.taskCode||'')!==code||!String(question.prompt||'').trim()||!Array.isArray(question.options)||!question.options.includes(question.answer)) throw new Error('D1 returned an invalid '+code+' question.');
+      const source=approved.get(id);
+      if(!source) throw new Error('D1 returned an unexpected '+code+' question ID: '+id+'.');
+      if(question.prompt!==source.prompt||question.answer!==source.answer||
+         !Array.isArray(source.options)||question.options.length!==source.options.length||
+         question.options.some((choice,index)=>choice!==source.options[index]))
+        throw new Error('D1 question content differs from the approved source for '+id+'.');
+      ids.add(id);
+    });
+    return {...staticData,
+      meta:{...(staticData.meta||{}),sourceQuestionCount:baseQuestions.length,questionCount:payload.questions.length,questionSource:'Cloudflare D1 with static module fallback'},
+      questions:payload.questions,
+      d1QuestionBank:{enabled:true,taskCode:code,count:payload.questions.length,fallback:'static-module'},
+      ownerQuestionRelease:releaseMetadata(release,baseQuestions.length),
+      ownerReleaseQuestionIds:additions.map(question=>question.id)
+    };
+  }
   async function fetchJson(path){
     const response=await root.fetch(path,{cache:'no-store'});
     if(!response.ok) throw new Error(path+' HTTP '+response.status);
@@ -129,7 +182,16 @@
   }
   async function loadJson(path){
     const data=await fetchJson(path);
-    return resourceKind(path)?decorate(path,data,await loadRelease()):data;
+    const kind=resourceKind(path);
+    if(!kind) return data;
+    const release=await loadRelease();
+    if(kind==='module'&&shouldTryD1()){
+      try{return await loadD1Module(path,data,release);}
+      catch(error){
+        if(root.console&&typeof root.console.warn==='function') root.console.warn('RPSGT D1 question-bank fallback:',error&&error.message||error);
+      }
+    }
+    return decorate(path,data,release);
   }
-  return {RELEASE_ID,RELEASE_PATH,DISPATCH_PATH,validateRelease,applyDispatch,resourceKind,decorate,loadJson};
+  return {RELEASE_ID,RELEASE_PATH,DISPATCH_PATH,validateRelease,applyDispatch,resourceKind,decorate,taskCodeFromModulePath,shouldTryD1,loadD1Module,loadJson};
 });
