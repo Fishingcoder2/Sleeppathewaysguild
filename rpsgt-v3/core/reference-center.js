@@ -159,7 +159,16 @@
     let sections=allSections(source);
     if(taskCode&&taskCode!=='all'){
       const selected=state.sourceSectionsByTask.get(text(source.id))?.get(taskCode);
-      if(selected&&selected.size) sections=sections.filter(section=>selected.has(text(section.id)));
+      if(selected&&selected.size){
+        // Compatibility aliases are hidden from learners, but their visible target sections are not.
+        const expanded=new Set(selected);
+        (Array.isArray(source.sections)?source.sections:[]).forEach(section=>{
+          if(selected.has(text(section.id))&&section.hiddenFromLearner===true){
+            (Array.isArray(section.aliasFor)?section.aliasFor:[]).forEach(id=>expanded.add(text(id)));
+          }
+        });
+        sections=sections.filter(section=>expanded.has(text(section.id)));
+      }
       else sections=sections.filter(section=>{
          const codes=Array.isArray(section.taskCodes)?section.taskCodes:section.discoveryTaskCodes;
          return !Array.isArray(codes)||!codes.length||codes.includes(taskCode);
@@ -176,7 +185,7 @@
       const remaining=sections.filter(section=>!normalize(section.label).includes(topic));
       sections=matching.concat(remaining);
     }
-    return sections.slice(0,Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length?22:12);
+    return sections;
   }
 
   function cardHtml(source,filters){
@@ -188,13 +197,15 @@
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
     const outlineOnly=source.referenceCenterActive===true&&Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length>0&&source.mappingEnabled===false;
-    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>Included for study:</strong> This third-edition reference is active for publisher-listed topic discovery. Page numbers, cases, and clinical statements have not been independently verified.</p>':'';
+    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>Included for study:</strong> These publisher-listed topics suggest where to read. They are not verified question citations. Page numbers, cases, and clinical statements have not been independently verified.</p>':'';
+    const olderEditionNote=source.id==='sleep-medicine-pearls-2e'?'<p class="reference-best-for"><strong>Older edition:</strong> Supplemental reading only; BRPT recommends the third edition. Use current professional standards for scoring, diagnosis, testing and treatment.</p>':'';
     const actions=affiliate||(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'');
     return '<article class="card reference-card">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
       '<div class="reference-citation"><span class="reference-citation-label">APA-style reference</span><em>'+escapeHtml(citation)+'</em></div>'+
       (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
-      outlineNote+
+      outlineNote+olderEditionNote+
+      (outlineOnly&&tasks.length?'<p class="reference-best-for"><strong>Suggested RPSGT study topics</strong></p>':'')+
       (tasks.length?'<div class="reference-task-list" aria-label="RPSGT tasks"><span class="sr-only">RPSGT tasks: </span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
       (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Publisher contents: '+sections.length+' fundamentals topic'+(sections.length===1?'':'s'):'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
       (actions?'<div class="reference-actions">'+actions+'</div>':'')+
