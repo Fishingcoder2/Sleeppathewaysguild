@@ -23,6 +23,14 @@ assert.equal(evidence.bankSnapshot.questionCount,bank.meta.questionCount);
 assert.equal(evidence.bankSnapshot.questionBankCanonicalSha256,bank.meta.questionBankCanonicalSha256);
 assert(Array.isArray(evidence.links), 'Page evidence links must be an array.');
 
+// A real dual-numbering pilot: directly inspected owner-supplied 2024 Maski et al. article.
+const pediatricMslt=sources.get('aasm-pediatric-mslt-mwt-2024');
+const pdfLocator=pediatricMslt?.verifiedArticlePageLocator;
+assert.deepEqual(pdfLocator?.printedPages,{start:631,end:641});
+assert.deepEqual(pdfLocator?.digitalCopyPdfViewerPages,{start:1,end:11});
+assert.equal(pdfLocator?.pdfViewerPageNumbering,'1-based');
+assert(/not establish which pages support any particular question/i.test(pdfLocator?.evidenceScope||''));
+
 const questionIds=new Set();
 for(const entry of bank.modules){
   const doc=await read('data/question-bank/'+entry.path);
