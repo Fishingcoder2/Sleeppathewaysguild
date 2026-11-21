@@ -190,7 +190,7 @@
       const remaining=sections.filter(section=>!normalize(section.label).includes(topic));
       sections=matching.concat(remaining);
     }
-    return sections.slice(0,Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length?source.publicOutlineSections.length:12);
+    return sections;
   }
 
   function cardHtml(source,filters){
