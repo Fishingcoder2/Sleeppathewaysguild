@@ -159,7 +159,21 @@
     let sections=allSections(source);
     if(taskCode&&taskCode!=='all'){
       const selected=state.sourceSectionsByTask.get(text(source.id))?.get(taskCode);
-      if(selected&&selected.size) sections=sections.filter(section=>selected.has(text(section.id)));
+      if(selected&&selected.size){
+        const expanded=new Set(selected);
+        // Internal routing aliases belong to this source only; expose their visible targets.
+        const byId=new Map((Array.isArray(source.sections)?source.sections:[]).map(section=>[text(section.id),section]));
+        const pending=[...selected];
+        while(pending.length){
+          const alias=byId.get(pending.pop());
+          if(!alias||alias.hiddenFromLearner!==true) continue;
+          (Array.isArray(alias.aliasFor)?alias.aliasFor:[]).forEach(id=>{
+            id=text(id);
+            if(id&&!expanded.has(id)){expanded.add(id);pending.push(id);}
+          });
+        }
+        sections=sections.filter(section=>expanded.has(text(section.id)));
+      }
       else sections=sections.filter(section=>{
          const codes=Array.isArray(section.taskCodes)?section.taskCodes:section.discoveryTaskCodes;
          return !Array.isArray(codes)||!codes.length||codes.includes(taskCode);
@@ -188,15 +202,15 @@
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
     const outlineOnly=source.referenceCenterActive===true&&Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length>0&&source.mappingEnabled===false;
-    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>Included for study:</strong> This third-edition reference is active for publisher-listed topic discovery. Page numbers, cases, and clinical statements have not been independently verified.</p>':'';
+    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>How to use:</strong> Browse this book’s own publisher-listed topics. These RPSGT study suggestions are based on headings only, not verified passages or answer citations.</p>':source.id==='sleep-medicine-pearls-2e'?'<p class="reference-best-for"><strong>How to use:</strong> Older edition for background study. BRPT recommends the third edition; use current professional guidance for scoring, diagnosis, testing and treatment.</p>':'';
     const actions=affiliate||(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'');
     return '<article class="card reference-card">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
       '<div class="reference-citation"><span class="reference-citation-label">APA-style reference</span><em>'+escapeHtml(citation)+'</em></div>'+
       (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
       outlineNote+
-      (tasks.length?'<div class="reference-task-list" aria-label="RPSGT tasks"><span class="sr-only">RPSGT tasks: </span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
-      (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Publisher contents: '+sections.length+' fundamentals topic'+(sections.length===1?'':'s'):'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
+      (tasks.length?'<div class="reference-task-list" aria-label="'+(outlineOnly?'Suggested RPSGT study topics':'RPSGT tasks')+'"><span'+(outlineOnly?'':' class="sr-only"')+'>'+(outlineOnly?'Suggested RPSGT study topics: ':'RPSGT tasks: ')+'</span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
+      (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Publisher contents: '+sections.length+' topic'+(sections.length===1?'':'s')+' from this book':'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
       (actions?'<div class="reference-actions">'+actions+'</div>':'')+
       '</article>';
   }
