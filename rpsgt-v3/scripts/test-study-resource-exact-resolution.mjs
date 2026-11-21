@@ -62,6 +62,17 @@ try{
     if(result.level!=='exact'||result.sourceIds[0]!==expected) throw new Error(`${key} does not resolve exactly to ${expected}.`);
   }
 
+  // Concept classifications must take priority over any historical source record's key.
+  const pediatricConcept=catalog.resolveQuestion({taskCode:'D3B',topic:'',referenceKeys:['pediatric-psg'],studyRecommendationKeys:[]});
+  if(pediatricConcept.level==='exact'||!pediatricConcept.conceptKeys.includes('pediatric-psg')||pediatricConcept.matchedKeys.includes('pediatric-psg')) throw new Error('Generic pediatric PSG incorrectly resolved as exact book provenance.');
+  const pediatricMixed=catalog.resolveQuestion({taskCode:'D3B',topic:'',referenceKeys:['pediatric-psg','pediatric-sleep-pearls'],studyRecommendationKeys:[]});
+  if(pediatricMixed.level!=='exact'||pediatricMixed.sourceIds[0]!=='pediatric-sleep-pearls-1e'||!pediatricMixed.conceptKeys.includes('pediatric-psg')) throw new Error('Explicit pediatric textbook reference must remain independent of its broad learning concept.');
+
+  const olderPearls=catalog.resolveQuestion({taskCode:'D1A',topic:'',referenceKeys:['sleep-medicine-pearls'],studyRecommendationKeys:[]});
+  if(olderPearls.level!=='exact'||olderPearls.sourceIds[0]!=='sleep-medicine-pearls-2e'||!olderPearls.titles[0].includes('2nd ed.')) throw new Error('Historical Pearls key must retain explicit second-edition identity.');
+  const outlinePearls=catalog.resolveQuestion({taskCode:'D1A',topic:'',referenceKeys:['sleep-medicine-pearls-3e'],studyRecommendationKeys:[]});
+  if(outlinePearls.level==='exact'||outlinePearls.sourceIds.includes('sleep-medicine-pearls-3e')) throw new Error('Publisher outline is not exact question provenance.');
+
   const atlasSource=JSON.parse(await readFile(join(sourceRoot,'atlas-electroencephalography-sleep-medicine-2012.json'),'utf8'));
   if(atlasSource.currentAuthority!==false||atlasSource.sourceRole!=='studySupport'||!atlasSource.editors.includes('Magdy Y. Morgan')||atlasSource.editors.includes('Undevia')) throw new Error('Sleep EEG atlas authority/editor metadata is not protected.');
   if(!/AASM Scoring Manual Version 3 controls sleep staging/i.test(atlasSource.authorityBoundary||'')) throw new Error('Sleep EEG atlas does not defer staging/scoring authority to AASM Version 3.');

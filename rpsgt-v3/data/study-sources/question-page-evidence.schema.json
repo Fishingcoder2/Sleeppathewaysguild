@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sleeppathwaysguild.com/rpsgt-v3/data/study-sources/question-page-evidence.schema.json",
+  "title": "RPSGT V3 question-to-source page evidence",
+  "description": "Owner-reviewed, exact-edition evidence. A chapter page or a task match alone is not proof that a question's correct answer is supported.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "bankSnapshot",
+    "links"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "bankSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifestPath",
+        "questionCount",
+        "questionBankCanonicalSha256"
+      ],
+      "properties": {
+        "manifestPath": {
+          "type": "string",
+          "const": "data/question-bank/manifest.json"
+        },
+        "questionCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "questionBankCanonicalSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    }
+  },
+  "$defs": {
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "start"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "printed-page",
+            "pdf-viewer-page",
+            "ebook-location",
+            "section-heading"
+          ]
+        },
+        "start": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "sectionTitle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string",
+          "description": "Original locator clarification; no copied textbook prose."
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "verified",
+            "rejected"
+          ]
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "directSourceChecked": {
+          "type": "boolean"
+        },
+        "exactEditionChecked": {
+          "type": "boolean"
+        },
+        "evidenceNote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authorityReview": {
+          "enum": [
+            "not-applicable",
+            "current-rule-cross-checked",
+            "requires-current-rule-review"
+          ]
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "questionId",
+        "sourceId",
+        "edition",
+        "evidenceRole",
+        "verification"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "questionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceRole": {
+          "enum": [
+            "reading-navigation",
+            "answer-support",
+            "rationale-support",
+            "current-authority"
+          ]
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        }
+      }
+    }
+  }
+}

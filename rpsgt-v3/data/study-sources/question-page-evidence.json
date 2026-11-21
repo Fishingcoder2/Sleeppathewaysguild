@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "bankSnapshot": {
+    "manifestPath": "data/question-bank/manifest.json",
+    "questionCount": 2920,
+    "questionBankCanonicalSha256": "2ef8a19398375bf69cea749fdffe03df6b47c68d58f19f1f92791f4c2ffbd0af"
+  },
+  "links": []
+}

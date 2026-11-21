@@ -33,7 +33,7 @@
     {
       id:"sleep-medicine-pearls",
       title:"Sleep Medicine Pearls",
-      citation:"Berry, R. B., & Wagner, M. H. (2014). Sleep medicine pearls (3rd ed.). Elsevier.",
+      citation:"Berry, R. B., & Wagner, M. H. (2015). Sleep medicine pearls (3rd ed.). Saunders.",
       url:"https://www.amazon.com/dp/1455770515?tag=spg_rpsgt-20",
       label:"BRPT RPSGT-listed · case-based review",
       icon:"💡",

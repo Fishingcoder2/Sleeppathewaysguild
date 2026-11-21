@@ -26,7 +26,7 @@
     return response.json();
   }
 
-  function titleForSource(source){return text(source&&(source.shortTitle||source.title||source.name||source.label||source.id));}
+  function titleForSource(source){return text(source&&(source.displayTitle||source.shortTitle||source.title||source.name||source.label||source.id));}
 
   function registerKey(key,sourceId,{verifiedAlias=false}={}){
     const normalized=normalizeKey(key);
@@ -82,12 +82,14 @@
 
       sources.forEach(source=>{
         const id=text(source&&source.id);
+        if(source.mappingEnabled===false) return;
         (Array.isArray(source&&source.referenceKeys)?source.referenceKeys:[]).forEach(key=>registerKey(key,id));
       });
 
       Object.entries(aliases&&aliases.verifiedAliases||{}).forEach(([key,sourceId])=>{
         const id=text(sourceId);
         if(!state.sources.has(id)) throw new Error(`Verified source-key alias points to an unknown source: ${key} -> ${id}`);
+        if(state.sources.get(id).mappingEnabled===false) throw new Error(`Verified source-key alias points to an outline-only source: ${key} -> ${id}`);
         registerKey(key,id,{verifiedAlias:true});
       });
 
@@ -124,14 +126,13 @@
     const unresolvedKeys=[];
     keys.forEach(key=>{
       if(state.contextOnlyKeys.has(key)) return;
+      // Explicit concept and legacy classifications take precedence over historical book keys.
+      if(state.conceptKeys.has(key)){conceptKeys.push(key);return;}
+      if(state.legacyUmbrellaKeys.has(key)){legacyKeys.push(key);return;}
       const sourceId=state.sourceKeyMap.get(key);
-      if(sourceId&&state.sources.has(sourceId)){
+      if(sourceId&&state.sources.has(sourceId)&&state.sources.get(sourceId).mappingEnabled!==false){
         ids.push(sourceId);
         matchedKeys.push(key);
-      }else if(state.conceptKeys.has(key)){
-        conceptKeys.push(key);
-      }else if(state.legacyUmbrellaKeys.has(key)){
-        legacyKeys.push(key);
       }else{
         unresolvedKeys.push(key);
       }
@@ -161,7 +162,7 @@
     scored.filter(item=>item.score===best).forEach(item=>{
       (Array.isArray(item.family.recommendations)?item.family.recommendations:[]).forEach(recommendation=>{
         const sourceId=Array.isArray(recommendation)?text(recommendation[0]):'';
-        if(sourceId&&state.sources.has(sourceId)) sourceIds.push(sourceId);
+        if(sourceId&&state.sources.has(sourceId)&&state.sources.get(sourceId).mappingEnabled!==false) sourceIds.push(sourceId);
       });
     });
     return unique(sourceIds).sort((a,b)=>sourceRank(a)-sourceRank(b));
@@ -171,7 +172,7 @@
     const plan=state.taskPlans[text(taskCode)];
     if(!plan||!Array.isArray(plan.sequence)) return [];
     const excluded=new Set(['brpt-blueprint','brpt-handbook','brpt-refs']);
-    return unique(plan.sequence.map(item=>text(item&&item.sourceId)).filter(id=>id&&state.sources.has(id)&&!excluded.has(id))).slice(0,3);
+    return unique(plan.sequence.map(item=>text(item&&item.sourceId)).filter(id=>id&&state.sources.has(id)&&state.sources.get(id).mappingEnabled!==false&&!excluded.has(id))).slice(0,3);
   }
 
   function resolutionPayload(level,sourceIds,extra={}){
