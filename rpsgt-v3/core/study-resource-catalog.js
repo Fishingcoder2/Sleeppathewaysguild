@@ -26,7 +26,7 @@
     return response.json();
   }
 
-  function titleForSource(source){return text(source&&(source.shortTitle||source.title||source.name||source.label||source.id));}
+  function titleForSource(source){return text(source&&(source.id==='sleep-medicine-pearls-2e'?'Sleep Medicine Pearls (2nd ed.)':source.id==='sleep-medicine-pearls-3e'?'Sleep Medicine Pearls (3rd ed.)':source.shortTitle||source.title||source.name||source.label||source.id));}
 
   function registerKey(key,sourceId,{verifiedAlias=false}={}){
     const normalized=normalizeKey(key);
@@ -124,14 +124,13 @@
     const unresolvedKeys=[];
     keys.forEach(key=>{
       if(state.contextOnlyKeys.has(key)) return;
+      // Explicit non-provenance classifications take precedence over historical source keys.
+      if(state.conceptKeys.has(key)){conceptKeys.push(key);return;}
+      if(state.legacyUmbrellaKeys.has(key)){legacyKeys.push(key);return;}
       const sourceId=state.sourceKeyMap.get(key);
       if(sourceId&&state.sources.has(sourceId)){
         ids.push(sourceId);
         matchedKeys.push(key);
-      }else if(state.conceptKeys.has(key)){
-        conceptKeys.push(key);
-      }else if(state.legacyUmbrellaKeys.has(key)){
-        legacyKeys.push(key);
       }else{
         unresolvedKeys.push(key);
       }
