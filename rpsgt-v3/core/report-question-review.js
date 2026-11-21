@@ -80,7 +80,7 @@
    let unresolved=0;
    const rows=collect(saved).map(item=>{
      const q=questions.get(item.id),info=map.get(item.id),code=item.taskCode||q?.taskCode||info?.taskCode||null;
-     if(!q||q.qa?.manualReviewRecommended===true||q.qa?.learnerExcluded===true||
+     if(!q||q.qa?.learnerExcluded===true||
        q.learnerExcluded===true||q.reviewStatus==='retired'||q.publicationStatus==='proposed-not-learner-eligible'||
        !list(q.options).includes(q.answer)||!text(q.prompt).trim()||!text(q.rationale).trim()){unresolved++;return null;}
      return {

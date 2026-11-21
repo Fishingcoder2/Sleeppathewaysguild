@@ -11,7 +11,7 @@
   const unique=list=>[...new Set(list.filter(validCode).map(codeOf))];
   function eligible(q,code){
     if(!q||q.taskCode!==code||q.learnerExcluded===true||q.reviewStatus==='retired')return false;
-    if(q.qa&&(q.qa.learnerExcluded===true||q.qa.manualReviewRecommended===true))return false;
+    if(q.qa&&q.qa.learnerExcluded===true)return false;
     return typeof q.prompt==='string'&&q.prompt.trim().length>9&&Array.isArray(q.options)&&q.options.length>=2&&q.options.every(x=>String(x||'').trim())&&q.options.includes(q.answer);
   }
   function shuffle(list){

@@ -7,6 +7,9 @@ on:
       - 'migrations/**'
       - 'wrangler.jsonc'
       - 'scripts/test-d1-question-bank-contract.mjs'
+      - 'scripts/test-d1-v3-fallback.mjs'
+      - 'rpsgt-v3/core/owner-question-release.js'
+      - 'rpsgt-v3/core/learner-surface-guard.js'
       - 'docs/D1-QUESTION-BANK-MIGRATION-2026-10-26.md'
   push:
     branches: [main]
@@ -15,6 +18,9 @@ on:
       - 'migrations/**'
       - 'wrangler.jsonc'
       - 'scripts/test-d1-question-bank-contract.mjs'
+      - 'scripts/test-d1-v3-fallback.mjs'
+      - 'rpsgt-v3/core/owner-question-release.js'
+      - 'rpsgt-v3/core/learner-surface-guard.js'
 
 jobs:
   contract:
@@ -25,3 +31,4 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/test-d1-question-bank-contract.mjs
+      - run: node scripts/test-d1-v3-fallback.mjs
