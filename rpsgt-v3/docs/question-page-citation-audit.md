@@ -24,6 +24,7 @@ Number pages as **1-based** in the page evidence register. A range requires both
 
 - `principles-practice-sleep-medicine-7e.json` contains 25 *printed chapter start* locators recorded as directly verified from the Guild library copy. For example, Chapter 132, *Positive Airway Pressure Treatment for Obstructive Sleep Apnea*, starts at **printed page 1261**. These are navigational anchors only.
 - `pediatric-sleep-pearls-1e.json` stores chapter-like thematic sections with 1-based digital-copy ranges; for example, **Pediatric polysomnography (digital copy, pp. 15–24)**. These are from the verified Guild file mapping, not automatically the printed edition's pages.
+- `aasm-pediatric-mslt-mwt-2024.json` now records a **directly checked dual-pagination pilot** from the uploaded Maski et al. (2024) article (DOI 10.5664/jcsm.10974): printed journal **pp. 631–641** correspond to **PDF viewer pp. 1–11** of that specific uploaded 11-page file. This establishes article pagination only; individual question support has not been reviewed.
 - `sleep-medicine-pearls-3e.json` contains 41 third-edition Fundamentals topics and 3 appendices, but **no approved page numbers or passage-level question mappings**. Do not copy the second edition's 22-section page structure or retail-table-of-contents labels.
 
 Reference Center may display recorded chapter starting pages behind an expandable heading, with a disclaimer that they are **not verified answer locations**. It must not show a guessed page next to a question or an explanation.
