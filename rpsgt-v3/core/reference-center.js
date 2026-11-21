@@ -190,7 +190,7 @@
       const remaining=sections.filter(section=>!normalize(section.label).includes(topic));
       sections=matching.concat(remaining);
     }
-    return sections.slice(0,Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length?22:12);
+    return sections.slice(0,Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length?source.publicOutlineSections.length:12);
   }
 
   function cardHtml(source,filters){
@@ -202,7 +202,7 @@
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
     const outlineOnly=source.referenceCenterActive===true&&Array.isArray(source.publicOutlineSections)&&source.publicOutlineSections.length>0&&source.mappingEnabled===false;
-    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>How to use:</strong> Browse this book’s own publisher-listed topics. These RPSGT study suggestions are based on headings only, not verified passages or answer citations.</p>':source.id==='sleep-medicine-pearls-2e'?'<p class="reference-best-for"><strong>How to use:</strong> Older edition for background study. BRPT recommends the third edition; use current professional guidance for scoring, diagnosis, testing and treatment.</p>':'';
+    const outlineNote=outlineOnly?'<p class="reference-best-for"><strong>How to use:</strong> Browse study topics based on this edition’s e-book contents. These RPSGT suggestions are based on headings only, not verified passages or answer citations.</p>':source.id==='sleep-medicine-pearls-2e'?'<p class="reference-best-for"><strong>How to use:</strong> Older edition for background study. BRPT recommends the third edition; use current professional guidance for scoring, diagnosis, testing and treatment.</p>':'';
     const actions=affiliate||(url?'<a class="btn secondary" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Open public source ↗</a>':'');
     return '<article class="card reference-card">'+
       '<div class="reference-card-head"><div><div class="eyebrow">Study reference</div><h2>'+escapeHtml(title)+'</h2></div></div>'+
@@ -210,7 +210,7 @@
       (bestFor?'<p class="reference-best-for"><strong>Helpful for:</strong> '+escapeHtml(bestFor)+'</p>':'')+
       outlineNote+
       (tasks.length?'<div class="reference-task-list" aria-label="'+(outlineOnly?'Suggested RPSGT study topics':'RPSGT tasks')+'"><span'+(outlineOnly?'':' class="sr-only"')+'>'+(outlineOnly?'Suggested RPSGT study topics: ':'RPSGT tasks: ')+'</span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
-      (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Publisher contents: '+sections.length+' topic'+(sections.length===1?'':'s')+' from this book':'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
+      (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Edition contents: '+sections.length+' topic'+(sections.length===1?'':'s')+' from this book':'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
       (actions?'<div class="reference-actions">'+actions+'</div>':'')+
       '</article>';
   }
