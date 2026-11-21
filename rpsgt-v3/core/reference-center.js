@@ -193,11 +193,29 @@
     return sections;
   }
 
+  // Chapter-start locators help readers find a topic; they are never question-level proof.
+  // Only pre-existing, explicitly verified printed-page records are displayed.
+  function relevantPrintedChapterStarts(source,filters){
+    if(!/directly verified/i.test(text(source.locatorStatus))) return [];
+    let locators=(Array.isArray(source.verifiedChapterLocators)?source.verifiedChapterLocators:[])
+      .filter(item=>item&&Number.isInteger(item.chapter)&&item.chapter>0&&
+        Number.isInteger(item.printedStartPage)&&item.printedStartPage>0&&text(item.label));
+    if(filters.task!=='all') locators=locators.filter(item=>Array.isArray(item.taskCodes)&&item.taskCodes.includes(filters.task));
+    else if(filters.domain!=='all') locators=locators.filter(item=>Array.isArray(item.taskCodes)&&item.taskCodes.some(code=>code.startsWith(filters.domain)));
+    if(filters.topic){
+      const matching=locators.filter(item=>normalize(item.label).includes(filters.topic));
+      const remaining=locators.filter(item=>!normalize(item.label).includes(filters.topic));
+      locators=matching.concat(remaining);
+    }
+    return locators;
+  }
+
   function cardHtml(source,filters){
     const title=sourceTitle(source);
     const citation=cleanCitation(source);
     const tasks=taskCodesFor(source);
     const sections=relevantSections(source,filters.task,filters.topic,filters.domain);
+    const printedChapterStarts=relevantPrintedChapterStarts(source,filters);
     const url=externalUrl(source);
     const affiliate=affiliateAction(source);
     const bestFor=text(source.bestFor);
@@ -211,6 +229,7 @@
       outlineNote+
       (tasks.length?'<div class="reference-task-list" aria-label="'+(outlineOnly?'Suggested RPSGT study topics':'RPSGT tasks')+'"><span'+(outlineOnly?'':' class="sr-only"')+'>'+(outlineOnly?'Suggested RPSGT study topics: ':'RPSGT tasks: ')+'</span>'+tasks.map(code=>'<span class="reference-task-pill">'+escapeHtml(code)+'</span>').join('')+'</div>':'')+
       (sections.length?'<details class="reference-sections"><summary>'+(outlineOnly?'Edition contents: '+sections.length+' topic'+(sections.length===1?'':'s')+' from this book':'Relevant sections / chapters')+'</summary><ul class="reference-section-list">'+sections.map(section=>'<li>'+escapeHtml(learnerSectionLabel(section.label))+'</li>').join('')+'</ul></details>':'')+
+      (printedChapterStarts.length?'<details class="reference-sections"><summary>Verified printed chapter starting pages ('+printedChapterStarts.length+')</summary><p class="reference-best-for">These are recorded chapter starting pages, not verified answer locations. E-book/PDF pages may differ.</p><ul class="reference-section-list">'+printedChapterStarts.map(item=>'<li>Chapter '+item.chapter+': '+escapeHtml(item.label)+' — print p. '+item.printedStartPage+'</li>').join('')+'</ul></details>':'')+
       (actions?'<div class="reference-actions">'+actions+'</div>':'')+
       '</article>';
   }
