@@ -117,8 +117,8 @@ if(/driveUrl|libraryFile/.test(referenceJs)) throw new Error('Reference Center c
 if(/RPSGTStorage|localStorage\s*\.\s*(?:setItem|removeItem|clear)\s*\(/.test(referenceJs)) throw new Error('Reference Center controller must remain read-only and storage-independent.');
 new Function(referenceJs);
 if(!referenceJs.includes('expanded.has(text(section.id))')||!referenceJs.includes('section.aliasFor')) throw new Error('Reference Center must expand hidden compatibility aliases into visible section IDs.');
-if(!referenceJs.includes('Suggested RPSGT study topics')||!referenceJs.includes('not verified question citations')) throw new Error('Publisher contents must not look like verified question citations.');
-if(!referenceJs.includes('Older edition:')||!referenceJs.includes('sleep-medicine-pearls-2e')) throw new Error('The historical Pearls edition must be identified explicitly.');
+if(!referenceJs.includes('Suggested RPSGT study topics')||!referenceJs.includes('not verified passages or answer citations')) throw new Error('Publisher contents must not look like verified question citations.');
+if(!referenceJs.includes('Older edition for background study')||!referenceJs.includes('sleep-medicine-pearls-2e')) throw new Error('The historical Pearls edition must be identified explicitly.');
 if(/sections\.slice\(0,/.test(referenceJs)) throw new Error('Reference Center must not silently truncate chapter outlines.');
 
 
