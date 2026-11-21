@@ -7,7 +7,7 @@
     "Richard B. Berry",
     "Mary H. Wagner"
   ],
-  "publicationYear": 2014,
+  "publicationYear": 2015,
   "copyrightYear": 2015,
   "publisher": "Saunders/Elsevier",
   "isbn13": "9781455770519",
@@ -17,100 +17,39 @@
   "currentAuthority": false,
   "verifiedAt": "2026-08-10",
   "officialUrl": "https://www.us.elsevierhealth.com/sleep-medicine-pearls-9781455770519.html",
-  "brptReferenceUrl": "https://brpt.org/rpsgt/exam-prep/references/",
+  "brptReferenceUrl": "https://brpt.org/rpsgt/recommended-readings/",
   "brptCurrentlyRecommended": true,
   "bibliographicIdentityVerified": true,
-  "bibliographicVerification": "Verified against the current BRPT RPSGT References page and the Elsevier U.S. product record on 2026-08-10.",
+  "bibliographicVerification": "Print ISBN, authors, edition, imprint and copyright year verified against Elsevier; release year 2014 is distinct from the 2015 book citation year. Library catalog corroborates 2015 and edition-specific e-book contents.",
   "libraryAvailability": "Guild owner confirmed lawful Kindle access to the 3rd edition on 2026-08-07. No exact 3rd-edition Guild Drive file has been verified.",
   "contentVerifiedByV3": false,
   "structuredForLearnerMapping": false,
   "mappingEnabled": false,
-  "usageStatus": "active in RPSGT Reference Center for public table-of-contents study discovery; exact third-edition case/page and question mappings remain pending",
+  "usageStatus": "active in RPSGT Reference Center for edition-specific e-book topic discovery; exact case/page and question mappings remain pending",
   "referenceKeys": [],
   "mappedTaskCodes": [],
-  "publicOutlineStatus": "Active Reference Center contents outline using publisher-listed fundamentals headings. Domain/task discovery is inferred from public section titles; chapter pages, case contents and clinical claims have not been verified in the third-edition book.",
+  "publicOutlineStatus": "Edition-specific e-book contents index, summarized as original study-topic labels. Retail-product contents conflict with the actual third-edition e-book and have been retired from learner navigation. Full chapter contents and individual clinical claims remain unverified.",
   "bestFor": "Case-based study of PSG and recording signals, sleep testing, sleep disorders and treatment approaches. Consult current AASM and AAST publications for version-sensitive rules and clinical decisions.",
   "authorityBoundary": "BRPT-listed study support only. Current AASM Scoring Manual Version 3 controls scoring and technical rules; ICSD-3-TR controls current diagnostic classification; current AASM/AAST guidance controls version-sensitive testing, treatment, and technologist-practice content.",
   "editionBoundary": "Do not relabel or migrate Sleep Medicine Pearls, Second Edition locators to this record. Third-edition learner mappings require direct verification from the lawful third-edition copy or another reliable exact-edition source.",
-  "copyrightUse": "Store bibliographic metadata, public table-of-contents headings, verified locators, and original Sleep Pathways Guild summaries only. Do not reproduce proprietary cases, questions, figures, tracings, tables, or substantial textbook prose.",
+  "copyrightUse": "Store bibliographic metadata, original topic summaries based on public contents, and independently verified locators only; no proprietary cases, questions, figures, tracings, tables, or substantial textbook prose.",
   "sections": [],
   "displayTitle": "Sleep Medicine Pearls (3rd ed.)",
-  "apaCitation": "Berry, R. B., & Wagner, M. H. (2014). Sleep medicine pearls (3rd ed.). Saunders.",
-  "publicOutlineSourceUrl": "https://www.us.elsevierhealth.com/sleep-medicine-pearls-9781455770519.html",
-  "publicOutlineVerifiedAt": "2026-11-11",
+  "apaCitation": "Berry, R. B., & Wagner, M. H. (2015). Sleep medicine pearls (3rd ed.). Saunders.",
+  "publicOutlineSourceUrl": "https://www.perlego.com/book/2938586/sleep-medicine-pearls-ebook-pdf",
+  "publicOutlineVerifiedAt": "2026-11-21",
   "publicOutlineSections": [
     {
-      "id": "SMP3-PUBLIC-F01",
-      "label": "Fundamentals of Sleep Medicine 1: Sleep Stages and Electroencephalographic Patterns",
+      "id": "SMP3-EBOOK-F01",
+      "label": "Fundamentals 1: Sleep-stage terminology and recording basics",
       "discoveryTaskCodes": [
         "D2A",
         "D3A"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F02",
-      "label": "Fundamentals of Sleep Medicine 2: Electroencephalographic Lead Placement",
-      "discoveryTaskCodes": [
-        "D2A"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F03",
-      "label": "Fundamentals of Sleep Medicine 3: Eye Movement Monitoring",
-      "discoveryTaskCodes": [
-        "D2A",
-        "D3A"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F04",
-      "label": "Fundamentals of Sleep Medicine 4: Eye Movement Patterns",
-      "discoveryTaskCodes": [
-        "D3A"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F05",
-      "label": "Fundamentals of Sleep Medicine 5: Chin (Submental) Electromyography",
-      "discoveryTaskCodes": [
-        "D2A",
-        "D3A"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F06",
-      "label": "Fundamentals of Sleep Medicine 6: Additional Sleep Staging Rules",
-      "discoveryTaskCodes": [
-        "D3A"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F07",
-      "label": "Fundamentals of Sleep Medicine 7: Sleep Architecture Definitions",
-      "discoveryTaskCodes": [
-        "D3A",
-        "D3C"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F08",
-      "label": "Fundamentals of Sleep Medicine 8: Polysomnography",
-      "discoveryTaskCodes": [
-        "D2B",
-        "D2C"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F09",
-      "label": "Fundamentals of Sleep Medicine 9: Multiple Sleep Latency Test and Maintenance of Wakefulness Test",
-      "discoveryTaskCodes": [
-        "D2B",
-        "D3C"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F10",
-      "label": "Fundamentals of Sleep Medicine 10: Monitoring Respiration During Sleep",
+      "id": "SMP3-EBOOK-F02",
+      "label": "Fundamentals 2: EEG and EOG recognition for staging",
       "discoveryTaskCodes": [
         "D2A",
         "D2C",
@@ -118,64 +57,114 @@
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F11",
-      "label": "Fundamentals of Sleep Medicine 11: Excessive Daytime Sleepiness",
-      "discoveryTaskCodes": [
-        "D1A"
-      ]
-    },
-    {
-      "id": "SMP3-PUBLIC-F12",
-      "label": "Fundamentals of Sleep Medicine 12: Respiratory Arousals",
+      "id": "SMP3-EBOOK-F03",
+      "label": "Fundamentals 3: Adult NREM and wake staging",
       "discoveryTaskCodes": [
         "D3A"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F13",
-      "label": "Fundamentals of Sleep Medicine 13: Treatment of Obstructive Sleep Apnea",
+      "id": "SMP3-EBOOK-F04",
+      "label": "Fundamentals 4: REM-stage scoring",
       "discoveryTaskCodes": [
-        "D1C",
-        "D4A",
-        "D4B"
+        "D3A"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F14",
-      "label": "Fundamentals of Sleep Medicine 14: Positive Airway Pressure Titration",
+      "id": "SMP3-EBOOK-F05",
+      "label": "Fundamentals 5: Arousal and body-movement scoring",
       "discoveryTaskCodes": [
-        "D4A"
+        "D3A"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F15",
-      "label": "Fundamentals of Sleep Medicine 15: Positive Pressure Airway Treatment: Improving Acceptance & Adherence",
+      "id": "SMP3-EBOOK-F06",
+      "label": "Fundamentals 6: Infant and pediatric sleep-stage scoring",
       "discoveryTaskCodes": [
-        "D1B",
-        "D1C",
-        "D4A"
+        "D3B"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F16",
-      "label": "Fundamentals of Sleep Medicine 16: Central Sleep Apnea",
+      "id": "SMP3-EBOOK-F07",
+      "label": "Fundamentals 7: Normal sleep architecture and its measures",
       "discoveryTaskCodes": [
-        "D1A",
         "D3A",
-        "D4A"
+        "D3C"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F17",
-      "label": "Fundamentals of Sleep Medicine 17: The Restless Leg Syndrome and Periodic Leg Movements in Sleep",
+      "id": "SMP3-EBOOK-F08",
+      "label": "Fundamentals 8: Medication and disorder effects on architecture",
       "discoveryTaskCodes": [
         "D1A",
         "D3A"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F18",
-      "label": "Fundamentals of Sleep Medicine 18: Narcolepsy",
+      "id": "SMP3-EBOOK-F09",
+      "label": "Fundamentals 9: PSG fundamentals",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D2B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F10",
+      "label": "Fundamentals 10: Indications for PSG, portable testing and actigraphy",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D2B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F11",
+      "label": "Fundamentals 11: Recording artifacts",
+      "discoveryTaskCodes": [
+        "D2C"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F12",
+      "label": "Fundamentals 12: Respiratory signal acquisition",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D2C"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F13",
+      "label": "Fundamentals 13: Adult respiratory-event scoring terminology",
+      "discoveryTaskCodes": [
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F14",
+      "label": "Fundamentals 14: Pediatric respiratory-event scoring",
+      "discoveryTaskCodes": [
+        "D3B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F15",
+      "label": "Fundamentals 15: ECG acquisition and recognition",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D2C"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F16",
+      "label": "Fundamentals 16: Limb and other movement recordings",
+      "discoveryTaskCodes": [
+        "D2A",
+        "D2C",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F17",
+      "label": "Fundamentals 17: Sleepiness assessment and objective testing",
       "discoveryTaskCodes": [
         "D1A",
         "D2B",
@@ -183,41 +172,214 @@
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F19",
-      "label": "Fundamentals of Sleep Medicine 19: Parasomnias",
+      "id": "SMP3-EBOOK-F18",
+      "label": "Fundamentals 18: Pediatric sleepiness and symptoms",
       "discoveryTaskCodes": [
         "D1A"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F20",
-      "label": "Fundamentals of Sleep Medicine 20: Monitoring for Nocturnal Seizures",
+      "id": "SMP3-EBOOK-F19",
+      "label": "Fundamentals 19: Adult OSA diagnostic assessment",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D2B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F20",
+      "label": "Fundamentals 20: Adult OSA prevalence and presentations",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F21",
+      "label": "Fundamentals 21: OSA in children",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F22",
+      "label": "Fundamentals 22: OSA therapies and medical options",
+      "discoveryTaskCodes": [
+        "D1B",
+        "D4B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F23",
+      "label": "Fundamentals 23: PAP therapy modalities",
+      "discoveryTaskCodes": [
+        "D1C",
+        "D4A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F24",
+      "label": "Fundamentals 24: Manual and automatic PAP titration",
+      "discoveryTaskCodes": [
+        "D4A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F25",
+      "label": "Fundamentals 25: PAP acceptance and ongoing use",
+      "discoveryTaskCodes": [
+        "D1B",
+        "D1C"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F26",
+      "label": "Fundamentals 26: OSA surgery",
+      "discoveryTaskCodes": [
+        "D4B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F27",
+      "label": "Fundamentals 27: Dental devices for OSA",
+      "discoveryTaskCodes": [
+        "D4B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F28",
+      "label": "Fundamentals 28: COPD and asthma in sleep medicine",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F29",
+      "label": "Fundamentals 29: CSA and nocturnal hypoventilation",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F30",
+      "label": "Fundamentals 30: Advanced PAP and noninvasive ventilation titration",
+      "discoveryTaskCodes": [
+        "D4A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F31",
+      "label": "Fundamentals 31: RLS and PLMD assessment",
+      "discoveryTaskCodes": [
+        "D1A",
+        "D3A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F32",
+      "label": "Fundamentals 32: Management of RLS and PLMD",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F33",
+      "label": "Fundamentals 33: Central hypersomnolence, part one",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F34",
+      "label": "Fundamentals 34: Central hypersomnolence, part two",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F35",
+      "label": "Fundamentals 35: Parasomnias",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F36",
+      "label": "Fundamentals 36: EEG findings and epilepsy",
       "discoveryTaskCodes": [
         "D1A",
         "D2C"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F21",
-      "label": "Fundamentals of Sleep Medicine 21: Evaluation of Insomnia",
+      "id": "SMP3-EBOOK-F37",
+      "label": "Fundamentals 37: Insomnia assessment",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F38",
+      "label": "Fundamentals 38: Behavioral insomnia interventions",
+      "discoveryTaskCodes": [
+        "D1B"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F39",
+      "label": "Fundamentals 39: Insomnia medications",
+      "discoveryTaskCodes": [
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-F40",
+      "label": "Fundamentals 40: Circadian sleep-wake conditions",
       "discoveryTaskCodes": [
         "D1A",
         "D1B"
       ]
     },
     {
-      "id": "SMP3-PUBLIC-F22",
-      "label": "Fundamentals of Sleep Medicine 22: Circadian Sleep Disorders",
+      "id": "SMP3-EBOOK-F41",
+      "label": "Fundamentals 41: Psychiatric conditions and sleep",
       "discoveryTaskCodes": [
-        "D1A",
-        "D1B"
+        "D1A"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-A01",
+      "label": "Appendix 1: Reference ranges for adult sleep architecture",
+      "discoveryTaskCodes": [
+        "D3C"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-A02",
+      "label": "Appendix 2: Reference sleep measures for children",
+      "discoveryTaskCodes": [
+        "D3B",
+        "D3C"
+      ]
+    },
+    {
+      "id": "SMP3-EBOOK-A03",
+      "label": "Appendix 3: Historical respiratory assist device reimbursement",
+      "discoveryTaskCodes": [
+        "D4A"
       ]
     }
   ],
-  "publicOutlineScope": "Public publisher table of contents only. Navigation hints are not source-content or rule validation. No copied case text, page numbers, inherited second-edition locators or question-bank mapping.",
-  "publicOutlineChapters": 22,
+  "publicOutlineScope": "Edition-specific public e-book contents only; concise original navigation labels, not verbatim chapter citations. No proprietary cases, page claims, inherited second-edition locators or question-bank mapping. Historical reference ranges and reimbursement rules are not current authority.",
+  "publicOutlineChapters": 41,
   "publicOutlineIncludesCaseText": false,
   "referenceCenterActive": true,
   "referenceCenterActivationDate": "2026-11-11",
-  "referenceCenterActivationScope": "Published bibliographic record and publisher public fundamentals outline; searchable by subject, RPSGT domain and task"
+  "referenceCenterActivationScope": "Bibliographic identity and public edition-specific e-book contents for topic discovery",
+  "releaseYear": 2014,
+  "ebookIsbn13": "9780323319713",
+  "publicOutlineCorroborationUrl": "https://library.kaist.ac.kr/search/ctlgSearch/posesn/view.do?bibctrlno=1135959&se=b0&ty=B",
+  "publicOutlineRejectedRetailUrl": "https://www.us.elsevierhealth.com/sleep-medicine-pearls-9781455770519.html",
+  "publicOutlineAppendices": 3,
+  "publicOutlineCorrectionNote": "2026-11-21: 22 headings from the retail page closely matched the second edition and conflict with the e-book's 41 Fundamentals and three appendices. Retired all SMP3-PUBLIC-F IDs; do not migrate their numbers or task hints."
 }
