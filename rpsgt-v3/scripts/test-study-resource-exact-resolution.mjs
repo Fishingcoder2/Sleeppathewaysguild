@@ -88,6 +88,13 @@ try{
     if(concept.level!=='task'||!concept.conceptKeys.includes(conceptKey)||concept.unresolvedKeys.includes(conceptKey)) throw new Error(`${conceptKey} concept handling changed.`);
   }
 
+  const pediatricConcept=catalog.resolveQuestion({taskCode:'D3B',topic:'',referenceKeys:['pediatric-psg'],studyRecommendationKeys:[]});
+  if(pediatricConcept.level==='exact'||!pediatricConcept.conceptKeys.includes('pediatric-psg')) throw new Error('Generic pediatric PSG must never resolve as exact textbook provenance.');
+  const historicalPearls=catalog.resolveQuestion({taskCode:'D1A',topic:'',referenceKeys:['sleep-medicine-pearls'],studyRecommendationKeys:[]});
+  if(historicalPearls.level!=='exact'||historicalPearls.sourceIds[0]!=='sleep-medicine-pearls-2e'||!historicalPearls.titles[0].includes('2nd ed.')) throw new Error('Historical Pearls key lost its edition identity.');
+  const unverifiedPearls=catalog.resolveQuestion({taskCode:'D1A',topic:'',referenceKeys:['sleep-medicine-pearls-3e'],studyRecommendationKeys:[]});
+  if(unverifiedPearls.level==='exact'&&unverifiedPearls.sourceIds.includes('sleep-medicine-pearls-3e')) throw new Error('Publisher-heading discovery cannot establish exact third-edition question provenance.');
+
   const contextOnly=catalog.resolveQuestion({taskCode:'D1A',topic:'',referenceKeys:['brpt-blueprint','brpt-refs'],studyRecommendationKeys:['brpt-handbook']});
   if(contextOnly.level!=='task') throw new Error(`BRPT context-only keys must not trigger exact learner recommendations; got ${contextOnly.level}.`);
   for(const forbidden of ['brpt-blueprint','brpt-handbook','brpt-refs']) if(contextOnly.sourceIds.includes(forbidden)) throw new Error(`${forbidden} leaked into task fallback recommendations.`);
